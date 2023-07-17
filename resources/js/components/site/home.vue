@@ -1,7 +1,8 @@
 <template>
-    <div class="container-fluid px-0">
+  
+  <div class="container-fluid px-0">
+    
     <div class="home_bg" style="">
-
  
 
         <div class="heading">
@@ -11,76 +12,78 @@
          <div class=" col-sm-12 text-center image" style="">
 
          <div class="my-4 w-50 mx-auto text-center">   
-         <h4 style="font-size:27px; font-weight: 500px;" class="text-dark ">
-        <!--  <marquee>Invest in Agriculture | Sports/Gaming | Real State | Entertainment | Auto | Finance/Accounting Security | Pets | Domestic Help | Other</marquee> -->
-       </h4> 
-       <p class="h6 text text-center text-dark ">Your platform to invest in local businesses</p>
+            <h4 style="font-size:27px; font-weight: 500px;" class="text-dark ">
+             <!--  <marquee>Invest in Agriculture | Sports/Gaming | Real State | Entertainment | Auto | Finance/Accounting Security | Pets | Domestic Help | Other</marquee> -->
+            </h4> 
+
+            <h2 class="h2 text-center text-dark py-2">Your Platform To Invest In Local Businesses
+            </h2>
 
  
-           </div>
+          </div>
 
-                            <form id="form" @submit.prevent ="search();" class=" w-100" method="post">
-                            <div style="width:75%;" class=" mx-auto text-center row py-0 searchBar text-center">
+          <form id="form" @submit.prevent ="search();" class=" w-100" method="post">
+              <div style="width:75%;" class=" mx-auto text-center row py-0 searchBar text-center">
 
-                            <!-- <div style="border-radius: 35px 0 0 35px;" class="py-2 col-sm-3 bg-white">
-                              <input  required=""  style="border: none;height: 42px;" class="bar bg-white form-control d-inline" type="text" name="listing_name" placeholder="What are you looking for?"></div> -->
+              <!-- <div style="border-radius: 35px 0 0 35px;" class="py-2 col-sm-3 bg-white">
+              <input  required=""  style="border: none;height: 42px;" class="bar bg-white form-control d-inline" type="text" name="listing_name" placeholder="What are you looking for?"></div> -->
 
-                             <div style="border-radius: 35px 0 0 35px;"  class="py-2 col-5 bg-white">
-                              <input id="searchbox" required="" onkeyup="suggest(this.value);" style="border: none;height: 42px;" class="bar bg-white form-control d-inline" type="text" name="search" value="" placeholder="Location">
+                <div style="border-radius: 35px 0 0 35px;"  class="py-2 col-5 bg-white">
+                    <input id="searchbox" required="" onkeyup="suggest(this.value);" style="border: none;height: 42px;" class="bar bg-white form-control d-inline" type="text" name="search" value="" placeholder="Location">
 
-                          </div>
+                </div>
 
-                          <div class="pt-2 col-4 bg-white">
-                          <div class="dropdown pt-1">
+                <div class="pt-2 col-4 bg-white">
+                    <div class="dropdown pt-1">
 
-            <select  name="category" class="border-white form-control">
-            <option class="form-control small" >Category</option>
+                      <select  name="category" class="border-white form-control">
+                        <option class="form-control small" >Category</option>
 
-            <option class="form-control" value="Agriculture" >Agriculture</option>
-            <option value="Arts / Culture" >Arts/Culture </option>
-            <option value="Auto" >Auto</option>
-           <option value="Sports/Gaming" >Sports/Gaming</option>
-           <option value="Real State" >Real State</option>
-           <option value="Food" >Food </option>
-           <option value="Legal" >Legal </option>
-            <option value="Security" >Security </option>
-             <option value="Media / Internet" >Media/Internet </option>
-              
-               <option value="Fashion" >Fashion </option>
-                <option value="Technology / Communications" >Technology/Communications </option>
-                 <option value="Retail" >Retail </option>
-           
-           <option value="Finance/Accounting" >Finance/Accounting</option>
-           <option value="Pets">Pets</option>
-           <option value="Domestic (Home Help etc)">Domestic (Home Help etc)</option>
-           <option value="Other" >Other</option> 
+                        <option class="form-control" value="Agriculture" >Agriculture</option>
+                        <option value="Arts / Culture" >Arts/Culture </option>
+                        <option value="Auto" >Auto</option>
+                        <option value="Sports/Gaming" >Sports/Gaming</option>
+                        <option value="Real State" >Real State</option>
+                        <option value="Food" >Food </option>
+                        <option value="Legal" >Legal </option>
+                        <option value="Security" >Security </option>
+                        <option value="Media / Internet" >Media/Internet </option>
+                          
+                        <option value="Fashion" >Fashion </option>
+                        <option value="Technology / Communications" >Technology/Communications </option>
+                        <option value="Retail" >Retail </option>
+                       
+                        <option value="Finance/Accounting" >Finance/Accounting</option>
+                        <option value="Pets">Pets</option>
+                        <option value="Domestic (Home Help etc)">Domestic (Home Help etc)</option>
+                        <option value="Other" >Other</option> 
 
-           </select>
+                      </select>
 
-                        </div>
-                        </div>
-
-                            <div style="border-radius: 0 35px 35px 0;" class="bg-white col-3 py-2 ">
-                                <button  class="searchListing px-sm-3 px-1 float-right" type="submit">Search</button>
-                            </div>
-
-                               </div>               
-
-                            <div class="row" style="">
-                                <div id="result_list" class="text-left" style="display: none;width:30%; z-index: 1000;height: 600px;position: absolute; margin-left: 174px;top: 139px;">
-                                    
-                                </div>
-                            </div>
-  
-                        </form>
-                        </div>                
-
-                        </div> 
-                    
                     </div>
+                  </div>
+
+                  <div style="border-radius: 0 35px 35px 0;" class="bg-white col-3 py-2 ">
+                      <button  class="searchListing px-sm-3 px-1 float-right" type="submit">Search</button>
+                  </div>
+
+                </div>               
+
+                <div class="row" style="">
+                    <div id="result_list" class="text-left" style="display: none;width:30%; z-index: 1000;height: 600px;position: absolute; margin-left: 174px;top: 139px;">
+                        
+                    </div>
+                </div>
+  
+            </form>
+          </div>                
+
+        </div> 
+                    
+      </div>
 
 
-      <div class="row mt-4">
+    <div class="row mt-4">
 
         <div class="cats text-center categories navbar navbar-expand-sm pb-0">
                                         
@@ -210,7 +213,10 @@
    <div class="row mt-4 w-75 mx-auto">
 <hr>
          <div >
-         <h3 style="font-family: system-ui; text-align:left;" class="text-dark headline  headline-aligned-to-left  headline-box "> Latest Businesses </h3></div>
+            <h3 style="text-align:left;" class="text-dark headline  headline-aligned-to-left  headline-box "> 
+              Latest Businesses 
+            </h3>
+         </div>
              
                 <div v-for="( result, index ) in results" class="listing col-sm-3 my-5">
                     <router-link :to="`/listingDetails/${result.id}`" class="shadow card border px-2">
@@ -279,7 +285,7 @@ created() {
 
       //CALL ACTION
       $('#call_to').html('');
-      $('#call_to').html('<a onclick="c_to_action();" data-target="#loginModal" data-toggle="modal" style="background: #72c537; border-radius: 15px;cursor: pointer;font-size: 11px; " class="text-light px-sm-3 my-1 px-1 py-1 ml-5 d-inline-block small text-center" ><span style="font-weight:bolder;" id="c_to_ac">Add Your Business</span></a> ');
+      $('#call_to').html('<a onclick="c_to_action();" data-target="#loginModal" data-toggle="modal" class="header_buttons text-light px-sm-3 my-1 px-1 py-1 ml-5 d-inline-block small text-center" ><span id="c_to_ac">Add Your Business</span></a> ');
         },
 
   methods:{

@@ -7987,6 +7987,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'business'],
   data: function data() {
@@ -8014,7 +8020,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     if (this.milestone != null) this.$router.push("business-milestone/".concat(this.milestone));else if (this.milestoneS != null) this.$router.push("service-milestone/".concat(this.milestoneS)); //CALL ACTION
 
     $('#call_to').html('');
-    $('#call_to').html('<a onclick="c_to_action();" data-target="#loginModal" data-toggle="modal" style="background: #72c537; border-radius: 15px;cursor: pointer;font-size: 11px; " class="text-light px-sm-3 my-1 px-1 py-1 ml-5 d-inline-block small text-center" ><span style="font-weight:bolder;" id="c_to_ac">Add Your Business</span></a> ');
+    $('#call_to').html('<a onclick="c_to_action();" data-target="#loginModal" data-toggle="modal" class="header_buttons text-light px-sm-3 my-1 px-1 py-1 ml-5 d-inline-block small text-center" ><span id="c_to_ac">Add Your Business</span></a> ');
   },
   methods: (_methods = {
     search: function search() {
@@ -9923,7 +9929,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     replaceText: function replaceText() {
       if (this.$router.currentRoute.path == '/services' || this.$router.currentRoute.path == '/serviceResults') {
         $('#call_to').html('');
-        $('#call_to').html('<a onclick="c_to_actionS();" data-target="#loginModal" data-toggle="modal" style="background: #72c537; border-radius: 15px;cursor: pointer;font-size: 11px; " class="text-light px-sm-3 my-1 px-1 py-1 ml-5 d-inline-block small text-center" ><span style="font-weight:bolder;" id="c_to_ac">Add Your Service</span></a> ');
+        $('#call_to').html('<a onclick="c_to_actionS();" data-target="#loginModal" data-toggle="modal" class="header_buttons text-light px-sm-3 my-1 px-1 py-1 ml-5 d-inline-block small text-center" ><span  id="c_to_ac">Add Your Service</span></a> ');
       }
     }
   },
@@ -67550,8 +67556,8 @@ var staticRenderFns = [
         staticStyle: { "font-size": "27px", "font-weight": "500px" },
       }),
       _vm._v(" "),
-      _c("p", { staticClass: "h6 text text-center text-dark" }, [
-        _vm._v("Your platform to invest in local businesses"),
+      _c("h2", { staticClass: "h2 text-center text-dark py-2" }, [
+        _vm._v("Your Platform To Invest In Local Businesses\n            "),
       ]),
     ])
   },
@@ -67909,9 +67915,9 @@ var staticRenderFns = [
         {
           staticClass:
             "text-dark headline headline-aligned-to-left headline-box",
-          staticStyle: { "font-family": "system-ui", "text-align": "left" },
+          staticStyle: { "text-align": "left" },
         },
-        [_vm._v(" Latest Businesses ")]
+        [_vm._v(" \n              Latest Businesses \n            ")]
       ),
     ])
   },

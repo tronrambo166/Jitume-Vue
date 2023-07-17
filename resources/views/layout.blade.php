@@ -1,8 +1,8 @@
 
 <!DOCTYPE HTML>
 <head>
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
     <title>JITUME</title>
+    <link rel="icon" href="images/favicon2.ico" type="image/x-icon" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -18,8 +18,8 @@
     <link href="slider/dist/nouislider.css" rel="stylesheet">
     <script src="slider/dist/nouislider.js"></script>
     
-    <link href='http://fonts.googleapis.com/css?family=Monda' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Doppio+One' rel='stylesheet' type='text/css'>
+    <!-- <link href='http://fonts.googleapis.com/css?family=Monda' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Doppio+One' rel='stylesheet' type='text/css'> -->
 
    <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
    <link href="{{ asset('/css/style.css') }}" rel="stylesheet"/>
@@ -29,148 +29,267 @@
         
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- {{-- Vue component files --}}
-<script src="https://unpkg.com/vue"></script>
-<script src="https://unpkg.com/http-vue-loader"></script>
-  {{-- Vue component files --}} -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+        <!-- {{-- Vue component files --}}
+        <script src="https://unpkg.com/vue"></script>
+        <script src="https://unpkg.com/http-vue-loader"></script>
+          {{-- Vue component files --}} -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
   
 </head>
-<body>
 
-     
 
-<div class="app container-fluid " style="background: white;" >
+
+<body class="">     
+
+<div class="app " style="background: white;" >
  
 
 <!-- Layout -->
-     <div class="row border_dark p-0" style="background: #02480f;">
-     <div class="col-8">
+
+
+<nav class="navbar navbar-expand-lg primary_bg">
+
+  <a href="./"><img class="img-fluid pb-2" width="170px" height="45px" src="images/logo.png" style="margin-left: 45px;"></a>
+
+
+  <button class="navbar-toggler bg-white text-white mr-2" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto text-white">
+
+
+      <!-- <li class="nav-item active" >
+        <a class="nav-link" href="/home" style="color:white;">Home <span class="sr-only">(current)</span></a>
+      </li> -->
+
+      <li class="nav-item py-1 px-3 active " >
+        <router-link  to="/home" class="header_buttons py-1 px-3">     Home
+        </router-link>
+      </li>
+
+
+      <li class="nav-item py-1 px-3 text-light ">
+        <router-link to="/services" class=" header_buttons py-1 px-3 "> 
+            Jitume Services 
+        </router-link>
+      </li>
+
+
+
+    </ul>
+
+    <div class="my-2 my-lg-0">
       
-     <div class="navbar navbar-expand-sm p-0 navy  ">
-       <ul class="navbar-nav py-1 ">
+        <div class="py-1 px-md-3">
 
-        
-        <li class="nav-item py-1 pr-5">
-            <a href="./"><img class="" src="images/logo.png" width="170px" height="45px" style="margin-left: 45px;"></a>
-        </li>
+            @if(Auth::check()) 
+            <div class="ml-3 ml-md-0 d-flex">
 
-        <div class="navbar navbar-expand-sm pl-4">
-             <ul class="navbar-nav ">
-        
-         <li class="nav-item py-1 px-3 active"><router-link to="/home" class=" header_buttons py-1 px-3"> <b style="position:relative;top: -1px;">Home</b></router-link></li>
+                <div class="nav-item">
+                     <a  href="{{route('business')}}" class="header_buttons px-sm-3 my-1 mr-2 px-1 py-1 " ><b>Dashboard</b></a> 
+                </div> 
+               
+                <div class="nav-item">
+                    <a v-if="" onclick="event.preventDefault();
+                 document.getElementById('logout-form').submit();" class=" sign_in_btn  px-sm-3 my-1 mr-2 px-1 py-1 " ><b>Sign Out</b></a>
+                </div> 
 
-                    <li class="nav-item py-1 px-3 text-light"><router-link to="/services" class=" header_buttons py-1 px-3 "> <b style="position:relative;top: -1px;">Jitume Services</b></router-link></li>
-
-                    <!-- <li class="font-weight-bold nav-item py-1 px-3"><router-link to="/applyShow" class="">Apply for Show
-                    </router-link></li> -->
-                </ul>
-
-                </div>
-
-                </ul>
-                 </div>
             </div>
 
-    
-    
- <div class="col-3 px-0">
-  <ul style="padding:0;">
-       
+
+            @elseif (Session::has('investor_auth') && Session::get('investor_auth') == true)
+
+            <div class="ml-3 ml-md-0 d-flex">
    
+                <div class="nav-item">
 
-     <li style="list-style-type: none;" class="w-100 ml-2 mt-3 nav-item py-1 px-3 text-light ">
-<!-- 
-    (Session::has('business_auth') && Session::get('business_auth') == true)
+                    <a  href="{{route('business')}}" class="header_buttons px-sm-3 my-1 mr-2 px-1 py-1" ><b>Dashboard</b></a> 
+                </div> 
+               
+                <div class="nav-item">
+                    <a v-if="" onclick="event.preventDefault();
+                     document.getElementById('logout-form').submit();" class="sign_in_btn px-sm-3 my-1 mr-2 px-1 py-1" ><b>Sign Out</b>
+                    </a>
+                </div> 
 
-    <div class="row">
-     <div class="col-sm-6 py-1 text-center">
-         <a  href="./business" style="background: aliceblue; border-radius: 15px;" class=" text-dark small d-inline px-3 py-2 d-inline-block text-center" ><b>Dashboard</b></a> 
-    </div> 
-       
-    <div class="col-sm-6 py-1 text-center">
-        <a v-if="" onclick="event.preventDefault();
-     document.getElementById('logout-form').submit();" style="background: white; border-radius: 15px;cursor: pointer;" class=" text-dark d-inline px-3 py-2 d-inline-block text-center small" ><b>Logout</b></a>
-      </div> 
+            </div>
 
-     </div>
+            @else
+
+            <div class="ml-3 ml-md-0 d-flex">
+
+                <div class="" id="call_to">
+
+                  <a onclick="c_to_action();" data-target="#loginModal" data-toggle="modal" class="header_buttons my-1 mr-2 px-2 py-1" style="color: white;"><span id="c_to_ac">
+                  Add Your Business</span></a> 
+                </div>
+
+                <a  data-target="#loginModal" data-toggle="modal" class=" sign_in_btn px-sm-3 my-1 mr-2 px-1 py-1 d-inline-block  text-center ml-md-3" >Sign In</a>
 
 
-    (Session::has('service_auth') && Session::get('service_auth') == true)
+            </div> 
 
-    <div class="row">
-     <div class="col-sm-6 py-1 text-center">
-        <a  href="./services" style="background: aliceblue; border-radius: 15px; " class=" text-dark d-inline px-3 py-2 d-inline-block small text-center" ><b>Dashboard</b></a> 
+            
+
+            
+
+            @endif
+
         </div>
+    </div>
+  </div>
+</nav>
 
-        <div class="col-sm-6 py-1 text-center">
-        <a v-if="" onclick="event.preventDefault();
-     document.getElementById('logout-form').submit();" style="background: white; border-radius: 15px;cursor: pointer;" class=" text-dark d-inline px-3 py-2 d-inline-block text-center small" ><b>Sign Out</b></a>
 
-      </div> 
 
-     </div>
- -->
+<!-- Commenting Previous Navigation Bar -->
+@php
+/*
 
-     @if(Auth::check()) 
-    <div class="row">
-     <div class="col-sm-2"></div>   
-     <div class="col-sm-4 py-1 text-center">
-         <a  href="{{route('business')}}" style="background: aliceblue; border-radius: 15px;" class="ml-2 header_buttons text-dark px-sm-3 my-1 mr-2 px-1 py-1 d-inline-block small text-center" ><b>Dashboard</b></a> 
-    </div> 
+<div class="row border_dark p-0" style="background: #001C30;">
+
+    <div class="col-8">
+
+        <div class="navbar navbar-expand-sm p-0 navy  ">
        
-    <div class="col-sm-6 py-1 text-center">
-        <a v-if="" onclick="event.preventDefault();
-     document.getElementById('logout-form').submit();" style="background: white;" class=" header_buttons text-dark px-sm-3 my-1 mr-2 px-1 py-1 d-inline-block small text-center" ><b>Sign Out</b></a>
-      </div> 
+            <ul class="navbar-nav py-1 ">
 
-     </div>
+            
+                <li class="nav-item py-1 pr-5">
+                    <a href="./"><img class="" src="images/logo.png" width="170px" height="45px" style="margin-left: 45px;"></a>
+                </li>
 
+                    <div class="navbar navbar-expand-sm pl-4">
+                        <ul class="navbar-nav ">
+                    
+                            <li class="nav-item py-1 px-3 active"><router-link to="/home" class=" header_buttons py-1 px-3"> <b style="">Home</b></router-link></li>
 
-     @elseif (Session::has('investor_auth') && Session::get('investor_auth') == true)
+                            <li class="nav-item py-1 px-3 text-light"><router-link to="/services" class=" header_buttons py-1 px-3 "> 
+                                <b style=""> Jitume Services </b></router-link></li>
 
-     <div class="row">
-     <div class="col-sm-2"></div>   
-     <div class="col-sm-4 py-1 text-center">
-         <a  href="{{route('business')}}" style="background: aliceblue; border-radius: 15px;" class="ml-2 header_buttons text-dark px-sm-3 my-1 mr-2 px-1 py-1 d-inline-block small text-center" ><b>Dashboard</b></a> 
-    </div> 
+                            <!-- <li class="font-weight-bold nav-item py-1 px-3"><router-link to="/applyShow" class="">Apply for Show
+                            </router-link></li> -->
+
+                        </ul>
+
+                    </div>
+
+            </ul>
+         </div>
+
+    </div>
+
+    
+    
+    <div class="col-3 px-0">
+
+        <ul style="padding:0;">
        
-    <div class="col-sm-6 py-1 text-center">
-        <a v-if="" onclick="event.preventDefault();
-     document.getElementById('logout-form').submit();" style="background: white; border-radius: 15px;cursor: pointer;" class=" header_buttons text-dark d-inline px-sm-3 my-1 mr-2 px-1 py-1 d-inline-block small text-center" ><b>Sign Out</b></a>
-      </div> 
+            <li style="list-style-type: none;" class="w-100 ml-2 mt-3 nav-item py-1 px-3 text-light ">
 
-     </div>
+                <!-- 
+                (Session::has('business_auth') && Session::get('business_auth') == true)
 
-      @else 
+                <div class="row">
+                 <div class="col-sm-6 py-1 text-center">
+                     <a  href="./business" style="background: aliceblue; border-radius: 15px;" class=" text-dark small d-inline px-3 py-2 d-inline-block text-center" ><b>Dashboard</b></a> 
+                </div> 
+                   
+                <div class="col-sm-6 py-1 text-center">
+                    <a v-if="" onclick="event.preventDefault();
+                 document.getElementById('logout-form').submit();" style="background: white; border-radius: 15px;cursor: pointer;" class=" text-dark d-inline px-3 py-2 d-inline-block text-center small" ><b>Logout</b></a>
+                  </div> 
 
-      <div class="d-inline-block" id="call_to">
+                 </div>
 
-      <a onclick="c_to_action();" data-target="#loginModal" data-toggle="modal" style="background: #72c537; border-radius: 15px;cursor: pointer;font-size: 11px; " class=" header_buttons text-light px-sm-3 my-1 px-1 py-1 ml-5 d-inline-block small text-center" ><span style="font-weight:bolder;" id="c_to_ac">
-      Add Your Business</span></a> 
-     </div>
 
-      <a  data-target="#loginModal" data-toggle="modal" style="background: white; border-radius: 15px;cursor: pointer;font-size: 11px; " class=" header_buttons float-right text-dark px-sm-3 my-1 mr-2 px-1 py-1 d-inline-block small text-center" ><b>Sign In</b></a>
+                (Session::has('service_auth') && Session::get('service_auth') == true)
 
-      @endif
+                <div class="row">
+                 <div class="col-sm-6 py-1 text-center">
+                    <a  href="./services" style="background: aliceblue; border-radius: 15px; " class=" text-dark d-inline px-3 py-2 d-inline-block small text-center" ><b>Dashboard</b></a> 
+                    </div>
 
-       </li>
+                    <div class="col-sm-6 py-1 text-center">
+                    <a v-if="" onclick="event.preventDefault();
+                 document.getElementById('logout-form').submit();" style="background: white; border-radius: 15px;cursor: pointer;" class=" text-dark d-inline px-3 py-2 d-inline-block text-center small" ><b>Sign Out</b></a>
+
+                  </div> 
+
+                 </div>
+             -->
+
+            @if(Auth::check()) 
+            <div class="row">
+                <div class="col-sm-2"></div>
+
+                <div class="col-sm-4 py-1 text-center">
+                     <a  href="{{route('business')}}" style="background: aliceblue; border-radius: 15px;" class="ml-2 header_buttons text-dark px-sm-3 my-1 mr-2 px-1 py-1 d-inline-block small text-center" ><b>Dashboard</b></a> 
+                </div> 
+               
+                <div class="col-sm-6 py-1 text-center">
+                    <a v-if="" onclick="event.preventDefault();
+                 document.getElementById('logout-form').submit();" style="background: white;" class=" header_buttons text-dark px-sm-3 my-1 mr-2 px-1 py-1 d-inline-block small text-center" ><b>Sign Out</b></a>
+                </div> 
+
+            </div>
+
+
+            @elseif (Session::has('investor_auth') && Session::get('investor_auth') == true)
+
+            <div class="row">
+
+                <div class="col-sm-2"></div>   
+                <div class="col-sm-4 py-1 text-center">
+
+                    <a  href="{{route('business')}}" style="background: aliceblue; border-radius: 15px;" class="ml-2 header_buttons text-dark px-sm-3 my-1 mr-2 px-1 py-1 d-inline-block small text-center" ><b>Dashboard</b></a> 
+                </div> 
+               
+                <div class="col-sm-6 py-1 text-center">
+                    <a v-if="" onclick="event.preventDefault();
+                 document.getElementById('logout-form').submit();" style="background: white; border-radius: 15px;cursor: pointer;" class=" header_buttons text-dark d-inline px-sm-3 my-1 mr-2 px-1 py-1 d-inline-block small text-center" ><b>Sign Out</b></a>
+                  </div> 
+
+             </div>
+
+            @else 
+
+            <div class="d-inline-block" id="call_to">
+
+                  <a onclick="c_to_action();" data-target="#loginModal" data-toggle="modal" style="background: #176B87; border-radius: 15px;cursor: pointer;" class=" header_buttons text-light px-sm-3 my-1 px-1 py-1 ml-5 d-inline-block small text-center" ><span style="font-weight:bolder;" id="c_to_ac">
+                  Add Your Business</span></a> 
+            </div>
+
+            <a  data-target="#loginModal" data-toggle="modal" style="background: white; border-radius: 15px;cursor: pointer;" class=" header_buttons float-right text-dark px-sm-3 my-1 mr-2 px-1 py-1 d-inline-block small text-center" ><b>Sign In</b></a>
+
+            @endif
+
+        </li>
                                     
-    </ul>
+        </ul>
         
-        </div> 
-
-       
-
     </div> 
-           
 
-    <!-- Layout -->
+</div> 
+        
+*/
+
+@endphp   
+
+<!-- Layout -->
 
 
 
-    <div class="row">
+<!-- Body -->
+
+<div class="row">
 
        <!--  @if(Session::has('login_err'))
         <div class="w-50 m-auto alert alert-danger alert-dismissible fade show" role="alert">
@@ -187,7 +306,8 @@
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-        </div>  @endif
+        </div>  
+        @endif
 
 
         @if(Session::has('auth_business'))
@@ -196,7 +316,8 @@
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-        </div>  @endif
+        </div>  
+        @endif
 
 
         @if(Session::has('auth_investor'))
@@ -206,23 +327,22 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>  
-
-         @endif 
-
+        @endif 
 
 
-@if(isset($errors))
 
-    @foreach ($errors->all() as $error)
-        <div class="w-50 m-auto alert alert-danger alert-dismissible fade show" role="alert">
-          <p class="font-weight-bold">{{$error}} </p>
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div> 
-    @break; @endforeach
+        @if(isset($errors))
 
-@endif
+            @foreach ($errors->all() as $error)
+                <div class="w-50 m-auto alert alert-danger alert-dismissible fade show" role="alert">
+                  <p class="font-weight-bold">{{$error}} </p>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div> 
+            @break; @endforeach
+
+        @endif
 
         <!--  @error('email')
         <div class="w-50 m-auto alert alert-danger alert-dismissible fade show" role="alert">
@@ -251,105 +371,113 @@
           </button>
         </div> 
         @enderror
- -->
+        -->
                    
-        </div>
+    </div>
        
 
                     
                    
 
 
+        @if(Session::has('reset'))
+            <p class="text-light font-weight-bold">{{Session::get('reset')}}   @php Session::forget('reset'); @endphp </p>
+        @endif                         
 
-          @if(Session::has('reset'))<p class="text-light font-weight-bold">{{Session::get('reset')}}   @php Session::forget('reset'); @endphp </p>@endif                         
 
         @if(Session::has('loginFailed'))
-        <p style="position: absolute;background: chartreuse;right: 0px;border-radius: 10px;" class="mb-3 text-danger font-weight-bold float-right">{{Session::get('loginFailed')}} @php Session::forget('loginFailed'); @endphp </p>@endif
+            <p style="position: absolute;background: chartreuse;right: 0px;border-radius: 10px;" class="mb-3 text-danger font-weight-bold float-right">{{Session::get('loginFailed')}} @php Session::forget('loginFailed'); @endphp </p>
+        @endif
+
 
         @if(Session::has('Stripe_pay'))
-        <p style="position: absolute;background: #00ff89;right: 0px;border-radius: 0px;" class="text-center mb-2 w-25 shadow font-weight-bold float-right">{{Session::get('Stripe_pay')}} @php Session::forget('Stripe_pay'); @endphp </p>@endif
+            <p style="position: absolute;background: #00ff89;right: 0px;border-radius: 0px;" class="text-center mb-2 w-25 shadow font-weight-bold float-right">{{Session::get('Stripe_pay')}} @php Session::forget('Stripe_pay'); @endphp </p>
+        @endif
 
-    <!-- yield('page') -->
-    <router-view :auth_user='@json($auth_user)' :app_url='@json($app_url)' 
-    :business='@json($business)' ></router-view>
-    <!-- yield('page') -->
+        <!-- yield('page') -->
+        <router-view :auth_user='@json($auth_user)' :app_url='@json($app_url)' 
+        :business='@json($business)' ></router-view>
+        <!-- yield('page') -->
 
-     </div>
+</div>
 
     
 
+<footer class="secondary_bg pt-3 text-light">
 
-    <div style="width:80%;" class="row mx-auto my-3">
-        <div class="col-sm-6">
-            <img class="img-fluid w-100" src="images/logo_services.png" width="363px" height="110px">
-        </div>
-
-        <div class="col-sm-3">
-            <ul>
-              
-                <li style="list-style-type:none;">
-                     @if(Session::has('business_auth') && Session::get('business_auth') == true)
-                    <a href="./business/listings" class="footer_txt" href="#"><i class="mr-2 fa fa-angle-right"></i>My Listings</a>
-
-                     @elseif(Session::has('service_auth') && Session::get('service_auth') == true)
-                    
-                    <a href="./services/services" class="footer_txt" href="#"><i class="mr-2 fa fa-angle-right"></i>My Services</a>
-                      @endif
-              </li>
-
-
-               
-
-                <li style="list-style-type:none;">
-                   @if(Session::has('business_auth') && Session::get('business_auth') == true)
-                    <a href="./business/add-listing" class="footer_txt" href="#"><i class="mr-2 fa fa-angle-right"></i>Add Listing</a>
-
-                     @elseif(Session::has('service_auth') && Session::get('service_auth') == true)
-                    
-                    <a href="./services/add-services" class="footer_txt" href="#"><i class="mr-2 fa fa-angle-right"></i>Add Service</a>
-                      @endif
-                </li>
-            </ul>
-        </div>
-
-        <div class="col-sm-3">
-             <ul>
-                
-                <h4 class="text-dark">Contact Us</h4>
-               
-
-                
-
-                <li style="list-style-type:none;">
-                    <a class="footer_txt" href="#">E-Mail: info@thedtagency.com</a>
-                </li>
-
-                
-            </ul>
+<div class="container row mx-auto my-3 d-flex align-items-center">
+    <div class="col-12 col-sm-6 d-flex justify-content-center">
+        <div class="w-75">
+            <img style="max-width: 438px;" class="w-100" src="images/logo_footer.png" />
         </div>
     </div>
 
+    <div class="col-12 col-sm-3 d-flex justify-content-center">
+        <ul class="text-light">     
+            <li style="list-style-type:none;">
+                 @if(Session::has('business_auth') && Session::get('business_auth') == true)
+                <a href="./business/listings" class="footer_txt" href="#"><i class="mr-2 fa fa-angle-right"></i>My Listings</a>
 
-        <div class=" border border-top-dark w-100">
-        <footer class="w-100">
-            <div class="row py-2">
+                 @elseif(Session::has('service_auth') && Session::get('service_auth') == true)
+                
+                <a href="./services/services" class="footer_txt" href="#"><i class="mr-2 fa fa-angle-right"></i>My Services</a>
+                  @endif
+          </li>
 
-                 <div class="col-sm-6 m-auto text-center">
-                    
-                    <p class="text-center text-secondary pt-2">© JITUME. All Rights Reserved.
-                    </p>
-                </div>
 
            
 
+            <li style="list-style-type:none;">
+               @if(Session::has('business_auth') && Session::get('business_auth') == true)
+                <a href="./business/add-listing" class="footer_txt" href="#"><i class="mr-2 fa fa-angle-right"></i>Add Listing</a>
+
+                 @elseif(Session::has('service_auth') && Session::get('service_auth') == true)
                 
-            </div>
-        </footer>
-       
-        </div>
-        
-        
+                <a href="./services/add-services" class="footer_txt" href="#"><i class="mr-2 fa fa-angle-right"></i>Add Service</a>
+                  @endif
+            </li>
+        </ul>
     </div>
+
+    <div class="col-12 col-sm-3 pt-2 d-flex justify-content-center">
+         <ul class="text-light">
+            
+            <h3 class="h3">Contact Us</h3>
+
+            <li style="list-style-type:none;">
+                <span class="footer_txt text-light">
+                    E-Mail:<a class="footer_txt text-light d-inline" href="mailto:info@thedtagency.com"> info@thedtagency.com</a>
+                </span>
+                
+            </li>
+
+            
+        </ul>
+    </div>
+    
+</div>
+
+
+<div class="w-100 primary_bg py-2">
+    <div class="w-100">
+        <div class="row py-2">
+
+             <div class="col-sm-6 m-auto text-center">
+                
+                <p class="text-center pt-2">© JITUME. All Rights Reserved.
+                </p>
+            </div>  
+
+            
+        </div>
+    </div>
+
+</div>
+        
+</footer>
+
+
+</div>
     
     
     
