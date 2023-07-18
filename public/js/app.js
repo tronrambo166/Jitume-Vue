@@ -7993,6 +7993,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'business'],
   data: function data() {
@@ -67222,17 +67257,17 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container-fluid px-0" }, [
+  return _c("div", { staticClass: "container-xl px-0" }, [
     _c("div", { staticClass: "home_bg" }, [
       _c("div", { staticClass: "heading" }, [
-        _c("div", { staticClass: "row" }, [
+        _c("div", {}, [
           _c("div", { staticClass: "col-sm-12 text-center image" }, [
             _vm._m(0),
             _vm._v(" "),
             _c(
               "form",
               {
-                staticClass: "w-100",
+                staticClass: "w-100 d-flex justify-content-center",
                 attrs: { id: "form", method: "post" },
                 on: {
                   submit: function ($event) {
@@ -67247,15 +67282,15 @@ var render = function () {
         ]),
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "row mt-4" }, [
-        _c(
-          "div",
-          {
-            staticClass:
-              "cats text-center categories navbar navbar-expand-sm pb-0",
-          },
-          [
-            _c("ul", { staticClass: "navbar-nav mx-auto" }, [
+      _c("div", { staticClass: "mt-4" }, [
+        _c("div", { staticClass: "cats text-center pb-0" }, [
+          _c(
+            "ul",
+            {
+              staticClass:
+                "hlist d-flex justify-content-center mx-4 mx-lg-4 py-0 my-0",
+            },
+            [
               _c(
                 "li",
                 { staticClass: "nav-item" },
@@ -67443,15 +67478,15 @@ var render = function () {
                 ],
                 1
               ),
-            ]),
-            _vm._v(" "),
-            _c("br"),
-          ]
-        ),
+            ]
+          ),
+          _vm._v(" "),
+          _c("br"),
+        ]),
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "categories cats py-0" }, [
-        _c("ul", { staticClass: "row text-center py-0" }, [
+        _c("ul", { staticClass: "text-center py-0" }, [
           _c(
             "li",
             {
@@ -67462,8 +67497,7 @@ var render = function () {
               _c(
                 "router-link",
                 {
-                  staticClass: "py-0",
-                  staticStyle: { color: "#1ed73d" },
+                  staticClass: "py-0 d-inline h6 renewable_text",
                   attrs: { to: "category/Renewable-Energy" },
                 },
                 [_vm._v("Renewable Energy ")]
@@ -67479,18 +67513,18 @@ var render = function () {
     _vm._v(" "),
     _vm._m(3),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "row mt-4 w-75 mx-auto" },
-      [
-        _c("hr"),
-        _vm._v(" "),
-        _vm._m(4),
-        _vm._v(" "),
+    _c("div", { staticClass: "container-xl py-5" }, [
+      _vm._m(4),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "card-group my-4 w-100 d-md-flex justify-content-center",
+        },
         _vm._l(_vm.results, function (result, index) {
           return _c(
             "div",
-            { staticClass: "listing col-sm-3 my-5" },
+            { staticClass: "m-2 listing" },
             [
               _c(
                 "router-link",
@@ -67499,37 +67533,42 @@ var render = function () {
                   attrs: { to: "/listingDetails/" + result.id },
                 },
                 [
-                  result.file
-                    ? _c(
-                        "video",
-                        {
-                          staticStyle: { width: "332px", height: "230px" },
-                          attrs: { controls: "", alt: "" },
-                        },
-                        [
-                          _c("source", {
-                            attrs: { src: result.file, type: "video/mp4" },
-                          }),
-                        ]
-                      )
-                    : _c("img", {
-                        staticStyle: { width: "100%", height: "130px" },
-                        attrs: { src: result.image, alt: "" },
-                      }),
-                  _vm._v(" "),
-                  _c("h4", { staticClass: "mt-3 mb-0" }, [
-                    _vm._v(_vm._s(result.name) + " "),
-                  ]),
-                  _vm._v(" "),
-                  _c("p", { staticClass: "my-1" }, [
-                    _c("i", { staticClass: "mr-2 fa fa-map-marker" }),
-                    _vm._v(_vm._s(result.location)),
-                  ]),
-                  _vm._v(" "),
-                  _c("p", [
-                    _c("span", { staticClass: "mt-1 rounded" }, [
-                      _c("i", { staticClass: "mr-2 fa fa-phone" }),
-                      _vm._v(_vm._s(result.contact)),
+                  _c("div", { staticClass: "p-2" }, [
+                    result.file
+                      ? _c(
+                          "video",
+                          {
+                            staticStyle: { width: "450px", height: "230px" },
+                            attrs: { controls: "", alt: "" },
+                          },
+                          [
+                            _c("source", {
+                              attrs: { src: result.file, type: "video/mp4" },
+                            }),
+                          ]
+                        )
+                      : _c("img", {
+                          staticClass: "card-img-top",
+                          staticStyle: { width: "450", height: "230px" },
+                          attrs: { src: result.image, alt: "" },
+                        }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "p-1 pb-2" }, [
+                      _c("h4", { staticClass: "card_heading mb-0 py-3" }, [
+                        _vm._v(_vm._s(result.name) + " "),
+                      ]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "card_text pt-1" }, [
+                        _c("i", { staticClass: "mr-2 fa fa-map-marker" }),
+                        _vm._v(_vm._s(result.location)),
+                      ]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "card_text" }, [
+                        _c("span", { staticClass: "rounded" }, [
+                          _c("i", { staticClass: "mr-2 fa fa-phone" }),
+                          _vm._v(_vm._s(result.contact)),
+                        ]),
+                      ]),
                     ]),
                   ]),
                 ]
@@ -67538,11 +67577,11 @@ var render = function () {
             1
           )
         }),
-      ],
-      2
-    ),
+        0
+      ),
+    ]),
     _vm._v(" "),
-    _c("div", { staticClass: "row mt-2 border border-bottom-dark" }),
+    _c("div", { staticClass: "mt-2 border border-bottom-dark" }),
   ])
 }
 var staticRenderFns = [
@@ -67556,9 +67595,11 @@ var staticRenderFns = [
         staticStyle: { "font-size": "27px", "font-weight": "500px" },
       }),
       _vm._v(" "),
-      _c("h2", { staticClass: "h2 text-center text-dark py-2" }, [
-        _vm._v("Your Platform To Invest In Local Businesses\n            "),
-      ]),
+      _c(
+        "h1",
+        { staticClass: "h1 text-center text_color_1 py-2 main_heading" },
+        [_vm._v("Your Platform To Invest In Local Businesses\r\n            ")]
+      ),
     ])
   },
   function () {
@@ -67568,39 +67609,33 @@ var staticRenderFns = [
     return _c(
       "div",
       {
-        staticClass: "mx-auto text-center row py-0 searchBar text-center",
-        staticStyle: { width: "75%" },
+        staticClass:
+          "w-100 w-xl-75 p-2 mx-2 mx-lg-5 text-center py-0 searchBar text-center d-flex justify-content-center",
       },
       [
-        _c(
-          "div",
-          {
-            staticClass: "py-2 col-5 bg-white",
-            staticStyle: { "border-radius": "35px 0 0 35px" },
-          },
-          [
-            _c("input", {
-              staticClass: "bar bg-white form-control d-inline",
-              staticStyle: { border: "none", height: "42px" },
-              attrs: {
-                id: "searchbox",
-                required: "",
-                onkeyup: "suggest(this.value);",
-                type: "text",
-                name: "search",
-                value: "",
-                placeholder: "Location",
-              },
-            }),
-          ]
-        ),
+        _c("div", { staticClass: "py-2 col-5 bg-white" }, [
+          _c("input", {
+            staticClass: "bg-white form-control d-inline",
+            staticStyle: { border: "none" },
+            attrs: {
+              id: "searchbox",
+              required: "",
+              onkeyup: "suggest(this.value);",
+              type: "text",
+              name: "search",
+              value: "",
+              placeholder: "Location",
+            },
+          }),
+        ]),
         _vm._v(" "),
-        _c("div", { staticClass: "pt-2 col-4 bg-white" }, [
-          _c("div", { staticClass: "dropdown pt-1" }, [
+        _c("div", { staticClass: "py-2 col-4 bg-white" }, [
+          _c("div", { staticClass: "dropdown" }, [
             _c(
               "select",
               {
                 staticClass: "border-white form-control",
+                staticStyle: { color: "grey", cursor: "pointer" },
                 attrs: { name: "category" },
               },
               [
@@ -67617,79 +67652,132 @@ var staticRenderFns = [
                   [_vm._v("Agriculture")]
                 ),
                 _vm._v(" "),
-                _c("option", { attrs: { value: "Arts / Culture" } }, [
-                  _vm._v("Arts/Culture "),
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "Auto" } }, [_vm._v("Auto")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "Sports/Gaming" } }, [
-                  _vm._v("Sports/Gaming"),
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "Real State" } }, [
-                  _vm._v("Real State"),
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "Food" } }, [_vm._v("Food ")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "Legal" } }, [_vm._v("Legal ")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "Security" } }, [
-                  _vm._v("Security "),
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "Media / Internet" } }, [
-                  _vm._v("Media/Internet "),
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "Fashion" } }, [
-                  _vm._v("Fashion "),
-                ]),
+                _c(
+                  "option",
+                  {
+                    staticClass: "form-control",
+                    attrs: { value: "Arts / Culture" },
+                  },
+                  [_vm._v("Arts/Culture ")]
+                ),
                 _vm._v(" "),
                 _c(
                   "option",
-                  { attrs: { value: "Technology / Communications" } },
+                  { staticClass: "form-control", attrs: { value: "Auto" } },
+                  [_vm._v("Auto")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "option",
+                  {
+                    staticClass: "form-control",
+                    attrs: { value: "Sports/Gaming" },
+                  },
+                  [_vm._v("Sports/Gaming")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "option",
+                  {
+                    staticClass: "form-control",
+                    attrs: { value: "Real State" },
+                  },
+                  [_vm._v("Real State")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "option",
+                  { staticClass: "form-control", attrs: { value: "Food" } },
+                  [_vm._v("Food ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "option",
+                  { staticClass: "form-control", attrs: { value: "Legal" } },
+                  [_vm._v("Legal ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "option",
+                  { staticClass: "form-control", attrs: { value: "Security" } },
+                  [_vm._v("Security ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "option",
+                  {
+                    staticClass: "form-control",
+                    attrs: { value: "Media / Internet" },
+                  },
+                  [_vm._v("Media/Internet ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "option",
+                  { staticClass: "form-control", attrs: { value: "Fashion" } },
+                  [_vm._v("Fashion ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "option",
+                  {
+                    staticClass: "form-control",
+                    attrs: { value: "Technology / Communications" },
+                  },
                   [_vm._v("Technology/Communications ")]
                 ),
                 _vm._v(" "),
-                _c("option", { attrs: { value: "Retail" } }, [
-                  _vm._v("Retail "),
-                ]),
+                _c(
+                  "option",
+                  { staticClass: "form-control", attrs: { value: "Retail" } },
+                  [_vm._v("Retail ")]
+                ),
                 _vm._v(" "),
-                _c("option", { attrs: { value: "Finance/Accounting" } }, [
-                  _vm._v("Finance/Accounting"),
-                ]),
+                _c(
+                  "option",
+                  {
+                    staticClass: "form-control",
+                    attrs: { value: "Finance/Accounting" },
+                  },
+                  [_vm._v("Finance/Accounting")]
+                ),
                 _vm._v(" "),
-                _c("option", { attrs: { value: "Pets" } }, [_vm._v("Pets")]),
+                _c(
+                  "option",
+                  { staticClass: "form-control", attrs: { value: "Pets" } },
+                  [_vm._v("Pets")]
+                ),
                 _vm._v(" "),
-                _c("option", { attrs: { value: "Domestic (Home Help etc)" } }, [
-                  _vm._v("Domestic (Home Help etc)"),
-                ]),
+                _c(
+                  "option",
+                  {
+                    staticClass: "form-control",
+                    attrs: { value: "Domestic (Home Help etc)" },
+                  },
+                  [_vm._v("Domestic (Home Help etc)")]
+                ),
                 _vm._v(" "),
-                _c("option", { attrs: { value: "Other" } }, [_vm._v("Other")]),
+                _c(
+                  "option",
+                  { staticClass: "form-control", attrs: { value: "Other" } },
+                  [_vm._v("Other")]
+                ),
               ]
             ),
           ]),
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "bg-white col-3 py-2",
-            staticStyle: { "border-radius": "0 35px 35px 0" },
-          },
-          [
-            _c(
-              "button",
-              {
-                staticClass: "searchListing px-sm-3 px-1 float-right",
-                attrs: { type: "submit" },
-              },
-              [_vm._v("Search")]
-            ),
-          ]
-        ),
+        _c("div", { staticClass: "search_btn col-3 py-2" }, [
+          _c(
+            "button",
+            {
+              staticClass:
+                "searchListing px-sm-3 px-1 float-right h-100 w-md-75",
+              attrs: { type: "submit" },
+            },
+            [_vm._v("Search")]
+          ),
+        ]),
       ]
     )
   },
@@ -67717,207 +67805,206 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row w-75 mx-auto my-5 bg-white" }, [
-      _c(
-        "div",
-        {
-          staticClass:
-            "col-sm-5 elementor-top-column elementor-element elementor-element-ce6f4c7",
-          attrs: { "data-id": "ce6f4c7", "data-element_type": "column" },
-        },
-        [
-          _c(
-            "div",
-            {
-              staticClass: "elementor-column-wrap elementor-element-populated",
-            },
-            [
-              _c("div", { staticClass: "elementor-widget-wrap" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "elementor-element elementor-element-ccc6233 elementor-widget elementor-widget-listeo-headline",
-                    attrs: {
-                      "data-id": "ccc6233",
-                      "data-element_type": "widget",
-                      "data-widget_type": "listeo-headline.default",
-                    },
-                  },
-                  [
-                    _c("div", { staticClass: "text-dark" }, [
-                      _c(
-                        "h3",
-                        {
-                          staticClass:
-                            "text-dark headline headline-aligned-to-left headline-box",
-                          staticStyle: {
-                            "font-family": "system-ui",
-                            "text-align": "left",
-                          },
-                        },
-                        [_vm._v(" How It Works? ")]
-                      ),
-                    ]),
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "elementor-element elementor-element-5df092b elementor-widget elementor-widget-listeo-iconbox",
-                    attrs: {
-                      "data-id": "5df092b",
-                      "data-element_type": "widget",
-                      "data-widget_type": "listeo-iconbox.default",
-                    },
-                  },
-                  [
-                    _c("div", { staticClass: "elementor-widget-container" }, [
-                      _c("div", { staticClass: "icon-box-v3 row" }, [
-                        _c("div", { staticClass: "ibv3-icon col-sm-3" }, [
-                          _c("img", {
-                            attrs: {
-                              width: "60px",
-                              src: "images/CreateAccountGreen.svg",
-                            },
-                          }),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "ibv3-content col-sm-9" }, [
-                          _c("h4", [_vm._v("Create an Account")]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Create an Account as as Investor or Business Owner"
-                            ),
-                          ]),
-                        ]),
-                      ]),
-                    ]),
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "elementor-element elementor-element-9169400 elementor-widget elementor-widget-listeo-iconbox",
-                    attrs: {
-                      "data-id": "9169400",
-                      "data-element_type": "widget",
-                      "data-widget_type": "listeo-iconbox.default",
-                    },
-                  },
-                  [
-                    _c("div", { staticClass: "elementor-widget-container" }, [
-                      _c("div", { staticClass: "icon-box-v3 row" }, [
-                        _c("div", { staticClass: "ibv3-icon col-sm-3" }, [
-                          _c("img", {
-                            attrs: {
-                              width: "60px",
-                              src: "images/AddInvestGreen.svg",
-                            },
-                          }),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "ibv3-content col-sm-9" }, [
-                          _c("h4", [_vm._v("Add/Invest in a Listing")]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Add a Listing( Your Business) or Invest in a listing"
-                            ),
-                          ]),
-                        ]),
-                      ]),
-                    ]),
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "elementor-element elementor-element-b9196ce elementor-widget elementor-widget-listeo-iconbox",
-                    attrs: {
-                      "data-id": "b9196ce",
-                      "data-element_type": "widget",
-                      "data-widget_type": "listeo-iconbox.default",
-                    },
-                  },
-                  [
-                    _c("div", { staticClass: "elementor-widget-container" }, [
-                      _c("div", { staticClass: "icon-box-v3 row" }, [
-                        _c("div", { staticClass: "ibv3-icon col-sm-3" }, [
-                          _c("img", {
-                            attrs: {
-                              width: "60px",
-                              src: "images/ApplyForJitumeGreen.svg",
-                            },
-                          }),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "ibv3-content col-sm-9" }, [
-                          _c("h4", [_vm._v("Apply For Jitume Show")]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "You can a apply for a chance to get covered in the JITUME SHOW"
-                            ),
-                          ]),
-                        ]),
-                      ]),
-                    ]),
-                  ]
-                ),
-              ]),
-            ]
-          ),
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-1" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-6" }, [
-        _c("div", { staticClass: "text-dark" }, [
-          _c(
-            "h3",
-            {
-              staticClass:
-                "text-dark headline headline-aligned-to-left headline-box",
-              staticStyle: { "font-family": "system-ui", "text-align": "left" },
-            },
-            [_vm._v(" The Show ")]
-          ),
-        ]),
-        _vm._v(" "),
-        _c("video", {
-          staticClass: "elementor-video",
-          staticStyle: { width: "100%", height: "auto" },
-          attrs: {
-            src: "videos/Jitume.mp4",
-            controls: "",
-            controlslist: "nodownload",
+    return _c(
+      "div",
+      { staticClass: "container-xl row mx-auto my-5 bg-white pt-3" },
+      [
+        _c(
+          "div",
+          {
+            staticClass:
+              "col-md-5 elementor-top-column elementor-element elementor-element-ce6f4c7",
+            attrs: { "data-id": "ce6f4c7", "data-element_type": "column" },
           },
-        }),
-      ]),
-    ])
+          [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "elementor-column-wrap elementor-element-populated",
+              },
+              [
+                _c("div", { staticClass: "elementor-widget-wrap" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "elementor-element elementor-element-ccc6233 elementor-widget elementor-widget-listeo-headline",
+                      attrs: {
+                        "data-id": "ccc6233",
+                        "data-element_type": "widget",
+                        "data-widget_type": "listeo-headline.default",
+                      },
+                    },
+                    [
+                      _c("div", { staticClass: "text-dark mb-md-3" }, [
+                        _c(
+                          "h2",
+                          {
+                            staticClass:
+                              "pb-2 secondary_heading h2 headline headline-aligned-to-left headline-box",
+                            staticStyle: { "text-align": "left" },
+                          },
+                          [_vm._v(" How It Works? ")]
+                        ),
+                      ]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "elementor-element elementor-element-5df092b elementor-widget elementor-widget-listeo-iconbox",
+                      attrs: {
+                        "data-id": "5df092b",
+                        "data-element_type": "widget",
+                        "data-widget_type": "listeo-iconbox.default",
+                      },
+                    },
+                    [
+                      _c("div", { staticClass: "elementor-widget-container" }, [
+                        _c("div", { staticClass: "icon-box-v3 row" }, [
+                          _c("div", { staticClass: "ibv3-icon col-sm-3" }, [
+                            _c("img", {
+                              attrs: {
+                                width: "60px",
+                                src: "images/CreateAccountGreen.svg",
+                              },
+                            }),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "ibv3-content col-sm-9" }, [
+                            _c("h4", [_vm._v("Create an Account")]),
+                            _vm._v(" "),
+                            _c("p", [
+                              _vm._v(
+                                "Create an Account as as Investor or Business Owner"
+                              ),
+                            ]),
+                          ]),
+                        ]),
+                      ]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "elementor-element elementor-element-9169400 elementor-widget elementor-widget-listeo-iconbox",
+                      attrs: {
+                        "data-id": "9169400",
+                        "data-element_type": "widget",
+                        "data-widget_type": "listeo-iconbox.default",
+                      },
+                    },
+                    [
+                      _c("div", { staticClass: "elementor-widget-container" }, [
+                        _c("div", { staticClass: "icon-box-v3 row" }, [
+                          _c("div", { staticClass: "ibv3-icon col-sm-3" }, [
+                            _c("img", {
+                              attrs: {
+                                width: "60px",
+                                src: "images/AddInvestGreen.svg",
+                              },
+                            }),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "ibv3-content col-sm-9" }, [
+                            _c("h4", [_vm._v("Add/Invest in a Listing")]),
+                            _vm._v(" "),
+                            _c("p", [
+                              _vm._v(
+                                "Add a Listing( Your Business) or Invest in a listing"
+                              ),
+                            ]),
+                          ]),
+                        ]),
+                      ]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "elementor-element elementor-element-b9196ce elementor-widget elementor-widget-listeo-iconbox",
+                      attrs: {
+                        "data-id": "b9196ce",
+                        "data-element_type": "widget",
+                        "data-widget_type": "listeo-iconbox.default",
+                      },
+                    },
+                    [
+                      _c("div", { staticClass: "elementor-widget-container" }, [
+                        _c("div", { staticClass: "icon-box-v3 row" }, [
+                          _c("div", { staticClass: "ibv3-icon col-sm-3" }, [
+                            _c("img", {
+                              attrs: {
+                                width: "60px",
+                                src: "images/ApplyForJitumeGreen.svg",
+                              },
+                            }),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "ibv3-content col-sm-9" }, [
+                            _c("h4", [_vm._v("Apply For Jitume Show")]),
+                            _vm._v(" "),
+                            _c("p", [
+                              _vm._v(
+                                "You can a apply for a chance to get covered in the JITUME SHOW"
+                              ),
+                            ]),
+                          ]),
+                        ]),
+                      ]),
+                    ]
+                  ),
+                ]),
+              ]
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-7 mt-5 mt-md-0 pl-md-5" }, [
+          _c("div", { staticClass: "text-dark mb-md-3" }, [
+            _c(
+              "h2",
+              {
+                staticClass:
+                  "secondary_heading h2 headline headline-aligned-to-left headline-box pb-2",
+                staticStyle: { "text-align": "left" },
+              },
+              [_vm._v(" The Show ")]
+            ),
+          ]),
+          _vm._v(" "),
+          _c("video", {
+            staticClass: "video_player elementor-video",
+            attrs: {
+              poster: "images/video_preview.png",
+              src: "videos/Jitume.mp4",
+              controls: "",
+              controlslist: "nodownload",
+            },
+          }),
+        ]),
+      ]
+    )
   },
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
+    return _c("div", { staticClass: "my-2" }, [
       _c(
-        "h3",
+        "h2",
         {
-          staticClass:
-            "text-dark headline headline-aligned-to-left headline-box",
+          staticClass: "secondary_heading",
           staticStyle: { "text-align": "left" },
         },
-        [_vm._v(" \n              Latest Businesses \n            ")]
+        [_vm._v(" \r\n          Latest Businesses \r\n        ")]
       ),
     ])
   },

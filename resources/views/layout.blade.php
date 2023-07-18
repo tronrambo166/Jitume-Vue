@@ -289,7 +289,7 @@
 
 <!-- Body -->
 
-<div class="row">
+<div class="">
 
        <!--  @if(Session::has('login_err'))
         <div class="w-50 m-auto alert alert-danger alert-dismissible fade show" role="alert">
@@ -401,78 +401,78 @@
 
 </div>
 
-    
+<!-- Vue Body End -->
 
 <footer class="secondary_bg pt-3 text-light">
 
-<div class="container row mx-auto my-3 d-flex align-items-center">
-    <div class="col-12 col-sm-6 d-flex justify-content-center">
-        <div class="w-75">
-            <img style="max-width: 438px;" class="w-100" src="images/logo_footer.png" />
+    <div class="container-xl row mx-auto my-3 d-flex align-items-center">
+        <div class="col-12 col-sm-6 d-flex justify-content-start">
+            <div class="">
+                <img style="max-width: 438px;" class="w-100" src="images/logo_footer.png" />
+            </div>
         </div>
-    </div>
 
-    <div class="col-12 col-sm-3 d-flex justify-content-center">
-        <ul class="text-light">     
-            <li style="list-style-type:none;">
-                 @if(Session::has('business_auth') && Session::get('business_auth') == true)
-                <a href="./business/listings" class="footer_txt" href="#"><i class="mr-2 fa fa-angle-right"></i>My Listings</a>
+        <div class="col-12 col-sm-3 d-flex justify-content-center">
+            <ul class="text-light">     
+                <li style="list-style-type:none;">
+                     @if(Session::has('business_auth') && Session::get('business_auth') == true)
+                    <a href="./business/listings" class="footer_txt" href="#"><i class="mr-2 fa fa-angle-right"></i>My Listings</a>
 
-                 @elseif(Session::has('service_auth') && Session::get('service_auth') == true)
+                     @elseif(Session::has('service_auth') && Session::get('service_auth') == true)
+                    
+                    <a href="./services/services" class="footer_txt" href="#"><i class="mr-2 fa fa-angle-right"></i>My Services</a>
+                      @endif
+              </li>
+
+
+               
+
+                <li style="list-style-type:none;">
+                   @if(Session::has('business_auth') && Session::get('business_auth') == true)
+                    <a href="./business/add-listing" class="footer_txt" href="#"><i class="mr-2 fa fa-angle-right"></i>Add Listing</a>
+
+                     @elseif(Session::has('service_auth') && Session::get('service_auth') == true)
+                    
+                    <a href="./services/add-services" class="footer_txt" href="#"><i class="mr-2 fa fa-angle-right"></i>Add Service</a>
+                      @endif
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-12 col-sm-3 pt-2 d-flex justify-content-center">
+             <ul class="text-light">
                 
-                <a href="./services/services" class="footer_txt" href="#"><i class="mr-2 fa fa-angle-right"></i>My Services</a>
-                  @endif
-          </li>
+                <h3 class="h3">Contact Us</h3>
 
+                <li style="list-style-type:none;">
+                    <span class="footer_txt text-light">
+                        E-Mail:<a class="footer_txt text-light d-inline" href="mailto:info@thedtagency.com"> info@thedtagency.com</a>
+                    </span>
+                    
+                </li>
 
-           
-
-            <li style="list-style-type:none;">
-               @if(Session::has('business_auth') && Session::get('business_auth') == true)
-                <a href="./business/add-listing" class="footer_txt" href="#"><i class="mr-2 fa fa-angle-right"></i>Add Listing</a>
-
-                 @elseif(Session::has('service_auth') && Session::get('service_auth') == true)
                 
-                <a href="./services/add-services" class="footer_txt" href="#"><i class="mr-2 fa fa-angle-right"></i>Add Service</a>
-                  @endif
-            </li>
-        </ul>
-    </div>
-
-    <div class="col-12 col-sm-3 pt-2 d-flex justify-content-center">
-         <ul class="text-light">
-            
-            <h3 class="h3">Contact Us</h3>
-
-            <li style="list-style-type:none;">
-                <span class="footer_txt text-light">
-                    E-Mail:<a class="footer_txt text-light d-inline" href="mailto:info@thedtagency.com"> info@thedtagency.com</a>
-                </span>
-                
-            </li>
-
-            
-        </ul>
-    </div>
+            </ul>
+        </div>
     
-</div>
-
-
-<div class="w-100 primary_bg py-2">
-    <div class="w-100">
-        <div class="row py-2">
-
-             <div class="col-sm-6 m-auto text-center">
-                
-                <p class="text-center pt-2">© JITUME. All Rights Reserved.
-                </p>
-            </div>  
-
-            
-        </div>
     </div>
 
-</div>
+
+    <div class="w-100 primary_bg py-2">
+        <div class="w-100">
+            <div class="py-2">
+
+                 <div class="col-sm-6 m-auto text-center">
+                    
+                    <p class="text-center pt-2">© JITUME. All Rights Reserved.
+                    </p>
+                </div>  
+
+                
+            </div>
+        </div>
+
+    </div>
         
 </footer>
 
