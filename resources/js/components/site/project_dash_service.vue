@@ -7,6 +7,7 @@
     <h4 class="font-weight-bold text-success">Milestones completed! Service delivered!</h4>
 </div>
 
+
  <div class="root py-5 mb-5 ml-4">
      <div class="progressbar-wrapper">
       <ul class="progressbar">
@@ -209,7 +210,8 @@
     }),
     results:[],
     status:false,
-    done_msg:''
+    done_msg:'',
+    no_mile:false
     }),
 
     created(){
@@ -231,6 +233,8 @@ getMilestones:function(){
         console.log(data);
         t.results = data.data.data;
         t.done_msg = data.data.done_msg;
+        if(data.data.data.length ==0)
+            t.no_mile = true;
     
     });
     

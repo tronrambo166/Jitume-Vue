@@ -143,9 +143,17 @@ $user = User::where('email',$request->email)->first();
      return redirect('home');
      }
 
+ $inv_range = $request->inv_range;
+ $interested_cats = $request->interested_cats;  
+ $past_investment = $request->past_investment;
+ $website = $request->website;
+ $id_no = $request->id_no;
+ $tax_pin = $request->tax_pin;  
+
 //Upload
 $user = User::latest()->first();
 $inv_id = $user->id+1;
+
 try {
  $passport=$request->file('id_passport');
  if(isset($request->pin))
@@ -193,7 +201,13 @@ try {
             'password' => Hash::make($request->password),
             'pin' => $final_pin,
             'id_passport' => $final_passport,
-            'investor' => $investor           
+            'investor' => $investor,
+            'id_no' => $id_no,
+            'tax_pin' => $tax_pin,
+            'inv_range' =>  $inv_range,
+            'interested_cats' =>  $interested_cats, 
+            'past_investment' => $past_investment,
+            'website' => $website         
            ]);  
        
        Session::put('login_success','Registration successfull! Please login to continue.');

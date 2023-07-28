@@ -2,7 +2,9 @@
         <div class="main">
         <div class="container">
 
-           
+  <div v-if="no_mile" class="w-75 h-100 py-5 my-5 my-auto justify-content-center my-2 text-center mx-auto">
+    <h4 class="font-weight-bold text-success">No Milestones Yet!</h4>
+  </div>         
 
  <div class="root py-5 mb-5 ml-4">
      <div class="progressbar-wrapper">
@@ -31,7 +33,7 @@
                                     </div>
 
 
-                                    <div class="col-sm-2 px-0 ">
+                                    <div class="col-sm-1 px-0 ">
                                         <div class="">
                                          
                                             <input readonly required=""  type="number"v-model="result.amount"   name="amount" class="placeH placeH_active w-100 py-1 border border-dark " >
@@ -46,11 +48,25 @@
                                     </div>
 
 
-                                    <div v-if="result.access && result.time_left != 'L A T E !'" class="col-1 px-1">
-                                        <div class="form-group">
+                                    <div v-if="result.access && result.time_left != 'L A T E !'" class="col-2 px-1">
 
-                                        <button @click="make_session(form.id);" type="submit" class="placeH_active text-center border border-dark px-2 py-1 btn btn-light btn-block" >PAY</button>                                    </div>
-                                </div>
+                                        <div v-if="result.with_equip" class="form-group">
+                                        <span  class="grey_btn pay_btn float-left diabled placeH_active text-center border border-dark px-2 py-1 btn btn-light" >PAY
+                                        </span> 
+
+                                        <a @click="milestoneInvestEQP(result.id,result.investor_id,result.user_id);" type="submit" class="pay_btn placeH_active text-center border border-dark px-2 py-1 btn btn-light" >EQUIP
+                                        </a> 
+                                         </div>
+
+                                        <div v-else class="form-group">
+                                        <button @click="make_session(form.id);" type="submit" class="pay_btn placeH_active text-center border border-dark px-2 py-1 btn btn-light" >PAY
+                                        </button> 
+
+                                        <span  class="grey_btn pay_btn float-left diabled placeH_active text-center border border-dark px-2 py-1 btn btn-light" >EQUIP
+                                        </span> 
+                                        </div>
+
+                                    </div>
 
                                 <input type="number" hidden="" name="lisitng_id" v-model="form.id">
                                 <input type="number" hidden name="milestone_id" v-model="result.id">
@@ -197,7 +213,8 @@
         id:''
     }),
     results:[],
-    status:false
+    status:false,
+    no_mile:false
     }),
 
     created(){
@@ -212,13 +229,30 @@
     },
 methods:{
 
-getMilestones:function(){ 
+getMilestones:function(){
     var id=this.$route.params.id; var t=this;
 
     axios.get('getMilestones/'+id).then( (data) =>{
-        console.log(data);
+        //console.log(data.data.data);
         t.results = data.data.data;
+        if(data.data.data.length ==0)
+            t.no_mile = true;
     
+    });
+    
+    },
+
+    milestoneInvestEQP:function(mile_id,investor_id,owner_id){
+    var t=this;
+    var listing_id=this.$route.params.id; 
+
+    axios.get('milestoneInvestEQP/'+listing_id+'/'+mile_id+'/'+investor_id+'/'+owner_id).then( (data) =>{
+        console.log(data);
+        if(data.data.success == 'success')
+              $.alert({
+                title: 'Alert!',
+                content: 'Request to invest with equipment sent! Now the business owner will contact with the investor and conclude the milestone.',
+            });
     });
     
     },

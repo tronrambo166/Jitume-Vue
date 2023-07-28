@@ -524,7 +524,7 @@ if($time_now > $time_due_date)
   $milestones[0]->status = 'In Progress';
 }
 
-if($d == 0)
+if($d == 0 && count($milestones)!=0)
 {
   $done_msg = 'Milestone completed! Order placed!';
 }

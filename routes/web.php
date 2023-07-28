@@ -79,8 +79,8 @@ Route::get('download_business/{id}', 'PagesController@download_business')->name(
 // <--milestones-->
 Route::get('getMilestones/{id}', 'BusinessController@getMilestones')->name('getMilestones');
 Route::get('getMilestonesS/{id}', 'ServiceController@getMilestones')->name('getMilestonesS');
-Route::get('milestoneCommits/{ids}', 'BusinessController@milestoneCommits')->name('milestoneCommits');
-Route::get('milestoneCommitsEqp/{ids}', 'BusinessController@milestoneCommitsEqp')->name('milestoneCommitsEqp');
+//Route::get('milestoneCommits/{amount}/{business_id}/{percent}', 'BusinessController@milestoneCommits')->name('milestoneCommits');
+Route::get('milestoneCommitsEQP/{ids}', 'BusinessController@milestoneCommitsEQP')->name('milestoneCommitsEQP');
 
 
 Route::get('download_milestoneDoc/{id}/{mile_id}', 'BusinessController@download_milestone_doc')->name('download_milestoneDoc');
@@ -109,13 +109,14 @@ Route::post('registerI', 'PagesController@registerI')->name('registerI');
 Route::get('business', 'BusinessController@business')->name('business');
 
 Route::prefix('/business')->group(function(){
-  Route::get('add-listing', 'BusinessController@add_listing')->name('add-listing');
-  Route::post('create-listing', 'BusinessController@save_listing')->name('create-listing');
-  Route::get('index', 'BusinessController@home')->name('business');
-  Route::get('listings', 'BusinessController@listings')->name('listings');
+Route::get('add-listing', 'BusinessController@add_listing')->name('add-listing');
+Route::post('create-listing', 'BusinessController@save_listing')->name('create-listing');
+Route::get('index', 'BusinessController@home')->name('business');
+Route::get('listings', 'BusinessController@listings')->name('listings');
 Route::post('add_eqp', 'BusinessController@add_eqp')->name('add_eqp');
 Route::post('up_listing', 'BusinessController@up_listing')->name('up_listing');
 Route::get('delete_listing/{id}', 'BusinessController@delete_listing')->name('delete_listing');
+Route::get('business_bids', 'BusinessController@business_bids')->name('business_bids');
 // --- MILESTONE
 Route::get('add_milestones', 'BusinessController@add_milestones')->name('add_milestones');
 
@@ -180,7 +181,7 @@ Route::get('/clear', function() {
 
 Auth::routes();
 
-// Payment Routes
+// <!-- Payment Routes -->
 
 Route::get('/stripe', 'checkoutController@goCheckout')->name('stripe');
 //Invest
@@ -197,9 +198,17 @@ Route::post('milestonestripe', 'checkoutController@milestoneStripePost')->name('
 
 Route::get('milestoneService', 'checkoutController@milestoneCheckoutS')->name('milestoneService');
 Route::post('milestoneService', 'checkoutController@milestoneStripePostS')->name('milestoneService.post');
-
-//Route::post('register', 'BusinessController@test')->name('register');
+Route::get('milestoneInvestEQP/{listing_id}/{mile_id}/{investor_id}/{owner_id}', 'checkoutController@milestoneInvestEQP')->name('milestoneInvestEQP');
 // Payment Routes
+
+
+//<!-- BIDS -->
+Route::post('bidsAccepted', 'bidsEmailController@bidsAccepted')->name('bidsAccepted');
+
+Route::get('bidCommits/{amount}/{business_id}/{percent}', 'checkoutController@bidCommitsForm')->name('bidCommits');
+Route::post('bidCommits', 'checkoutController@bidCommits')->name('bidCommits');
+//<!-- BIDS -->
+
 
 //SOCIAL
 Route::get('social_login',function (){return view('social_types');})->name('social_login');

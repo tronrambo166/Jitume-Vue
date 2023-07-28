@@ -27,7 +27,7 @@
                 <div class="col-sm-12">
                   
 
-            <form action="{{route('create-listing')}}"  method="post" enctype="multipart/form-data">
+            <form id="add_listing" action="{{route('create-listing')}}"  method="post" enctype="multipart/form-data">
             @csrf   
                
                 <div class="row form-group">
@@ -89,7 +89,6 @@
                      <div class="col-sm-4"> 
                     <select required name="y_turnover" class="form-control">
                         <option hidden >Choose Yearly Turnover</option>
-
                         <option value="0-10000">$0-$10000</option>
                         <option value="10000-100000">$10000-$100000</option>
                         <option value="100000-250000">$100000-$250000</option>
@@ -150,7 +149,7 @@
                       <label for="file-upload" class="btnUp2 custom-file-upload">
                                 Upload <i class="ml-2 fa fa-arrow-up"></i>
                               </label>
-                              <input id="file-upload" name='image' type="file" style="display:none;">
+                              <input id="file-upload" name='image' type="file" style="" required>
                     </div>
                     </div>
 
@@ -166,6 +165,58 @@
 
                         </div>
                     </div> 
+                </div>
+
+
+                <div class=" row form-group">
+                    <div class="col-sm-6"> 
+                        <div class="row">
+                           <div class="col-sm-8"><label for="name">
+                                <p class="small text-left">Please enter a directors passport/Id no*</p></label>
+                               </div>
+                               <div class="col-sm-4">
+                                   <input class="text-left form-control" type="text" name="id_no">
+                               </div>
+                               </div> 
+                               </div>
+
+                        <div class="col-sm-6"> 
+                        <div class="row">
+                           <div class="col-sm-8"><label for="name">
+                                <p class="small text-left">Please enter your individual/company tax pin*</p></label>
+                               </div>
+                               <div class="col-sm-4">
+                                   <input class="form-control" type="text" name="tax_pin">
+                               </div>
+                               </div> 
+                               </div>
+
+                </div>
+
+                
+
+                <div class=" row form-group">
+
+                    <div class="col-sm-12"> 
+                        <div class="row">
+                           <div class="col-sm-6"><label for="name">
+                                <p class="">Set fee for investor to view your full business data?</p></label>
+                               </div>
+
+                               <div class="col-sm-1"> </div>
+
+                               <div class="col-sm-1 form-check form-switch">
+                                  <input onchange="showAmount();" class="toggole_bar form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" >
+                                </div>
+
+                                <div id="amount_box" class="col-sm-2">
+                                  
+                                </div>
+
+                               </div> 
+                               </div>
+ 
+
                 </div>
 
 
@@ -187,7 +238,7 @@
                       <label for="file-upload2" class="btnUp_listing">
                         Upload Company/Individual Pin *
                       <img src="../images/up.svg" width="30px"> </label>
-                      <input style="display:none;" id="file-upload2" required="" type="file" name="pin" />
+                      <input style="" id="file-upload2" required type="file" name="pin" />
                     </div>
 
                     </div>
@@ -198,7 +249,7 @@
                     <div class="upload-btn-wrapper">
                       <label for="file-upload3" class="btnUp_listing"> Upload Directors Identification(Id/Passport)*
                       <img src="../images/up.svg" width="30px"> </label>
-                      <input style="display:none;" id="file-upload3" required="" type="file" name="identification" />
+                      <input style="" id="file-upload3" required="" type="file" name="identification" />
                     </div>
 
                     </div>
@@ -210,12 +261,23 @@
 
         <div class="row my-4 form-group">
 
-            <div class="col-sm-12 mx-auto"> 
+              <div class="col-sm-12 mx-auto"> 
+
+                    <div class="upload-btn-wrapper w-75  d-block">
+                      <label for="file-upload4" class="text-center w-100 btnUp_listing">  Upload 12 Months Financial Statements (Bnak/Mpesa etc)*
+                      <img src="../images/up.svg" width="30px"> </label>
+                      <input style="" id="file-upload4" required="" type="file" name="yeary_fin_statement" />
+                    </div>
+
+                    </div>
+
+
+            <div class="col-sm-12 mx-auto mt-3"> 
 
                     <div class="upload-btn-wrapper w-75  d-block">
                       <label for="file-upload4" class="text-center w-100 btnUp_listing">  Upload Supporting Business Documentation*
                       <img src="../images/up.svg" width="30px"> </label>
-                      <input style="display:none;" id="file-upload4" required="" type="file" name="document" />
+                      <input style="" id="file-upload4" required="" type="file" name="document" />
                     </div>
 
                     </div>
@@ -226,7 +288,7 @@
                     <div class="upload-btn-wrapper w-75  d-block">
                      <label for="file-upload5" class="text-center w-100 bg-info btnUp_listing"> Upload supportive video*
                       <img src="../images/up.svg" width="30px"> </label>
-                      <input style="display:none;" id="file-upload5" type="file" name="video" />
+                      <input style="" id="file-upload5" type="file" name="video" />
                     </div>
 
                     </div>
@@ -254,8 +316,8 @@
 
 
 
-                 <div class="row my-5"> 
-                    <button style="width: 40%;background:green;border-radius: 2px;" class=" m-auto btn text-white font-weight-bold">SAVE</button></div>
+                 <div class="row my-5 w-75"> 
+                    <button style="width:40%;background:green;border-radius: 30px;" class=" m-auto btn text-white font-weight-bold">SAVE</button></div>
 
 
             </form>
@@ -319,6 +381,13 @@
     }
      function free_price() {
       $('#paid_price').hide(); 
+    }
+
+    function showAmount(){
+        if($.trim($("#amount_box").html())=='')
+            $('#amount_box').html('<input class="form-control" type="number"  id="investors_fee" required placeholder="amount" name="investors_fee" style="height:33px;" >');
+        else $('#amount_box').html('');
+
     }
 
   </script>

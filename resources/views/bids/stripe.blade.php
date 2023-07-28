@@ -64,7 +64,7 @@
                         <!-- Form Starts Here -->
                      <form     
                         role="form"
-                        action="{{ route('milestonestripe.post') }}"
+                        action="{{ route('bidCommits') }}"
                         method="post"
                         class="require-validation m-auto"
                         data-cc-on-file="false"
@@ -81,7 +81,7 @@
                          
                         <div class='form-row row my-2'>
                            <div class='col-sm-12  form-group required'>
-                              <label class='control-label'><b>  Amount (USD) </b> <small>Tax + Vat ( {{$tax}} %) <br> <b class="text-success"> {{$discount}}</b></small></label> 
+                              <label class='control-label'><b>  Amount(USD) </b> <small>5% + tax added</small></label> 
                               <input class='form-control' size='4' name="price" id="price" type='number' value="{{$amount}}" readonly >
 
                            </div> 
@@ -97,11 +97,8 @@
 
                         </div> 
 
-                     <input hidden type="text" name="milestone_id" value="{{$milestone_id}}">
-                    
-                     
-                     
-                           <input hidden value="USD" type="text" name="currency"/>
+                           <input step="0.01" hidden type="number" name="percent" value="{{$percent}}">                   
+                           <input hidden type="number" name="listing" value="{{$business_id}}">
                            
                                        
                                        
@@ -116,14 +113,6 @@
                               <label class='control-label'><b> Name on Card </b></label> <input name="name" 
                                  class='form-control' size='4' type='text'>
                            </div>
-
-                         <!--  <div class="col-sm-5 mt-4"><select  name="currency" id="currency" class="w-75 m-auto form-control" >
-            
-            <option hidden value="usd">Change currency</option>
-            <option value="usd">(USD)</option>
-            <option value="gbp">(GBP)</option>
-            
-            </select></div> -->
 
 
                         </div>

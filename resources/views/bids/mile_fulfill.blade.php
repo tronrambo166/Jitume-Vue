@@ -7,13 +7,15 @@
         <div class="row  w-75 m-auto border shadow text-center bg-light" style=" box-shadow: 3px 3px 7px 7px grey; width:70%; background: #fbfbfb;border: 1px solid black;">
 		<div class="container w-75 m-auto" style="box-shadow: 3px 3px 7px 7px grey; background: #fbfbfb;width:75%; margin:auto; text-align:center">
 		
-		 <h2 style="color: white;font-family: sans-serif;">  
-		 	<br> Milestone Status Changed to Done!</h2>
+		 <h2 style="text-align: left;color: black;font-family: sans-serif;">  
+		 	<br> Fulfills a milestone!</h2>
 			
-			<div class="" style="width:50%; margin:auto;">
-			<h4 style="font-weight:500; color: #000000a1;font-family:  sans-serif;text-align:left;"> Milestone Name: {{$name}} </h4>
-			<h4 style="font-weight:500; color: #000000a1;font-family: sans-serif;text-align:left;"> Amount: {{$amount}} </h4>
-			<h4 style="font-weight:500; color: #000000a1;font-family: sans-serif;text-align:left;"> Business Name: {{$business}} </h4>
+			<div class="" style="width:100%; margin:auto;">
+			<h4 style="line-height: 28px;font-weight:500; color: #000000a1;font-family: sans-serif;text-align:left;"> Hi,<br> 
+            A milestone now can be fulfilled for your business {{$business_name}}. Start accepting bids!
+					</h4>
+			
+			
 			</div>
 		
 		

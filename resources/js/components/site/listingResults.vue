@@ -66,8 +66,15 @@
 
                     <h4 class="mt-3 mb-0">{{result.name}} </h4>
                     <p class="my-1"><i class="mr-2 fa fa-map-marker"></i>{{result.location}}</p>
-                    <p><span class="mt-1 rounded"><i class="mr-2 fa fa-phone"></i>{{result.contact}}</span></p>
+                    <p class="mb-1"><span class="mt-1 rounded"><i class="mr-2 fa fa-phone"></i>{{result.contact}}</span></p>
+
+                    <div class="amount float-right text-right w-100 py-0 my-0">   
+                        <h6 class="font-weight-bold" >Amount: <span class="font-weight-light"><b>${{result.investment_needed}}</b></span></h6>
+                    </div>
+
                     </router-link>
+
+
                     
               </div>
                 </div>

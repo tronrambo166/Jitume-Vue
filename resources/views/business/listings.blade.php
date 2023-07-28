@@ -153,7 +153,7 @@
 
                <div class="row form-group">
                     
-                    <div class="col-sm-6"> 
+                    <div class="col-sm-4"> 
                         <div class="row">
                         
                     <div class="col-sm-12"> 
@@ -163,16 +163,24 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-6"> 
-                        <div class="row">
-                            
-                    
+                    <div class="col-sm-4"> 
+                    <div class="row">
                     <div class="col-sm-12"> 
                         <label class="labels font-weight-bold">Contact</label>
-                    <input required="" type="text" class="form-control" value="{{$ev->contact}}" name="contact" value="">                     
+                    <input required="" type="text" class="form-control" value="{{$ev->contact}}" name="contact">                     
                     </div>
                         </div>
                     </div>
+
+                     <div class="col-sm-4"> 
+                    <div class="row">
+                    <div class="col-sm-12"> 
+                        <label class="labels font-weight-bold">Fee</label>
+                    <input required="" type="number" class="form-control" value="{{$ev->investors_fee}}" name="investors_fee" >                     
+                    </div>
+                        </div>
+                    </div>
+
                     
                 </div>
 
@@ -327,7 +335,18 @@
 
         <div class="row my-4 form-group">
 
-            <div class="col-sm-12 mx-auto"> 
+                    <div class="col-sm-12 mx-auto"> 
+
+                    <div class="upload-btn-wrapper w-75  d-block">
+                      <button class="btnUp_listing w-100">  Upload 12 Months Financial Statements (Bnak/Mpesa etc)*
+                      <img src="../images/up.svg" width="30px"> </button>
+                      <input type="file" name="yeary_fin_statement" />
+                    </div>
+
+                    </div>
+
+
+                    <div class="col-sm-12 mx-auto mt-3"> 
 
                     <div class="upload-btn-wrapper w-75  d-block">
                       <button class="btnUp_listing w-100"> Change Supporting Business Documentation*

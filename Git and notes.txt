@@ -1,8 +1,5 @@
 -NOTES
- - Investor first commit to milestones (checkbox), the checked will be available for him, then normal checkout
- - milestone page should have 2 buttons, PAY, EQUIP. If commited with invest, and commited with 'Invest with equip'
- -wanjiku for B
- -investor for I
+ -CICD Pipeline, appspec.yml do auto push AWS regardless tests, deploy.yml should be used.
  -
 
 -GIT
