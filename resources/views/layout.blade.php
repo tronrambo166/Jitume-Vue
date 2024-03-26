@@ -423,7 +423,7 @@
 
                     <div class="col-sm-6 m-auto text-center">
 
-                        <p class="text-center pt-2">© JITUME - All Rights Reserved.
+                        <p class="text-center pt-2">© JITUME. All Rights Reserved.
                         </p>
                     </div>
 
