@@ -4,140 +4,119 @@
 
 
 
-      <div class="heading">
+      <div class="container-fluid py-5 bg-light">
 
-        <div class="row" style="">
+  <div class="container">
+  <div class="row justify-content-center">
 
-          <div class=" col-sm-12 text-center image" style="">
+    <div class="col-lg-8 col-md-10 text-center">
 
-            <div class="my-4 w-50 mx-auto text-center">
-              <h4 style="font-size:27px; font-weight: 500px;" class="text-dark ">
-                <!--  <marquee>Invest in Agriculture | Sports/Gaming | Real State | Entertainment | Auto | Finance/Accounting Security | Pets | Domestic Help | Other</marquee> -->
-              </h4>
-              <h4 class="h3 text-center text_color_1 py-3 main_heading">Your platform to invest in local businesses</h4>
-            </div>
+      <div class="my-4">
+        <h4 class="display-4">Invest in Agriculture | Sports/Gaming | Real State | Entertainment | Auto | Finance/Accounting Security | Pets | Domestic Help | Other .........</h4>
+        <h4 class="h3 text-success py-3">Your platform to invest in local businesses</h4>
+      </div>
 
-        <!-- Search Test -->
-        <!-- <div class="" style="min-height:500px;">
-          <input id="pac-input"class="controls"type="text"placeholder="Search Box"/>
-        </div>    -->
-        <!-- Search Test -->
+      <form id="form" @submit.prevent="search();" class="d-flex flex-wrap justify-content-center" method="post">
 
-            <form id="form" @submit.prevent="search();" class="d-flex justify-content-center w-100" method="post">
-
-              <div class=" mx-4 text-center row py-0 searchBar text-center">
-
-                 <div style="border-radius: 35px 0 0 35px;" class="py-2 col-sm-3">
-                              <input style="border: none;height: 42px;" class="bar bg-white form-control d-inline" type="text" name="listing_name" placeholder="What are you looking for?"></div>
-
-                <div class="col-12 col-sm-4 my-1 py-1 bg-white rounded">
-                  <i style="width: 6%;" class="d-inline fa fa-map-marker"></i>
-                  <input id="searchbox" onkeyup="suggest(this.value);" style="width: 94%;border: none;height: 42px;"
-                    class="px-1 bar bg-white form-control d-inline ml-1 controls" type="text" name="search" value=""
-                    placeholder="Location"> <!-- onkeyup="suggest(this.value);" -->
-                </div>
-
-                <input type="text" name="lat" id="lat" hidden value="">
-                <input type="text" name="lng" id="lng" hidden value="">
-
-                <div class="col-12 col-sm-3 my-1 pt-1  bg-white">
-                  <div class="dropdown pt-1 text-left">
-
-                    <select id="category" name="category" class="py-2 home_category_listings">
-                      <option class="form-control small" value="">Category</option>
-
-                      <option class="form-control" value="Agriculture">Agriculture</option>
-                      <option value="Arts / Culture">Arts/Culture </option>
-                      <option value="Auto">Auto</option>
-                      <option value="Sports/Gaming">Sports/Gaming</option>
-                      <option value="Real State">Real State</option>
-                      <option value="Food">Food </option>
-                      <option value="Legal">Legal </option>
-                      <option value="Security">Security </option>
-                      <option value="Media / Internet">Media/Internet </option>
-
-                      <option value="Fashion">Fashion </option>
-                      <option value="Technology / Communications">Technology/Communications </option>
-                      <option value="Retail">Retail </option>
-
-                      <option value="Finance/Accounting">Finance/Accounting</option>
-                      <option value="Pets">Pets</option>
-                      <option value="Domestic (Home Help etc)">Domestic (Home Help etc)</option>
-                      <option value="Other">Other</option>
-
-                    </select>
-
-                  </div>
-                </div>
-
-                <div class="col-12 col-sm-2 my-1 py-1 d-flex justify-content-center align-items-center rounded">
-                  <button class="w-100 searchListing px-sm-3 px-2" type="submit">Search</button>
-                </div>
-
-              </div>
-
-              <div class="row" style="">
-                <div id="result_list" class="text-left search_results"
-                  style="">
-
-                </div>
-              </div>
-
-            </form>
+        <div class="input-group col-lg-5 col-md-6 my-2">
+          <input style="border-radius: 35px 0 0 35px;" class="form-control border-right-0" type="text" name="listing_name" placeholder="What are you looking for?">
+          <div class="input-group-append">
+            <span class="input-group-text bg-white border-left-0"><i class="fa fa-map-marker"></i></span>
           </div>
-
         </div>
 
+        <div class="input-group col-lg-4 col-md-6 my-2">
+          <input id="searchbox" onkeyup="suggest(this.value);" class="form-control" type="text" name="search" value="" placeholder="Location">
+        </div>
+
+        <input type="text" name="lat" id="lat" hidden value="">
+        <input type="text" name="lng" id="lng" hidden value="">
+
+        <div class="col-lg-3 col-md-6 my-2">
+          <div class="dropdown">
+            <select id="category" name="category" class="form-control">
+              <option value="">Category</option>
+              <option value="Agriculture">Agriculture</option>
+              <option value="Arts / Culture">Arts/Culture</option>
+              <option value="Auto">Auto</option>
+              <option value="Sports/Gaming">Sports/Gaming</option>
+              <option value="Real State">Real State</option>
+              <option value="Food">Food</option>
+              <option value="Legal">Legal</option>
+              <option value="Security">Security</option>
+              <option value="Media / Internet">Media/Internet</option>
+              <option value="Fashion">Fashion</option>
+              <option value="Technology / Communications">Technology/Communications</option>
+              <option value="Retail">Retail</option>
+              <option value="Finance/Accounting">Finance/Accounting</option>
+              <option value="Pets">Pets</option>
+              <option value="Domestic (Home Help etc)">Domestic (Home Help etc)</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-6 my-2">
+          <button class="btn btn-success w-100" type="submit">Search</button>
+        </div>
+
+      </form>
+
+      <div class="row">
+        <div id="result_list" class="col-md-12 text-left search_results"></div>
       </div>
+
+    </div>
+
+  </div>
+</div>
+
+</div>
 
 
       <div class="mt-4">
 
-        <div class="cats  text-center pb-0 ">
+  <div class="text-center pb-0">
 
-          <ul class="hlist d-flex justify-content-center mx-4 mx-lg-4 py-0 my-0">
+    <ul class="d-flex list-unstyled justify-content-center text-success mx-4 mx-lg-4 py-0 my-0">
 
-            <li class="nav-item"> <router-link to="category/Arts-Culture">Arts/Culture </router-link></li>
-            <li class="nav-item"> <router-link to="category/Auto">Auto </router-link></li>
-            <li class="nav-item"> <router-link to="category/Domestic_Home">Domestic (HomeHelp etc) </router-link></li>
-            <li class="nav-item"> <router-link to="category/Fashion">Fashion </router-link></li>
-            <li class="nav-item"> <router-link to="category/Finance-Accounting">Finance/Accounting </router-link></li>
-            <li class="nav-item"> <router-link to="category/Food">Food </router-link></li>
-            <li class="nav-item"> <router-link to="category/Legal">Legal </router-link></li>
-            <li class="nav-item"> <router-link to="category/Media-Internet">Media/Internet</router-link></li>
-            <li class="nav-item"> <router-link to="category/Pets">Pets </router-link></li>
-            <li class="nav-item"> <router-link to="category/Retail">Retail </router-link></li>
+      <li class="nav-item"><router-link to="category/Arts-Culture"><i class="fas fa-paint-brush" title="Arts/Culture"></i></router-link></li>
+      <li class="nav-item"><router-link to="category/Auto"><i class="fas fa-car" title="Auto"></i></router-link></li>
+      <li class="nav-item"><router-link to="category/Domestic_Home"><i class="fas fa-home" title="Domestic (HomeHelp etc)"></i></router-link></li>
+      <li class="nav-item"><router-link to="category/Fashion"><i class="fas fa-tshirt" title="Fashion"></i></router-link></li>
+      <li class="nav-item"><router-link to="category/Finance-Accounting"><i class="fas fa-money-bill-wave" title="Finance/Accounting"></i></router-link></li>
+      <li class="nav-item"><router-link to="category/Food"><i class="fas fa-utensils" title="Food"></i></router-link></li>
+      <li class="nav-item"><router-link to="category/Legal"><i class="fas fa-balance-scale" title="Legal"></i></router-link></li>
+      <li class="nav-item"><router-link to="category/Media-Internet"><i class="fas fa-globe" title="Media/Internet"></i></router-link></li>
+      <li class="nav-item"><router-link to="category/Pets"><i class="fas fa-paw" title="Pets"></i></router-link></li>
+      <li class="nav-item"><router-link to="category/Retail"><i class="fas fa-shopping-bag" title="Retail"></i></router-link></li>
+      <li class="nav-item"><router-link to="category/Real State"><i class="fas fa-home" title="Real Estate"></i></router-link></li>
+      <li class="nav-item"><router-link to="category/Security"><i class="fas fa-shield-alt" title="Security"></i></router-link></li>
+      <li class="nav-item"><router-link to="category/Sports-Gaming"><i class="fas fa-gamepad" title="Sports/Gaming"></i></router-link></li>
+      <li class="nav-item"><router-link to="category/Technology-Communications"><i class="fas fa-mobile-alt" title="Technology/Communications"></i></router-link></li>
+      <li class="nav-item"><router-link to="category/Other"><i class="fas fa-question-circle" title="Other"></i></router-link></li>
 
+    </ul>
 
+  </div>
 
-            <li class="nav-item"> <router-link to="category/Real State">Real Estate </router-link></li>
+</div>
 
+<div class="my-5 py-0">
+  <ul class="nav justify-content-center">
+    <li class="nav-item">
+      <router-link class="nav-link btn btn-success text-light mx-2" to="category/Agriculture">
+        <i class="bi bi-bag"></i> Agriculture
+      </router-link>
+    </li>
+    <li class="nav-item">
+      <router-link class="nav-link btn btn-dark mx-2 text-light" to="category/Renewable-Energy">
+        <i class="bi bi-lightning-charge"></i> Renewable Energy
+      </router-link>
+    </li>
+  </ul>
+</div>
 
-            <li class="nav-item"> <router-link to="category/Security">Security </router-link></li>
-            <li class="nav-item"> <router-link to="category/Sports-Gaming">Sports/Gaming </router-link></li>
-
-
-            <li class="nav-item"> <router-link to="category/Technology-Communications">Technology/Communications
-              </router-link></li>
-
-            <li class="nav-item"><router-link to="category/Other">Other </router-link></li>
-
-          </ul>
-
-
-        </div>
-
-      </div>
-
-      <div class="my-1 py-0">
-        <ul class="text-center py-0 justify-content-center d-flex">
-          <li style="list-style-type:none;border-radius:3px;" class="nav-item  mr-4 "> <router-link class=" searchListing  py-1 px-5" to="category/Agriculture">Agriculture </router-link></li>
-
-          <li style="list-style-type:none;border-radius:3px;" class=" nav-item py-0  "> <router-link to="category/Renewable-Energy"
-              class=" searchListing  py-1 px-3" style="">Renewable Energy </router-link>
-          </li>
-        </ul>
-      </div>
 
 
     </div>
@@ -247,9 +226,9 @@
     </div>
      How it works  -->
 
-    <div class="container-md-xl row mx-auto my-2 bg-white pt-3">
+    <!--<div class="container-md-xl row mx-auto my-2 bg-white pt-3">
       <hr>
-      <!-- <div class="pt-1  w-75 mx-auto">
+       <div class="pt-1  w-75 mx-auto">
         <h2 style="text-align:left;" class="container-xl secondary_heading"> Latest Businesses </h2>
       </div> -->
 
@@ -285,12 +264,12 @@
 
       </div> -->
 
-      <!-- SLider test -->
-      <div style="overflow:hidden;" class="row card-group px-3 w-75 mx-auto d-md-flex justify-content-center">
+    
+     <!--- <div style="overflow:hidden;" class="row card-group px-3 w-75 mx-auto d-md-flex justify-content-center">
         <hooper :settings="hooperSettings" :itemsToShow="4" :centerMode="true" pagination="no">
           <slide class="listing text-center col-md-4 px-4" v-for="( result, index ) in results" :key="index"
             :index="index">
-            <!-- Loop -->
+            <!-- Loop 
             <div class="mx-auto mt-4">
               <router-link :to="`/listingDetails/${result.id}`" class="shadow card border px-2 pt-2">
 
@@ -317,19 +296,18 @@
                 </div>
 
               </router-link>
-            </div>
-            <!-- Loop -->
+            </div>-->
+            <!-- Loop 
 
           </slide>
 
           <hooper-navigation slot="hooper-addons"></hooper-navigation>
         </hooper>
 
-      </div>
+      </div> 
 
 
-    </div>
-
+    </div>-->
 
     <!-- HOW IT WORKS -->
 
@@ -400,7 +378,92 @@
 
           </div>
 
+
+
+
+
+  <section id="about-us" class="py-5  pt-3" style="margin-right: 40px;">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <img src="https://img.freepik.com/free-photo/low-angle-man-with-sunglasses-taking-selfie_23-2148666533.jpg?t=st=1713210483~exp=1713214083~hmac=0bb6bbb572bb457373fff1c7deabfad09fcfe6e57920ec0b1e25c6dbb8f8aa2d&w=996" class="img-fluid" alt="About Us">
+      </div>
+      <div class="col-md-6 mt-4 mt-md-0">
+        <h2>About Jitume</h2>
+        <p>Jitume is more than just a business directory. We're a community-driven platform that connects local businesses with customers in a meaningful way. Our mission is to empower businesses and consumers alike by providing a platform that fosters growth, innovation, and collaboration.</p>
+        <p>With Jitume, you can discover new businesses, read reviews, and find the perfect services for your needs. Whether you're a business owner looking to expand your reach or a customer seeking local services, Jitume is here to help you connect with your community.</p>
+        <div>      <button class="btn btn-danger btn-rounded px-5 my-4">Explore</button></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<section class="bg-light py-5">
+  <div class="container">
+    <h2 class="text-center mb-5">Unlock Your Organization's Impact Potential</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <h3>Jitume Partnerships</h3>
+        <p>Jitume partners with businesses and organizations to make an even greater impact on communities around the world. By partnering with Jitume, you can create a more connected and efficient business ecosystem, empowering communities and driving growth.</p>
+        <p><strong>Join Jitume today to unlock your organization's impact potential!</strong></p>
+      </div>
+      <div class="col-md-6">
+        <img src="https://img.freepik.com/premium-photo/symbol-business-goal-business-target-icon-goal-achievement-symbol-business-vision-corporate-o_980716-77129.jpg?w=740" alt="Partner with Jitume" class="img-fluid rounded">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="bg-dark text-white py-5" style="margin-right: 40px;">
+  <div class="container">
+    <h2 class="text-center mb-5 text-success">Testimonials</h2>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="text-center">
+          <h4>Maria Rodriguez</h4>
+          <p>"Working with Jitume has been a game-changer for my business. The platform helped me connect with new customers and grow my revenue."</p>
         </div>
+      </div>
+      <div class="col-md-4">
+        <div class="text-center">
+          <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fG1hbiUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D" alt="User 2" class="rounded-circle mb-3" style="width: 100px;">
+          <h4>Jamal Washington</h4>
+          <p>"I've been using Jitume for a while now, and I'm impressed by the quality of service and the range of businesses available. Highly recommended!"</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="text-center">
+          <h4>Ling Wong</h4>
+          <p>"Jitume has made it easy for me to find local businesses that meet my needs. I love supporting my community through this platform."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="bg-light py-5">
+  <div class="container text-center">
+    <h2>Subscribe to Our Newsletter</h2>
+    <p class="text-center">Get the latest updates and offers delivered straight to your inbox.</p>
+    <form class="mt-4">
+      <div class="input-group mx-auto" style="max-width: 400px;">
+        <input type="email" class="form-control" placeholder="Your Email Address" aria-label="Your Email Address" aria-describedby="button-addon2">
+        <button class="btn btn-primary" type="button" id="button-addon2">Subscribe</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+
+
+  </div>
 
 
       </div>

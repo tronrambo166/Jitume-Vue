@@ -65,107 +65,78 @@
 
         <!-- Layout -->
 
-
-        <nav class="navbar navbar-expand-lg primary_bg py-1">
-
-            <a href="./"><img class="logo img-fluid pb-0" width="170px" height="45px" src="images/logo.png" ></a>
-
-
-            <button class="navbar-toggler bg-white text-white mr-2" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto text-white">
-                    <li class="nav-item py-1 active header_btn_width mr-md-2">
-                        <router-link to="/home" class="py-1  pr-0 pl-1"> 
-                            <div class="d-inline rounded-circle px-2 pb-2 pt-1 mr-1" style="background: #6d8b8291;">
-                               <img width="14px" class="" src="images/home-Icon.png" />
-
-                            </div>
-                        </router-link>
-                    </li>
-
-                    <li class="border-none nav-item py-1 text-light header_btn_width ">
-                        <router-link to="/services" class="border-none text-light py-1 px-md-3 ">
-                           <div class="d-inline rounded-circle px-2 pb-2 pt-1 mr-1" style="background: #6d8b8291;">
-                               <img width="14px" class="" src="images/service-icon.png" />
-
-                           </div>  Services
-                        </router-link>
-                    </li>
-                </ul>
-
-                <div class="clearfix"></div>
-                <div class="my-2 my-lg-0 right_bar">
-                    <div class="py-1 px-md-3">
-                        @if(Auth::check())
-                        <div class="ml-3 ml-md-0 d-md-flex">
-                            <div class="nav-item ">
-                                <a href="{{route('business')}}" class="header_buttons px-sm-3 my-1 mr-2 px-1 py-1"><i class="fa fa-bell"></i></a>
-                            </div>
-                            <div class="nav-item ">
-
-                                <a href="{{route('service-messages')}}" class="header_buttons px-sm-3 my-1 mr-2 px-1 py-1"><i class="fa fa-envelope"></i></a>
-                            </div>
-
-                            <div class="nav-item mr-md-4">
-                                <a href="{{route('business')}}" class="header_buttons px-sm-3 my-1 mr-2 px-1 py-1 "><b>Dashboard</b></a>
-                            </div>
-
-                            <div class="nav-item">
-                            <a  v-if="" onclick="event.preventDefault();
-                 document.getElementById('logout-form').submit();" class=" sign_in_btn  px-sm-3 header_buttons my-1 mr-2 px-1 py-1 "><b>Sign Out</b></a>
-                            </div>
-
-                        </div>
-
-
-                        @elseif (Session::has('investor_auth') && Session::get('investor_auth') == true)
-
-                        <div class="ml-3 ml-md-0 d-flex">
-                            <div class="nav-item mr-4">
-
-                                <a href="{{route('business')}}" class="header_buttons px-sm-3 my-1 mr-2 px-1 py-1"><b>Dashboard</b></a>
-                            </div>
-
-                            <div class="nav-item">
-                                <a v-if="" onclick="event.preventDefault();
-                             document.getElementById('logout-form').submit();" class="sign_in_btn header_buttons px-sm-3 my-1 mr-2 px-1 py-1"><b>Sign Out</b>
-                                </a>
-                            </div>
-
-                        </div>
-
-                        @else
-
-                        <div class="ml-3 ml-md-0">
-
-                            <div class="" id="call_to">
-                                <a onclick="c_to_action();" data-target="#loginModal" data-toggle="modal" style="color:black;cursor: pointer; " class="header_buttons px-3 my-1 px-1 py-1 mx-1 d-inline-block small text-center"><span id="c_to_ac">
-                                        Add Your Business</span></a>
-                            </div>
-
-
-                            <div class="" id="create_investor">
-                                <a data-target="#loginmodal2" data-toggle="modal" style="color:black; cursor: pointer; " class="header_buttons px-3 my-1 px-1 py-1 mr-1 ml-3 d-inline-block small text-center"><span id="c_to_ac">Create Investor Account</span></a>
-                            </div>
-
-                            <a data-target="#loginModal" data-toggle="modal" class=" sign_in_btn px-3 my-1 mr-1 px-1 py-1 text-center ml-md-3">Sign In</a>
-
-
-                        </div>
+<style>
+    .dropdown-menu {
+        background-color: #fff; /* Set background color for the dropdown menu */
+        border: none; /* Remove default border */
+        border-radius: 0.5rem; /* Add border-radius for rounded corners */
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Add shadow for depth */
+    }
+</style>
 
 
 
+<nav class="navbar navbar-expand-lg navbar-dark py-1" style="background-color: #333;">
+    <a href="./" class="navbar-brand"><img class="logo img-fluid" width="170px" height="45px" src="images/logo.png" ></a>
 
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#offcanvasNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-                        @endif
-
-                    </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto ">
+            <li class="nav-item text-light">
+                <router-link to="/home" class="nav-link"><i class="fas fa-home"></i> Home</router-link>
+            </li>
+            <li class="nav-item  text-light" margin-right="30px">
+                <router-link to="/services" class="nav-link"><i class="fas fa-wrench"></i> Services</router-link>
+            </li>
+        </ul>
+        <div class="my-2 mr-6 my-lg-0">
+            <div class="nav-item dropdown text-light " style="margin-right: 40px;">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-user"></i> Account
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#" data-target="#loginModal" data-toggle="modal"><i class="fas fa-plus"></i> Add Your Business</a>
+                    <a class="dropdown-item" href="#" data-target="#loginmodal2" data-toggle="modal"><i class="fas fa-user-plus"></i> Create Investor Account</a>
+                    <a class="dropdown-item" href="#" data-target="#loginModal" data-toggle="modal"><i class="fas fa-sign-in-alt"></i> Sign In</a>
                 </div>
             </div>
-        </nav>
+        </div>
+    </div>
+</nav>
+
+
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="width: 250px;">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="#offcanvasNavbar" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="navbar-nav flex-column" style="display: flex; flex-direction: column; align-items: flex-start;">
+            <li class="nav-item">
+                <router-link to="/home" class="nav-link">Home</router-link>
+            </li>
+            <li class="nav-item">
+                <router-link to="/services" class="nav-link">Services</router-link>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">Add Your Business</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-target="#loginmodal2" data-toggle="modal">Create Investor Account</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">Sign In</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
 
 
 
@@ -330,110 +301,50 @@
     </div>
 
     <!-- Vue Body End -->
-
-    <footer id="footer" class="secondary_bg pt-3 text-light ">
-
-        <div class="container-xl row mx-auto my-0 d-flex align-items-center">
-           
-            <div class="col-12 col-sm-4 d-flex justify-content-start">
-                <div class="">
-                   <!--  <img style="max-width: 438px;" class="w-100" src="images/logo_footer.png" /> -->
-
-                   <ul class="foot_menu_ui px-5">
-                       <li>
-                        <a onclick="c_to_actionS();" data-target="#loginModal" data-toggle="modal" class=" " ><span id="c_to_ac">Sign Up/Sign In as A Project Manager</a>
-                       </li>
-
-                       <li>
-                        <a onclick="c_to_actionS();" data-target="#loginModal" data-toggle="modal" class=" " ><span id="c_to_ac">Add a Business Service</a>
-                       </li>
-
-                       <li><a class="foot_menu" href="">How It Works</a></li>
-
-                       <!-- <li><a class="foot_menu" href="">FAQs</a></li>
-
-                       <li><a class="foot_menu" href="">Contact Us</a></li>
-
-                       <li><a class="foot_menu" href="">Help</a></li> -->
-
-                   </ul>
-                </div>
+<footer id="footer" class="bg-dark text-light py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-light">Sign Up/Sign In as A Project Manager</a></li>
+                    <li><a href="#" class="text-light">Add a Business Service</a></li>
+                    <li><a href="#" class="text-light">How It Works</a></li>
+                </ul>
             </div>
-
-                <div class="col-12 col-sm-4 text-sm-center">
-                <div class="">
-                   <ul class="foot_menu_ui px-5">
-
-                       <li><a class="foot_menu" href="">FAQs</a></li>
-
-                       <li><a class="foot_menu" href="">Contact Us</a></li>
-
-                       <li><a class="foot_menu" href="">Help</a></li>
-
-                   </ul>
-                   </div>
-                </div>
-
-            <div class="col-12 col-sm-4 pt-2 text-sm-right">
-                    <div class="py-0">
-                        <ul class="foot_menu_ui mb-1 px-5">
-                        <li>
-                              <a href="./policy" target="_blank" class="text-light font-weight-bold d-block">Privacy Policy</a>
-                              </li>
-                              
-                              <li>
-                              
-                                <a href="./terms" target="_blank" class="text-light font-weight-bold">Terms and Conditions</a>
-                              </li> 
-                              </ul>
-                    </div>
-
-                    <div class="px-5 d-flex flex-wrap pb-2 justify-content-end social">
-                    <a class="" href="twitter.com" target="_black">
-                        <img width="31px" src="images/randomIcons/twitter.png" class="rounded p-1"></a>
-
-                    <a href="twitter.com" target="_black">
-                        <img width="31px" src="images/randomIcons/instagram.png" class="rounded p-1"></a>
-
-                    <a href="twitter.com" target="_black">
-                        <img width="31px" src="images/randomIcons/facebook.png" class="rounded p-1">
-                    </a>
-
-                    <a href="twitter.com" target="_black">
-                        <img width="31px" src="images/randomIcons/youtube.png" class="rounded p-1">
-                    </a>
-
-                    <!-- <ul class="text-light px-2">
-                    <h3 class="h3">Contact Us</h3>
-                    <li style="list-style-type:none;">
-                        <a class="footer_txt px-0 text-light d-inline small" href="mailto:info@thedtagency.com"> E-Mail: info@thedtagency.com</a>
-                    </li>
-                </ul>  -->
-
-                </div>   
-          
+            <div class="col-md-4">
+                <h5>Help & Support</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-light">FAQs</a></li>
+                    <li><a href="#" class="text-light">Contact Us</a></li>
+                    <li><a href="#" class="text-light">Help</a></li>
+                </ul>
             </div>
-
+            <div class="col-md-4">
+                <h5>Legal</h5>
+                <ul class="list-unstyled">
+                    <li><a href="./policy" target="_blank" class="text-light">Privacy Policy</a></li>
+                    <li><a href="./terms" target="_blank" class="text-light">Terms and Conditions</a></li>
+                </ul>
+            </div>
         </div>
-
-
-        <div class="w-100 primary_bg py-2">
-            <div class="w-100">
-                <div class="py-2">
-
-                    <div class="col-sm-6 m-auto text-center">
-
-                        <p class="text-center pt-2">© JITUME. All Rights Reserved (2024).
-                        </p>
-                    </div>
-
-
-                </div>
+        <hr class="bg-light">
+        <div class="row">
+            <div class="col-md-6">
+                <p>&copy; JITUME. All Rights Reserved (2024).</p>
             </div>
-
+            <div class="col-md-6 text-md-right">
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    <li class="list-inline-item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                    <li class="list-inline-item"><a href="#"><i class="fab fa-facebook"></i></a></li>
+                    <li class="list-inline-item"><a href="#"><i class="fab fa-youtube"></i></a></li>
+                </ul>
+            </div>
         </div>
+    </div>
+</footer>
 
-    </footer>
 
 
     </div>
