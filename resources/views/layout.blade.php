@@ -531,15 +531,17 @@
 
 
     <!-- LOGIN MODAL -->
+   
+    <!-- LOGIN MODAL -->
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+<div class="modal-dialog modal-dialog-centered" role="document"> <!-- Added modal-dialog-centered class for centering -->
             <div class="modal-content" style="width: 585px;border-radius: 20px;">
 
                  <button type="button" class="m-0 close float-left text-left d-inline-block pt-2 pl-3 h3" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
 
-                <div id="header" class="py-0 m-auto modal-header" style="width: 75%; border-bottom:1px solid #66666630;">
+                <div id="header" class="py-0 m-auto modal-header" style="border-bottom: 1px solid #66666630;"> <!-- Removed width style to allow responsiveness -->
 
                     <div class="d-block mx-auto my-3 rounded-circle border-bottom text-center" style="background: #C4C4C4">
                         <div class="mini_logo rounded-circle p-2">
@@ -548,6 +550,9 @@
                        
                     </div>
                 </div>
+
+
+
 
 
                 <div class="m-auto modal-body text-center" style="width: 75%;">
@@ -947,7 +952,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mb-3 w-50 px-4 m-auto">
+                                        <div class="row mb-3 w-50 px-4 m-auto flex">
                                             <div class="col-md-6">
                                                 <a href="{{route('login.facebook')}}" class="social_btn text-light">
                                                     <img class="shadow" src="images/randomIcons/fb.png"></a>
