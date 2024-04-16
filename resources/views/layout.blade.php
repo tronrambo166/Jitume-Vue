@@ -84,11 +84,11 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto ">
-            <li class="nav-item text-light">
+        <ul class="navbar-nav mr-auto " style="color:#FFFFFF;">
+            <li class="nav-item " style="color:#FFFFFF;">
                 <router-link to="/home" class="nav-link"><i class="fas fa-home"></i> Home</router-link>
             </li>
-            <li class="nav-item  text-light" margin-right="30px">
+            <li class="nav-item  text-light"  style="color:#FFFFFF; margin-right=30px;">
                 <router-link to="/services" class="nav-link"><i class="fas fa-wrench"></i> Services</router-link>
             </li>
         </ul>
@@ -112,25 +112,32 @@
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="width: 250px;">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="#offcanvasNavbar" aria-label="Close"></button>
+<button type="button" class="navbar-toggler btn-close text-reset" data-toggle="collapse" data-target="#offcanvasNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" data-bs-dismiss="#offcanvasNavbar">
+    <span class="navbar-toggler-icon"></span>
+</button>
     </div>
     <div class="offcanvas-body">
-        <ul class="navbar-nav flex-column" style="display: flex; flex-direction: column; align-items: flex-start;">
-            <li class="nav-item">
-                <router-link to="/home" class="nav-link">Home</router-link>
-            </li>
-            <li class="nav-item">
-                <router-link to="/services" class="nav-link">Services</router-link>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">Add Your Business</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" data-target="#loginmodal2" data-toggle="modal">Create Investor Account</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">Sign In</a>
-            </li>
+<ul class="navbar-nav flex-column" style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px; color: #000;">
+            <div class="offcanvas-body">
+    <ul class="navbar-nav flex-column" style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px; color: #E53935;">
+        <li class="nav-item">
+            <router-link to="/home" class="nav-link"><i class="fas fa-home"></i> Home</router-link>
+        </li>
+        <li class="nav-item">
+            <router-link to="/services" class="nav-link"><i class="fas fa-cogs"></i> Services</router-link>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal"><i class="fas fa-plus-circle"></i> Add Your Business</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-target="#loginmodal2" data-toggle="modal"><i class="fas fa-user-plus"></i> Create Investor Account</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal"><i class="fas fa-sign-in-alt"></i> Sign In</a>
+        </li>
+    </ul>
+</div>
+
         </ul>
     </div>
 </div>

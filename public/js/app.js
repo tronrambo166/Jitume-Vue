@@ -8390,6 +8390,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -72607,17 +72617,24 @@ var staticRenderFns = [
                       },
                     },
                     [
-                      _c("div", { staticClass: "text-dark mb-md-3" }, [
-                        _c(
-                          "h3",
-                          {
-                            staticClass:
-                              "pb-2 secondary_heading h2 headline headline-aligned-to-left headline-box",
-                            staticStyle: { "text-align": "center" },
-                          },
-                          [_vm._v(" How Jitume Works?\n                ")]
-                        ),
-                      ]),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "text-dark mb-md-3",
+                          staticStyle: { "margin-bottom": "30px" },
+                        },
+                        [
+                          _c(
+                            "h3",
+                            {
+                              staticClass:
+                                "pb-2 secondary_heading h2 headline headline-aligned-to-left headline-box",
+                              staticStyle: { "text-align": "center" },
+                            },
+                            [_vm._v(" How Jitume Works?\n                ")]
+                          ),
+                        ]
+                      ),
                     ]
                   ),
                   _vm._v(" "),
@@ -72748,7 +72765,7 @@ var staticRenderFns = [
                   "section",
                   {
                     staticClass: "py-5 pt-3",
-                    staticStyle: { "margin-right": "40px" },
+                    staticStyle: { "margin-top": "40px" },
                     attrs: { id: "about-us" },
                   },
                   [
@@ -72840,104 +72857,151 @@ var staticRenderFns = [
                     staticStyle: { "margin-right": "40px" },
                   },
                   [
-                    _c("div", { staticClass: "container" }, [
-                      _c(
-                        "h2",
-                        { staticClass: "text-center mb-5 text-success" },
-                        [_vm._v("Testimonials")]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-md-4" }, [
-                          _c("div", { staticClass: "text-center" }, [
-                            _c("h4", [_vm._v("Maria Rodriguez")]),
-                            _vm._v(" "),
-                            _c("p", [
-                              _vm._v(
-                                '"Working with Jitume has been a game-changer for my business. The platform helped me connect with new customers and grow my revenue."'
-                              ),
-                            ]),
-                          ]),
-                        ]),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "container d-flex-col justify-content-center align-items center",
+                      },
+                      [
+                        _c(
+                          "h2",
+                          { staticClass: "text-center mb-5 text-success" },
+                          [_vm._v("Testimonials")]
+                        ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-md-4" }, [
-                          _c("div", { staticClass: "text-center" }, [
-                            _c("img", {
-                              staticClass: "rounded-circle mb-3",
-                              staticStyle: { width: "100px" },
-                              attrs: {
-                                src: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fG1hbiUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D",
-                                alt: "User 2",
-                              },
-                            }),
-                            _vm._v(" "),
-                            _c("h4", [_vm._v("Jamal Washington")]),
-                            _vm._v(" "),
-                            _c("p", [
-                              _vm._v(
-                                "\"I've been using Jitume for a while now, and I'm impressed by the quality of service and the range of businesses available. Highly recommended!\""
-                              ),
+                        _c("div", { staticClass: "row py-4" }, [
+                          _c("div", { staticClass: "col-md-4" }, [
+                            _c("div", { staticClass: "text-center" }, [
+                              _c("h4", [_vm._v("Maria Rodriguez")]),
+                              _vm._v(" "),
+                              _c("p", [
+                                _vm._v(
+                                  '"Working with Jitume has been a game-changer for my business. The platform helped me connect with new customers and grow my revenue."'
+                                ),
+                              ]),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-md-4" }, [
+                            _c("div", { staticClass: "text-center" }, [
+                              _c("img", {
+                                staticClass: "rounded-circle mb-3",
+                                staticStyle: { width: "100px" },
+                                attrs: {
+                                  src: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fG1hbiUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D",
+                                  alt: "User 2",
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c("h4", [_vm._v("Jamal Washington")]),
+                              _vm._v(" "),
+                              _c("p", [
+                                _vm._v(
+                                  "\"I've been using Jitume for a while now, and I'm impressed by the quality of service and the range of businesses available. Highly recommended!\""
+                                ),
+                              ]),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-md-4" }, [
+                            _c("div", { staticClass: "text-center" }, [
+                              _c("h4", [_vm._v("Ling Wong")]),
+                              _vm._v(" "),
+                              _c("p", [
+                                _vm._v(
+                                  '"Jitume has made it easy for me to find local businesses that meet my needs. I love supporting my community through this platform."'
+                                ),
+                              ]),
                             ]),
                           ]),
                         ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-4" }, [
-                          _c("div", { staticClass: "text-center" }, [
-                            _c("h4", [_vm._v("Ling Wong")]),
-                            _vm._v(" "),
-                            _c("p", [
-                              _vm._v(
-                                '"Jitume has made it easy for me to find local businesses that meet my needs. I love supporting my community through this platform."'
-                              ),
-                            ]),
-                          ]),
-                        ]),
+                      ]
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "section",
+                  {
+                    staticClass: "text-center py-5",
+                    staticStyle: {
+                      "background-color": "#f8f9fa",
+                      "margin-top": "30px",
+                    },
+                  },
+                  [
+                    _c("div", { staticClass: "container-fluid" }, [
+                      _c("h2", { staticClass: "display-4 mb-4" }, [
+                        _vm._v("Grow Your Business with Jitume"),
                       ]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "lead mb-4" }, [
+                        _vm._v(
+                          "Jitume offers innovative solutions to help your business thrive. Join us today and experience the difference."
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-success btn-lg",
+                          attrs: { href: "#" },
+                        },
+                        [_vm._v("Start Growing")]
+                      ),
                     ]),
                   ]
                 ),
                 _vm._v(" "),
-                _c("section", { staticClass: "bg-light py-5" }, [
-                  _c("div", { staticClass: "container text-center" }, [
-                    _c("h2", [_vm._v("Subscribe to Our Newsletter")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "text-center" }, [
-                      _vm._v(
-                        "Get the latest updates and offers delivered straight to your inbox."
-                      ),
+                _c(
+                  "section",
+                  {
+                    staticClass: "bg-light py-5",
+                    staticStyle: { "margin-top": "30px" },
+                  },
+                  [
+                    _c("div", { staticClass: "container-fluid text-center" }, [
+                      _c("h2", [_vm._v("Subscribe to Our Newsletter")]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-center" }, [
+                        _vm._v(
+                          "Get the latest updates and offers delivered straight to your inbox."
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _c("form", { staticClass: "mt-4" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "input-group mx-auto",
+                            staticStyle: { "max-width": "400px" },
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "email",
+                                placeholder: "Your Email Address",
+                                "aria-label": "Your Email Address",
+                                "aria-describedby": "button-addon2",
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary",
+                                attrs: { type: "button", id: "button-addon2" },
+                              },
+                              [_vm._v("Subscribe")]
+                            ),
+                          ]
+                        ),
+                      ]),
                     ]),
-                    _vm._v(" "),
-                    _c("form", { staticClass: "mt-4" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "input-group mx-auto",
-                          staticStyle: { "max-width": "400px" },
-                        },
-                        [
-                          _c("input", {
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "email",
-                              placeholder: "Your Email Address",
-                              "aria-label": "Your Email Address",
-                              "aria-describedby": "button-addon2",
-                            },
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-primary",
-                              attrs: { type: "button", id: "button-addon2" },
-                            },
-                            [_vm._v("Subscribe")]
-                          ),
-                        ]
-                      ),
-                    ]),
-                  ]),
-                ]),
+                  ]
+                ),
               ]
             ),
           ]

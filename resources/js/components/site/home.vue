@@ -326,7 +326,7 @@
             <div class=" elementor-element elementor-element-ccc6233 elementor-widget elementor-widget-listeo-headline"
               data-id="ccc6233" data-element_type="widget" data-widget_type="listeo-headline.default">
 
-              <div class="text-dark mb-md-3">
+              <div class="text-dark mb-md-3" style="margin-bottom: 30px;">
                 <h3 style="text-align:center;"
                   class="pb-2 secondary_heading h2 headline  headline-aligned-to-left  headline-box "> How Jitume Works?
                 </h3>
@@ -382,7 +382,7 @@
 
 
 
-  <section id="about-us" class="py-5  pt-3" style="margin-right: 40px;">
+  <section id="about-us" class="py-5  pt-3" style="margin-top: 40px;">
 
   <div class="container">
     <div class="row">
@@ -420,9 +420,9 @@
 
 
 <section class="bg-dark text-white py-5" style="margin-right: 40px;">
-  <div class="container">
+  <div class="container d-flex-col justify-content-center align-items center">
     <h2 class="text-center mb-5 text-success">Testimonials</h2>
-    <div class="row">
+    <div class="row py-4">
       <div class="col-md-4">
         <div class="text-center">
           <h4>Maria Rodriguez</h4>
@@ -448,8 +448,16 @@
 
 
 
-<section class="bg-light py-5">
-  <div class="container text-center">
+<section class="text-center py-5" style="background-color: #f8f9fa; margin-top: 30px;">
+    <div class="container-fluid">
+        <h2 class="display-4 mb-4">Grow Your Business with Jitume</h2>
+        <p class="lead mb-4">Jitume offers innovative solutions to help your business thrive. Join us today and experience the difference.</p>
+        <a href="#" class="btn btn-success btn-lg">Start Growing</a>
+    </div>
+</section>
+
+<section class="bg-light py-5"style="margin-top:30px;">
+  <div class="container-fluid text-center">
     <h2>Subscribe to Our Newsletter</h2>
     <p class="text-center">Get the latest updates and offers delivered straight to your inbox.</p>
     <form class="mt-4">
@@ -467,6 +475,8 @@
 
 
       </div>
+
+
 
 
       <!-- <div class="row w-75 mx-auto my-5  pl-md-5">
