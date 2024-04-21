@@ -448,7 +448,7 @@
 
 
 
-<section class="text-center py-5" style="background-color: #f8f9fa; padding-top">
+<section class="text-center py-5" style="background-color: #f8f9fa; ">
     <div class="container-fluid">
         <h2 class="display-4 mb-4">Grow Your Business with Jitume</h2>
         <p class="lead mb-4">Jitume offers innovative solutions to help your business thrive. Join us today and experience the difference.</p>

@@ -77,10 +77,12 @@
 
 
 
-<div class="bg-slate-100">
-  <nav class="container px-6 py-4 mx-auto flex justify-between items-center">
+<div class="bg-slate-100 relative">
+
+
+  <nav class="container px-6 py-4 mx-auto flex justify-between items-center ">
     <!-- Logo -->
-    <div class="flex items-center">
+    <div class="flex items-center ">
       <router-link to="/" class="text-xl font-bold text-gray-800 md:text-2xl hover:text-blue-400">
         <img class="logo img-fluid" width="100px" height="45px" src="images/logo.png">
       </router-link>
@@ -93,32 +95,27 @@
 
     <!-- Centered Links -->
     <ul class="hidden md:flex items-center space-x-8">
-      <li class="text-sm font-bold text-gray-800 hover:text-blue-400">
-        <router-link to="/home"><i class="fas fa-home"></i>Home</router-link>
+      <li class="text-sm font-bold text-gray-800 hover:text-blue-400 px-3">
+        <router-link to="/home">Home</router-link>
       </li>
-      <li class="text-sm font-bold text-gray-800 hover:text-blue-400">
-        <router-link to="/services"><i class="fas fa-cogs"></i> Services</router-link>
+      <li class="text-sm font-bold text-gray-800 hover:text-blue-400 px-2">
+        <router-link to="/services"> Services</router-link>
               </li>
-      <li class="text-sm font-bold text-gray-800 hover:text-blue-400">
+      <li class="text-sm font-bold text-gray-800 hover:text-blue-400 px-2">
         <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">        
-          <i class="fas fa-plus"></i> Add Your Business
+         </i> Add Your Business
         </a>
       </li>
-      <li class="text-sm font-bold text-gray-800 hover:text-blue-400">
+      <li class="text-sm font-bold text-gray-800 hover:text-blue-400 px-2">
         <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">        
-          <i class="fas fa-user-plus"></i> Create Investor Account
+          Create Investor Account
         </a>
       </li>
     </ul>
 
-    <!-- Login Button -->
-    <button class="hidden md:block text-sm font-bold text-gray-800 hover:text-blue-400 border-2 border-black rounded-md py-2 px-6">
- <a class="dropdown-item" href="#" data-target="#loginModal" data-toggle="modal"><i class="fas fa-sign-in-alt"></i> Sign In</a>
-    </button>
+  <!-- Login Button -->
+    <button class="hidden md:block text-sm font-bold text-gray-800 hover:text-blue-400 border-2 border-black rounded-md py-2 px-6">Login</button>
   </nav>
-<
-
-
 
 <!-- Offcanvas Navbar -->
 <div class="fixed inset-0 bg-gray-600 bg-opacity-75 z-50 hidden md:hidden" id="offcanvasNavbar">
@@ -126,7 +123,7 @@
     <button class="text-white text-3xl mr-4 mt-4" id="closeButton">&times;</button>
   </div>
   <div class="flex flex-col items-center justify-center h-full">
-    <ul class="flex flex-col items-center space-y-4">
+    <ul class="flex flex-col items-center space-y-4 space-x-8">
       <li><router-link to="/home" class="text-white">Home</router-link></li>
       <li><router-link to="/services" class="text-white">Services</router-link></li>
       <li><a href="#" class="text-white">Add Your Business</a></li>
@@ -136,16 +133,44 @@
 </div>
 
 
+<!--hero section-->
 
 
 
+<div class="bg-gray-100 relative">
 
-        <!-- Commenting Previous Navigation Bar -->
+    <!-- Vector on the left -->
+<img src="/images/left vector.png" class="absolute left-0 top-1/2 transform -translate-y-1/2 z-90" style="height: 100px; width: auto;">
 
-        <!-- Layout -->
+<!-- Vector on the right -->
+<img src="/images/right vector.png" class="absolute right-0 top-1/3 transform -translate-y-1/2 z-10" style="height: 100px; width: auto;">
+    <div class="container mx-auto py-8 px-[250px]">
+      <div class="flex flex-col gap-6 md:flex-row items-center justify-center space-y-8 md:space-y-0">
+        <!-- Text on the left -->
+        <div class="md:w-1/2">
+          <h2 class="text-lg text-gray-800 text-gray-500 font-bold mb-4 py-[18px]">Welcome to Jitume</h2>
+          <h3 class="text-[28px] text-black font-black ">Real business,real solutions,<span class="text-green-800 text-[30px]">realchange</span></h3>
+          <h3 class="font-bold py-[20px]">Invest in a business you believe in with as little as $100</h2>
+
+      <div>
+          <button class="bg-green-800 text-slate-100 rounded-[14px] px-6 py-3">Join today</button>
+      </div>
+
+        </div>
 
 
+        <!-- Image on the right -->
+        <div class="md:w-1/2">
+          <img src="/images/Frame 859(1).png" alt="Your Image" class="w-full h-auto rounded-lg">
+        </div>
+      </div>
+    </div>
+  </div>
 
+
+<!--hero section Ends-->
+     
+<!-- Layout -->
         <!-- Body -->
 
         <div class="">
