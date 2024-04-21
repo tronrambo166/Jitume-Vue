@@ -190,12 +190,13 @@
     /* .home_bg {} */
 
     .service_img {
-        height: 100%;
-        background: url(../images/service-bg.jpeg) no-repeat;
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-        background-position: center center;
-    }
+    height: 100%;
+    background: url("https://img.freepik.com/free-photo/high-angle-three-stacks-coins-grass-with-plants-dirt_23-2148803923.jpg?t=st=1713282132~exp=1713285732~hmac=4226a3dd91e2bfd770bad1cb3a8079cb9acd2e6b7c7e162fb7bf78f482e0cbda&w=826") no-repeat;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+
 
     .map_style {
 

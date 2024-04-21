@@ -52,6 +52,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
 
 </head>
@@ -76,70 +77,62 @@
 
 
 
-<nav class="navbar navbar-expand-lg navbar-dark py-1" style="background-color: #333;">
-    <a href="./" class="navbar-brand"><img class="logo img-fluid" width="170px" height="45px" src="images/logo.png" ></a>
+<div class="bg-slate-100">
+  <nav class="container px-6 py-4 mx-auto flex justify-between items-center">
+    <!-- Logo -->
+    <div class="flex items-center">
+      <router-link to="/" class="text-xl font-bold text-gray-800 md:text-2xl hover:text-blue-400">
+        <img class="logo img-fluid" width="100px" height="45px" src="images/logo.png">
+      </router-link>
+    </div>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#offcanvasNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+    <!-- Toggle Button -->
+    <button class="block md:hidden text-xl text-gray-800 focus:outline-none" id="toggleButton">
+      <i class="fas fa-bars"></i>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto " style="color:#FFFFFF;">
-            <li class="nav-item " style="color:#FFFFFF;">
-                <router-link to="/home" class="nav-link"><i class="fas fa-home"></i> Home</router-link>
-            </li>
-            <li class="nav-item  text-light"  style="color:#FFFFFF; margin-right=30px;">
-                <router-link to="/services" class="nav-link"><i class="fas fa-wrench"></i> Services</router-link>
-            </li>
-        </ul>
-        <div class="my-2 mr-6 my-lg-0">
-            <div class="nav-item dropdown text-light " style="margin-right: 40px;">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-user"></i> Account
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#" data-target="#loginModal" data-toggle="modal"><i class="fas fa-plus"></i> Add Your Business</a>
-                    <a class="dropdown-item" href="#" data-target="#loginmodal2" data-toggle="modal"><i class="fas fa-user-plus"></i> Create Investor Account</a>
-                    <a class="dropdown-item" href="#" data-target="#loginModal" data-toggle="modal"><i class="fas fa-sign-in-alt"></i> Sign In</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</nav>
-
-
-
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="width: 250px;">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-<button type="button" class="navbar-toggler btn-close text-reset" data-toggle="collapse" data-target="#offcanvasNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" data-bs-dismiss="#offcanvasNavbar">
-    <span class="navbar-toggler-icon"></span>
-</button>
-    </div>
-    <div class="offcanvas-body">
-<ul class="navbar-nav flex-column" style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px; color: #000;">
-            <div class="offcanvas-body">
-    <ul class="navbar-nav flex-column" style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px; color: #E53935;">
-        <li class="nav-item">
-            <router-link to="/home" class="nav-link"><i class="fas fa-home"></i> Home</router-link>
-        </li>
-        <li class="nav-item">
-            <router-link to="/services" class="nav-link"><i class="fas fa-cogs"></i> Services</router-link>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal"><i class="fas fa-plus-circle"></i> Add Your Business</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" data-target="#loginmodal2" data-toggle="modal"><i class="fas fa-user-plus"></i> Create Investor Account</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal"><i class="fas fa-sign-in-alt"></i> Sign In</a>
-        </li>
+    <!-- Centered Links -->
+    <ul class="hidden md:flex items-center space-x-8">
+      <li class="text-sm font-bold text-gray-800 hover:text-blue-400">
+        <router-link to="/home"><i class="fas fa-home"></i>Home</router-link>
+      </li>
+      <li class="text-sm font-bold text-gray-800 hover:text-blue-400">
+        <router-link to="/services"><i class="fas fa-cogs"></i> Services</router-link>
+              </li>
+      <li class="text-sm font-bold text-gray-800 hover:text-blue-400">
+        <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">        
+          <i class="fas fa-plus"></i> Add Your Business
+        </a>
+      </li>
+      <li class="text-sm font-bold text-gray-800 hover:text-blue-400">
+        <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">        
+          <i class="fas fa-user-plus"></i> Create Investor Account
+        </a>
+      </li>
     </ul>
-</div>
 
-        </ul>
-    </div>
+    <!-- Login Button -->
+    <button class="hidden md:block text-sm font-bold text-gray-800 hover:text-blue-400 border-2 border-black rounded-md py-2 px-6">
+ <a class="dropdown-item" href="#" data-target="#loginModal" data-toggle="modal"><i class="fas fa-sign-in-alt"></i> Sign In</a>
+    </button>
+  </nav>
+<
+
+
+
+<!-- Offcanvas Navbar -->
+<div class="fixed inset-0 bg-gray-600 bg-opacity-75 z-50 hidden md:hidden" id="offcanvasNavbar">
+  <div class="flex justify-end">
+    <button class="text-white text-3xl mr-4 mt-4" id="closeButton">&times;</button>
+  </div>
+  <div class="flex flex-col items-center justify-center h-full">
+    <ul class="flex flex-col items-center space-y-4">
+      <li><router-link to="/home" class="text-white">Home</router-link></li>
+      <li><router-link to="/services" class="text-white">Services</router-link></li>
+      <li><a href="#" class="text-white">Add Your Business</a></li>
+      <li><a href="#" class="text-white">Create Investor Account</a></li>
+    </ul>
+  </div>
 </div>
 
 
@@ -305,10 +298,12 @@
         <router-view :auth_user='@json($auth_user)' :app_url='@json($app_url)' :business='@json($business)'></router-view>
         <!-- yield('page') -->
 
-    </div>
+
+
+
 
     <!-- Vue Body End -->
-<footer id="footer" class="bg-dark text-light py-4">
+<footer id="footer" class="bg-dark text-light py-5"> <!-- Increased padding to make the footer bigger -->
     <div class="container">
         <div class="row">
             <div class="col-md-4">
@@ -338,20 +333,22 @@
         <hr class="bg-light">
         <div class="row">
             <div class="col-md-6">
-                <p>&copy; JITUME. All Rights Reserved (2024).</p>
+                <p class="text-success">&copy; JITUME. All Rights Reserved (2024).</p>
             </div>
             <div class="col-md-6 text-md-right">
-                <ul class="list-inline">
-                    <li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>
-                    <li class="list-inline-item"><a href="#"><i class="fab fa-instagram"></i></a></li>
-                    <li class="list-inline-item"><a href="#"><i class="fab fa-facebook"></i></a></li>
-                    <li class="list-inline-item"><a href="#"><i class="fab fa-youtube"></i></a></li>
+                <ul class="list-inline text-success">
+                    <li class="list-inline-item"><a href="#" class="text-success"><i class="fab fa-twitter"></i></a></li>
+                    <li class="list-inline-item"><a href="#" class="text-success"><i class="fab fa-instagram"></i></a></li>
+                    <li class="list-inline-item"><a href="#" class="text-success"><i class="fab fa-facebook"></i></a></li>
+                    <li class="list-inline-item"><a href="#" class="text-success"><i class="fab fa-youtube"></i></a></li>
                 </ul>
             </div>
         </div>
     </div>
 </footer>
 
+
+    </div>
 
 
     </div>
@@ -868,7 +865,7 @@
                                             </div>
                                             <div class="row mb-4">
                                                 <div class="col-md-12 ">
-                                                    <button id="next_reg" onclick="next();" style="width: 99%;" class="d-block mx-auto my-3 pt-3 proceed_btn" disabled> Next </button>
+                                                    <button id="next_reg" onclick="next();" style="width: 99%;" class="d-block mx-auto my-3 pt-3 proceed_btn" > Next </button>
                                                 </div>
                                             </div>
 
@@ -929,7 +926,7 @@
 
                                             <div class="row my-4">
                                                 <div class="col-md-12 ">
-                                                    <button id="proceed_reg" type="submit" style="width: 99%;" class="d-block mx-auto my-3 pt-2 proceed_btn text-light " disabled> Register </button>
+                                                   <button id="proceed_reg" onclick="proceed();" style="width: 99%;" class="d-block mx-auto my-3 pt-2 proceed_btn text-light"> Proceed </button>
 
 
                                                 </div>
@@ -1030,19 +1027,19 @@
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                           @enderror -->
-                                           <div class="row">
-                                            <div class="col-sm-12 pr-1 text-center">
-                                                <a href="{{ route('forgot','email') }}" style="color:black;" class=" text-responsive font-weight-bold mx-auto my-2 d-inline-block py-0 small">Forgot Password?</a>
-                                            </div>
-                                        </div>
+                                      <!-- @enderror -->
+<div class="row">
+    <div class="col-sm-12 pr-1 text-center">
+        <a href="{{ route('forgot','email') }}" style="color:black;" class="text-responsive font-weight-bold mx-auto my-2 d-inline-block py-0 small">Forgot Password?</a>
+    </div>
+</div>
 
+@if (Route::has('forgetPass'))
+    <a href="{{ route('password.request') }}" class="small text">Forgot password ?</a>
+@endif
 
-                                            @if (Route::has('forgetPass'))
-                                            <a href="{{ route('password.request') }}" class="small text">Forgot password ?</a> @endif
-
-                                            <button id="login_btn" type="submit" style="width: 99%;" class="d-block mx-auto my-3 pt-2 proceed_btn text-light " disabled> Proceed </button>
-                                        </form>
+<button id="login_btn" type="submit" style="width: 99%;" class="d-block mx-auto my-3 pt-2 proceed_btn text-light">Proceed</button>
+</form>
 
                                     </div>   
 
@@ -1874,6 +1871,7 @@
 
 
 
+
         
 
 //For Register
@@ -1893,6 +1891,22 @@
 <script src="sddjs/map.js"> </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnKB7p3g8iG6IGE9nXX4PqlZ6EPHNUo3w&callback=myMap" async ></script>
  GOOGLE MAP -->
+
+<script>
+  const toggleButton = document.getElementById('toggleButton');
+  const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+  const closeButton = document.getElementById('closeButton');
+
+  toggleButton.addEventListener('click', () => {
+    offcanvasNavbar.classList.toggle('hidden');
+  });
+
+  closeButton.addEventListener('click', () => {
+    offcanvasNavbar.classList.add('hidden');
+  });
+</script>
+
+
 
 
 <script type="text/javascript">

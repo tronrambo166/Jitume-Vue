@@ -12444,6 +12444,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -20334,10 +20337,10 @@ defineJQueryPlugin(Toast);
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/hooper/dist/hooper.css":
-/*!*****************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/hooper/dist/hooper.css ***!
-  \*****************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-10[0].rules[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-10[0].rules[0].use[2]!./node_modules/hooper/dist/hooper.css":
+/*!*******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-10[0].rules[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-10[0].rules[0].use[2]!./node_modules/hooper/dist/hooper.css ***!
+  \*******************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -38830,6 +38833,19 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
   \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./resources/css/app.css":
+/*!*******************************!*\
+  !*** ./resources/css/app.css ***!
+  \*******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -60636,7 +60652,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_hooper_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./hooper.css */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/hooper/dist/hooper.css");
+/* harmony import */ var _css_loader_dist_cjs_js_clonedRuleSet_10_0_rules_0_use_1_postcss_loader_dist_cjs_js_clonedRuleSet_10_0_rules_0_use_2_hooper_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../css-loader/dist/cjs.js??clonedRuleSet-10[0].rules[0].use[1]!../../postcss-loader/dist/cjs.js??clonedRuleSet-10[0].rules[0].use[2]!./hooper.css */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-10[0].rules[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-10[0].rules[0].use[2]!./node_modules/hooper/dist/hooper.css");
 
             
 
@@ -60645,11 +60661,11 @@ var options = {};
 options.insert = "head";
 options.singleton = false;
 
-var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_hooper_css__WEBPACK_IMPORTED_MODULE_1__["default"], options);
+var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_css_loader_dist_cjs_js_clonedRuleSet_10_0_rules_0_use_1_postcss_loader_dist_cjs_js_clonedRuleSet_10_0_rules_0_use_2_hooper_css__WEBPACK_IMPORTED_MODULE_1__["default"], options);
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_hooper_css__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_css_loader_dist_cjs_js_clonedRuleSet_10_0_rules_0_use_1_postcss_loader_dist_cjs_js_clonedRuleSet_10_0_rules_0_use_2_hooper_css__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
@@ -72925,10 +72941,7 @@ var staticRenderFns = [
                   "section",
                   {
                     staticClass: "text-center py-5",
-                    staticStyle: {
-                      "background-color": "#f8f9fa",
-                      "margin-top": "30px",
-                    },
+                    staticStyle: { "background-color": "#f8f9fa" },
                   },
                   [
                     _c("div", { staticClass: "container-fluid" }, [
@@ -77980,7 +77993,7 @@ var render = function () {
             "form",
             {
               staticClass:
-                "container w-100 mb-5 pb-5 d-flex justify-content-center",
+                "container w-100 mb-5 pb-5 d-flex justify-content-center align-items-center",
               attrs: { id: "form", method: "post" },
               on: {
                 submit: function ($event) {
@@ -77989,7 +78002,7 @@ var render = function () {
                 },
               },
             },
-            [_vm._m(1), _vm._v(" "), _vm._m(2)]
+            [_vm._m(1)]
           ),
         ]
       ),
@@ -78148,7 +78161,8 @@ var staticRenderFns = [
         _c(
           "div",
           {
-            staticClass: "px-2 py-2 bg-white col-12 col-sm-4",
+            staticClass:
+              "px-2 py-2 bg-white col-12 col-sm-4 d-flex align-items-center justify-content-center",
             staticStyle: { "border-radius": "35px 0 0 35px" },
           },
           [
@@ -78164,46 +78178,6 @@ var staticRenderFns = [
           ]
         ),
         _vm._v(" "),
-        _c("div", { staticClass: "px-2 py-2 bg-white col-12 col-sm-4" }, [
-          _c("i", {
-            staticClass: "d-inline fa fa-map-marker",
-            staticStyle: { width: "6%" },
-          }),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "border-none bar bg-white form-control d-inline px-1",
-            staticStyle: { width: "94%", border: "none", height: "42px" },
-            attrs: {
-              id: "searchbox",
-              onkeyup: "suggest(this.value);",
-              type: "text",
-              name: "search",
-              value: "",
-              placeholder: "Location",
-            },
-          }),
-          _vm._v(" "),
-          _c("input", {
-            attrs: {
-              type: "text",
-              name: "lat",
-              id: "lat",
-              hidden: "",
-              value: "",
-            },
-          }),
-          _vm._v(" "),
-          _c("input", {
-            attrs: {
-              type: "text",
-              name: "lng",
-              id: "lng",
-              hidden: "",
-              value: "",
-            },
-          }),
-        ]),
-        _vm._v(" "),
         _c(
           "div",
           {
@@ -78211,102 +78185,132 @@ var staticRenderFns = [
               "px-2 py-2 bg-white col-12 col-sm-4 d-flex align-items-center",
           },
           [
-            _c("div", { staticClass: "w-100 row" }, [
-              _c("div", { staticClass: "dropdown col-8" }, [
-                _c(
-                  "select",
-                  {
-                    staticClass: "py-2",
-                    attrs: { id: "category", name: "category" },
-                  },
-                  [
+            _c("i", {
+              staticClass: "d-inline fa fa-map-marker",
+              staticStyle: { width: "6%" },
+            }),
+            _vm._v(" "),
+            _c("input", {
+              staticClass:
+                "border-none bar bg-white form-control d-inline px-1",
+              staticStyle: { width: "94%", border: "none", height: "42px" },
+              attrs: {
+                id: "searchbox",
+                onkeyup: "suggest(this.value);",
+                type: "text",
+                name: "search",
+                value: "",
+                placeholder: "Location",
+              },
+            }),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "px-2 py-2 bg-white col-12 col-sm-4 d-flex align-items-center",
+              },
+              [
+                _c("div", { staticClass: "w-100 row" }, [
+                  _c("div", { staticClass: "dropdown col-8" }, [
                     _c(
-                      "option",
+                      "select",
                       {
-                        staticClass: "form-control",
-                        attrs: { hidden: "", value: "" },
-                      },
-                      [_vm._v("Services")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "option",
-                      {
-                        staticClass: "form-control",
-                        attrs: { value: "Business Planning" },
-                      },
-                      [_vm._v("Business Planning")]
-                    ),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "IT" } }, [_vm._v("IT")]),
-                    _vm._v(" "),
-                    _c(
-                      "option",
-                      { attrs: { value: "Legal Project Management" } },
-                      [_vm._v("Legal Project Management")]
-                    ),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "Branding and Design" } }, [
-                      _vm._v("Branding and Design "),
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "Auto" } }, [
-                      _vm._v("Auto"),
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "option",
-                      {
-                        attrs: { value: "Finance, Accounting & Tax Marketing" },
+                        staticClass: "py-2",
+                        attrs: { id: "category", name: "category" },
                       },
                       [
-                        _vm._v(
-                          "Finance, Accounting &\n                                    Tax Marketing"
+                        _c(
+                          "option",
+                          {
+                            staticClass: "form-control",
+                            attrs: { hidden: "", value: "" },
+                          },
+                          [_vm._v("Services")]
                         ),
+                        _vm._v(" "),
+                        _c(
+                          "option",
+                          {
+                            staticClass: "form-control",
+                            attrs: { value: "Business Planning" },
+                          },
+                          [_vm._v("Business Planning")]
+                        ),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "IT" } }, [
+                          _vm._v("IT"),
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "option",
+                          { attrs: { value: "Legal Project Management" } },
+                          [_vm._v("Legal Project Management")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "option",
+                          { attrs: { value: "Branding and Design" } },
+                          [_vm._v("Branding and Design ")]
+                        ),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "Auto" } }, [
+                          _vm._v("Auto"),
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "option",
+                          {
+                            attrs: {
+                              value: "Finance, Accounting & Tax Marketing",
+                            },
+                          },
+                          [
+                            _vm._v(
+                              "Finance, Accounting &\n                                        Tax Marketing"
+                            ),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "Tax Marketing" } }, [
+                          _vm._v("Tax Marketing"),
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "Public Relations" } }, [
+                          _vm._v("Public Relations"),
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "Other" } }, [
+                          _vm._v("Other"),
+                        ]),
                       ]
                     ),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "Tax Marketing" } }, [
-                      _vm._v("Tax Marketing"),
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "Public Relations" } }, [
-                      _vm._v("Public Relations"),
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "Other" } }, [
-                      _vm._v("Other"),
-                    ]),
-                  ]
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "bg-white px-1 px-md-2 col-4" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "searchListing py-1 w-100",
-                    attrs: { type: "submit" },
-                  },
-                  [_vm._v("Search")]
-                ),
-              ]),
-            ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "bg-white px-1 px-md-2 col-4" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "searchListing py-1 w-100",
+                        attrs: { type: "submit" },
+                      },
+                      [_vm._v("Search")]
+                    ),
+                  ]),
+                ]),
+              ]
+            ),
           ]
         ),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", {
+            staticClass: "text-left search_resultsS",
+            attrs: { id: "result_list" },
+          }),
+        ]),
       ]
     )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", {
-        staticClass: "text-left search_resultsS",
-        attrs: { id: "result_list" },
-      }),
-    ])
   },
 ]
 render._withStripped = true
@@ -92367,7 +92371,8 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
 /******/ 	__webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/js/app.js")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/sass/app.scss")))
+/******/ 	__webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/sass/app.scss")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/css/app.css")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()

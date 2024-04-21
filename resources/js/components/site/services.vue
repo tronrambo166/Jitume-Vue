@@ -3,39 +3,40 @@
 
 
 
-    <!-- PAGE CONTENT -->
-    <div class="row  mx-auto text-center" style="overflow:hidden;">
+ <!-- PAGE CONTENT -->
+<div class="row mx-auto text-center " style="overflow:hidden;">
 
-        <div class="container-xl service_img mx-auto col-sm-12 text-center p-md-5" style="min-height: 600px;">
+    <div class="container-xl service_img mx-auto col-sm-12 text-center p-md-5" style="min-height: 600px;">
 
-            <div class="py-5"></div>
-            <div class=" mt-5 mb-5 pb-2 mx-auto text-center">
-                <h2 style="font-size: 60px; font-weight: bold; font-style: normal; text-shadow: 3px 3px #2a2a2c ; "
-                    class="text-light ">
-                    Looking for...
-                </h2>
-            </div>
+        <div class="py-5"></div>
+        <div class="mt-5 mb-5 pb-2 mx-auto text-center">
+            <h2 style="font-size: 60px; font-weight: bold; font-style: normal; text-shadow: 3px 3px #2a2a2c;"
+                class="text-light">
+                Looking for...
+            </h2>
+        </div>
 
-            <form id="form" @submit.prevent="search();" class="container w-100 mb-5 pb-5 d-flex justify-content-center"
-                method="post">
+        <form id="form" @submit.prevent="search();"
+            class="container w-100 mb-5 pb-5 d-flex justify-content-center align-items-center" method="post">
 
-                <div class="w-100 text-center py-1 rounded text-center row justify-content-between bg-white mr-2 mr-sm-0">
+            <div
+                class="w-100 text-center py-1 rounded text-center row justify-content-between bg-white mr-2 mr-sm-0">
 
-                    <div style="border-radius: 35px 0 0 35px;" class="px-2 py-2 bg-white col-12 col-sm-4">
-                        <input style="border: none;height: 42px;" class="bar bg-white form-control d-inline" type="text"
-                            name="listing_name" placeholder="What are you looking for?">
-                    </div>
+                <div style="border-radius: 35px 0 0 35px;"
+                    class="px-2 py-2 bg-white col-12 col-sm-4 d-flex align-items-center justify-content-center">
+                    <input style="border: none;height: 42px;" class="bar bg-white form-control d-inline" type="text"
+                        name="listing_name" placeholder="What are you looking for?">
+                </div>
 
-                    <div style="" class="px-2 py-2 bg-white col-12 col-sm-4">
-                        <i style="width: 6%;" class="d-inline fa fa-map-marker"></i>
-                        <input id="searchbox" onkeyup="suggest(this.value);" style="width: 94%;border: none;height: 42px;"
-                            class="border-none bar bg-white form-control d-inline px-1" type="text" name="search" value=""
-                            placeholder="Location">
+                <div class="px-2 py-2 bg-white col-12 col-sm-4 d-flex align-items-center">
+                    <i style="width: 6%;" class="d-inline fa fa-map-marker"></i>
+                    <input id="searchbox" onkeyup="suggest(this.value);"
+                        style="width: 94%;border: none;height: 42px;" class="border-none bar bg-white form-control d-inline px-1"
+                        type="text" name="search" value="" placeholder="Location">
 
-                        <input type="text" name="lat" id="lat" hidden value="">
-                        <input type="text" name="lng" id="lng" hidden value="">
+            
+            
 
-                    </div>
 
                     <div class="px-2 py-2 bg-white col-12 col-sm-4 d-flex align-items-center">
 
@@ -77,6 +78,8 @@
                     </div>
                 </div>
 
+
+</div>
             </form>
         </div>
 
