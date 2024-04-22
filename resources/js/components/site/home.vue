@@ -1,10 +1,13 @@
 <template>
   <div class="container-fluid px-0" style="overflow:hidden;">
-    <div class="home_bg" style="">
+    <div class="bg-white" style="">
 
 
 
-  <div class="w-full bg-light">
+  <div class="w-full ">
+
+
+    
 <!--hero section-->
 <div class="bg-white relative">
     <!-- Vector on the left -->
@@ -17,7 +20,7 @@
         <div class="flex flex-col gap-6 md:flex-row items-center justify-center space-y-8 md:space-y-0">
             <!-- Text on the left -->
             <div class="md:w-1/2">
-                <h2 class="text-lg text-gray-800 text-gray-500 font-bold mb-4 py-[18px]">Welcome to Jitume</h2>
+                <h2 class="text-lg  text-gray-500 font-bold mb-4 py-[18px]">Welcome to Jitume</h2>
                 <h3 class="text-[28px] text-black font-black ">Real business,real solutions,<span class="text-green-800 text-[30px]">realchange</span></h3>
                 <h3 class="font-bold py-[20px]">Invest in a business you believe in with as little as $100</h3>
 
@@ -33,8 +36,98 @@
             </div>
         </div>
     </div>
+
+
+
+  <!-- HOW IT WORKS -->
+
+  <div class="  border border-bottom-dark bg-white"></div>
+
+<div class="container-fluid row mx-auto my-5 bg-white pt-3">
+
+
+  <div class="elementor-top-column elementor-element elementor-element-ce6f4c7 flex flex-col items-center" data-id="ce6f4c7" data-element_type="column">
+  <div class="elementor-column-wrap elementor-element-populated flex flex-col items-center">
+
+    <div class="elementor-widget-wrap row flex flex-col items-center">
+
+      <div class="elementor-element elementor-element-ccc6233 elementor-widget elementor-widget-listeo-headline flex flex-col items-center" data-id="ccc6233" data-element_type="widget" data-widget_type="listeo-headline.default">
+
+        <div class="text-dark mb-md-3" style="margin-bottom: 30px;">
+          <h3 style="text-align:center;" class="pb-2 secondary_heading h2 headline headline-aligned-to-left headline-box py-4"> How Jitume Works? </h3>
+        </div>
+
+      </div>
+
+      <div class="elementor-element elementor-element-5df092b elementor-widget elementor-widget-listeo-iconbox" data-id="5df092b" data-element_type="widget" data-widget_type="listeo-iconbox.default">
+        <div class="elementor-widget-container">
+
+          <div class="icon-box-v3 row mx-auto flex justify-center gap-6 my-6">
+
+            <div class="ibv3-icon col-sm-2 text-center">
+              <img width="75px" height="75px" src="images/randomIcons/loc.png">
+              <p class="text-center mt-3 small">Enter Your Location</p>
+            </div>
+
+            <div class="ibv3-icon col-sm-2 text-center">
+              <img width="75px" height="75px" src="images/randomIcons/cat.png">
+              <p class="text-center mt-3 small">Choose a Category</p>
+            </div>
+
+            <div class="ibv3-icon col-sm-2 text-center">
+              <img width="75px" height="75px" src="images/randomIcons/results.png">
+              <p class="text-center mt-3 small">Get Results in Your Location</p>
+            </div>
+
+            <div class="ibv3-icon col-sm-2 text-center">
+              <img width="75px" height="75px" src="images/randomIcons/choose.png">
+              <p class="text-center mt-3 small">Choose Your Business</p>
+            </div>
+
+            <div class="ibv3-icon col-sm-2 text-center">
+              <img width="75px" height="75px" src="images/randomIcons/grow.png">
+              <p class="text-center mt-3 small">Grow Your Business Together</p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
 </div>
 
+  <!-- <div class="row w-75 mx-auto my-5  pl-md-5">
+    <div class="text-dark mb-md-3">
+      <h2 style="text-align:center;" class="secondary_heading h2 headline  headline-aligned-to-left  headline-box pb-2">
+        The Show </h2>
+    </div>
+    <video poster="images/video_preview.png" style="" class="video_player elementor-video" src="videos/Jitume.mp4"
+      controls="" controlslist="nodownload"></video>
+  </div> -->
+
+</div>
+<!-- How it works -->
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+<div class="py-5 d-md-flex  border-bottom-dark"></div>
+<!-- <div class="py-5 d-md-flex  border border-bottom-dark"></div> -->
+
+
+</div>
 
   <div class="container">
    
@@ -346,167 +439,7 @@
 
     </div>-->
 
-    <!-- HOW IT WORKS -->
-
-    <div class=" mt-4 border border-bottom-dark bg-white"></div>
-
-    <div class="container-xl row mx-auto my-5 bg-white pt-3">
-
-
-      <div class="elementor-top-column elementor-element elementor-element-ce6f4c7" data-id="ce6f4c7"
-        data-element_type="column">
-
-        <div class=" elementor-column-wrap elementor-element-populated">
-
-          <div class="elementor-widget-wrap row">
-
-            <div class=" elementor-element elementor-element-ccc6233 elementor-widget elementor-widget-listeo-headline"
-              data-id="ccc6233" data-element_type="widget" data-widget_type="listeo-headline.default">
-
-              <div class="text-dark mb-md-3" style="margin-bottom: 30px;">
-                <h3 style="text-align:center;"
-                  class="pb-2 secondary_heading h2 headline  headline-aligned-to-left  headline-box "> How Jitume Works?
-                </h3>
-              </div>
-
-            </div>
-
-            <div class="elementor-element elementor-element-5df092b elementor-widget elementor-widget-listeo-iconbox"
-              data-id="5df092b" data-element_type="widget" data-widget_type="listeo-iconbox.default">
-              <div class="elementor-widget-container">
-
-                <div class="icon-box-v3 row mx-auto">
-
-                  <div class="col-sm-1"></div>
-
-                  <div class="ibv3-icon col-sm-2 text-center">
-                    <img width="75px" height="75px" src="images/randomIcons/loc.png">
-                    <p class="text-center mt-3 small">Enter Your Location</p>
-                  </div>
-
-
-                  <div class="ibv3-icon col-sm-2 text-center">
-                    <img width="75px" height="75px" src="images/randomIcons/cat.png">
-                    <p class="text-center mt-3 small">Choose a Category</p>
-                  </div>
-
-                  <div class="ibv3-icon col-sm-2 text-center">
-                    <img width="75px" height="75px" src="images/randomIcons/results.png">
-                    <p class="text-center mt-3 small">Get Results in Your Yocation</p>
-                  </div>
-
-                  <div class="ibv3-icon col-sm-2 text-center">
-                    <img width="75px" height="75px" src="images/randomIcons/choose.png">
-                    <p class="text-center mt-3 small">Choose Your Business</p>
-                  </div>
-
-                  <div class="ibv3-icon col-sm-2 text-center">
-                    <img width="75px" height="75px" src="images/randomIcons/grow.png">
-                    <p class="text-center mt-3 small">Grow Your Business Together</p>
-                  </div>
-
-                  <div class="col-sm-1"></div>
-
-                </div>
-
-              </div>
-            </div>
-
-
-          </div>
-
-
-
-
-
- 
-
-
-<!-- <section class="bg-light py-5">
-  <div class="container">
-    <h2 class="text-center mb-5">Unlock Your Organization's Impact Potential</h2>
-    <div class="row">
-      <div class="col-md-6">
-        <h3>Jitume Partnerships</h3>
-        <p>Jitume partners with businesses and organizations to make an even greater impact on communities around the world. By partnering with Jitume, you can create a more connected and efficient business ecosystem, empowering communities and driving growth.</p>
-        <p><strong>Join Jitume today to unlock your organization's impact potential!</strong></p>
-      </div>
-      <div class="col-md-6">
-        <img src="https://img.freepik.com/premium-photo/symbol-business-goal-business-target-icon-goal-achievement-symbol-business-vision-corporate-o_980716-77129.jpg?w=740" alt="Partner with Jitume" class="img-fluid rounded">
-      </div>
-    </div>
-  </div>
-</section> -->
-
-
-<!-- 
-<section class="bg-dark text-white py-5" style="margin-right: 40px;">
-  <div class="container d-flex-col justify-content-center align-items center">
-    <h2 class="text-center mb-5 text-success">Testimonials</h2>
-    <div class="row py-4">
-      <div class="col-md-4">
-        <div class="text-center">
-          <h4>Maria Rodriguez</h4>
-          <p>"Working with Jitume has been a game-changer for my business. The platform helped me connect with new customers and grow my revenue."</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="text-center">
-          <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fG1hbiUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D" alt="User 2" class="rounded-circle mb-3" style="width: 100px;">
-          <h4>Jamal Washington</h4>
-          <p>"I've been using Jitume for a while now, and I'm impressed by the quality of service and the range of businesses available. Highly recommended!"</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="text-center">
-          <h4>Ling Wong</h4>
-          <p>"Jitume has made it easy for me to find local businesses that meet my needs. I love supporting my community through this platform."</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section> -->
-
-
-
-<!-- <section class="text-center py-5" style="background-color: #f8f9fa; ">
-    <div class="container-fluid">
-        <h2 class="display-4 mb-4">Grow Your Business with Jitume</h2>
-        <p class="lead mb-4">Jitume offers innovative solutions to help your business thrive. Join us today and experience the difference.</p>
-        <a href="#" class="btn btn-success btn-lg">Start Growing</a>
-    </div>
-</section> -->
-
-
-
-
-  </div>
-
-
-      </div>
-
-
-
-
-      <!-- <div class="row w-75 mx-auto my-5  pl-md-5">
-        <div class="text-dark mb-md-3">
-          <h2 style="text-align:center;" class="secondary_heading h2 headline  headline-aligned-to-left  headline-box pb-2">
-            The Show </h2>
-        </div>
-        <video poster="images/video_preview.png" style="" class="video_player elementor-video" src="videos/Jitume.mp4"
-          controls="" controlslist="nodownload"></video>
-      </div> -->
-
-    </div>
-    <!-- How it works -->
-
-
-
-    <div class="py-5 d-md-flex  border-bottom-dark"></div>
-    <div class="py-5 d-md-flex  border border-bottom-dark"></div>
-
-
-  </div>
+  
 </template>
 
 
