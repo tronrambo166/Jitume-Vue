@@ -6,7 +6,7 @@
 
   <div class="w-full bg-light">
 <!--hero section-->
-<div class="bg-gray-100 relative">
+<div class="bg-white relative">
     <!-- Vector on the left -->
     <img src="/images/left vector.png" class="absolute left-0 top-1/2 transform -translate-y-1/2 z-90" style="height: 100px; width: auto;">
 
@@ -38,61 +38,7 @@
 
   <div class="container">
    
-    <div class="row justify-content-center">
-    <div class="col-lg-8 col-md-10 text-center">
-        
-
-        <form id="form" @submit.prevent="search();" class="d-flex flex-wrap justify-content-center" method="post">
-
-            <div class="input-group col-lg-5 col-md-6 my-2">
-                <input style="border-radius: 35px 0 0 35px;" class="form-control border-right-0" type="text" name="listing_name" placeholder="What are you looking for?">
-                <div class="input-group-append">
-                    <span class="input-group-text bg-white border-left-0"><i class="fa fa-map-marker"></i></span>
-                </div>
-            </div>
-
-            <div class="input-group col-lg-4 col-md-6 my-2">
-                <input id="searchbox" onkeyup="suggest(this.value);" class="form-control" type="text" name="search" value="" placeholder="Location">
-            </div>
-
-            <input type="text" name="lat" id="lat" hidden value="">
-            <input type="text" name="lng" id="lng" hidden value="">
-
-            <div class="col-lg-3 col-md-6 my-2">
-                <div class="dropdown">
-                    <select id="category" name="category" class="form-control">
-                        <option value="">Category</option>
-                        <option value="Agriculture">Agriculture</option>
-                        <option value="Arts / Culture">Arts/Culture</option>
-                        <option value="Auto">Auto</option>
-                        <option value="Sports/Gaming">Sports/Gaming</option>
-                        <option value="Real State">Real State</option>
-                        <option value="Food">Food</option>
-                        <option value="Legal">Legal</option>
-                        <option value="Security">Security</option>
-                        <option value="Media / Internet">Media/Internet</option>
-                        <option value="Fashion">Fashion</option>
-                        <option value="Technology / Communications">Technology/Communications</option>
-                        <option value="Retail">Retail</option>
-                        <option value="Finance/Accounting">Finance/Accounting</option>
-                        <option value="Pets">Pets</option>
-                        <option value="Domestic (Home Help etc)">Domestic (Home Help etc)</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="col-md-6 my-2">
-                <button class="btn btn-success w-100" type="submit">Search</button>
-            </div>
-
-        </form>
-
-        <div class="row">
-            <div id="result_list" class="col-md-12 text-left search_results"></div>
-        </div>
-    </div>
-</div>
+    
 
 
 
@@ -102,13 +48,10 @@
 
 
   <div class="row justify-content-center">
-
+           <h1>hello</h1>
     <div class="col-lg-8 col-md-10 text-center">
 
-      <div class="my-4">
-        <h4 class="display-4">Invest in Agriculture | Sports/Gaming | Real State | Entertainment | Auto | Finance/Accounting Security | Pets | Domestic Help | Other .........</h4>
-        <h4 class="h3 text-success py-3">Your platform to invest in local businesses</h4>
-      </div>
+      
 
       <form id="form" @submit.prevent="search();" class="d-flex flex-wrap justify-content-center" method="post">
 
@@ -150,10 +93,22 @@
           </div>
         </div>
 
-        <div class="col-md-6 my-2">
-          <button class="btn btn-success w-100" type="submit">Search</button>
-        </div>
-
+       
+        <div class="my-5 py-0">
+         
+  <ul class="nav justify-content-center mb-34">
+    <li class="nav-item">
+      <router-link class="nav-link btn btn-success text-light mx-2" to="category/Agriculture">
+        <i class="bi bi-bag"></i> Agriculture
+      </router-link>
+    </li>
+    <li class="nav-item">
+      <router-link class="nav-link btn btn-dark mx-2 text-light" to="category/Renewable-Energy">
+        <i class="bi bi-lightning-charge"></i> Renewable Energy
+      </router-link>
+    </li>
+  </ul>
+</div>
       </form>
 
       <div class="row">
@@ -165,10 +120,11 @@
   </div>
 </div>
 
+
 </div>
 
 
-      <div class="mt-4">
+      <!-- <div class="mt-4">
 
   <div class="text-center pb-0">
 
@@ -194,22 +150,9 @@
 
   </div>
 
-</div>
+</div> -->
 
-<div class="my-5 py-0">
-  <ul class="nav justify-content-center">
-    <li class="nav-item">
-      <router-link class="nav-link btn btn-success text-light mx-2" to="category/Agriculture">
-        <i class="bi bi-bag"></i> Agriculture
-      </router-link>
-    </li>
-    <li class="nav-item">
-      <router-link class="nav-link btn btn-dark mx-2 text-light" to="category/Renewable-Energy">
-        <i class="bi bi-lightning-charge"></i> Renewable Energy
-      </router-link>
-    </li>
-  </ul>
-</div>
+
 
 
 
@@ -476,26 +419,10 @@
 
 
 
-  <section id="about-us" class="py-5  pt-3" style="margin-top: 40px;">
-
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <img src="https://img.freepik.com/free-photo/low-angle-man-with-sunglasses-taking-selfie_23-2148666533.jpg?t=st=1713210483~exp=1713214083~hmac=0bb6bbb572bb457373fff1c7deabfad09fcfe6e57920ec0b1e25c6dbb8f8aa2d&w=996" class="img-fluid" alt="About Us">
-      </div>
-      <div class="col-md-6 mt-4 mt-md-0">
-        <h2>About Jitume</h2>
-        <p>Jitume is more than just a business directory. We're a community-driven platform that connects local businesses with customers in a meaningful way. Our mission is to empower businesses and consumers alike by providing a platform that fosters growth, innovation, and collaboration.</p>
-        <p>With Jitume, you can discover new businesses, read reviews, and find the perfect services for your needs. Whether you're a business owner looking to expand your reach or a customer seeking local services, Jitume is here to help you connect with your community.</p>
-        <div>      <button class="btn btn-danger btn-rounded px-5 my-4">Explore</button></div>
-      </div>
-
-    </div>
-  </div>
-</section>
+ 
 
 
-<section class="bg-light py-5">
+<!-- <section class="bg-light py-5">
   <div class="container">
     <h2 class="text-center mb-5">Unlock Your Organization's Impact Potential</h2>
     <div class="row">
@@ -509,10 +436,10 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
 
-
+<!-- 
 <section class="bg-dark text-white py-5" style="margin-right: 40px;">
   <div class="container d-flex-col justify-content-center align-items center">
     <h2 class="text-center mb-5 text-success">Testimonials</h2>
@@ -538,30 +465,18 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
 
 
-<section class="text-center py-5" style="background-color: #f8f9fa; ">
+<!-- <section class="text-center py-5" style="background-color: #f8f9fa; ">
     <div class="container-fluid">
         <h2 class="display-4 mb-4">Grow Your Business with Jitume</h2>
         <p class="lead mb-4">Jitume offers innovative solutions to help your business thrive. Join us today and experience the difference.</p>
         <a href="#" class="btn btn-success btn-lg">Start Growing</a>
     </div>
-</section>
+</section> -->
 
-<section class="bg-light py-5"style="margin-top:30px;">
-  <div class="container-fluid text-center">
-    <h2>Subscribe to Our Newsletter</h2>
-    <p class="text-center">Get the latest updates and offers delivered straight to your inbox.</p>
-    <form class="mt-4">
-      <div class="input-group mx-auto" style="max-width: 400px;">
-        <input type="email" class="form-control" placeholder="Your Email Address" aria-label="Your Email Address" aria-describedby="button-addon2">
-        <button class="btn btn-primary" type="button" id="button-addon2">Subscribe</button>
-      </div>
-    </form>
-  </div>
-</section>
 
 
 

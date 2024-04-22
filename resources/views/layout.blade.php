@@ -77,10 +77,10 @@
 
 
 
-<div class="bg-slate-100 ">
+<div class=" ">
 
 
-  <nav class="container px-6 py-4 mx-auto flex justify-between items-center ">
+  <nav class="container px-6 py-4 mx-auto flex justify-between items-center bg-white ">
     <!-- Logo -->
     <div class="flex items-center ">
       <router-link to="/" class="text-xl font-bold text-gray-800 md:text-2xl hover:text-blue-400">

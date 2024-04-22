@@ -8409,91 +8409,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -72188,6 +72103,8 @@ var render = function () {
           _vm._v(" "),
           _c("div", { staticClass: "container" }, [
             _c("div", { staticClass: "row justify-content-center" }, [
+              _c("h1", [_vm._v("hello")]),
+              _vm._v(" "),
               _c("div", { staticClass: "col-lg-8 col-md-10 text-center" }, [
                 _c(
                   "form",
@@ -72228,364 +72145,68 @@ var render = function () {
                     _vm._v(" "),
                     _vm._m(3),
                     _vm._v(" "),
-                    _vm._m(4),
+                    _c("div", { staticClass: "my-5 py-0" }, [
+                      _c(
+                        "ul",
+                        { staticClass: "nav justify-content-center mb-34" },
+                        [
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass:
+                                    "nav-link btn btn-success text-light mx-2",
+                                  attrs: { to: "category/Agriculture" },
+                                },
+                                [
+                                  _c("i", { staticClass: "bi bi-bag" }),
+                                  _vm._v(" Agriculture\n      "),
+                                ]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass:
+                                    "nav-link btn btn-dark mx-2 text-light",
+                                  attrs: { to: "category/Renewable-Energy" },
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "bi bi-lightning-charge",
+                                  }),
+                                  _vm._v(" Renewable Energy\n      "),
+                                ]
+                              ),
+                            ],
+                            1
+                          ),
+                        ]
+                      ),
+                    ]),
                   ]
                 ),
                 _vm._v(" "),
-                _vm._m(5),
+                _vm._m(4),
               ]),
             ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "row justify-content-center" }, [
-              _c("div", { staticClass: "col-lg-8 col-md-10 text-center" }, [
-                _vm._m(6),
-                _vm._v(" "),
-                _c(
-                  "form",
-                  {
-                    staticClass: "d-flex flex-wrap justify-content-center",
-                    attrs: { id: "form", method: "post" },
-                    on: {
-                      submit: function ($event) {
-                        $event.preventDefault()
-                        return _vm.search()
-                      },
-                    },
-                  },
-                  [
-                    _vm._m(7),
-                    _vm._v(" "),
-                    _vm._m(8),
-                    _vm._v(" "),
-                    _c("input", {
-                      attrs: {
-                        type: "text",
-                        name: "lat",
-                        id: "lat",
-                        hidden: "",
-                        value: "",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _c("input", {
-                      attrs: {
-                        type: "text",
-                        name: "lng",
-                        id: "lng",
-                        hidden: "",
-                        value: "",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _vm._m(9),
-                    _vm._v(" "),
-                    _vm._m(10),
-                  ]
-                ),
-                _vm._v(" "),
-                _vm._m(11),
-              ]),
-            ]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "mt-4" }, [
-          _c("div", { staticClass: "text-center pb-0" }, [
-            _c(
-              "ul",
-              {
-                staticClass:
-                  "d-flex list-unstyled justify-content-center text-success mx-4 mx-lg-4 py-0 my-0",
-              },
-              [
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c(
-                      "router-link",
-                      { attrs: { to: "category/Arts-Culture" } },
-                      [
-                        _c("i", {
-                          staticClass: "fas fa-paint-brush",
-                          attrs: { title: "Arts/Culture" },
-                        }),
-                      ]
-                    ),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c("router-link", { attrs: { to: "category/Auto" } }, [
-                      _c("i", {
-                        staticClass: "fas fa-car",
-                        attrs: { title: "Auto" },
-                      }),
-                    ]),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c(
-                      "router-link",
-                      { attrs: { to: "category/Domestic_Home" } },
-                      [
-                        _c("i", {
-                          staticClass: "fas fa-home",
-                          attrs: { title: "Domestic (HomeHelp etc)" },
-                        }),
-                      ]
-                    ),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c("router-link", { attrs: { to: "category/Fashion" } }, [
-                      _c("i", {
-                        staticClass: "fas fa-tshirt",
-                        attrs: { title: "Fashion" },
-                      }),
-                    ]),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c(
-                      "router-link",
-                      { attrs: { to: "category/Finance-Accounting" } },
-                      [
-                        _c("i", {
-                          staticClass: "fas fa-money-bill-wave",
-                          attrs: { title: "Finance/Accounting" },
-                        }),
-                      ]
-                    ),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c("router-link", { attrs: { to: "category/Food" } }, [
-                      _c("i", {
-                        staticClass: "fas fa-utensils",
-                        attrs: { title: "Food" },
-                      }),
-                    ]),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c("router-link", { attrs: { to: "category/Legal" } }, [
-                      _c("i", {
-                        staticClass: "fas fa-balance-scale",
-                        attrs: { title: "Legal" },
-                      }),
-                    ]),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c(
-                      "router-link",
-                      { attrs: { to: "category/Media-Internet" } },
-                      [
-                        _c("i", {
-                          staticClass: "fas fa-globe",
-                          attrs: { title: "Media/Internet" },
-                        }),
-                      ]
-                    ),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c("router-link", { attrs: { to: "category/Pets" } }, [
-                      _c("i", {
-                        staticClass: "fas fa-paw",
-                        attrs: { title: "Pets" },
-                      }),
-                    ]),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c("router-link", { attrs: { to: "category/Retail" } }, [
-                      _c("i", {
-                        staticClass: "fas fa-shopping-bag",
-                        attrs: { title: "Retail" },
-                      }),
-                    ]),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c(
-                      "router-link",
-                      { attrs: { to: "category/Real State" } },
-                      [
-                        _c("i", {
-                          staticClass: "fas fa-home",
-                          attrs: { title: "Real Estate" },
-                        }),
-                      ]
-                    ),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c("router-link", { attrs: { to: "category/Security" } }, [
-                      _c("i", {
-                        staticClass: "fas fa-shield-alt",
-                        attrs: { title: "Security" },
-                      }),
-                    ]),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c(
-                      "router-link",
-                      { attrs: { to: "category/Sports-Gaming" } },
-                      [
-                        _c("i", {
-                          staticClass: "fas fa-gamepad",
-                          attrs: { title: "Sports/Gaming" },
-                        }),
-                      ]
-                    ),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c(
-                      "router-link",
-                      { attrs: { to: "category/Technology-Communications" } },
-                      [
-                        _c("i", {
-                          staticClass: "fas fa-mobile-alt",
-                          attrs: { title: "Technology/Communications" },
-                        }),
-                      ]
-                    ),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c("router-link", { attrs: { to: "category/Other" } }, [
-                      _c("i", {
-                        staticClass: "fas fa-question-circle",
-                        attrs: { title: "Other" },
-                      }),
-                    ]),
-                  ],
-                  1
-                ),
-              ]
-            ),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "my-5 py-0" }, [
-          _c("ul", { staticClass: "nav justify-content-center" }, [
-            _c(
-              "li",
-              { staticClass: "nav-item" },
-              [
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "nav-link btn btn-success text-light mx-2",
-                    attrs: { to: "category/Agriculture" },
-                  },
-                  [
-                    _c("i", { staticClass: "bi bi-bag" }),
-                    _vm._v(" Agriculture\n      "),
-                  ]
-                ),
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "li",
-              { staticClass: "nav-item" },
-              [
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "nav-link btn btn-dark mx-2 text-light",
-                    attrs: { to: "category/Renewable-Energy" },
-                  },
-                  [
-                    _c("i", { staticClass: "bi bi-lightning-charge" }),
-                    _vm._v(" Renewable Energy\n      "),
-                  ]
-                ),
-              ],
-              1
-            ),
           ]),
         ]),
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "mt-4 border border-bottom-dark bg-white" }),
       _vm._v(" "),
-      _vm._m(12),
+      _vm._m(5),
       _vm._v(" "),
       _c("div", { staticClass: "py-5 d-md-flex border-bottom-dark" }),
       _vm._v(" "),
@@ -72598,7 +72219,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "bg-gray-100 relative" }, [
+    return _c("div", { staticClass: "bg-white relative" }, [
       _c("img", {
         staticClass: "absolute left-0 top-1/2 transform -translate-y-1/2 z-90",
         staticStyle: { height: "100px", width: "auto" },
@@ -72772,166 +72393,6 @@ var staticRenderFns = [
           ]
         ),
       ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-6 my-2" }, [
-      _c(
-        "button",
-        { staticClass: "btn btn-success w-100", attrs: { type: "submit" } },
-        [_vm._v("Search")]
-      ),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", {
-        staticClass: "col-md-12 text-left search_results",
-        attrs: { id: "result_list" },
-      }),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "my-4" }, [
-      _c("h4", { staticClass: "display-4" }, [
-        _vm._v(
-          "Invest in Agriculture | Sports/Gaming | Real State | Entertainment | Auto | Finance/Accounting Security | Pets | Domestic Help | Other ........."
-        ),
-      ]),
-      _vm._v(" "),
-      _c("h4", { staticClass: "h3 text-success py-3" }, [
-        _vm._v("Your platform to invest in local businesses"),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group col-lg-5 col-md-6 my-2" }, [
-      _c("input", {
-        staticClass: "form-control border-right-0",
-        staticStyle: { "border-radius": "35px 0 0 35px" },
-        attrs: {
-          type: "text",
-          name: "listing_name",
-          placeholder: "What are you looking for?",
-        },
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "input-group-append" }, [
-        _c("span", { staticClass: "input-group-text bg-white border-left-0" }, [
-          _c("i", { staticClass: "fa fa-map-marker" }),
-        ]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group col-lg-4 col-md-6 my-2" }, [
-      _c("input", {
-        staticClass: "form-control",
-        attrs: {
-          id: "searchbox",
-          onkeyup: "suggest(this.value);",
-          type: "text",
-          name: "search",
-          value: "",
-          placeholder: "Location",
-        },
-      }),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-3 col-md-6 my-2" }, [
-      _c("div", { staticClass: "dropdown" }, [
-        _c(
-          "select",
-          {
-            staticClass: "form-control",
-            attrs: { id: "category", name: "category" },
-          },
-          [
-            _c("option", { attrs: { value: "" } }, [_vm._v("Category")]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Agriculture" } }, [
-              _vm._v("Agriculture"),
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Arts / Culture" } }, [
-              _vm._v("Arts/Culture"),
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Auto" } }, [_vm._v("Auto")]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Sports/Gaming" } }, [
-              _vm._v("Sports/Gaming"),
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Real State" } }, [
-              _vm._v("Real State"),
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Food" } }, [_vm._v("Food")]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Legal" } }, [_vm._v("Legal")]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Security" } }, [
-              _vm._v("Security"),
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Media / Internet" } }, [
-              _vm._v("Media/Internet"),
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Fashion" } }, [_vm._v("Fashion")]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Technology / Communications" } }, [
-              _vm._v("Technology/Communications"),
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Retail" } }, [_vm._v("Retail")]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Finance/Accounting" } }, [
-              _vm._v("Finance/Accounting"),
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Pets" } }, [_vm._v("Pets")]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Domestic (Home Help etc)" } }, [
-              _vm._v("Domestic (Home Help etc)"),
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Other" } }, [_vm._v("Other")]),
-          ]
-        ),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-6 my-2" }, [
-      _c(
-        "button",
-        { staticClass: "btn btn-success w-100", attrs: { type: "submit" } },
-        [_vm._v("Search")]
-      ),
     ])
   },
   function () {
@@ -73124,245 +72585,6 @@ var staticRenderFns = [
                     ]
                   ),
                 ]),
-                _vm._v(" "),
-                _c(
-                  "section",
-                  {
-                    staticClass: "py-5 pt-3",
-                    staticStyle: { "margin-top": "40px" },
-                    attrs: { id: "about-us" },
-                  },
-                  [
-                    _c("div", { staticClass: "container" }, [
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-md-6" }, [
-                          _c("img", {
-                            staticClass: "img-fluid",
-                            attrs: {
-                              src: "https://img.freepik.com/free-photo/low-angle-man-with-sunglasses-taking-selfie_23-2148666533.jpg?t=st=1713210483~exp=1713214083~hmac=0bb6bbb572bb457373fff1c7deabfad09fcfe6e57920ec0b1e25c6dbb8f8aa2d&w=996",
-                              alt: "About Us",
-                            },
-                          }),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-6 mt-4 mt-md-0" }, [
-                          _c("h2", [_vm._v("About Jitume")]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Jitume is more than just a business directory. We're a community-driven platform that connects local businesses with customers in a meaningful way. Our mission is to empower businesses and consumers alike by providing a platform that fosters growth, innovation, and collaboration."
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "With Jitume, you can discover new businesses, read reviews, and find the perfect services for your needs. Whether you're a business owner looking to expand your reach or a customer seeking local services, Jitume is here to help you connect with your community."
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", [
-                            _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "btn btn-danger btn-rounded px-5 my-4",
-                              },
-                              [_vm._v("Explore")]
-                            ),
-                          ]),
-                        ]),
-                      ]),
-                    ]),
-                  ]
-                ),
-                _vm._v(" "),
-                _c("section", { staticClass: "bg-light py-5" }, [
-                  _c("div", { staticClass: "container" }, [
-                    _c("h2", { staticClass: "text-center mb-5" }, [
-                      _vm._v("Unlock Your Organization's Impact Potential"),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-md-6" }, [
-                        _c("h3", [_vm._v("Jitume Partnerships")]),
-                        _vm._v(" "),
-                        _c("p", [
-                          _vm._v(
-                            "Jitume partners with businesses and organizations to make an even greater impact on communities around the world. By partnering with Jitume, you can create a more connected and efficient business ecosystem, empowering communities and driving growth."
-                          ),
-                        ]),
-                        _vm._v(" "),
-                        _c("p", [
-                          _c("strong", [
-                            _vm._v(
-                              "Join Jitume today to unlock your organization's impact potential!"
-                            ),
-                          ]),
-                        ]),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-6" }, [
-                        _c("img", {
-                          staticClass: "img-fluid rounded",
-                          attrs: {
-                            src: "https://img.freepik.com/premium-photo/symbol-business-goal-business-target-icon-goal-achievement-symbol-business-vision-corporate-o_980716-77129.jpg?w=740",
-                            alt: "Partner with Jitume",
-                          },
-                        }),
-                      ]),
-                    ]),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c(
-                  "section",
-                  {
-                    staticClass: "bg-dark text-white py-5",
-                    staticStyle: { "margin-right": "40px" },
-                  },
-                  [
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "container d-flex-col justify-content-center align-items center",
-                      },
-                      [
-                        _c(
-                          "h2",
-                          { staticClass: "text-center mb-5 text-success" },
-                          [_vm._v("Testimonials")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "row py-4" }, [
-                          _c("div", { staticClass: "col-md-4" }, [
-                            _c("div", { staticClass: "text-center" }, [
-                              _c("h4", [_vm._v("Maria Rodriguez")]),
-                              _vm._v(" "),
-                              _c("p", [
-                                _vm._v(
-                                  '"Working with Jitume has been a game-changer for my business. The platform helped me connect with new customers and grow my revenue."'
-                                ),
-                              ]),
-                            ]),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-md-4" }, [
-                            _c("div", { staticClass: "text-center" }, [
-                              _c("img", {
-                                staticClass: "rounded-circle mb-3",
-                                staticStyle: { width: "100px" },
-                                attrs: {
-                                  src: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fG1hbiUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D",
-                                  alt: "User 2",
-                                },
-                              }),
-                              _vm._v(" "),
-                              _c("h4", [_vm._v("Jamal Washington")]),
-                              _vm._v(" "),
-                              _c("p", [
-                                _vm._v(
-                                  "\"I've been using Jitume for a while now, and I'm impressed by the quality of service and the range of businesses available. Highly recommended!\""
-                                ),
-                              ]),
-                            ]),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-md-4" }, [
-                            _c("div", { staticClass: "text-center" }, [
-                              _c("h4", [_vm._v("Ling Wong")]),
-                              _vm._v(" "),
-                              _c("p", [
-                                _vm._v(
-                                  '"Jitume has made it easy for me to find local businesses that meet my needs. I love supporting my community through this platform."'
-                                ),
-                              ]),
-                            ]),
-                          ]),
-                        ]),
-                      ]
-                    ),
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "section",
-                  {
-                    staticClass: "text-center py-5",
-                    staticStyle: { "background-color": "#f8f9fa" },
-                  },
-                  [
-                    _c("div", { staticClass: "container-fluid" }, [
-                      _c("h2", { staticClass: "display-4 mb-4" }, [
-                        _vm._v("Grow Your Business with Jitume"),
-                      ]),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "lead mb-4" }, [
-                        _vm._v(
-                          "Jitume offers innovative solutions to help your business thrive. Join us today and experience the difference."
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "a",
-                        {
-                          staticClass: "btn btn-success btn-lg",
-                          attrs: { href: "#" },
-                        },
-                        [_vm._v("Start Growing")]
-                      ),
-                    ]),
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "section",
-                  {
-                    staticClass: "bg-light py-5",
-                    staticStyle: { "margin-top": "30px" },
-                  },
-                  [
-                    _c("div", { staticClass: "container-fluid text-center" }, [
-                      _c("h2", [_vm._v("Subscribe to Our Newsletter")]),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "text-center" }, [
-                        _vm._v(
-                          "Get the latest updates and offers delivered straight to your inbox."
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("form", { staticClass: "mt-4" }, [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "input-group mx-auto",
-                            staticStyle: { "max-width": "400px" },
-                          },
-                          [
-                            _c("input", {
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "email",
-                                placeholder: "Your Email Address",
-                                "aria-label": "Your Email Address",
-                                "aria-describedby": "button-addon2",
-                              },
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-primary",
-                                attrs: { type: "button", id: "button-addon2" },
-                              },
-                              [_vm._v("Subscribe")]
-                            ),
-                          ]
-                        ),
-                      ]),
-                    ]),
-                  ]
-                ),
               ]
             ),
           ]
