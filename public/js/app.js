@@ -8400,6 +8400,100 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -72089,12 +72183,12 @@ var render = function () {
     },
     [
       _c("div", { staticClass: "home_bg" }, [
-        _c("div", { staticClass: "container-fluid py-5 bg-light" }, [
+        _c("div", { staticClass: "w-full bg-light" }, [
+          _vm._m(0),
+          _vm._v(" "),
           _c("div", { staticClass: "container" }, [
             _c("div", { staticClass: "row justify-content-center" }, [
               _c("div", { staticClass: "col-lg-8 col-md-10 text-center" }, [
-                _vm._m(0),
-                _vm._v(" "),
                 _c(
                   "form",
                   {
@@ -72139,6 +72233,57 @@ var render = function () {
                 ),
                 _vm._v(" "),
                 _vm._m(5),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row justify-content-center" }, [
+              _c("div", { staticClass: "col-lg-8 col-md-10 text-center" }, [
+                _vm._m(6),
+                _vm._v(" "),
+                _c(
+                  "form",
+                  {
+                    staticClass: "d-flex flex-wrap justify-content-center",
+                    attrs: { id: "form", method: "post" },
+                    on: {
+                      submit: function ($event) {
+                        $event.preventDefault()
+                        return _vm.search()
+                      },
+                    },
+                  },
+                  [
+                    _vm._m(7),
+                    _vm._v(" "),
+                    _vm._m(8),
+                    _vm._v(" "),
+                    _c("input", {
+                      attrs: {
+                        type: "text",
+                        name: "lat",
+                        id: "lat",
+                        hidden: "",
+                        value: "",
+                      },
+                    }),
+                    _vm._v(" "),
+                    _c("input", {
+                      attrs: {
+                        type: "text",
+                        name: "lng",
+                        id: "lng",
+                        hidden: "",
+                        value: "",
+                      },
+                    }),
+                    _vm._v(" "),
+                    _vm._m(9),
+                    _vm._v(" "),
+                    _vm._m(10),
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(11),
               ]),
             ]),
           ]),
@@ -72440,7 +72585,7 @@ var render = function () {
       _vm._v(" "),
       _c("div", { staticClass: "mt-4 border border-bottom-dark bg-white" }),
       _vm._v(" "),
-      _vm._m(6),
+      _vm._m(12),
       _vm._v(" "),
       _c("div", { staticClass: "py-5 d-md-flex border-bottom-dark" }),
       _vm._v(" "),
@@ -72449,6 +72594,209 @@ var render = function () {
   )
 }
 var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "bg-gray-100 relative" }, [
+      _c("img", {
+        staticClass: "absolute left-0 top-1/2 transform -translate-y-1/2 z-90",
+        staticStyle: { height: "100px", width: "auto" },
+        attrs: { src: "/images/left vector.png" },
+      }),
+      _vm._v(" "),
+      _c("img", {
+        staticClass: "absolute right-0 top-1/3 transform -translate-y-1/2 z-10",
+        staticStyle: { height: "100px", width: "auto" },
+        attrs: { src: "/images/right vector.png" },
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "container mx-auto py-8 px-[250px]" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "flex flex-col gap-6 md:flex-row items-center justify-center space-y-8 md:space-y-0",
+          },
+          [
+            _c("div", { staticClass: "md:w-1/2" }, [
+              _c(
+                "h2",
+                {
+                  staticClass:
+                    "text-lg text-gray-800 text-gray-500 font-bold mb-4 py-[18px]",
+                },
+                [_vm._v("Welcome to Jitume")]
+              ),
+              _vm._v(" "),
+              _c("h3", { staticClass: "text-[28px] text-black font-black" }, [
+                _vm._v("Real business,real solutions,"),
+                _c("span", { staticClass: "text-green-800 text-[30px]" }, [
+                  _vm._v("realchange"),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("h3", { staticClass: "font-bold py-[20px]" }, [
+                _vm._v(
+                  "Invest in a business you believe in with as little as $100"
+                ),
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "bg-green-800 text-slate-100 rounded-[14px] px-6 py-3",
+                  },
+                  [_vm._v("Join today")]
+                ),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "md:w-1/2" }, [
+              _c("img", {
+                staticClass: "w-full h-auto rounded-lg",
+                attrs: { src: "/images/Frame 859(1).png", alt: "Your Image" },
+              }),
+            ]),
+          ]
+        ),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group col-lg-5 col-md-6 my-2" }, [
+      _c("input", {
+        staticClass: "form-control border-right-0",
+        staticStyle: { "border-radius": "35px 0 0 35px" },
+        attrs: {
+          type: "text",
+          name: "listing_name",
+          placeholder: "What are you looking for?",
+        },
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "input-group-append" }, [
+        _c("span", { staticClass: "input-group-text bg-white border-left-0" }, [
+          _c("i", { staticClass: "fa fa-map-marker" }),
+        ]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group col-lg-4 col-md-6 my-2" }, [
+      _c("input", {
+        staticClass: "form-control",
+        attrs: {
+          id: "searchbox",
+          onkeyup: "suggest(this.value);",
+          type: "text",
+          name: "search",
+          value: "",
+          placeholder: "Location",
+        },
+      }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-lg-3 col-md-6 my-2" }, [
+      _c("div", { staticClass: "dropdown" }, [
+        _c(
+          "select",
+          {
+            staticClass: "form-control",
+            attrs: { id: "category", name: "category" },
+          },
+          [
+            _c("option", { attrs: { value: "" } }, [_vm._v("Category")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Agriculture" } }, [
+              _vm._v("Agriculture"),
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Arts / Culture" } }, [
+              _vm._v("Arts/Culture"),
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Auto" } }, [_vm._v("Auto")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Sports/Gaming" } }, [
+              _vm._v("Sports/Gaming"),
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Real State" } }, [
+              _vm._v("Real State"),
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Food" } }, [_vm._v("Food")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Legal" } }, [_vm._v("Legal")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Security" } }, [
+              _vm._v("Security"),
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Media / Internet" } }, [
+              _vm._v("Media/Internet"),
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Fashion" } }, [_vm._v("Fashion")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Technology / Communications" } }, [
+              _vm._v("Technology/Communications"),
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Retail" } }, [_vm._v("Retail")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Finance/Accounting" } }, [
+              _vm._v("Finance/Accounting"),
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Pets" } }, [_vm._v("Pets")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Domestic (Home Help etc)" } }, [
+              _vm._v("Domestic (Home Help etc)"),
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Other" } }, [_vm._v("Other")]),
+          ]
+        ),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-6 my-2" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-success w-100", attrs: { type: "submit" } },
+        [_vm._v("Search")]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", {
+        staticClass: "col-md-12 text-left search_results",
+        attrs: { id: "result_list" },
+      }),
+    ])
+  },
   function () {
     var _vm = this
     var _h = _vm.$createElement

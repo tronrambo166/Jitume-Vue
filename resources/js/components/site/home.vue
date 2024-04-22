@@ -4,9 +4,103 @@
 
 
 
-      <div class="container-fluid py-5 bg-light">
+  <div class="w-full bg-light">
+<!--hero section-->
+<div class="bg-gray-100 relative">
+    <!-- Vector on the left -->
+    <img src="/images/left vector.png" class="absolute left-0 top-1/2 transform -translate-y-1/2 z-90" style="height: 100px; width: auto;">
+
+    <!-- Vector on the right -->
+    <img src="/images/right vector.png" class="absolute right-0 top-1/3 transform -translate-y-1/2 z-10" style="height: 100px; width: auto;">
+
+    <div class="container mx-auto py-8 px-[250px]">
+        <div class="flex flex-col gap-6 md:flex-row items-center justify-center space-y-8 md:space-y-0">
+            <!-- Text on the left -->
+            <div class="md:w-1/2">
+                <h2 class="text-lg text-gray-800 text-gray-500 font-bold mb-4 py-[18px]">Welcome to Jitume</h2>
+                <h3 class="text-[28px] text-black font-black ">Real business,real solutions,<span class="text-green-800 text-[30px]">realchange</span></h3>
+                <h3 class="font-bold py-[20px]">Invest in a business you believe in with as little as $100</h3>
+
+                <div>
+                    <button class="bg-green-800 text-slate-100 rounded-[14px] px-6 py-3">Join today</button>
+                </div>
+
+            </div>
+
+            <!-- Image on the right -->
+            <div class="md:w-1/2">
+                <img src="/images/Frame 859(1).png" alt="Your Image" class="w-full h-auto rounded-lg">
+            </div>
+        </div>
+    </div>
+</div>
+
 
   <div class="container">
+   
+    <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 text-center">
+        
+
+        <form id="form" @submit.prevent="search();" class="d-flex flex-wrap justify-content-center" method="post">
+
+            <div class="input-group col-lg-5 col-md-6 my-2">
+                <input style="border-radius: 35px 0 0 35px;" class="form-control border-right-0" type="text" name="listing_name" placeholder="What are you looking for?">
+                <div class="input-group-append">
+                    <span class="input-group-text bg-white border-left-0"><i class="fa fa-map-marker"></i></span>
+                </div>
+            </div>
+
+            <div class="input-group col-lg-4 col-md-6 my-2">
+                <input id="searchbox" onkeyup="suggest(this.value);" class="form-control" type="text" name="search" value="" placeholder="Location">
+            </div>
+
+            <input type="text" name="lat" id="lat" hidden value="">
+            <input type="text" name="lng" id="lng" hidden value="">
+
+            <div class="col-lg-3 col-md-6 my-2">
+                <div class="dropdown">
+                    <select id="category" name="category" class="form-control">
+                        <option value="">Category</option>
+                        <option value="Agriculture">Agriculture</option>
+                        <option value="Arts / Culture">Arts/Culture</option>
+                        <option value="Auto">Auto</option>
+                        <option value="Sports/Gaming">Sports/Gaming</option>
+                        <option value="Real State">Real State</option>
+                        <option value="Food">Food</option>
+                        <option value="Legal">Legal</option>
+                        <option value="Security">Security</option>
+                        <option value="Media / Internet">Media/Internet</option>
+                        <option value="Fashion">Fashion</option>
+                        <option value="Technology / Communications">Technology/Communications</option>
+                        <option value="Retail">Retail</option>
+                        <option value="Finance/Accounting">Finance/Accounting</option>
+                        <option value="Pets">Pets</option>
+                        <option value="Domestic (Home Help etc)">Domestic (Home Help etc)</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-6 my-2">
+                <button class="btn btn-success w-100" type="submit">Search</button>
+            </div>
+
+        </form>
+
+        <div class="row">
+            <div id="result_list" class="col-md-12 text-left search_results"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--hero section Ends-->
+
+
+
+
   <div class="row justify-content-center">
 
     <div class="col-lg-8 col-md-10 text-center">
