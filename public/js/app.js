@@ -8342,6 +8342,44 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -72031,109 +72069,451 @@ var render = function () {
     },
     [
       _c("div", { staticClass: "bg-white" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("div", { staticClass: "container" }, [
-          _c("div", { staticClass: "row justify-content-center" }, [
-            _c("h1", [_vm._v("hello")]),
+        _c("div", { staticClass: "w-full" }, [
+          _c("div", { staticClass: "bg-white relative" }, [
+            _c("img", {
+              staticClass:
+                "absolute left-0 top-1/2 transform -translate-y-1/2 z-90",
+              staticStyle: { height: "100px", width: "auto" },
+              attrs: { src: "/images/left vector.png" },
+            }),
             _vm._v(" "),
-            _c("div", { staticClass: "col-lg-8 col-md-10 text-center" }, [
+            _c("img", {
+              staticClass:
+                "absolute right-0 top-1/3 transform -translate-y-1/2 z-10",
+              staticStyle: { height: "100px", width: "auto" },
+              attrs: { src: "/images/right vector.png" },
+            }),
+            _vm._v(" "),
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "container" }, [
               _c(
-                "form",
-                {
-                  staticClass: "d-flex flex-wrap justify-content-center",
-                  attrs: { id: "form", method: "post" },
-                  on: {
-                    submit: function ($event) {
-                      $event.preventDefault()
-                      return _vm.search()
-                    },
-                  },
-                },
-                [
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _vm._m(2),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: {
-                      type: "text",
-                      name: "lat",
-                      id: "lat",
-                      hidden: "",
-                      value: "",
-                    },
-                  }),
-                  _vm._v(" "),
-                  _c("input", {
-                    attrs: {
-                      type: "text",
-                      name: "lng",
-                      id: "lng",
-                      hidden: "",
-                      value: "",
-                    },
-                  }),
-                  _vm._v(" "),
-                  _vm._m(3),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "my-5 py-0" }, [
-                    _c(
-                      "ul",
-                      { staticClass: "nav justify-content-center mb-34" },
-                      [
-                        _c(
-                          "li",
-                          { staticClass: "nav-item" },
-                          [
-                            _c(
-                              "router-link",
-                              {
-                                staticClass:
-                                  "nav-link btn btn-success text-light mx-2",
-                                attrs: { to: "category/Agriculture" },
-                              },
-                              [
-                                _c("i", { staticClass: "bi bi-bag" }),
-                                _vm._v(" Agriculture\n      "),
-                              ]
-                            ),
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "li",
-                          { staticClass: "nav-item" },
-                          [
-                            _c(
-                              "router-link",
-                              {
-                                staticClass:
-                                  "nav-link btn btn-dark mx-2 text-light",
-                                attrs: { to: "category/Renewable-Energy" },
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "bi bi-lightning-charge",
-                                }),
-                                _vm._v(" Renewable Energy\n      "),
-                              ]
-                            ),
-                          ],
-                          1
-                        ),
-                      ]
-                    ),
-                  ]),
-                ]
+                "h1",
+                { staticClass: "text-center font-bold py-2 text-[24px]" },
+                [_vm._v("Your platform to invest in local businesses")]
               ),
               _vm._v(" "),
-              _vm._m(4),
+              _c("div", { staticClass: "flex justify-center" }, [
+                _c("div", { staticClass: "lg:w-8/12 md:w-10/12 text-center" }, [
+                  _c(
+                    "form",
+                    {
+                      attrs: { id: "form", method: "post" },
+                      on: {
+                        submit: function ($event) {
+                          $event.preventDefault()
+                          return _vm.search()
+                        },
+                      },
+                    },
+                    [_vm._m(1)]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "my-5 py-0" }, [
+                    _c("ul", { staticClass: "nav justify-content-center" }, [
+                      _c(
+                        "li",
+                        { staticClass: "nav-item" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass:
+                                "nav-link btn btn-success text-light mx-2",
+                              attrs: { to: "category/Agriculture" },
+                            },
+                            [
+                              _c("i", { staticClass: "bi bi-bag" }),
+                              _vm._v(" Agriculture\n      "),
+                            ]
+                          ),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "li",
+                        { staticClass: "nav-item" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass:
+                                "nav-link btn bg-black mx-2 text-light",
+                              attrs: { to: "category/Renewable-Energy" },
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "bi bi-lightning-charge",
+                              }),
+                              _vm._v(" Renewable Energy\n      "),
+                            ]
+                          ),
+                        ],
+                        1
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "my-6" }, [
+                      _c(
+                        "ul",
+                        {
+                          staticClass:
+                            "d-flex list-unstyled justify-content-center text-black font-bold mx-4 mx-lg-4 py-0 my-0",
+                        },
+                        [
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: "category/Arts-Culture" } },
+                                [_vm._v("Arts/Culture")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: "category/Auto" } },
+                                [_vm._v("Auto")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: "category/Domestic_Home" } },
+                                [_vm._v("Domestic (HomeHelp etc)")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: "category/Fashion" } },
+                                [_vm._v("Fashion")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: { to: "category/Finance-Accounting" },
+                                },
+                                [_vm._v("Finance/Accounting")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: "category/Food" } },
+                                [_vm._v("Food")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: "category/Legal" } },
+                                [_vm._v("Legal")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: "category/Media-Internet" } },
+                                [_vm._v("Media/Internet")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: "category/Pets" } },
+                                [_vm._v("Pets")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: "category/Retail" } },
+                                [_vm._v("Retail")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: "category/Real State" } },
+                                [_vm._v("Real Estate")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: "category/Security" } },
+                                [_vm._v("Security")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: "category/Sports-Gaming" } },
+                                [_vm._v("Sports/Gaming")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: "category/Technology-Communications",
+                                  },
+                                },
+                                [_vm._v("Technology/Communications")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: "category/Other" } },
+                                [_vm._v("Other")]
+                              ),
+                            ],
+                            1
+                          ),
+                        ]
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", {
+                    staticClass: "text-left search_results",
+                    attrs: { id: "result_list" },
+                  }),
+                ]),
+              ]),
             ]),
           ]),
         ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "py-5 d-md-flex border-bottom-dark" }),
       ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "row card-group px-3 w-75 mx-auto d-md-flex justify-content-center",
+          staticStyle: { overflow: "hidden" },
+        },
+        [
+          _c(
+            "hooper",
+            {
+              attrs: {
+                settings: _vm.hooperSettings,
+                itemsToShow: 4,
+                centerMode: true,
+                pagination: "no",
+              },
+            },
+            [
+              _vm._l(_vm.results, function (result, index) {
+                return _c(
+                  "slide",
+                  {
+                    key: index,
+                    staticClass: "listing text-center col-md-4 px-4",
+                    attrs: { index: index },
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "mx-auto mt-4" },
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "shadow card border px-2 pt-2",
+                            attrs: { to: "/listingDetails/" + result.id },
+                          },
+                          [
+                            result.file
+                              ? _c(
+                                  "video",
+                                  {
+                                    staticStyle: {
+                                      width: "95%",
+                                      height: "114px",
+                                    },
+                                    attrs: { controls: "", alt: "" },
+                                  },
+                                  [
+                                    _c("source", {
+                                      attrs: {
+                                        src: result.file,
+                                        type: "video/mp4",
+                                      },
+                                    }),
+                                  ]
+                                )
+                              : _c("img", {
+                                  staticClass: "card-img-top mx-auto",
+                                  staticStyle: {
+                                    width: "90%",
+                                    height: "118px",
+                                  },
+                                  attrs: { src: result.image, alt: "" },
+                                }),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "px-3 pb-2" }, [
+                              _c(
+                                "h5",
+                                {
+                                  staticClass:
+                                    "card_heading text-left mb-0 py-2",
+                                },
+                                [_vm._v(_vm._s(result.name) + " ")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "p",
+                                {
+                                  staticClass: "loc_p card_text pt-1 text-left",
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "mr-2 fa fa-map-marker",
+                                  }),
+                                  _vm._v(_vm._s(result.location)),
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("p", { staticClass: "card_text" }, [
+                                _c("span", { staticClass: "rounded" }, [
+                                  _c("i", { staticClass: "mr-2 fa fa-phone" }),
+                                  _vm._v(_vm._s(result.contact)),
+                                ]),
+                              ]),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "amount px-3 pb-0" }, [
+                              _c("p", { staticClass: "font-weight-bold" }, [
+                                _vm._v("Amount: "),
+                                _c(
+                                  "span",
+                                  { staticClass: "font-weight-light" },
+                                  [
+                                    _c("b", [
+                                      _vm._v(
+                                        "$" + _vm._s(result.investment_needed)
+                                      ),
+                                    ]),
+                                  ]
+                                ),
+                              ]),
+                            ]),
+                          ]
+                        ),
+                      ],
+                      1
+                    ),
+                  ]
+                )
+              }),
+              _vm._v(" "),
+              _c("hooper-navigation", {
+                attrs: { slot: "hooper-addons" },
+                slot: "hooper-addons",
+              }),
+            ],
+            2
+          ),
+        ],
+        1
+      ),
     ]
   )
 }
@@ -72142,433 +72522,187 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "w-full" }, [
-      _c("div", { staticClass: "bg-white relative" }, [
-        _c("img", {
+    return _c("div", { staticClass: "container mx-auto py-8 px-[250px]" }, [
+      _c(
+        "div",
+        {
           staticClass:
-            "absolute left-0 top-1/2 transform -translate-y-1/2 z-90",
-          staticStyle: { height: "100px", width: "auto" },
-          attrs: { src: "/images/left vector.png" },
-        }),
-        _vm._v(" "),
-        _c("img", {
-          staticClass:
-            "absolute right-0 top-1/3 transform -translate-y-1/2 z-10",
-          staticStyle: { height: "100px", width: "auto" },
-          attrs: { src: "/images/right vector.png" },
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "container mx-auto py-8 px-[250px]" }, [
-          _c(
-            "div",
-            {
-              staticClass:
-                "flex flex-col gap-6 md:flex-row items-center justify-center space-y-8 md:space-y-0",
-            },
-            [
-              _c("div", { staticClass: "md:w-1/2" }, [
-                _c(
-                  "h2",
-                  {
-                    staticClass:
-                      "text-lg text-gray-500 font-bold mb-4 py-[18px]",
-                  },
-                  [_vm._v("Welcome to Jitume")]
-                ),
-                _vm._v(" "),
-                _c("h3", { staticClass: "text-[28px] text-black font-black" }, [
-                  _vm._v("Real business,real solutions,"),
-                  _c("span", { staticClass: "text-green-800 text-[30px]" }, [
-                    _vm._v("realchange"),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("h3", { staticClass: "font-bold py-[20px]" }, [
-                  _vm._v(
-                    "Invest in a business you believe in with as little as $100"
-                  ),
-                ]),
-                _vm._v(" "),
-                _c("div", [
-                  _c(
-                    "button",
-                    {
-                      staticClass:
-                        "bg-green-800 text-slate-100 rounded-[14px] px-6 py-3",
-                    },
-                    [_vm._v("Join today")]
-                  ),
-                ]),
+            "flex flex-col gap-6 md:flex-row items-center justify-center space-y-8 md:space-y-0",
+        },
+        [
+          _c("div", { staticClass: "md:w-1/2" }, [
+            _c(
+              "h2",
+              {
+                staticClass: "text-lg text-green-500 font-bold mb-4 py-[18px]",
+              },
+              [_vm._v("Welcome to Jitume")]
+            ),
+            _vm._v(" "),
+            _c("h3", { staticClass: "text-[28px] text-black font-black" }, [
+              _vm._v("Real business,real solutions,"),
+              _c("span", { staticClass: "text-green-800 text-[30px]" }, [
+                _vm._v("realchange"),
               ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "md:w-1/2" }, [
-                _c("img", {
-                  staticClass: "w-full h-auto rounded-lg",
-                  attrs: { src: "/images/Frame 859(1).png", alt: "Your Image" },
-                }),
-              ]),
-            ]
-          ),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "border border-bottom-dark bg-white" }),
-        _vm._v(" "),
+            ]),
+            _vm._v(" "),
+            _c("h3", { staticClass: "font-bold py-[20px]" }, [
+              _vm._v(
+                "Invest in a business you believe in with as little as $100"
+              ),
+            ]),
+            _vm._v(" "),
+            _c("div", [
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "bg-green-800 text-slate-100 rounded-[14px] px-6 py-3",
+                },
+                [_vm._v("Join today")]
+              ),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "md:w-1/2" }, [
+            _c("img", {
+              staticClass: "w-full h-auto rounded-lg",
+              attrs: { src: "/images/Frame 859(1).png", alt: "Your Image" },
+            }),
+          ]),
+        ]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "flex justify-center gap-8" }, [
+      _c("div", { staticClass: "w-5/12 md:w-6/12 my-2" }, [
         _c(
           "div",
-          { staticClass: "container-fluid row mx-auto my-5 bg-white pt-3" },
+          { staticClass: "flex items-center border border-black rounded-lg" },
           [
+            _c("input", {
+              staticClass: "py-2 px-4 rounded-xl",
+              attrs: {
+                type: "text",
+                name: "listing_name",
+                placeholder: "What are you looking for?",
+              },
+            }),
+            _vm._v(" "),
             _c(
               "div",
-              {
-                staticClass:
-                  "elementor-top-column elementor-element elementor-element-ce6f4c7 flex flex-col items-center",
-                attrs: { "data-id": "ce6f4c7", "data-element_type": "column" },
-              },
-              [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "elementor-column-wrap elementor-element-populated flex flex-col items-center",
-                  },
-                  [
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "elementor-widget-wrap row flex flex-col items-center",
-                      },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "elementor-element elementor-element-ccc6233 elementor-widget elementor-widget-listeo-headline flex flex-col items-center",
-                            attrs: {
-                              "data-id": "ccc6233",
-                              "data-element_type": "widget",
-                              "data-widget_type": "listeo-headline.default",
-                            },
-                          },
-                          [
-                            _c(
-                              "div",
-                              {
-                                staticClass: "text-dark mb-md-3",
-                                staticStyle: { "margin-bottom": "30px" },
-                              },
-                              [
-                                _c(
-                                  "h3",
-                                  {
-                                    staticClass:
-                                      "pb-2 secondary_heading h2 headline headline-aligned-to-left headline-box py-4",
-                                    staticStyle: { "text-align": "center" },
-                                  },
-                                  [_vm._v(" How Jitume Works? ")]
-                                ),
-                              ]
-                            ),
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "elementor-element elementor-element-5df092b elementor-widget elementor-widget-listeo-iconbox",
-                            attrs: {
-                              "data-id": "5df092b",
-                              "data-element_type": "widget",
-                              "data-widget_type": "listeo-iconbox.default",
-                            },
-                          },
-                          [
-                            _c(
-                              "div",
-                              { staticClass: "elementor-widget-container" },
-                              [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "icon-box-v3 row mx-auto flex justify-center gap-6 my-6",
-                                  },
-                                  [
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "ibv3-icon col-sm-2 text-center",
-                                      },
-                                      [
-                                        _c("img", {
-                                          attrs: {
-                                            width: "75px",
-                                            height: "75px",
-                                            src: "images/randomIcons/loc.png",
-                                          },
-                                        }),
-                                        _vm._v(" "),
-                                        _c(
-                                          "p",
-                                          {
-                                            staticClass:
-                                              "text-center mt-3 small",
-                                          },
-                                          [_vm._v("Enter Your Location")]
-                                        ),
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "ibv3-icon col-sm-2 text-center",
-                                      },
-                                      [
-                                        _c("img", {
-                                          attrs: {
-                                            width: "75px",
-                                            height: "75px",
-                                            src: "images/randomIcons/cat.png",
-                                          },
-                                        }),
-                                        _vm._v(" "),
-                                        _c(
-                                          "p",
-                                          {
-                                            staticClass:
-                                              "text-center mt-3 small",
-                                          },
-                                          [_vm._v("Choose a Category")]
-                                        ),
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "ibv3-icon col-sm-2 text-center",
-                                      },
-                                      [
-                                        _c("img", {
-                                          attrs: {
-                                            width: "75px",
-                                            height: "75px",
-                                            src: "images/randomIcons/results.png",
-                                          },
-                                        }),
-                                        _vm._v(" "),
-                                        _c(
-                                          "p",
-                                          {
-                                            staticClass:
-                                              "text-center mt-3 small",
-                                          },
-                                          [
-                                            _vm._v(
-                                              "Get Results in Your Location"
-                                            ),
-                                          ]
-                                        ),
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "ibv3-icon col-sm-2 text-center",
-                                      },
-                                      [
-                                        _c("img", {
-                                          attrs: {
-                                            width: "75px",
-                                            height: "75px",
-                                            src: "images/randomIcons/choose.png",
-                                          },
-                                        }),
-                                        _vm._v(" "),
-                                        _c(
-                                          "p",
-                                          {
-                                            staticClass:
-                                              "text-center mt-3 small",
-                                          },
-                                          [_vm._v("Choose Your Business")]
-                                        ),
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "ibv3-icon col-sm-2 text-center",
-                                      },
-                                      [
-                                        _c("img", {
-                                          attrs: {
-                                            width: "75px",
-                                            height: "75px",
-                                            src: "images/randomIcons/grow.png",
-                                          },
-                                        }),
-                                        _vm._v(" "),
-                                        _c(
-                                          "p",
-                                          {
-                                            staticClass:
-                                              "text-center mt-3 small",
-                                          },
-                                          [
-                                            _vm._v(
-                                              "Grow Your Business Together"
-                                            ),
-                                          ]
-                                        ),
-                                      ]
-                                    ),
-                                  ]
-                                ),
-                              ]
-                            ),
-                          ]
-                        ),
-                      ]
-                    ),
-                  ]
-                ),
-              ]
+              { staticClass: "bg-white border-l border-gray-300 p-2" },
+              [_c("i", { staticClass: "fa fa-map-marker" })]
             ),
           ]
         ),
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "py-5 d-md-flex border-bottom-dark" }),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group col-lg-5 col-md-6 my-2" }, [
-      _c("input", {
-        staticClass: "form-control border-right-0",
-        staticStyle: { "border-radius": "35px 0 0 35px" },
-        attrs: {
-          type: "text",
-          name: "listing_name",
-          placeholder: "What are you looking for?",
-        },
-      }),
+      _c("div", { staticClass: "w-4/12 md:w-6/12 my-2" }, [
+        _c("input", {
+          staticClass: "py-2 px-4 w-full border border-gray-300 rounded-full",
+          attrs: {
+            id: "searchbox",
+            onkeyup: "suggest(this.value);",
+            type: "text",
+            name: "search",
+            value: "",
+            placeholder: "Location",
+          },
+        }),
+      ]),
       _vm._v(" "),
-      _c("div", { staticClass: "input-group-append" }, [
-        _c("span", { staticClass: "input-group-text bg-white border-left-0" }, [
-          _c("i", { staticClass: "fa fa-map-marker" }),
+      _c("div", { staticClass: "w-3/12 md:w-6/12 my-2" }, [
+        _c("div", { staticClass: "relative" }, [
+          _c(
+            "select",
+            {
+              staticClass:
+                "py-2 px-4 w-full border border-gray-300 rounded-full appearance-none",
+              attrs: { id: "category", name: "category" },
+            },
+            [
+              _c("option", { attrs: { value: "" } }, [_vm._v("Category")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "Agriculture" } }, [
+                _vm._v("Agriculture"),
+              ]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "Arts / Culture" } }, [
+                _vm._v("Arts/Culture"),
+              ]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "Auto" } }, [_vm._v("Auto")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "Sports/Gaming" } }, [
+                _vm._v("Sports/Gaming"),
+              ]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "Real State" } }, [
+                _vm._v("Real State"),
+              ]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "Food" } }, [_vm._v("Food")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "Legal" } }, [_vm._v("Legal")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "Security" } }, [
+                _vm._v("Security"),
+              ]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "Media / Internet" } }, [
+                _vm._v("Media/Internet"),
+              ]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "Fashion" } }, [
+                _vm._v("Fashion"),
+              ]),
+              _vm._v(" "),
+              _c(
+                "option",
+                { attrs: { value: "Technology / Communications" } },
+                [_vm._v("Technology/Communications")]
+              ),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "Retail" } }, [_vm._v("Retail")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "Finance/Accounting" } }, [
+                _vm._v("Finance/Accounting"),
+              ]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "Pets" } }, [_vm._v("Pets")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "Domestic (Home Help etc)" } }, [
+                _vm._v("Domestic (Home Help etc)"),
+              ]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "Other" } }, [_vm._v("Other")]),
+            ]
+          ),
         ]),
       ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group col-lg-4 col-md-6 my-2" }, [
-      _c("input", {
-        staticClass: "form-control",
-        attrs: {
-          id: "searchbox",
-          onkeyup: "suggest(this.value);",
-          type: "text",
-          name: "search",
-          value: "",
-          placeholder: "Location",
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "w-12 my-2 bg-green-700 rounded-full flex items-center justify-center",
         },
-      }),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-3 col-md-6 my-2" }, [
-      _c("div", { staticClass: "dropdown" }, [
-        _c(
-          "select",
-          {
-            staticClass: "form-control",
-            attrs: { id: "category", name: "category" },
-          },
-          [
-            _c("option", { attrs: { value: "" } }, [_vm._v("Category")]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Agriculture" } }, [
-              _vm._v("Agriculture"),
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Arts / Culture" } }, [
-              _vm._v("Arts/Culture"),
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Auto" } }, [_vm._v("Auto")]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Sports/Gaming" } }, [
-              _vm._v("Sports/Gaming"),
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Real State" } }, [
-              _vm._v("Real State"),
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Food" } }, [_vm._v("Food")]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Legal" } }, [_vm._v("Legal")]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Security" } }, [
-              _vm._v("Security"),
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Media / Internet" } }, [
-              _vm._v("Media/Internet"),
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Fashion" } }, [_vm._v("Fashion")]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Technology / Communications" } }, [
-              _vm._v("Technology/Communications"),
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Retail" } }, [_vm._v("Retail")]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Finance/Accounting" } }, [
-              _vm._v("Finance/Accounting"),
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Pets" } }, [_vm._v("Pets")]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Domestic (Home Help etc)" } }, [
-              _vm._v("Domestic (Home Help etc)"),
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "Other" } }, [_vm._v("Other")]),
-          ]
-        ),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", {
-        staticClass: "col-md-12 text-left search_results",
-        attrs: { id: "result_list" },
-      }),
+        [
+          _c(
+            "button",
+            {
+              staticClass: "py-2 px-6 text-white rounded-full",
+              attrs: { type: "submit" },
+            },
+            [_c("i", { staticClass: "fa fa-search" })]
+          ),
+        ]
+      ),
     ])
   },
 ]

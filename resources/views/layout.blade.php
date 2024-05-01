@@ -66,14 +66,6 @@
 
         <!-- Layout -->
 
-<style>
-    .dropdown-menu {
-        background-color: #fff; /* Set background color for the dropdown menu */
-        border: none; /* Remove default border */
-        border-radius: 0.5rem; /* Add border-radius for rounded corners */
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Add shadow for depth */
-    }
-</style>
 
 
 
@@ -83,7 +75,7 @@
   <nav class="container px-6 py-4 mx-auto flex justify-between items-center bg-white ">
     <!-- Logo -->
     <div class="flex items-center ">
-      <router-link to="/" class="text-xl font-bold text-gray-800 md:text-2xl hover:text-blue-400">
+      <router-link to="/" class="text-xl font-bold text-gray-800 md:text-2xl hover:text-green-400">
         <img class="logo img-fluid" width="100px" height="45px" src="images/logo.png">
       </router-link>
     </div>
@@ -95,18 +87,18 @@
 
     <!-- Centered Links -->
     <ul class="hidden md:flex items-center space-x-8">
-      <li class="text-sm font-bold text-gray-800 hover:text-blue-400 px-3">
+      <li class="text-sm font-bold text-gray-800 hover:text-green-400 px-3">
         <router-link to="/home" active-class="text-green-600" >Home</router-link>
       </li>
-      <li class="text-sm font-bold text-gray-800 hover:text-blue-400 px-2">
+      <li class="text-sm font-bold text-gray-800 hover:text-green-400 px-2">
         <router-link to="/services"> Services</router-link>
               </li>
-      <li class="text-sm font-bold text-gray-800 hover:text-blue-400 px-2">
+      <li class="text-sm font-bold text-gray-800 hover:text-green-400 px-2">
         <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">        
          </i> Add Your Business
         </a>
       </li>
-      <li class="text-sm font-bold text-gray-800 hover:text-blue-400 px-2">
+      <li class="text-sm font-bold text-gray-800 hover:text-green-400 px-2">
         <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">        
           Create Investor Account
         </a>
@@ -114,7 +106,7 @@
     </ul>
 
   <!-- Login Button -->
-    <button class="hidden md:block text-sm font-bold text-gray-800 hover:text-blue-400 border-2 border-black rounded-md py-2 px-6">Login</button>
+    <button data-target="#loginModal" data-toggle="modal" class="hidden md:block text-sm font-bold text-gray-800 hover:text-blue-400 border-2 border-black rounded-md py-2 px-6 mr-8">Login</button>
   </nav>
 
 <!-- Offcanvas Navbar -->
@@ -552,8 +544,7 @@
                         </div>
 
                         <div class="col-md-6">
-                             <button id="register" onclick="registers()" class=" pb-1  font-weight-bold  px-2">{{ __('Sign Up') }}</button>
-                        </div>              
+                        <button id="register" onclick="registers()" class="pb-1 font-weight-bold px-2">{{ __('Sign Up') }}</button>                        </div>              
 
                         @if(Session::has('email')) <p class="text-danger ml-5">{{Session::get('email')}} @php Session::forget('email'); @endphp </p> @endif
 
@@ -566,37 +557,8 @@
                     </div> -->
 
 
-                    <div class="hidden_currency ">
-
-                        <div class="row justify-content-center py-2 mb-2">
-                            <div class="px-0 w-100 py-0">
-
-
-                                <div class="collapse" id="all_registers">
-
-                               
-                                    <div class="text-center User-Artist-Select">
-                                        <a style="cursor: pointer;" id="reg_back" class="float-left bg-light collapse" onclick="step_one();">
-                                            <i class="fa fa-arrow-left"></i> back</a>
-
-                                     <div class="col-md-5"></div>
-                                      <div id="errors" class="w-100">
-                                        </div>
-                                        <div class="card-header d-block w-75 mx-auto mt-5 mb-4">
-                                            <div class="row">
-                                                
-                                            <div class="col-md-12 text-center sinup_text">
-                                                <h2 class="">Registration</h2>
-                                                <h4 >Step <span id="steps">1 </span> of 2</h4>
-                                            </div>
-
-                                            
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-
+                
+                  
 
 
 
@@ -955,6 +917,10 @@
                                     </div>
 
                                  <!-- HIDDEN USER REG -->
+
+
+
+                                 
                                     
                                 </div>
 

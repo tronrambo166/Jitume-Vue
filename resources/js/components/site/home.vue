@@ -4,102 +4,112 @@
 
 
 
-  <div class="w-full ">
+      <div class="w-full ">
 
 
-    
-<!--hero section-->
-<div class="bg-white relative">
-    <!-- Vector on the left -->
-    <img src="/images/left vector.png" class="absolute left-0 top-1/2 transform -translate-y-1/2 z-90" style="height: 100px; width: auto;">
 
-    <!-- Vector on the right -->
-    <img src="/images/right vector.png" class="absolute right-0 top-1/3 transform -translate-y-1/2 z-10" style="height: 100px; width: auto;">
+        <!--hero section-->
+        <div class="bg-white relative">
+          <!-- Vector on the left -->
+          <img src="/images/left vector.png" class="absolute left-0 top-1/2 transform -translate-y-1/2 z-90"
+            style="height: 100px; width: auto;">
 
-    <div class="container mx-auto py-8 px-[250px]">
-        <div class="flex flex-col gap-6 md:flex-row items-center justify-center space-y-8 md:space-y-0">
-            <!-- Text on the left -->
-            <div class="md:w-1/2">
-                <h2 class="text-lg  text-gray-500 font-bold mb-4 py-[18px]">Welcome to Jitume</h2>
-                <h3 class="text-[28px] text-black font-black ">Real business,real solutions,<span class="text-green-800 text-[30px]">realchange</span></h3>
+          <!-- Vector on the right -->
+          <img src="/images/right vector.png" class="absolute right-0 top-1/3 transform -translate-y-1/2 z-10"
+            style="height: 100px; width: auto;">
+
+          <div class="container mx-auto py-8 px-[250px]">
+            <div class="flex flex-col gap-6 md:flex-row items-center justify-center space-y-8 md:space-y-0">
+              <!-- Text on the left -->
+              <div class="md:w-1/2">
+                <h2 class="text-lg  text-green-500 font-bold mb-4 py-[18px]">Welcome to Jitume</h2>
+                <h3 class="text-[28px] text-black font-black ">Real business,real solutions,<span
+                    class="text-green-800 text-[30px]">realchange</span></h3>
                 <h3 class="font-bold py-[20px]">Invest in a business you believe in with as little as $100</h3>
 
                 <div>
-                    <button class="bg-green-800 text-slate-100 rounded-[14px] px-6 py-3">Join today</button>
+                  <button class="bg-green-800 text-slate-100 rounded-[14px] px-6 py-3">Join today</button>
                 </div>
 
-            </div>
+              </div>
 
-            <!-- Image on the right -->
-            <div class="md:w-1/2">
+              <!-- Image on the right -->
+              <div class="md:w-1/2">
                 <img src="/images/Frame 859(1).png" alt="Your Image" class="w-full h-auto rounded-lg">
+              </div>
             </div>
-        </div>
-    </div>
-
-
-
-  <!-- HOW IT WORKS -->
-
-  <div class="  border border-bottom-dark bg-white"></div>
-
-<div class="container-fluid row mx-auto my-5 bg-white pt-3">
-
-
-  <div class="elementor-top-column elementor-element elementor-element-ce6f4c7 flex flex-col items-center" data-id="ce6f4c7" data-element_type="column">
-  <div class="elementor-column-wrap elementor-element-populated flex flex-col items-center">
-
-    <div class="elementor-widget-wrap row flex flex-col items-center">
-
-      <div class="elementor-element elementor-element-ccc6233 elementor-widget elementor-widget-listeo-headline flex flex-col items-center" data-id="ccc6233" data-element_type="widget" data-widget_type="listeo-headline.default">
-
-        <div class="text-dark mb-md-3" style="margin-bottom: 30px;">
-          <h3 style="text-align:center;" class="pb-2 secondary_heading h2 headline headline-aligned-to-left headline-box py-4"> How Jitume Works? </h3>
-        </div>
-
-      </div>
-
-      <div class="elementor-element elementor-element-5df092b elementor-widget elementor-widget-listeo-iconbox" data-id="5df092b" data-element_type="widget" data-widget_type="listeo-iconbox.default">
-        <div class="elementor-widget-container">
-
-          <div class="icon-box-v3 row mx-auto flex justify-center gap-6 my-6">
-
-            <div class="ibv3-icon col-sm-2 text-center">
-              <img width="75px" height="75px" src="images/randomIcons/loc.png">
-              <p class="text-center mt-3 small">Enter Your Location</p>
-            </div>
-
-            <div class="ibv3-icon col-sm-2 text-center">
-              <img width="75px" height="75px" src="images/randomIcons/cat.png">
-              <p class="text-center mt-3 small">Choose a Category</p>
-            </div>
-
-            <div class="ibv3-icon col-sm-2 text-center">
-              <img width="75px" height="75px" src="images/randomIcons/results.png">
-              <p class="text-center mt-3 small">Get Results in Your Location</p>
-            </div>
-
-            <div class="ibv3-icon col-sm-2 text-center">
-              <img width="75px" height="75px" src="images/randomIcons/choose.png">
-              <p class="text-center mt-3 small">Choose Your Business</p>
-            </div>
-
-            <div class="ibv3-icon col-sm-2 text-center">
-              <img width="75px" height="75px" src="images/randomIcons/grow.png">
-              <p class="text-center mt-3 small">Grow Your Business Together</p>
-            </div>
-
           </div>
 
-        </div>
-      </div>
 
-    </div>
 
-  </div>
-</div>
+          <!-- HOW IT WORKS -->
 
-  <!-- <div class="row w-75 mx-auto my-5  pl-md-5">
+          <!-- <div class="  border border-bottom-dark bg-white"></div> -->
+
+          <!-- <div class="container-fluid row mx-auto my-5 bg-white pt-3">
+
+
+            <div class="elementor-top-column elementor-element elementor-element-ce6f4c7 flex flex-col items-center"
+              data-id="ce6f4c7" data-element_type="column">
+              <div class="elementor-column-wrap elementor-element-populated flex flex-col items-center">
+
+                <div class="elementor-widget-wrap row flex flex-col items-center">
+
+                  <div
+                    class="elementor-element elementor-element-ccc6233 elementor-widget elementor-widget-listeo-headline flex flex-col items-center"
+                    data-id="ccc6233" data-element_type="widget" data-widget_type="listeo-headline.default">
+
+                    <div class="text-dark mb-md-3" style="margin-bottom: 30px;">
+                      <h3 style="text-align:center;"
+                        class="pb-2 secondary_heading h2 headline headline-aligned-to-left headline-box py-4"> How
+                        Jitume Works? </h3>
+                    </div>
+
+                  </div>
+
+                  <div
+                    class="elementor-element elementor-element-5df092b elementor-widget elementor-widget-listeo-iconbox"
+                    data-id="5df092b" data-element_type="widget" data-widget_type="listeo-iconbox.default">
+                    <div class="elementor-widget-container">
+
+                      <div class="icon-box-v3 row mx-auto flex justify-center gap-6 my-6">
+
+                        <div class="ibv3-icon col-sm-2 text-center">
+                          <img width="75px" height="75px" src="images/randomIcons/loc.png">
+                          <p class="text-center mt-3 small">Enter Your Location</p>
+                        </div>
+
+                        <div class="ibv3-icon col-sm-2 text-center">
+                          <img width="75px" height="75px" src="images/randomIcons/cat.png">
+                          <p class="text-center mt-3 small">Choose a Category</p>
+                        </div>
+
+                        <div class="ibv3-icon col-sm-2 text-center">
+                          <img width="75px" height="75px" src="images/randomIcons/results.png">
+                          <p class="text-center mt-3 small">Get Results in Your Location</p>
+                        </div>
+
+                        <div class="ibv3-icon col-sm-2 text-center">
+                          <img width="75px" height="75px" src="images/randomIcons/choose.png">
+                          <p class="text-center mt-3 small">Choose Your Business</p>
+                        </div>
+
+                        <div class="ibv3-icon col-sm-2 text-center">
+                          <img width="75px" height="75px" src="images/randomIcons/grow.png">
+                          <p class="text-center mt-3 small">Grow Your Business Together</p>
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+            <!-- <div class="row w-75 mx-auto my-5  pl-md-5">
     <div class="text-dark mb-md-3">
       <h2 style="text-align:center;" class="secondary_heading h2 headline  headline-aligned-to-left  headline-box pb-2">
         The Show </h2>
@@ -107,64 +117,36 @@
     <video poster="images/video_preview.png" style="" class="video_player elementor-video" src="videos/Jitume.mp4"
       controls="" controlslist="nodownload"></video>
   </div> -->
+  <div class="container ">
 
-</div>
-<!-- How it works -->
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
-<div class="py-5 d-md-flex  border-bottom-dark"></div>
-<!-- <div class="py-5 d-md-flex  border border-bottom-dark"></div> -->
-
-
-</div>
-
-  <div class="container">
-   
-    
-
-
-
+<h1 class="text-center font-bold py-2 text-[24px]">Your platform to invest in local businesses</h1>
 <!--hero section Ends-->
+<div class="flex justify-center ">
+  <div class="lg:w-8/12 md:w-10/12 text-center">
 
+    <form id="form" @submit.prevent="search();" method="post">
 
-
-
-  <div class="row justify-content-center">
-           <h1>hello</h1>
-    <div class="col-lg-8 col-md-10 text-center">
-
-      
-
-      <form id="form" @submit.prevent="search();" class="d-flex flex-wrap justify-content-center" method="post">
-
-        <div class="input-group col-lg-5 col-md-6 my-2">
-          <input style="border-radius: 35px 0 0 35px;" class="form-control border-right-0" type="text" name="listing_name" placeholder="What are you looking for?">
-          <div class="input-group-append">
-            <span class="input-group-text bg-white border-left-0"><i class="fa fa-map-marker"></i></span>
+      <!-- Search Options and Button Section -->
+      <div class="flex justify-center gap-8">
+        <div class="w-5/12 md:w-6/12 my-2">
+          <div class="flex items-center border border-black rounded-lg ">
+            <input class="py-2 px-4 rounded-xl" type="text" name="listing_name"
+              placeholder="What are you looking for?">
+            <div class="bg-white border-l border-gray-300  p-2"><i class="fa fa-map-marker"></i>
+            </div>
           </div>
         </div>
 
-        <div class="input-group col-lg-4 col-md-6 my-2">
-          <input id="searchbox" onkeyup="suggest(this.value);" class="form-control" type="text" name="search" value="" placeholder="Location">
+        <div class="w-4/12 md:w-6/12 my-2">
+          <input id="searchbox" onkeyup="suggest(this.value);"
+            class="py-2 px-4 w-full border border-gray-300 rounded-full" type="text" name="search" value=""
+            placeholder="Location">
         </div>
 
-        <input type="text" name="lat" id="lat" hidden value="">
-        <input type="text" name="lng" id="lng" hidden value="">
-
-        <div class="col-lg-3 col-md-6 my-2">
-          <div class="dropdown">
-            <select id="category" name="category" class="form-control">
+        <div class="w-3/12 md:w-6/12 my-2">
+          <div class="relative">
+            <select id="category" name="category"
+              class="py-2 px-4 w-full border border-gray-300 rounded-full appearance-none">
               <option value="">Category</option>
               <option value="Agriculture">Agriculture</option>
               <option value="Arts / Culture">Arts/Culture</option>
@@ -186,38 +168,97 @@
           </div>
         </div>
 
-       
-        <div class="my-5 py-0">
-         
-  <ul class="nav justify-content-center mb-34">
+        <div class="w-12 my-2 bg-green-700 rounded-full flex items-center justify-center">
+          <button type="submit" class="py-2 px-6  text-white rounded-full"><i class="fa fa-search"></i></button>
+        </div>
+      </div>
+      <!-- End of Search Options and Button Section -->
+
+
+      
+    </form>
+
+    <div class="my-5 py-0">
+  <ul class="nav justify-content-center">
     <li class="nav-item">
       <router-link class="nav-link btn btn-success text-light mx-2" to="category/Agriculture">
         <i class="bi bi-bag"></i> Agriculture
       </router-link>
     </li>
     <li class="nav-item">
-      <router-link class="nav-link btn btn-dark mx-2 text-light" to="category/Renewable-Energy">
+      <router-link class="nav-link btn bg-black mx-2 text-light" to="category/Renewable-Energy">
         <i class="bi bi-lightning-charge"></i> Renewable Energy
       </router-link>
     </li>
   </ul>
-</div>
-      </form>
 
-      <div class="row">
-        <div id="result_list" class="col-md-12 text-left search_results"></div>
-      </div>
 
-    </div>
+
+  <div class="my-6">
+
+    <ul class="d-flex list-unstyled justify-content-center text-black font-bold mx-4 mx-lg-4 py-0 my-0">
+    <li class="nav-item"><router-link to="category/Arts-Culture">Arts/Culture</router-link></li>
+    <li class="nav-item"><router-link to="category/Auto">Auto</router-link></li>
+    <li class="nav-item"><router-link to="category/Domestic_Home">Domestic (HomeHelp etc)</router-link></li>
+    <li class="nav-item"><router-link to="category/Fashion">Fashion</router-link></li>
+    <li class="nav-item"><router-link to="category/Finance-Accounting">Finance/Accounting</router-link></li>
+    <li class="nav-item"><router-link to="category/Food">Food</router-link></li>
+    <li class="nav-item"><router-link to="category/Legal">Legal</router-link></li>
+    <li class="nav-item"><router-link to="category/Media-Internet">Media/Internet</router-link></li>
+    <li class="nav-item"><router-link to="category/Pets">Pets</router-link></li>
+    <li class="nav-item"><router-link to="category/Retail">Retail</router-link></li>
+    <li class="nav-item"><router-link to="category/Real State">Real Estate</router-link></li>
+    <li class="nav-item"><router-link to="category/Security">Security</router-link></li>
+    <li class="nav-item"><router-link to="category/Sports-Gaming">Sports/Gaming</router-link></li>
+    <li class="nav-item"><router-link to="category/Technology-Communications">Technology/Communications</router-link></li>
+    <li class="nav-item"><router-link to="category/Other">Other</router-link></li>
+</ul>
 
   </div>
 </div>
 
 
+
+
+
+    <!-- Search Results Section -->
+    <div id="result_list" class="text-left search_results"></div>
+    <!-- End of Search Results Section -->
+
+  </div>
+</div>
 </div>
 
 
-      <!-- <div class="mt-4">
+
+
+
+          </div>
+          <!-- How it works -->
+
+
+
+
+
+
+        </div>
+
+
+
+
+
+
+        <div class="py-5 d-md-flex  border-bottom-dark"></div>
+        <!-- <div class="py-5 d-md-flex  border border-bottom-dark"></div> -->
+
+
+      </div>
+
+ 
+
+
+
+    <!-- <div class="mt-4">
 
   <div class="text-center pb-0">
 
@@ -249,13 +290,12 @@
 
 
 
-    </div>
 
 
 
 
 
-    <!-- HOW IT WORKS 
+  <!-- HOW IT WORKS 
 
     <div class=" mt-4 border border-bottom-dark bg-white"></div>
 
@@ -356,13 +396,13 @@
     </div>
      How it works  -->
 
-    <!--<div class="container-md-xl row mx-auto my-2 bg-white pt-3">
+  <!--<div class="container-md-xl row mx-auto my-2 bg-white pt-3">
       <hr>
        <div class="pt-1  w-75 mx-auto">
         <h2 style="text-align:left;" class="container-xl secondary_heading"> Latest Businesses </h2>
       </div> -->
 
-      <!--     <div class="card-group my-2 w-75 mx-auto d-md-flex justify-content-center">
+  <!--     <div class="card-group my-2 w-75 mx-auto d-md-flex justify-content-center">
 
         <div v-for="( result, index ) in results" class=" listing col-md-3">
           <router-link :to="`/listingDetails/${result.id}`" class="shadow card border px-2">
@@ -394,12 +434,11 @@
 
       </div> -->
 
-    
-     <!--- <div style="overflow:hidden;" class="row card-group px-3 w-75 mx-auto d-md-flex justify-content-center">
+
+ <div style="overflow:hidden;" class="row card-group px-3 w-75 mx-auto d-md-flex justify-content-center">
         <hooper :settings="hooperSettings" :itemsToShow="4" :centerMode="true" pagination="no">
           <slide class="listing text-center col-md-4 px-4" v-for="( result, index ) in results" :key="index"
             :index="index">
-            <!-- Loop 
             <div class="mx-auto mt-4">
               <router-link :to="`/listingDetails/${result.id}`" class="shadow card border px-2 pt-2">
 
@@ -426,8 +465,7 @@
                 </div>
 
               </router-link>
-            </div>-->
-            <!-- Loop 
+            </div>
 
           </slide>
 
@@ -437,9 +475,9 @@
       </div> 
 
 
-    </div>-->
+    </div>
 
-  
+
 </template>
 
 
@@ -480,9 +518,9 @@ export default {
     checkListing: '',
     serviceDetails: '',
     milestone: '',
-    service_milestone:'',
+    service_milestone: '',
     commit: '',
-    projectManagers:''
+    projectManagers: ''
 
   }),
 
@@ -503,7 +541,7 @@ export default {
     if (this.milestone != null)
       this.$router.push(`business-milestone/${this.milestone}`);
 
-     if (this.projectManagers != null || this.projectManagers)
+    if (this.projectManagers != null || this.projectManagers)
       this.$router.push(`projectManagers/${this.projectManagers}`);
 
     else if (this.milestoneS != null)
@@ -552,9 +590,9 @@ export default {
 
           //thiss.$router.push({ path: '/listingResults', query: { result: response } })
 
-          sessionStorage.setItem('queryLat',lat);
-          sessionStorage.setItem('queryLng',lng);
-          thiss.$router.push({ name: 'listingResults', params: { results: btoa(ids),loc:response.loc } })
+          sessionStorage.setItem('queryLat', lat);
+          sessionStorage.setItem('queryLng', lng);
+          thiss.$router.push({ name: 'listingResults', params: { results: btoa(ids), loc: response.loc } })
         },
         error: function (response) {
           //console.log(response);
@@ -566,11 +604,11 @@ export default {
       let t = this;
       axios.get('latBusiness').then((data) => {
         t.results = data.data.data;
-        for (const [key, value] of Object.entries(t.results)) {                   
-                    value.id = btoa(value.id);
-                    value.id = btoa(value.id);
-                   //console.log(value.id);
-                }
+        for (const [key, value] of Object.entries(t.results)) {
+          value.id = btoa(value.id);
+          value.id = btoa(value.id);
+          //console.log(value.id);
+        }
 
         //console.log(data);
       }).catch((error) => { })
@@ -610,20 +648,20 @@ export default {
   mounted() {
     this.latBusiness();
     this.routerPush();
-    
+
     //GOOGLE VAR
-  //   let initializeWhenGoogleIsAvailable = () => {
-  //     if (google) { // test if google is available
-  //       this.initAutocomplete(); // if it is, then initalize
-  //     } else {
-  //       setTimeout(initializeWhenGoogleIsAvailable, 2000) // if it isn't, wait a bit
-  //      }
-  //    };
-  // initializeWhenGoogleIsAvailable();
-   //GOOGLE VAR
+    //   let initializeWhenGoogleIsAvailable = () => {
+    //     if (google) { // test if google is available
+    //       this.initAutocomplete(); // if it is, then initalize
+    //     } else {
+    //       setTimeout(initializeWhenGoogleIsAvailable, 2000) // if it isn't, wait a bit
+    //      }
+    //    };
+    // initializeWhenGoogleIsAvailable();
+    //GOOGLE VAR
 
     //this.initAutocomplete();
-    
+
 
 
   }
