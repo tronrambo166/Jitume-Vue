@@ -68,9 +68,9 @@
 
 
       <div class="col-md-3">
-        <div class=" eqp-invest my-4 text-left">
-          <h3 class="secondary_heading my-3">About {{form.name}}</h3>
-          <p class="text-justify-center  ">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        <div class=" eqp-invest my-4 text-left my-8">
+          <h3 class="font-light text-3xl my-3">About {{form.name}}</h3>
+          <p class="text-justify-center   ">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
             tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
             laboris nisi ut aliquip</p>
         </div>

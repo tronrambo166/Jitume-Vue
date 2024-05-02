@@ -72,7 +72,7 @@
 <div class=" ">
 
 
-  <nav class="container px-6 py-4 mx-auto flex justify-between items-center bg-white ">
+  <nav class="container px-6 py-4 mx-auto flex justify-between items-center bg-white  border-b-[1.0]">
     <!-- Logo -->
     <div class="flex items-center ">
       <router-link to="/" class="text-xl font-bold text-gray-800 md:text-2xl hover:text-green-400">
@@ -86,19 +86,21 @@
     </button>
 
     <!-- Centered Links -->
-    <ul class="hidden md:flex items-center space-x-8">
-      <li class="text-sm font-bold text-gray-800 hover:text-green-400 px-3">
-        <router-link to="/home" active-class="text-green-600" >Home</router-link>
-      </li>
-      <li class="text-sm font-bold text-gray-800 hover:text-green-400 px-2">
-        <router-link to="/services"> Services</router-link>
-              </li>
-      <li class="text-sm font-bold text-gray-800 hover:text-green-400 px-2">
+<ul class="hidden md:flex items-center space-x-8">
+  <li class="text-sm font-bold text-gray-800 hover:text-green-700 px-3">
+    <router-link to="/home" active-class="text-green-800" class="hover:text-green-700">Home</router-link>
+  </li>
+  <li class="text-sm font-bold text-gray-800 hover:text-green-400 px-2">
+    <router-link to="/services" class="hover:text-green-700">Services</router-link>
+  </li>
+
+
+      <li class="text-sm font-bold text-gray-800 hover:text-green-700 px-2">
         <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">        
          </i> Add Your Business
         </a>
       </li>
-      <li class="text-sm font-bold text-gray-800 hover:text-green-400 px-2">
+      <li class="text-sm font-bold text-gray-800 hover:text-green-700 px-2">
         <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">        
           Create Investor Account
         </a>
@@ -106,7 +108,7 @@
     </ul>
 
   <!-- Login Button -->
-    <button data-target="#loginModal" data-toggle="modal" class="hidden md:block text-sm font-bold text-gray-800 hover:text-blue-400 border-2 border-black rounded-md py-2 px-6 mr-8">Login</button>
+    <button data-target="#loginModal" data-toggle="modal" class="hidden md:block text-sm font-bold text-gray-800 hover:text-green-700 border-[1px] border-black rounded-md py-2 px-6 mr-8">Login</button>
   </nav>
 
 <!-- Offcanvas Navbar -->
@@ -284,48 +286,41 @@
 
 
 
-    <!-- Vue Body End -->
-<footer id="footer" class="bg-dark text-light py-5"> <!-- Increased padding to make the footer bigger -->
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <h5>Quick Links</h5>
-                <ul class="list-unstyled">
-                    <li><a href="#" class="text-light">Sign Up/Sign In as A Project Manager</a></li>
-                    <li><a href="#" class="text-light">Add a Business Service</a></li>
-                    <li><a href="#" class="text-light">How It Works</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4">
-                <h5>Help & Support</h5>
-                <ul class="list-unstyled">
-                    <li><a href="#" class="text-light">FAQs</a></li>
-                    <li><a href="#" class="text-light">Contact Us</a></li>
-                    <li><a href="#" class="text-light">Help</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4">
-                <h5>Legal</h5>
-                <ul class="list-unstyled">
-                    <li><a href="./policy" target="_blank" class="text-light">Privacy Policy</a></li>
-                    <li><a href="./terms" target="_blank" class="text-light">Terms and Conditions</a></li>
-                </ul>
-            </div>
+<footer class="bg-white text-gray-800 py-8 px-[40px] mt-[50px] border-t-2">
+    <div class="container mx-auto flex flex-col md:flex-row justify-between gap-6">
+        <div class="md:w-1/3">
+            <h5 class="font-bold text-lg mb-4">Quick Links</h5>
+            <ul class="list-none ">
+                <li><a href="#" class="text-gray-800 hover:text-green-700 font-light">Sign Up/Sign In as A Project Manager</a></li>
+                <li><a href="#" class="text-gray-800 hover:text-green-700">Add a Business Service</a></li>
+                <li><a href="#" class="text-gray-800 hover:text-green-700">How It Works</a></li>
+            </ul>
         </div>
-        <hr class="bg-light">
-        <div class="row">
-            <div class="col-md-6">
-                <p class="text-success">&copy; JITUME. All Rights Reserved (2024).</p>
-            </div>
-            <div class="col-md-6 text-md-right">
-                <ul class="list-inline text-success">
-                    <li class="list-inline-item"><a href="#" class="text-success"><i class="fab fa-twitter"></i></a></li>
-                    <li class="list-inline-item"><a href="#" class="text-success"><i class="fab fa-instagram"></i></a></li>
-                    <li class="list-inline-item"><a href="#" class="text-success"><i class="fab fa-facebook"></i></a></li>
-                    <li class="list-inline-item"><a href="#" class="text-success"><i class="fab fa-youtube"></i></a></li>
-                </ul>
-            </div>
+        <div class="md:w-1/3">
+            <h5 class="font-bold text-lg mb-4">Help & Support</h5>
+            <ul class="list-none">
+                <li><a href="#" class="text-gray-800 hover:text-green-700">FAQs</a></li>
+                <li><a href="#" class="text-gray-800 hover:text-green-700">Contact Us</a></li>
+                <li><a href="#" class="text-gray-800 hover:text-green-700">Help</a></li>
+            </ul>
         </div>
+        <div class="md:w-1/3">
+            <h5 class="font-bold text-lg mb-4">Legal</h5>
+            <ul class="list-none">
+                <li><a href="./policy" target="_blank" class="text-red-800 hover:text-green-700">Privacy Policy</a></li>
+                <li><a href="./terms" target="_blank" class="text-gray-800 hover:text-green-700">Terms and Conditions</a></li>
+            </ul>
+        </div>
+    </div>
+    <hr class="my-6 border-gray-300">
+    <div class="container mx-auto flex justify-between items-center">
+        <p class="text-sm text-gray-600">&copy; JITUME. All Rights Reserved (2024).</p>
+        <ul class="flex space-x-4">
+            <li><a href="#" class="text-black bold"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 8.293a1 1 0 0 1 1.414 1.414L11.414 12l2.707 2.293a1 1 0 1 1-1.414 1.414L10 13.414l-2.293 2.707a1 1 0 1 1-1.414-1.414L8.586 12 5.879 9.707a1 1 0 1 1 1.414-1.414L10 10.586l2.293-2.707a1 1 0 0 1 1.414 0z" clip-rule="evenodd" /></svg>
+</a></li>            <li><a href="#" class="text-success"><i class="fab fa-instagram"></i></a></li>
+            <li><a href="#" class="text-blue-500"><i class="fab fa-facebook"></i></a></li>
+            <li><a href="#" class="text-red-600"><i class="fab fa-youtube"></i></a></li>
+        </ul>
     </div>
 </footer>
 
@@ -901,17 +896,20 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mb-3 w-50 px-4 m-auto flex">
-                                            <div class="col-md-6">
-                                                <a href="{{route('login.facebook')}}" class="social_btn text-light">
-                                                    <img class="shadow" src="images/randomIcons/fb.png"></a>
-                                            </div>
-                                        
-                                            <div class="col-md-6">
-                                                <a href="{{route('login.google')}}" class="social_btn text-dark">
-                                                    <img class="shadow" src="images/randomIcons/google.png"></a>
-                                            </div>
-                                        </div>
+   <div class="row mb-3 w-50 px-4 m-auto flex">
+    <div class="col-md-6">
+        <a href="{{route('login.facebook')}}" class="social_btn text-light">
+            <i class="fab fa-facebook-f fa-lg shadow"></i>
+        </a>
+    </div>
+    <div class="col-md-6">
+        <a href="{{route('login.google')}}" class="social_btn text-dark">
+            <i class="fab fa-google fa-lg shadow"></i>
+        </a>
+    </div>
+
+</div>
+
 
 
                                     </div>
@@ -1049,7 +1047,7 @@
 
                         <div class="row justify-content-center py-3 ">
                             <div class="px-0 w-100 py-2">
-                                <div class="card collapse" id="all_register">
+                                <div class="card " id="all_register">
 
                                     <div class=" mt-2 text-center User-Artist-Select">
                                         <div class="col-md-5"></div>

@@ -11,18 +11,18 @@
         <!--hero section-->
         <div class="bg-white relative">
           <!-- Vector on the left -->
-          <img src="/images/left vector.png" class="absolute left-0 top-1/2 transform -translate-y-1/2 z-90"
+          <img src="images/left vector.png" class="absolute left-0 top-1/2 transform -translate-y-1/2 z-90"
             style="height: 100px; width: auto;">
 
           <!-- Vector on the right -->
-          <img src="/images/right vector.png" class="absolute right-0 top-1/3 transform -translate-y-1/2 z-10"
+          <img src="images/right vector.png" class="absolute right-0 top-1/3 transform -translate-y-1/2 z-10"
             style="height: 100px; width: auto;">
 
           <div class="container mx-auto py-8 px-[250px]">
             <div class="flex flex-col gap-6 md:flex-row items-center justify-center space-y-8 md:space-y-0">
               <!-- Text on the left -->
               <div class="md:w-1/2">
-                <h2 class="text-lg  text-green-500 font-bold mb-4 py-[18px]">Welcome to Jitume</h2>
+                <h2 class="text-lg  text-gr-500 font-bold mb-4 py-[18px]">Welcome to Jitume</h2>
                 <h3 class="text-[28px] text-black font-black ">Real business,real solutions,<span
                     class="text-green-800 text-[30px]">realchange</span></h3>
                 <h3 class="font-bold py-[20px]">Invest in a business you believe in with as little as $100</h3>
@@ -35,7 +35,7 @@
 
               <!-- Image on the right -->
               <div class="md:w-1/2">
-                <img src="/images/Frame 859(1).png" alt="Your Image" class="w-full h-auto rounded-lg">
+                <img src="images/Frame 859(1).png" alt="Your Image" class="w-full h-auto rounded-lg">
               </div>
             </div>
           </div>
@@ -128,45 +128,61 @@
 
       <!-- Search Options and Button Section -->
       <div class="flex justify-center gap-8">
-        <div class="w-5/12 md:w-6/12 my-2">
+        <div class="w-[300px] my-2">
           <div class="flex items-center border border-black rounded-lg ">
             <input class="py-2 px-4 rounded-xl" type="text" name="listing_name"
               placeholder="What are you looking for?">
-            <div class="bg-white border-l border-gray-300  p-2"><i class="fa fa-map-marker"></i>
-            </div>
+          
           </div>
         </div>
 
-        <div class="w-4/12 md:w-6/12 my-2">
-          <input id="searchbox" onkeyup="suggest(this.value);"
-            class="py-2 px-4 w-full border border-gray-300 rounded-full" type="text" name="search" value=""
-            placeholder="Location">
-        </div>
+        <div class="w-[147px] my-2">
+  <div class="relative">
+    <input id="searchbox" onkeyup="suggest(this.value);"
+      class="py-2 px-4 w-full border border-gray-300 rounded-full" type="text" name="search" value=""
+      placeholder="Location">
+    <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+      <svg class="h-4 w-4 fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+        <path
+          d="M10 2a7 7 0 0 1 7 7c0 4.472-7 11-7 11S3 13.472 3 9a7 7 0 0 1 7-7zm0 2a5 5 0 0 0-5 5c0 2.142 3.094 6.333 5 8 1.906-1.667 5-5.858 5-8a5 5 0 0 0-5-5z" />
+      </svg>
+    </div>
+  </div>
+</div>
 
-        <div class="w-3/12 md:w-6/12 my-2">
-          <div class="relative">
-            <select id="category" name="category"
-              class="py-2 px-4 w-full border border-gray-300 rounded-full appearance-none">
-              <option value="">Category</option>
-              <option value="Agriculture">Agriculture</option>
-              <option value="Arts / Culture">Arts/Culture</option>
-              <option value="Auto">Auto</option>
-              <option value="Sports/Gaming">Sports/Gaming</option>
-              <option value="Real State">Real State</option>
-              <option value="Food">Food</option>
-              <option value="Legal">Legal</option>
-              <option value="Security">Security</option>
-              <option value="Media / Internet">Media/Internet</option>
-              <option value="Fashion">Fashion</option>
-              <option value="Technology / Communications">Technology/Communications</option>
-              <option value="Retail">Retail</option>
-              <option value="Finance/Accounting">Finance/Accounting</option>
-              <option value="Pets">Pets</option>
-              <option value="Domestic (Home Help etc)">Domestic (Home Help etc)</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-        </div>
+
+        <div class="w-[162px] my-2">
+  <div class="relative">
+    <select id="category" name="category"
+      class="py-2 px-4 w-full border border-gray-300 rounded-full appearance-none">
+      <option value="">Category</option>
+      <option value="Agriculture">Agriculture</option>
+      <option value="Arts / Culture">Arts/Culture</option>
+      <option value="Auto">Auto</option>
+      <option value="Sports/Gaming">Sports/Gaming</option>
+      <option value="Real State">Real State</option>
+      <option value="Food">Food</option>
+      <option value="Legal">Legal</option>
+      <option value="Security">Security</option>
+      <option value="Media / Internet">Media/Internet</option>
+      <option value="Fashion">Fashion</option>
+      <option value="Technology / Communications">Technology/Communications</option>
+      <option value="Retail">Retail</option>
+      <option value="Finance/Accounting">Finance/Accounting</option>
+      <option value="Pets">Pets</option>
+      <option value="Domestic (Home Help etc)">Domestic (Home Help etc)</option>
+      <option value="Other">Other</option>
+    </select>
+    <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+      <svg class="h-4 w-4 fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20">
+        <path
+          d="M10 12a1 1 0 0 1-.7-.29l-4-4a1 1 0 1 1 1.4-1.42L10 9.58l3.3-3.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-.7.3z" />
+      </svg>
+    </div>
+  </div>
+</div>
+
 
         <div class="w-12 my-2 bg-green-700 rounded-full flex items-center justify-center">
           <button type="submit" class="py-2 px-6  text-white rounded-full"><i class="fa fa-search"></i></button>
@@ -435,12 +451,65 @@
       </div> -->
 
 
- <div style="overflow:hidden;" class="row card-group px-3 w-75 mx-auto d-md-flex justify-content-center">
+
+    <!-- HOW IT WORKS -->
+
+    <div class=" mt-4 border border-bottom-dark bg-white"></div>
+
+ <div class="container-xl mx-auto my-5 bg-white pt-3">
+    <div class="row">
+        <div class="col-12">
+            <h3  class="text-black py-6 font-bold mb-3 text-center text-2xl">How Jitume Works?</h3>
+        </div>
+    </div>
+    <div class="row my-4">
+        <div class="col-1"></div>
+        <div class="col-2 text-center">
+            <img src="images/randomIcons/loc.png" width="75px" height="75px" alt="">
+            <p class="mt-8 small">Enter Your Location</p>
+        </div>
+        <div class="col-2 text-center">
+            <img src="images/randomIcons/cat.png" width="75px" height="75px" alt="">
+            <p class="mt-8 small">Choose a Category</p>
+        </div>
+        <div class="col-2 text-center">
+            <img src="images/randomIcons/results.png" width="75px" height="75px" alt="">
+            <p class="mt-8 small">Get Results in Your Location</p>
+        </div>
+        <div class="col-2 text-center">
+            <img src="images/randomIcons/choose.png" width="75px" height="75px" alt="">
+            <p class="mt-8 small">Choose Your Business</p>
+        </div>
+        <div class="col-2 text-center">
+            <img src="images/randomIcons/grow.png" width="75px" height="75px" alt="">
+            <p class="mt-8 small">Grow Your Business Together</p>
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
+
+    <!-- How it works -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <div style="overflow:hidden;" class="my-[120px]">
+
+  <h1 class="px-8 text-4xl font-light ">Our Listings</h1>
         <hooper :settings="hooperSettings" :itemsToShow="4" :centerMode="true" pagination="no">
           <slide class="listing text-center col-md-4 px-4" v-for="( result, index ) in results" :key="index"
             :index="index">
-            <div class="mx-auto mt-4">
-              <router-link :to="`/listingDetails/${result.id}`" class="shadow card border px-2 pt-2">
+            <div class=" mt-4">
+              <router-link :to="`/listingDetails/${result.id}`" class="bg-white/70 px-2 pt-2">
 
                 <video v-if="result.file" controls style="width:95%; height:114px;" alt="">
                   <source :src="result.file" type="video/mp4">
@@ -450,17 +519,17 @@
 
                 <div class="px-3 pb-2">
 
-                  <h5 class="card_heading text-left mb-0 py-2">{{ result.name }} </h5>
+                  <h5 class="text-2xl font-light text-green-700 text-left mb-0 py-2">{{ result.name }} </h5>
 
-                  <p class="loc_p card_text pt-1 text-left"><i class="mr-2 fa fa-map-marker"></i>{{ result.location }}</p>
+                  <p class="loc_p card_text pt-1 text-left py-3 block "><i class="mr-2 fa fa-map-marker text-red-600"></i>{{ result.location }}</p>
 
-                  <p class="card_text"><span class="rounded"><i class="mr-2 fa fa-phone"></i>{{ result.contact }}</span>
+                  <p class="card_text"><span class="rounded "><i class="mr-2 fa fa-phone text-black"></i>{{ result.contact }}</span>
                   </p>
 
                 </div>
 
-                <div class="amount px-3 pb-0">
-                  <p class="font-weight-bold">Amount: <span class="font-weight-light"><b>${{ result.investment_needed
+                <div class="amount px-3 pb-0 text-green-700">
+                  <p class="font-thin text-sm">Amount: <span class="font-weight-light"><b>${{ result.investment_needed
                   }}</b></span></p>
                 </div>
 
@@ -473,6 +542,10 @@
         </hooper>
 
       </div> 
+
+
+
+
 
 
     </div>
