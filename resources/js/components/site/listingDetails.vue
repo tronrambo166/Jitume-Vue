@@ -74,6 +74,30 @@
             tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
             laboris nisi ut aliquip</p>
         </div>
+
+
+         <section v-if="!form.conv || !auth_user" class="bg-gray-100 w-full mx-auto py-3">
+
+    <h4 class="text-secondary ml-4 py-2 block">Business Home Window</h4>
+
+    <div v-if="auth_user" class="eqp-invest">
+      <a v-if="plan == 'platinum' || (plan == 'gold' && range == form.range)"
+        @click="unlockBySubs(form.listing_id, subscrib_id, 'platinum');"
+        class="bg-blue-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded my-2 inline-block">Unlock More
+        Business Information To Invest</a>
+
+      <a v-else data-target="#investModal" data-toggle="modal"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-2 inline-block">Unlock More
+        Business Information To Invest</a>
+    </div>
+
+    <div v-else class="eqp-invest">
+      <a @click="make_session(form.listing_id);" data-target="#loginModal" data-toggle="modal"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3 inline-block">Unlock More
+        Business Information To Invest</a>
+    </div>
+
+  </section>
       </div>
 
       <div class="col-md-3">

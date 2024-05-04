@@ -69,10 +69,10 @@
 
 
 
-<div class=" ">
+<div class="border-b border-black ">
 
 
-  <nav class="container px-6 py-4 mx-auto flex justify-between items-center bg-white  border-b-[1.0]">
+<nav class=" w-[1290px] px-8 py-4 mx-auto flex justify-between items-center bg-white" style="border-bottom: 1px solid black;">
     <!-- Logo -->
     <div class="flex items-center ">
       <router-link to="/" class="text-xl font-bold text-gray-800 md:text-2xl hover:text-green-400">
@@ -108,7 +108,7 @@
     </ul>
 
   <!-- Login Button -->
-    <button data-target="#loginModal" data-toggle="modal" class="hidden md:block text-sm font-bold text-gray-800 hover:text-green-700 border-[1px] border-black rounded-md py-2 px-6 mr-8">Login</button>
+    <button data-target="#loginModal" data-toggle="modal" class="hidden md:block text-sm font-bold text-gray-800 hover:text-green-700 border-[1px] border-[#0A0A0A99] rounded-md py-2 px-6 mr-8">Sign in</button>
   </nav>
 
 <!-- Offcanvas Navbar -->
@@ -286,44 +286,43 @@
 
 
 
-<footer class="bg-white text-gray-800 py-8 px-[40px] mt-[50px] border-t-2">
-    <div class="container mx-auto flex flex-col md:flex-row justify-between gap-6">
-        <div class="md:w-1/3">
-            <h5 class="font-bold text-lg mb-4">Quick Links</h5>
-            <ul class="list-none ">
-                <li><a href="#" class="text-gray-800 hover:text-green-700 font-light">Sign Up/Sign In as A Project Manager</a></li>
-                <li><a href="#" class="text-gray-800 hover:text-green-700">Add a Business Service</a></li>
-                <li><a href="#" class="text-gray-800 hover:text-green-700">How It Works</a></li>
+<footer class="bg-white text-green-600 px-[100px] w-full mt-6 py-2">
+    <div class="container mx-auto gap-[220px] flex flex-col md:flex-row justify-center md:justify-between gap-6 w-[959px]">
+        <div class="md:w-1/3 flex flex-col items-start">
+    <ul class="list-none">
+        <li><a href="#" class="text-[#3B856B] hover:text-green-700 font-light">Sign Up/Sign In as A Project Manager</a></li>
+        <li><a href="#" class="text-[#3B856B] hover:text-green-700">Add a Business Service</a></li>
+        <li><a href="#" class="text-[#3B856B] hover:text-green-700">How It Works</a></li>
             </ul>
-        </div>
-        <div class="md:w-1/3">
-            <h5 class="font-bold text-lg mb-4">Help & Support</h5>
-            <ul class="list-none">
-                <li><a href="#" class="text-gray-800 hover:text-green-700">FAQs</a></li>
-                <li><a href="#" class="text-gray-800 hover:text-green-700">Contact Us</a></li>
-                <li><a href="#" class="text-gray-800 hover:text-green-700">Help</a></li>
-            </ul>
-        </div>
-        <div class="md:w-1/3">
-            <h5 class="font-bold text-lg mb-4">Legal</h5>
-            <ul class="list-none">
-                <li><a href="./policy" target="_blank" class="text-red-800 hover:text-green-700">Privacy Policy</a></li>
-                <li><a href="./terms" target="_blank" class="text-gray-800 hover:text-green-700">Terms and Conditions</a></li>
-            </ul>
-        </div>
+</div>
+
+      <div class="md:w-1/3 flex flex-col items-start">
+    <ul class="list-none text-center">
+        <li><a href="#" class="text-[#3B856B] hover:text-green-700">FAQs</a></li>
+        <li><a href="#" class="text-[#3B856B] hover:text-green-700">Contact Us</a></li>
+        <li><a href="#" class="text-[#3B856B] hover:text-green-700">Help</a></li>
+    </ul>
+</div>
+<div class="md:w-1/3 flex flex-col items-start">
+    <ul class="list-none">
+        <li><a href="./policy" target="_blank" class="text-[#3B856B] hover:text-green-700">Privacy Policy</a></li>
+        <li><a href="./terms" target="_blank" class="text-[#3B856B] hover:text-green-700">Terms and Conditions</a></li>
+    </ul>
+    <ul class="flex">
+        <li><a href="#" class="text-black bold"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 8.293a1 1 0 0 1 1.414 1.414L11.414 12l2.707 2.293a1 1 0 1 1-1.414 1.414L10 13.414l-2.293 2.707a1 1 0 1 1-1.414-1.414L8.586 12 5.879 9.707a1 1 0 1 1 1.414-1.414L10 10.586l2.293-2.707a1 1 0 0 1 1.414 0z" clip-rule="evenodd" /></svg></a></li>
+        <li><a href="#" class="text-success"><i class="fab fa-instagram"></i></a></li>
+        <li><a href="#" class="text-blue-500"><i class="fab fa-facebook"></i></a></li>
+        <li><a href="#" class="text-red-600"><i class="fab fa-youtube"></i></a></li>
+    </ul>
+</div>
+
     </div>
     <hr class="my-6 border-gray-300">
     <div class="container mx-auto flex justify-between items-center">
-        <p class="text-sm text-gray-600">&copy; JITUME. All Rights Reserved (2024).</p>
-        <ul class="flex space-x-4">
-            <li><a href="#" class="text-black bold"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 8.293a1 1 0 0 1 1.414 1.414L11.414 12l2.707 2.293a1 1 0 1 1-1.414 1.414L10 13.414l-2.293 2.707a1 1 0 1 1-1.414-1.414L8.586 12 5.879 9.707a1 1 0 1 1 1.414-1.414L10 10.586l2.293-2.707a1 1 0 0 1 1.414 0z" clip-rule="evenodd" /></svg>
-</a></li>            <li><a href="#" class="text-success"><i class="fab fa-instagram"></i></a></li>
-            <li><a href="#" class="text-blue-500"><i class="fab fa-facebook"></i></a></li>
-            <li><a href="#" class="text-red-600"><i class="fab fa-youtube"></i></a></li>
-        </ul>
+       <!-- <p class="text-sm text-gray-600">&copy; JITUME. All Rights Reserved (2024).</p>-->
+        
     </div>
 </footer>
-
 
     </div>
 
