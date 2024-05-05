@@ -1900,6 +1900,24 @@ window.addEventListener('load', () => {
 
 </script>
 
+
+
+<script>
+export default {
+  props: {
+    results: {
+      type: Array,
+      required: true
+    }
+  }
+};
+</script>
+
+
+
+
+
+
 </body>
 
 </html>

@@ -23,7 +23,7 @@
         <!-- Text on the left -->
         <div class="w-[338px] h-[371px] flex-wrap  flex-col gap-[24px] px-6">
             <h2 class="text-[20px] text-gray-500 font-bold mb-4">Welcome to Jitume</h2>
-            <h3 class="text-[28px] text-black font-extrabold py-4">Real businesses, real  <br>solutions, <span
+            <h3 class="text-[28px] text-black font-extrabold py-4">Real businesses, real <br>solutions, <span
                     class="text-green-800 text-[30px]"> real change</span></h3>
             <h3 class="font-bold text-20px pb-6">Invest in a business you believe in with as little as $100</h3>
 
@@ -467,7 +467,30 @@
     </div>
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- How it works --> 
+
+
+
+
+
+
+
+
+
 
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
   <!-- Indicators -->
@@ -478,20 +501,27 @@
   </ol>
 
   <!-- Wrapper for slides -->
-  <div class="carousel-inner px-4 d-md-block">
+  <div class="carousel-inner px-4 d-md-block my-4 ">
     <!-- Loop through your results to generate carousel items -->
     <div v-for="(result, index) in Math.ceil(results.length / 3)" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }">
-      <div class="flex flex-wrap justify-between rounded-full">
+      <div class="flex flex-wrap justify-between bg-white">
         <!-- Loop through three cards for each carousel item -->
-        <div v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]" class="max-w-sm rounded overflow-hidden shadow-lg mx-2 mb-4 sm:mb-0 md:w-1/2">
-          <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="block">
-            <img v-if="results[index * 3 + offset].file" :src="results[index * 3 + offset].file" alt="Placeholder Image" class="w-full h-48 object-cover rounded-xl">
-            <img v-else-if="results[index * 3 + offset].image" :src="results[index * 3 + offset].image" alt="Placeholder Image" class="w-full h-48 object-cover rounded-lg">
-            <img v-else src="https://via.placeholder.com/150" alt="Placeholder Image" class="w-full h-48 object-cover rounded-xl">
-          </router-link>
-          <div class="px-6 py-4">
-            <div class="font-bold text-xl text-bold mb-2">{{ results[index * 3 + offset].name }}</div>
-            <p class="text-gray-900 font-light text-base"><span class="text-gray-400 mr-2">
+        <div v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]" class="max-w-sm  overflow-hidden bg-white rounded-[0.875rem]  shadow-lg mx-2 mb-4 sm:mb-0 md:w-1/2">
+         <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="block relative">
+    <img v-if="results[index * 3 + offset].file" :src="results[index * 3 + offset].file" alt="Placeholder Image" class="w-full h-48 object-cover rounded-[0.875rem]">
+    <img v-else-if="results[index * 3 + offset].image" :src="results[index * 3 + offset].image" alt="Placeholder Image" class="w-full h-48 object-cover rounded-[0.875rem]">
+    <img v-else src="https://via.placeholder.com/150" alt="Placeholder Image" class="w-full h-48 object-cover rounded-[40px]">
+    <div class="absolute bottom-2 left-2 text-black px-4 py-2 bg-white m-2 rounded-[0.875rem] text-sm font-mono">
+      <span>
+    <i class="fas fa-map-marker-alt text-slate-600"></i> 
+</span>
+  {{ results[index * 3 + offset].location }}
+    </div>
+</router-link>
+
+          <div class="p-2 ">
+            <div class="font-bold text-xl text-bold mb-2 text-black py-2">{{ results[index * 3 + offset].name }}</div>
+            <p class="text-black font-light text-lg"><span class="text-gray-400 mr-2">
   <i class="fas fa-map-marker-alt"></i>
 </span>
 {{ results[index * 3 + offset].location }}</p>
@@ -540,10 +570,13 @@
 
 
 
+<!--cards-->
 
 
-    
-
+<section>
+  <Slider/>
+  
+</section>
 
 
 
@@ -632,7 +665,6 @@
 
 
 </div>
-
 
 
 
@@ -831,3 +863,4 @@ export default {
 
 }
 </script>
+

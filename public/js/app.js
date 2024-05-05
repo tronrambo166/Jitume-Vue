@@ -8542,6 +8542,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -72473,7 +72505,7 @@ var render = function () {
           _vm._v(" "),
           _c(
             "div",
-            { staticClass: "carousel-inner px-4 d-md-block" },
+            { staticClass: "carousel-inner px-4 d-md-block my-4" },
             _vm._l(Math.ceil(_vm.results.length / 3), function (result, index) {
               return _c(
                 "div",
@@ -72484,10 +72516,7 @@ var render = function () {
                 [
                   _c(
                     "div",
-                    {
-                      staticClass:
-                        "flex flex-wrap justify-between rounded-full",
-                    },
+                    { staticClass: "flex flex-wrap justify-between bg-white" },
                     _vm._l([0, 1, 2], function (offset) {
                       return _vm.results[index * 3 + offset]
                         ? _c(
@@ -72495,13 +72524,13 @@ var render = function () {
                             {
                               key: index * 3 + offset,
                               staticClass:
-                                "max-w-sm rounded overflow-hidden shadow-lg mx-2 mb-4 sm:mb-0 md:w-1/2",
+                                "max-w-sm overflow-hidden bg-white rounded-[0.875rem] shadow-lg mx-2 mb-4 sm:mb-0 md:w-1/2",
                             },
                             [
                               _c(
                                 "router-link",
                                 {
-                                  staticClass: "block",
+                                  staticClass: "block relative",
                                   attrs: {
                                     to:
                                       "/listingDetails/" +
@@ -72512,7 +72541,7 @@ var render = function () {
                                   _vm.results[index * 3 + offset].file
                                     ? _c("img", {
                                         staticClass:
-                                          "w-full h-48 object-cover rounded-xl",
+                                          "w-full h-48 object-cover rounded-[0.875rem]",
                                         attrs: {
                                           src: _vm.results[index * 3 + offset]
                                             .file,
@@ -72522,7 +72551,7 @@ var render = function () {
                                     : _vm.results[index * 3 + offset].image
                                     ? _c("img", {
                                         staticClass:
-                                          "w-full h-48 object-cover rounded-lg",
+                                          "w-full h-48 object-cover rounded-[0.875rem]",
                                         attrs: {
                                           src: _vm.results[index * 3 + offset]
                                             .image,
@@ -72531,21 +72560,45 @@ var render = function () {
                                       })
                                     : _c("img", {
                                         staticClass:
-                                          "w-full h-48 object-cover rounded-xl",
+                                          "w-full h-48 object-cover rounded-[40px]",
                                         attrs: {
                                           src: "https://via.placeholder.com/150",
                                           alt: "Placeholder Image",
                                         },
                                       }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "absolute bottom-2 left-2 text-black px-4 py-2 bg-white m-2 rounded-[0.875rem] text-sm font-mono",
+                                    },
+                                    [
+                                      _c("span", [
+                                        _c("i", {
+                                          staticClass:
+                                            "fas fa-map-marker-alt text-slate-600",
+                                        }),
+                                      ]),
+                                      _vm._v(
+                                        "\n  " +
+                                          _vm._s(
+                                            _vm.results[index * 3 + offset]
+                                              .location
+                                          ) +
+                                          "\n    "
+                                      ),
+                                    ]
+                                  ),
                                 ]
                               ),
                               _vm._v(" "),
-                              _c("div", { staticClass: "px-6 py-4" }, [
+                              _c("div", { staticClass: "p-2" }, [
                                 _c(
                                   "div",
                                   {
                                     staticClass:
-                                      "font-bold text-xl text-bold mb-2",
+                                      "font-bold text-xl text-bold mb-2 text-black py-2",
                                   },
                                   [
                                     _vm._v(
@@ -72560,7 +72613,7 @@ var render = function () {
                                   "p",
                                   {
                                     staticClass:
-                                      "text-gray-900 font-light text-base",
+                                      "text-black font-light text-lg",
                                   },
                                   [
                                     _vm._m(5, true),
@@ -72670,6 +72723,8 @@ var render = function () {
         ]
       ),
       _vm._v(" "),
+      _c("section", [_c("Slider")], 1),
+      _vm._v(" "),
       _vm._m(9),
       _vm._v(" "),
       _vm._m(10),
@@ -72708,7 +72763,7 @@ var staticRenderFns = [
                 "h3",
                 { staticClass: "text-[28px] text-black font-extrabold py-4" },
                 [
-                  _vm._v("Real businesses, real \u2028"),
+                  _vm._v("Real businesses, real "),
                   _c("br"),
                   _vm._v("solutions, "),
                   _c("span", { staticClass: "text-green-800 text-[30px]" }, [
