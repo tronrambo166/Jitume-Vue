@@ -8563,17 +8563,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -72496,16 +72485,16 @@ var render = function () {
       _vm._v(" "),
       _c(
         "div",
-        {
-          staticClass: "carousel slide",
-          attrs: { id: "myCarousel", "data-ride": "carousel" },
-        },
+        { staticClass: "carousel slide", attrs: { id: "myCarousel" } },
         [
           _vm._m(4),
           _vm._v(" "),
           _c(
             "div",
-            { staticClass: "carousel-inner px-4 d-md-block my-4" },
+            {
+              staticClass: "carousel-inner px-4 d-md-block my-4",
+              staticStyle: { "padding-left": "20px", "padding-right": "20px" },
+            },
             _vm._l(Math.ceil(_vm.results.length / 3), function (result, index) {
               return _c(
                 "div",
@@ -72516,7 +72505,10 @@ var render = function () {
                 [
                   _c(
                     "div",
-                    { staticClass: "flex flex-wrap justify-between bg-white" },
+                    {
+                      staticClass:
+                        "flex flex-wrap justify-center lg:justify-start bg-white",
+                    },
                     _vm._l([0, 1, 2], function (offset) {
                       return _vm.results[index * 3 + offset]
                         ? _c(
@@ -72524,7 +72516,7 @@ var render = function () {
                             {
                               key: index * 3 + offset,
                               staticClass:
-                                "max-w-sm overflow-hidden bg-white rounded-[0.875rem] shadow-lg mx-2 mb-4 sm:mb-0 md:w-1/2",
+                                "max-w-[400px] mx-auto lg:mx-0 overflow-hidden bg-white rounded-[0.875rem] shadow-lg my-4 sm:my-0 md:w-[350px] lg:w-[350px]",
                             },
                             [
                               _c(
@@ -72571,7 +72563,7 @@ var render = function () {
                                     "div",
                                     {
                                       staticClass:
-                                        "absolute bottom-2 left-2 text-black px-4 py-2 bg-white m-2 rounded-[0.875rem] text-sm font-mono",
+                                        "absolute bottom-2 left-2 text-black px-4 py-2 bg-white m-2 rounded-[0.875rem] text-sm",
                                     },
                                     [
                                       _c("span", [
@@ -72581,12 +72573,12 @@ var render = function () {
                                         }),
                                       ]),
                                       _vm._v(
-                                        "\n  " +
+                                        "\n              " +
                                           _vm._s(
                                             _vm.results[index * 3 + offset]
                                               .location
                                           ) +
-                                          "\n    "
+                                          "\n            "
                                       ),
                                     ]
                                   ),
@@ -72618,7 +72610,7 @@ var render = function () {
                                   [
                                     _vm._m(5, true),
                                     _vm._v(
-                                      "\n" +
+                                      "\n            " +
                                         _vm._s(
                                           _vm.results[index * 3 + offset]
                                             .location

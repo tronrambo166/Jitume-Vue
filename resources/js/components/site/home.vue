@@ -490,9 +490,7 @@
 
 
 
-
-
-<div id="myCarousel" class="carousel slide" data-ride="carousel">
+<div id="myCarousel" class="carousel slide">
   <!-- Indicators -->
   <ol class="carousel-indicators">
     <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -501,30 +499,30 @@
   </ol>
 
   <!-- Wrapper for slides -->
-  <div class="carousel-inner px-4 d-md-block my-4 ">
+  <div class="carousel-inner px-4 d-md-block my-4" style="padding-left: 20px; padding-right: 20px;">
     <!-- Loop through your results to generate carousel items -->
     <div v-for="(result, index) in Math.ceil(results.length / 3)" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }">
-      <div class="flex flex-wrap justify-between bg-white">
+      <div class="flex flex-wrap justify-center lg:justify-start bg-white">
         <!-- Loop through three cards for each carousel item -->
-        <div v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]" class="max-w-sm  overflow-hidden bg-white rounded-[0.875rem]  shadow-lg mx-2 mb-4 sm:mb-0 md:w-1/2">
-         <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="block relative">
-    <img v-if="results[index * 3 + offset].file" :src="results[index * 3 + offset].file" alt="Placeholder Image" class="w-full h-48 object-cover rounded-[0.875rem]">
-    <img v-else-if="results[index * 3 + offset].image" :src="results[index * 3 + offset].image" alt="Placeholder Image" class="w-full h-48 object-cover rounded-[0.875rem]">
-    <img v-else src="https://via.placeholder.com/150" alt="Placeholder Image" class="w-full h-48 object-cover rounded-[40px]">
-    <div class="absolute bottom-2 left-2 text-black px-4 py-2 bg-white m-2 rounded-[0.875rem] text-sm font-mono">
-      <span>
-    <i class="fas fa-map-marker-alt text-slate-600"></i> 
-</span>
-  {{ results[index * 3 + offset].location }}
-    </div>
-</router-link>
+        <div v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]" class="max-w-[400px] mx-auto lg:mx-0 overflow-hidden bg-white rounded-[0.875rem] shadow-lg my-4 sm:my-0 md:w-[350px] lg:w-[350px]">
+          <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="block relative">
+            <img v-if="results[index * 3 + offset].file" :src="results[index * 3 + offset].file" alt="Placeholder Image" class="w-full h-48 object-cover rounded-[0.875rem]">
+            <img v-else-if="results[index * 3 + offset].image" :src="results[index * 3 + offset].image" alt="Placeholder Image" class="w-full h-48 object-cover rounded-[0.875rem]">
+            <img v-else src="https://via.placeholder.com/150" alt="Placeholder Image" class="w-full h-48 object-cover rounded-[40px]">
+            <div class="absolute bottom-2 left-2 text-black px-4 py-2 bg-white m-2 rounded-[0.875rem] text-sm ">
+              <span>
+                <i class="fas fa-map-marker-alt text-slate-600"></i> 
+              </span>
+              {{ results[index * 3 + offset].location }}
+            </div>
+          </router-link>
 
           <div class="p-2 ">
             <div class="font-bold text-xl text-bold mb-2 text-black py-2">{{ results[index * 3 + offset].name }}</div>
             <p class="text-black font-light text-lg"><span class="text-gray-400 mr-2">
-  <i class="fas fa-map-marker-alt"></i>
-</span>
-{{ results[index * 3 + offset].location }}</p>
+              <i class="fas fa-map-marker-alt"></i>
+            </span>
+            {{ results[index * 3 + offset].location }}</p>
             <p class="text-black text-base">{{ results[index * 3 + offset].contact }}</p>
             <p class="text-gray-900 text-base py-2">Amount: <span class="font-semibold text-green-600">${{ results[index * 3 + offset].investment_needed }}</span></p>
             <div class="flex justify-between items-center mt-4">
@@ -544,29 +542,20 @@
     </div>
   </div>
 
- <!-- Left and right controls -->
-<a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-  <div class="bg-black px-8 rounded-full">
-  <i class="fas fa-chevron-left custom-icon text-green-700"></i>
-  <span class="sr-only">Previous</span>
+  <!-- Left and right controls -->
+  <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+    <div class="bg-black px-8 rounded-full">
+      <i class="fas fa-chevron-left custom-icon text-green-700"></i>
+      <span class="sr-only">Previous</span>
+    </div>
+  </a>
+  <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+    <div class="bg-black px-8 rounded-full">
+      <i class="fas fa-chevron-right custom-icon text-green-700"></i>
+      <span class="sr-only">Next</span>
+    </div>
+  </a>
 </div>
-
- 
-</a>
-<a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-  <div class="bg-black px-8 rounded-full">
-    <i class="fas fa-chevron-right custom-icon text-green-700"></i>
-    <span class="sr-only">Next</span>
-  </div>
-</a>
-
-
-
-</div>
-
-
-
-
 
 
 
