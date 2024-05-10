@@ -11655,6 +11655,15 @@ video {
 .h-\[300px\] {
   height: 300px;
 }
+.h-3 {
+  height: 0.75rem;
+}
+.h-64 {
+  height: 16rem;
+}
+.h-8 {
+  height: 2rem;
+}
 .w-12 {
   width: 3rem;
 }
@@ -11751,6 +11760,12 @@ video {
 .w-\[350px\] {
   width: 350px;
 }
+.w-3 {
+  width: 0.75rem;
+}
+.w-8 {
+  width: 2rem;
+}
 .max-w-\[1440px\] {
   max-width: 1440px;
 }
@@ -11760,8 +11775,17 @@ video {
 .max-w-full {
   max-width: 100%;
 }
+.max-w-7xl {
+  max-width: 80rem;
+}
+.max-w-xs {
+  max-width: 20rem;
+}
 .flex-1 {
   flex: 1 1 0%;
+}
+.flex-shrink-0 {
+  flex-shrink: 0;
 }
 .flex-grow {
   flex-grow: 1;
@@ -11772,6 +11796,9 @@ video {
 }
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 .list-none {
   list-style-type: none;
@@ -11861,6 +11888,11 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(2rem * var(--tw-space-y-reverse));
+}
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
 }
 .overflow-hidden {
   overflow: hidden;
@@ -12005,6 +12037,10 @@ video {
 .bg-gray-900 {
   --tw-bg-opacity: 1;
   background-color: rgb(17 24 39 / var(--tw-bg-opacity));
+}
+.bg-gray-800 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity));
 }
 .bg-opacity-75 {
   --tw-bg-opacity: 0.75;
@@ -12227,6 +12263,9 @@ video {
 }
 .pb-4 {
   padding-bottom: 1rem;
+}
+.pb-8 {
+  padding-bottom: 2rem;
 }
 .text-left {
   text-align: left;
@@ -12456,6 +12495,10 @@ video {
 .hover\:text-green-700:hover {
   --tw-text-opacity: 1;
   color: rgb(21 128 61 / var(--tw-text-opacity));
+}
+.hover\:text-gray-900:hover {
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity));
 }
 .focus\:border-\[\#198754\]:focus {
   --tw-border-opacity: 1;
