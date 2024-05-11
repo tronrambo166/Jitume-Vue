@@ -72794,7 +72794,7 @@ var staticRenderFns = [
       "div",
       {
         staticClass:
-          "w-12 my-2 bg-green-700 rounded-full flex items-center justify-center",
+          "w-12 h-12 my-2 bg-green-700 rounded-[50%] flex items-center justify-center",
       },
       [
         _c(
