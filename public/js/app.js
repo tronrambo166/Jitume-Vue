@@ -8525,43 +8525,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -72478,18 +72441,15 @@ var render = function () {
         ]),
       ]),
       _vm._v(" "),
+      _c("section", [_c("Slider")], 1),
+      _vm._v(" "),
       _c(
         "div",
-        { staticClass: "carousel slide", attrs: { id: "myCarousel" } },
+        { staticClass: "carousel slide", attrs: { id: "resource-slider" } },
         [
-          _vm._m(4),
-          _vm._v(" "),
           _c(
             "div",
-            {
-              staticClass: "carousel-inner px-4 d-md-block my-4",
-              staticStyle: { "padding-left": "20px", "padding-right": "20px" },
-            },
+            { staticClass: "carousel-inner" },
             _vm._l(Math.ceil(_vm.results.length / 3), function (result, index) {
               return _c(
                 "div",
@@ -72500,199 +72460,154 @@ var render = function () {
                 [
                   _c(
                     "div",
-                    {
-                      staticClass:
-                        "flex flex-wrap justify-center lg:justify-start bg-white",
-                    },
+                    { staticClass: "flex flex-wrap" },
                     _vm._l([0, 1, 2], function (offset) {
                       return _vm.results[index * 3 + offset]
                         ? _c(
                             "div",
                             {
                               key: index * 3 + offset,
-                              staticClass:
-                                "m mx-auto lg:mx-0 overflow-hidden bg-white rounded-[0.875rem] shadow-lg my-4 sm:my-0 md:w-[350px] lg:w-[350px]",
+                              staticClass: "w-full md:w-1/3 px-2",
                             },
                             [
                               _c(
-                                "router-link",
+                                "div",
                                 {
-                                  staticClass: "block relative",
-                                  attrs: {
-                                    to:
-                                      "/listingDetails/" +
-                                      _vm.results[index * 3 + offset].id,
-                                  },
+                                  staticClass:
+                                    "bg-white rounded-lg shadow-lg p-4 mb-4",
                                 },
                                 [
-                                  _vm.results[index * 3 + offset].file
-                                    ? _c("img", {
+                                  _c(
+                                    "a",
+                                    {
+                                      attrs: {
+                                        href:
+                                          "/listingDetails/" +
+                                          _vm.results[index * 3 + offset].id,
+                                      },
+                                    },
+                                    [
+                                      _c("img", {
                                         staticClass:
-                                          "w-full h-48 object-cover rounded-[0.875rem]",
-                                        attrs: {
-                                          src: _vm.results[index * 3 + offset]
-                                            .file,
-                                          alt: "Placeholder Image",
-                                        },
-                                      })
-                                    : _vm.results[index * 3 + offset].image
-                                    ? _c("img", {
-                                        staticClass:
-                                          "w-full h-48 object-cover rounded-[0.875rem]",
+                                          "w-full h-40 object-cover rounded-lg mb-4",
                                         attrs: {
                                           src: _vm.results[index * 3 + offset]
                                             .image,
-                                          alt: "Placeholder Image",
-                                        },
-                                      })
-                                    : _c("img", {
-                                        staticClass:
-                                          "w-full h-48 object-cover rounded-[40px]",
-                                        attrs: {
-                                          src: "https://via.placeholder.com/150",
-                                          alt: "Placeholder Image",
+                                          alt: "Image",
                                         },
                                       }),
+                                    ]
+                                  ),
                                   _vm._v(" "),
                                   _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "absolute bottom-2 left-2 text-black px-4 py-2 bg-white m-2 rounded-[0.875rem] text-sm",
-                                    },
+                                    "footer",
+                                    { staticClass: "text-sm text-gray-600" },
                                     [
-                                      _c("span", [
-                                        _c("i", {
-                                          staticClass:
-                                            "fas fa-map-marker-alt text-slate-600",
-                                        }),
-                                      ]),
                                       _vm._v(
-                                        "\n              " +
-                                          _vm._s(
-                                            _vm.results[index * 3 + offset]
-                                              .location
-                                          ) +
-                                          "\n            "
+                                        _vm._s(
+                                          _vm.results[index * 3 + offset].type
+                                        )
                                       ),
                                     ]
                                   ),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "p-2 bg- mb-8" }, [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "font-bold text-xl text-bold mb-2 text-black py-2",
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm.results[index * 3 + offset].name
-                                      )
+                                  _vm._v(" "),
+                                  _c("header", [
+                                    _c(
+                                      "h4",
+                                      { staticClass: "text-lg font-bold mt-2" },
+                                      [
+                                        _c(
+                                          "a",
+                                          {
+                                            attrs: {
+                                              href:
+                                                "/listingDetails/" +
+                                                _vm.results[index * 3 + offset]
+                                                  .id,
+                                            },
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm.results[index * 3 + offset]
+                                                  .name
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                      ]
                                     ),
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "p",
-                                  {
-                                    staticClass:
-                                      "text-black font-light text-lg",
-                                  },
-                                  [
-                                    _vm._m(5, true),
-                                    _vm._v(
-                                      "\n            " +
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "p",
+                                    { staticClass: "text-sm text-gray-700" },
+                                    [
+                                      _vm._v(
                                         _vm._s(
                                           _vm.results[index * 3 + offset]
-                                            .location
+                                            .description
                                         )
-                                    ),
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "p",
-                                  { staticClass: "text-black text-base" },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm.results[index * 3 + offset].contact
-                                      )
-                                    ),
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "p",
-                                  {
-                                    staticClass: "text-gray-900 text-base py-2",
-                                  },
-                                  [
-                                    _vm._v("Amount: "),
-                                    _c(
-                                      "span",
-                                      {
-                                        staticClass:
-                                          "font-semibold text-green-600",
-                                      },
-                                      [
-                                        _vm._v(
-                                          "$" +
-                                            _vm._s(
-                                              _vm.results[index * 3 + offset]
-                                                .investment_needed
-                                            )
-                                        ),
-                                      ]
-                                    ),
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "flex justify-between items-center mt-4",
-                                  },
-                                  [
-                                    _c("div", [
-                                      _vm._m(6, true),
-                                      _vm._v(" "),
-                                      _c(
-                                        "span",
-                                        { staticClass: "text-gray-700" },
-                                        [
-                                          _vm._v(
-                                            _vm._s(
-                                              _vm.results[index * 3 + offset]
-                                                .contact
-                                            )
-                                          ),
-                                        ]
                                       ),
-                                    ]),
-                                    _vm._v(" "),
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass:
-                                          "bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded",
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                View Details\n              "
-                                        ),
-                                      ]
-                                    ),
-                                  ]
-                                ),
-                              ]),
-                            ],
-                            1
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "p",
+                                    {
+                                      staticClass:
+                                        "text-sm text-gray-700 hover:text-green-800",
+                                    },
+                                    [
+                                      _vm._v(
+                                        "Name: " +
+                                          _vm._s(
+                                            _vm.results[index * 3 + offset].name
+                                          )
+                                      ),
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "p",
+                                    { staticClass: "text-sm text-gray-700" },
+                                    [
+                                      _vm._v(
+                                        "Contact: " +
+                                          _vm._s(
+                                            _vm.results[index * 3 + offset]
+                                              .contact
+                                          )
+                                      ),
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "p",
+                                    { staticClass: "text-sm text-gray-700" },
+                                    [
+                                      _vm._v(
+                                        "Location: " +
+                                          _vm._s(
+                                            _vm.results[index * 3 + offset]
+                                              .location
+                                          )
+                                      ),
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "a",
+                                    {
+                                      staticClass:
+                                        "btn mt-4 inline-block bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded",
+                                      attrs: { href: "#" },
+                                    },
+                                    [_vm._v("Learn More")]
+                                  ),
+                                ]
+                              ),
+                            ]
                           )
                         : _vm._e()
                     }),
@@ -72704,19 +72619,17 @@ var render = function () {
             0
           ),
           _vm._v(" "),
-          _vm._m(7),
+          _vm._m(4),
           _vm._v(" "),
-          _vm._m(8),
+          _vm._m(5),
         ]
       ),
       _vm._v(" "),
-      _c("section", [_c("Slider")], 1),
+      _vm._m(6),
       _vm._v(" "),
-      _vm._m(9),
+      _vm._m(7),
       _vm._v(" "),
-      _vm._m(10),
-      _vm._v(" "),
-      _vm._m(11),
+      _vm._m(8),
     ]
   )
 }
@@ -72899,51 +72812,23 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("ol", { staticClass: "carousel-indicators" }, [
-      _c("li", {
-        staticClass: "active",
-        attrs: { "data-target": "#myCarousel", "data-slide-to": "0" },
-      }),
-      _vm._v(" "),
-      _c("li", {
-        attrs: { "data-target": "#myCarousel", "data-slide-to": "1" },
-      }),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "text-gray-400 mr-2" }, [
-      _c("i", { staticClass: "fas fa-map-marker-alt" }),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "text-gray-400 mr-2" }, [
-      _c("i", { staticClass: "fas fa-phone text-green-600" }),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c(
       "a",
       {
         staticClass: "carousel-control-prev",
-        attrs: { href: "#myCarousel", role: "button", "data-slide": "prev" },
+        attrs: {
+          href: "#resource-slider",
+          role: "button",
+          "data-slide": "prev",
+        },
       },
       [
-        _c("div", { staticClass: "bg-black px-8 rounded-full" }, [
-          _c("i", {
-            staticClass: "fas fa-chevron-left custom-icon text-green-700",
-          }),
-          _vm._v(" "),
-          _c("span", { staticClass: "sr-only" }, [_vm._v("Previous")]),
-        ]),
+        _c("span", {
+          staticClass: "carousel-control-prev-icon bg-black",
+          attrs: { "aria-hidden": "true" },
+        }),
+        _vm._v(" "),
+        _c("span", { staticClass: "sr-only" }, [_vm._v("Previous")]),
       ]
     )
   },
@@ -72955,16 +72840,19 @@ var staticRenderFns = [
       "a",
       {
         staticClass: "carousel-control-next",
-        attrs: { href: "#myCarousel", role: "button", "data-slide": "next" },
+        attrs: {
+          href: "#resource-slider",
+          role: "button",
+          "data-slide": "next",
+        },
       },
       [
-        _c("div", { staticClass: "bg-black px-8 rounded-full" }, [
-          _c("i", {
-            staticClass: "fas fa-chevron-right custom-icon text-green-700",
-          }),
-          _vm._v(" "),
-          _c("span", { staticClass: "sr-only" }, [_vm._v("Next")]),
-        ]),
+        _c("span", {
+          staticClass: "carousel-control-next-icon bg-black",
+          attrs: { "aria-hidden": "true" },
+        }),
+        _vm._v(" "),
+        _c("span", { staticClass: "sr-only" }, [_vm._v("Next")]),
       ]
     )
   },
