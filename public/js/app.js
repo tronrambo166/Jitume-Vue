@@ -8522,9 +8522,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -72464,10 +72461,15 @@ var render = function () {
                     _vm._l([0, 1, 2], function (offset) {
                       return _vm.results[index * 3 + offset]
                         ? _c(
-                            "div",
+                            "router-link",
                             {
                               key: index * 3 + offset,
                               staticClass: "w-full md:w-1/3 px-2",
+                              attrs: {
+                                to:
+                                  "/listingDetails/" +
+                                  _vm.results[index * 3 + offset].id,
+                              },
                             },
                             [
                               _c(
@@ -72477,27 +72479,15 @@ var render = function () {
                                     "bg-white rounded-lg shadow-lg p-4 mb-4",
                                 },
                                 [
-                                  _c(
-                                    "a",
-                                    {
-                                      attrs: {
-                                        href:
-                                          "/listingDetails/" +
-                                          _vm.results[index * 3 + offset].id,
-                                      },
+                                  _c("img", {
+                                    staticClass:
+                                      "w-full h-40 object-cover rounded-lg mb-4",
+                                    attrs: {
+                                      src: _vm.results[index * 3 + offset]
+                                        .image,
+                                      alt: "Image",
                                     },
-                                    [
-                                      _c("img", {
-                                        staticClass:
-                                          "w-full h-40 object-cover rounded-lg mb-4",
-                                        attrs: {
-                                          src: _vm.results[index * 3 + offset]
-                                            .image,
-                                          alt: "Image",
-                                        },
-                                      }),
-                                    ]
-                                  ),
+                                  }),
                                   _vm._v(" "),
                                   _c(
                                     "footer",
@@ -72516,24 +72506,10 @@ var render = function () {
                                       "h4",
                                       { staticClass: "text-lg font-bold mt-2" },
                                       [
-                                        _c(
-                                          "a",
-                                          {
-                                            attrs: {
-                                              href:
-                                                "/listingDetails/" +
-                                                _vm.results[index * 3 + offset]
-                                                  .id,
-                                            },
-                                          },
-                                          [
-                                            _vm._v(
-                                              _vm._s(
-                                                _vm.results[index * 3 + offset]
-                                                  .name
-                                              )
-                                            ),
-                                          ]
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.results[index * 3 + offset].name
+                                          )
                                         ),
                                       ]
                                     ),
@@ -72554,10 +72530,7 @@ var render = function () {
                                   _vm._v(" "),
                                   _c(
                                     "p",
-                                    {
-                                      staticClass:
-                                        "text-sm text-gray-700 hover:text-green-800",
-                                    },
+                                    { staticClass: "text-sm text-gray-700" },
                                     [
                                       _vm._v(
                                         "Name: " +
@@ -72597,21 +72570,26 @@ var render = function () {
                                   ),
                                   _vm._v(" "),
                                   _c(
-                                    "a",
+                                    "router-link",
                                     {
                                       staticClass:
                                         "btn mt-4 inline-block bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded",
-                                      attrs: { href: "#" },
+                                      attrs: {
+                                        to:
+                                          "/listingDetails/" +
+                                          _vm.results[index * 3 + offset].id,
+                                      },
                                     },
                                     [_vm._v("Learn More")]
                                   ),
-                                ]
+                                ],
+                                1
                               ),
                             ]
                           )
                         : _vm._e()
                     }),
-                    0
+                    1
                   ),
                 ]
               )
