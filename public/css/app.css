@@ -11735,6 +11735,9 @@ video {
 .h-\[50vh\] {
   height: 50vh;
 }
+.h-\[215px\] {
+  height: 215px;
+}
 .w-12 {
   width: 3rem;
 }
@@ -11864,6 +11867,9 @@ video {
 .w-\[7zz\] {
   width: 7zz;
 }
+.w-\[70\%\] {
+  width: 70%;
+}
 .max-w-\[1440px\] {
   max-width: 1440px;
 }
@@ -11905,6 +11911,15 @@ video {
 }
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+@keyframes pulse {
+
+  50% {
+    opacity: .5;
+  }
+}
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 .cursor-pointer {
   cursor: pointer;

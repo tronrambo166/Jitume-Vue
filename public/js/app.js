@@ -72781,7 +72781,7 @@ var render = function () {
         [
           _c(
             "div",
-            { staticClass: "carousel-inner mb-4 w-[80%] mx-auto" },
+            { staticClass: "carousel-inner mb-4 w-[70%] mx-auto" },
             _vm._l(Math.ceil(_vm.results.length / 3), function (result, index) {
               return _c(
                 "div",
@@ -72799,7 +72799,7 @@ var render = function () {
                             "router-link",
                             {
                               key: index * 3 + offset,
-                              staticClass: "w-full md:w-1/3 px-2",
+                              staticClass: "w-full md:w-1/3 px-3",
                               attrs: {
                                 to:
                                   "/listingDetails/" +
@@ -72817,7 +72817,7 @@ var render = function () {
                                   _c("div", { staticClass: "relative" }, [
                                     _c("img", {
                                       staticClass:
-                                        "w-full h-40 object-cover rounded-lg mb-4",
+                                        "w-full h-[215px] object-cover rounded-lg mb-4",
                                       attrs: {
                                         src: _vm.results[index * 3 + offset]
                                           .image,
@@ -72922,7 +72922,7 @@ var render = function () {
                                         "router-link",
                                         {
                                           staticClass:
-                                            "btn inline-block bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded",
+                                            "btn inline-block bg-green-800 hover:bg-green-700 text-white py-2 px-4 rounded",
                                           attrs: {
                                             to:
                                               "/listingDetails/" +

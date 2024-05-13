@@ -86,3 +86,10 @@ defer(function() {
   })(jQuery); // end function
 });
 
+
+ document.addEventListener("DOMContentLoaded", function() {
+        var div = document.getElementById('myDiv');
+        div.classList.remove('animate-pulse');
+        div.classList.add('animation-none');
+    });
+ 
