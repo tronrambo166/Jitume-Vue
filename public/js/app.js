@@ -8522,6 +8522,60 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -72434,6 +72488,287 @@ var render = function () {
                 ]),
               ]),
             ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-center pb-0" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "carousel slide",
+                  attrs: { id: "category-slider" },
+                },
+                [
+                  _c("div", { staticClass: "carousel-inner" }, [
+                    _c("div", { staticClass: "carousel-item active" }, [
+                      _c(
+                        "ul",
+                        {
+                          staticClass:
+                            "d-flex list-unstyled justify-content-center text-black font-semibold mx-4 mx-lg-4 py-0 my-0",
+                        },
+                        [
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "text-decoration-none",
+                                  attrs: { to: "category/Arts-Culture" },
+                                },
+                                [_vm._v("Arts/Culture")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "text-decoration-none",
+                                  attrs: { to: "category/Auto" },
+                                },
+                                [_vm._v("Auto")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "text-decoration-none",
+                                  attrs: { to: "category/Domestic_Home" },
+                                },
+                                [_vm._v("Domestic (HomeHelp etc)")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "text-decoration-none",
+                                  attrs: { to: "category/Fashion" },
+                                },
+                                [_vm._v("Fashion")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "text-decoration-none",
+                                  attrs: { to: "category/Finance-Accounting" },
+                                },
+                                [_vm._v("Finance/Accounting")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "text-decoration-none",
+                                  attrs: { to: "category/Food" },
+                                },
+                                [_vm._v("Food")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "text-decoration-none",
+                                  attrs: { to: "category/Legal" },
+                                },
+                                [_vm._v("Legal")]
+                              ),
+                            ],
+                            1
+                          ),
+                        ]
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "carousel-item" }, [
+                      _c(
+                        "ul",
+                        {
+                          staticClass:
+                            "d-flex list-unstyled justify-content-center text-black mx-4 mx-lg-4 py-0 my-0",
+                        },
+                        [
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "text-decoration-none",
+                                  attrs: { to: "category/Media-Internet" },
+                                },
+                                [_vm._v("Media/Internet")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "text-decoration-none",
+                                  attrs: { to: "category/Pets" },
+                                },
+                                [_vm._v("Pets")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "text-decoration-none",
+                                  attrs: { to: "category/Retail" },
+                                },
+                                [_vm._v("Retail")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "text-decoration-none",
+                                  attrs: { to: "category/Real-State" },
+                                },
+                                [_vm._v("Real Estate")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "text-decoration-none",
+                                  attrs: { to: "category/Security" },
+                                },
+                                [_vm._v("Security")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "text-decoration-none",
+                                  attrs: { to: "category/Sports-Gaming" },
+                                },
+                                [_vm._v("Sports/Gaming")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "text-decoration-none",
+                                  attrs: {
+                                    to: "category/Technology-Communications",
+                                  },
+                                },
+                                [_vm._v("Technology/Communications")]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "text-decoration-none",
+                                  attrs: { to: "category/Other" },
+                                },
+                                [_vm._v("Other")]
+                              ),
+                            ],
+                            1
+                          ),
+                        ]
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(4),
+                  _vm._v(" "),
+                  _vm._m(5),
+                ]
+              ),
+            ]),
           ]),
         ]),
       ]),
@@ -72446,7 +72781,7 @@ var render = function () {
         [
           _c(
             "div",
-            { staticClass: "carousel-inner" },
+            { staticClass: "carousel-inner mb-4 w-[80%] mx-auto" },
             _vm._l(Math.ceil(_vm.results.length / 3), function (result, index) {
               return _c(
                 "div",
@@ -72476,18 +72811,39 @@ var render = function () {
                                 "div",
                                 {
                                   staticClass:
-                                    "bg-white rounded-lg shadow-sm p-4 mb-4",
+                                    "bg-white w-full h-full rounded-xl shadow-sm p-2 mb-4 flex flex-col relative",
                                 },
                                 [
-                                  _c("img", {
-                                    staticClass:
-                                      "w-full h-40 object-cover rounded-lg mb-4",
-                                    attrs: {
-                                      src: _vm.results[index * 3 + offset]
-                                        .image,
-                                      alt: "Image",
-                                    },
-                                  }),
+                                  _c("div", { staticClass: "relative" }, [
+                                    _c("img", {
+                                      staticClass:
+                                        "w-full h-40 object-cover rounded-lg mb-4",
+                                      attrs: {
+                                        src: _vm.results[index * 3 + offset]
+                                          .image,
+                                        alt: "Image",
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "p",
+                                      {
+                                        staticClass:
+                                          "absolute inset-t-4 mb-4 ml-2 font-bold px-2 rounded-xl bottom-4 bg-white text-black text-center py-1 text-xs",
+                                      },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-map-marker pr-2",
+                                        }),
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.results[index * 3 + offset]
+                                              .location
+                                          ) + "\n"
+                                        ),
+                                      ]
+                                    ),
+                                  ]),
                                   _vm._v(" "),
                                   _c(
                                     "footer",
@@ -72504,7 +72860,10 @@ var render = function () {
                                   _c("header", [
                                     _c(
                                       "h4",
-                                      { staticClass: "text-lg font-bold mt-2" },
+                                      {
+                                        staticClass:
+                                          "text-lg font-bold mt-2 hover:no-underline",
+                                      },
                                       [
                                         _vm._v(
                                           _vm._s(
@@ -72556,34 +72915,27 @@ var render = function () {
                                   ),
                                   _vm._v(" "),
                                   _c(
-                                    "p",
-                                    { staticClass: "text-sm text-gray-700" },
+                                    "div",
+                                    { staticClass: "mt-auto flex justify-end" },
                                     [
-                                      _vm._v(
-                                        "Location: " +
-                                          _vm._s(
-                                            _vm.results[index * 3 + offset]
-                                              .location
-                                          )
+                                      _c(
+                                        "router-link",
+                                        {
+                                          staticClass:
+                                            "btn inline-block bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded",
+                                          attrs: {
+                                            to:
+                                              "/listingDetails/" +
+                                              _vm.results[index * 3 + offset]
+                                                .id,
+                                          },
+                                        },
+                                        [_vm._v("Learn More")]
                                       ),
-                                    ]
+                                    ],
+                                    1
                                   ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "router-link",
-                                    {
-                                      staticClass:
-                                        "btn mt-4 inline-block bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded",
-                                      attrs: {
-                                        to:
-                                          "/listingDetails/" +
-                                          _vm.results[index * 3 + offset].id,
-                                      },
-                                    },
-                                    [_vm._v("Learn More")]
-                                  ),
-                                ],
-                                1
+                                ]
                               ),
                             ]
                           )
@@ -72597,17 +72949,17 @@ var render = function () {
             0
           ),
           _vm._v(" "),
-          _vm._m(4),
+          _vm._m(6),
           _vm._v(" "),
-          _vm._m(5),
+          _vm._m(7),
         ]
       ),
       _vm._v(" "),
-      _vm._m(6),
-      _vm._v(" "),
-      _vm._m(7),
-      _vm._v(" "),
       _vm._m(8),
+      _vm._v(" "),
+      _vm._m(9),
+      _vm._v(" "),
+      _vm._m(10),
     ]
   )
 }
@@ -72795,14 +73147,14 @@ var staticRenderFns = [
       {
         staticClass: "carousel-control-prev",
         attrs: {
-          href: "#resource-slider",
+          href: "#category-slider",
           role: "button",
           "data-slide": "prev",
         },
       },
       [
         _c("span", {
-          staticClass: "carousel-control-prev-icon bg-black",
+          staticClass: "fa fa-chevron-left text-black",
           attrs: { "aria-hidden": "true" },
         }),
         _vm._v(" "),
@@ -72819,16 +73171,82 @@ var staticRenderFns = [
       {
         staticClass: "carousel-control-next",
         attrs: {
-          href: "#resource-slider",
+          href: "#category-slider",
           role: "button",
           "data-slide": "next",
         },
       },
       [
         _c("span", {
-          staticClass: "carousel-control-next-icon bg-black",
+          staticClass: "fa fa-chevron-right text-black",
           attrs: { "aria-hidden": "true" },
         }),
+        _vm._v(" "),
+        _c("span", { staticClass: "sr-only" }, [_vm._v("Next")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "carousel-control-prev flex items-center justify-center",
+        attrs: {
+          href: "#resource-slider",
+          role: "button",
+          "data-slide": "prev",
+        },
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass:
+              "bg-black rounded-full p-1 w-6 h-6 flex items-center justify-center",
+          },
+          [
+            _c("span", {
+              staticClass: "carousel-control-prev-icon text-white",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c("span", { staticClass: "sr-only" }, [_vm._v("Previous")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "carousel-control-next flex items-center justify-center",
+        attrs: {
+          href: "#resource-slider",
+          role: "button",
+          "data-slide": "next",
+        },
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass:
+              "bg-black rounded-full p-1 w-6 h-6 flex items-center justify-center",
+          },
+          [
+            _c("span", {
+              staticClass: "carousel-control-next-icon text-white",
+              attrs: { "aria-hidden": "true" },
+            }),
+          ]
+        ),
         _vm._v(" "),
         _c("span", { staticClass: "sr-only" }, [_vm._v("Next")]),
       ]

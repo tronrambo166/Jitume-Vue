@@ -11321,6 +11321,14 @@ video {
   top: 0px;
   bottom: 0px;
 }
+.inset-x-0 {
+  left: 0px;
+  right: 0px;
+}
+.inset-x-4 {
+  left: 1rem;
+  right: 1rem;
+}
 .bottom-2 {
   bottom: 0.5rem;
 }
@@ -11357,6 +11365,15 @@ video {
 .right-8 {
   right: 2rem;
 }
+.bottom-\[-2\] {
+  bottom: -2;
+}
+.bottom-\[4\] {
+  bottom: 4;
+}
+.bottom-4 {
+  bottom: 1rem;
+}
 .z-10 {
   z-index: 10;
 }
@@ -11386,6 +11403,9 @@ video {
 }
 .m-6 {
   margin: 1.5rem;
+}
+.m-4 {
+  margin: 1rem;
 }
 .mx-0 {
   margin-left: 0px;
@@ -11697,6 +11717,24 @@ video {
 .h-12 {
   height: 3rem;
 }
+.h-\[90vh\] {
+  height: 90vh;
+}
+.h-\[70vh\] {
+  height: 70vh;
+}
+.h-\[80\%\] {
+  height: 80%;
+}
+.h-\[80vh\] {
+  height: 80vh;
+}
+.h-\[60vh\] {
+  height: 60vh;
+}
+.h-\[50vh\] {
+  height: 50vh;
+}
 .w-12 {
   width: 3rem;
 }
@@ -11810,6 +11848,21 @@ video {
 }
 .w-14 {
   width: 3.5rem;
+}
+.w-\[75\] {
+  width: 75;
+}
+.w-\[75\%\] {
+  width: 75%;
+}
+.w-\[60\%\] {
+  width: 60%;
+}
+.w-\[80\%\] {
+  width: 80%;
+}
+.w-\[7zz\] {
+  width: 7zz;
 }
 .max-w-\[1440px\] {
   max-width: 1440px;
@@ -12124,6 +12177,19 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(156 163 175 / var(--tw-bg-opacity));
 }
+.bg-green-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(187 247 208 / var(--tw-bg-opacity));
+}
+.bg-green-700\/50 {
+  background-color: rgb(21 128 61 / 0.5);
+}
+.bg-green-800\/50 {
+  background-color: rgb(22 101 52 / 0.5);
+}
+.bg-green-600\/50 {
+  background-color: rgb(22 163 74 / 0.5);
+}
 .bg-opacity-75 {
   --tw-bg-opacity: 0.75;
 }
@@ -12364,6 +12430,9 @@ video {
 .text-start {
   text-align: start;
 }
+.text-end {
+  text-align: end;
+}
 .align-baseline {
   vertical-align: baseline;
 }
@@ -12428,6 +12497,9 @@ video {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+.text-\[10px\] {
+  font-size: 10px;
 }
 .font-bold {
   font-weight: 700;
@@ -12604,6 +12676,13 @@ video {
 .hover\:text-green-800:hover {
   --tw-text-opacity: 1;
   color: rgb(22 101 52 / var(--tw-text-opacity));
+}
+.hover\:text-black:hover {
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity));
+}
+.hover\:no-underline:hover {
+  text-decoration-line: none;
 }
 .focus\:border-\[\#198754\]:focus {
   --tw-border-opacity: 1;
