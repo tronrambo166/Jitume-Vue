@@ -8571,11 +8571,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -72497,275 +72492,314 @@ var render = function () {
                   attrs: { id: "category-slider" },
                 },
                 [
-                  _c("div", { staticClass: "carousel-inner" }, [
-                    _c("div", { staticClass: "carousel-item active" }, [
-                      _c(
-                        "ul",
-                        {
-                          staticClass:
-                            "d-flex list-unstyled justify-content-center text-black font-semibold mx-4 mx-lg-4 py-0 my-0",
-                        },
-                        [
-                          _c(
-                            "li",
-                            { staticClass: "nav-item" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "text-decoration-none",
-                                  attrs: { to: "category/Arts-Culture" },
-                                },
-                                [_vm._v("Arts/Culture")]
-                              ),
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "li",
-                            { staticClass: "nav-item" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "text-decoration-none",
-                                  attrs: { to: "category/Auto" },
-                                },
-                                [_vm._v("Auto")]
-                              ),
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "li",
-                            { staticClass: "nav-item" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "text-decoration-none",
-                                  attrs: { to: "category/Domestic_Home" },
-                                },
-                                [_vm._v("Domestic (HomeHelp etc)")]
-                              ),
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "li",
-                            { staticClass: "nav-item" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "text-decoration-none",
-                                  attrs: { to: "category/Fashion" },
-                                },
-                                [_vm._v("Fashion")]
-                              ),
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "li",
-                            { staticClass: "nav-item" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "text-decoration-none",
-                                  attrs: { to: "category/Finance-Accounting" },
-                                },
-                                [_vm._v("Finance/Accounting")]
-                              ),
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "li",
-                            { staticClass: "nav-item" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "text-decoration-none",
-                                  attrs: { to: "category/Food" },
-                                },
-                                [_vm._v("Food")]
-                              ),
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "li",
-                            { staticClass: "nav-item" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "text-decoration-none",
-                                  attrs: { to: "category/Legal" },
-                                },
-                                [_vm._v("Legal")]
-                              ),
-                            ],
-                            1
-                          ),
-                        ]
-                      ),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "carousel-item" }, [
-                      _c(
-                        "ul",
-                        {
-                          staticClass:
-                            "d-flex list-unstyled justify-content-center text-black mx-4 mx-lg-4 py-0 my-0",
-                        },
-                        [
-                          _c(
-                            "li",
-                            { staticClass: "nav-item" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "text-decoration-none",
-                                  attrs: { to: "category/Media-Internet" },
-                                },
-                                [_vm._v("Media/Internet")]
-                              ),
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "li",
-                            { staticClass: "nav-item" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "text-decoration-none",
-                                  attrs: { to: "category/Pets" },
-                                },
-                                [_vm._v("Pets")]
-                              ),
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "li",
-                            { staticClass: "nav-item" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "text-decoration-none",
-                                  attrs: { to: "category/Retail" },
-                                },
-                                [_vm._v("Retail")]
-                              ),
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "li",
-                            { staticClass: "nav-item" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "text-decoration-none",
-                                  attrs: { to: "category/Real-State" },
-                                },
-                                [_vm._v("Real Estate")]
-                              ),
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "li",
-                            { staticClass: "nav-item" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "text-decoration-none",
-                                  attrs: { to: "category/Security" },
-                                },
-                                [_vm._v("Security")]
-                              ),
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "li",
-                            { staticClass: "nav-item" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "text-decoration-none",
-                                  attrs: { to: "category/Sports-Gaming" },
-                                },
-                                [_vm._v("Sports/Gaming")]
-                              ),
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "li",
-                            { staticClass: "nav-item" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "text-decoration-none",
-                                  attrs: {
-                                    to: "category/Technology-Communications",
-                                  },
-                                },
-                                [_vm._v("Technology/Communications")]
-                              ),
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "li",
-                            { staticClass: "nav-item" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "text-decoration-none",
-                                  attrs: { to: "category/Other" },
-                                },
-                                [_vm._v("Other")]
-                              ),
-                            ],
-                            1
-                          ),
-                        ]
-                      ),
-                    ]),
+                  _c("div", {}, [
+                    _c(
+                      "ul",
+                      {
+                        staticClass:
+                          "d-flex list-unstyled justify-content-center text-black py-0 my-0 flex-wrap pt-2",
+                      },
+                      [
+                        _c(
+                          "li",
+                          {
+                            staticClass:
+                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                          },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "text-decoration-none",
+                                attrs: { to: "category/Arts-Culture" },
+                              },
+                              [_vm._v("Arts/Culture")]
+                            ),
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "li",
+                          {
+                            staticClass:
+                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                          },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "text-decoration-none",
+                                attrs: { to: "category/Auto" },
+                              },
+                              [_vm._v("Auto")]
+                            ),
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "li",
+                          {
+                            staticClass:
+                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                          },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "text-decoration-none",
+                                attrs: { to: "category/Domestic_Home" },
+                              },
+                              [_vm._v("Domestic (HomeHelp etc)")]
+                            ),
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "li",
+                          {
+                            staticClass:
+                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                          },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "text-decoration-none",
+                                attrs: { to: "category/Fashion" },
+                              },
+                              [_vm._v("Fashion")]
+                            ),
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "li",
+                          {
+                            staticClass:
+                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                          },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "text-decoration-none",
+                                attrs: { to: "category/Finance-Accounting" },
+                              },
+                              [_vm._v("Finance/Accounting")]
+                            ),
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "li",
+                          {
+                            staticClass:
+                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                          },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "text-decoration-none",
+                                attrs: { to: "category/Food" },
+                              },
+                              [_vm._v("Food")]
+                            ),
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "li",
+                          {
+                            staticClass:
+                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                          },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "text-decoration-none",
+                                attrs: { to: "category/Legal" },
+                              },
+                              [_vm._v("Legal")]
+                            ),
+                          ],
+                          1
+                        ),
+                      ]
+                    ),
                   ]),
                   _vm._v(" "),
-                  _vm._m(4),
-                  _vm._v(" "),
-                  _vm._m(5),
+                  _c("div", { staticClass: "carousel-inner" }, [
+                    _c(
+                      "ul",
+                      {
+                        staticClass:
+                          "d-flex list-unstyled justify-content-center text-black py-0 my-0 flex-wrap pt-2",
+                      },
+                      [
+                        _c(
+                          "li",
+                          {
+                            staticClass:
+                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                          },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "text-decoration-none",
+                                attrs: { to: "category/Media-Internet" },
+                              },
+                              [_vm._v("Media/Internet")]
+                            ),
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "li",
+                          {
+                            staticClass:
+                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                          },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "text-decoration-none",
+                                attrs: { to: "category/Pets" },
+                              },
+                              [_vm._v("Pets")]
+                            ),
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "li",
+                          {
+                            staticClass:
+                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                          },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "text-decoration-none",
+                                attrs: { to: "category/Retail" },
+                              },
+                              [_vm._v("Retail")]
+                            ),
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "li",
+                          {
+                            staticClass:
+                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                          },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "text-decoration-none",
+                                attrs: { to: "category/Real-State" },
+                              },
+                              [_vm._v("Real Estate")]
+                            ),
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "li",
+                          {
+                            staticClass:
+                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                          },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "text-decoration-none",
+                                attrs: { to: "category/Security" },
+                              },
+                              [_vm._v("Security")]
+                            ),
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "li",
+                          {
+                            staticClass:
+                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                          },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "text-decoration-none",
+                                attrs: { to: "category/Sports-Gaming" },
+                              },
+                              [_vm._v("Sports/Gaming")]
+                            ),
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "li",
+                          {
+                            staticClass:
+                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                          },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "text-decoration-none",
+                                attrs: {
+                                  to: "category/Technology-Communications",
+                                },
+                              },
+                              [_vm._v("Technology/Communications")]
+                            ),
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "li",
+                          {
+                            staticClass:
+                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                          },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "text-decoration-none",
+                                attrs: { to: "category/Other" },
+                              },
+                              [_vm._v("Other")]
+                            ),
+                          ],
+                          1
+                        ),
+                      ]
+                    ),
+                  ]),
                 ]
               ),
             ]),
@@ -72857,83 +72891,112 @@ var render = function () {
                                     ]
                                   ),
                                   _vm._v(" "),
-                                  _c("header", [
-                                    _c(
-                                      "h4",
-                                      {
-                                        staticClass:
-                                          "text-lg mt-2 hover:no-underline hover:text-green-800",
-                                      },
-                                      [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm.results[index * 3 + offset].name
-                                          )
-                                        ),
-                                      ]
-                                    ),
-                                  ]),
-                                  _vm._v(" "),
-                                  _c(
-                                    "p",
-                                    { staticClass: "text-sm text-gray-700" },
-                                    [
-                                      _vm._v(
-                                        _vm._s(
-                                          _vm.results[index * 3 + offset]
-                                            .description
-                                        )
-                                      ),
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "p",
-                                    { staticClass: "text-sm text-gray-700" },
-                                    [
-                                      _vm._v(
-                                        "Name: " +
-                                          _vm._s(
-                                            _vm.results[index * 3 + offset].name
-                                          )
-                                      ),
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "p",
-                                    { staticClass: "text-sm text-gray-700" },
-                                    [
-                                      _vm._v(
-                                        "Contact: " +
-                                          _vm._s(
-                                            _vm.results[index * 3 + offset]
-                                              .contact
-                                          )
-                                      ),
-                                    ]
-                                  ),
-                                  _vm._v(" "),
                                   _c(
                                     "div",
-                                    { staticClass: "mt-auto flex justify-end" },
+                                    {
+                                      staticClass:
+                                        "flex justify-between items-center",
+                                    },
                                     [
+                                      _c("div", [
+                                        _c("header", [
+                                          _c(
+                                            "h4",
+                                            {
+                                              staticClass:
+                                                "text-lg mt-2 hover:no-underline hover:text-green-800",
+                                            },
+                                            [
+                                              _vm._v(
+                                                _vm._s(
+                                                  _vm.results[
+                                                    index * 3 + offset
+                                                  ].name
+                                                )
+                                              ),
+                                            ]
+                                          ),
+                                        ]),
+                                        _vm._v(" "),
+                                        _c(
+                                          "p",
+                                          {
+                                            staticClass:
+                                              "text-sm text-gray-700",
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm.results[index * 3 + offset]
+                                                  .description
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "p",
+                                          {
+                                            staticClass:
+                                              "text-sm text-gray-700",
+                                          },
+                                          [
+                                            _vm._v(
+                                              "Name: " +
+                                                _vm._s(
+                                                  _vm.results[
+                                                    index * 3 + offset
+                                                  ].name
+                                                )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "p",
+                                          {
+                                            staticClass:
+                                              "text-sm text-gray-700",
+                                          },
+                                          [
+                                            _vm._v(
+                                              "Contact: " +
+                                                _vm._s(
+                                                  _vm.results[
+                                                    index * 3 + offset
+                                                  ].contact
+                                                )
+                                            ),
+                                          ]
+                                        ),
+                                      ]),
+                                      _vm._v(" "),
                                       _c(
-                                        "router-link",
+                                        "div",
                                         {
                                           staticClass:
-                                            "btn inline-block bg-green-800 hover:bg-green-700 text-white py-2 px-4 rounded",
-                                          attrs: {
-                                            to:
-                                              "/listingDetails/" +
-                                              _vm.results[index * 3 + offset]
-                                                .id,
-                                          },
+                                            "mt-auto flex justify-end",
                                         },
-                                        [_vm._v("Learn More")]
+                                        [
+                                          _c(
+                                            "router-link",
+                                            {
+                                              staticClass:
+                                                "btn inline-block bg-green-800 hover:bg-green-700 text-white py-2 px-2 rounded",
+                                              attrs: {
+                                                to:
+                                                  "/listingDetails/" +
+                                                  _vm.results[
+                                                    index * 3 + offset
+                                                  ].id,
+                                              },
+                                            },
+                                            [_vm._v("Learn More")]
+                                          ),
+                                        ],
+                                        1
                                       ),
-                                    ],
-                                    1
+                                    ]
                                   ),
                                 ]
                               ),
@@ -72949,17 +73012,17 @@ var render = function () {
             0
           ),
           _vm._v(" "),
-          _vm._m(6),
+          _vm._m(4),
           _vm._v(" "),
-          _vm._m(7),
+          _vm._m(5),
         ]
       ),
       _vm._v(" "),
+      _vm._m(6),
+      _vm._v(" "),
+      _vm._m(7),
+      _vm._v(" "),
       _vm._m(8),
-      _vm._v(" "),
-      _vm._m(9),
-      _vm._v(" "),
-      _vm._m(10),
     ]
   )
 }
@@ -73035,21 +73098,17 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "w-[300px] my-2" }, [
-      _c(
-        "div",
-        { staticClass: "flex items-center border border-black rounded-lg" },
-        [
-          _c("input", {
-            staticClass: "py-2 px-4 rounded-xl",
-            attrs: {
-              type: "text",
-              name: "listing_name",
-              placeholder: "What are you looking for?",
-            },
-          }),
-        ]
-      ),
+    return _c("div", { staticClass: "w-[250px] my-2" }, [
+      _c("div", { staticClass: "flex items-center rounded-lg" }, [
+        _c("input", {
+          staticClass: "py-2 px-4 rounded-xl border border-black w-[300px]",
+          attrs: {
+            type: "text",
+            name: "listing_name",
+            placeholder: "What are you looking for?",
+          },
+        }),
+      ]),
     ])
   },
   function () {
@@ -73070,49 +73129,49 @@ var staticRenderFns = [
           _vm._v("Agriculture"),
         ]),
         _vm._v(" "),
-        _c("option", { attrs: { value: "Arts / Culture" } }, [
+        _c("option", { attrs: { value: "Arts/Culture" } }, [
           _vm._v("Arts/Culture"),
         ]),
         _vm._v(" "),
         _c("option", { attrs: { value: "Auto" } }, [_vm._v("Auto")]),
         _vm._v(" "),
-        _c("option", { attrs: { value: "Sports/Gaming" } }, [
-          _vm._v("Sports/Gaming"),
+        _c("option", { attrs: { value: "Domestic (Home Help etc)" } }, [
+          _vm._v("Domestic (Home Help etc)"),
         ]),
         _vm._v(" "),
-        _c("option", { attrs: { value: "Real State" } }, [
-          _vm._v("Real State"),
+        _c("option", { attrs: { value: "Fashion" } }, [_vm._v("Fashion")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "Finance/Accounting" } }, [
+          _vm._v("Finance/Accounting"),
         ]),
         _vm._v(" "),
         _c("option", { attrs: { value: "Food" } }, [_vm._v("Food")]),
         _vm._v(" "),
         _c("option", { attrs: { value: "Legal" } }, [_vm._v("Legal")]),
         _vm._v(" "),
-        _c("option", { attrs: { value: "Security" } }, [_vm._v("Security")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "Media / Internet" } }, [
+        _c("option", { attrs: { value: "Media/Internet" } }, [
           _vm._v("Media/Internet"),
         ]),
         _vm._v(" "),
-        _c("option", { attrs: { value: "Fashion" } }, [_vm._v("Fashion")]),
+        _c("option", { attrs: { value: "Other" } }, [_vm._v("Other")]),
         _vm._v(" "),
-        _c("option", { attrs: { value: "Technology / Communications" } }, [
-          _vm._v("Technology/Communications"),
+        _c("option", { attrs: { value: "Pets" } }, [_vm._v("Pets")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "Real State" } }, [
+          _vm._v("Real State"),
         ]),
         _vm._v(" "),
         _c("option", { attrs: { value: "Retail" } }, [_vm._v("Retail")]),
         _vm._v(" "),
-        _c("option", { attrs: { value: "Finance/Accounting" } }, [
-          _vm._v("Finance/Accounting"),
+        _c("option", { attrs: { value: "Security" } }, [_vm._v("Security")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "Sports/Gaming" } }, [
+          _vm._v("Sports/Gaming"),
         ]),
         _vm._v(" "),
-        _c("option", { attrs: { value: "Pets" } }, [_vm._v("Pets")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "Domestic (Home Help etc)" } }, [
-          _vm._v("Domestic (Home Help etc)"),
+        _c("option", { attrs: { value: "Technology/Communications" } }, [
+          _vm._v("Technology/Communications"),
         ]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "Other" } }, [_vm._v("Other")]),
       ]
     )
   },
@@ -73135,54 +73194,6 @@ var staticRenderFns = [
           },
           [_c("i", { staticClass: "fa fa-search" })]
         ),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "carousel-control-prev",
-        attrs: {
-          href: "#category-slider",
-          role: "button",
-          "data-slide": "prev",
-        },
-      },
-      [
-        _c("span", {
-          staticClass: "fa fa-chevron-left text-black",
-          attrs: { "aria-hidden": "true" },
-        }),
-        _vm._v(" "),
-        _c("span", { staticClass: "sr-only" }, [_vm._v("Previous")]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "carousel-control-next",
-        attrs: {
-          href: "#category-slider",
-          role: "button",
-          "data-slide": "next",
-        },
-      },
-      [
-        _c("span", {
-          staticClass: "fa fa-chevron-right text-black",
-          attrs: { "aria-hidden": "true" },
-        }),
-        _vm._v(" "),
-        _c("span", { staticClass: "sr-only" }, [_vm._v("Next")]),
       ]
     )
   },
