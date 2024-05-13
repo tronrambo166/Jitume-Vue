@@ -72868,7 +72868,7 @@ var render = function () {
                                         "h4",
                                         {
                                           staticClass:
-                                            "text-lg font-bold mt-2 hover:no-underline",
+                                            "text-lg font-bold mt-2 hover:no-underline hover:text-green-800",
                                         },
                                         [
                                           _vm._v(
