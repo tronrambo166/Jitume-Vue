@@ -73098,7 +73098,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "w-[250px] my-2" }, [
+    return _c("div", { staticClass: "w-[120px] my-2" }, [
       _c("div", { staticClass: "flex items-center rounded-lg" }, [
         _c("input", {
           staticClass: "py-2 px-4 rounded-xl border border-black w-[300px]",
@@ -73269,7 +73269,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "section",
-      { staticClass: "w- flex flex-col items-center space-y-8 pb-6 my-6" },
+      { staticClass: "flex flex-col items-center mt-6 space-y-8 pb-6 my-6" },
       [
         _c("div", { staticClass: "how-it-works-header" }, [
           _c("h3", { staticClass: "text-[24px] font-bold" }, [
