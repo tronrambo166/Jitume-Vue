@@ -72349,7 +72349,7 @@ var render = function () {
                             _c("div", { staticClass: "relative" }, [
                               _c("input", {
                                 staticClass:
-                                  "py-2 px-4 w-full border border-gray-300 rounded-full",
+                                  "py-2 px-4 w-[162px] border border-gray-300 rounded-full",
                                 attrs: {
                                   id: "searchbox",
                                   onkeyup: "suggest(this.value);",
@@ -72371,7 +72371,7 @@ var render = function () {
                                     "svg",
                                     {
                                       staticClass:
-                                        "h-4 w-4 fill-current text-gray-500",
+                                        "h-4 w-full fill-current text-gray-500",
                                       attrs: {
                                         xmlns: "http://www.w3.org/2000/svg",
                                         viewBox: "0 0 20 20",
@@ -72845,7 +72845,7 @@ var render = function () {
                                 "div",
                                 {
                                   staticClass:
-                                    "bg-white w-full h-full rounded-xl shadow-sm p-2 mb-4 flex flex-col relative",
+                                    "bg-white w-full h-full rounded-xl shadow-sm px-2 mb-4 flex flex-col relative",
                                 },
                                 [
                                   _c("div", { staticClass: "relative" }, [
@@ -73098,10 +73098,10 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "w-[120px] my-2" }, [
+    return _c("div", { staticClass: "my-2" }, [
       _c("div", { staticClass: "flex items-center rounded-lg" }, [
         _c("input", {
-          staticClass: "py-2 px-4 rounded-xl border border-black w-[300px]",
+          staticClass: "py-2 px-4 rounded-xl border border-black w-[250px]",
           attrs: {
             type: "text",
             name: "listing_name",
