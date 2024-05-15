@@ -8568,9 +8568,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -72345,11 +72342,11 @@ var render = function () {
                         [
                           _vm._m(1),
                           _vm._v(" "),
-                          _c("div", { staticClass: "w-[147px] my-2" }, [
+                          _c("div", { staticClass: "my-2" }, [
                             _c("div", { staticClass: "relative" }, [
                               _c("input", {
                                 staticClass:
-                                  "py-2 px-4 w-[162px] border border-gray-300 rounded-full",
+                                  "py-2 px-4 w-[250px] border border-gray-300 rounded-full",
                                 attrs: {
                                   id: "searchbox",
                                   onkeyup: "suggest(this.value);",
@@ -73099,7 +73096,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "my-2" }, [
-      _c("div", { staticClass: "flex items-center rounded-lg" }, [
+      _c("div", { staticClass: "flex items-center rounded-full" }, [
         _c("input", {
           staticClass: "py-2 px-4 rounded-xl border border-black w-[250px]",
           attrs: {
