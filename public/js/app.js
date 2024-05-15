@@ -73096,9 +73096,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "my-2" }, [
-      _c("div", { staticClass: "flex items-center rounded-full" }, [
+      _c("div", { staticClass: "flex items-center" }, [
         _c("input", {
-          staticClass: "py-2 px-4 rounded-xl border border-black w-[250px]",
+          staticClass: "py-2 px-4 rounded-full border border-black w-[250px]",
           attrs: {
             type: "text",
             name: "listing_name",
