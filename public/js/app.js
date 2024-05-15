@@ -72501,7 +72501,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72520,7 +72520,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72539,7 +72539,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72558,7 +72558,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72577,7 +72577,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72596,7 +72596,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72615,7 +72615,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72645,7 +72645,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72664,7 +72664,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72683,7 +72683,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72702,7 +72702,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72721,7 +72721,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72740,7 +72740,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72759,7 +72759,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72780,7 +72780,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-1 mx-1 hover:text-green-700",
+                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72812,7 +72812,7 @@ var render = function () {
         [
           _c(
             "div",
-            { staticClass: "carousel-inner mb-4 w-[70%] mx-auto" },
+            { staticClass: "carousel-inner w-[70%] mx-auto" },
             _vm._l(Math.ceil(_vm.results.length / 3), function (result, index) {
               return _c(
                 "div",
@@ -72842,7 +72842,7 @@ var render = function () {
                                 "div",
                                 {
                                   staticClass:
-                                    "bg-white w-full h-full rounded-xl shadow-sm px-2 mb-4 flex flex-col relative",
+                                    "bg-white mt-4 w-full h-full rounded-xl shadow-sm px-2 mb-4 flex flex-col relative",
                                 },
                                 [
                                   _c("div", { staticClass: "relative" }, [
@@ -73266,9 +73266,9 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "section",
-      { staticClass: "flex flex-col items-center mt-6 space-y-8 pb-6 my-6" },
+      { staticClass: "flex flex-col items-center space-y-8 pb-6 mt-6" },
       [
-        _c("div", { staticClass: "how-it-works-header" }, [
+        _c("div", { staticClass: "how-it-works-header mt-4" }, [
           _c("h3", { staticClass: "text-[24px] font-bold" }, [
             _vm._v("How Jitume Works"),
           ]),
