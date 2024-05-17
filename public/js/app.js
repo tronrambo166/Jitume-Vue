@@ -72807,7 +72807,7 @@ var render = function () {
                                 "div",
                                 {
                                   staticClass:
-                                    "bg-white mt-4 w-full h-full rounded-xl shadow-sm px-2 mb-4 flex flex-col relative",
+                                    "bg-white/90 mt-4 w-full h-[90%] rounded-xl shadow-md p-3 mb-4 flex flex-col relative",
                                 },
                                 [
                                   _c("div", { staticClass: "relative" }, [
@@ -73386,7 +73386,7 @@ var staticRenderFns = [
       "div",
       {
         staticClass:
-          "flex flex-col md:flex-row mx-auto w-full md:w-auto justify-center items-center my-8",
+          "flex flex-col md:flex-row w-full md:w-auto justify-center items-center my-8",
       },
       [
         _c("div", { staticClass: "w-[376px] p-8 text-md" }, [
@@ -73401,7 +73401,7 @@ var staticRenderFns = [
           ]),
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "md:w-1/2 p-4" }, [
+        _c("div", { staticClass: "md:w-1/2" }, [
           _c("img", {
             staticClass: "w-[368px] h-[211px] md:max-w-md mx-auto",
             attrs: { src: "images/imageFrame.png", alt: "Placeholder Image" },
