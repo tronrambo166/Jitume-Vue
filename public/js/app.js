@@ -74109,7 +74109,7 @@ var render = function () {
                 "div",
                 {
                   staticClass:
-                    "absolute top-0 left-0 bg-gray-900 rounded-l-xl px-4 bg-opacity-50 text-white pt-8 w-[50%] h-full",
+                    "absolute top-0 left-0 bg-black rounded-l-xl px-4 bg-opacity-50 text-white pt-8 w-[60%] h-full",
                 },
                 [
                   _c("h3", { staticClass: "text-2xl font-bold text-white" }, [
@@ -74302,6 +74302,7 @@ var render = function () {
                           },
                         },
                         [
+                          _c("i", { staticClass: "mr-2 fa fa-unlock-alt" }),
                           _vm._v(
                             "Unlock More Business Information To\n              Invest"
                           ),

@@ -11528,6 +11528,24 @@ video {
 .mt-auto {
   margin-top: auto;
 }
+.mr-\[20px\] {
+  margin-right: 20px;
+}
+.mr-\[80px\] {
+  margin-right: 80px;
+}
+.ml-\[50px\] {
+  margin-left: 50px;
+}
+.ml-8 {
+  margin-left: 2rem;
+}
+.mr-\[50px\] {
+  margin-right: 50px;
+}
+.mr-\[60px\] {
+  margin-right: 60px;
+}
 .block {
   display: block;
 }
@@ -11678,6 +11696,9 @@ video {
 .w-full {
   width: 100%;
 }
+.w-\[60\%\] {
+  width: 60%;
+}
 .max-w-\[1440px\] {
   max-width: 1440px;
 }
@@ -11744,6 +11765,11 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(2rem * var(--tw-space-y-reverse));
+}
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
 }
 .overflow-hidden {
   overflow: hidden;
@@ -12060,6 +12086,12 @@ video {
 .pt-8 {
   padding-top: 2rem;
 }
+.pr-\[20px\] {
+  padding-right: 20px;
+}
+.pr-\[80px\] {
+  padding-right: 80px;
+}
 .text-left {
   text-align: left;
 }
@@ -12292,6 +12324,19 @@ video {
 }
 @media (min-width: 640px) {
 
+  .sm\:mx-6 {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+  }
+
+  .sm\:ml-6 {
+    margin-left: 1.5rem;
+  }
+
+  .sm\:mr-6 {
+    margin-right: 1.5rem;
+  }
+
   .sm\:w-\[125px\] {
     width: 125px;
   }
@@ -12332,9 +12377,20 @@ video {
     gap: 28px;
   }
 
+  .sm\:space-x-6 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 0;
+    margin-right: calc(1.5rem * var(--tw-space-x-reverse));
+    margin-left: calc(1.5rem * calc(1 - var(--tw-space-x-reverse)));
+  }
+
   .sm\:px-6 {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
+  }
+
+  .sm\:px-5 {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
   }
 }
 @media (min-width: 768px) {
@@ -12355,6 +12411,30 @@ video {
 
   .md\:mr-4 {
     margin-right: 1rem;
+  }
+
+  .md\:ml-16 {
+    margin-left: 4rem;
+  }
+
+  .md\:mr-16 {
+    margin-right: 4rem;
+  }
+
+  .md\:ml-8 {
+    margin-left: 2rem;
+  }
+
+  .md\:mr-8 {
+    margin-right: 2rem;
+  }
+
+  .md\:mr-\[50px\] {
+    margin-right: 50px;
+  }
+
+  .md\:mr-\[60px\] {
+    margin-right: 60px;
   }
 
   .md\:block {
@@ -12407,6 +12487,12 @@ video {
 
   .md\:justify-between {
     justify-content: space-between;
+  }
+
+  .md\:space-x-8 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 0;
+    margin-right: calc(2rem * var(--tw-space-x-reverse));
+    margin-left: calc(2rem * calc(1 - var(--tw-space-x-reverse)));
   }
 
   .md\:px-6 {
