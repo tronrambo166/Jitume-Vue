@@ -73384,29 +73384,60 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "div",
-      {
-        staticClass:
-          "flex flex-col md:flex-row w-full md:w-auto justify-center items-center my-8",
-      },
+      { staticClass: "flex justify-center items-center min-h-screen" },
       [
-        _c("div", { staticClass: "w-[376px] p-8 text-md" }, [
-          _c("p", { staticClass: "text-black p-4 font-bold text-xl" }, [
-            _c("span", { staticClass: "text-[#198754]" }, [_vm._v("100%")]),
-            _vm._v(" of your investment "),
-            _c("br"),
-            _vm._v("goes to"),
-            _c("span", { staticClass: "text-[#198754]" }, [
-              _vm._v("selected business."),
-            ]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "md:w-1/2" }, [
-          _c("img", {
-            staticClass: "w-[368px] h-[211px] md:max-w-md mx-auto",
-            attrs: { src: "images/imageFrame.png", alt: "Placeholder Image" },
-          }),
-        ]),
+        _c(
+          "div",
+          {
+            staticClass:
+              "shadow-xl mt-4 rounded-xl p-4 mb-4 flex gap-4 flex-col relative w-full lg:w-3/4 xl:w-2/3 mx-4 md:mx-0",
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "flex flex-col md:flex-row w-full md:w-auto justify-center items-center space-y-4 md:space-y-0 md:space-x-8",
+              },
+              [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "w-full md:w-[376px] p-8 text-md text-center md:text-left",
+                  },
+                  [
+                    _c("p", { staticClass: "text-black font-bold text-xl" }, [
+                      _c("span", { staticClass: "text-[#198754]" }, [
+                        _vm._v("100%"),
+                      ]),
+                      _vm._v(" of your investment "),
+                      _c("br"),
+                      _vm._v("goes to "),
+                      _c("span", { staticClass: "text-[#198754]" }, [
+                        _vm._v("selected business."),
+                      ]),
+                    ]),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "w-full md:w-auto flex justify-center" },
+                  [
+                    _c("img", {
+                      staticClass: "w-[368px] h-[211px] md:max-w-md",
+                      attrs: {
+                        src: "images/imageFrame.png",
+                        alt: "Placeholder Image",
+                      },
+                    }),
+                  ]
+                ),
+              ]
+            ),
+          ]
+        ),
       ]
     )
   },
