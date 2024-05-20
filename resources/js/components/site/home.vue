@@ -19,25 +19,23 @@
             style="height: 100px; width: auto;">
 
         <div class="my-4">
-<div class="lg:flex justify-center items-center  mx-auto w-full lg:w-[832.55px] h-[406.54px] px-6 my-[20px]">
-        <!-- Text on the left -->
-        <div class="w-[338px] h-[371px] flex-wrap  flex-col gap-[24px] px-6">
-            <h2 class="text-[20px] text-gray-500 font-bold mb-4">Welcome to Jitume</h2>
-            <h3 class="text-[28px] text-black font-extrabold py-4">Real businesses, real <br>solutions, <span
-                    class="text-green-800 text-[30px]"> real change</span></h3>
-            <h3 class="font-bold text-20px pb-6">Invest in a business you believe in with as little as $100</h3>
+<div class="lg:flex justify-center items-center mx-auto w-full lg:w-[832.55px] h-[406.54px] my-[20px]">
+  <!-- Text on the left -->
+  <div class="w-[338px] h-[371px] flex flex-col gap-[24px] px-6">
+    <h2 class="text-[20px] text-gray-500 font-bold mb-4">Welcome to Jitume</h2>
+    <h3 class="text-[28px] text-black font-extrabold py-4">Real businesses, real <br>solutions, <span class="text-green-800 text-[30px]">real change</span></h3>
+    <h3 class="font-bold text-[20px] pb-6">Invest in a business you believe in with as little as $100</h3>
+    <div>
+      <button class="bg-green-800 w-[125px] h-[50px] text-slate-100 rounded-[14px] px-6 py-3">Join today</button>
+    </div>
+  </div>
 
-            <div>
-                <button class="bg-green-800 w-[125px] h-[50px] text-slate-100 rounded-[14px] px-6 py-3">Join today</button>
-            </div>
-
-        </div>
-<!-- Image on the right (hidden on small screens) -->
-<div class="hidden md:block md:w-1/2 lg:block">
+  <!-- Image on the right (hidden on small screens) -->
+  <div class="hidden md:block md:w-1/2 lg:block">
     <img src="images/Frame 859(1).png" alt="Your Image" class="w-[392.55px] h-auto rounded-lg">
+  </div>
 </div>
 
-    </div>
 </div>
 
 
@@ -508,22 +506,6 @@
 
 
 
-
-
-
-
-
-
-<!--cards-->
-
-
-<section>
-  <Slider/>
-  
-</section>
-
-
- 
  <!-- Your carousel HTML -->
 <div id="resource-slider" class="carousel slide">
   <div class="carousel-inner  w-[70%]  mx-auto">
@@ -583,68 +565,76 @@
 
 
 
-<section class=" flex flex-col items-center   space-y-8 pb-6 mt-6">
-    <div class="how-it-works-header mt-4">
-        <h3 class="text-[24px] font-bold">How Jitume Works</h3>
-    </div>
-   <div class="flex flex-col gap-4 lg:flex-row lg:justify-between px-[60px]">
-    <div class="flex flex-col items-center">
-        <div class="w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE;] mb-2 mx-auto">
-            <img src="images/location.png" alt="Location Icon" class="w-[32px] h-[42.18px]">
-        </div>
-        <p class="text-center text-[16px] text-[#000000] font-500">Enter Your Location</p>
-    </div>
-    <div class="flex flex-col items-center">
-        <div class="w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE;] mb-2 mx-auto">
-            <img src="images/category.png" alt="Location Icon" class="w-[32px] h-[32px]">
-        </div>
-        <p class="text-center text-[16px] text-[#000000] font-500">Choose a category</p>
-    </div>
-    <div class="flex flex-col items-center">
-        <div class="w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE;] mb-2 mx-auto">
-            <img src="images/locresults.png" alt="Location Icon" class="w-[32px] h-[32px]">
-        </div>
-        <p class="text-center text-[16px] text-[#000000] font-500">Get location results</p>
-    </div>
-    <div class="flex flex-col items-center">
-        <div class="w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE;] mb-2 mx-auto">
-            <img src="images/choose.png" alt="Location Icon" class="w-[32px] h-[42.01px]">
-        </div>
-        <p class="text-center text-[16px] text-[#000000] font-500">Choose your business</p>
-    </div>
-    <div class="flex flex-col items-center">
-        <div class="w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE;] mb-2 mx-auto">
-            <img src="images/grow.png" alt="Location Icon" class="w-[32px] h-[32px]">
-        </div>
-        <p class="text-center text-[16px] text-[#000000] font-500">Grow your business</p>
-    </div>
-</div>
 
+
+
+<!--cards-->
+
+
+<section>
+  <Slider/>
+  
 </section>
 
 
+ 
+
+
+
+<section class="flex flex-col items-center w-[832.55px] mx-auto gap-8 space-y-8 pb-6 mt-6">
+    <div class="how-it-works-header mt-4">
+        <h3 class="text-[24px] font-bold">How Jitume Works</h3>
+    </div>
+    <div class="flex flex-col gap-4 lg:flex-row lg:justify-between px-[60px]">
+        <div class="flex flex-col items-center">
+            <div class="w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE] mb-2 mx-auto">
+                <img src="images/location.png" alt="Location Icon" class="w-[32px] h-[42.18px]">
+            </div>
+            <p class="text-center text-[16px] text-[#000000] font-500">Enter Your Location</p>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE] mb-2 mx-auto">
+                <img src="images/category.png" alt="Category Icon" class="w-[32px] h-[32px]">
+            </div>
+            <p class="text-center text-[16px] text-[#000000] font-500">Choose a category</p>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE] mb-2 mx-auto">
+                <img src="images/locresults.png" alt="Location Results Icon" class="w-[32px] h-[32px]">
+            </div>
+            <p class="text-center text-[16px] text-[#000000] font-500">Get location results</p>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE] mb-2 mx-auto">
+                <img src="images/choose.png" alt="Choose Business Icon" class="w-[32px] h-[42.01px]">
+            </div>
+            <p class="text-center text-[16px] text-[#000000] font-500">Choose your business</p>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE] mb-2 mx-auto">
+                <img src="images/grow.png" alt="Grow Business Icon" class="w-[32px] h-[32px]">
+            </div>
+            <p class="text-center text-[16px] text-[#000000] font-500">Grow your business</p>
+        </div>
+    </div>
+</section>
+
 
 <div class="flex justify-center items-center my-6">
-  <div class="p-4 flex gap-4 flex-col relative w-full lg:w-3/4 xl:w-2/3 mx-4 md:mx-0">
-    <div class="flex flex-col md:flex-row w-full md:w-auto justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
-      <div class="w-full md:w-[376px] p-4 text-md text-center md:text-left">
-        <p class="text-black font-bold text-xl">
+  <div class="p-4 flex gap-4 flex-col relative  lg:w-3/4 xl:w-2/3 mx-4 md:mx-0">
+    <div class="flex flex-col md:flex-row w-[832.55px] md:w-auto justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
+      <div class="w-[376px] p-4 text-md text-center md:text-left">
+        <p class="text-black ml-8 font-bold text-xl">
           <span class="text-[#198754]">100%</span> of your investment <br>goes to <span class="text-[#198754]">selected business.</span>
         </p>
       </div>
 
-      <div class="w-full md:w-auto flex justify-center">
-        <img src="images/imageFrame.png" alt="Placeholder Image" class="w-[368px] h-[211px] md:max-w-md">
+      <div class="w-[376px] md:w-auto flex justify-center">
+        <img src="images/imageFrame.png" alt="Placeholder Image" class="w-[368px] h-[211px] mr-8 md:max-w-md">
       </div>
     </div>
   </div>
 </div>
-
-
-
-
-
-
 
 <div class="flex bg-[#F4FBF7] justify-center items-center flex-col py-[40px] max-w-[1440px] mx-auto my-6">
   <div class="w-[334px] pt-6">

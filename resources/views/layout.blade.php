@@ -67,17 +67,17 @@
 
    
 
-<nav class="w-full py-3 mx-auto flex justify-between items-center bg-white" style="border-bottom: 1px solid #0000002b;">
+<nav class="w-full py-3 mx-auto flex justify-between items-center bg-white border-b border-gray-300">
   <!-- Logo -->
-  <div class="flex items-center ml-[120px]">
+  <div class="flex items-center ml-4 lg:ml-10 xl:ml-20">
     <router-link to="/" class="text-xl font-bold text-gray-800 md:text-2xl hover:text-green-400">
-      <img class="logo img-fluid" width="100px" height="45px" src="images/logo.png" alt="Logo">
+      <img class=" img-fluid" width="100px" height="45px" src="images/logo.png" alt="Logo">
     </router-link>
   </div>
 
   <!-- Centered Links -->
   <div class="flex-1 flex items-center justify-center">
-    <ul class="hidden md:flex items-center space-x-4 sm:space-x-6 md:space-x-8">
+    <ul class="flex items-center justify-between w-full max-w-xs md:max-w-md lg:max-w-lg xl:max-w-[832.55px] px-4">
       <li class="text-sm font-bold text-gray-800 hover:text-green-700">
         <router-link to="/home" active-class="text-green-800" class="hover:text-green-700">Home</router-link>
       </li>
@@ -94,8 +94,8 @@
   </div>
 
   <!-- Login Button -->
-  <div class="flex items-center mr-[120px]">
-    <button data-target="#loginModal" data-toggle="modal" class="hidden md:block text-sm font-bold text-gray-800 hover:text-green-700 border-[1px] border-[#0A0A0A99] rounded-md py-2 px-4 sm:px-5 md:px-6">Sign in</button>
+  <div class="flex items-center mr-4 lg:mr-10 xl:mr-20">
+    <button data-target="#loginModal" data-toggle="modal" class="hidden md:block text-sm font-bold text-gray-800 hover:text-green-700 border border-gray-500 rounded-md py-2 px-4 sm:px-5 md:px-6">Sign in</button>
   </div>
 
   <!-- Toggle Button -->
@@ -105,6 +105,7 @@
     </button>
   </div>
 </nav>
+
 
 <!-- Offcanvas Navbar -->
 <div class="fixed inset-0 bg-gray-600 bg-opacity-75 z-50 hidden md:hidden" id="offcanvasNavbar">

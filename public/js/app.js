@@ -8559,16 +8559,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -72767,8 +72757,6 @@ var render = function () {
         ]),
       ]),
       _vm._v(" "),
-      _c("section", [_c("Slider")], 1),
-      _vm._v(" "),
       _c(
         "div",
         { staticClass: "carousel slide", attrs: { id: "resource-slider" } },
@@ -72978,6 +72966,8 @@ var render = function () {
         ]
       ),
       _vm._v(" "),
+      _c("section", [_c("Slider")], 1),
+      _vm._v(" "),
       _vm._m(6),
       _vm._v(" "),
       _vm._m(7),
@@ -72996,14 +72986,13 @@ var staticRenderFns = [
         "div",
         {
           staticClass:
-            "lg:flex justify-center items-center mx-auto w-full lg:w-[832.55px] h-[406.54px] px-6 my-[20px]",
+            "lg:flex justify-center items-center mx-auto w-full lg:w-[832.55px] h-[406.54px] my-[20px]",
         },
         [
           _c(
             "div",
             {
-              staticClass:
-                "w-[338px] h-[371px] flex-wrap flex-col gap-[24px] px-6",
+              staticClass: "w-[338px] h-[371px] flex flex-col gap-[24px] px-6",
             },
             [
               _c(
@@ -73020,12 +73009,12 @@ var staticRenderFns = [
                   _c("br"),
                   _vm._v("solutions, "),
                   _c("span", { staticClass: "text-green-800 text-[30px]" }, [
-                    _vm._v(" real change"),
+                    _vm._v("real change"),
                   ]),
                 ]
               ),
               _vm._v(" "),
-              _c("h3", { staticClass: "font-bold text-20px pb-6" }, [
+              _c("h3", { staticClass: "font-bold text-[20px] pb-6" }, [
                 _vm._v(
                   "Invest in a business you believe in with as little as $100"
                 ),
@@ -73229,7 +73218,10 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "section",
-      { staticClass: "flex flex-col items-center space-y-8 pb-6 mt-6" },
+      {
+        staticClass:
+          "flex flex-col items-center w-[832.55px] mx-auto gap-8 space-y-8 pb-6 mt-6",
+      },
       [
         _c("div", { staticClass: "how-it-works-header mt-4" }, [
           _c("h3", { staticClass: "text-[24px] font-bold" }, [
@@ -73249,7 +73241,7 @@ var staticRenderFns = [
                 "div",
                 {
                   staticClass:
-                    "w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE;] mb-2 mx-auto",
+                    "w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE] mb-2 mx-auto",
                 },
                 [
                   _c("img", {
@@ -73274,12 +73266,12 @@ var staticRenderFns = [
                 "div",
                 {
                   staticClass:
-                    "w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE;] mb-2 mx-auto",
+                    "w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE] mb-2 mx-auto",
                 },
                 [
                   _c("img", {
                     staticClass: "w-[32px] h-[32px]",
-                    attrs: { src: "images/category.png", alt: "Location Icon" },
+                    attrs: { src: "images/category.png", alt: "Category Icon" },
                   }),
                 ]
               ),
@@ -73299,14 +73291,14 @@ var staticRenderFns = [
                 "div",
                 {
                   staticClass:
-                    "w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE;] mb-2 mx-auto",
+                    "w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE] mb-2 mx-auto",
                 },
                 [
                   _c("img", {
                     staticClass: "w-[32px] h-[32px]",
                     attrs: {
                       src: "images/locresults.png",
-                      alt: "Location Icon",
+                      alt: "Location Results Icon",
                     },
                   }),
                 ]
@@ -73327,12 +73319,15 @@ var staticRenderFns = [
                 "div",
                 {
                   staticClass:
-                    "w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE;] mb-2 mx-auto",
+                    "w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE] mb-2 mx-auto",
                 },
                 [
                   _c("img", {
                     staticClass: "w-[32px] h-[42.01px]",
-                    attrs: { src: "images/choose.png", alt: "Location Icon" },
+                    attrs: {
+                      src: "images/choose.png",
+                      alt: "Choose Business Icon",
+                    },
                   }),
                 ]
               ),
@@ -73352,12 +73347,15 @@ var staticRenderFns = [
                 "div",
                 {
                   staticClass:
-                    "w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE;] mb-2 mx-auto",
+                    "w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE] mb-2 mx-auto",
                 },
                 [
                   _c("img", {
                     staticClass: "w-[32px] h-[32px]",
-                    attrs: { src: "images/grow.png", alt: "Location Icon" },
+                    attrs: {
+                      src: "images/grow.png",
+                      alt: "Grow Business Icon",
+                    },
                   }),
                 ]
               ),
@@ -73385,43 +73383,46 @@ var staticRenderFns = [
         "div",
         {
           staticClass:
-            "p-4 flex gap-4 flex-col relative w-full lg:w-3/4 xl:w-2/3 mx-4 md:mx-0",
+            "p-4 flex gap-4 flex-col relative lg:w-3/4 xl:w-2/3 mx-4 md:mx-0",
         },
         [
           _c(
             "div",
             {
               staticClass:
-                "flex flex-col md:flex-row w-full md:w-auto justify-center items-center space-y-4 md:space-y-0 md:space-x-8",
+                "flex flex-col md:flex-row w-[832.55px] md:w-auto justify-center items-center space-y-4 md:space-y-0 md:space-x-8",
             },
             [
               _c(
                 "div",
                 {
-                  staticClass:
-                    "w-full md:w-[376px] p-4 text-md text-center md:text-left",
+                  staticClass: "w-[376px] p-4 text-md text-center md:text-left",
                 },
                 [
-                  _c("p", { staticClass: "text-black font-bold text-xl" }, [
-                    _c("span", { staticClass: "text-[#198754]" }, [
-                      _vm._v("100%"),
-                    ]),
-                    _vm._v(" of your investment "),
-                    _c("br"),
-                    _vm._v("goes to "),
-                    _c("span", { staticClass: "text-[#198754]" }, [
-                      _vm._v("selected business."),
-                    ]),
-                  ]),
+                  _c(
+                    "p",
+                    { staticClass: "text-black ml-8 font-bold text-xl" },
+                    [
+                      _c("span", { staticClass: "text-[#198754]" }, [
+                        _vm._v("100%"),
+                      ]),
+                      _vm._v(" of your investment "),
+                      _c("br"),
+                      _vm._v("goes to "),
+                      _c("span", { staticClass: "text-[#198754]" }, [
+                        _vm._v("selected business."),
+                      ]),
+                    ]
+                  ),
                 ]
               ),
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "w-full md:w-auto flex justify-center" },
+                { staticClass: "w-[376px] md:w-auto flex justify-center" },
                 [
                   _c("img", {
-                    staticClass: "w-[368px] h-[211px] md:max-w-md",
+                    staticClass: "w-[368px] h-[211px] mr-8 md:max-w-md",
                     attrs: {
                       src: "images/imageFrame.png",
                       alt: "Placeholder Image",
