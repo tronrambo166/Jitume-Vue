@@ -12543,12 +12543,24 @@ video {
     max-width: 28rem;
   }
 
+  .md\:flex-1 {
+    flex: 1 1 0%;
+  }
+
   .md\:flex-row {
     flex-direction: row;
   }
 
   .md\:items-start {
     align-items: flex-start;
+  }
+
+  .md\:items-center {
+    align-items: center;
+  }
+
+  .md\:justify-center {
+    justify-content: center;
   }
 
   .md\:justify-between {

@@ -71,12 +71,12 @@
   <!-- Logo -->
   <div class="flex items-center ml-4 lg:ml-10 xl:ml-20">
     <router-link to="/" class="text-xl font-bold text-gray-800 md:text-2xl hover:text-green-400">
-      <img class=" img-fluid" width="100px" height="45px" src="images/logo.png" alt="Logo">
+      <img class="img-fluid" width="100px" height="45px" src="images/logo.png" alt="Logo">
     </router-link>
   </div>
 
   <!-- Centered Links -->
-  <div class="flex-1 flex items-center justify-center">
+  <div class="hidden md:flex-1 md:flex md:items-center md:justify-center">
     <ul class="flex items-center justify-between w-full max-w-xs md:max-w-md lg:max-w-lg xl:max-w-[832.55px] px-4">
       <li class="text-sm font-bold text-gray-800 hover:text-green-700">
         <router-link to="/home" active-class="text-green-800" class="hover:text-green-700">Home</router-link>
@@ -94,17 +94,18 @@
   </div>
 
   <!-- Login Button -->
-  <div class="flex items-center mr-4 lg:mr-10 xl:mr-20">
-    <button data-target="#loginModal" data-toggle="modal" class="hidden md:block text-sm font-bold text-gray-800 hover:text-green-700 border border-gray-500 rounded-md py-2 px-4 sm:px-5 md:px-6">Sign in</button>
+  <div class="hidden md:flex items-center mr-4 lg:mr-10 xl:mr-20">
+    <button data-target="#loginModal" data-toggle="modal" class="text-sm font-bold text-gray-800 hover:text-green-700 border border-gray-500 rounded-md py-2 px-4 sm:px-5 md:px-6">Sign in</button>
   </div>
 
   <!-- Toggle Button -->
-  <div class="md:hidden flex items-center">
+  <div class="md:hidden flex items-center mr-4">
     <button class="text-xl text-gray-800 focus:outline-none" id="toggleButton">
       <i class="fas fa-bars"></i>
     </button>
   </div>
 </nav>
+
 
 
 <!-- Offcanvas Navbar -->
