@@ -8568,6 +8568,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -72253,10 +72254,7 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    {
-      staticClass: "container-fluid px-0",
-      staticStyle: { overflow: "hidden" },
-    },
+    { staticClass: "w-full px-0", staticStyle: { overflow: "hidden" } },
     [
       _c("div", { staticClass: "bg-white" }, [
         _c("div", { staticClass: "w-full" }, [
@@ -73382,64 +73380,60 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "flex justify-center items-center min-h-screen" },
-      [
-        _c(
-          "div",
-          {
-            staticClass:
-              "shadow-xl mt-4 rounded-xl p-4 mb-4 flex gap-4 flex-col relative w-full lg:w-3/4 xl:w-2/3 mx-4 md:mx-0",
-          },
-          [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "flex flex-col md:flex-row w-full md:w-auto justify-center items-center space-y-4 md:space-y-0 md:space-x-8",
-              },
-              [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "w-full md:w-[376px] p-8 text-md text-center md:text-left",
-                  },
-                  [
-                    _c("p", { staticClass: "text-black font-bold text-xl" }, [
-                      _c("span", { staticClass: "text-[#198754]" }, [
-                        _vm._v("100%"),
-                      ]),
-                      _vm._v(" of your investment "),
-                      _c("br"),
-                      _vm._v("goes to "),
-                      _c("span", { staticClass: "text-[#198754]" }, [
-                        _vm._v("selected business."),
-                      ]),
+    return _c("div", { staticClass: "flex justify-center items-center my-6" }, [
+      _c(
+        "div",
+        {
+          staticClass:
+            "p-4 flex gap-4 flex-col relative w-full lg:w-3/4 xl:w-2/3 mx-4 md:mx-0",
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass:
+                "flex flex-col md:flex-row w-full md:w-auto justify-center items-center space-y-4 md:space-y-0 md:space-x-8",
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "w-full md:w-[376px] p-4 text-md text-center md:text-left",
+                },
+                [
+                  _c("p", { staticClass: "text-black font-bold text-xl" }, [
+                    _c("span", { staticClass: "text-[#198754]" }, [
+                      _vm._v("100%"),
                     ]),
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "w-full md:w-auto flex justify-center" },
-                  [
-                    _c("img", {
-                      staticClass: "w-[368px] h-[211px] md:max-w-md",
-                      attrs: {
-                        src: "images/imageFrame.png",
-                        alt: "Placeholder Image",
-                      },
-                    }),
-                  ]
-                ),
-              ]
-            ),
-          ]
-        ),
-      ]
-    )
+                    _vm._v(" of your investment "),
+                    _c("br"),
+                    _vm._v("goes to "),
+                    _c("span", { staticClass: "text-[#198754]" }, [
+                      _vm._v("selected business."),
+                    ]),
+                  ]),
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "w-full md:w-auto flex justify-center" },
+                [
+                  _c("img", {
+                    staticClass: "w-[368px] h-[211px] md:max-w-md",
+                    attrs: {
+                      src: "images/imageFrame.png",
+                      alt: "Placeholder Image",
+                    },
+                  }),
+                ]
+              ),
+            ]
+          ),
+        ]
+      ),
+    ])
   },
   function () {
     var _vm = this
@@ -73449,7 +73443,7 @@ var staticRenderFns = [
       "div",
       {
         staticClass:
-          "flex bg-[#F4FBF7] justify-center items-center flex-col py-[40px] max-w-[1440px] mx-auto",
+          "flex bg-[#F4FBF7] justify-center items-center flex-col py-[40px] max-w-[1440px] mx-auto my-6",
       },
       [
         _c("div", { staticClass: "w-[334px] pt-6" }, [
@@ -74140,7 +74134,7 @@ var render = function () {
                 "div",
                 {
                   staticClass:
-                    "absolute top-0 left-0 bg-black rounded-l-xl px-4 bg-opacity-50 text-white pt-8 w-[60%] h-full",
+                    "absolute top-0 left-0 bg-black rounded-l-xl px-4 bg-opacity-50 text-white pt-8 w-[50%] flex flex-col justify-center h-full",
                 },
                 [
                   _c("h3", { staticClass: "text-2xl font-bold text-white" }, [
@@ -74218,11 +74212,11 @@ var render = function () {
         "div",
         { staticClass: "col-md-4 py-2 lg:w-[40%] md:w-[80%] m:w-[80%] px-4" },
         [
-          _c("h3", { staticClass: "text-3xl font-bold py-3 text-black" }, [
+          _c("h3", { staticClass: "text-3xl font-bold py-6 text-black" }, [
             _vm._v("About " + _vm._s(_vm.form.name)),
           ]),
           _vm._v(" "),
-          _c("p", { staticClass: "text-justify-center text-black py-3" }, [
+          _c("p", { staticClass: "text-justify-center text-black py-[70px]" }, [
             _vm._v(
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod\n            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco\n            laboris nisi ut aliquip"
             ),
@@ -74271,7 +74265,7 @@ var render = function () {
           ]),
           _vm._v(" "),
           !_vm.form.conv || !_vm.auth_user
-            ? _c("div", { staticClass: "card w-[70%] mt-4 py-3" }, [
+            ? _c("div", { staticClass: "card w-[70%] mt-4 py-3 hidden" }, [
                 _vm._m(3),
                 _vm._v(" "),
                 _vm.auth_user
