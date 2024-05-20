@@ -11557,6 +11557,12 @@ video {
 .mr-8 {
   margin-right: 2rem;
 }
+.mr-10 {
+  margin-right: 2.5rem;
+}
+.mr-\[40px\] {
+  margin-right: 40px;
+}
 .block {
   display: block;
 }
@@ -11733,6 +11739,18 @@ video {
 }
 .w-\[376px\] {
   width: 376px;
+}
+.w-\[300px\] {
+  width: 300px;
+}
+.w-\[378px\] {
+  width: 378px;
+}
+.w-\[330px\] {
+  width: 330px;
+}
+.w-\[360px\] {
+  width: 360px;
 }
 .max-w-\[1440px\] {
   max-width: 1440px;

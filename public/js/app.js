@@ -8559,6 +8559,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -73233,7 +73234,7 @@ var staticRenderFns = [
           "div",
           {
             staticClass:
-              "flex flex-col gap-4 lg:flex-row lg:justify-between px-[60px]",
+              "flex flex-col gap-6 lg:flex-row lg:justify-between px-[60px]",
           },
           [
             _c("div", { staticClass: "flex flex-col items-center" }, [
@@ -73390,18 +73391,18 @@ var staticRenderFns = [
             "div",
             {
               staticClass:
-                "flex flex-col md:flex-row w-[832.55px] md:w-auto justify-center items-center space-y-4 md:space-y-0 md:space-x-8",
+                "flex flex-col md:flex-row w-full md:w-auto justify-center items-center space-y-4 md:space-y-0 md:space-x-8",
             },
             [
               _c(
                 "div",
                 {
-                  staticClass: "w-[376px] p-4 text-md text-center md:text-left",
+                  staticClass: "w-[350px] p-4 text-md text-center md:text-left",
                 },
                 [
                   _c(
                     "p",
-                    { staticClass: "text-black ml-8 font-bold text-xl" },
+                    { staticClass: "text-black ml-4 font-bold text-xl" },
                     [
                       _c("span", { staticClass: "text-[#198754]" }, [
                         _vm._v("100%"),
@@ -73419,10 +73420,10 @@ var staticRenderFns = [
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "w-[376px] md:w-auto flex justify-center" },
+                { staticClass: "w-[350px] md:w-auto flex justify-center" },
                 [
                   _c("img", {
-                    staticClass: "w-[368px] h-[211px] mr-8 md:max-w-md",
+                    staticClass: "w-[368px] h-[211px] md:max-w-md",
                     attrs: {
                       src: "images/imageFrame.png",
                       alt: "Placeholder Image",

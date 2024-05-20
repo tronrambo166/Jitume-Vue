@@ -585,7 +585,7 @@
     <div class="how-it-works-header mt-4">
         <h3 class="text-[24px] font-bold">How Jitume Works</h3>
     </div>
-    <div class="flex flex-col gap-4 lg:flex-row lg:justify-between px-[60px]">
+    <div class="flex flex-col gap-6 lg:flex-row lg:justify-between px-[60px]">
         <div class="flex flex-col items-center">
             <div class="w-20 h-20 flex items-center justify-center rounded-full bg-[#EAF7EE] mb-2 mx-auto">
                 <img src="images/location.png" alt="Location Icon" class="w-[32px] h-[42.18px]">
@@ -621,20 +621,21 @@
 
 
 <div class="flex justify-center items-center my-6">
-  <div class="p-4 flex gap-4 flex-col relative  lg:w-3/4 xl:w-2/3 mx-4 md:mx-0">
-    <div class="flex flex-col md:flex-row w-[832.55px] md:w-auto justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
-      <div class="w-[376px] p-4 text-md text-center md:text-left">
-        <p class="text-black ml-8 font-bold text-xl">
+  <div class="p-4 flex gap-4 flex-col relative lg:w-3/4 xl:w-2/3 mx-4 md:mx-0">
+    <div class="flex flex-col md:flex-row w-full md:w-auto justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
+      <div class="w-[350px] p-4 text-md text-center md:text-left">
+        <p class="text-black ml-4 font-bold text-xl">
           <span class="text-[#198754]">100%</span> of your investment <br>goes to <span class="text-[#198754]">selected business.</span>
         </p>
       </div>
 
-      <div class="w-[376px] md:w-auto flex justify-center">
-        <img src="images/imageFrame.png" alt="Placeholder Image" class="w-[368px] h-[211px] mr-8 md:max-w-md">
+      <div class="w-[350px] md:w-auto flex justify-center">
+        <img src="images/imageFrame.png" alt="Placeholder Image" class="w-[368px] h-[211px] md:max-w-md">
       </div>
     </div>
   </div>
 </div>
+
 
 <div class="flex bg-[#F4FBF7] justify-center items-center flex-col py-[40px] max-w-[1440px] mx-auto my-6">
   <div class="w-[334px] pt-6">
