@@ -850,7 +850,7 @@
                                                 <hr class="thick_border">
                                             </div>
                                         </div>
-<div class="flex items-center gap-3  justify-center mr-3">
+<div class="flex items-center gap-2  justify-center mr-3">
     <div class="">
         <a href="{{route('login.facebook')}}" class="text-black text-2xl">
             <i class="fab fa-facebook-f"></i>
