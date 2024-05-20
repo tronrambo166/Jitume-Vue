@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid px-0" style="overflow:hidden;">
+  <div class="w-full px-0" style="overflow:hidden;">
     <div class="bg-white" style="">
 
 
@@ -128,27 +128,24 @@
     <form id="form" @submit.prevent="search();" method="post">
 
       <!-- Search Options and Button Section -->
-<div class="flex flex-col sm:flex-row lg:flex-row lg:justify-center sm:justify-start items-center gap-4 sm:gap-16 px-2">        <div class="w-[300px] my-2">
-          <div class="flex items-center border border-black rounded-lg ">
-            <input class="py-2 px-4 rounded-xl" type="text" name="listing_name"
-              placeholder="What are you looking for?">
-          
-          </div>
+<div class="flex flex-col sm:flex-row lg:flex-row lg:justify-center sm:justify-start items-center gap-4 sm:gap-16 px-2">
+    <div class="my-2">
+        <div class="flex items-center ">
+            <input class="py-2 px-4 rounded-full border border-black w-[250px]" type="text" name="listing_name" placeholder="What are you looking for?">
         </div>
-
-        <div class="w-[147px] my-2">
-  <div class="relative">
-    <input id="searchbox" onkeyup="suggest(this.value);"
-      class="py-2 px-4 w-full border border-gray-300 rounded-full" type="text" name="search" value=""
-      placeholder="Location">
-    <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-      <svg class="h-4 w-4 fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-        <path
-          d="M10 2a7 7 0 0 1 7 7c0 4.472-7 11-7 11S3 13.472 3 9a7 7 0 0 1 7-7zm0 2a5 5 0 0 0-5 5c0 2.142 3.094 6.333 5 8 1.906-1.667 5-5.858 5-8a5 5 0 0 0-5-5z" />
-      </svg>
     </div>
-  </div>
-</div>
+
+    <div class="my-2">
+        <div class="relative">
+            <input id="searchbox" onkeyup="suggest(this.value);" class="py-2 px-4 w-[250px] border border-gray-300 rounded-full" type="text" name="search" value="" placeholder="Location">
+            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                <svg class="h-4 w-full fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M10 2a7 7 0 0 1 7 7c0 4.472-7 11-7 11S3 13.472 3 9a7 7 0 0 1 7-7zm0 2a5 5 0 0 0-5 5c0 2.142 3.094 6.333 5 8 1.906-1.667 5-5.858 5-8a5 5 0 0 0-5-5z" />
+                </svg>
+            </div>
+        </div>
+    </div>
+
 
 
         <div class="w-[162px] my-2">
@@ -156,22 +153,23 @@
     <select id="category" name="category"
       class="py-2 px-4 w-full border border-gray-300 rounded-full appearance-none">
       <option value="">Category</option>
-      <option value="Agriculture">Agriculture</option>
-      <option value="Arts / Culture">Arts/Culture</option>
-      <option value="Auto">Auto</option>
-      <option value="Sports/Gaming">Sports/Gaming</option>
-      <option value="Real State">Real State</option>
-      <option value="Food">Food</option>
-      <option value="Legal">Legal</option>
-      <option value="Security">Security</option>
-      <option value="Media / Internet">Media/Internet</option>
-      <option value="Fashion">Fashion</option>
-      <option value="Technology / Communications">Technology/Communications</option>
-      <option value="Retail">Retail</option>
-      <option value="Finance/Accounting">Finance/Accounting</option>
-      <option value="Pets">Pets</option>
-      <option value="Domestic (Home Help etc)">Domestic (Home Help etc)</option>
-      <option value="Other">Other</option>
+<option value="Agriculture">Agriculture</option>
+<option value="Arts/Culture">Arts/Culture</option>
+<option value="Auto">Auto</option>
+<option value="Domestic (Home Help etc)">Domestic (Home Help etc)</option>
+<option value="Fashion">Fashion</option>
+<option value="Finance/Accounting">Finance/Accounting</option>
+<option value="Food">Food</option>
+<option value="Legal">Legal</option>
+<option value="Media/Internet">Media/Internet</option>
+<option value="Other">Other</option>
+<option value="Pets">Pets</option>
+<option value="Real State">Real State</option>
+<option value="Retail">Retail</option>
+<option value="Security">Security</option>
+<option value="Sports/Gaming">Sports/Gaming</option>
+<option value="Technology/Communications">Technology/Communications</option>
+
     </select>
     <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
       <svg class="h-4 w-4 fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg"
@@ -184,7 +182,7 @@
 </div>
 
 
-        <div class="w-12 my-2 bg-green-700 rounded-full flex items-center justify-center">
+        <div class="w-12 h-12 my-2 bg-green-700 rounded-[50%] flex items-center justify-center">
           <button type="submit" class="py-2 px-6  text-white rounded-full"><i class="fa fa-search"></i></button>
         </div>
       </div>
@@ -224,8 +222,33 @@
   </div>
 </div>
 </div>
-
-
+<div class="text-center pb-0">
+  <div id="category-slider" class="carousel slide">
+    <div class="">
+      <ul class="d-flex list-unstyled justify-content-center text-black py-0 my-0 flex-wrap pt-2">
+        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Arts-Culture" class="text-decoration-none">Arts/Culture</router-link></li>
+        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Auto" class="text-decoration-none">Auto</router-link></li>
+        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Domestic_Home" class="text-decoration-none">Domestic (HomeHelp etc)</router-link></li>
+        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Fashion" class="text-decoration-none">Fashion</router-link></li>
+        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Finance-Accounting" class="text-decoration-none">Finance/Accounting</router-link></li>
+        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Food" class="text-decoration-none">Food</router-link></li>
+        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Legal" class="text-decoration-none">Legal</router-link></li>
+      </ul>
+    </div>
+    <div class="carousel-inner">
+      <ul class="d-flex list-unstyled justify-content-center text-black py-0 my-0 flex-wrap pt-2">
+        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Media-Internet" class="text-decoration-none">Media/Internet</router-link></li>
+        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Pets" class="text-decoration-none">Pets</router-link></li>
+        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Retail" class="text-decoration-none">Retail</router-link></li>
+        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Real-State" class="text-decoration-none">Real Estate</router-link></li>
+        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Security" class="text-decoration-none">Security</router-link></li>
+        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Sports-Gaming" class="text-decoration-none">Sports/Gaming</router-link></li>
+        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Technology-Communications" class="text-decoration-none">Technology/Communications</router-link></li>
+        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Other" class="text-decoration-none">Other</router-link></li>
+      </ul>
+    </div>
+  </div>
+</div>
 
 
 
@@ -244,8 +267,7 @@
 
 
 
-        <div class="py-5 d-md-flex  border-bottom-dark"></div>
-        <!-- <div class="py-5 d-md-flex  border border-bottom-dark"></div> -->
+        
 
 
       </div>
@@ -490,73 +512,6 @@
 
 
 
-<div id="myCarousel" class="carousel slide">
-  <!-- Indicators -->
-  <ol class="carousel-indicators">
-    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-    <li data-target="#myCarousel" data-slide-to="1"></li>
-    <!-- Add more indicators as needed -->
-  </ol>
-
-  <!-- Wrapper for slides -->
-  <div class="carousel-inner px-4 d-md-block my-4" style="padding-left: 20px; padding-right: 20px;">
-    <!-- Loop through your results to generate carousel items -->
-    <div v-for="(result, index) in Math.ceil(results.length / 3)" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }">
-      <div class="flex flex-wrap justify-center lg:justify-start bg-white">
-        <!-- Loop through three cards for each carousel item -->
-        <div v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]" class="max-w-[400px] mx-auto lg:mx-0 overflow-hidden bg-white rounded-[0.875rem] shadow-lg my-4 sm:my-0 md:w-[350px] lg:w-[350px]">
-          <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="block relative">
-            <img v-if="results[index * 3 + offset].file" :src="results[index * 3 + offset].file" alt="Placeholder Image" class="w-full h-48 object-cover rounded-[0.875rem]">
-            <img v-else-if="results[index * 3 + offset].image" :src="results[index * 3 + offset].image" alt="Placeholder Image" class="w-full h-48 object-cover rounded-[0.875rem]">
-            <img v-else src="https://via.placeholder.com/150" alt="Placeholder Image" class="w-full h-48 object-cover rounded-[40px]">
-            <div class="absolute bottom-2 left-2 text-black px-4 py-2 bg-white m-2 rounded-[0.875rem] text-sm ">
-              <span>
-                <i class="fas fa-map-marker-alt text-slate-600"></i> 
-              </span>
-              {{ results[index * 3 + offset].location }}
-            </div>
-          </router-link>
-
-          <div class="p-2 ">
-            <div class="font-bold text-xl text-bold mb-2 text-black py-2">{{ results[index * 3 + offset].name }}</div>
-            <p class="text-black font-light text-lg"><span class="text-gray-400 mr-2">
-              <i class="fas fa-map-marker-alt"></i>
-            </span>
-            {{ results[index * 3 + offset].location }}</p>
-            <p class="text-black text-base">{{ results[index * 3 + offset].contact }}</p>
-            <p class="text-gray-900 text-base py-2">Amount: <span class="font-semibold text-green-600">${{ results[index * 3 + offset].investment_needed }}</span></p>
-            <div class="flex justify-between items-center mt-4">
-              <div>
-                <span class="text-gray-400 mr-2">
-                  <i class="fas fa-phone text-green-600"></i>
-                </span>
-                <span class="text-gray-700">{{ results[index * 3 + offset].contact }}</span>
-              </div>
-              <button class="bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                View Details
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Left and right controls -->
-  <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-    <div class="bg-black px-8 rounded-full">
-      <i class="fas fa-chevron-left custom-icon text-green-700"></i>
-      <span class="sr-only">Previous</span>
-    </div>
-  </a>
-  <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-    <div class="bg-black px-8 rounded-full">
-      <i class="fas fa-chevron-right custom-icon text-green-700"></i>
-      <span class="sr-only">Next</span>
-    </div>
-  </a>
-</div>
-
 
 
 <!--cards-->
@@ -568,18 +523,68 @@
 </section>
 
 
-
-
-
-
-
-
-
-
  
+ <!-- Your carousel HTML -->
+<div id="resource-slider" class="carousel slide">
+  <div class="carousel-inner  w-[70%]  mx-auto">
+    <!-- Loop through your results to generate carousel items -->
+    <div v-for="(result, index) in Math.ceil(results.length / 3)" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }">
+      <div class="flex flex-wrap">
+        <!-- Loop through three cards for each carousel item -->
+        <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="w-full md:w-1/3 px-2" v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]">
+          <div class="bg-white/90 mt-4 w-full h-[90%] rounded-xl shadow-md p-3 mb-4 flex flex-col relative">
+    <div class="relative">
+<img :src="results[index * 3 + offset].image" alt="Image" class="w-full h-[215px] object-cover rounded-lg mb-4">
+    <p class="absolute inset-t-4 mb-4 ml-2 font-bold px-2 rounded-xl bottom-4 bg-white text-black text-center py-1 text-xs">
+    <i class="fa fa-map-marker pr-2"></i>{{ results[index * 3 + offset].location }}
+</p>
 
-<section class="w- flex flex-col items-center  space-y-8 pb-6 my-6">
-    <div class="how-it-works-header">
+</div>
+
+
+    <footer class="text-sm text-gray-600">{{ results[index * 3 + offset].type }}</footer>
+    <div class="flex justify-between items-center">
+      <div>
+        
+        <header >
+        <h4 class="text-lg  mt-2 hover:no-underline hover:text-green-800">{{ results[index * 3 + offset].name }}</h4>
+    </header>
+    <p class="text-sm text-gray-700">{{ results[index * 3 + offset].description }}</p>
+    <p class="text-sm text-gray-700">Name: {{ results[index * 3 + offset].name }}</p>
+    <p class="text-sm text-gray-700">Contact: {{ results[index * 3 + offset].contact }}</p>
+      </div>
+      
+    <div class="mt-auto flex justify-end">
+        <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="btn inline-block bg-green-800 hover:bg-green-700 text-white  py-2 px-2 rounded">Learn More</router-link>
+    </div>
+    </div>
+    
+</div>
+
+        </router-link>
+      </div>
+    </div>
+  </div>
+
+  <a class="carousel-control-prev flex items-center justify-center" href="#resource-slider" role="button" data-slide="prev">
+  <div class="bg-black rounded-full p-1 w-6 h-6 flex items-center justify-center">
+    <span class="carousel-control-prev-icon text-white" aria-hidden="true"></span>
+  </div>
+  <span class="sr-only">Previous</span>
+</a>
+<a class="carousel-control-next flex items-center justify-center" href="#resource-slider" role="button" data-slide="next">
+  <div class="bg-black rounded-full p-1 w-6 h-6 flex items-center justify-center">
+    <span class="carousel-control-next-icon text-white" aria-hidden="true"></span>
+  </div>
+  <span class="sr-only">Next</span>
+</a>
+
+</div>
+
+
+
+<section class=" flex flex-col items-center   space-y-8 pb-6 mt-6">
+    <div class="how-it-works-header mt-4">
         <h3 class="text-[24px] font-bold">How Jitume Works</h3>
     </div>
    <div class="flex flex-col gap-4 lg:flex-row lg:justify-between px-[60px]">
@@ -619,28 +624,29 @@
 
 
 
-<div class="flex flex-col md:flex-row mx-auto w-full md:w-auto justify-center items-center my-8">
+<div class="flex justify-center items-center my-6">
+  <div class="p-4 flex gap-4 flex-col relative w-full lg:w-3/4 xl:w-2/3 mx-4 md:mx-0">
+    <div class="flex flex-col md:flex-row w-full md:w-auto justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
+      <div class="w-full md:w-[376px] p-4 text-md text-center md:text-left">
+        <p class="text-black font-bold text-xl">
+          <span class="text-[#198754]">100%</span> of your investment <br>goes to <span class="text-[#198754]">selected business.</span>
+        </p>
+      </div>
 
-  <div class="w-[376px] p-8 text-md ">
-    <p class="text-black p-4 font-bold  text-xl">
-        <span class="text-[#198754] ">100%</span> of your investment <br>goes to<span class="text-[#198754]">selected business.</span>
-    </p>
+      <div class="w-full md:w-auto flex justify-center">
+        <img src="images/imageFrame.png" alt="Placeholder Image" class="w-[368px] h-[211px] md:max-w-md">
+      </div>
+    </div>
+  </div>
 </div>
 
 
 
-    <div class="md:w-1/2 p-4">
-      <img src="images/imageFrame.png" alt="Placeholder Image" class="w-[368px] h-[211px] md:max-w-md mx-auto">
-    </div>
-  </div>
 
 
 
 
-
-
-
-<div class="flex bg-[#F4FBF7] justify-center items-center flex-col py-[40px] max-w-[1440px] mx-auto">
+<div class="flex bg-[#F4FBF7] justify-center items-center flex-col py-[40px] max-w-[1440px] mx-auto my-6">
   <div class="w-[334px] pt-6">
     
          <h2 class="text-[40px] font-bold text-black">Get started today!</h2>

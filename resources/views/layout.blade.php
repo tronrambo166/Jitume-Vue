@@ -61,63 +61,58 @@
 
 <body class="">
 
-    <div class="app" style="background: white; height:100%;">
 
 
-        <!-- Layout -->
+<div class="app relative" style="background: white; height: 100%;">
 
+   
 
+<nav class="w-full py-3 mx-auto flex justify-between items-center bg-white" style="border-bottom: 1px solid #0000002b;">
+  <!-- Logo -->
+  <div class="flex items-center ml-[120px]">
+    <router-link to="/" class="text-xl font-bold text-gray-800 md:text-2xl hover:text-green-400">
+      <img class="logo img-fluid" width="100px" height="45px" src="images/logo.png" alt="Logo">
+    </router-link>
+  </div>
 
-
-<div class="border-b border-black ">
-
-
-<nav class=" w-[1290px] px-8 py-4 mx-auto flex justify-between items-center bg-white" style="border-bottom: 1px solid black;">
-    <!-- Logo -->
-    <div class="flex items-center ">
-      <router-link to="/" class="text-xl font-bold text-gray-800 md:text-2xl hover:text-green-400">
-        <img class="logo img-fluid" width="100px" height="45px" src="images/logo.png">
-      </router-link>
-    </div>
-
-    <!-- Toggle Button -->
-    <button class="block md:hidden text-xl text-gray-800 focus:outline-none" id="toggleButton">
-      <i class="fas fa-bars"></i>
-    </button>
-
-    <!-- Centered Links -->
-<ul class="hidden md:flex items-center space-x-8">
-  <li class="text-sm font-bold text-gray-800 hover:text-green-700 px-3">
-    <router-link to="/home" active-class="text-green-800" class="hover:text-green-700">Home</router-link>
-  </li>
-  <li class="text-sm font-bold text-gray-800 hover:text-green-400 px-2">
-    <router-link to="/services" class="hover:text-green-700">Services</router-link>
-  </li>
-
-
-      <li class="text-sm font-bold text-gray-800 hover:text-green-700 px-2">
-        <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">        
-         </i> Add Your Business
-        </a>
+  <!-- Centered Links -->
+  <div class="flex-1 flex items-center justify-center">
+    <ul class="hidden md:flex items-center space-x-4 sm:space-x-6 md:space-x-8">
+      <li class="text-sm font-bold text-gray-800 hover:text-green-700">
+        <router-link to="/home" active-class="text-green-800" class="hover:text-green-700">Home</router-link>
       </li>
-      <li class="text-sm font-bold text-gray-800 hover:text-green-700 px-2">
-        <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">        
-          Create Investor Account
-        </a>
+      <li class="text-sm font-bold text-gray-800 hover:text-green-700">
+        <router-link to="/services" class="hover:text-green-700">Services</router-link>
+      </li>
+      <li class="text-sm font-bold text-gray-800 hover:text-green-700">
+        <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">Add Your Business</a>
+      </li>
+      <li class="text-sm font-bold text-gray-800 hover:text-green-700">
+        <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">Create Investor Account</a>
       </li>
     </ul>
+  </div>
 
   <!-- Login Button -->
-    <button data-target="#loginModal" data-toggle="modal" class="hidden md:block text-sm font-bold text-gray-800 hover:text-green-700 border-[1px] border-[#0A0A0A99] rounded-md py-2 px-6 mr-8">Sign in</button>
-  </nav>
+  <div class="flex items-center mr-[120px]">
+    <button data-target="#loginModal" data-toggle="modal" class="hidden md:block text-sm font-bold text-gray-800 hover:text-green-700 border-[1px] border-[#0A0A0A99] rounded-md py-2 px-4 sm:px-5 md:px-6">Sign in</button>
+  </div>
+
+  <!-- Toggle Button -->
+  <div class="md:hidden flex items-center">
+    <button class="text-xl text-gray-800 focus:outline-none" id="toggleButton">
+      <i class="fas fa-bars"></i>
+    </button>
+  </div>
+</nav>
 
 <!-- Offcanvas Navbar -->
 <div class="fixed inset-0 bg-gray-600 bg-opacity-75 z-50 hidden md:hidden" id="offcanvasNavbar">
   <div class="flex justify-end">
     <button class="text-white text-3xl mr-4 mt-4" id="closeButton">&times;</button>
   </div>
-  <div class="flex flex-col items-center justify-center h-full">
-    <ul class="flex flex-col items-center space-y-4 space-x-8">
+  <div class="flex items-center justify-center ml-4 text-center  text-lg h-full">
+    <ul class=" ">
       <li><router-link to="/home" class="text-white">Home</router-link></li>
       <li><router-link to="/services" class="text-white">Services</router-link></li>
       <li><a href="#" class="text-white">Add Your Business</a></li>
@@ -528,9 +523,9 @@
 
 
 
-                <div class="m-auto modal-body text-center" style="width: 75%;">
+                <div class="m-auto modal-body pt-4 text-center" style="width: 75%;">
 
-                    <div class="card-header d-block w-50 m-auto">
+                    <div class="card-header d-block w-50 m-auto  py-2">
                         <div class="row">
                             
                         <div class="col-md-6">
@@ -558,7 +553,7 @@
 
                                     <!-- User REG -->
 
-                                    <div id="user_reg" class="px-4 card-body">
+                                    <div id="user_reg" class="px-4 card-body collapse">
                                         <!-- onsubmit="register_main(event);" -->
                                         <form method="POST" action="{{ route('register') }}" id="register_main" enctype="multipart/form-data">
                                             @csrf
@@ -571,7 +566,7 @@
                                             <div id="form_fields" class="col-md-6">
                                             <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">First Name </p></label>
                                            
-                                            <input onkeyup="fill(this.value);" class="border w-100 py-2 mr-1" type="text" name="fname" value="{{ old('fname') }}" id="fname" required />
+                                            <input onkeyup="fill(this.value);" class="border w-100 px-3 py-2 mr-1" type="text" name="fname" value="{{ old('fname') }}" id="fname" required />
 
                                             <span id="er_fname" class="collapse float-left text-danger small">Error: Invalid email</span>
                                             </div>
@@ -579,7 +574,7 @@
                                             <div id="form_fields" class="col-md-6">
                                             <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Middle Name </p></label>
                                            
-                                            <input onkeyup="fill(this.value);" class="border w-100 py-2 mr-1" type="text" name="mname" value="{{ old('mname') }}" id="mname" required />
+                                            <input onkeyup="fill(this.value);" class="border w-100 px-3 py-2 mr-1" type="text" name="mname" value="{{ old('mname') }}" id="mname" required />
 
                                             <span id="er_mname" class="collapse float-left text-danger small">Error: Invalid email</span>
                                             </div>
@@ -590,7 +585,7 @@
                                             <div id="form_fields">
                                             <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Last Name </p></label>
                                            
-                                            <input onkeyup="fill(this.value);" class="border w-100 py-2 mr-1" type="text" name="lname" value="{{ old('lname') }}" id="lname" required />
+                                            <input onkeyup="fill(this.value);" class="border w-100 px-3 py-2 mr-1" type="text" name="lname" value="{{ old('lname') }}" id="lname" required />
 
                                             <span id="er_lname" class="collapse float-left text-danger small">Error: Invalid email</span>
                                             </div>
@@ -600,205 +595,166 @@
                                             <div class="col-md-12">
                                                 <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left ">What's your gender?(optional) </p></label>
                                             </div>
-
-                                            <div id="" class="form_fields_black col-md-4">
-                                            
-                                            <div class="row">
-                                            <div class="col-sm-1"><input class="" type="radio" name="gender" value="F" id="F" />
-                                             </div>
-                                            <div class="col-sm-8">
-                                            <label class="mb-0 w-100">
-                                                <p class="mb-0 d-block w-100 float-left text-left small">Female
-                                            </p></label>                                 
-                                            </div>
-                                            </div>   
-                                            </div>
-
-                                            <div id="" class="form_fields_black col-md-3">
-                                            
-                                            <div class="row">
-                                            <div class="col-sm-1"><input class="" type="radio" name="gender" value="M" id="M" />
-                                             </div>
-                                            <div class="col-sm-8">
-                                            <label class="mb-0 w-100">
-                                                <p class="mb-0 d-block w-100 float-left text-left small">Male
-                                            </p></label>                                 
-                                            </div>
-                                            </div>   
-                                            </div>
-
-                                            <div id="" class="form_fields_black col-md-5">
-                                            
-                                            <div class="row">
-                                            <div class="col-sm-1"><input class="" type="radio" name="gender" value="N/A" id="N/A" />
-                                             </div>
-                                            <div class="col-sm-9">
-                                            <label class="mb-0 w-100">
-                                                <p class="mb-0 d-block w-100 float-left text-left small">Non-Binary
-                                            </p></label>                                 
-                                            </div>
-                                            </div>   
-                                            </div>
-
-                                            </div>
-                                
+<div class="flex items-center">
+    <div class="mr-4 flex items-center">
+        <input class="mr-2" type="radio" name="gender" value="F" id="F" />
+        <label class="inline-block pt-2" for="F">Female</label>
+    </div>
+    <div class="mr-4 flex items-center">
+        <input class="mr-2" type="radio" name="gender" value="M" id="M" />
+        <label class="inline-block pt-2" for="M">Male</label>
+    </div>
+    <div class="flex items-center">
+        <input class="mr-2" type="radio" name="gender" value="N/A" id="N/A" />
+        <label class="inline-block pt-2" for="N/A">Non-Binary</label>
+    </div>
+</div>
 
 
-                                            <div class="row my-2">
-                                            <div class="col-md-12 form_fields_black">
-                                                <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left ">What's your date of birth? </p></label>
-                                            </div>
 
-                                            <div id="form_fields_black" class="col-md-4">
-                                            
-                                            <div class="row">
-                                            <div class="col-sm-12">
-                                            <label class="mb-0 w-100">
-                                                <p class="mb-0 d-block w-100 float-left text-left py-1 small">Month
-                                            </p></label>                                 
-                                            </div>
 
-                                            <div class="col-sm-12">
-                                                <select  onchange="fill(this.value);" name="month" id="month" class="text-center dob border w-100 ">
-                                                    <option value="">Month</option>
-                                                    <option value="01">January</option>
-                                                    <option value="02">February</option>
-                                                    <option value="03">March</option>
-                                                    <option value="04">April</option>
-                                                    <option value="05">May</option>
-                                                    <option value="06">June</option>
-                                                    <option value="07">July</option>
-                                                    <option value="08">August</option>
-                                                    <option value="09">September</option>
-                                                    <option value="10">October</option>
-                                                    <option value="11">November</option>
-                                                    <option value="12">December</option>
-                                                </select>
-                                             </div>
+                               <div class="w-full flex items-center my-4">
+    <div class="form_fields_black w-full">
+        <label class="mb-0 w-full">
+            <p class="mb-0 text-left">What's your date of birth?</p>
+        </label>
+    </div>
+</div>
 
-                                            </div>   
-                                            </div>
+<div class="w-full flex gap-4 space-x-4">
+   <div class="w-1/3">
+        <label class="mb-0 w-full">
+            <p class="mb-0 text-left py-1 small">Day</p>
+        </label>
+        <div class="relative">
+            <select name="month" id="month" class="w-[100px] border rounded-md p-2 appearance-none mr-4">
+            <option value="">Month</option>
+            <option value="01">January</option>
+            <option value="02">February</option>
+            <option value="03">March</option>
+            <option value="04">April</option>
+            <option value="05">May</option>
+            <option value="06">June</option>
+            <option value="07">July</option>
+            <option value="08">August</option>
+            <option value="09">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+            <div class="absolute inset-y-0 right-0 flex items-center pl-2 pointer-events-none">
+                <svg class="w-4 h-4 " fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
 
-                                            <div id="form_fields_black" class="col-md-4">
-                                            
-                                            <div class="row">
-                                            <div class="col-sm-12">
-                                            <label class="mb-0 w-100">
-                                                <p class="mb-0 d-block w-100 float-left text-left py-1 small">Day
-                                            </p></label>                                 
-                                            </div>
+    <div class="w-1/3">
+        <label class="mb-0 w-full">
+            <p class="mb-0 text-left py-1 small">Day</p>
+        </label>
+        <div class="relative">
+            <select name="day" id="day" class="w-[100px] border rounded-md p-2 appearance-none">
+                <option value="">Day</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+                <option value="31">31</option>
+            </select>
+            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
 
-                                            <div class="col-sm-12">
-                                                <select  onchange="fill(this.value);" id="day" name="day" class="text-center dob border w-100 ">
-                                                    <option value="">day</option>
-                                                    <option value="01">01</option>
-                                                    <option value="02">02</option>
-                                                    <option value="03">03</option>
-                                                    <option value="04">04</option>
-                                                    <option value="05">05</option>
-                                                    <option value="06">06</option>
-                                                    <option value="07">07</option>
-                                                    <option value="08">08</option>
-                                                    <option value="09">09</option>
-                                                    <option value="10">10</option>
-                                                    <option value="11">11</option>
-                                                    <option value="12">12</option>
-                                                    <option value="13">13</option>
-                                                    <option value="14">14</option>
-                                                    <option value="15">15</option>
-                                                    <option value="16">16</option>
-                                                    <option value="17">17</option>
-                                                    <option value="18">18</option>
-                                                    <option value="19">19</option>
-                                                    <option value="20">20</option>
-                                                    <option value="21">21</option>
-                                                    <option value="22">22</option>
-                                                    <option value="23">23</option>
-                                                    <option value="24">24</option>
-                                                    <option value="25">25</option>
-                                                    <option value="26">26</option>
-                                                    <option value="27">27</option>
-                                                    <option value="28">28</option>
-                                                    <option value="29">29</option>
-                                                    <option value="30">30</option>
-                                                    <option value="31">31</option>
-                                                    
-                                                </select>
-                                             </div>
+    <div class="w-1/3">
+        <label class="mb-0 w-full">
+            <p class="mb-0 text-left py-1 small">Year</p>
+        </label>
+        <div class="relative">
+            <select name="year" id="year" class="w-[100px] border rounded-md p-2 appearance-none">
+                <option value="">Year</option>
+                <option value="1960">1960</option>
+                <option value="1961">1961</option>
+                <option value="1962">1962</option>
+                <option value="1963">1963</option>
+                <option value="1964">1964</option>
+                <option value="1965">1965</option>
+                <option value="1966">1966</option>
+                <option value="1967">1967</option>
+                <option value="1968">1968</option>
+                <option value="1969">1969</option>
+                <option value="1970">1970</option>
+                <option value="1971">1971</option>
+                <option value="1972">1972</option>
+                <option value="1973">1973</option>
+                <option value="1974">1974</option>
+                <option value="1975">1975</option>
+                <option value="1976">1976</option>
+                <option value="1977">1977</option>
+                <option value="1978">1978</option>
+                <option value="1979">1979</option>
+                <option value="1980">1980</option>
+                <option value="1981">1981</option>
+                <option value="1982">1982</option>
+                <option value="1983">1983</option>
+                <option value="1984">1984</option>
+                <option value="1985">1985</option>
+                <option value="1986">1986</option>
+                <option value="1987">1987</option>
+                <option value="1988">1988</option>
+                <option value="1989">1989</option>
+                <option value="1990">1990</option>
+                <option value="1991">1991</option>
+                <option value="1992">1992</option>
+                <option value="1993">1993</option>
+                <option value="1994">1994</option>
+                <option value="1995">1995</option>
+                <option value="1996">1996</option>
+                <option value="1997">1997</option>
+                <option value="1998">1998</
+                    9</option>
+                <option value="1999">1999</option>
+            </select>
+            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
 
-                                            </div>  
-                                            </div>
-
-                                            <div id="form_fields_black" class="col-md-4">
-                                            
-                                            <div class="row">
-                                            <div class="col-sm-12">
-                                            <label class="mb-0 w-100">
-                                                <p class="mb-0 d-block w-100 float-left text-left py-1 small">Year
-                                            </p></label>                                 
-                                            </div>
-
-                                            <div class="col-sm-12">
-                                                <select  onchange="fill(this.value);" id="year" name="year" class="text-center dob border w-100 ">
-                                                    <option value="">Year</option>
-                                                    <option value="1960">1960</option>
-                                                    <option value="1961">1961</option>
-                                                    <option value="1962">1962</option>
-                                                    <option value="1963">1963</option>
-                                                    <option value="1964">1964</option>
-                                                    <option value="1965">1965</option>
-                                                    <option value="1966">1966</option>
-                                                    <option value="1967">1967</option>
-                                                    <option value="1968">1968</option>
-                                                    <option value="1969">1969</option>
-                                                    <option value="1970">1970</option>
-                                                    <option value="1971">1971</option>
-                                                    <option value="1972">1972</option>
-                                                    <option value="1973">1973</option>
-                                                    <option value="1974">1974</option>
-                                                    <option value="1975">1975</option>
-                                                    <option value="1976">1976</option>
-                                                    <option value="1977">1977</option>
-                                                    <option value="1978">1978</option>
-                                                    <option value="1979">1979</option>
-                                                    <option value="1980">1980</option>
-                                                    <option value="1981">1981</option>
-                                                    <option value="1982">1982</option>
-                                                    <option value="1983">1983</option>
-                                                    <option value="1984">1984</option>
-                                                    <option value="1985">1985</option>
-                                                    <option value="1986">1986</option>
-                                                    <option value="1987">1987</option>
-                                                    <option value="1988">1988</option>
-                                                    <option value="1989">1989</option>
-                                                    <option value="1990">1990</option>
-                                                    <option value="1991">1991</option>
-                                                    <option value="1992">1992</option>
-                                                    <option value="1993">1993</option>
-                                                    <option value="1994">1994</option>
-                                                    <option value="1995">1995</option>
-                                                    <option value="1996">1996</option>
-                                                    <option value="1997">1997</option>
-                                                    <option value="1998">1998</option>
-                                                    <option value="1999">1999</option>
-                                                    <option value="2000">2000</option>
-                                                    <option value="2001">2001</option>
-                                                    <option value="2002">2002</option>
-                                                    <option value="2003">2003</option>
-                                                    <option value="2004">2004</option>
-                                                    <option value="2005">2005</option>
-                                                    <option value="2006">2006</option>
-                                                    <option value="2007">2007</option>
-                                                    <option value="2008">2008</option>
-                                                    <option value="2009">2009</option>
-                                                    <option value="2010">2010</option>
-                                                </select>
-                                             </div>
-
-                                            </div>  
-                                            </div>
-
-                                            </div>
 
                                             <div class="row mb-3 w-75 m-auto">
                                                 <!-- <div class="col-md-12">
@@ -809,9 +765,9 @@
                                 @endif
                             </div> -->
                                             </div>
-                                            <div class="row mb-4">
-                                                <div class="col-md-12 ">
-                                                    <button id="next_reg" onclick="next();" style="width: 99%;" class="d-block mx-auto my-3 pt-3 proceed_btn" > Next </button>
+                                            <div class="mx-10">
+                                                <div class=" mx-auto ">
+                                                    <button id="next_reg" onclick="next();" style="width: 99%;" class=" my-3 pt-3 proceed_btn" > Next </button>
                                                 </div>
                                             </div>
 
@@ -888,26 +844,25 @@
                                                 <hr class="thick_border">
                                             </div>
                                             <div class="mb-0 col-md-4 form_fields_black">
-                                                <p>Or continue with</p>
+                                                <p>Or continue <br><span class="text-center">with</span></p>
                                             </div>
                                             <div class="col-md-4 px-0">
                                                 <hr class="thick_border">
                                             </div>
                                         </div>
-
-   <div class="row mb-3 w-50 px-4 m-auto flex">
-    <div class="col-md-6">
-        <a href="{{route('login.facebook')}}" class="social_btn text-light">
-            <i class="fab fa-facebook-f fa-lg shadow"></i>
+<div class="flex items-center gap-3  justify-center mr-3">
+    <div class="">
+        <a href="{{route('login.facebook')}}" class="text-black text-2xl">
+            <i class="fab fa-facebook-f"></i>
         </a>
     </div>
-    <div class="col-md-6">
-        <a href="{{route('login.google')}}" class="social_btn text-dark">
-            <i class="fab fa-google fa-lg shadow"></i>
+    <div class="">
+        <a href="{{route('login.google')}}" class="text-dark text-2xl">
+            <i class="fab fa-google"></i>
         </a>
     </div>
-
 </div>
+
 
 
 
@@ -936,7 +891,7 @@
                                 <div class="" id="all_logins">
                                     <div id="user_log" class="px-4 py-0">
 
-                                        <div class="card-header d-block w-75 mx-auto mt-5 mb-4">
+                                        <div class="card-header d-block w-75 mx-auto pt-3">
                                             <div class="row">
                                                 
                                             <div class="col-md-12 text-center sign_text">
@@ -949,7 +904,7 @@
                                             </div>
                                         </div>
 
-                                        <form method="POST" class="" action="{{route('login')}}">
+                                        <form method="POST" class="p-3" action="{{route('login')}}">
                                             @csrf
 
 
@@ -958,7 +913,7 @@
                                             <div id="form_fields">
                                                 <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Email Address</p></label>
                                            
-                                            <input onkeyup="email_ck(this.value);" class="border w-100 py-2 mr-1" type="email" name="email" placeholder="" id="inputEmailAddress" value="{{ old('email') }}" required />
+                                            <input onkeyup="email_ck(this.value);" class="border w-100 px-3 py-2 mr-1" type="email" name="email" placeholder="" id="inputEmailAddress" value="{{ old('email') }}" required />
 
                                             <span id="er_email" class="collapse float-left text-danger small">Error: Invalid email</span>
                                             </div>
@@ -966,11 +921,16 @@
                                             <div id="form_fields2" class="mt-3">
                                                 <label class="mb-0 w-100"><p class="mb-0 d-block w-50 float-left small small_label">Password</p>
                                                     <span id="hideButton" onclick="passShow();" class="float-right p-0 w-50 text-right small_label px-2">
-                                                     <img id="passIcon" width="15px" src="images/randomIcons/see.png"> <span id="hide">Show</span>  
+                                                        <div class="flex items-center justify-end">
+                                                            
+                                                             <span id="hide">Show  </span> 
+                                                              <img id="passIcon" width="15px" src="images/randomIcons/see.png">
+                                                        </div>
+                                                   
                                                     </span>
                                                 </label>
                                            
-                                            <input onkeyup="pass_ck(this.value);" class="border w-100 py-2 mr-1" name="password" id="inputPassword" type="password" value="" required />
+                                            <input onkeyup="pass_ck(this.value);" class="border w-100 px-3 py-2 mr-1" name="password" id="inputPassword" type="password" value="" required />
                                             </div>
 
 
@@ -1060,28 +1020,22 @@
 
                                     <input hidden type="number" name="investor" value="1">
                                     <input type="text" hidden name="c_to_listing_reg" id="c_to_listing_reg" value="">
+<div class="pt-2">
+    <label for="name" class="col-md-4 col-form-label text-md-left">{{ __('First Name') }} <span title="Required" class="text-danger">*</span></label>
 
-                                            <div class="row mb-3">
-                                                <label for="name" class="col-md-4 col-form-label text-md-left">{{ __('First Name') }} <span title="Required" class="text-danger">*</span></label>
+    <div class="col-md-6">
+        <input id="name" type="text" class="form-control" name="fname" @if(Session::has('old_fname')) value="{{Session::get('old_fname')}}" @endif required autocomplete="name" autofocus>
+    </div>
+</div>
 
-                                                <div class="col-md-6">
-                                                    <input id="name" type="text" class="form-control" name="fname" 
-                                                    @if(Session::has('old_fname')) value="{{Session::get('old_fname')}}" @endif required autocomplete="name" autofocus>
+<div class="row mb-3 pt-2">
+    <label for="name" class="col-md-4 col-form-label text-md-left">{{ __('Middle Name') }} <span title="Required" class="text-danger"></span></label>
 
+    <div class="col-md-6">
+        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="mname" @if(Session::has('old_mname')) value="{{Session::get('old_mname')}}" @endif autocomplete="name" autofocus>
+    </div>
+</div>
 
-                                                </div>
-                                            </div>
-
-
-                                            <div class="row mb-3">
-                                                <label for="name" class="col-md-4 col-form-label text-md-left">{{ __('Middle Name') }} <span title="Required" class="text-danger"></span></label>
-
-                                                <div class="col-md-6">
-                                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="mname" @if(Session::has('old_mname')) value="{{Session::get('old_mname')}}" @endif autocomplete="name" autofocus>
-
-
-                                                </div>
-                                            </div>
 
 
                                             <div class="row mb-3">
@@ -1436,6 +1390,8 @@
             $('#user_logs').hide();
             $('#all_register').show();
             $('#user_regs').show();
+            $('#user_reg').show();
+
 
         }
 
@@ -1471,6 +1427,9 @@
                 $('#all_registers').show();
                 $('#user_reg').show();
             }
+
+          $('#user_reg').removeClass("collapse");
+
 
         }
     </script>
@@ -1838,6 +1797,7 @@
     <script type="text/javascript">
 
     </script>
+    <script src="js/slider2.js"></script>
 
 
 <!-- GOOGLE MAP 
@@ -1899,6 +1859,8 @@ window.addEventListener('load', () => {
 })
 
 </script>
+
+
 
 
 

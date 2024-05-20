@@ -1,155 +1,153 @@
 <template>
-  <div class="container bg-white">
-
-    <!-- PAGE CONTENT -->
-    <div class="row mx-auto text-center">
-
-      <div class="w-full  col-sm-12 text-center p-md-5" style="min-height: 600px;">
-
-<section class="hero bg-gray-100 py-16 ">
-    <div class="container mx-auto flex flex-col items-center justify-center text-center">
-        <h2 class="text-4xl font-bold text-gray-800 mb-4">Find the Right Services for You</h2>
-        <p class="text-lg text-gray-600 mb-8">Discover top-rated services in your area</p>
-        <form id="form" @submit.prevent="search();" class="container mb-5 pb-5 d-flex justify-content-center my-6 align-items-center" method="post">
-            <div class="w-full bg-white rounded text-center row justify-content-between mr-2 mr-sm-0">
-                <div class="px-2 py-2 bg-white col-12 col-sm-4 d-flex align-items-center justify-content-center rounded-l-md">
-                    <input class="bar bg-white form-control d-inline w-full sm:w-auto" type="text" name="listing_name" placeholder="What are you looking for?">
-                </div>
-                <div class="px-2 py-2 bg-white col-12 col-sm-4 d-flex align-items-center">
-                    <i class="d-inline fa fa-map-marker mr-2"></i>
-                    <input id="searchbox" onkeyup="suggest(this.value);" class="border-none bar bg-white form-control d-inline w-full sm:w-auto" type="text" name="search" value="" placeholder="Location">
-                </div>
-                <div class="px-2 py-2 bg-white col-12 col-sm-4 d-flex align-items-center rounded-r-md">
-                    <div class="w-full row">
-                        <div class="dropdown col-8">
-                            <select id="category" name="category" class="py-2 form-control">
-                                <option hidden value="">Services</option>
-                                <option value="Business Planning">Business Planning</option>
-                                <option value="IT">IT</option>
-                                <option value="Legal Project Management">Legal Project Management</option>
-                                <option value="Branding and Design">Branding and Design</option>
-                                <option value="Auto">Auto</option>
-                                <option value="Finance, Accounting & Tax Marketing">Finance, Accounting & Tax Marketing</option>
-                                <option value="Tax Marketing">Tax Marketing</option>
-                                <option value="Public Relations">Public Relations</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                        <div class="bg-white px-1 px-md-2 col-4">
-                            <button class="bg-black rounded-md text-slate-100 py-2 px-8 w-full sm:w-auto" type="submit">Search</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div id="result_list" class="text-left search_resultsS"></div>
-            </div>
-        </form>
-        <p class="text-md text-green-900 mt-8">Choose Your Business</p>
-        <p class="text-xl text-green-600 mb-8">Grow Your Business Together</p>
-    </div>
-</section>
+  <div>
 
 
-
-
-        <div class="py-5"></div>
-       
-
-      </div>
-
-      <br>
-
- <section class="py-16">
-   <div class="container mx-auto flex flex-col lg:flex-row items-center justify-center">
-    <div class="lg:w-1/2 lg:pr-12 mb-6 lg:mb-0">
-        <img src="https://img.freepik.com/free-photo/person-with-adjustable-wrench_1048-1698.jpg?t=st=1714645387~exp=1714648987~hmac=59eae29dffaad37c23e681ed33fc0a8e99201646c09792c6b0f37d1d0c9d80b2&w=740" alt="Image" class="w-full h-auto object-cover rounded-lg">
-    </div>
-    <div class="lg:w-1/4">
-        <h4 class="font-light text-3xl text-gray-800 mb-4">Discover Local Services</h4>
-        <h4 class="text-gray-900 text-lg mb-4">Find the best local services in your area.</h4>
-        <p class="text-gray-700 text-sm mb-8">
-            Explore a variety of categories to suit your needs. Connect with businesses offering top-notch services.
-            <br>
-            Get quotes, compare options, and make informed decisions.
-            <br>
-            Experience seamless transactions and quality service.
-        </p>
-        <a href="#" class="bg-green-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full transition duration-300">Get Started</a>
-    </div>
-</div>
-
-</section>
-
-
-<!--get started section-->
-
-
-
-
-
-
-
-      <!-- Slider test -->
-      <hr>
-      <div class=" py-5">
-
-        <h1 class="font-light text-gray-900 text-4xl">Featured Listings</h1>
-        <div style="overflow:hidden;" class="my-4">
-          <hooper :settings="hooperSettings" :itemsToShow="4" :centerMode="true" pagination="no">
-            <slide class="listing text-center col-sm-4 px-3 " v-for="( result, index ) in results" :key="index"
-              :index="index">
-              <!-- Loop -->
-             <div class="mx-auto mt-5 ">
-  <router-link :to="`/serviceDetails/${result.id}`" class="rounded-lg overflow-hidden  h-full">
-
-    <div class="relative py-8" style="height: 200px;">
-      <video v-if="result.file" controls style="width:100%; height:100%;" alt="">
-        <source :src="result.file" type="video/mp4">
-      </video>
-
-      <img v-else :src="result.image" style="width:100%; height:70%;" class="object-cover" alt="" />
-
-      <div class="absolute top-0 left-0 p-2 bg-black text-white text-sm rounded-tr-md">
-        Featured
-      </div>
-
-      <div class=" flex  flex-col items-center py-6 bg-slate-100/50" >
-      <h5 class="text-md w-full font-bold mb-1">{{ result.name }}</h5>
-      <p class="text-gray-600">{{ result.location }}</p>
-    </div>
-    </div>
-
-    
-
-  </router-link>
-</div>
-
-
-
-            </slide>
-
-            <hooper-navigation slot="hooper-addons"></hooper-navigation>
-          </hooper>
-
+<section class="bg-cover bg-center flex items-center relative w-full" style="background-image: url('images/heroimg.png');">
+  <div class="container my-8 md:mx-8 px-4 sm:px-6 lg:px-8 flex items-center relative">
+    <form id="form" class="bg-white w-[517px] sm:w-[517px] h-[369px] p-6 rounded-[28px] mr-6 relative z-10" @submit.prevent="search()" method="post">
+      <h2 class="text-[32px] font-semibold mb-4">Find the <span class="text-[#198754]">right services</span>,<br>for you</h2>
+      <div class="flex flex-col">
+        <div class="mb-4">
+          <label for="listing_name" class="sr-only">Listing Name:</label>
+          <input id="listing_name" class="bar bg-gray-100 form-control w-full sm:w-[453px] px-4 py-2 rounded-md" type="text" name="listing_name" placeholder="What are you looking for?" onchange="handleInputChange(event)">
         </div>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:gap-[28px]">
+          <div class="mb-4 relative">
+            <label for="location" class="sr-only">Location:</label>
+            <input id="location" class="bar bg-gray-100 form-control w-full sm:w-[212.5px] px-4 py-2 rounded-md pl-10" type="text" name="location" placeholder="Location" onchange="handleInputChange(event)">
+            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+              <i class="fa fa-map-marker text-gray-400"></i>
+            </div>
+          </div>
+          <div class="mb-4 relative">
+            <label for="category" class="sr-only">Category:</label>
+            <select id="category" name="category" class="py-2 form-control w-full sm:w-[212.5px] px-4 rounded-md bg-gray-100" onchange="handleInputChange(event)">
+              <option hidden value="">Services</option>
+              <option value="Business Planning">Business Planning</option>
+              <option value="IT">IT</option>
+              <option value="Legal Project Management">Legal Project Management</option>
+              <option value="Branding and Design">Branding and Design</option>
+              <option value="Auto">Auto</option>
+              <option value="Finance, Accounting & Tax Marketing">Finance, Accounting & Tax Marketing</option>
+              <option value="Tax Marketing">Tax Marketing</option>
+              <option value="Public Relations">Public Relations</option>
+              <option value="Other">Other</option>
+            </select>
+            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+              <i class="fa fa-chevron-down text-gray-400"></i>
+            </div>
+          </div>
+        </div>
+        <button class="bg-[#198754] rounded-[14px] text-white rounded-md py-2 px-4 mt-4 mb-4 w-full sm:w-[125px] h-auto" type="submit">Search</button>
       </div>
-      <!-- Slider -->
-
-    </div>
-
-    <!-- PAGE CONTENT -->
-
-
-
-
-
-
-
-   
-
+    </form>
   </div>
+</section>
+
+
+<section class="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-between py-[150px] px-10 my-4 mx-[50px] md:mx-[50px]">
+  <div class="w-[320px] md:w-[430px] md:mr-4 ]">
+    <h1 class="pb-2 text-[18px] md:text-[20px] text-gray-900">Discover local services</h1>
+    <h3 class="py-2 text-[24px] md:text-[32px] font-bold">Find the best <span class="text-green-800">local service</span> <br> in your area</h3>
+    <p class="text-black text-[13px] md:text-[20px]">Explore categories to suit your needs. Connect with businesses offering top-notch services.</p>
+    <button class="bg-green-800 text-white px-4 py-2 mt-4 md:px-6 md:py-3 rounded-[14px]">Get started</button>
+  </div>
+  <div class="hidden md:block md:w-[445px] h-[255px
+  ] md:ml-4">
+    <img src="images/sideframe.png" alt="Your Image" class="w-full h-auto rounded-lg">
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+    <hr>
+     <div class="py-5 h-full w-full">
+    <h1 class="text-center text-gray-900 text-4xl">Featured Listings</h1>
+    <div class="my-4 px-4 py-6 h-full">
+      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
+          <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
+          <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li>
+          <!-- Add more indicators as needed -->
+        </ol>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="row justify-center lg:justify-between">
+              <div v-for="(result, index) in results.slice(0, 3)" :key="index" class="col-lg-4 p-3">
+                <div class="bg-white h-[300px] w-[350px] rounded-xl shadow-lg mx-auto">
+                  <router-link :to="`/serviceDetails/${result.id}`" class="rounded-lg overflow-hidden h-full flex flex-col">
+                    <div class="relative" style="height: 200px;">
+                      <video v-if="result.file" controls style="width:100%; height:100%;" alt="">
+                        <source :src="result.file" type="video/mp4">
+                      </video>
+                      <img v-else :src="result.image"  class="object-cover w-full h-full rounded-t-xl" alt="" />
+                    </div>
+                    <div class=" ">
+                      <div>
+                        <h5 class="text-md  text-success text-2xl mb-1 pt-4">{{ result.name }}</h5>
+                        <p class="text-black py-2">{{ result.location }}</p>
+                      </div>
+                    </div>
+                  </router-link>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="row justify-center lg:justify-between">
+              <div v-for="(result, index) in results.slice(3, 6)" :key="index" class="col-lg-4 p-3">
+                <div class="shadow-lg  rounded-xl h-[300px] w-[350px] mx-auto">
+                  <router-link :to="`/serviceDetails/${result.id}`" class="rounded-lg overflow-hidden h-full flex flex-col">
+                    <div class="relative" style="height: 200px;">
+                      <video v-if="result.file" controls style="width:100%; height:100%;" alt="">
+                        <source :src="result.file" type="video/mp4">
+                      </video>
+                      <img v-else :src="result.image"  class="object-cover rounded-t-xl w-full h-full" alt="" />
+                    </div>
+                    <div class="  ">
+                      <div>
+                       <div>
+                        <h5 class="text-md  text-success text-2xl mb-1 pt-4">{{ result.name }}</h5>
+                        <p class="text-black py-2">{{ result.location }}</p>
+                      </div>
+                      </div>
+                    </div>
+                  </router-link>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Add more carousel items as needed -->
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon bg-black" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+          <span class="carousel-control-next-icon bg-black" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+              
+    </div>
+  </div>
+
+
+
+</div>
 </template>
+
 
 <script>
 import { Hooper, Slide, Navigation as HooperNavigation } from 'hooper';
