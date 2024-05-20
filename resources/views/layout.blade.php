@@ -583,7 +583,7 @@
 
 
                                             <div id="form_fields">
-                                            <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Last Name </p></label>
+                                            <label class="mb-0 w-100"><p class="mb-0 d-block pt-2 w-100 float-left text-left small small_label">Last Name </p></label>
                                            
                                             <input onkeyup="fill(this.value);" class="border w-100 px-3 py-2 mr-1" type="text" name="lname" value="{{ old('lname') }}" id="lname" required />
 
@@ -624,7 +624,7 @@
 <div class="w-full flex gap-4 space-x-4">
    <div class="w-1/3">
         <label class="mb-0 w-full">
-            <p class="mb-0 text-left py-1 small">Day</p>
+            <p class="mb-0 text-left py-1 small">Month</p>
         </label>
         <div class="relative">
             <select name="month" id="month" class="w-[100px] border rounded-md p-2 appearance-none mr-4">
@@ -895,7 +895,7 @@
                                             <div class="row">
                                                 
                                             <div class="col-md-12 text-center sign_text">
-                                                <h2 class="font-weight-bold">Sign In</h2>
+                                                <h2 class="text-lg font-semibold">Sign In</h2>
                                                 <h4>Enter details to log in</h4>
                                             </div>
 
