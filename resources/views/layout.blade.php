@@ -523,7 +523,7 @@
 
 
 
-                <div class="m-auto modal-body pt-4 text-center" style="width: 75%;">
+                <div class="m-auto modal-body pt-3 text-center" style="width: 75%;">
 
                     <div class="card-header d-block w-50 m-auto  py-2">
                         <div class="row">
