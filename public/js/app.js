@@ -8566,6 +8566,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -72349,8 +72353,14 @@ var render = function () {
                               _vm._v(" "),
                               _c("ul", {
                                 staticClass:
-                                  "absolute mt-1 w-[250px] bg-black border border-gray-300 rounded-md shadow-lg z-10 top-full",
+                                  "absolute w-[250px] bg-white border-t-0 rounded-b-md shadow-lg z-10 top-full",
                                 attrs: { id: "suggestion-list" },
+                              }),
+                              _vm._v(" "),
+                              _c("div", {
+                                staticClass:
+                                  "absolute w-[250px] bg-white border-gray-300 border-t-0 rounded-b-md shadow-lg z-10 top-full",
+                                attrs: { id: "result_list" },
                               }),
                             ]),
                           ]),
@@ -72440,11 +72450,6 @@ var render = function () {
                       ),
                     ]),
                   ]),
-                  _vm._v(" "),
-                  _c("div", {
-                    staticClass: "text-left search_results",
-                    attrs: { id: "result_list" },
-                  }),
                 ]),
               ]),
             ]),
