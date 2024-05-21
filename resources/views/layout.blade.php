@@ -769,7 +769,8 @@
                                             </div>
                                             <div class="mx-10">
                                                 <div class=" mx-auto ">
-                                                    <button id="next_reg" onclick="next();" style="width: 99%;" class=" my-3 pt-3 proceed_btn" > Next </button>
+                                         <button id="next_reg" onclick="next();" style="width: 99%;" class="d-block mx-auto my-3 pt-3 proceed_btn" disabled> Next </button>
+
                                                 </div>
                                             </div>
 
@@ -1661,6 +1662,7 @@
         }
 
         function next() {
+            console.log("clicked next")
             $('#step_one').addClass('collapse');
             $('#step_two').removeClass('collapse');
             $('#reg_back').removeClass('collapse');

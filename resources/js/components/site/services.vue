@@ -45,18 +45,20 @@
 </section>
 
 
-<section class="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-between py-[150px] px-10 my-4 mx-[50px] md:mx-[50px]">
-  <div class="w-[320px] md:w-[430px] md:mr-4 ]">
+<section class="flex justify-center py-8 gap-6 px-6  items-center w-[[832.55px]">
+  <div>
+    <div class="w-[300px] md:w-[430px] md:mr-4 ]">
     <h1 class="pb-2 text-[18px] md:text-[20px] text-gray-900">Discover local services</h1>
     <h3 class="py-2 text-[24px] md:text-[32px] font-bold">Find the best <span class="text-green-800">local service</span> <br> in your area</h3>
     <p class="text-black text-[13px] md:text-[20px]">Explore categories to suit your needs. Connect with businesses offering top-notch services.</p>
     <button class="bg-green-800 text-white px-4 py-2 mt-4 md:px-6 md:py-3 rounded-[14px]">Get started</button>
   </div>
-  <div class="hidden md:block md:w-[445px] h-[255px
-  ] md:ml-4">
-    <img src="images/sideframe.png" alt="Your Image" class="w-full h-auto rounded-lg">
+  </div>
+  <div>
+    <img src="images/sideframe.png" alt="Your Image">
   </div>
 </section>
+
 
 
 

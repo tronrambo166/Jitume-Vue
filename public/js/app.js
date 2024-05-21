@@ -8560,6 +8560,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -12458,6 +12464,8 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+//
+//
 //
 //
 //
@@ -72322,7 +72330,7 @@ var render = function () {
                                     "svg",
                                     {
                                       staticClass:
-                                        "h-4 w-full fill-current text-gray-500",
+                                        "h-4 w-4 fill-current text-gray-500",
                                       attrs: {
                                         xmlns: "http://www.w3.org/2000/svg",
                                         viewBox: "0 0 20 20",
@@ -72338,6 +72346,12 @@ var render = function () {
                                   ),
                                 ]
                               ),
+                              _vm._v(" "),
+                              _c("ul", {
+                                staticClass:
+                                  "absolute mt-1 w-[250px] bg-black border border-gray-300 rounded-md shadow-lg z-10 top-full",
+                                attrs: { id: "suggestion-list" },
+                              }),
                             ]),
                           ]),
                           _vm._v(" "),
@@ -78842,56 +78856,53 @@ var staticRenderFns = [
       "section",
       {
         staticClass:
-          "flex flex-col md:flex-row items-center md:items-start justify-center md:justify-between py-[150px] px-10 my-4 mx-[50px] md:mx-[50px]",
+          "flex justify-center py-8 gap-6 px-6 items-center w-[[832.55px]",
       },
       [
-        _c("div", { staticClass: "w-[320px] md:w-[430px] md:mr-4 ]" }, [
-          _c(
-            "h1",
-            { staticClass: "pb-2 text-[18px] md:text-[20px] text-gray-900" },
-            [_vm._v("Discover local services")]
-          ),
-          _vm._v(" "),
-          _c(
-            "h3",
-            { staticClass: "py-2 text-[24px] md:text-[32px] font-bold" },
-            [
-              _vm._v("Find the best "),
-              _c("span", { staticClass: "text-green-800" }, [
-                _vm._v("local service"),
-              ]),
-              _vm._v(" "),
-              _c("br"),
-              _vm._v(" in your area"),
-            ]
-          ),
-          _vm._v(" "),
-          _c("p", { staticClass: "text-black text-[13px] md:text-[20px]" }, [
-            _vm._v(
-              "Explore categories to suit your needs. Connect with businesses offering top-notch services."
+        _c("div", [
+          _c("div", { staticClass: "w-[300px] md:w-[430px] md:mr-4 ]" }, [
+            _c(
+              "h1",
+              { staticClass: "pb-2 text-[18px] md:text-[20px] text-gray-900" },
+              [_vm._v("Discover local services")]
+            ),
+            _vm._v(" "),
+            _c(
+              "h3",
+              { staticClass: "py-2 text-[24px] md:text-[32px] font-bold" },
+              [
+                _vm._v("Find the best "),
+                _c("span", { staticClass: "text-green-800" }, [
+                  _vm._v("local service"),
+                ]),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v(" in your area"),
+              ]
+            ),
+            _vm._v(" "),
+            _c("p", { staticClass: "text-black text-[13px] md:text-[20px]" }, [
+              _vm._v(
+                "Explore categories to suit your needs. Connect with businesses offering top-notch services."
+              ),
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass:
+                  "bg-green-800 text-white px-4 py-2 mt-4 md:px-6 md:py-3 rounded-[14px]",
+              },
+              [_vm._v("Get started")]
             ),
           ]),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass:
-                "bg-green-800 text-white px-4 py-2 mt-4 md:px-6 md:py-3 rounded-[14px]",
-            },
-            [_vm._v("Get started")]
-          ),
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "hidden md:block md:w-[445px] h-[255px ] md:ml-4" },
-          [
-            _c("img", {
-              staticClass: "w-full h-auto rounded-lg",
-              attrs: { src: "images/sideframe.png", alt: "Your Image" },
-            }),
-          ]
-        ),
+        _c("div", [
+          _c("img", {
+            attrs: { src: "images/sideframe.png", alt: "Your Image" },
+          }),
+        ]),
       ]
     )
   },
