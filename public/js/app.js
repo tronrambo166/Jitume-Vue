@@ -72312,7 +72312,7 @@ var render = function () {
                             _c("div", { staticClass: "relative" }, [
                               _c("input", {
                                 staticClass:
-                                  "py-2 px-4 w-[250px] border border-gray-300 rounded-full",
+                                  "py-2 px-4 w-[250px] border border-gray-300 rounded-full focus:outline-none focus:ring-0 focus:border-transparent",
                                 attrs: {
                                   id: "searchbox",
                                   onkeyup: "suggest(this.value);",
@@ -73070,7 +73070,8 @@ var staticRenderFns = [
     return _c("div", { staticClass: "my-2" }, [
       _c("div", { staticClass: "flex items-center" }, [
         _c("input", {
-          staticClass: "py-2 px-4 rounded-full border border-black w-[250px]",
+          staticClass:
+            "py-2 px-4 rounded-full border border-black w-[250px] focus:outline-none focus:ring-0 focus:border-transparent",
           attrs: {
             type: "text",
             name: "listing_name",

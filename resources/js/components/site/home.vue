@@ -128,14 +128,14 @@
       <!-- Search Options and Button Section -->
 <div class="flex flex-col sm:flex-row lg:flex-row lg:justify-center sm:justify-start items-center gap-4 sm:gap-16 px-2">
     <div class="my-2">
-        <div class="flex items-center ">
-            <input class="py-2 px-4 rounded-full border border-black w-[250px]" type="text" name="listing_name" placeholder="What are you looking for?">
-        </div>
+        <div class="flex items-center">
+        <input class="py-2 px-4 rounded-full border border-black w-[250px] focus:outline-none focus:ring-0 focus:border-transparent" type="text" name="listing_name" placeholder="What are you looking for?">
+    </div>
     </div>
 
     <div class="my-2">
       <div class="relative">
-    <input id="searchbox" onkeyup="suggest(this.value);" class="py-2 px-4 w-[250px] border border-gray-300 rounded-full" type="text" name="search" value="" placeholder="Location">
+    <input id="searchbox" onkeyup="suggest(this.value);" class="py-2 px-4 w-[250px] border border-gray-300 rounded-full focus:outline-none focus:ring-0 focus:border-transparent" type="text" name="search" value="" placeholder="Location">
     <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
         <svg class="h-4 w-4 fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
             <path d="M10 2a7 7 0 0 1 7 7c0 4.472-7 11-7 11S3 13.472 3 9a7 7 0 0 1 7-7zm0 2a5 5 0 0 0-5 5c0 2.142 3.094 6.333 5 8 1.906-1.667 5-5.858 5-8a5 5 0 0 0-5-5z"/>
