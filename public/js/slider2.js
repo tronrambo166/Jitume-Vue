@@ -73,3 +73,24 @@
     $('.resource-slider-frame').removeClass('animate-pulse');
 
 })(jQuery); // end function
+
+
+// Reapply the loading class after the page is loaded
+window.addEventListener('load', function() {
+  // Add a delay before removing the loading class
+  setTimeout(function() {
+    // Remove the loading class from all card elements
+    document.querySelectorAll('.card').forEach(function(card) {
+      card.classList.remove('loading');
+    });
+  }, 500); // Adjust the delay time as needed (in milliseconds)
+});
+
+// Remove the loading class from cards after a delay
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    document.querySelectorAll('.loading').forEach(function(card) {
+      card.classList.remove('loading');
+    });
+  }, 1000); // Adjust the delay time (in milliseconds)
+});

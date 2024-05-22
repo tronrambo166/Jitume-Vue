@@ -8559,17 +8559,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -72777,11 +72766,14 @@ var render = function () {
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "carousel slide", attrs: { id: "resource-slider" } },
+        {
+          staticClass: "carousel slide w-full mx-auto",
+          attrs: { id: "resource-slider", "data-ride": "false" },
+        },
         [
           _c(
             "div",
-            { staticClass: "carousel-inner w-[70%] px-4 mx-auto" },
+            { staticClass: "carousel-inner w-[70%] mx-auto" },
             _vm._l(Math.ceil(_vm.results.length / 3), function (result, index) {
               return _c(
                 "div",
@@ -72792,14 +72784,14 @@ var render = function () {
                 [
                   _c(
                     "div",
-                    { staticClass: "flex flex-wrap" },
+                    { staticClass: "flex justify-center items-center w-full" },
                     _vm._l([0, 1, 2], function (offset) {
                       return _vm.results[index * 3 + offset]
                         ? _c(
                             "router-link",
                             {
                               key: index * 3 + offset,
-                              staticClass: "w-full md:w-1/3 px-2",
+                              staticClass: "w-full md:w-[300px] px-2",
                               attrs: {
                                 to:
                                   "/listingDetails/" +
@@ -72811,7 +72803,7 @@ var render = function () {
                                 "div",
                                 {
                                   staticClass:
-                                    "bg-white/90 mt-4 w-full h-[90%] rounded-xl shadow-md p-3 mb-4 flex flex-col relative",
+                                    "bg-white mt-4 w-full h-[400px] rounded-xl shadow-md p-3 mb-4 flex flex-col justify-center relative loading",
                                 },
                                 [
                                   _c("div", { staticClass: "relative" }, [
@@ -72839,7 +72831,7 @@ var render = function () {
                                           _vm._s(
                                             _vm.results[index * 3 + offset]
                                               .location
-                                          ) + "\n"
+                                          ) + "\n              "
                                         ),
                                       ]
                                     ),
@@ -72948,7 +72940,7 @@ var render = function () {
                                             "router-link",
                                             {
                                               staticClass:
-                                                "btn inline-block bg-green-800 hover:bg-green-700 text-white py-2 px-2 rounded",
+                                                "btn inline-block bg-green-800 hover:bg-green-700 text-white py-1 px-2 md:px-3 lg:px-4 rounded text-xs md:text-sm lg:text-base lg:py-2 lg:px-3",
                                               attrs: {
                                                 to:
                                                   "/listingDetails/" +
