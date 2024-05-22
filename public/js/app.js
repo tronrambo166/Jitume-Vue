@@ -73417,7 +73417,7 @@ var staticRenderFns = [
               _c(
                 "div",
                 {
-                  staticClass: "w-[350px] p-4 text-md text-center md:text-left",
+                  staticClass: "w-[390px] p-2 text-md text-center md:text-left",
                 },
                 [
                   _c(
@@ -73443,7 +73443,7 @@ var staticRenderFns = [
                 { staticClass: "w-[350px] md:w-auto flex justify-center" },
                 [
                   _c("img", {
-                    staticClass: "w-[368px] h-[211px] md:max-w-md",
+                    staticClass: "w-[300px] h-[211px] md:max-w-md",
                     attrs: {
                       src: "images/imageFrame.png",
                       alt: "Placeholder Image",

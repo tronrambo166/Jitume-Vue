@@ -633,14 +633,14 @@
 <div class="flex justify-center items-center my-6">
   <div class="p-4 flex gap-4 flex-col relative lg:w-3/4 xl:w-2/3 mx-4 md:mx-0">
     <div class="flex flex-col md:flex-row w-full md:w-auto justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
-      <div class="w-[350px] p-4 text-md text-center md:text-left">
+      <div class="w-[390px] p-2 text-md text-center md:text-left">
         <p class="text-black ml-4 font-bold text-xl">
           <span class="text-[#198754]">100%</span> of your investment <br>goes to <span class="text-[#198754]">selected business.</span>
         </p>
       </div>
 
       <div class="w-[350px] md:w-auto flex justify-center">
-        <img src="images/imageFrame.png" alt="Placeholder Image" class="w-[368px] h-[211px] md:max-w-md">
+        <img src="images/imageFrame.png" alt="Placeholder Image" class="w-[300px] h-[211px] md:max-w-md">
       </div>
     </div>
   </div>
