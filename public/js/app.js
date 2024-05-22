@@ -72768,7 +72768,11 @@ var render = function () {
         "div",
         {
           staticClass: "carousel slide w-full mx-auto",
-          attrs: { id: "resource-slider", "data-ride": "false" },
+          attrs: {
+            id: "resource-slider",
+            "data-ride": "false",
+            "data-interval": "false",
+          },
         },
         [
           _c(

@@ -12856,3 +12856,17 @@ video {
     transform: translateX(100%);
   }
 }
+/* CSS for the "Learn More" button */
+.btn {
+  padding: 8px 12px; /* Set padding inside the button */
+  background-color: #198754; /* Set the background color of the button to match your existing green color */
+  color: white; /* Set the text color of the button */
+  border: none; /* Remove the border */
+  border-radius: 5px; /* Add a border radius to make the button slightly rounded */
+  transition: background-color 0.3s; /* Add a transition effect for hover */
+}
+
+.btn:hover {
+
+  background-color:#198754 ; /* Change the background color on hover */
+}
