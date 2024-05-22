@@ -505,7 +505,7 @@
     <!-- LOGIN MODAL -->
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal-dialog modal-dialog-centered" role="document"> <!-- Added modal-dialog-centered class for centering -->
-            <div class="modal-content" style="width: 585px;border-radius: 20px;">
+            <div class="modal-content" style="width: 585px; border-radius: 20px;">
 
                  <button type="button" class="m-0 close float-left text-left d-inline-block pt-2 pl-3 h3" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>

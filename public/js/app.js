@@ -9655,7 +9655,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'business'],
   data: function data() {
@@ -73458,10 +73457,10 @@ var staticRenderFns = [
       "div",
       {
         staticClass:
-          "flex bg-[#F4FBF7] justify-center items-center flex-col py-[40px] max-w-[1440px] mx-auto my-6",
+          "bg-[#F4FBF7] flex flex-col justify-center items-center py-[40px] max-w-[1440px] mx-auto my-6",
       },
       [
-        _c("div", { staticClass: "w-[334px] pt-6" }, [
+        _c("div", { staticClass: "w-[334px] pt-6 text-center" }, [
           _c("h2", { staticClass: "text-[40px] font-bold text-black" }, [
             _vm._v("Get started today!"),
           ]),
@@ -74141,7 +74140,7 @@ var render = function () {
           [
             _c("div", { staticClass: "relative" }, [
               _c("img", {
-                staticClass: "w-[100%] h-[70vh] rounded-xl",
+                staticClass: "w-full h-[70vh] rounded-xl object-cover",
                 attrs: { src: _vm.form.image, alt: "" },
               }),
               _vm._v(" "),
@@ -74178,7 +74177,7 @@ var render = function () {
                     ]),
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticStyle: { width: "30%" } }, [
+                  _c("div", { staticClass: "w-3/4" }, [
                     _c("div", { staticClass: "flex items-center" }, [
                       _c("h6", { staticClass: "text-md text-white" }, [
                         _vm._v("Amount: "),
@@ -74227,55 +74226,55 @@ var render = function () {
         "div",
         { staticClass: "col-md-4 py-2 lg:w-[40%] md:w-[80%] m:w-[80%] px-4" },
         [
-          _c("h3", { staticClass: "text-3xl font-bold py-6 text-black" }, [
-            _vm._v("About " + _vm._s(_vm.form.name)),
-          ]),
-          _vm._v(" "),
-          _c("p", { staticClass: "text-justify-center text-black py-[70px]" }, [
-            _vm._v(
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod\n            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco\n            laboris nisi ut aliquip"
-            ),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-12 flex gap-2" }, [
-              _vm._m(2),
-              _vm._v(" "),
-              _vm.auth_user
-                ? _c(
-                    "a",
-                    {
-                      staticClass:
-                        "btn border border-b-0 border-success hover:bg-green-500 hover:text-white transition-colors duration-300",
-                      attrs: {
-                        "data-toggle": "modal",
-                        "data-target": "#reviewModal",
-                      },
-                    },
-                    [_vm._v("Add review")]
-                  )
-                : _c(
-                    "a",
-                    {
-                      staticClass:
-                        "bg-green-800 text-white rounded-lg hover:bg-green-700 transition-colors duration-300",
-                      attrs: {
-                        "data-target": "#loginmodal2",
-                        "data-toggle": "modal",
-                      },
-                      on: {
-                        click: function ($event) {
-                          return _vm.make_session(_vm.form.listing_id)
+          _c("div", { staticClass: "flex flex-col justify-center h-full" }, [
+            _c("h3", { staticClass: "text-3xl font-bold py-3 text-black" }, [
+              _vm._v("About " + _vm._s(_vm.form.name)),
+            ]),
+            _vm._v(" "),
+            _c("p", { staticClass: "text-justify-center text-black py-3" }, [
+              _vm._v(
+                "\n      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip\n    "
+              ),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-12 flex gap-2" }, [
+                _vm._m(2),
+                _vm._v(" "),
+                _vm.auth_user
+                  ? _c(
+                      "a",
+                      {
+                        staticClass:
+                          "btn border border-b-0 border-success hover:bg-green-500 hover:text-white transition-colors duration-300",
+                        attrs: {
+                          "data-toggle": "modal",
+                          "data-target": "#reviewModal",
                         },
                       },
-                    },
-                    [
-                      _c("i", { staticClass: "mr-2 fa fa-star" }),
-                      _vm._v("Add review"),
-                    ]
-                  ),
-              _vm._v(" "),
-              _c("hr"),
+                      [_vm._v("\n          Add review\n        ")]
+                    )
+                  : _c(
+                      "a",
+                      {
+                        staticClass:
+                          "bg-green-800 text-white rounded-lg hover:bg-green-700 transition-colors duration-300",
+                        attrs: {
+                          "data-target": "#loginmodal2",
+                          "data-toggle": "modal",
+                        },
+                        on: {
+                          click: function ($event) {
+                            return _vm.make_session(_vm.form.listing_id)
+                          },
+                        },
+                      },
+                      [
+                        _c("i", { staticClass: "mr-2 fa fa-star" }),
+                        _vm._v("Add review\n        "),
+                      ]
+                    ),
+              ]),
             ]),
           ]),
           _vm._v(" "),
@@ -75136,7 +75135,10 @@ var staticRenderFns = [
         staticClass:
           "border border-gray-700 rounded-lg text-black hover:bg-gray-200 hover:text-gray-800 transition-colors duration-300",
       },
-      [_c("i", { staticClass: "mr-2 text-md fa fa-list" }), _vm._v("Overview")]
+      [
+        _c("i", { staticClass: "mr-2 text-md fa fa-list" }),
+        _vm._v("Overview\n        "),
+      ]
     )
   },
   function () {

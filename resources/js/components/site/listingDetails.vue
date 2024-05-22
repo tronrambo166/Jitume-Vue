@@ -3,38 +3,33 @@
 
     <div class="heading row my-3 pt-3">
       <div class="col-md-6">
-  <div class="grid images_3_of_2 rounded listing px-3  mx-auto w-full">
-<div class="relative">
-  <!-- Image -->
-  <img class="w-[100%] h-[70vh] rounded-xl " :src="form.image" alt="" />
-  
-  <!-- Overlay Content -->
-  <div class="absolute top-0 left-0 bg-black rounded-l-xl px-4 bg-opacity-50 text-white pt-8 w-[50%] flex flex-col justify-center h-full ">
-    <h3 class="text-2xl font-bold text-white">{{ form.name }}</h3>
-    <p class="my-4 text-white"><i class="mr-2 fa fa-map-marker text-green-700"></i>{{ form.location }}</p>
-    <div class="">
-      <p><span class="mt-1 rounded py-2 text-white"><i class="mr-2 fa fa-phone text-slate-100"></i>{{ form.contact }}</span></p>
-    </div>
-    <div class="" style="width:30%;">
-      <div class="flex items-center">
-         <h6 class="text-md text-white">Amount: <span class="font-light"><b>${{ form.investment_needed }}</b></span>
-        </h6>
-        <span class="text-sm px-2 text-green-300 font-bold">(Required): ${{ amount_required }}</span>
-      </div>
-     
-      <div class="flex items-center gap-6 my-2">
+  <div class="grid images_3_of_2 rounded listing px-3 mx-auto w-full">
+    <div class="relative">
+      <!-- Image -->
+      <img class="w-full h-[70vh] rounded-xl object-cover" :src="form.image" alt="" />
+      
+      <!-- Overlay Content -->
+      <div class="absolute top-0 left-0 bg-black rounded-l-xl px-4 bg-opacity-50 text-white pt-8 w-[50%] flex flex-col justify-center h-full">
+        <h3 class="text-2xl font-bold text-white">{{ form.name }}</h3>
+        <p class="my-4 text-white"><i class="mr-2 fa fa-map-marker text-green-700"></i>{{ form.location }}</p>
         <div class="">
-          <div id="staticRating" class="float-left flex"></div>
+          <p><span class="mt-1 rounded py-2 text-white"><i class="mr-2 fa fa-phone text-slate-100"></i>{{ form.contact }}</span></p>
         </div>
-        
+        <div class="w-3/4">
+          <div class="flex items-center">
+            <h6 class="text-md text-white">Amount: <span class="font-light"><b>${{ form.investment_needed }}</b></span></h6>
+            <span class="text-sm px-2 text-green-300 font-bold">(Required): ${{ amount_required }}</span>
+          </div>
+          <div class="flex items-center gap-6 my-2">
+            <div class="">
+              <div id="staticRating" class="float-left flex"></div>
+            </div>
+          </div>
+          <p class="text-white flex">{{ form.rating }}</p>
+          <p class="text-white float-left text-sm">{{ form.rating_count }} reviews</p>
+        </div>
       </div>
-                <p class="text-white flex">{{ form.rating }}</p>
-
-      <p class="text-white float-left text-sm">{{ form.rating_count }} reviews</p>
     </div>
-  </div>
-
-</div>
       
     <div v-if="auth_user" class="float-right w-1/4">
       <div class="bg-gray-300 h-5">
@@ -42,30 +37,34 @@
       </div>
       <span>{{ progress }}% Invested</span>
     </div>
-    
   </div>
 </div>
 
       <div class="col-md-4  py-2 lg:w-[40%] md:w-[80%] m:w-[80%] px-4">
        
 
+<div class="flex flex-col  justify-center h-full">
+    <!-- Your centered section content goes here -->
+    <h3 class="text-3xl font-bold py-3 text-black">About {{ form.name }}</h3>
+    <p class="text-justify-center text-black py-3">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+    </p>
 
-        <h3 class=" text-3xl font-bold py-6 text-black">About {{form.name}}</h3>
-          <p class="text-justify-center text-black  py-[70px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-            laboris nisi ut aliquip</p>
-
-
-      
-<div class="row ">
-  <div class="col-md-12 flex gap-2">
-    <a class="border border-gray-700 rounded-lg text-black hover:bg-gray-200 hover:text-gray-800 transition-colors duration-300"><i class="mr-2 text-md fa fa-list"></i>Overview</a>
-    <a v-if="auth_user" data-toggle="modal" data-target="#reviewModal" class="btn border border-b-0 border-success hover:bg-green-500 hover:text-white transition-colors duration-300">Add review</a>
-    <a v-else @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal" class="bg-green-800 text-white rounded-lg hover:bg-green-700 transition-colors duration-300"><i class="mr-2 fa fa-star"></i>Add review</a>
-    <hr>
+    <!-- Add the provided HTML snippet -->
+    <div class="row">
+      <div class="col-md-12 flex gap-2">
+        <a class="border border-gray-700 rounded-lg text-black hover:bg-gray-200 hover:text-gray-800 transition-colors duration-300">
+          <i class="mr-2 text-md fa fa-list"></i>Overview
+        </a>
+        <a v-if="auth_user" data-toggle="modal" data-target="#reviewModal" class="btn border border-b-0 border-success hover:bg-green-500 hover:text-white transition-colors duration-300">
+          Add review
+        </a>
+        <a v-else @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal" class="bg-green-800 text-white rounded-lg hover:bg-green-700 transition-colors duration-300">
+          <i class="mr-2 fa fa-star"></i>Add review
+        </a>
+      </div>
+    </div>
   </div>
-</div>
-
 
         <!--  <div class="card bg-light w-75 mx-auto py-3">
              <h5 class="mx-4 text-secondary shadow border border-light py-2 d-block text-center">Seed investors spot open

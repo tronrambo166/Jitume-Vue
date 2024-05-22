@@ -638,8 +638,8 @@
 </div>
 
 
-<div class="flex bg-[#F4FBF7] justify-center items-center flex-col py-[40px] max-w-[1440px] mx-auto my-6">
-  <div class="w-[334px] pt-6">
+<div class=" bg-[#F4FBF7] flex flex-col justify-center items-center  py-[40px] max-w-[1440px] mx-auto my-6 ">
+  <div class="w-[334px] pt-6 text-center">
     
          <h2 class="text-[40px] font-bold text-black">Get started today!</h2>
 
