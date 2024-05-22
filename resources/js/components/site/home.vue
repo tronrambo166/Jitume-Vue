@@ -518,7 +518,7 @@
 
  <!-- Your carousel HTML -->
 <div id="resource-slider" class="carousel slide">
-  <div class="carousel-inner  w-[70%]  mx-auto">
+  <div class="carousel-inner  w-[70%] px-4 mx-auto">
     <!-- Loop through your results to generate carousel items -->
     <div v-for="(result, index) in Math.ceil(results.length / 3)" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }">
       <div class="flex flex-wrap">

@@ -4,7 +4,7 @@
 
 <section class="bg-cover bg-center flex items-center relative w-full" style="background-image: url('images/heroimg.png');">
   <div class="container my-8 md:mx-8 px-4 sm:px-6 lg:px-8 flex items-center relative">
-    <form id="form" class="bg-white w-[517px] sm:w-[517px] h-[369px] p-6 rounded-[28px] mr-6 relative z-10" @submit.prevent="search()" method="post">
+    <form id="form" class="bg-white w-[517px] sm:w-[517px] h-[369px] p-6 rounded-[28px]  ml-[75px] relative z-10" @submit.prevent="search()" method="post">
       <h2 class="text-[32px] font-semibold mb-4">Find the <span class="text-[#198754]">right services</span>,<br>for you</h2>
       <div class="flex flex-col">
         <div class="mb-4">
@@ -70,76 +70,74 @@
 
 
     <hr>
-     <div class="py-5 h-full w-full">
+  <div class="py-5 h-full w-full">
     <h1 class="text-center text-gray-900 text-4xl">Featured Listings</h1>
     <div class="my-4 px-4 py-6 h-full">
-      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-        <ol class="carousel-indicators">
-          <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
-          <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
-          <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li>
-          <!-- Add more indicators as needed -->
-        </ol>
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <div class="row justify-center lg:justify-between">
-              <div v-for="(result, index) in results.slice(0, 3)" :key="index" class="col-lg-4 p-3">
-                <div class="bg-white h-[300px] w-[350px] rounded-xl shadow-lg mx-auto">
-                  <router-link :to="`/serviceDetails/${result.id}`" class="rounded-lg overflow-hidden h-full flex flex-col">
-                    <div class="relative" style="height: 200px;">
-                      <video v-if="result.file" controls style="width:100%; height:100%;" alt="">
-                        <source :src="result.file" type="video/mp4">
-                      </video>
-                      <img v-else :src="result.image"  class="object-cover w-full h-full rounded-t-xl" alt="" />
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-interval="false" data-bs-wrap="false">
+            <ol class="carousel-indicators">
+                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
+                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
+                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li>
+                <!-- Add more indicators as needed -->
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="flex justify-center lg:justify-center">
+                        <div v-for="(result, index) in results.slice(0, 3)" :key="index" class="p-3">
+                            <div class="bg-white h-[300px] w-[350px] rounded-xl shadow-lg mx-auto">
+                                <router-link :to="`/serviceDetails/${result.id}`" class="rounded-lg overflow-hidden h-full flex flex-col">
+                                    <div class="relative" style="height: 200px;">
+                                        <video v-if="result.file" controls style="width:100%; height:100%;" alt="">
+                                            <source :src="result.file" type="video/mp4">
+                                        </video>
+                                        <img v-else :src="result.image" class="object-cover w-full h-full rounded-t-xl" alt="" />
+                                    </div>
+                                    <div class="">
+                                        <div>
+                                            <h5 class="text-md text-success text-2xl mb-1 pt-4">{{ result.name }}</h5>
+                                            <p class="text-black py-2">{{ result.location }}</p>
+                                        </div>
+                                    </div>
+                                </router-link>
+                            </div>
+                        </div>
                     </div>
-                    <div class=" ">
-                      <div>
-                        <h5 class="text-md  text-success text-2xl mb-1 pt-4">{{ result.name }}</h5>
-                        <p class="text-black py-2">{{ result.location }}</p>
-                      </div>
-                    </div>
-                  </router-link>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <div class="row justify-center lg:justify-between">
-              <div v-for="(result, index) in results.slice(3, 6)" :key="index" class="col-lg-4 p-3">
-                <div class="shadow-lg  rounded-xl h-[300px] w-[350px] mx-auto">
-                  <router-link :to="`/serviceDetails/${result.id}`" class="rounded-lg overflow-hidden h-full flex flex-col">
-                    <div class="relative" style="height: 200px;">
-                      <video v-if="result.file" controls style="width:100%; height:100%;" alt="">
-                        <source :src="result.file" type="video/mp4">
-                      </video>
-                      <img v-else :src="result.image"  class="object-cover rounded-t-xl w-full h-full" alt="" />
+                <div class="carousel-item">
+                    <div class="flex justify-center lg:justify-center">
+                        <div v-for="(result, index) in results.slice(3, 6)" :key="index" class="p-3">
+                            <div class="shadow-lg rounded-xl h-[300px] w-[350px] mx-auto">
+                                <router-link :to="`/serviceDetails/${result.id}`" class="rounded-lg overflow-hidden h-full flex flex-col">
+                                    <div class="relative" style="height: 200px;">
+                                        <video v-if="result.file" controls style="width:100%; height:100%;" alt="">
+                                            <source :src="result.file" type="video/mp4">
+                                        </video>
+                                        <img v-else :src="result.image" class="object-cover rounded-t-xl w-full h-full" alt="" />
+                                    </div>
+                                    <div class="">
+                                        <div>
+                                            <h5 class="text-md text-success text-2xl mb-1 pt-4">{{ result.name }}</h5>
+                                            <p class="text-black py-2">{{ result.location }}</p>
+                                        </div>
+                                    </div>
+                                </router-link>
+                            </div>
+                        </div>
                     </div>
-                    <div class="  ">
-                      <div>
-                       <div>
-                        <h5 class="text-md  text-success text-2xl mb-1 pt-4">{{ result.name }}</h5>
-                        <p class="text-black py-2">{{ result.location }}</p>
-                      </div>
-                      </div>
-                    </div>
-                  </router-link>
                 </div>
-              </div>
+                <!-- Add more carousel items as needed -->
             </div>
-          </div>
-          <!-- Add more carousel items as needed -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon bg-black" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon bg-black" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon bg-black" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-          <span class="carousel-control-next-icon bg-black" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
     </div>
-  </div>
+</div>
 
               
     </div>

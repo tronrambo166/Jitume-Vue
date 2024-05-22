@@ -11573,6 +11573,24 @@ video {
 .mt-12 {
   margin-top: 3rem;
 }
+.mr-\[50px\] {
+  margin-right: 50px;
+}
+.mr-\[250px\] {
+  margin-right: 250px;
+}
+.mr-\[450px\] {
+  margin-right: 450px;
+}
+.ml-\[60px\] {
+  margin-left: 60px;
+}
+.ml-\[70px\] {
+  margin-left: 70px;
+}
+.ml-\[75px\] {
+  margin-left: 75px;
+}
 .block {
   display: block;
 }
@@ -12710,6 +12728,10 @@ video {
 
   .lg\:justify-between {
     justify-content: space-between;
+  }
+
+  .lg\:justify-around {
+    justify-content: space-around;
   }
 
   .lg\:space-x-6 > :not([hidden]) ~ :not([hidden]) {

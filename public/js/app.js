@@ -12619,8 +12619,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -72783,7 +72781,7 @@ var render = function () {
         [
           _c(
             "div",
-            { staticClass: "carousel-inner w-[70%] mx-auto" },
+            { staticClass: "carousel-inner w-[70%] px-4 mx-auto" },
             _vm._l(Math.ceil(_vm.results.length / 3), function (result, index) {
               return _c(
                 "div",
@@ -78473,7 +78471,7 @@ var render = function () {
               "form",
               {
                 staticClass:
-                  "bg-white w-[517px] sm:w-[517px] h-[369px] p-6 rounded-[28px] mr-6 relative z-10",
+                  "bg-white w-[517px] sm:w-[517px] h-[369px] p-6 rounded-[28px] ml-[75px] relative z-10",
                 attrs: { id: "form", method: "post" },
                 on: {
                   submit: function ($event) {
@@ -78505,7 +78503,8 @@ var render = function () {
             staticClass: "carousel slide",
             attrs: {
               id: "carouselExampleIndicators",
-              "data-bs-ride": "carousel",
+              "data-bs-interval": "false",
+              "data-bs-wrap": "false",
             },
           },
           [
@@ -78515,86 +78514,80 @@ var render = function () {
               _c("div", { staticClass: "carousel-item active" }, [
                 _c(
                   "div",
-                  { staticClass: "row justify-center lg:justify-between" },
+                  { staticClass: "flex justify-center lg:justify-center" },
                   _vm._l(_vm.results.slice(0, 3), function (result, index) {
-                    return _c(
-                      "div",
-                      { key: index, staticClass: "col-lg-4 p-3" },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "bg-white h-[300px] w-[350px] rounded-xl shadow-lg mx-auto",
-                          },
-                          [
-                            _c(
-                              "router-link",
-                              {
-                                staticClass:
-                                  "rounded-lg overflow-hidden h-full flex flex-col",
-                                attrs: { to: "/serviceDetails/" + result.id },
-                              },
-                              [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "relative",
-                                    staticStyle: { height: "200px" },
-                                  },
-                                  [
-                                    result.file
-                                      ? _c(
-                                          "video",
-                                          {
-                                            staticStyle: {
-                                              width: "100%",
-                                              height: "100%",
-                                            },
-                                            attrs: { controls: "", alt: "" },
+                    return _c("div", { key: index, staticClass: "p-3" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "bg-white h-[300px] w-[350px] rounded-xl shadow-lg mx-auto",
+                        },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass:
+                                "rounded-lg overflow-hidden h-full flex flex-col",
+                              attrs: { to: "/serviceDetails/" + result.id },
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "relative",
+                                  staticStyle: { height: "200px" },
+                                },
+                                [
+                                  result.file
+                                    ? _c(
+                                        "video",
+                                        {
+                                          staticStyle: {
+                                            width: "100%",
+                                            height: "100%",
                                           },
-                                          [
-                                            _c("source", {
-                                              attrs: {
-                                                src: result.file,
-                                                type: "video/mp4",
-                                              },
-                                            }),
-                                          ]
-                                        )
-                                      : _c("img", {
-                                          staticClass:
-                                            "object-cover w-full h-full rounded-t-xl",
-                                          attrs: { src: result.image, alt: "" },
-                                        }),
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "" }, [
-                                  _c("div", [
-                                    _c(
-                                      "h5",
-                                      {
+                                          attrs: { controls: "", alt: "" },
+                                        },
+                                        [
+                                          _c("source", {
+                                            attrs: {
+                                              src: result.file,
+                                              type: "video/mp4",
+                                            },
+                                          }),
+                                        ]
+                                      )
+                                    : _c("img", {
                                         staticClass:
-                                          "text-md text-success text-2xl mb-1 pt-4",
-                                      },
-                                      [_vm._v(_vm._s(result.name))]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "p",
-                                      { staticClass: "text-black py-2" },
-                                      [_vm._v(_vm._s(result.location))]
-                                    ),
+                                          "object-cover w-full h-full rounded-t-xl",
+                                        attrs: { src: result.image, alt: "" },
+                                      }),
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("div", {}, [
+                                _c("div", [
+                                  _c(
+                                    "h5",
+                                    {
+                                      staticClass:
+                                        "text-md text-success text-2xl mb-1 pt-4",
+                                    },
+                                    [_vm._v(_vm._s(result.name))]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("p", { staticClass: "text-black py-2" }, [
+                                    _vm._v(_vm._s(result.location)),
                                   ]),
                                 ]),
-                              ]
-                            ),
-                          ],
-                          1
-                        ),
-                      ]
-                    )
+                              ]),
+                            ]
+                          ),
+                        ],
+                        1
+                      ),
+                    ])
                   }),
                   0
                 ),
@@ -78603,88 +78596,80 @@ var render = function () {
               _c("div", { staticClass: "carousel-item" }, [
                 _c(
                   "div",
-                  { staticClass: "row justify-center lg:justify-between" },
+                  { staticClass: "flex justify-center lg:justify-center" },
                   _vm._l(_vm.results.slice(3, 6), function (result, index) {
-                    return _c(
-                      "div",
-                      { key: index, staticClass: "col-lg-4 p-3" },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "shadow-lg rounded-xl h-[300px] w-[350px] mx-auto",
-                          },
-                          [
-                            _c(
-                              "router-link",
-                              {
-                                staticClass:
-                                  "rounded-lg overflow-hidden h-full flex flex-col",
-                                attrs: { to: "/serviceDetails/" + result.id },
-                              },
-                              [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "relative",
-                                    staticStyle: { height: "200px" },
-                                  },
-                                  [
-                                    result.file
-                                      ? _c(
-                                          "video",
-                                          {
-                                            staticStyle: {
-                                              width: "100%",
-                                              height: "100%",
-                                            },
-                                            attrs: { controls: "", alt: "" },
-                                          },
-                                          [
-                                            _c("source", {
-                                              attrs: {
-                                                src: result.file,
-                                                type: "video/mp4",
-                                              },
-                                            }),
-                                          ]
-                                        )
-                                      : _c("img", {
-                                          staticClass:
-                                            "object-cover rounded-t-xl w-full h-full",
-                                          attrs: { src: result.image, alt: "" },
-                                        }),
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "" }, [
-                                  _c("div", [
-                                    _c("div", [
-                                      _c(
-                                        "h5",
+                    return _c("div", { key: index, staticClass: "p-3" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "shadow-lg rounded-xl h-[300px] w-[350px] mx-auto",
+                        },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass:
+                                "rounded-lg overflow-hidden h-full flex flex-col",
+                              attrs: { to: "/serviceDetails/" + result.id },
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "relative",
+                                  staticStyle: { height: "200px" },
+                                },
+                                [
+                                  result.file
+                                    ? _c(
+                                        "video",
                                         {
-                                          staticClass:
-                                            "text-md text-success text-2xl mb-1 pt-4",
+                                          staticStyle: {
+                                            width: "100%",
+                                            height: "100%",
+                                          },
+                                          attrs: { controls: "", alt: "" },
                                         },
-                                        [_vm._v(_vm._s(result.name))]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "p",
-                                        { staticClass: "text-black py-2" },
-                                        [_vm._v(_vm._s(result.location))]
-                                      ),
-                                    ]),
+                                        [
+                                          _c("source", {
+                                            attrs: {
+                                              src: result.file,
+                                              type: "video/mp4",
+                                            },
+                                          }),
+                                        ]
+                                      )
+                                    : _c("img", {
+                                        staticClass:
+                                          "object-cover rounded-t-xl w-full h-full",
+                                        attrs: { src: result.image, alt: "" },
+                                      }),
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("div", {}, [
+                                _c("div", [
+                                  _c(
+                                    "h5",
+                                    {
+                                      staticClass:
+                                        "text-md text-success text-2xl mb-1 pt-4",
+                                    },
+                                    [_vm._v(_vm._s(result.name))]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("p", { staticClass: "text-black py-2" }, [
+                                    _vm._v(_vm._s(result.location)),
                                   ]),
                                 ]),
-                              ]
-                            ),
-                          ],
-                          1
-                        ),
-                      ]
-                    )
+                              ]),
+                            ]
+                          ),
+                        ],
+                        1
+                      ),
+                    ])
                   }),
                   0
                 ),
