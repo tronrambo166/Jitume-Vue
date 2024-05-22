@@ -12858,7 +12858,7 @@ video {
 }
 /* CSS for the "Learn More" button */
 .btn {
-  padding: 8px 12px; /* Set padding inside the button */
+  padding: 6px 12px; /* Set padding inside the button */
   background-color: #198754; /* Set the background color of the button to match your existing green color */
   color: white; /* Set the text color of the button */
   border: none; /* Remove the border */
@@ -12870,12 +12870,12 @@ video {
 
   background-color:#198754 ; /* Change the background color on hover */
 }
-/* Custom CSS to override the hover color */
-#category-slider ul li:hover a {
-  color: #198754 !important; /* Set the hover color to match your existing green color */
-}
-/* Remove blue hover effect and set green hover effect for card name */
-.card-name:hover {
-  color: #4CAF50 !important; /* Set the hover color to your desired green */
-  text-decoration: none !important; /* Remove underline on hover */
-}
+
+.btn-learn-more {
+    width: 120px; /* Set the desired width for all "Learn More" buttons */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 16px; /* Adjust the padding as needed */
+    text-align: center;
+  }

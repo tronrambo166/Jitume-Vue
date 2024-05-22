@@ -94,3 +94,14 @@ window.addEventListener('load', function() {
     });
   }, 1500); // Adjust the delay time (in milliseconds)
 });
+document.addEventListener('DOMContentLoaded', function () {
+    // Get the carousel element
+    var carousel = document.getElementById('resource-slider');
+
+    // Disable the carousel interval
+    if (carousel) {
+      var carouselInstance = new bootstrap.Carousel(carousel, {
+        interval: false
+      });
+    }
+  });

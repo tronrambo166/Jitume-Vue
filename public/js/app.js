@@ -8559,6 +8559,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -72767,12 +72769,8 @@ var render = function () {
       _c(
         "div",
         {
-          staticClass: "carousel slide w-full mx-auto",
-          attrs: {
-            id: "resource-slider",
-            "data-ride": "false",
-            "data-interval": "false",
-          },
+          staticClass: "carousel w-full mx-auto",
+          attrs: { id: "resource-slider" },
         },
         [
           _c(
@@ -72945,7 +72943,7 @@ var render = function () {
                                             "router-link",
                                             {
                                               staticClass:
-                                                "btn inline-block bg-green-800 hover:bg-green-700 text-white py-1 px-2 md:px-3 lg:px-4 rounded text-xs md:text-sm lg:text-base lg:py-2 lg:px-3",
+                                                "btn-learn-more inline-block bg-green-800 hover:bg-green-700 text-white py-1 px-2 md:px-3 lg:px-4 rounded text-xs md:text-sm lg:text-base lg:py-2 lg:px-3",
                                               attrs: {
                                                 to:
                                                   "/listingDetails/" +

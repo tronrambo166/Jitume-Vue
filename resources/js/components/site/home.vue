@@ -517,7 +517,7 @@
 
 
  <!-- Your carousel HTML -->
-<div id="resource-slider" class="carousel slide w-full mx-auto" data-ride="false" data-interval="false">
+<div id="resource-slider" class="carousel  w-full mx-auto">
   <div class="carousel-inner w-[70%] mx-auto">
     <!-- Loop through your results to generate carousel items -->
     <div v-for="(result, index) in Math.ceil(results.length / 3)" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }">
@@ -542,7 +542,7 @@
                 <p class="text-sm text-gray-700">Contact: {{ results[index * 3 + offset].contact }}</p>
               </div>
               <div class="mt-auto flex justify-end">
-                <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="btn inline-block bg-green-800 hover:bg-green-700 text-white py-1 px-2 md:px-3 lg:px-4 rounded text-xs md:text-sm lg:text-base lg:py-2 lg:px-3">Learn More</router-link>
+                <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class=" btn-learn-more inline-block bg-green-800 hover:bg-green-700 text-white py-1 px-2 md:px-3 lg:px-4 rounded text-xs md:text-sm lg:text-base lg:py-2 lg:px-3">Learn More</router-link>
               </div>
             </div>
           </div>
@@ -565,6 +565,8 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
+
+
 
 
 <!--cards-->
