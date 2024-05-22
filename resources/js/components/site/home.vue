@@ -523,8 +523,8 @@
     <div v-for="(result, index) in Math.ceil(results.length / 3)" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }">
       <div class="flex justify-center items-center w-full">
         <!-- Loop through three cards for each carousel item -->
-        <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="w-full md:w-[300px] px-2" v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]">
-          <div class="bg-white mt-4 w-full h-[400px] rounded-xl shadow-md p-3 mb-4 flex flex-col justify-center relative loading">
+        <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="w-full md:w-[calc(100% / 3 - 2rem)] px-2" v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]">
+          <div class="bg-white mt-4 w-full h-[90%] rounded-xl shadow-md p-3 mb-4 flex flex-col justify-center relative loading">
             <div class="relative">
               <img :src="results[index * 3 + offset].image" alt="Image" class="w-full h-[215px] object-cover rounded-lg mb-4">
               <p class="absolute inset-t-4 mb-4 ml-2 font-bold px-2 rounded-xl bottom-4 bg-white text-black text-center py-1 text-xs">

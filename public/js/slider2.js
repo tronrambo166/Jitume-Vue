@@ -92,5 +92,5 @@ window.addEventListener('load', function() {
     document.querySelectorAll('.loading').forEach(function(card) {
       card.classList.remove('loading');
     });
-  }, 1000); // Adjust the delay time (in milliseconds)
+  }, 1500); // Adjust the delay time (in milliseconds)
 });

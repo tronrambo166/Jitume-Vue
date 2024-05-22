@@ -72791,7 +72791,8 @@ var render = function () {
                             "router-link",
                             {
                               key: index * 3 + offset,
-                              staticClass: "w-full md:w-[300px] px-2",
+                              staticClass:
+                                "w-full md:w-[calc(100% / 3 - 2rem)] px-2",
                               attrs: {
                                 to:
                                   "/listingDetails/" +
@@ -72803,7 +72804,7 @@ var render = function () {
                                 "div",
                                 {
                                   staticClass:
-                                    "bg-white mt-4 w-full h-[400px] rounded-xl shadow-md p-3 mb-4 flex flex-col justify-center relative loading",
+                                    "bg-white mt-4 w-full h-[90%] rounded-xl shadow-md p-3 mb-4 flex flex-col justify-center relative loading",
                                 },
                                 [
                                   _c("div", { staticClass: "relative" }, [
