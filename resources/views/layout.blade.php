@@ -982,25 +982,30 @@
 
     <div class="modal fade" id="loginmodal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content ">
                 <div class="modal-header">
 
-                    <div class="card-header w-100">
-                        <div class="card-header row my-2">
-                            <button style="" class="ml-2 w-50 text-center text-dark bg-light font-weight-bold btn px-4 mr-2">{{ __('Join Jitume') }}</button>
+                  <div id="header" class="py-0 m-auto modal-header " style="border-bottom: 1px solid #66666630;"> <!-- Removed width style to allow responsiveness -->
+
+                    <div class="d-block mx-auto my-3 rounded-circle border-bottom text-center" style="background: #C4C4C4">
+                        <div class="mini_logo rounded-circle p-2">
+                             <img width="31px" class=" pl-2" src="images/randomIcons/mini_logo.png">
                         </div>
-
-                        <button style="border: 1px solid darkblue;background: #72c537;" id="logins" onclick="login()" class=" w-25 btn   px-1 mr-2">{{ __('Log In') }}</button>
-                        <button style="border: 1px solid darkblue;width:70%;" id="registers" onclick="register()" class=" btn  px-1 py-2 ">{{ __('Create Investor Account') }}</button>
-
-                        @if(Session::has('email')) <p class="text-danger ml-5">{{Session::get('email')}} @php Session::forget('email'); @endphp </p> @endif
+                       
                     </div>
-
+                </div>
 
 
                     <button type="button" class="m-0 close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
+
+                        <!-- <button style="" class="ml-2 w-50 text-center text-dark  font-weight-bold btn px-2 mr-2">{{ __('Join Jitume') }}</button> -->
                     </button>
+
+
+    
+
+                     <!--<button  id="registers" onclick="register()" class="  rounded-lg text-black py-2 px-4 "> <i class="fas fa-user-plus mr-2"></i>{{ __('Create Investor Account') }}</button>-->
                 </div>
 
 
@@ -1009,7 +1014,6 @@
 
                         <div class="row justify-content-center py-3 ">
                             <div class="px-0 w-100 py-2">
-                                <div class="card " id="all_register">
 
                                     <div class=" mt-2 text-center User-Artist-Select">
                                         <div class="col-md-5"></div>
@@ -1311,10 +1315,15 @@
 
                                             <input type="text" hidden name="c_to_action_login2" id="c_to_action_login2" value="">
 
-                                            <div class="row"> <span style="padding-left: 30px;" class="font-weight-bold w-25 mt-3 text-left">Email</span> <input style="border: 1px solid;" class=" w-50 d-inline my-2 form-control my-1 px-2 py-1 mr-1" type="email" name="email" placeholder="" id="inputEmailAddress" value="" required /> </div>
+                                           <div class="row flex justify-center items-center mb-3">
+    <span class="w-25 text-left text-xl mt-3">Email</span>
+    <input  class="w-50 d-inline my-2 form-control px-2 py-1 mr-1 border rouned-lg" type="email" name="email" placeholder="" id="inputEmailAddress" value="" required />
+</div>
 
-
-                                            <div class="row"> <span class=" w-25 mt-3 font-weight-bold">Password</span> <input style="border: 1px solid;" class=" w-50 d-inline my-2 form-control my-1 px-2 py-1 mr-1" name="password" id="inputPassword" type="password" placeholder="" value="" required /> </div>
+<div class="row flex items-center justify-center mb-3">
+    <span class="text-xl w-25 text-left mt-3">Password</span>
+    <input class="w-50 d-inline my-2 form-control px-2 py-1 mr-1 border rouned-lg" name="password" id="inputPassword" type="password" placeholder="" value="" required />
+</div>
 
 
 
@@ -1330,17 +1339,29 @@
                                             @if (Route::has('forgetPass'))
                                             <a href="{{ route('password.request') }}" class="small text">Forgot password ?</a> @endif
 
-                                            <input type="submit" class=" d-block w-25 mx-auto my-2 btn primary_bg text-white font-weight-bold " href="" name="Log In" value="Sign In" />
+                                              <div class="card-header w-100">
+                       <!-- <div class=" my-2">
+                            <button style="" class="ml-2 w-50 text-center text-dark bg-green-700 font-weight-bold btn px-4 mr-2">{{ __('Join Jitume') }}</button>
+                        </div>-->
+
+                        <button " id="logins" onclick="login()" class="bg-green-700 w-[78%] h-auto  text-white py-2 px-5  ml-2 rounded-lg ">{{ __('Log In') }}</button>
+                       
+
+                        @if(Session::has('email')) <p class="text-danger ml-5">{{Session::get('email')}} @php Session::forget('email'); @endphp </p> @endif
+                    </div>
+
+
+
+                                            <!--<input type="submit" class=" d-block w-25 mx-auto my-2 btn bg-black text-white font-weight-bold " href="" name="Log In" value="Sign In" />-->
                                         </form>
 
 
 
 
 
-                                        <hr>
                                         <div class="row">
                                             <div class="col-sm-12 pr-1">
-                                                <a href="{{ route('forgot','email') }}" class=" text-responsive font-weight-bold text-info mx-auto my-2 d-inline-block py-0 small">Forgot Password?</a>
+                                                <a href="{{ route('forgot','email') }}" class="  text-black text-md mx-auto my-2 d-inline-block py-0 ">Forgot Password?</a>
                                             </div>
 
 
