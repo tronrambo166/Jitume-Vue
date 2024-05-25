@@ -4,7 +4,7 @@
 
 <section class="bg-cover bg-center flex items-center relative w-full" style="background-image: url('images/heroimg.png');">
   <div class="container my-8 md:mx-8 px-4 sm:px-6 lg:px-8 flex items-center relative">
-    <form id="form" class="bg-white w-[517px] sm:w-[517px] h-[369px] p-6 rounded-[28px]  ml-[75px] relative z-10" @submit.prevent="search()" method="post">
+    <form id="form" class="bg-black w-[517px] sm:w-[517px] h-[369px] p-6 rounded-[28px]  ml-[75px] relative z-10" @submit.prevent="search()" method="post">
       <h2 class="text-[32px] font-semibold mb-4">Find the <span class="text-[#198754]">right services</span>,<br>for you</h2>
       <div class="flex flex-col">
         <div class="mb-4">
