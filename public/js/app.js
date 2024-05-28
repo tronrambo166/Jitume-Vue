@@ -78468,7 +78468,7 @@ var render = function () {
               "form",
               {
                 staticClass:
-                  "bg-white w-[517px] sm:w-[517px] h-[369px] p-6 rounded-[28px] ml-[75px] relative z-10",
+                  "bg-black w-[517px] sm:w-[517px] h-[369px] p-6 rounded-[28px] ml-[75px] relative z-10",
                 attrs: { id: "form", method: "post" },
                 on: {
                   submit: function ($event) {

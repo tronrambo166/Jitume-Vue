@@ -79,75 +79,37 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
         <p class="text-danger font-weight-bold float-right">{{Session::get('loginFailed')}} @php Session::forget('loginFailed'); @endphp</p>@endif
 
 
-<div class="container-fluid">
+<div class="container-fluid  ">
    
 
- <div  class="row px-0 shadow primary_bg" style="min-height: 91.98px;">
-
-    <div class="col-sm-3">
-        <ul class="navbar-nav ">
-        <li class="nav-item  px-3">
-            <a href="{{route('business')}}"><img class="img-fluid py-1" width="170px" height="45px" src="../images/logo.png" style="margin-left: 17px;"></a>
-        </li> 
-         
-      </ul> 
-
+ <div  class="row " ">
+<div class='side-nav '  >
+    <div
+    class="ml-[60px]"
+      style="display: flex;  align-items: center; gap: 5.534839630126953px; padding: 0px; border-radius: 0px">
+      <svg
+        width="37"
+        height="38"
+        viewBox="0 0 37 38"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M0.00574579 31.8224C0.00574579 29.1899 -0.0171152 26.7719 0.0303651 24.3557C0.0373993 24.011 0.320524 23.6083 0.586062 23.341C3.6336 20.2618 6.69345 17.1932 9.77264 14.1439C10.6589 13.2664 13.2299 13.3332 14.1391 14.1984C16.2651 16.2225 16.2651 16.2207 18.3103 14.1791C21.1767 11.3162 24.0396 8.44975 26.9131 5.59214C28.1106 4.39985 28.1194 4.4104 27.0203 3.17943C26.9166 3.06336 26.8234 2.93499 26.6159 2.67649C29.9201 1.77964 33.1172 0.91092 36.4654 0C35.5791 3.33594 34.7332 6.51888 33.8944 9.68072C33.7414 9.68072 33.6394 9.71414 33.5884 9.67545C32.0497 8.55878 32.0304 8.53768 30.7062 9.84778C26.6475 13.8625 22.6099 17.9001 18.5548 21.9184C17.475 22.9875 14.7792 22.9506 13.7258 21.8709C11.9304 20.0297 12.1818 19.6375 9.94497 21.9324C6.8904 25.0661 3.76901 28.133 0.675746 31.228C0.510444 31.3898 0.332833 31.5305 0.00574579 31.8224Z"
+          fill="#78BE3E" />
+        <path
+          d="M0.0408943 15.9641C0.0408943 13.5848 0.0162741 11.2055 0.0690301 8.82797C0.0760643 8.48682 0.397876 8.1017 0.666932 7.82912C2.22851 6.24293 3.80767 4.67256 5.40969 3.12681C5.68051 2.86655 6.092 2.59749 6.44019 2.59573C11.6613 2.56232 16.8824 2.57287 22.4745 2.57287C21.8871 3.22177 21.5249 3.65788 21.1222 4.05707C19.9721 5.19484 18.8431 6.36075 17.6245 7.4229C17.1866 7.80451 16.5271 8.10697 15.9556 8.12983C13.9333 8.21249 11.904 8.20721 9.87988 8.13863C8.82652 8.10346 8.04574 8.40592 7.30891 9.1744C5.34639 11.2178 3.31177 13.1909 1.30352 15.1903C0.995778 15.4963 0.672207 15.7865 0.357429 16.0854C0.250159 16.0432 0.146406 16.0045 0.0408943 15.9641Z"
+          fill="#014811" />
+        <path
+          d="M22.4675 24.6077C22.4675 26.987 22.4922 29.3663 22.4394 31.7438C22.4324 32.0849 22.1106 32.4701 21.8415 32.7426C20.2799 34.3288 18.7008 35.8992 17.0987 37.445C16.8279 37.7052 16.4164 37.9743 16.0682 37.976C10.8472 38.0094 5.62607 37.9989 0.0339355 37.9989C0.621286 37.35 0.983542 36.9139 1.38625 36.5147C2.53633 35.3769 3.66531 34.211 4.88397 33.1489C5.32184 32.7673 5.98129 32.4648 6.55282 32.4419C8.57513 32.3593 10.6045 32.3646 12.6285 32.4331C13.6819 32.4683 14.4627 32.1658 15.1995 31.3974C17.162 29.3539 19.1967 27.3809 21.2049 25.3814C21.5127 25.0754 21.8362 24.7853 22.151 24.4863C22.2583 24.5285 22.362 24.5672 22.4675 24.6077Z"
+          fill="#014811" />
+      </svg>
+      <span
+        style="color: #014811; font-size: 24px; font-family: Inter; text-align: left; font-weight: 500">
+        Jitume
+      </span>
     </div>
 
-     <div class="col-sm-9 px-0">
-        <nav class="navbar navbar-expand-lg primary_bg pt-4">
-            <div class="navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto text-white">
-                    <li class="nav-item py-1 active ">
-                        <a href="{{route('/')}}" class=" py-1"> 
-                          <div class="d-inline rounded-circle px-2 pb-2 pt-1 mr-1" style="background: #6d8b8291;">
-                               <img width="14px" class="" src="../images/home-Icon.png" />
-
-                            </div>
-                        </a>
-                    </li>
-
-                    <li class="nav-item py-1 text-light ">
-                        <a href=".././#/services" class="text-light  py-1">
-                            <div class="d-inline rounded-circle pl-2 pr-1 pb-2 pt-1 mr-1" style="background: #6d8b8291;">
-                               <img width="14px" class="" src="../images/service-icon.png" />
-
-                           </div> Services
-                        </a>
-                    </li>
-                </ul>
-
-                <div class="my-2 my-lg-0">
-                    <div class="pb-2 px-md-3" style="padding-top: 2px;">
-                        <div class="ml-3 ml-md-0 dash_menu">
-                            <div class="nav-item ">
-                                <a href="{{route('account')}}" class="header_buttons px-sm-3 my-1 mr-2 px-1 py-1"><i class="fa fa-dollar-sign"></i></a>
-                            </div>
-                            <div class="nav-item bg">
-
-                                <a href="{{route('service-messages')}}" class="header_buttons px-sm-3 my-1 mr-2 px-1 py-1"><i class="fa fa-envelope"></i>
-                                    @if(count($messages) != 0)
-                                    <span class="new_msg font-weight-bold px-1">{{count($messages)}}</span>
-                                    @endif
-                                </a>
-                            </div>
-
-                            <div class="nav-item mr-4">
-                                <a href="{{route('business', ['url'=>'url'])}}" class="header_buttons px-sm-3 my-1 mr-2 px-1 py-1 "><b>Dashboard</b></a>
-                            </div>
-
-                            <div class="nav-item">
-                                <a v-if="" onclick="event.preventDefault();
-                 document.getElementById('logout-form').submit();" class=" sign_in_btn  px-sm-3 header_buttons my-1 mr-2 px-1 py-1 "><b>Sign Out</b></a>
-                            </div>
-
-                        </div>
-                         </div>
-                          </div>
-                           </div>
-                       </nav>
-     </div>
-
+  </div>   
     
     
     <!-- <div class="col-sm-4" style="background: white;">
@@ -181,48 +143,60 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
 
     <div class="row">
               <div class="py-4 bid_header col-md-3 sidebar-inner slimscroll" style="">
-                    <div id="sidebar-menu" class="sidebar-menu">
-                        <ul class="sidebar text-light px-2" style="color:white;">
+                    <div id="sidebar-menu" class="sidebar-menu pl-[50px]">
+                        <ul class="sidebar-main text-black px-2" style="color:white;">
                            
 
                             <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf1E_') || Request::is('business/')? 'active' : '' }}"> 
                                 
-                                <a class="navLink" href="{{route('business')}}"><i class="fe fe-home"></i> <span>Dashboard</span></a> 
+                                <a class="navLink bg-shadow-lg" href="{{route('business')}}"> <img src='../images/default.png' alt=''><span>Dashboard</span></a> 
                             </li>
 
-                        @if(!$business->count() && !$service->count())
-                        <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf5E_') ? 'active' : '' }}"> 
-                                <a class="navLink" href="{{route('my_bids')}}"><i class="fe fe-layout"></i> <span>My Bids</span></a>
-                            </li>
-                        @endif
 
-                        @if($business->count())
-                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf2E_') ? 'active' : '' }}"> 
-                                <a class="navLink" href="{{route('add-listing')}}"><i class=" fe fe-layout"></i> <span>Add Business</span></a>
+
+                              <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf3E_') ? 'active' : '' }}"> 
+                                <a class="navLink flex itens-center gap-4" href="{{route('listings')}}"> <img src='../images/doc.png' alt=''> <span>My Businesses</span></a>           
+
                             </li>
 
-                             <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf3E_') ? 'active' : '' }}"> 
-                                <a class="navLink" href="{{route('listings')}}"><i class=" fe fe-layout"></i> <span>My Businesses</span></a>           
 
+                             <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf7E_-*') ? 'active' : '' }}"> 
+                                <a class="navLink flex itens-center gap-4" href="{{route('milestones','all')}}"><img src='../images/sharp.svg' alt=''   > <span>Milestones</span></a>
                             </li>
 
 
                             <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf6E_') ? 'active' : '' }}"> 
-                                <a class="navLink" href="{{route('add_milestones')}}"><i class=" fe fe-layout"></i> <span>Add Business Milestone</span></a>
+                                <a class="navLink flex itens-center gap-4" href="{{route('add_milestones')}}"> <img src='../images/add.png' alt=''><span>Add Business Milestone</span></a>
        
                             </li>
 
-                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf7E_-*') ? 'active' : '' }}"> 
-                                <a class="navLink" href="{{route('milestones','all')}}"><i class=" fe fe-layout"></i> <span>Milestones</span></a>
-                            </li>
 
-                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf4E_') ? 'active' : '' }}"> 
-                                <a class="navLink" href="{{route('business_bids')}}"><i class=" fe fe-layout"></i> <span>Business Bids</span>
+                             <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf4E_') ? 'active' : '' }}"> 
+                                <a class="navLink flex itens-center gap-4" href="{{route('business_bids')}}"> <img src='../images/chart.png' alt=''> <span>Business Bids</span>
                                     @if(count($new_bids) != 0)
                                     <span class="new_msg2 small rounded px-1">New {{count($new_bids)}}</span>
                                     @endif
                             </a>
                             </li>
+
+                        @if(!$business->count() && !$service->count())
+                        <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf5E_') ? 'active' : '' }}"> 
+                                <a class="navLink" flex itens-center gap-4 href="{{route('my_bids')}}"><i class="fe fe-layout"></i> <span>My Bids</span></a>
+                            </li>
+                        @endif
+
+                       <!-- @if($business->count())
+                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf2E_') ? 'active' : '' }}"> 
+                                <a class="navLink" href="{{route('add-listing')}}"><i class=" fe fe-layout"></i> <span>Add Business</span></a>
+                            </li>-->
+
+                           
+
+
+                            
+
+                           
+                           
                           </ul>
 
                         @endif  
@@ -232,34 +206,44 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
                         @if($service->count())
                          <hr class=""> 
 
-                         <ul class="sidebar text-light px-2" style="color:white;">
-                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf2F_') ? 'active' : '' }}"> 
-                                <a class="navLink" href="{{route('add-services')}}"><i class=" fe fe-layout"></i> <span>Add Service</span></a>
-                            </li>
-
+                         <ul class="sidebar-main text-black px-2" >
 
                              <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf8F_') ? 'active' : '' }}"> 
-                                <a class="navLink" href="{{route('services')}}"><i class=" fe fe-layout"></i> <span>My Services</span></a>
+                                <a class="navLink flex itens-center gap-4" href="{{route('services')}}"><img src='../images/set.svg' alt=''> <span>My Services</span></a>
                             </li>
 
 
 
-                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf3F_') ? 'active' : '' }}"> 
-                                <a class="navLink" href="{{route('add_s_milestones')}}"><i class=" fe fe-layout"></i> <span>Add Service Milestone</span></a>
+                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf2F_') ? 'active' : '' }}"> 
+                                <a class="navLink flex itens-center gap-4" href="{{route('add-services')}}"><img src='../images/sharp.svg' alt=''> <span>Add Service</span></a>
                             </li>
 
-                               <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf4F_-*') ? 'active' : '' }}"> 
-                                <a class="navLink" href="{{route('s_milestones','all')}}"><i class=" fe fe-layout"></i> <span>Milestones</span></a>
+
+                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf6F__') ? 'active' : '' }}"> 
+                                <a class="navLink flex itens-center gap-4" href="{{route('booker-milestones')}}"><img src='../images/add.svg' alt=''> <span>Milestones</span></a>
                             </li>
 
-                             <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf5F_') ? 'active' : '' }}"> 
-                                <a class="navLink" href="{{route('service_booking')}}"><i class=" fe fe-layout"></i> <span>Service Booking</span>
+
+                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf5F_') ? 'active' : '' }}"> 
+                                <a class="navLink flex itens-center gap-4" href="{{route('service_booking')}}"><img src='../images/service.svg' alt=''> <span>Service Booking</span>
 
                                 @if(count($new_books) != 0)
                                     <span class="new_msg2 small rounded px-1">New {{count($new_books)}}</span>
                                     @endif
                                 </a>
                             </li>
+
+
+
+
+
+                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf3F_') ? 'active' : '' }}"> 
+                                <a class="navLink flex itens-center gap-4" href="{{route('add_s_milestones')}}"><img src='../images/calendar.svg' alt=''> <span>Add Service Milestone</span></a>
+                            </li>
+
+                              
+
+                             
                           </ul>
 
                             @endif
@@ -267,12 +251,9 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
                             @if($booking->count())
                             <ul class="sidebar text-light px-2" style="color:white;">
                             <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf6F_') ? 'active' : '' }}"> 
-                                <a class="navLink" href="{{route('my_booking')}}"><i class=" fe fe-layout"></i> <span>My Booking</span></a>
+                                <a class="navLink flex itens-center gap-4" href="{{route('my_booking')}}"><i class=" fe fe-layout"></i> <span>My Booking</span></a>
                             </li>
 
-                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf6F__') ? 'active' : '' }}"> 
-                                <a class="navLink" href="{{route('booker-milestones')}}"><i class=" fe fe-layout"></i> <span>Milestones</span></a>
-                            </li>
                             </ul>
                             @endif
 
@@ -282,6 +263,21 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
                             </li>
                             
                         </ul> -->
+
+
+
+
+    <div class="custom-text-container sec-bg">
+    
+    <h1 class="custom-heading" style="position: absolute; top: 20px; left: 20px;"><img src="../images/btmicon.png" alt="heading" ></h1>
+    <div class="bottom-left-content" style="position: absolute; bottom: 20px; left: 20px;">
+        <p class="custom-paragraph">Need help?</p>
+        <p class="custom-paragraph2">Please check our docs</p>
+
+        <button class="custom-button">contact us</button>
+    </div>
+</div>
+
                     </div>
 
                     @if($subscribed)

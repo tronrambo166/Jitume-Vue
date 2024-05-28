@@ -1787,3 +1787,76 @@ table tr td{padding-left: 12px;}
 .upload-btn-wrapper label { font-size: 12px }
 
 #add_listing textarea { height: 45px; }
+
+
+
+.navlink, li{
+gap:3em;
+background-color:#FFFFFF;
+    color:;
+}
+.navLink img{
+        
+width:30px;
+    width: 15px;
+height: 15px;
+flex-shrink: 0;
+}
+.sidebar-main {
+     position: relative;
+    width: 100%;
+    /* Set the aspect ratio */
+    padding-top: calc(254 / 220 * 100%);
+    /* For visibility, you can add a background color or image */
+    background-color: ;
+    padding: 0; /* Remove default padding */
+    list-style-type: none; /* Remove default list styling */
+}
+
+.sidebar-main > li {
+    margin-bottom: 20px; /* Add margin between each li element */
+}
+.sec-bg {
+  background-image: url("../images/section-btm.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 218px; /* Fixed width */
+  height: 169.5px; /* Fixed height */
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 15px;
+  margin-left:10px;
+}
+
+.custom-paragraph{
+    color: var(--black-amp-white-white, #FFF);
+font-family: Outfit;
+font-size: 14px;
+font-style: normal;
+font-weight: 700;
+line-height: 140%; /* 19.6px */
+}
+
+.custom-paragraph2{
+color: var(--black-amp-white-white, #FFF);
+font-family: Outfit;
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 150%; /* 18px */
+}
+.custom-button{
+    display: flex;
+    text-transform:uppercase;
+width: 186px;
+height: 35px;
+margin-top:10px;
+padding: 0px 8px;
+justify-content: center;
+align-items: center;
+flex-shrink: 0;
+border-radius: 12px;
+font-size:12px;
+background: var(--black-amp-white-white, #FFF);
+}
