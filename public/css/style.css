@@ -1860,3 +1860,84 @@ border-radius: 12px;
 font-size:12px;
 background: var(--black-amp-white-white, #FFF);
 }
+
+.custom-div {
+  background-image: url("../images/dashbg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 0;
+  padding-top: 18.77%; /* (height / width) * 100 (aspect ratio) */
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 15px;
+  overflow: hidden; /* Ensures content doesn't overflow the rounded corners */
+}
+
+.c.custom-div {
+  background-image: url("../images/dashbg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 0;
+  padding-top: 18.77%; /* (height / width) * 100 (aspect ratio) */
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 15px;
+  overflow: hidden; /* Ensures content doesn't overflow the rounded corners */
+}
+
+.custom-div .top-left {
+  position: absolute;
+  top: 20px; /* Adjust top padding as needed */
+  left: 20px; /* Adjust left padding as needed */
+  color: var(--black-amp-white-white, #FFF);
+  font-family: Outfit;
+}
+
+.custom-div .top-left h1 {
+  font-size: 12px; /* Font size for h1 */
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 18px */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+}
+
+.custom-div .top-left p {
+  color: var(--black-amp-white-white, #FFF);
+font-family: Outfit;
+font-size: 14px;
+font-style: normal;
+font-weight: 700;
+line-height: 140%; /* 19.6px */
+}
+
+
+.custom-div .top-r {
+  position: absolute;
+  top: 20px; /* Adjust top padding as needed */
+  right: 0px; /* Adjust left padding as needed */
+  color: var(--black-amp-white-white, #FFF);
+  font-family: Outfit;
+}
+
+.search-icon {
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 20px;
+}
+.bottom-center  {
+  position: absolute;
+  bottom: -30px;
+  z-index: 4;
+background: linear-gradient(113deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.80) 110.84%);
+
+ height: 113px;
+ border-radius: 16px;
+ }
+
