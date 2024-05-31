@@ -242,7 +242,7 @@ try {
 }
 
 //-------------------Login-Register
-public function clear(){ \Artisan::call('config:cache'); return redirect('home'); }
+//public function clear(){ \Artisan::call('config:cache'); return redirect('home'); }
 
  public function home(){ 
  
