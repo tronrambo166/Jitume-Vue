@@ -295,7 +295,7 @@
 
       <div class="md:w-1/3 flex flex-col items-start">
     <ul class="list-none text-center">
-        <li><a href="#" class="text-[#3B856B] hover:text-green-700">FAQs</a></li>
+        <li><a href="#" class="text-[#3B856B] hover:text-green-700">FAQ</a></li>
         <li><a href="#" class="text-[#3B856B] hover:text-green-700">Contact Us</a></li>
         <li><a href="#" class="text-[#3B856B] hover:text-green-700">Help</a></li>
     </ul>
