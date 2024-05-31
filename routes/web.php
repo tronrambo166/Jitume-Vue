@@ -44,7 +44,7 @@ Route::post('admin/logout', 'AdminController@adminLogout')->name('admin/logout')
 
 
 //MAIN/BACKEND/VUE
-Route::get('/', 'PagesController@home')->name('/'); 
+Route::get('/', 'PagesController@clear')->name('/'); 
 Route::get('/home', 'PagesController@home')->name('home');
 
 //Route::group(['middleware'=>['auth']], function(){ 
@@ -197,10 +197,10 @@ Route::post('reset/{remail}', 'testController@reset')->name('reset');
 
 Route::get('/clear', function() {
    \Artisan::call('config:cache');
-    \Artisan::call('view:clear');
-    \Artisan::call('route:clear');
-    \Artisan::call('cache:clear');
-    dd("Cache is cleared");
+   // \Artisan::call('view:clear');
+    //\Artisan::call('route:clear');
+    //\Artisan::call('cache:clear');
+    //dd("Cache is cleared");
 
 });
 
