@@ -119,32 +119,17 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
 
     <div class="row">
               <div class="py-4 bid_header col-md-3 sidebar-inner slimscroll" style="">
+
                     <div id="sidebar-menu" class="sidebar-menu pl-[50px]">
                         <ul class="sidebar-main text-black px-2" style="color:white;">
+
                            <div
     class=" "
       style="display: flex;  align-items: center; gap: 5.534839630126953px; padding: 0px; border-radius: 0px">
-      <svg
-        width="37"
-        height="38"
-        viewBox="0 0 37 38"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M0.00574579 31.8224C0.00574579 29.1899 -0.0171152 26.7719 0.0303651 24.3557C0.0373993 24.011 0.320524 23.6083 0.586062 23.341C3.6336 20.2618 6.69345 17.1932 9.77264 14.1439C10.6589 13.2664 13.2299 13.3332 14.1391 14.1984C16.2651 16.2225 16.2651 16.2207 18.3103 14.1791C21.1767 11.3162 24.0396 8.44975 26.9131 5.59214C28.1106 4.39985 28.1194 4.4104 27.0203 3.17943C26.9166 3.06336 26.8234 2.93499 26.6159 2.67649C29.9201 1.77964 33.1172 0.91092 36.4654 0C35.5791 3.33594 34.7332 6.51888 33.8944 9.68072C33.7414 9.68072 33.6394 9.71414 33.5884 9.67545C32.0497 8.55878 32.0304 8.53768 30.7062 9.84778C26.6475 13.8625 22.6099 17.9001 18.5548 21.9184C17.475 22.9875 14.7792 22.9506 13.7258 21.8709C11.9304 20.0297 12.1818 19.6375 9.94497 21.9324C6.8904 25.0661 3.76901 28.133 0.675746 31.228C0.510444 31.3898 0.332833 31.5305 0.00574579 31.8224Z"
-          fill="#78BE3E" />
-        <path
-          d="M0.0408943 15.9641C0.0408943 13.5848 0.0162741 11.2055 0.0690301 8.82797C0.0760643 8.48682 0.397876 8.1017 0.666932 7.82912C2.22851 6.24293 3.80767 4.67256 5.40969 3.12681C5.68051 2.86655 6.092 2.59749 6.44019 2.59573C11.6613 2.56232 16.8824 2.57287 22.4745 2.57287C21.8871 3.22177 21.5249 3.65788 21.1222 4.05707C19.9721 5.19484 18.8431 6.36075 17.6245 7.4229C17.1866 7.80451 16.5271 8.10697 15.9556 8.12983C13.9333 8.21249 11.904 8.20721 9.87988 8.13863C8.82652 8.10346 8.04574 8.40592 7.30891 9.1744C5.34639 11.2178 3.31177 13.1909 1.30352 15.1903C0.995778 15.4963 0.672207 15.7865 0.357429 16.0854C0.250159 16.0432 0.146406 16.0045 0.0408943 15.9641Z"
-          fill="#014811" />
-        <path
-          d="M22.4675 24.6077C22.4675 26.987 22.4922 29.3663 22.4394 31.7438C22.4324 32.0849 22.1106 32.4701 21.8415 32.7426C20.2799 34.3288 18.7008 35.8992 17.0987 37.445C16.8279 37.7052 16.4164 37.9743 16.0682 37.976C10.8472 38.0094 5.62607 37.9989 0.0339355 37.9989C0.621286 37.35 0.983542 36.9139 1.38625 36.5147C2.53633 35.3769 3.66531 34.211 4.88397 33.1489C5.32184 32.7673 5.98129 32.4648 6.55282 32.4419C8.57513 32.3593 10.6045 32.3646 12.6285 32.4331C13.6819 32.4683 14.4627 32.1658 15.1995 31.3974C17.162 29.3539 19.1967 27.3809 21.2049 25.3814C21.5127 25.0754 21.8362 24.7853 22.151 24.4863C22.2583 24.5285 22.362 24.5672 22.4675 24.6077Z"
-          fill="#014811" />
-      </svg>
-      <span
-        style="color: #014811; font-size: 24px; font-family: Inter; text-align: left; font-weight: 500">
-        Jitume
-      </span>
-
+      
+<router-link to="/" class="text-xl font-bold text-gray-800 md:text-2xl hover:text-green-400">
+      <img class="img-fluid" width="100px" height="45px" src="../images/logo3.png" alt="Logo">
+    </router-link>
 
 
     </div>
@@ -308,10 +293,13 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
         </div>
         <input type="text" placeholder="Type here..." class="w-full text-xs text-gray-400 font-normal px-0 py-2 rounded-[16px] border-none focus:ring-0" style="font-family: Outfit;" />
       </div>
-      <div class="flex font-bold font-outfit items-center ">
-        <img src="../images/signouticon.svg" alt="icon" />
-        <a href="#" class="text-white">signout</a>
-      </div>
+      <a v-if="" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" >
+    <div class="flex gap-1 font-bold font-outfit items-center pointer">
+        <img src="../images/signouticon.svg " alt="icon" />
+        <span class="text-white">signout</span>
+    </div>
+</a>
+
       <i class="fa fa-cog text-[12px]"></i>
       <img src="../images/notification.svg" alt="icon" />
     </div>
@@ -333,7 +321,7 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
   </div>
 
   <div class="flex justify-between mt-4 text-[10px]  font-bold uppercase">
-    <a href="#" class="flex items-center gap-[0.5] "><svg class="" xmlns="http://www.w3.org/2000/svg"  width="12" height="11" viewBox="0 0 12 11" fill="none">
+    <a href="{{route('business')}}" class="flex items-center gap-[0.5] "><svg class="" xmlns="http://www.w3.org/2000/svg"  width="12" height="11" viewBox="0 0 12 11" fill="none">
   <g clip-path="url(#clip0_881_4550)">
     <path d="M1.78101 3.64844V7.87914L5.906 10.3086V6.09766L1.78101 3.64844Z" fill="#2D3748"/>
     <path d="M6.59351 10.3086L10.7185 7.87914V3.64844L6.59351 6.09766V10.3086Z" fill="#2D3748"/>
@@ -345,8 +333,14 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
     </clipPath>
   </defs>
 </svg>overview</a>
-    <a href="#" class=" flex items-center gap-1"><img  src="../images/doc2.svg"  >add business</a>
-    <a href="#" class="flex items-center gap-1">    <i class="fa fa-wrench text-[11px]"></i> add service</a>
+
+    <a class="navLink flex items-center gap-1" href="{{route('add-listing')}}">
+        <img src="../images/doc2.svg">
+        <span>add business</span>
+    </a>
+
+
+    <a   href="{{route('add-listing')}}" class="flex items-center gap-1">    <i class="fa fa-wrench text-[11px]"></i> add service</a>
   </div>
 </div>
 
