@@ -25,6 +25,7 @@ use Response;
 class PagesController extends Controller
 {
     //-------------------Login-Register
+	
 
     public function skip(){
         Session::put('investor_auth',true);
@@ -241,9 +242,10 @@ try {
 }
 
 //-------------------Login-Register
-
+//public function clear(){ \Artisan::call('config:cache'); return redirect('home'); }
 
  public function home(){ 
+ 
          $app_url = config('app.url');
          $auth_user = auth()->user(); 
          $business=0;
