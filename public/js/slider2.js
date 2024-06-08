@@ -106,11 +106,87 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-document.getElementById('sidebarToggle').addEventListener('click', function() {
-    var sidebar = document.getElementById('sidebar');
-    if (sidebar.classList.contains('hidden')) {
-      sidebar.classList.remove('hidden');
-    } else {
-      sidebar.classList.add('hidden');
+    console.log("hello kioko")
+
+
+
+
+document.getElementById('toggle-button').addEventListener('click', function() {
+        var menuItems = document.getElementById('menu-items');
+        if (menuItems.classList.contains('hidden')) {
+            menuItems.classList.remove('hidden');
+            menuItems.classList.add('block');
+        } else {
+            menuItems.classList.remove('block');
+            menuItems.classList.add('hidden');
+        }
+    });
+
+document.querySelector('button').addEventListener('click', function() {
+    var dropdown = this.nextElementSibling;
+    dropdown.classList.toggle('hidden');
+  });
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const profileImage = document.getElementById('profile-image');
+    const dropdownMenu = document.getElementById('dropdown-menu');
+
+    profileImage.addEventListener('click', function() {
+        dropdownMenu.classList.toggle('hidden');
+    });
+
+    // Close the dropdown menu when clicking outside of it
+    document.addEventListener('click', function(event) {
+        if (!dropdownMenu.contains(event.target) && !profileImage.contains(event.target)) {
+            dropdownMenu.classList.add('hidden');
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    const dropdownMenu = document.getElementById('dropdown-menu');
+
+    // Toggle dropdown when clicking on user avatar icon
+    document.querySelector('.fa-user-circle').addEventListener('click', function() {
+        dropdownMenu.classList.toggle('hidden');
+    });
+
+    // Close the dropdown when clicking outside of it or on the toggle button
+    document.addEventListener('click', function(event) {
+        if (!dropdownMenu.contains(event.target) && event.target.id !== 'toggle-button' && !document.querySelector('.fa-user-circle').contains(event.target)) {
+            dropdownMenu.classList.add('hidden');
+        }
+    });
+
+    // Toggle sidebar when clicking on the toggle button
+    document.getElementById('toggle-button').addEventListener('click', function() {
+        // Add your toggle sidebar logic here
+    });
+});
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const toggleButton = document.getElementById('toggleButton');
+  const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+  const closeButton = document.getElementById('closeButton');
+
+  toggleButton.addEventListener('click', () => {
+    if (offcanvasNavbar) {
+      if (offcanvasNavbar.className.includes('hidden')) {
+        offcanvasNavbar.className = offcanvasNavbar.className.replace('hidden', '').trim();
+      } else {
+        offcanvasNavbar.className += ' hidden';
+      }
     }
   });
+
+  if (closeButton) {
+    closeButton.addEventListener('click', () => {
+      if (offcanvasNavbar) {
+        offcanvasNavbar.className += ' hidden';
+      }
+    });
+  }
+});

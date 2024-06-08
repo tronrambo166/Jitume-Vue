@@ -41,7 +41,7 @@
 	
   <div class="col-sm-12">
          <div class="row float-right"> <a class="btn btn-primary float-right" href="{{route('/')}}">Back to home</a></div>
-         <div class="row w-50 bg-light m-auto ">
+         <div class="row w-50 bg-black m-auto ">
 
             <div class="col-md-9 m-auto col-md-offset-3 py-2">
                 <h5 class="text-center">Pay with your Credit/Debit Card via Stripe    <i  class="fab fa-cc-mastercard fa-1x"></i> <i style="color:red" class="fab fa-cc-visa fa-1x"></i> </h5>

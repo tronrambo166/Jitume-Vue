@@ -4,7 +4,7 @@
 
 <section class="bg-cover bg-center flex items-center relative w-full" style="background-image: url('images/heroimg.png');">
   <div class="container my-8 md:mx-8 px-4 sm:px-6 lg:px-8 flex items-center relative">
-    <form id="form" class="bg-black w-[517px] sm:w-[517px] h-[369px] p-6 rounded-[28px]  ml-[75px] relative z-10" @submit.prevent="search()" method="post">
+    <form id="form" class="bg-white w-[517px] sm:w-[517px] h-[369px] p-6 rounded-[28px]  ml-[75px] relative z-10" @submit.prevent="search()" method="post">
       <h2 class="text-[32px] font-semibold mb-4">Find the <span class="text-[#198754]">right services</span>,<br>for you</h2>
       <div class="flex flex-col">
         <div class="mb-4">
@@ -14,10 +14,24 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:gap-[28px]">
           <div class="mb-4 relative">
             <label for="location" class="sr-only">Location:</label>
-            <input id="location" class="bar bg-gray-100 form-control w-full sm:w-[212.5px] px-4 py-2 rounded-md pl-10" type="text" name="location" placeholder="Location" onchange="handleInputChange(event)">
-            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-              <i class="fa fa-map-marker text-gray-400"></i>
-            </div>
+
+            <div class="relative">
+    <input id="searchbox" onkeyup="suggest(this.value);" class="py-2 px-4 w-[220px] border border-gray-300 rounded-full focus:outline-none focus:ring-0 focus:border-transparent" type="text" name="search" value="" placeholder="Location">
+    <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+        <svg class="h-4 w-4 fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path d="M10 2a7 7 0 0 1 7 7c0 4.472-7 11-7 11S3 13.472 3 9a7 7 0 0 1 7-7zm0 2a5 5 0 0 0-5 5c0 2.142 3.094 6.333 5 8 1.906-1.667 5-5.858 5-8a5 5 0 0 0-5-5z"/>
+        </svg>
+    </div>
+    <ul id="suggestion-list" class="absolute w-[250px] bg-white  border-t-0 rounded-b-md shadow-lg z-10 top-full">
+        <!-- Suggestions will be dynamically added here -->
+    </ul>
+    <!-- Search Results Section -->
+    <div id="result_list" class="absolute w-[250px] bg-white  border-gray-300 border-t-0 rounded-b-md shadow-lg z-10 top-full">
+        <!-- Search results will be dynamically added here -->
+    </div>
+    <!-- End of Search Results Section -->
+</div>
+            
           </div>
           <div class="mb-4 relative">
             <label for="category" class="sr-only">Category:</label>
@@ -70,73 +84,55 @@
 
 
     <hr>
-  <div class="py-5 h-full w-full">
-    <h1 class="text-center text-gray-900 text-4xl">Featured Listings</h1>
-    <div class="my-4 px-4 py-6 h-full">
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-interval="false" data-bs-wrap="false">
-            <ol class="carousel-indicators">
-                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
-                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
-                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li>
-                <!-- Add more indicators as needed -->
-            </ol>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="flex justify-center lg:justify-center">
-                        <div v-for="(result, index) in results.slice(0, 3)" :key="index" class="p-3">
-                            <div class="bg-white h-[300px] w-[350px] rounded-xl shadow-lg mx-auto">
-                                <router-link :to="`/serviceDetails/${result.id}`" class="rounded-lg overflow-hidden h-full flex flex-col">
-                                    <div class="relative" style="height: 200px;">
-                                        <video v-if="result.file" controls style="width:100%; height:100%;" alt="">
-                                            <source :src="result.file" type="video/mp4">
-                                        </video>
-                                        <img v-else :src="result.image" class="object-cover w-full h-full rounded-t-xl" alt="" />
-                                    </div>
-                                    <div class="">
-                                        <div>
-                                            <h5 class="text-md text-success text-2xl mb-1 pt-4">{{ result.name }}</h5>
-                                            <p class="text-black py-2">{{ result.location }}</p>
-                                        </div>
-                                    </div>
-                                </router-link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="flex justify-center lg:justify-center">
-                        <div v-for="(result, index) in results.slice(3, 6)" :key="index" class="p-3">
-                            <div class="shadow-lg rounded-xl h-[300px] w-[350px] mx-auto">
-                                <router-link :to="`/serviceDetails/${result.id}`" class="rounded-lg overflow-hidden h-full flex flex-col">
-                                    <div class="relative" style="height: 200px;">
-                                        <video v-if="result.file" controls style="width:100%; height:100%;" alt="">
-                                            <source :src="result.file" type="video/mp4">
-                                        </video>
-                                        <img v-else :src="result.image" class="object-cover rounded-t-xl w-full h-full" alt="" />
-                                    </div>
-                                    <div class="">
-                                        <div>
-                                            <h5 class="text-md text-success text-2xl mb-1 pt-4">{{ result.name }}</h5>
-                                            <p class="text-black py-2">{{ result.location }}</p>
-                                        </div>
-                                    </div>
-                                </router-link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Add more carousel items as needed -->
+ x
+
+<div id="resource-slider" class="carousel w-full mx-auto">
+  <div class="carousel-inner w-[70%] mx-auto">
+    <!-- Loop through your results to generate carousel items -->
+    <div v-for="(result, index) in Math.ceil(results.length / 3)" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }">
+      <div class="flex justify-center items-center w-full">
+        <!-- Loop through three cards for each carousel item -->
+        <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="w-full md:w-[calc(100% / 3 - 2rem)] px-2" v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]">
+          <div class="bg-white mt-4 w-full h-[90%] rounded-xl shadow-md p-3 mb-4 flex flex-col justify-center relative loading">
+            <div class="relative">
+              <img :src="results[index * 3 + offset].image" alt="Image" class="w-full h-[215px] object-cover rounded-lg mb-4">
+              <p class="absolute inset-t-4 mb-4 ml-2 font-bold px-2 rounded-xl bottom-4 bg-white text-black text-center py-1 text-xs">
+                <i class="fa fa-map-marker pr-2"></i>{{ results[index * 3 + offset].location }}
+              </p>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon bg-black" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                <span class="carousel-control-next-icon bg-black" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
+            <footer class="text-sm text-gray-600">{{ results[index * 3 + offset].type }}</footer>
+            <div class="flex justify-between items-center">
+              <div>
+                <header>
+                  <h4 class="text-lg mt-2 hover:no-underline hover:text-green-800">{{ results[index * 3 + offset].name }}</h4>
+                </header>
+                <p class="text-sm text-gray-700">{{ results[index * 3 + offset].description }}</p>
+                <p class="text-sm text-gray-700">Name: {{ results[index * 3 + offset].name }}</p>
+                <p class="text-sm text-gray-700">Contact: {{ results[index * 3 + offset].contact }}</p>
+              </div>
+              <div class="mt-auto flex justify-end">
+                <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="btn-learn-more inline-block bg-green-800 hover:bg-green-700 text-white py-1 px-2 md:px-3 lg:px-4 rounded text-xs md:text-sm lg:text-base lg:py-2 lg:px-3">Learn More</router-link>
+              </div>
+            </div>
+          </div>
+        </router-link>
+      </div>
     </div>
+  </div>
+
+  <!-- Carousel controls for manual scrolling -->
+  <a class="carousel-control-prev flex items-center justify-center" href="#resource-slider" role="button" data-slide="prev">
+    <div class="bg-black rounded-full p-1 w-6 h-6 flex items-center justify-center">
+      <span class="carousel-control-prev-icon text-white" aria-hidden="true"></span>
+    </div>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next flex items-center justify-center" href="#resource-slider" role="button" data-slide="next">
+    <div class="bg-black rounded-full p-1 w-6 h-6 flex items-center justify-center">
+      <span class="carousel-control-next-icon text-white" aria-hidden="true"></span>
+    </div>
+    <span class="sr-only">Next</span>
+  </a>
 </div>
 
               

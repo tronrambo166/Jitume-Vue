@@ -58,43 +58,75 @@
 @else
  
  @if($services->count())       
-<div class="row m-auto">
-     <h3 class="bid_header text-left my-0 pb-3 py-2 font-weight-bold"> My Services</h3> 
+<div class="flex flex-col pt-9 pb-5 bg-white rounded-2xl shadow-sm my-3">
+  <div class="flex flex-col px-5 w-full max-md:px-5 max-md:max-w-full">
+    <div class="flex gap-5 justify-between w-full font-bold max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
+      <div class="flex flex-col">
+        <div class="text-lg leading-6 text-gray-700">My Services</div>
+        <div class="mt-7 text-xs leading-4 text-slate-400">NAME</div>
+      </div>
+      <div class="flex gap-5 justify-between mt-12 text-xs leading-4 whitespace-nowrap text-slate-400 max-md:flex-wrap max-md:mt-10 max-md:max-w-full">
+        <div>CATEGORY</div>
+        <div>DETAILS</div>
+        <div>REQUIRED</div>
+      </div>
+    </div>
 
-    <table class="eq table" id="d_table" style="border-collapse:collapse;">
-    <thead  class="table_head border">
-        <tr>
-            <th>Name </th>
-            <th>Category </th>
-            <th>Price </th>  
-            <th>Details </th> 
-            <th>Location </th> 
-            <th>Image </th> 
-            <th width="20%" class="text-center">Action</th>        
-        </tr>
+    <!-- Loop through each service -->
+    @foreach($services as $ev)
+    @php
+      $coded_id = base64_encode($ev->id);
+      $coded_id = base64_encode($coded_id);
+    @endphp
+    <div class="flex gap-5 justify-between pr-10 pb-3 mt-7 w-full text-sm leading-5 max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
+         <div class="flex gap-4 whitespace-nowrap">
+                  <img class="rounded" width="72px" height="40px" src="../{{$ev->image}}">
 
-    </thead>
-       
-    <tbody>
-        @foreach($services as $ev) @php $coded_id = base64_encode($ev->id); $coded_id = base64_encode($coded_id); @endphp
-        <tr onclick="bg_change({{$ev->id}});" id="{{$ev->id}}">
-            <td>{{$ev->name }}</td>
-                <td>{{$ev->category }}</td>
-                    <td>{{$ev->price }}</td>
-                        <td>{{$ev->details }}</td>
-                        <td>{{$ev->location }}</td>
-                        <td><img class="rounded" width="72px" height="40px" src="../{{$ev->image}}"></td>
-   
-            <td class="text-center">
+        <div class="flex flex-col my-auto">
+          <div class="font-bold text-gray-700">{{$ev->name}}</div>
+          <div class="mt-2 text-slate-500">{{$ev->contact}}</div>
+        </div>
+      </div>
+      
+      <div class="flex gap-5 justify-between items-center max-md:flex-wrap max-md:max-w-full">
+        <div class="flex flex-col self-stretch">
+          <div class="font-bold text-gray-700">{{$ev->category}}</div>
+          <div class="text-slate-500">Price: {{$ev->price}}</div>
+        </div>
+        <div class="self-stretch my-auto text-slate-500">{{$ev->details}}</div>
+        
+        <div class="self-stretch my-auto text-xs font-bold leading-5 text-slate-500">
+         <a href="./../#/service-milestone/{{$coded_id}}" class="text-success btn small px-3 py-1 my-1 d-inline-block py-0 border">View Milestone</a>
+        </div>
+      </div>
+    </div>
+    @endforeach
+  </div>
 
-            <a style="border-radius: 4px;font-size: 12px;font-weight: 500; background: white;" href="./../#/service-milestone/{{$coded_id}}" class="btn border text-success small px-3 py-1  my-1  d-inline-block py-0">View Milestone</a >
-            
-
-            </td>
-        </tr>
-        @endforeach
-        </tbody>
-    </table>
+  <div class="flex gap-3 self-end mt-8 mr-6 text-xs font-medium tracking-normal leading-3 text-gray-700 whitespace-nowrap max-md:mr-2.5">
+    <div class="flex justify-center items-center w-8 h-8 rounded border border-solid bg-neutral-100 border-zinc-100">
+      &lt;
+    </div>
+    <div class="flex justify-center items-center w-8 h-8 text-white bg-green-700 rounded border border-green-700 border-solid">
+      1
+    </div>
+    <div class="flex justify-center items-center w-8 h-8 rounded border border-solid bg-neutral-100 border-zinc-100">
+      2
+    </div>
+    <div class="flex justify-center items-center w-8 h-8 rounded border border-solid bg-neutral-100 border-zinc-100">
+      3
+    </div>
+    <div class="flex justify-center items-center w-8 h-8 rounded border border-solid bg-neutral-100 border-zinc-100">
+      4
+    </div>
+    <div class="self-start mt-4 text-black">...</div>
+    <div class="flex justify-center items-center w-8 h-8 rounded border border-solid bg-neutral-100 border-zinc-100">
+      40
+    </div>
+    <div class="flex justify-center items-center w-8 h-8 rounded border border-solid bg-neutral-100 border-zinc-100">
+      &gt;
+    </div>
+  </div>
 </div>
 
 @else
@@ -119,46 +151,87 @@
 
 
 @if($business->count())       
-<div class="row mx-auto pt-3">
-     <h3 class="bid_header text-left my-0 pb-3 pt-3 font-weight-bold"> My Businesses</h3> 
+<div class="flex flex-col pt-9 pb-5 bg-white rounded-2xl shadow-sm">
+  <div class="flex flex-col px-5 w-full max-md:px-5 max-md:max-w-full">
+    <div class="flex gap-5 justify-between w-full font-bold max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
+      <div class="flex flex-col">
+        <div class="text-lg leading-6 text-gray-700">My Businesses</div>
+        <div class="mt-7 text-xs leading-4 text-slate-400">NAME</div>
+      </div>
+      <div class="flex gap-5 justify-between mt-12 text-xs leading-4 whitespace-nowrap text-slate-400 max-md:flex-wrap max-md:mt-10 max-md:max-w-full">
+        <div>CATEGORY</div>
+        <div>DETAILS</div>
+        <div>REQUIRED</div>
+      </div>
+    </div>
 
-    <table class="eq table" id="d_table2">
-    <thead class="table_head border">
-        <tr>
-            <th>Name </th>
-            <th>Category </th>
-            <th>Required</th>
-            <th>Details </th>  
-            <th>Contact </th> 
-            <th>Share </th> 
-            <th>Image </th> 
-            <th width="20%" class="text-center">Action</th>        
-        </tr>
+    <!-- Loop through each business -->
+    @foreach($business as $ev)
+    @php
+      $coded_id = base64_encode($ev->id);
+      $coded_id = base64_encode($coded_id);
+    @endphp
+    <div class="flex gap-5 justify-between pr-10 pb-3 mt-7 w-full text-sm leading-5 max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
+      <div class="flex gap-4 whitespace-nowrap">
+        <img
+          loading="lazy"
+          src="../{{$ev->image}}"
+          class="shrink-0 w-10 aspect-square"
+        />
+        <div class="flex flex-col my-auto">
+          <div class="font-bold text-gray-700">{{$ev->name}}</div>
+          <div class="mt-2 text-slate-500">{{$ev->contact}}</div>
+        </div>
+      </div>
+      <div class="flex gap-5 justify-between items-center max-md:flex-wrap max-md:max-w-full">
+        <div class="flex flex-col self-stretch">
+          <div>CATEGORY</div>
+          <div class="font-bold text-gray-700">{{$ev->category}}</div>
+        </div>
+        <div class="flex flex-col self-stretch">
+          <div>DETAILS</div>
+          <div class="self-stretch my-auto text-slate-500">{{$ev->details}}</div>
+        </div>
+        <div class="flex flex-col self-stretch">
+          <div>REQUIRED</div>
+          <div class="self-stretch my-auto font-bold text-center text-gray-700">{{$ev->investment_needed}}</div>
+        </div>
+        <div class="self-stretch my-auto text-xs font-bold leading-5 text-slate-500">
+          <a href="./../#/business-milestone/{{$coded_id}}" class="text-success btn small px-3 py-1 my-1 d-inline-block py-0 border">View Milestone</a>
+        </div>
+      </div>
+    </div>
+    @endforeach
+  </div>
 
-    </thead>
-    
-
-    
-    <tbody>
-        @foreach($business as $ev) @php $coded_id = base64_encode($ev->id); $coded_id = base64_encode($coded_id); @endphp
-        <tr onclick="bg_changeB({{$ev->id}});" id="b{{$ev->id}}">
-            <td>{{$ev->name }}</td>
-                <td>{{$ev->category }}</td>
-                    <td>{{$ev->investment_needed }}</td>
-                        <td>{{$ev->details }}</td>
-                        <td>{{$ev->contact }}</td>
-                        <td>{{$ev->share }}</td>
-                        <td><img class="rounded" width="72px" height="40px" src="../{{$ev->image}}"></td>
-   
-            <td class="text-center">
-            <a style="border-radius: 4px;font-size: 12px;font-weight: 500;background: white;" href="./../#/business-milestone/{{$coded_id}}" class="text-success btn small px-3 py-1  my-1  d-inline-block py-0 border">View Milestone</a >
-            
-            </td>
-        </tr>
-        @endforeach
-        </tbody>
-    </table>
+  <div class="flex gap-3 self-end mt-8 mr-6 text-xs font-medium tracking-normal leading-3 text-gray-700 whitespace-nowrap max-md:mr-2.5">
+    <div class="flex justify-center items-center w-8 h-8 rounded border border-solid bg-neutral-100 border-zinc-100">
+      &lt;
+    </div>
+    <div class="flex justify-center items-center w-8 h-8 text-white bg-green-700 rounded border border-green-700 border-solid">
+      1
+    </div>
+    <div class="flex justify-center items-center w-8 h-8 rounded border border-solid bg-neutral-100 border-zinc-100">
+      2
+    </div>
+    <div class="flex justify-center items-center w-8 h-8 rounded border border-solid bg-neutral-100 border-zinc-100">
+      3
+    </div>
+    <div class="flex justify-center items-center w-8 h-8 rounded border border-solid bg-neutral-100 border-zinc-100">
+      4
+    </div>
+    <div class="self-start mt-4 text-black">...</div>
+    <div class="flex justify-center items-center w-8 h-8 rounded border border-solid bg-neutral-100 border-zinc-100">
+      40
+    </div>
+    <div class="flex justify-center items-center w-8 h-8 rounded border border-solid bg-neutral-100 border-zinc-100">
+      &gt;
+    </div>
+  </div>
 </div>
+
+
+
 
 @else
     <div class="pt-3">

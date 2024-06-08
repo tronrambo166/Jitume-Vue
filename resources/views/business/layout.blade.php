@@ -118,234 +118,213 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
 
 
     <div class="row">
-              <div class="py-4 bid_header col-md-3 sidebar-inner slimscroll" style="">
+            <div class="py-4 bid_header col-md-3 sidebar-inner slimscroll">
+    <div id="sidebar-menu" class="sidebar-menu">
+        <!-- Navbar (Logo and Toggle Button) visible only on small and medium screens -->
+        <div class="flex items-center justify-between md:hidden lg:hidden">
+            <router-link to="/" class="text-xl font-bold text-gray-800 md:text-2xl hover:text-green-400 pl-2 sm:pl-0">
+                <img class="img-fluid" width="100px" height="45px" src="../images/logo3.png" alt="Logo">
+            </router-link>
+            <div class="flex items-center gap-2">
+                <div class="relative">
+                    <i class="fas fa-user-circle text-2xl text-gray-800 cursor-pointer"></i>
+                    <div id="dropdown-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-50">
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Settings</a>
+                        <a v-if="" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</a>
+                    </div>
+                </div>
+                <button id="toggle-button" class="px-2 py-1 bg-gray-800 text-white rounded">☰</button>
+            </div>
+        </div>
 
-                    <div id="sidebar-menu" class="sidebar-menu pl-[50px]">
-                        <ul class="sidebar-main text-black px-2" style="color:white;">
-
-                           <div
-    class=" "
-      style="display: flex;  align-items: center; gap: 5.534839630126953px; padding: 0px; border-radius: 0px">
-      
-<router-link to="/" class="text-xl font-bold text-gray-800 md:text-2xl hover:text-green-400">
-      <img class="img-fluid" width="100px" height="45px" src="../images/logo3.png" alt="Logo">
-    </router-link>
-
-
-    </div>
-
-
-                            <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf1E_') || Request::is('business/')? 'active' : '' }}"> 
-                                
-                                <a class="navLink bg-shadow-lg" href="{{route('business')}}"> <img src='../images/default.png' alt=''><span>Dashboard</span></a> 
-                            </li>
-
-
-
-                              <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf3E_') ? 'active' : '' }}"> 
-                                <a class="navLink flex itens-center gap-4" href="{{route('listings')}}"> <img src='../images/doc.png' alt=''> <span>My Businesses</span></a>           
-
-                            </li>
-
-
-                             <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf7E_-*') ? 'active' : '' }}"> 
-                                <a class="navLink flex itens-center gap-4" href="{{route('milestones','all')}}"><img src='../images/sharp.png' alt=''   > <span>Milestones</span></a>
-                            </li>
-
-
-                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf6E_') ? 'active' : '' }}"> 
-                                <a class="navLink flex itens-center gap-4" href="{{route('add_milestones')}}"> <img src='../images/add.png' alt=''><span>Add Business Milestone</span></a>
-       
-                            </li>
-
-
-                             <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf4E_') ? 'active' : '' }}"> 
-                                <a class="navLink flex itens-center gap-4" href="{{route('business_bids')}}"> <img src='../images/chart.png' alt=''> <span>Business Bids</span>
-                                    @if(count($new_bids) != 0)
-                                    <span class="new_msg2 small rounded px-1">New {{count($new_bids)}}</span>
-                                    @endif
-                            </a>
-                            </li>
-
-                        @if(!$business->count() && !$service->count())
-                        <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf5E_') ? 'active' : '' }}"> 
-                                <a class="navLink" flex itens-center gap-4 href="{{route('my_bids')}}"><i class="fe fe-layout"></i> <span>My Bids</span></a>
-                            </li>
+        <!-- Sidebar Menu Items visible on small and medium screens -->
+        <ul id="menu-items" class="sidebar-main text-black px-2 hidden md:block lg:block" style="color:white;">
+            <!-- Logo visible only on medium screens -->
+            <div class="hidden md:flex lg:flex items-center justify-center gap-5 px-4">
+                <router-link to="/" class="text-xl font-bold text-gray-800 md:text-2xl hover:text-green-400">
+                    <img class="img-fluid" width="100px" height="45px" src="../images/logo3.png" alt="Logo">
+                </router-link>
+            </div>
+            <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf1E_') || Request::is('business/') ? 'active' : '' }}">
+                <a class="navLink bg-shadow-lg" href="{{route('business')}}">
+                    <img src='../images/default.png' alt=''>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf3E_') ? 'active' : '' }}">
+                <a class="navLink flex items-center gap-4" href="{{route('listings')}}">
+                    <img src='../images/doc.png' alt=''>
+                    <span>My Businesses</span>
+                </a>
+            </li>
+            <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf7E_-*') ? 'active' : '' }}">
+                <a class="navLink flex items-center gap-4" href="{{route('milestones','all')}}">
+                    <img src='../images/sharp.png' alt=''>
+                    <span>Milestones</span>
+                </a>
+            </li>
+            <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf6E_') ? 'active' : '' }}">
+                <a class="navLink flex items-center gap-4" href="{{route('add_milestones')}}">
+                    <img src='../images/add.png' alt=''>
+                    <span>Add Business Milestone</span>
+                </a>
+            </li>
+            <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf4E_') ? 'active' : '' }}">
+                <a class="navLink flex items-center gap-4" href="{{route('business_bids')}}">
+                    <img src='../images/chart.png' alt=''>
+                    <span>Business Bids</span>
+                    @if(count($new_bids) != 0)
+                    <span class="new_msg2 small rounded px-1">New {{count($new_bids)}}</span>
+                    @endif
+                </a>
+            </li>
+            @if(!$business->count() && !$service->count())
+            <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf5E_') ? 'active' : '' }}">
+                <a class="navLink flex items-center gap-4" href="{{route('my_bids')}}">
+                    <i class="fe fe-layout"></i>
+                    <span>My Bids</span>
+                </a>
+            </li>
+            @endif
+            @if($service->count())
+            <hr class="">
+            <ul class="sidebar-main text-black px-2">
+                <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf8F_') ? 'active' : '' }}">
+                    <a class="navLink flex items-center gap-4" href="{{route('services')}}">
+                        <img src='../images/set.svg' alt=''>
+                        <span>My Services</span>
+                    </a>
+                </li>
+                <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf2F_') ? 'active' : '' }}">
+                    <a class="navLink flex items-center gap-4" href="{{route('add-services')}}">
+                        <img src='../images/sharp.png' alt=''>
+                        <span>Add Service</span>
+                    </a>
+                </li>
+                <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf6F__') ? 'active' : '' }}">
+                    <a class="navLink flex items-center gap-4" href="{{route('booker-milestones')}}">
+                        <img src='../images/add.svg' alt=''>
+                        <span>Milestones</span>
+                    </a>
+                </li>
+                <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf5F_') ? 'active' : '' }}">
+                    <a class="navLink flex items-center gap-4" href="{{route('service_booking')}}">
+                        <img src='../images/service.svg' alt=''>
+                        <span>Service Booking</span>
+                        @if(count($new_books) != 0)
+                        <span class="new_msg2 small rounded px-1">New {{count($new_books)}}</span>
                         @endif
+                    </a>
+                </li>
+                <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf3F_') ? 'active' : '' }}">
+                    <a class="navLink flex items-center gap-4" href="{{route('add_s_milestones')}}">
+                        <img src='../images/calendar.svg' alt=''>
+                        <span>Add Service Milestone</span>
+                    </a>
+                </li>
+            </ul>
+            @endif
+            @if($booking->count())
+            <ul class="sidebar text-light px-2" style="color:white;">
+                <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf6F_') ? 'active' : '' }}">
+                    <a class="navLink flex items-center gap-4" href="{{route('my_booking')}}">
+                        <i class="fe fe-layout"></i>
+                        <span>My Booking</span>
+                    </a>
+                </li>
+            </ul>
+            @endif
+            <div class="custom-text-container sec-bg">
+                <h1 class="custom-heading absolute top-5 left-5">
+                    <img src="../images/btmicon.png" alt="heading">
+                </h1>
+                <div class="bottom-left-content absolute bottom-5 left-5">
+                    <p class="custom-paragraph">Need help?</p>
+                    <p class="custom-paragraph2">Please check our docs</p>
+                    <button class="custom-button">contact us</button>
+                </div>
+            </div>
 
-                       <!-- @if($business->count())
-                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf2E_') ? 'active' : '' }}"> 
-                                <a class="navLink" href="{{route('add-listing')}}"><i class=" fe fe-layout"></i> <span>Add Business</span></a>
-                            </li>-->
-
-                           
-
-
-                            
-
-                           
-                           
-                          </ul>
-
-                        @endif  
-
-
-                        
-                        @if($service->count())
-                         <hr class=""> 
-
-                         <ul class="sidebar-main text-black px-2" >
-
-                             <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf8F_') ? 'active' : '' }}"> 
-                                <a class="navLink flex itens-center gap-4" href="{{route('services')}}"><img src='../images/set.svg' alt=''> <span>My Services</span></a>
-                            </li>
-
-
-
-                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf2F_') ? 'active' : '' }}"> 
-                                <a class="navLink flex itens-center gap-4" href="{{route('add-services')}}"><img src='../images/sharp.png' alt=''> <span>Add Service</span></a>
-                            </li>
-
-
-                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf6F__') ? 'active' : '' }}"> 
-                                <a class="navLink flex itens-center gap-4" href="{{route('booker-milestones')}}"><img src='../images/add.svg' alt=''> <span>Milestones</span></a>
-                            </li>
-
-
-                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf5F_') ? 'active' : '' }}"> 
-                                <a class="navLink flex itens-center gap-4" href="{{route('service_booking')}}"><img src='../images/service.svg' alt=''> <span>Service Booking</span>
-
-                                @if(count($new_books) != 0)
-                                    <span class="new_msg2 small rounded px-1">New {{count($new_books)}}</span>
-                                    @endif
-                                </a>
-                            </li>
-
-
-
-
-
-                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf3F_') ? 'active' : '' }}"> 
-                                <a class="navLink flex itens-center gap-4" href="{{route('add_s_milestones')}}"><img src='../images/calendar.svg' alt=''> <span>Add Service Milestone</span></a>
-                            </li>
-
-                              
-
-                             
-                          </ul>
-
-                            @endif
-
-                            @if($booking->count())
-                            <ul class="sidebar text-light px-2" style="color:white;">
-                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf6F_') ? 'active' : '' }}"> 
-                                <a class="navLink flex itens-center gap-4" href="{{route('my_booking')}}"><i class=" fe fe-layout"></i> <span>My Booking</span></a>
-                            </li>
-
-                            </ul>
-                            @endif
-
-                        <!-- <ul class="sidebar text-light px-0" style="color:white;">
-                            <li  class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf_E_') ? 'active' : '' }}"> 
-                                <a class="navLink" href="{{route('applyForShow')}}"><i class=" fe fe-layout"></i> <span>Apply For Show</span></a>
-                            </li>
-                            
-                        </ul> -->
-
-
-
-
-    <div class="custom-text-container sec-bg">
-    
-    <h1 class="custom-heading" style="position: absolute; top: 20px; left: 20px;"><img src="../images/btmicon.png" alt="heading" ></h1>
-    <div class="bottom-left-content" style="position: absolute; bottom: 20px; left: 20px;">
-        <p class="custom-paragraph">Need help?</p>
-        <p class="custom-paragraph2">Please check our docs</p>
-
-        <button class="custom-button">contact us</button>
+            <div class="mx-auto mt-5 sm:hidden md:hidden lg:hidden" style="width:95%;">
+                <a onclick="return confirm('Are you sure?');" style="background: azure;" class="header_buttons seacrhListing px-5 sign_in_btn text-center" href="{{route('cancelSubscription', $subscribed->id)}}">
+                    <i class="fe fe-layout"></i> <span>Cancel Subscription</span>
+                </a>
+            </div>
+        </ul>
     </div>
 </div>
 
-                    </div>
-
-                    @if($subscribed)
-                    <div class=" mx-auto mt-5" style="width:95%;">
-                        <a onclick="return confirm('Are you sure?');" style="background: azure;" class="header_buttons seacrhListing px-5 sign_in_btn text-center" href="{{route('cancelSubscription', $subscribed->id)}}"><i class=" fe fe-layout"></i> <span>Cancel Subscription</span></a>
-                    </div>
-                    @endif
-                </div>
+                   
        
    <div class="col-md-9 bg-white px-0 ">
-    <div class="relative">
-  <div class="custom-div mb-[50px]">
+<div class="relative">
+<div class="custom-div mb-[50px] mx-0 sm:mb-[50px] sm:mx-4 hidden sm:block">
     <div class="top-left flex flex-col justify-start">
       <h1>Pages / Dashboard</h1>
       <p>Dashboard</p>
     </div>
 
-    <div class="flex items-center space-x-4 top-r mr-3">
-      <div class="flex items-center border border-gray-300 rounded-[15px] p-0 bg-white" style="width: 199px; height: 39.5px;">
+    <div class="flex items-center space-x-4 top-r sm:mr-3">
+      <div class="flex items-center border border-gray-300 rounded-[15px] p-0 bg-white" style="height: 39.5px;">
         <div class="flex items-center justify-center p-0" style="width: 37px;">
           <div class="flex items-center gap-1 p-1.5 text-gray-700">
-              <!-- SVG Path -->
-<i class="fas fa-search" style="font-size: 12px;"></i>
+            <i class="fas fa-search" style="font-size: 12px;"></i>
           </div>
         </div>
         <input type="text" placeholder="Type here..." class="w-full text-xs text-gray-400 font-normal px-0 py-2 rounded-[16px] border-none focus:ring-0" style="font-family: Outfit;" />
       </div>
-      <a v-if="" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" >
-    <div class="flex gap-1 font-bold font-outfit items-center pointer">
-        <img src="../images/signouticon.svg " alt="icon" />
-        <span class="text-white">signout</span>
-    </div>
-</a>
+      <a v-if="" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <div class="flex gap-1 font-bold font-outfit items-center pointer">
+          <img src="../images/signouticon.svg" alt="icon" />
+          <span class="text-white">signout</span>
+        </div>
+      </a>
 
       <i class="fa fa-cog text-[12px]"></i>
       <img src="../images/notification.svg" alt="icon" />
     </div>
   </div>
 
-<div class="bottom-center flex justify-between absolute left-1/2 transform -translate-x-1/2 text-black p-4  z-10" style="width: calc(100% - 2rem); bottom: -1rem;">
-  <div class="flex gap-3">
-    <div class="relative inline-block mb-4">
-      <img src="../images/profile.png" class="rounded-[12px]" alt="Profile Image" class="block">
-      <div class="absolute bottom-0 right-0 bg-white p-1 rounded-md" style="transform: translate(40%, 160%);">
-        <img src="../images/edit.png" alt="Edit Icon" class="w-4 h-4">
+  <div class="bottom-center flex justify-between absolute left-1/2 transform -translate-x-1/2 text-black p-4 z-10 hidden sm:flex px-0" style="width: calc(100% - 2rem); bottom: -1rem;">
+    <div class="flex gap-3">
+      <div class="relative inline-block mb-4">
+        <img src="../images/profile.png" class="rounded-[12px]" alt="Profile Image" class="block">
+        <div class="absolute bottom-0 right-0 bg-white p-1 rounded-md" style="transform: translate(40%, 160%);">
+          <img src="../images/edit.png" alt="Edit Icon" class="w-4 h-4">
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <h1 class="font-bold text-[18px]">Emmanuel Nurul</h1>
+        <h3 class="text-gray-700">test@email.com</h3>
       </div>
     </div>
 
-    <div class="mt-3">
-      <h1 class="font-bold text-[18px]">Emmanuel Nurul</h1>
-      <h3 class="text-gray-700">test@email.com</h3>
-    </div>
-  </div>
+    <div class="flex justify-between mt-4 text-[10px] font-bold uppercase">
+      <a href="{{route('business')}}" class="flex items-center gap-[0.5]"><svg class="" xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11" fill="none">
+          <g clip-path="url(#clip0_881_4550)">
+            <path d="M1.78101 3.64844V7.87914L5.906 10.3086V6.09766L1.78101 3.64844Z" fill="#2D3748" />
+            <path d="M6.59351 10.3086L10.7185 7.87914V3.64844L6.59351 6.09766V10.3086Z" fill="#2D3748" />
+            <path d="M10.3748 3.08984L6.24975 0.683594L2.12476 3.08984L6.24975 5.49609L10.3748 3.08984Z" fill="#2D3748" />
+          </g>
+          <defs>
+            <clipPath id="clip0_881_4550">
+              <rect width="11" height="11" fill="white" transform="translate(0.749756 -0.00292969)" />
+            </clipPath>
+          </defs>
+        </svg>overview</a>
 
-  <div class="flex justify-between mt-4 text-[10px]  font-bold uppercase">
-    <a href="{{route('business')}}" class="flex items-center gap-[0.5] "><svg class="" xmlns="http://www.w3.org/2000/svg"  width="12" height="11" viewBox="0 0 12 11" fill="none">
-  <g clip-path="url(#clip0_881_4550)">
-    <path d="M1.78101 3.64844V7.87914L5.906 10.3086V6.09766L1.78101 3.64844Z" fill="#2D3748"/>
-    <path d="M6.59351 10.3086L10.7185 7.87914V3.64844L6.59351 6.09766V10.3086Z" fill="#2D3748"/>
-    <path d="M10.3748 3.08984L6.24975 0.683594L2.12476 3.08984L6.24975 5.49609L10.3748 3.08984Z" fill="#2D3748"/>
-  </g>
-  <defs>
-    <clipPath id="clip0_881_4550">
-      <rect width="11" height="11" fill="white" transform="translate(0.749756 -0.00292969)"/>
-    </clipPath>
-  </defs>
-</svg>overview</a>
-
-    <a class="navLink flex items-center gap-1" href="{{route('add-listing')}}">
+      <a class="navLink flex items-center gap-1" href="{{route('add-listing')}}">
         <img src="../images/doc2.svg">
         <span>add business</span>
-    </a>
+      </a>
 
-
-    <a   href="{{route('add-listing')}}" class="flex items-center gap-1">    <i class="fa fa-wrench text-[11px]"></i> add service</a>
+      <a href="{{route('add-services')}}" class="flex items-center gap-1"><i class="fa fa-wrench text-[11px]"></i> add service</a>
+    </div>
   </div>
 </div>
 
-
-</div>
 
 
     <!-- Session -->
@@ -911,6 +890,7 @@ new DataTable('#d_table2', {
 </script>
 
 
+    <script src="../js/slider2.js"></script>
 
 
 

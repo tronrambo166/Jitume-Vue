@@ -41,116 +41,121 @@
             <form id="add_listing" action="{{route('create-listing')}}"  method="post" enctype="multipart/form-data">
             @csrf   
 
-                <div class="row">
-                <div id="" class="col-md-4">
-                <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Business Title* </p></label>
-               
-                <input onblur="fill(this.value);" class="border w-100  mr-1" type="text" name="title" id="title" required />
-                </div>
+          <div class="row" style="display: flex; flex-wrap: nowrap; gap: 30px;">
+    <div class="col-md-5">
+        <label class="mb-0 w-100">
+            <p class="mb-0 d-block w-100 float-left text-left small small_label">Business Title* </p>
+        </label>
+        <input onblur="fill(this.value);" class="border w-100 mr-1 input-with-placeholder" style="padding: 10px 15px; height: 45px;" type="text" name="title" id="title" required placeholder="Business Title*" />
+    </div>
+
+    <div class="col-md-5">
+        <label class="mb-0 w-100">
+            <p class="mb-0 d-block w-100 float-left text-left small small_label">Contact* </p>
+        </label>
+        <input onblur="fill(this.value);" class="border w-100 mr-1 input-with-placeholder" style="padding: 10px 15px; height: 45px;" type="text" name="contact" id="contact" required placeholder="Contact*" />
+    </div>
+
+    <div class="col-md-5">
+    <label class="mb-0 w-100">
+        <p class="mb-0 d-block w-100 float-left text-left small small_label">Select Category* </p>
+    </label>
+    <div class="relative">
+        <select name="category" class="py-2 pl-10 pr-4 border w-full input-with-placeholder text-slate-300" style="padding: 10px 15px; height: 45px;" required>
+            <option hidden>Select Category*</option>
+            <option value="Agriculture">Agriculture</option>
+            <option value="Arts/Culture">Arts/Culture</option>
+            <option value="Auto">Auto</option>
+            <option value="Sports/Gaming">Sports/Gaming</option>
+            <option value="Real State">Real State</option>
+            <option value="Food">Food</option>
+            <option value="Legal">Legal</option>
+            <option value="Security">Security</option>
+            <option value="Media/Internet">Media/Internet</option>
+            <option value="Fashion">Fashion</option>
+            <option value="Technology/Communications">Technology/Communications</option>
+            <option value="Renewable/Energy">Renewable Energy</option>
+            <option value="Retail">Retail</option>
+            <option value="Finance/Accounting">Finance/Accounting</option>
+            <option value="Pets">Pets</option>
+            <option value="Domestic (Home Help etc)">Domestic (Home Help etc)</option>
+            <option value="Other">Other</option>
+        </select>
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path></svg>
+        </div>
+    </div>
+</div>
+
+</div>
 
 
-                <div id="" class="col-md-4">
-                <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Contact* </p></label>
-               
-                <input onblur="fill(this.value);" class="border w-100  mr-1" type="text" name="contact" id="contact" required />
-                </div>
+              <div class="row my-3 pt-6" style="display: flex; flex-wrap: nowrap; gap: 30px;">
+    <div class="col-md-5">
+        <label class="mb-0 w-100">
+            <p class="mb-0 d-block w-100 float-left text-left small small_label">Details* </p>
+        </label>
+        <textarea rows="2" cols="30" class="border w-100 mr-1 input-with-placeholder" style="padding: 10px 15px;" name="details" id="details" required placeholder="Details*"></textarea>
+    </div>
 
+    <div class="col-md-5">
+        <label class="mb-0 w-100">
+            <p class="mb-0 d-block w-100 float-left text-left small small_label">Yearly Turnover* </p>
+        </label>
+        <div class="relative">
+            <select name="y_turnover" class="py-2 pl-10 pr-4 border w-full input-with-placeholder text-slate-300 appearance-none" style="padding: 10px 15px; height: 45px;" required>
+                <option hidden>Yearly Turnover*</option>
+                <option value="0-10000">$0-$10000</option>
+                <option value="10000-100000">$10000-$100000</option>
+                <option value="100000-250000">$100000-$250000</option>
+                <option value="250000-500000">$250000-$500000</option>
+                <option value="500000-">$500000+</option>
+            </select>
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path></svg>
+            </div>
+        </div>
+    </div>
 
-                <div id="" class="col-md-4">
-                  <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Select Category* </p></label>
-
-                <select  name="category" class="py-1 border">
-                  <option hidden class="" ></option>
-                  <option class="" value="Agriculture" >Agriculture</option>
-                  <option value="Arts/Culture" >Arts/Culture </option>
-                  <option value="Auto" >Auto</option>
-                   <option value="Sports/Gaming" >Sports/Gaming</option>
-                   <option value="Real State" >Real State</option>
-                   <option value="Food" >Food </option>
-                   <option value="Legal" >Legal </option>
-                   <option value="Security" >Security </option>
-                   <option value="Media/Internet" >Media/Internet </option>
-                    
-                     <option value="Fashion" >Fashion </option>
-                     <option value="Technology/Communications" >Technology/Communications </option>
-                     <option value="Renewable/Energy" >Renewable Energy </option>
-                     <option value="Retail" >Retail </option>
-                 
-                 <option value="Finance/Accounting" >Finance/Accounting</option>
-                 <option value="Pets">Pets</option>
-                 <option value="Domestic (Home Help etc)">Domestic (Home Help etc)</option>
-                 <option value="Other" >Other</option>  
-
-                </select>
-                </div>
-
-              </div>
-
-
-
-              <div class="row my-3">
-                <div id="" class="col-md-4">
-                <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Details* </p></label>
-               
-                <textarea rows="2" cols="30"  class="border w-100  mr-1" type="text" name="details" id="details" required ></textarea>
-                </div>
-
-
-                <div id="" class="col-md-4">
-                <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Yearly Turnover* </p></label>
-               
-                <select required name="y_turnover" class="border">
-                        <option value="" ></option>
-                        <option value="0-10000">$0-$10000</option>
-                        <option value="10000-100000">$10000-$100000</option>
-                        <option value="100000-250000">$100000-$250000</option>
-                        <option value="250000-500000">$250000-$500000</option>
-                        <option value="500000-">$500000+</option>
-                </select>
-                </div>
-
-
-                <div id="" class="col-md-4">
-                <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Email </p></label>
-               
-                <input class="border w-100  mr-1" type="text" name="contact_mail" id="contact_mail" required />
-                </div>
-
-              </div>
+    <div class="col-md-5">
+        <label class="mb-0 w-100">
+            <p class="mb-0 d-block w-100 float-left text-left small small_label">Email </p>
+        </label>
+        <input class="border w-100 mr-1 input-with-placeholder" style="padding: 10px 15px; height: 45px;" type="text" name="contact_mail" id="contact_mail" required placeholder="Email" />
+    </div>
+</div>
 
               
+<div class="row my-3 pt-6" style="display: flex; flex-wrap: nowrap; gap: 30px;">
+    <div class="col-md-5">
+        <label class="mb-0 w-100">
+            <p class="mb-0 d-block w-100 float-left text-left small small_label">Cover* </p>
+        </label>
+        <div class="relative">
+            <input id="file-upload" name="image" type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" required>
+            <label for="file-upload" class="border rounded-lg w-100 flex items-center justify-center input-with-placeholder" style="padding: 10px 15px; height: 45px;">
+                Upload <img src="../images/up.png" width="17px" class="ml-2">
+            </label>
+        </div>
+    </div>
 
-              <div class="row my-3">
-                <div id="" class="col-md-4">
-                <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Cover* </p></label>
-               
-                <div class="upload-btn-wrapper">
-                      <label for="file-upload" class="btnUp2 custom-file-upload">
-                                Upload <img src="../images/up.png" width="17px">
-                              </label>
-                              <input id="file-upload" name='image' type="file" style="" required>
-                    </div>
-                </div>
+    <div class="col-md-5">
+        <label class="mb-0 w-100">
+            <p class="mb-0 d-block w-100 float-left text-left small small_label">Location* </p>
+        </label>
+        <input id="searchbox" onkeyup="suggest(this.value);" class="border w-100 mr-1 input-with-placeholder" style="padding: 10px 15px; height: 45px;" type="text" name="location" required placeholder="Location*" />
+        <input type="text" name="lat" id="lat" hidden value="">
+        <input type="text" name="lng" id="lng" hidden value="">
+    </div>
 
+    <div class="col-md-5">
+        <label class="mb-0 w-100">
+            <p class="mb-0 d-block w-100 float-left text-left small small_label">Directors passport/Id No.* </p>
+        </label>
+        <input class="border w-100 mr-1 input-with-placeholder" style="padding: 10px 15px; height: 45px;" type="text" name="id_no" id="id_no" required placeholder="Directors passport/Id No.*" />
+    </div>
+</div>
 
-                <div id="" class="col-md-4">
-                <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Location* </p></label>
-               
-                <input id="searchbox" onkeyup="suggest(this.value);" class="border w-100  mr-1" type="text" name="location" required />
-
-                <!-- onkeyup="suggest(this.value);" -->
-                    <input type="text" name="lat" id="lat" hidden value="">
-                    <input type="text" name="lng" id="lng" hidden value="">
-                    </div>
-                   
-
-                <div id="" class="col-md-4">
-                <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Directors passport/Id No.* </p></label>
-               
-                <input class="border w-100  mr-1" type="text" name="id_no" id="id_no" required />
-                </div>
-
-              </div>
 
                <div class="row" style="">
                           <div id="result_list" class="" style="display: none;left: 222px;width:35%; top: 230px; z-index: 1000;height: 600px;position: absolute;">
@@ -160,56 +165,58 @@
 
 
 
-              <div class="row">
-                <div id="" class="col-md-5">
-                <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Investment Needed </p></label>
-               
-                <input class="border w-100  mr-1" type="number" max="1000000" name="investment_needed" required />
-                </div>
+              <div class="row pt-6 " style="display: flex; flex-wrap: nowrap; gap: 30px;">
+    <div class="col-md-5">
+        <label class="mb-0 w-100">
+            <p class="mb-0 d-block w-100 float-left text-left small small_label">Investment Needed </p>
+        </label>
+        <input class="border w-100 mr-1 input-with-placeholder" style="padding: 10px 15px; height: 45px;" type="number" max="1000000" name="investment_needed" required placeholder="Investment Needed" />
+    </div>
 
-
-                <div id="" class="col-md-5">
-                <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Share </p></label>
-               
-                <input class="border w-100  mr-1" type="number" max="100" name="share" id="share" required />
-                </div>
-              </div>
-
-
-
-
-              <div class="row my-3">
-                 <div id="" class="col-md-4">
-                <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">individual/company tax pin* </p></label>
-               
-                <input class="border w-100  mr-1" type="text" name="tax_pin" id="tax_pin" required />
-                </div>
-
-
-                <div id="" class="col-md-8">
-                <div class="row mt-3">
-                           <div class="col-sm-5"><label for="name">
-                                <p class="small_label">Set fee for investor to view your full business data?</p></label>
-                               </div>
-
-                               <div class="col-sm-1"> </div>
-
-                               <div class="col-sm-1 form-check form-switch">
-                                  <input onchange="showAmount();" class="toggole_bar form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" >
-                                </div>
-
-                                <div id="amount_box" class="col-sm-4">
-                                  
-                                </div>
-
-                               </div> 
-                </div>
-
-              </div>
+    <div class="col-md-5">
+        <label class="mb-0 w-100">
+            <p class="mb-0 d-block w-100 float-left text-left small small_label">Share </p>
+        </label>
+        <input class="border w-100 mr-1 input-with-placeholder" style="padding: 10px 15px; height: 45px;" type="number" max="100" name="share" id="share" required placeholder="Share" />
+    </div>
+</div>
 
 
 
-              <div class="row my-3">
+
+
+              <div class="row my-3 pt-6" style="display: flex; flex-wrap: nowrap; gap: 30px;">
+    <div class="col-md-5">
+        <label class="mb-0 w-100">
+            <p class="mb-0 d-block w-100 float-left text-left small small_label">Individual/Company Tax Pin* </p>
+        </label>
+        <input class="border w-100 mr-1 input-with-placeholder" style="padding: 10px 15px; height: 45px;" type="text" name="tax_pin" id="tax_pin" required placeholder="Individual/Company Tax Pin*" />
+    </div>
+
+    <div class="col-md-8">
+        <div class="row mt-3 pt-4 mb-3">
+            <div class="col-sm-5">
+                <label for="name">
+                    <p class="small_label">Set fee for investor to view your full business data?</p>
+                </label>
+            </div>
+
+            <div class="col-sm-1"></div>
+
+            <div class="col-sm-1 form-check form-switch">
+                <input onchange="showAmount();" class="toggole_bar form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+            </div>
+
+            <div id="amount_box" class="col-sm-4"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+              <div class="row my-3 ">
+                
 
                 <div class="col-sm-12"> 
                         <div class="row">
@@ -230,7 +237,7 @@
                 </div>
 
 
-                <div id="" class="col-md-4">
+                <div id="" class="col-md-5">
                 <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Directors Id/Passport* </p></label>
                
                 <div class="upload-btn-wrapper">
@@ -242,7 +249,7 @@
                 </div>
 
 
-                <div id="" class="col-md-4">
+                <div id="" class="col-md-5">
                 <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">12 Months Financial Statements* </p></label>
                
                <div class="upload-btn-wrapper w-75  d-block">

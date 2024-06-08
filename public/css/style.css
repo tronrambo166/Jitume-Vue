@@ -1246,6 +1246,8 @@
     .toggole_bar {
         font-size: 25px;
         top: -8px;
+        color: white;
+        background-color: green;
     }
 
     .form-check-input:checked {
