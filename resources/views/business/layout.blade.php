@@ -245,12 +245,14 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
                     <button class="custom-button">contact us</button>
                 </div>
             </div>
-
+@if(isset($subscribed->id))
             <div class="mx-auto mt-5 sm:hidden md:hidden lg:hidden" style="width:95%;">
                 <a onclick="return confirm('Are you sure?');" style="background: azure;" class="header_buttons seacrhListing px-5 sign_in_btn text-center" href="{{route('cancelSubscription', $subscribed->id)}}">
                     <i class="fe fe-layout"></i> <span>Cancel Subscription</span>
                 </a>
             </div>
+@endif
+
         </ul>
     </div>
 </div>
@@ -263,6 +265,7 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
     <div class="top-left flex flex-col justify-start">
       <h1>Pages / Dashboard</h1>
       <p>Dashboard</p>
+
     </div>
 
     <div class="flex items-center space-x-4 top-r sm:mr-3">
@@ -302,6 +305,9 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
     </div>
 
     <div class="flex justify-between mt-4 text-[10px] font-bold uppercase">
+    <a href="{{ route('/') }}" class="navLink flex items-center gap-1"><i class="fas fa-home text-dark"></i> Home</a>
+
+        
       <a href="{{route('business')}}" class="flex items-center gap-[0.5]"><svg class="" xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11" fill="none">
           <g clip-path="url(#clip0_881_4550)">
             <path d="M1.78101 3.64844V7.87914L5.906 10.3086V6.09766L1.78101 3.64844Z" fill="#2D3748" />
@@ -314,6 +320,11 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
             </clipPath>
           </defs>
         </svg>overview</a>
+
+
+       
+
+
 
       <a class="navLink flex items-center gap-1" href="{{route('add-listing')}}">
         <img src="../images/doc2.svg">

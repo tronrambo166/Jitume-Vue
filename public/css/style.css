@@ -881,14 +881,16 @@
         background: white;
         color: #000000;
         font-family: Outfit-Regular;
-        border: 2px solid white;
-        border-radius: 35px;
+        border: 1px solid rgba(10, 10, 10, 0.6);;
+        border-radius: 8px;
         cursor: pointer;
         font-size: 13px;
         font-weight: bold;
         text-wrap: nowrap;
         font-stretch: semi-expanded;
         letter-spacing: 1px;
+        padding: 25px 30px;
+        margin-right: 45px;
     }
 
     .sign_in_btn:hover {

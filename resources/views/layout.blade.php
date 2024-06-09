@@ -94,9 +94,51 @@
   </div>
 
   <!-- Login Button -->
-  <div class="hidden md:flex items-center mr-4 lg:mr-10 xl:mr-20">
-    <button data-target="#loginModal" data-toggle="modal" class="text-sm font-bold text-gray-800 hover:text-green-700 border border-gray-500 rounded-md py-2 px-4 sm:px-5 md:px-6">Sign in</button>
-  </div>
+  @if(Auth::check())
+                        <div class="ml-3 ml-md-0 d-md-flex">
+                            
+
+                            <div class="nav-item mr-md-4">
+                                <a href="{{route('business')}}" class=" px-sm-3 my-1 mr-2 px-1 py-1 "><b>Dashboard</b></a>
+                            </div>
+
+                            <div class="nav-item">
+                            <a  v-if="" onclick="event.preventDefault();
+                 document.getElementById('logout-form').submit();" class=" sign_in_btn  px-sm-3 header_buttons my-1 mr-2 px-1 py-1 "><b>Sign Out</b></a>
+                            </div>
+
+                        </div>
+
+
+                        @elseif (Session::has('investor_auth') && Session::get('investor_auth') == true)
+
+                        <div class="ml-3 ml-md-0 d-flex">
+                            <div class="nav-item mr-4">
+
+                                <a href="{{route('business')}}" class="header_buttons px-sm-3 my-1 mr-2 px-1 py-1"><b>Dashboard</b></a>
+                            </div>
+
+                            <div class="nav-item">
+                                <a v-if="" onclick="event.preventDefault();
+                             document.getElementById('logout-form').submit();" class=" hover:text-green-700 border border-gray-500 rounded-md py-2 px-4 sm:px-5 md:px-6 sign_in_btn header_buttons px-sm-3 my-1 mr-2 px-1 py-1"><b>Sign Out</b>
+                                </a>
+                            </div>
+
+                        </div>
+
+                        @else
+
+                        <div class="ml-3 ml-md-0">
+
+                           
+
+                            <a data-target="#loginModal" data-toggle="modal" class=" border sign_in_btn px-3 my-1 mr-1 px-1 py-1 text-center ml-md-3">Sign In</a>
+
+                        </div>
+                        @endif
+  <!-- login btn old version jitume-->
+
+
 
   <!-- Toggle Button -->
   <div class="md:hidden flex items-center mr-4">
