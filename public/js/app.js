@@ -9745,6 +9745,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'business'],
   data: function data() {
@@ -74241,7 +74251,45 @@ var render = function () {
                 ),
               ]),
               _vm._v(" "),
-              _vm._m(0),
+              _c("div", { staticClass: "flex gap-2" }, [
+                _c(
+                  "div",
+                  { staticClass: "col-md-12 flex items-center gap-2" },
+                  [
+                    _vm.auth_user
+                      ? _c(
+                          "a",
+                          {
+                            staticClass: "",
+                            attrs: {
+                              "data-toggle": "modal",
+                              "data-target": "#reviewModal",
+                            },
+                          },
+                          [_vm._v("Add review")]
+                        )
+                      : _c(
+                          "a",
+                          {
+                            staticClass:
+                              "w-[45%] text-center bg-green-700 text-white rounded-[16px]",
+                            attrs: {
+                              "data-target": "#loginmodal2",
+                              "data-toggle": "modal",
+                            },
+                            on: {
+                              click: function ($event) {
+                                return _vm.make_session(_vm.form.listing_id)
+                              },
+                            },
+                          },
+                          [_vm._v("Add review")]
+                        ),
+                    _vm._v(" "),
+                    _vm._m(0),
+                  ]
+                ),
+              ]),
             ]),
           ]),
           _vm._v(" "),
@@ -75305,19 +75353,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex gap-2" }, [
-      _c(
-        "div",
-        {
-          staticClass:
-            "bg-[#198754] rounded-[16px] text-white text-center w-[45%] md:w-[60%]",
-        },
-        [_c("a", {}, [_vm._v("Add Review")])]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "text-green-700 text-center w-[50%]" }, [
-        _c("a", {}, [_vm._v("Overview")]),
-      ]),
+    return _c("div", { staticClass: "text-green-700 text-center w-[50%]" }, [
+      _c("a", {}, [_vm._v("Overview")]),
     ])
   },
   function () {

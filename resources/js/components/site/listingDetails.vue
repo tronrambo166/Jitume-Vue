@@ -15,10 +15,20 @@
       veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
     </div>
     <div class="flex  gap-2">
+      <div class="col-md-12 flex items-center gap-2">
+              
 
-            <div class=" bg-[#198754] rounded-[16px] text-white text-center w-[45%] md:w-[60%]"><a class="">Add Review</a></div>
+              <a v-if="auth_user" data-toggle="modal" data-target="#reviewModal"
+                class=" ">Add review</a>
 
+              <a v-else @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal"
+                class="w-[45%] text-center  bg-green-700 text-white rounded-[16px]">Add review</a>
       <div class=" text-green-700 text-center w-[50%]"><a class="">Overview</a>
+
+           
+            </div>
+
+
 </div>
     </div>
   </div>
