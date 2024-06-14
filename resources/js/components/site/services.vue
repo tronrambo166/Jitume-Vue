@@ -84,7 +84,7 @@
 
 
     <hr>
- x
+ 
 
 <div id="resource-slider" class="carousel w-full mx-auto">
   <div class="carousel-inner w-[70%] mx-auto">

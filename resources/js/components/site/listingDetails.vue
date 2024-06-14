@@ -1,9 +1,89 @@
 <template>
-  <div class="container">
+  <div class="container mx-auto flex justify-center items-center">
 
-    <div class="heading row my-3 pt-3">
-      <div class="col-md-6">
-        <div class="grid images_3_of_2 rounded listing px-3">
+<div class="px-4 md:px-6 lg:px-8 xl:px-12 my-3 pt-3 w-full flex flex-col md:flex-row items-center justify-center mx-auto gap-4 md:gap-6 lg:gap-8">
+
+
+      <div class="col-md-4 px-6 pt-6">
+
+        <div class="div">
+    <div class="text-[#0A0A0A99] font-semibold">More business informations</div>
+    <div class="py-3 font-bold">{{ form.name }}</div>
+    <div class="py-3 ">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+    </div>
+    <div class="flex  gap-2">
+
+            <div class=" bg-[#198754] rounded-[16px] text-white text-center w-[45%] md:w-[60%]"><a class="">Add Review</a></div>
+
+      <div class=" text-green-700 text-center w-[50%]"><a class="">Overview</a>
+</div>
+    </div>
+  </div>
+        <!--<div class=" eqp-invest my-4 text-left">
+          <h3 class="secondary_heading my-3">About {{form.name}}</h3>
+          <p class="text-justify-center  ">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+            laboris nisi ut aliquip</p>
+        </div>-->
+      </div>
+
+<!--right section --->
+
+     <div class="col-md-4 flex mr-0">
+     <div>
+                 
+
+               <div class="relative">
+    <img style="width:100%; max-height: 400px;" class="shadow rounded-[16px] " :src="form.image" alt="" />
+    <div class="absolute bottom-0 left-0 w-full glass-bg rounded-b-[16px] text-white text-center py-2 ">
+        <p class="text-center"><i class="mr-2 fa fa-map-marker"></i>{{ form.location }}</p>
+    </div>
+</div>
+
+  
+
+   <div class="w-[100%]  justify-end py-3 flex flex-col ml-60px text-right ">
+   <!--<div class="row ">
+                  <div class="col-10 flex " id="">
+                    <div class="float-right" id="staticRating">
+                <div class=""> <p class="rating-star text-dark  float-right" >({{ form.rating }})</p></div>
+
+                </div> 
+                </div>
+                </div>-->
+    <div class="">
+      
+      <div class="">({{ form.rating_count }} reviews)</div>
+    </div>
+    <div
+      class=""
+    >
+      Amount: <span class="font-semibold text-green-700">${{ form.investment_needed }}</span>
+      <span class="text-xl">(Required)</span>
+    </div>
+    <div
+      class="flex items-center justify-end text-right"
+    >
+      <img
+        loading="lazy"
+        src="https://cdn.builder.io/api/v1/image/assets/TEMP/80bc96587703667588b7efe45b98824e0d7227f4bd4efbce0ee15df008a321fb?"
+        class="hidden"
+      />
+      <div class="float-right hidden">+1791205437</div>
+    </div>
+  </div>
+
+     </div>
+
+
+
+
+
+
+        <div class="grid images_3_of_2 rounded listing px-3 hidden">
           <img style="width:100%; max-height: 500px;" class="shadow card" :src="form.image" alt="" />
 
 
@@ -67,16 +147,14 @@
       </div>
 
 
-      <div class="col-md-3">
-        <div class=" eqp-invest my-4 text-left">
-          <h3 class="secondary_heading my-3">About {{form.name}}</h3>
-          <p class="text-justify-center  ">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-            laboris nisi ut aliquip</p>
-        </div>
-      </div>
 
-      <div class="col-md-3">
+
+
+
+
+
+
+      <div class="">
 
         <!--  <div class="card bg-light w-75 mx-auto py-3">
              <h5 class="mx-4 text-secondary shadow border border-light py-2 d-block text-center">Seed investors spot open
@@ -96,7 +174,7 @@
          </div> -->
 
 
-        <div v-if="!form.conv || !auth_user" class="card bg-light w-100 mx-auto py-3">
+        <div v-if="!form.conv || !auth_user" class="card bg-light w-100 mx-auto py-3 hidden">
 
           <h4 class="secondary_heading ml-4 border border-light py-2 d-block ">Business Home Window <p class="d-inline ">
             </p>

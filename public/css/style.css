@@ -1945,3 +1945,154 @@ background: linear-gradient(113deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255,
  border-radius: 16px;
  }
 
+#pay{
+    background-color: rgb(22 101 52);
+    color: white;
+    width: 250px;
+}
+
+.form-group label{
+    color: #666666;
+    font-size: 12px;
+    font: outfit;
+}
+.bd-rm{
+    border: none;
+}
+
+.card-icon{
+    color:#666666 ;
+}
+#icon{
+    background-color:rgb(22 101 52) ;
+    color: white;
+    boreder-radius-left:20px;
+}
+
+input[type="checkbox"]:focus {
+    outline: none;
+}
+
+.form-control{
+    outline: none;
+}
+
+  /* Error Popup styles */
+        .errorPopup {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black with opacity */
+            padding-top: 60px;
+        }
+
+        .errorPopup-content {
+            background-color: #fefefe;
+            margin: 5% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+#terms{
+    color:black;
+    font-weight: 800;
+}
+
+/* Add this CSS in your stylesheet or inside a <style> tag in the <head> of your HTML document */
+@media (max-width: 768px) {
+    .allterms {
+        flex-wrap: wrap;
+    }
+    #terms {
+        margin-top: 5px; /* Add some space to align with the checkbox */
+    }
+}
+@media (max-width: 768px) {
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .bg-white {
+        width: 100%;
+        margin-top: 20px;
+    }
+    .float-right {
+        float: none !important;
+        margin: 0 auto;
+    }
+    .form-row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .col-xs-12 {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .privacy-wrp {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .privacy-wrp label {
+        font-size: 14px;
+        line-height: 1.2;
+    }
+    .privacy-wrp input {
+        margin-right: 10px;
+    }
+    .btn {
+        width: 100%;
+    }
+    .text-center {
+        text-align: center !important;
+    }
+    .extra-section {
+        display: block;
+    }
+}
+
+/* Hide on small and medium screens */
+@media (max-width: 992px) {
+    .right-content {
+        display: none;
+    }
+
+}
+
+
+/* Hide on large screens */
+@media (min-width: 992px) {
+    .ms-content {
+        display: none;
+    }
+}
+
+.glass-bg {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    border-radius: 0.5rem; /* 8px */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}

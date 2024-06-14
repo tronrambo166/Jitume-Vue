@@ -363,6 +363,50 @@
     </div>
 </footer>
 
+
+<!-- testing template-->
+    <div class="row hidden w-75 m-auto border shadow text-center bg-light" style=" box-shadow: 3px 3px 7px 7px grey; width:70%; background: #fbfbfb;border: 1px solid black;">
+        <div class="container w-75 m-auto" style="box-shadow: 3px 3px 7px 7px grey; background: #fbfbfb;width:75%; margin:auto; text-align:center">
+        
+         <h2 style="text-align: left;color: black;font-family: sans-serif;">  
+            <br> Completion of milestone!</h2>
+            
+            <div class="" style="width:100%; margin:auto;">
+            <h4 style="line-height: 28px;font-weight:500; color: #000000a1;font-family: sans-serif;text-align:left;"> Hi,<br> 
+                    milestone $mile_name of business $business_name is done and you can now review with the entrepreneur. <br> 
+
+                   Do you want to Continue to the Next Milestone?
+                <div style="width:100%;margin: auto; padding-bottom:20px;padding-top:15px;"> 
+                    <a target="_blank" href="https://test.jitume.com/agreeToNextmile/$bid_id"
+                style="width:50%;text-decoration:none;color: aliceblue;background:green;padding:10px 30px;border-radius:5px;margin-left:30px">
+                Continue</a>
+
+                <a
+                style="width:50%;text-decoration:none;color: aliceblue;background:red;padding:10px 30px;border-radius:5px;margin-left:30px">
+                Cancel </a>
+            </div>
+
+            </h4>
+            
+            
+            </div>
+        
+        
+                
+                
+                <p style="font-weight: bold; color:#000000a1; line-height:22px; font-family:arial; padding-top:20px; padding-bottom:20px; text-align:center;" class="py-3 text-center"> Thanks! <br />   Jitume Admin.</p>
+
+        </div>
+        
+        
+        </div>
+  
+        
+<!-- testing template end-->
+ 
+
+
+
     </div>
 
 
@@ -548,7 +592,7 @@
   <!-- LOGIN MODAL -->
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="width: 585px;border-radius: 20px;">
+            <div class="modal-content" style="border-radius: 20px;">
 
                  <button type="button" class="m-0 close float-left text-left d-inline-block pt-2 pl-3 h3" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -638,7 +682,7 @@
                                             <div id="form_fields" class="col-md-6">
                                             <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">First Name </p></label>
                                            
-                                            <input onkeyup="fill(this.value);" class="border w-100 py-2 mr-1" type="text" name="fname" value="{{ old('fname') }}" id="fname" required />
+                                            <input onkeyup="fill(this.value);" class="border w-100 pl-2 py-2 mr-1" type="text" name="fname" value="{{ old('fname') }}" id="fname" required />
 
                                             <span id="er_fname" class="collapse float-left text-danger small">Error: Invalid email</span>
                                             </div>
@@ -646,7 +690,7 @@
                                             <div id="form_fields" class="col-md-6">
                                             <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Middle Name </p></label>
                                            
-                                            <input onkeyup="fill(this.value);" class="border w-100 py-2 mr-1" type="text" name="mname" value="{{ old('mname') }}" id="mname" required />
+                                            <input onkeyup="fill(this.value);" class="border w-100 py-2 pl-2 mr-1" type="text" name="mname" value="{{ old('mname') }}" id="mname" required />
 
                                             <span id="er_mname" class="collapse float-left text-danger small">Error: Invalid email</span>
                                             </div>
@@ -657,7 +701,7 @@
                                             <div id="form_fields">
                                             <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Last Name </p></label>
                                            
-                                            <input onkeyup="fill(this.value);" class="border w-100 py-2 mr-1" type="text" name="lname" value="{{ old('lname') }}" id="lname" required />
+                                            <input onkeyup="fill(this.value);" class="border w-100 pl-2 py-2 mr-1" type="text" name="lname" value="{{ old('lname') }}" id="lname" required />
 
                                             <span id="er_lname" class="collapse float-left text-danger small">Error: Invalid email</span>
                                             </div>
@@ -1016,9 +1060,9 @@
                                             <input type="text" hidden name="c_to_action_login" id="c_to_action_login" value="">
 
                                             <div id="form_fields">
-                                                <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Email Address</p></label>
+                                                <label class="mb-0 w-100"><p class="mb-0  d-block w-100 float-left text-left small small_label">Email Address</p></label>
                                            
-                                            <input onkeyup="email_ck(this.value);" class="border w-100 py-2 mr-1" type="email" name="email" placeholder="" id="inputEmailAddress" value="{{ old('email') }}" required />
+                                            <input onkeyup="email_ck(this.value);" class="border w-100 pl-2 py-2 mr-1" type="email" name="email" placeholder="" id="inputEmailAddress" value="{{ old('email') }}" required />
 
                                             <span id="er_email" class="collapse float-left text-danger small">Error: Invalid email</span>
                                             </div>
@@ -1030,7 +1074,7 @@
                                                     </span>
                                                 </label>
                                            
-                                            <input onkeyup="pass_ck(this.value);" class="border w-100 py-2 mr-1" name="password" id="inputPassword" type="password" value="" required />
+                                            <input onkeyup="pass_ck(this.value);" class="border w-100 pl-2 py-2 mr-1" name="password" id="inputPassword" type="password" value="" required />
                                             </div>
 
 
@@ -1126,25 +1170,25 @@
                                     <input hidden type="number" name="investor" value="1">
                                     <input type="text" hidden name="c_to_listing_reg" id="c_to_listing_reg" value="">
 <div class="pt-2">
-    <label for="name" class="col-md-4 col-form-label text-md-left">{{ __('First Name') }} <span title="Required" class="text-danger">*</span></label>
+    <label for="name" class="col-md-4 col-form-label text-md-left ">{{ __('First Name') }} <span title="Required" class="text-danger">*</span></label>
 
     <div class="col-md-6">
-        <input id="name" type="text" class="form-control" name="fname" @if(Session::has('old_fname')) value="{{Session::get('old_fname')}}" @endif required autocomplete="name" autofocus>
+        <input id="name" type="text" class="form-control pl-2" name="fname" @if(Session::has('old_fname')) value="{{Session::get('old_fname')}}" @endif required autocomplete="name" autofocus>
     </div>
 </div>
 
 <div class="row mb-3 pt-2">
-    <label for="name" class="col-md-4 col-form-label text-md-left">{{ __('Middle Name') }} <span title="Required" class="text-danger"></span></label>
+    <label for="name" class="col-md-4 col-form-label text-md-left ">{{ __('Middle Name') }} <span title="Required" class="text-danger"></span></label>
 
     <div class="col-md-6">
-        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="mname" @if(Session::has('old_mname')) value="{{Session::get('old_mname')}}" @endif autocomplete="name" autofocus>
+        <input id="name" type="text" class=" form-control @error('name') is-invalid @enderror" name="mname" @if(Session::has('old_mname')) value="{{Session::get('old_mname')}}" @endif autocomplete="name" autofocus>
     </div>
 </div>
 
 
 
                                             <div class="row mb-3">
-                                                <label for="name" class="col-md-4 col-form-label text-md-left">{{ __('Last Name') }} <span title="Required" class="text-danger">*</span></label>
+                                                <label for="name" class="col-md-4 col-form-label text-md-left ">{{ __('Last Name') }} <span title="Required" class="text-danger">*</span></label>
 
                                                 <div class="col-md-6">
                                                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="lname" @if(Session::has('old_lname')) value="{{Session::get('old_lname')}}" @endif required autocomplete="name" autofocus>
@@ -1541,8 +1585,9 @@
             //$('#user_log').hide();
             $('#all_logins').hide();
             $('#all_registers').removeClass("collapse");
-            //$('#user_reg').hide();
+            $('#user_reg').show();
 
+            $('#all_registers').show();
 
             var type = $('#type').val();
             // if (type == 1) {

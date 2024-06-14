@@ -9667,6 +9667,84 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'business'],
   data: function data() {
@@ -74136,611 +74214,171 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "heading row my-3 pt-3" }, [
-      _c("div", { staticClass: "col-md-6" }, [
-        _c("div", { staticClass: "grid images_3_of_2 rounded listing px-3" }, [
-          _c("img", {
-            staticClass: "shadow card",
-            staticStyle: { width: "100%", "max-height": "500px" },
-            attrs: { src: _vm.form.image, alt: "" },
-          }),
+  return _c(
+    "div",
+    { staticClass: "container mx-auto flex justify-center items-center" },
+    [
+      _c(
+        "div",
+        {
+          staticClass:
+            "px-4 md:px-6 lg:px-8 xl:px-12 my-3 pt-3 w-full flex flex-col md:flex-row items-center justify-center mx-auto gap-4 md:gap-6 lg:gap-8",
+        },
+        [
+          _c("div", { staticClass: "col-md-4 px-6 pt-6" }, [
+            _c("div", { staticClass: "div" }, [
+              _c("div", { staticClass: "text-[#0A0A0A99] font-semibold" }, [
+                _vm._v("More business informations"),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "py-3 font-bold" }, [
+                _vm._v(_vm._s(_vm.form.name)),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "py-3" }, [
+                _vm._v(
+                  "\n      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod\n      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim\n      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip\n    "
+                ),
+              ]),
+              _vm._v(" "),
+              _vm._m(0),
+            ]),
+          ]),
           _vm._v(" "),
-          _c("div", { staticClass: "pl-2 pt-4" }, [
-            _c(
-              "h3",
-              { staticClass: "mt-2 text-left text-dark font-weight-bold" },
-              [
-                _vm._v(_vm._s(_vm.form.name) + "\n            "),
+          _c("div", { staticClass: "col-md-4 flex mr-0" }, [
+            _c("div", [
+              _c("div", { staticClass: "relative" }, [
+                _c("img", {
+                  staticClass: "shadow rounded-[16px]",
+                  staticStyle: { width: "100%", "max-height": "400px" },
+                  attrs: { src: _vm.form.image, alt: "" },
+                }),
+                _vm._v(" "),
                 _c(
                   "div",
                   {
-                    staticClass: "float-right text-rightpy-0 my-0",
-                    staticStyle: { width: "30%" },
+                    staticClass:
+                      "absolute bottom-0 left-0 w-full glass-bg rounded-b-[16px] text-white text-center py-2",
                   },
                   [
-                    _c("h6", { staticClass: "font-weight-bold" }, [
-                      _vm._v("Amount: "),
-                      _c("span", { staticClass: "font-weight-light" }, [
-                        _c("b", [
-                          _vm._v(
-                            "$" + _vm._s(_vm.form.investment_needed) + " "
-                          ),
-                        ]),
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "span",
-                        {
-                          staticClass: "font-weight-light",
-                          staticStyle: { "font-size": "11px" },
-                        },
-                        [
-                          _c("b", [
-                            _vm._v(
-                              "   (Required):$" + _vm._s(_vm.amount_required)
-                            ),
-                          ]),
-                        ]
-                      ),
+                    _c("p", { staticClass: "text-center" }, [
+                      _c("i", { staticClass: "mr-2 fa fa-map-marker" }),
+                      _vm._v(_vm._s(_vm.form.location)),
                     ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "row" }, [
-                      _vm._m(0),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-2" }, [
-                        _c(
-                          "p",
-                          {
-                            staticClass:
-                              "rating-star text-dark d-inline float-right",
-                          },
-                          [_vm._v("(" + _vm._s(_vm.form.rating) + ")")]
-                        ),
-                      ]),
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "p",
-                      {
-                        staticClass: "text-dark d-block float-right",
-                        staticStyle: { "font-size": "13px" },
-                      },
-                      [
-                        _vm._v(
-                          "(" + _vm._s(_vm.form.rating_count) + " reviews)"
-                        ),
-                      ]
-                    ),
                   ]
                 ),
-              ]
-            ),
-            _vm._v(" "),
-            _c("p", { staticClass: "my-1 text-left" }, [
-              _c("i", { staticClass: "mr-2 fa fa-map-marker" }),
-              _vm._v(_vm._s(_vm.form.location) + "\n\n          "),
-            ]),
-            _vm.auth_user
-              ? _c("div", { staticClass: "float-right w-25" }, [
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _c("span", [_vm._v(_vm._s(_vm.progress) + "% Invested")]),
-                ])
-              : _vm._e(),
-            _vm._v(" "),
-            _c("p"),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row my-4" }, [
-            _c("div", { staticClass: "col-md-12" }, [
-              _c("a", { staticClass: "btn border border-bottom-success" }, [
-                _vm._v("Overview"),
               ]),
               _vm._v(" "),
-              _vm.auth_user
-                ? _c(
-                    "a",
-                    {
-                      staticClass: "btn border border-bottom-success",
-                      attrs: {
-                        "data-toggle": "modal",
-                        "data-target": "#reviewModal",
-                      },
-                    },
-                    [_vm._v("Add review")]
-                  )
-                : _c(
-                    "a",
-                    {
-                      staticClass: "btn border border-bottom-success",
-                      attrs: {
-                        "data-target": "#loginmodal2",
-                        "data-toggle": "modal",
-                      },
-                      on: {
-                        click: function ($event) {
-                          return _vm.make_session(_vm.form.listing_id)
-                        },
-                      },
-                    },
-                    [_vm._v("Add review")]
-                  ),
-              _vm._v(" "),
-              _c("hr"),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "Overview", attrs: { id: "Overview" } }, [
-              _c("p", [
-                _c("span", { staticClass: "mt-1 rounded" }, [
-                  _c("i", { staticClass: "mr-2 fa fa-phone" }),
-                  _vm._v(_vm._s(_vm.form.contact)),
-                ]),
-              ]),
-            ]),
-          ]),
-        ]),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-3" }, [
-        _c("div", { staticClass: "eqp-invest my-4 text-left" }, [
-          _c("h3", { staticClass: "secondary_heading my-3" }, [
-            _vm._v("About " + _vm._s(_vm.form.name)),
-          ]),
-          _vm._v(" "),
-          _c("p", { staticClass: "text-justify-center" }, [
-            _vm._v(
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod\n          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco\n          laboris nisi ut aliquip"
-            ),
-          ]),
-        ]),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-3" }, [
-        !_vm.form.conv || !_vm.auth_user
-          ? _c("div", { staticClass: "card bg-light w-100 mx-auto py-3" }, [
-              _vm._m(2),
-              _vm._v(" "),
-              _vm.auth_user
-                ? _c("div", { staticClass: "eqp-invest" }, [
-                    _vm.plan == "platinum" ||
-                    (_vm.plan == "gold" && _vm.range == _vm.form.range)
-                      ? _c(
-                          "a",
-                          {
-                            staticClass:
-                              "business_btns py-2 text-center text-light buttonListing my-2",
-                            on: {
-                              click: function ($event) {
-                                return _vm.unlockBySubs(
-                                  _vm.form.listing_id,
-                                  _vm.subscrib_id,
-                                  "platinum"
-                                )
-                              },
-                            },
-                          },
-                          [
-                            _vm._v(
-                              "Unlock More Business\n            Information To\n            Invest"
-                            ),
-                          ]
-                        )
-                      : _c(
-                          "a",
-                          {
-                            staticClass:
-                              "business_btns py-2 text-center text-light buttonListing my-2",
-                            attrs: {
-                              "data-target": "#investModal",
-                              "data-toggle": "modal",
-                            },
-                          },
-                          [
-                            _vm._v(
-                              "Unlock More Business\n            Information To\n            Invest"
-                            ),
-                          ]
-                        ),
-                  ])
-                : _c("div", { staticClass: "eqp-invest" }, [
-                    _c(
-                      "a",
-                      {
-                        staticClass:
-                          "business_btns py-2 text-center text-light buttonListing my-3",
-                        attrs: {
-                          "data-target": "#loginModal",
-                          "data-toggle": "modal",
-                        },
-                        on: {
-                          click: function ($event) {
-                            return _vm.make_session(_vm.form.listing_id)
-                          },
-                        },
-                      },
-                      [
-                        _vm._v(
-                          "Unlock More Business Information To\n            Invest"
-                        ),
-                      ]
-                    ),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "w-[100%] justify-end py-3 flex flex-col ml-60px text-right",
+                },
+                [
+                  _c("div", {}, [
+                    _c("div", {}, [
+                      _vm._v("(" + _vm._s(_vm.form.rating_count) + " reviews)"),
+                    ]),
                   ]),
-            ])
-          : _c(
-              "div",
-              { staticClass: "bg-light w-100 mx-auto py-3 text-center" },
-              [
-                _c("div", { staticClass: "eqp-invest" }, [
-                  _c(
-                    "a",
-                    {
-                      staticClass:
-                        "py-1 convBtn my-3 text-center mx-auto w-75 btn px-2",
-                      staticStyle: { border: "1px solid black" },
-                      attrs: { id: "convBtn2" },
-                      on: {
-                        click: function ($event) {
-                          return _vm.download_statement()
-                        },
-                        mouseleave: function ($event) {
-                          return _vm.leave()
-                        },
-                        mouseover: _vm.hover2,
-                      },
-                    },
-                    [_vm._v("Download Financial Statements")]
-                  ),
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "eqp-invest" },
-                  [
+                  _vm._v(" "),
+                  _c("div", {}, [
+                    _vm._v("\n      Amount: "),
                     _c(
-                      "a",
-                      {
-                        staticClass:
-                          "py-1 convBtn text-center mx-auto w-75 btn mt-4 px-2",
-                        staticStyle: { border: "1px solid black" },
-                        attrs: { id: "convBtn3" },
-                        on: {
-                          mouseleave: function ($event) {
-                            return _vm.leave()
-                          },
-                          mouseover: function ($event) {
-                            return _vm.hover3()
-                          },
-                          click: function ($event) {
-                            return _vm.download_business()
-                          },
-                        },
-                      },
-                      [_vm._v("Download Business\n            Documentation")]
+                      "span",
+                      { staticClass: "font-semibold text-green-700" },
+                      [_vm._v("$" + _vm._s(_vm.form.investment_needed))]
                     ),
                     _vm._v(" "),
-                    _c(
-                      "router-link",
-                      {
-                        staticClass:
-                          "py-1 convBtn my-3 text-center mx-auto w-75 btn px-2",
-                        staticStyle: { border: "1px solid black" },
-                        attrs: {
-                          to: "/business-milestone/" + _vm.form.raw_id,
-                          id: "convBtn4",
-                        },
-                        nativeOn: {
-                          mouseleave: function ($event) {
-                            return _vm.leave()
-                          },
-                          mouseover: function ($event) {
-                            return _vm.hover4.apply(null, arguments)
-                          },
-                        },
-                      },
-                      [_vm._v("View Business Milestones")]
-                    ),
-                    _vm._v(" "),
-                    _vm.running && _vm.amount_required > 0
-                      ? _c("div", { staticClass: "Invest-Payout" }, [
-                          _c("div", { staticClass: "w-75 mx-auto row" }, [
-                            _vm._m(3),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-sm-12 px-1" }, [
-                              _c("div", { staticClass: "row" }, [
-                                _c("div", { staticClass: "col-md-4" }, [
-                                  _vm._v("Amount:$"),
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col-md-8" }, [
-                                  _c("input", {
-                                    staticStyle: { height: "25px" },
-                                    attrs: {
-                                      value: "",
-                                      id: "bid_amount",
-                                      type: "number",
-                                      name: "bid_amount",
-                                    },
-                                    on: {
-                                      keyup: function ($event) {
-                                        return _vm.calculate(
-                                          $event.target.value
-                                        )
-                                      },
-                                    },
-                                  }),
-                                ]),
-                              ]),
-                              _vm._v(" "),
-                              _vm._m(4),
-                            ]),
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "a",
-                            {
-                              staticClass:
-                                "py-1 convBtn text-center mx-auto w-75 btn mt-4 px-2",
-                              staticStyle: { border: "1px solid black" },
-                              attrs: { id: "convBtn5" },
-                              on: {
-                                mouseleave: function ($event) {
-                                  return _vm.leave()
-                                },
-                                mouseover: function ($event) {
-                                  return _vm.hover5()
-                                },
-                                click: function ($event) {
-                                  _vm.make_session(_vm.form.listing_id)
-                                  _vm.bidCommits()
-                                },
-                              },
-                            },
-                            [_vm._v("Invest")]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "w-75 mx-auto row" }, [
-                            _vm._m(5),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-sm-12 px-1" }, [
-                              _c("div", { staticClass: "row" }, [
-                                _c("div", { staticClass: "col-md-4" }, [
-                                  _vm._v("Amount:$"),
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col-md-8" }, [
-                                  _c("input", {
-                                    staticStyle: { height: "25px" },
-                                    attrs: {
-                                      value: "",
-                                      id: "bid_amount_eqp",
-                                      type: "number",
-                                      name: "bid_amount_eqp",
-                                    },
-                                    on: {
-                                      keyup: function ($event) {
-                                        return _vm.calculate2(
-                                          $event.target.value
-                                        )
-                                      },
-                                    },
-                                  }),
-                                ]),
-                              ]),
-                              _vm._v(" "),
-                              _vm._m(6),
-                            ]),
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "a",
-                            {
-                              staticClass:
-                                "py-1 convBtn text-center mx-auto w-75 btn mt-4 px-2",
-                              staticStyle: { border: "1px solid black" },
-                              attrs: { id: "convBtn6" },
-                              on: {
-                                mouseleave: function ($event) {
-                                  return _vm.leave()
-                                },
-                                mouseover: function ($event) {
-                                  return _vm.hover6()
-                                },
-                                click: function ($event) {
-                                  return _vm.bidCommitsEQP()
-                                },
-                              },
-                            },
-                            [_vm._v("Invest With Equpment")]
-                          ),
-                        ])
-                      : _c("div", { staticClass: "w-75 mx-auto row" }, [
-                          _c("p", { staticClass: "bg-light" }, [
-                            _vm._v(
-                              "Milestone payout is currently off due to milestone completion process, please wait until\n              next milestone is open."
-                            ),
-                          ]),
-                        ]),
-                  ],
-                  1
-                ),
-              ]
-            ),
-      ]),
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "investModal",
-          tabindex: "-1",
-          role: "dialog",
-          "aria-labelledby": "exampleModalLabel",
-          "aria-hidden": "true",
-        },
-      },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog", attrs: { role: "document" } },
-          [
+                    _c("span", { staticClass: "text-xl" }, [
+                      _vm._v("(Required)"),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(1),
+                ]
+              ),
+            ]),
+            _vm._v(" "),
             _c(
               "div",
-              {
-                staticClass: "modal-content",
-                staticStyle: { "border-radius": "3px" },
-              },
+              { staticClass: "grid images_3_of_2 rounded listing px-3 hidden" },
               [
-                _c("div", { staticClass: "modal-header" }, [
+                _c("img", {
+                  staticClass: "shadow card",
+                  staticStyle: { width: "100%", "max-height": "500px" },
+                  attrs: { src: _vm.form.image, alt: "" },
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "pl-2 pt-4" }, [
                   _c(
-                    "div",
-                    { staticClass: "card-header w-100" },
+                    "h3",
+                    {
+                      staticClass: "mt-2 text-left text-dark font-weight-bold",
+                    },
                     [
+                      _vm._v(_vm._s(_vm.form.name) + "\n              "),
                       _c(
-                        "a",
+                        "div",
                         {
-                          staticClass:
-                            "border w-25 d-inline btn rounded mr-3 px-3 font-weight-bold",
-                          attrs: { id: "small_fee" },
-                          on: {
-                            click: function ($event) {
-                              return _vm.unlock_choose_button("a")
-                            },
-                          },
+                          staticClass: "float-right text-rightpy-0 my-0",
+                          staticStyle: { width: "30%" },
                         },
-                        [_vm._v("\n                Small fee\n              ")]
-                      ),
-                      _vm._v(" "),
-                      _vm.subscribed
-                        ? _c(
-                            "a",
-                            {
-                              staticClass:
-                                "border modal_ok_btn w-25 d-inline btn rounded mr-3 px-3 font-weight-bold",
-                              attrs: { id: "subs" },
-                              on: {
-                                click: function ($event) {
-                                  return _vm.unlock_choose_button("b")
-                                },
+                        [
+                          _c("h6", { staticClass: "font-weight-bold" }, [
+                            _vm._v("Amount: "),
+                            _c("span", { staticClass: "font-weight-light" }, [
+                              _c("b", [
+                                _vm._v(
+                                  "$" + _vm._s(_vm.form.investment_needed) + " "
+                                ),
+                              ]),
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticClass: "font-weight-light",
+                                staticStyle: { "font-size": "11px" },
                               },
+                              [
+                                _c("b", [
+                                  _vm._v(
+                                    "   (Required):$" +
+                                      _vm._s(_vm.amount_required)
+                                  ),
+                                ]),
+                              ]
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "row" }, [
+                            _vm._m(2),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-2" }, [
+                              _c(
+                                "p",
+                                {
+                                  staticClass:
+                                    "rating-star text-dark d-inline float-right",
+                                },
+                                [_vm._v("(" + _vm._s(_vm.form.rating) + ")")]
+                              ),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "p",
+                            {
+                              staticClass: "text-dark d-block float-right",
+                              staticStyle: { "font-size": "13px" },
                             },
                             [
                               _vm._v(
-                                "\n                Subscription\n              "
+                                "(" +
+                                  _vm._s(_vm.form.rating_count) +
+                                  " reviews)"
                               ),
-                            ]
-                          )
-                        : _c(
-                            "router-link",
-                            {
-                              staticClass:
-                                "border w-25 d-inline btn rounded mr-3 px-3 font-weight-bold",
-                              attrs: {
-                                to: "/subscribe/" + _vm.form.listing_id,
-                                "data-dismiss": "modal",
-                                "aria-label": "Close",
-                              },
-                            },
-                            [_vm._v("Subscribe")]
-                          ),
-                    ],
-                    1
-                  ),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "modal-body" }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "row collapse",
-                      attrs: { id: "small_fee_div" },
-                    },
-                    [
-                      _c("div", { staticClass: "col-sm-12 w-100 mx-auto" }, [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "p-3",
-                            staticStyle: {
-                              cursor: "pointer",
-                              background: "white",
-                            },
-                          },
-                          [
-                            _c(
-                              "p",
-                              {
-                                staticClass: "text-dark smalls",
-                                staticStyle: { "font-size": "16px" },
-                              },
-                              [
-                                _vm._v(
-                                  "This business requests a small fee of\n                  "
-                                ),
-                                _c("b", [
-                                  _vm._v(
-                                    "$" + _vm._s(_vm.form.investors_fee) + " "
-                                  ),
-                                ]),
-                                _vm._v(
-                                  " to view their full business information. Do you want to pay now?\n                "
-                                ),
-                              ]
-                            ),
-                          ]
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "card-header w-100 text-center" },
-                        [
-                          _c(
-                            "form",
-                            { attrs: { action: "stripe", method: "get" } },
-                            [
-                              _c("input", {
-                                attrs: {
-                                  type: "text",
-                                  hidden: "",
-                                  id: "price",
-                                  name: "price",
-                                },
-                                domProps: { value: _vm.form.investors_fee },
-                              }),
-                              _vm._v(" "),
-                              _c("input", {
-                                attrs: {
-                                  type: "number",
-                                  hidden: "",
-                                  id: "listing_id",
-                                  name: "listing_id",
-                                },
-                                domProps: { value: _vm.form.listing_id },
-                              }),
-                              _vm._v(" "),
-                              _c(
-                                "a",
-                                {
-                                  staticClass:
-                                    "modal_ok_btn w-25 d-inline btn rounded mr-3 px-3 font-weight-bold",
-                                  attrs: { type: "submit" },
-                                  on: {
-                                    click: function ($event) {
-                                      _vm.make_session(_vm.form.listing_id)
-                                      _vm.stripeFee(
-                                        _vm.form.listing_id,
-                                        _vm.form.investors_fee
-                                      )
-                                    },
-                                  },
-                                },
-                                [_vm._v("\n                Ok\n              ")]
-                              ),
-                              _vm._v(" "),
-                              _vm._m(7),
                             ]
                           ),
                         ]
@@ -74748,363 +74386,962 @@ var render = function () {
                     ]
                   ),
                   _vm._v(" "),
-                  _vm.subscribed
-                    ? _c(
-                        "div",
-                        { staticClass: "row", attrs: { id: "subs_div" } },
-                        [
-                          _c(
-                            "div",
-                            { staticClass: "col-sm-12 w-100 mx-auto" },
-                            [
-                              _c(
-                                "div",
+                  _c("p", { staticClass: "my-1 text-left" }, [
+                    _c("i", { staticClass: "mr-2 fa fa-map-marker" }),
+                    _vm._v(_vm._s(_vm.form.location) + "\n\n            "),
+                  ]),
+                  _vm.auth_user
+                    ? _c("div", { staticClass: "float-right w-25" }, [
+                        _vm._m(3),
+                        _vm._v(" "),
+                        _c("span", [
+                          _vm._v(_vm._s(_vm.progress) + "% Invested"),
+                        ]),
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("p"),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row my-4" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c(
+                      "a",
+                      { staticClass: "btn border border-bottom-success" },
+                      [_vm._v("Overview")]
+                    ),
+                    _vm._v(" "),
+                    _vm.auth_user
+                      ? _c(
+                          "a",
+                          {
+                            staticClass: "btn border border-bottom-success",
+                            attrs: {
+                              "data-toggle": "modal",
+                              "data-target": "#reviewModal",
+                            },
+                          },
+                          [_vm._v("Add review")]
+                        )
+                      : _c(
+                          "a",
+                          {
+                            staticClass: "btn border border-bottom-success",
+                            attrs: {
+                              "data-target": "#loginmodal2",
+                              "data-toggle": "modal",
+                            },
+                            on: {
+                              click: function ($event) {
+                                return _vm.make_session(_vm.form.listing_id)
+                              },
+                            },
+                          },
+                          [_vm._v("Add review")]
+                        ),
+                    _vm._v(" "),
+                    _c("hr"),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "Overview", attrs: { id: "Overview" } },
+                    [
+                      _c("p", [
+                        _c("span", { staticClass: "mt-1 rounded" }, [
+                          _c("i", { staticClass: "mr-2 fa fa-phone" }),
+                          _vm._v(_vm._s(_vm.form.contact)),
+                        ]),
+                      ]),
+                    ]
+                  ),
+                ]),
+              ]
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", {}, [
+            !_vm.form.conv || !_vm.auth_user
+              ? _c(
+                  "div",
+                  { staticClass: "card bg-light w-100 mx-auto py-3 hidden" },
+                  [
+                    _vm._m(4),
+                    _vm._v(" "),
+                    _vm.auth_user
+                      ? _c("div", { staticClass: "eqp-invest" }, [
+                          _vm.plan == "platinum" ||
+                          (_vm.plan == "gold" && _vm.range == _vm.form.range)
+                            ? _c(
+                                "a",
                                 {
-                                  staticClass: "px-3 py-2",
-                                  staticStyle: {
-                                    cursor: "pointer",
-                                    background: "white",
+                                  staticClass:
+                                    "business_btns py-2 text-center text-light buttonListing my-2",
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.unlockBySubs(
+                                        _vm.form.listing_id,
+                                        _vm.subscrib_id,
+                                        "platinum"
+                                      )
+                                    },
                                   },
                                 },
                                 [
-                                  _c("p", {
-                                    staticClass:
-                                      "system_ui collapse mb-3 py-1 text-danger smalls bg-light text-center",
-                                    staticStyle: { "font-size": "14px" },
-                                    attrs: { id: "range_error" },
-                                  }),
-                                  _vm._v(" "),
-                                  _vm.token_left > 0 && _vm.trial
-                                    ? _c(
-                                        "p",
-                                        {
-                                          staticClass:
-                                            "mb-3 py-2 text-warning smalls bg-light text-center",
-                                          staticStyle: { "font-size": "16px" },
+                                  _vm._v(
+                                    "Unlock More Business\n              Information To\n              Invest"
+                                  ),
+                                ]
+                              )
+                            : _c(
+                                "a",
+                                {
+                                  staticClass:
+                                    "business_btns py-2 text-center text-light buttonListing my-2",
+                                  attrs: {
+                                    "data-target": "#investModal",
+                                    "data-toggle": "modal",
+                                  },
+                                },
+                                [
+                                  _vm._v(
+                                    "Unlock More Business\n              Information To\n              Invest"
+                                  ),
+                                ]
+                              ),
+                        ])
+                      : _c("div", { staticClass: "eqp-invest" }, [
+                          _c(
+                            "a",
+                            {
+                              staticClass:
+                                "business_btns py-2 text-center text-light buttonListing my-3",
+                              attrs: {
+                                "data-target": "#loginModal",
+                                "data-toggle": "modal",
+                              },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.make_session(_vm.form.listing_id)
+                                },
+                              },
+                            },
+                            [
+                              _vm._v(
+                                "Unlock More Business Information To\n              Invest"
+                              ),
+                            ]
+                          ),
+                        ]),
+                  ]
+                )
+              : _c(
+                  "div",
+                  { staticClass: "bg-light w-100 mx-auto py-3 text-center" },
+                  [
+                    _c("div", { staticClass: "eqp-invest" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass:
+                            "py-1 convBtn my-3 text-center mx-auto w-75 btn px-2",
+                          staticStyle: { border: "1px solid black" },
+                          attrs: { id: "convBtn2" },
+                          on: {
+                            click: function ($event) {
+                              return _vm.download_statement()
+                            },
+                            mouseleave: function ($event) {
+                              return _vm.leave()
+                            },
+                            mouseover: _vm.hover2,
+                          },
+                        },
+                        [_vm._v("Download Financial Statements")]
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "eqp-invest" },
+                      [
+                        _c(
+                          "a",
+                          {
+                            staticClass:
+                              "py-1 convBtn text-center mx-auto w-75 btn mt-4 px-2",
+                            staticStyle: { border: "1px solid black" },
+                            attrs: { id: "convBtn3" },
+                            on: {
+                              mouseleave: function ($event) {
+                                return _vm.leave()
+                              },
+                              mouseover: function ($event) {
+                                return _vm.hover3()
+                              },
+                              click: function ($event) {
+                                return _vm.download_business()
+                              },
+                            },
+                          },
+                          [
+                            _vm._v(
+                              "Download Business\n              Documentation"
+                            ),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "router-link",
+                          {
+                            staticClass:
+                              "py-1 convBtn my-3 text-center mx-auto w-75 btn px-2",
+                            staticStyle: { border: "1px solid black" },
+                            attrs: {
+                              to: "/business-milestone/" + _vm.form.raw_id,
+                              id: "convBtn4",
+                            },
+                            nativeOn: {
+                              mouseleave: function ($event) {
+                                return _vm.leave()
+                              },
+                              mouseover: function ($event) {
+                                return _vm.hover4.apply(null, arguments)
+                              },
+                            },
+                          },
+                          [_vm._v("View Business Milestones")]
+                        ),
+                        _vm._v(" "),
+                        _vm.running && _vm.amount_required > 0
+                          ? _c("div", { staticClass: "Invest-Payout" }, [
+                              _c("div", { staticClass: "w-75 mx-auto row" }, [
+                                _vm._m(5),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col-sm-12 px-1" }, [
+                                  _c("div", { staticClass: "row" }, [
+                                    _c("div", { staticClass: "col-md-4" }, [
+                                      _vm._v("Amount:$"),
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "col-md-8" }, [
+                                      _c("input", {
+                                        staticStyle: { height: "25px" },
+                                        attrs: {
+                                          value: "",
+                                          id: "bid_amount",
+                                          type: "number",
+                                          name: "bid_amount",
                                         },
-                                        [
-                                          _vm._v("Your \n                   "),
-                                          _vm._v(" "),
-                                          _c("span", [_vm._v("plan")]),
-                                          _vm._v(
-                                            "\n                  expires in "
-                                          ),
-                                          _c("b", [
-                                            _vm._v(_vm._s(_vm.expire) + " "),
-                                          ]),
-                                          _vm._v(" days.\n                  "),
-                                          _c(
-                                            "span",
-                                            {
-                                              staticClass:
-                                                "text-dark small d-block",
-                                            },
-                                            [
-                                              _vm._v(
-                                                "Are you sure you want to use one of your " +
-                                                  _vm._s(_vm.token_left) +
-                                                  " business information tokens?"
-                                              ),
-                                            ]
-                                          ),
-                                        ]
-                                      )
-                                    : _c(
-                                        "p",
-                                        {
-                                          staticClass:
-                                            "mb-3 py-2 text-dark smalls bg-light text-center",
-                                          staticStyle: { "font-size": "16px" },
+                                        on: {
+                                          keyup: function ($event) {
+                                            return _vm.calculate(
+                                              $event.target.value
+                                            )
+                                          },
                                         },
-                                        [
-                                          _vm._v("Please use "),
-                                          _c("b", [_vm._v("'Small fee'")]),
-                                          _vm._v(" option to unlock"),
-                                        ]
-                                      ),
+                                      }),
+                                    ]),
+                                  ]),
                                   _vm._v(" "),
-                                  _vm.plan == "silver" ||
-                                  _vm.plan == "silver-trial"
-                                    ? _c("div", { staticClass: "row" }, [
-                                        _vm.token_left > 0
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "col-md-6" },
-                                              [
-                                                _c(
-                                                  "a",
-                                                  {
-                                                    staticClass:
-                                                      "modal_ok_btn w-75 m-auto d-inline btn rounded mr-3 px-3",
-                                                    attrs: { type: "submit" },
-                                                    on: {
-                                                      click: function ($event) {
-                                                        _vm.make_session(
-                                                          _vm.form.listing_id
-                                                        )
-                                                        _vm.unlockBySubs(
-                                                          _vm.form.listing_id,
-                                                          _vm.subscrib_id,
-                                                          "token"
-                                                        )
-                                                      },
-                                                    },
-                                                  },
-                                                  [
-                                                    _vm._v(
-                                                      "\n                Use token "
-                                                    ),
-                                                    _c("small", [
-                                                      _vm._v(
-                                                        "(" +
-                                                          _vm._s(
-                                                            _vm.token_left
-                                                          ) +
-                                                          " left)"
-                                                      ),
-                                                    ]),
-                                                  ]
-                                                ),
-                                              ]
+                                  _vm._m(6),
+                                ]),
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "a",
+                                {
+                                  staticClass:
+                                    "py-1 convBtn text-center mx-auto w-75 btn mt-4 px-2",
+                                  staticStyle: { border: "1px solid black" },
+                                  attrs: { id: "convBtn5" },
+                                  on: {
+                                    mouseleave: function ($event) {
+                                      return _vm.leave()
+                                    },
+                                    mouseover: function ($event) {
+                                      return _vm.hover5()
+                                    },
+                                    click: function ($event) {
+                                      _vm.make_session(_vm.form.listing_id)
+                                      _vm.bidCommits()
+                                    },
+                                  },
+                                },
+                                [_vm._v("Invest")]
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "w-75 mx-auto row" }, [
+                                _vm._m(7),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col-sm-12 px-1" }, [
+                                  _c("div", { staticClass: "row" }, [
+                                    _c("div", { staticClass: "col-md-4" }, [
+                                      _vm._v("Amount:$"),
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "col-md-8" }, [
+                                      _c("input", {
+                                        staticStyle: { height: "25px" },
+                                        attrs: {
+                                          value: "",
+                                          id: "bid_amount_eqp",
+                                          type: "number",
+                                          name: "bid_amount_eqp",
+                                        },
+                                        on: {
+                                          keyup: function ($event) {
+                                            return _vm.calculate2(
+                                              $event.target.value
                                             )
-                                          : _c(
-                                              "div",
-                                              { staticClass: "col-md-6" },
-                                              [
-                                                _c(
-                                                  "a",
-                                                  {
-                                                    staticClass:
-                                                      "modal_ok_btn w-75 m-auto d-inline btn rounded mr-3 px-3",
-                                                  },
-                                                  [
-                                                    _c("small", [
-                                                      _c("b", [
-                                                        _vm._v(
-                                                          "(" +
-                                                            _vm._s(
-                                                              _vm.token_left
-                                                            ) +
-                                                            " token left)"
-                                                        ),
-                                                      ]),
-                                                    ]),
-                                                  ]
-                                                ),
-                                              ]
-                                            ),
-                                        _vm._v(" "),
-                                        _vm._m(8),
-                                      ])
-                                    : _vm._e(),
-                                  _vm._v(" "),
-                                  _vm.plan == "gold" || _vm.plan == "gold-trial"
-                                    ? _c("div", { staticClass: "row" }, [
-                                        _vm.token_left > 0
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "col-md-6" },
-                                              [
-                                                _c(
-                                                  "a",
-                                                  {
-                                                    staticClass:
-                                                      "modal_ok_btn w-75 m-auto d-inline btn rounded mr-3 px-3",
-                                                    attrs: { type: "submit" },
-                                                    on: {
-                                                      click: function ($event) {
-                                                        _vm.make_session(
-                                                          _vm.form.listing_id
-                                                        )
-                                                        _vm.unlockBySubs(
-                                                          _vm.form.listing_id,
-                                                          _vm.subscrib_id,
-                                                          "token"
-                                                        )
-                                                      },
-                                                    },
-                                                  },
-                                                  [
-                                                    _vm._v(
-                                                      "\n                Use token "
-                                                    ),
-                                                    _c("small", [
-                                                      _vm._v(
-                                                        "(" +
-                                                          _vm._s(
-                                                            _vm.token_left
-                                                          ) +
-                                                          " left)"
-                                                      ),
-                                                    ]),
-                                                  ]
-                                                ),
-                                              ]
-                                            )
-                                          : _c(
-                                              "div",
-                                              { staticClass: "col-md-6" },
-                                              [
-                                                _c(
-                                                  "a",
-                                                  {
-                                                    staticClass:
-                                                      "modal_ok_btn w-75 mx-auto d-block btn rounded mr-3 px-3",
-                                                  },
-                                                  [
-                                                    _c("small", [
-                                                      _c("b", [
-                                                        _vm._v(
-                                                          "(" +
-                                                            _vm._s(
-                                                              _vm.token_left
-                                                            ) +
-                                                            " token left)"
-                                                        ),
-                                                      ]),
-                                                    ]),
-                                                  ]
-                                                ),
-                                              ]
-                                            ),
-                                        _vm._v(" "),
-                                        _vm._m(9),
-                                        _vm._v(" "),
-                                        _vm._m(10),
-                                      ])
-                                    : _vm._e(),
-                                  _vm._v(" "),
-                                  _vm.plan == "platinum"
-                                    ? _c("div", { staticClass: "row" }, [
-                                        _c(
-                                          "a",
-                                          {
-                                            staticClass:
-                                              "modal_ok_btn w-75 m-auto btn rounded mr-3 px-3",
-                                            attrs: { type: "submit" },
-                                            on: {
-                                              click: function ($event) {
-                                                _vm.make_session(
-                                                  _vm.form.listing_id
-                                                )
-                                                _vm.unlockBySubs(
-                                                  _vm.form.listing_id,
-                                                  _vm.subscrib_id,
-                                                  "platinum"
-                                                )
-                                              },
-                                            },
                                           },
-                                          [
-                                            _vm._v(
-                                              "\n                Use platinum package\n              "
-                                            ),
-                                          ]
-                                        ),
-                                      ])
-                                    : _vm._e(),
+                                        },
+                                      }),
+                                    ]),
+                                  ]),
                                   _vm._v(" "),
-                                  _vm.plan == "platinum-trial"
-                                    ? _c("div", { staticClass: "row" }, [
-                                        _c(
-                                          "a",
-                                          {
-                                            staticClass:
-                                              "modal_ok_btn w-75 m-auto btn rounded mr-3 px-3",
-                                            attrs: { type: "submit" },
-                                            on: {
-                                              click: function ($event) {
-                                                _vm.make_session(
-                                                  _vm.form.listing_id
-                                                )
-                                                _vm.unlockBySubs(
-                                                  _vm.form.listing_id,
-                                                  _vm.subscrib_id,
-                                                  _vm.plan
-                                                )
-                                              },
-                                            },
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                Use trial package\n              "
-                                            ),
-                                          ]
-                                        ),
-                                      ])
-                                    : _vm._e(),
+                                  _vm._m(8),
+                                ]),
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "a",
+                                {
+                                  staticClass:
+                                    "py-1 convBtn text-center mx-auto w-75 btn mt-4 px-2",
+                                  staticStyle: { border: "1px solid black" },
+                                  attrs: { id: "convBtn6" },
+                                  on: {
+                                    mouseleave: function ($event) {
+                                      return _vm.leave()
+                                    },
+                                    mouseover: function ($event) {
+                                      return _vm.hover6()
+                                    },
+                                    click: function ($event) {
+                                      return _vm.bidCommitsEQP()
+                                    },
+                                  },
+                                },
+                                [_vm._v("Invest With Equpment")]
+                              ),
+                            ])
+                          : _c("div", { staticClass: "w-75 mx-auto row" }, [
+                              _c("p", { staticClass: "bg-light" }, [
+                                _vm._v(
+                                  "Milestone payout is currently off due to milestone completion process, please wait until\n                next milestone is open."
+                                ),
+                              ]),
+                            ]),
+                      ],
+                      1
+                    ),
+                  ]
+                ),
+          ]),
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "investModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "exampleModalLabel",
+            "aria-hidden": "true",
+          },
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "modal-dialog", attrs: { role: "document" } },
+            [
+              _c(
+                "div",
+                {
+                  staticClass: "modal-content",
+                  staticStyle: { "border-radius": "3px" },
+                },
+                [
+                  _c("div", { staticClass: "modal-header" }, [
+                    _c(
+                      "div",
+                      { staticClass: "card-header w-100" },
+                      [
+                        _c(
+                          "a",
+                          {
+                            staticClass:
+                              "border w-25 d-inline btn rounded mr-3 px-3 font-weight-bold",
+                            attrs: { id: "small_fee" },
+                            on: {
+                              click: function ($event) {
+                                return _vm.unlock_choose_button("a")
+                              },
+                            },
+                          },
+                          [
+                            _vm._v(
+                              "\n                  Small fee\n                "
+                            ),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm.subscribed
+                          ? _c(
+                              "a",
+                              {
+                                staticClass:
+                                  "border modal_ok_btn w-25 d-inline btn rounded mr-3 px-3 font-weight-bold",
+                                attrs: { id: "subs" },
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.unlock_choose_button("b")
+                                  },
+                                },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                  Subscription\n                "
+                                ),
+                              ]
+                            )
+                          : _c(
+                              "router-link",
+                              {
+                                staticClass:
+                                  "border w-25 d-inline btn rounded mr-3 px-3 font-weight-bold",
+                                attrs: {
+                                  to: "/subscribe/" + _vm.form.listing_id,
+                                  "data-dismiss": "modal",
+                                  "aria-label": "Close",
+                                },
+                              },
+                              [_vm._v("Subscribe")]
+                            ),
+                      ],
+                      1
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "row collapse",
+                        attrs: { id: "small_fee_div" },
+                      },
+                      [
+                        _c("div", { staticClass: "col-sm-12 w-100 mx-auto" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "p-3",
+                              staticStyle: {
+                                cursor: "pointer",
+                                background: "white",
+                              },
+                            },
+                            [
+                              _c(
+                                "p",
+                                {
+                                  staticClass: "text-dark smalls",
+                                  staticStyle: { "font-size": "16px" },
+                                },
+                                [
+                                  _vm._v(
+                                    "This business requests a small fee of\n                    "
+                                  ),
+                                  _c("b", [
+                                    _vm._v(
+                                      "$" + _vm._s(_vm.form.investors_fee) + " "
+                                    ),
+                                  ]),
+                                  _vm._v(
+                                    " to view their full business information. Do you want to pay now?\n                  "
+                                  ),
                                 ]
                               ),
                             ]
                           ),
-                        ]
-                      )
-                    : _vm._e(),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "modal-footer" }),
-              ]
-            ),
-          ]
-        ),
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "reviewModal",
-          tabindex: "-1",
-          role: "dialog",
-          "aria-labelledby": "exampleModalLabel",
-          "aria-hidden": "true",
-        },
-      },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog", attrs: { role: "document" } },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _vm._m(11),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c("form", [
-                  _vm._m(12),
-                  _vm._v(" "),
-                  _c("h5", { staticClass: "font-weight-bold" }, [
-                    _vm._v("Leave a review"),
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "card-header w-100 text-center" },
+                          [
+                            _c(
+                              "form",
+                              { attrs: { action: "stripe", method: "get" } },
+                              [
+                                _c("input", {
+                                  attrs: {
+                                    type: "text",
+                                    hidden: "",
+                                    id: "price",
+                                    name: "price",
+                                  },
+                                  domProps: { value: _vm.form.investors_fee },
+                                }),
+                                _vm._v(" "),
+                                _c("input", {
+                                  attrs: {
+                                    type: "number",
+                                    hidden: "",
+                                    id: "listing_id",
+                                    name: "listing_id",
+                                  },
+                                  domProps: { value: _vm.form.listing_id },
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass:
+                                      "modal_ok_btn w-25 d-inline btn rounded mr-3 px-3 font-weight-bold",
+                                    attrs: { type: "submit" },
+                                    on: {
+                                      click: function ($event) {
+                                        _vm.make_session(_vm.form.listing_id)
+                                        _vm.stripeFee(
+                                          _vm.form.listing_id,
+                                          _vm.form.investors_fee
+                                        )
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                  Ok\n                "
+                                    ),
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _vm._m(9),
+                              ]
+                            ),
+                          ]
+                        ),
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm.subscribed
+                      ? _c(
+                          "div",
+                          { staticClass: "row", attrs: { id: "subs_div" } },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "col-sm-12 w-100 mx-auto" },
+                              [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "px-3 py-2",
+                                    staticStyle: {
+                                      cursor: "pointer",
+                                      background: "white",
+                                    },
+                                  },
+                                  [
+                                    _c("p", {
+                                      staticClass:
+                                        "system_ui collapse mb-3 py-1 text-danger smalls bg-light text-center",
+                                      staticStyle: { "font-size": "14px" },
+                                      attrs: { id: "range_error" },
+                                    }),
+                                    _vm._v(" "),
+                                    _vm.token_left > 0 && _vm.trial
+                                      ? _c(
+                                          "p",
+                                          {
+                                            staticClass:
+                                              "mb-3 py-2 text-warning smalls bg-light text-center",
+                                            staticStyle: {
+                                              "font-size": "16px",
+                                            },
+                                          },
+                                          [
+                                            _vm._v(
+                                              "Your \n                     "
+                                            ),
+                                            _vm._v(" "),
+                                            _c("span", [_vm._v("plan")]),
+                                            _vm._v(
+                                              "\n                    expires in "
+                                            ),
+                                            _c("b", [
+                                              _vm._v(_vm._s(_vm.expire) + " "),
+                                            ]),
+                                            _vm._v(
+                                              " days.\n                    "
+                                            ),
+                                            _c(
+                                              "span",
+                                              {
+                                                staticClass:
+                                                  "text-dark small d-block",
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "Are you sure you want to use one of your " +
+                                                    _vm._s(_vm.token_left) +
+                                                    " business information tokens?"
+                                                ),
+                                              ]
+                                            ),
+                                          ]
+                                        )
+                                      : _c(
+                                          "p",
+                                          {
+                                            staticClass:
+                                              "mb-3 py-2 text-dark smalls bg-light text-center",
+                                            staticStyle: {
+                                              "font-size": "16px",
+                                            },
+                                          },
+                                          [
+                                            _vm._v("Please use "),
+                                            _c("b", [_vm._v("'Small fee'")]),
+                                            _vm._v(" option to unlock"),
+                                          ]
+                                        ),
+                                    _vm._v(" "),
+                                    _vm.plan == "silver" ||
+                                    _vm.plan == "silver-trial"
+                                      ? _c("div", { staticClass: "row" }, [
+                                          _vm.token_left > 0
+                                            ? _c(
+                                                "div",
+                                                { staticClass: "col-md-6" },
+                                                [
+                                                  _c(
+                                                    "a",
+                                                    {
+                                                      staticClass:
+                                                        "modal_ok_btn w-75 m-auto d-inline btn rounded mr-3 px-3",
+                                                      attrs: { type: "submit" },
+                                                      on: {
+                                                        click: function (
+                                                          $event
+                                                        ) {
+                                                          _vm.make_session(
+                                                            _vm.form.listing_id
+                                                          )
+                                                          _vm.unlockBySubs(
+                                                            _vm.form.listing_id,
+                                                            _vm.subscrib_id,
+                                                            "token"
+                                                          )
+                                                        },
+                                                      },
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                  Use token "
+                                                      ),
+                                                      _c("small", [
+                                                        _vm._v(
+                                                          "(" +
+                                                            _vm._s(
+                                                              _vm.token_left
+                                                            ) +
+                                                            " left)"
+                                                        ),
+                                                      ]),
+                                                    ]
+                                                  ),
+                                                ]
+                                              )
+                                            : _c(
+                                                "div",
+                                                { staticClass: "col-md-6" },
+                                                [
+                                                  _c(
+                                                    "a",
+                                                    {
+                                                      staticClass:
+                                                        "modal_ok_btn w-75 m-auto d-inline btn rounded mr-3 px-3",
+                                                    },
+                                                    [
+                                                      _c("small", [
+                                                        _c("b", [
+                                                          _vm._v(
+                                                            "(" +
+                                                              _vm._s(
+                                                                _vm.token_left
+                                                              ) +
+                                                              " token left)"
+                                                          ),
+                                                        ]),
+                                                      ]),
+                                                    ]
+                                                  ),
+                                                ]
+                                              ),
+                                          _vm._v(" "),
+                                          _vm._m(10),
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _vm.plan == "gold" ||
+                                    _vm.plan == "gold-trial"
+                                      ? _c("div", { staticClass: "row" }, [
+                                          _vm.token_left > 0
+                                            ? _c(
+                                                "div",
+                                                { staticClass: "col-md-6" },
+                                                [
+                                                  _c(
+                                                    "a",
+                                                    {
+                                                      staticClass:
+                                                        "modal_ok_btn w-75 m-auto d-inline btn rounded mr-3 px-3",
+                                                      attrs: { type: "submit" },
+                                                      on: {
+                                                        click: function (
+                                                          $event
+                                                        ) {
+                                                          _vm.make_session(
+                                                            _vm.form.listing_id
+                                                          )
+                                                          _vm.unlockBySubs(
+                                                            _vm.form.listing_id,
+                                                            _vm.subscrib_id,
+                                                            "token"
+                                                          )
+                                                        },
+                                                      },
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                  Use token "
+                                                      ),
+                                                      _c("small", [
+                                                        _vm._v(
+                                                          "(" +
+                                                            _vm._s(
+                                                              _vm.token_left
+                                                            ) +
+                                                            " left)"
+                                                        ),
+                                                      ]),
+                                                    ]
+                                                  ),
+                                                ]
+                                              )
+                                            : _c(
+                                                "div",
+                                                { staticClass: "col-md-6" },
+                                                [
+                                                  _c(
+                                                    "a",
+                                                    {
+                                                      staticClass:
+                                                        "modal_ok_btn w-75 mx-auto d-block btn rounded mr-3 px-3",
+                                                    },
+                                                    [
+                                                      _c("small", [
+                                                        _c("b", [
+                                                          _vm._v(
+                                                            "(" +
+                                                              _vm._s(
+                                                                _vm.token_left
+                                                              ) +
+                                                              " token left)"
+                                                          ),
+                                                        ]),
+                                                      ]),
+                                                    ]
+                                                  ),
+                                                ]
+                                              ),
+                                          _vm._v(" "),
+                                          _vm._m(11),
+                                          _vm._v(" "),
+                                          _vm._m(12),
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _vm.plan == "platinum"
+                                      ? _c("div", { staticClass: "row" }, [
+                                          _c(
+                                            "a",
+                                            {
+                                              staticClass:
+                                                "modal_ok_btn w-75 m-auto btn rounded mr-3 px-3",
+                                              attrs: { type: "submit" },
+                                              on: {
+                                                click: function ($event) {
+                                                  _vm.make_session(
+                                                    _vm.form.listing_id
+                                                  )
+                                                  _vm.unlockBySubs(
+                                                    _vm.form.listing_id,
+                                                    _vm.subscrib_id,
+                                                    "platinum"
+                                                  )
+                                                },
+                                              },
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                  Use platinum package\n                "
+                                              ),
+                                            ]
+                                          ),
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _vm.plan == "platinum-trial"
+                                      ? _c("div", { staticClass: "row" }, [
+                                          _c(
+                                            "a",
+                                            {
+                                              staticClass:
+                                                "modal_ok_btn w-75 m-auto btn rounded mr-3 px-3",
+                                              attrs: { type: "submit" },
+                                              on: {
+                                                click: function ($event) {
+                                                  _vm.make_session(
+                                                    _vm.form.listing_id
+                                                  )
+                                                  _vm.unlockBySubs(
+                                                    _vm.form.listing_id,
+                                                    _vm.subscrib_id,
+                                                    _vm.plan
+                                                  )
+                                                },
+                                              },
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                  Use trial package\n                "
+                                              ),
+                                            ]
+                                          ),
+                                        ])
+                                      : _vm._e(),
+                                  ]
+                                ),
+                              ]
+                            ),
+                          ]
+                        )
+                      : _vm._e(),
                   ]),
                   _vm._v(" "),
-                  _c("textarea", {
-                    staticClass: "bg-light border border-none",
-                    attrs: { name: "reply", cols: "55", rows: "3" },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      staticClass: "font-weight-bold btn btn-light w-50 m-auto",
-                      on: {
-                        click: function ($event) {
-                          return _vm.rating()
+                  _c("div", { staticClass: "modal-footer" }),
+                ]
+              ),
+            ]
+          ),
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "reviewModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "exampleModalLabel",
+            "aria-hidden": "true",
+          },
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "modal-dialog", attrs: { role: "document" } },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _vm._m(13),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("form", [
+                    _vm._m(14),
+                    _vm._v(" "),
+                    _c("h5", { staticClass: "font-weight-bold" }, [
+                      _vm._v("Leave a review"),
+                    ]),
+                    _vm._v(" "),
+                    _c("textarea", {
+                      staticClass: "bg-light border border-none",
+                      attrs: { name: "reply", cols: "55", rows: "3" },
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass:
+                          "font-weight-bold btn btn-light w-50 m-auto",
+                        on: {
+                          click: function ($event) {
+                            return _vm.rating()
+                          },
                         },
                       },
-                    },
-                    [_vm._v("Submit")]
-                  ),
+                      [_vm._v("Submit")]
+                    ),
+                  ]),
                 ]),
               ]),
-            ]),
-          ]
-        ),
-      ]
-    ),
-  ])
+            ]
+          ),
+        ]
+      ),
+    ]
+  )
 }
 var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "flex gap-2" }, [
+      _c(
+        "div",
+        {
+          staticClass:
+            "bg-[#198754] rounded-[16px] text-white text-center w-[45%] md:w-[60%]",
+        },
+        [_c("a", {}, [_vm._v("Add Review")])]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "text-green-700 text-center w-[50%]" }, [
+        _c("a", {}, [_vm._v("Overview")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "flex items-center justify-end text-right" },
+      [
+        _c("img", {
+          staticClass: "hidden",
+          attrs: {
+            loading: "lazy",
+            src: "https://cdn.builder.io/api/v1/image/assets/TEMP/80bc96587703667588b7efe45b98824e0d7227f4bd4efbce0ee15df008a321fb?",
+          },
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "float-right hidden" }, [
+          _vm._v("+1791205437"),
+        ]),
+      ]
+    )
+  },
   function () {
     var _vm = this
     var _h = _vm.$createElement
@@ -75322,7 +75559,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("h5", { staticClass: "my-3 font-weight-bold" }, [
-      _vm._v("Service rating\n              "),
+      _vm._v("Service rating\n                "),
       _c("div", { staticClass: "ml-5 d-inline-block", attrs: { id: "demo" } }),
     ])
   },
@@ -78564,7 +78801,7 @@ var render = function () {
     _vm._m(3),
     _vm._v(" "),
     _c("hr"),
-    _vm._v("\n x\n\n"),
+    _vm._v(" "),
     _c(
       "div",
       {

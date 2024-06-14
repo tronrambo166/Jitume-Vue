@@ -305,7 +305,8 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
     </div>
 
     <div class="flex justify-between mt-4 text-[10px] font-bold uppercase">
-    <a href="{{ route('/') }}" class="navLink flex items-center gap-1"><i class="fas fa-home text-dark"></i> Home</a>
+
+    <a href="{{ route('/') }}"class="navLink flex items-center gap-1"><i class="fas fa-home text-dark"></i> Home</a>
 
         
       <a href="{{route('business')}}" class="flex items-center gap-[0.5]"><svg class="" xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11" fill="none">

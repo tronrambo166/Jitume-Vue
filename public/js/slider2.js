@@ -190,3 +190,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+function showErrorPopup(message) {
+    document.querySelector("#errorPopup .alert").innerText = message;
+    document.getElementById("errorPopup").style.display = "block";
+}
+
+function closeErrorPopup() {
+    document.getElementById("errorPopup").style.display = "none";
+}

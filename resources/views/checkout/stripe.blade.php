@@ -7,7 +7,7 @@
 
    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-
+   <link href="{{ asset('/css/style.css') }}" rel="stylesheet"/>
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
@@ -44,66 +44,15 @@
         @endif
    
 <div class="container mt-5 mb-5">
-   
+    <div class="right-content float-right bg-white shadow-md " style="margin-top: 50px; padding-left: 0;">
 
-    <div class="row justify-content-center">
-        <div class="col-lg-6">
-
-            <div class="card bg-white shadow-sm text-black">
-                <div class="float-left">
-    <a href="{{ route('/') }}" class="btn btn-link text-dark"><i class="fas fa-home text-dark"></i> Home</a>
-</div>
-
-                <div class="card-body">
-                    @if (Session::has('success'))
-                    <div class="alert alert-success text-center">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                        <p>{{ Session::get('success') }}</p>
-                    </div>
-                    @endif
-                  <div class="py-5 text-center" style="background-color: #f8f9fa;">
-    <h6 class="text-dark fw-bold" style="font-size: 1.25rem;">A Secure and Easy Checkout Experience</h6>
-    <h5 class="text-success fw-bold" style="font-size: 1rem;">Pay with your Credit/Debit Card via Stripe</h5>
-</div>
-
-
-                     
-                    <div class="card-text">
-                        <form role="form" action="{{ route('stripe.post.coversation') }}" method="post" class="require-validation m-auto" data-cc-on-file="false" data-stripe-publishable-key="pk_test_51JFWrpJkjwNxIm6zf1BN9frgMmLdlGWlSjkcdVpgVueYK5fosCf1fAKlMpGrkfGoiXGMb0PpcMEOdINTEVcJoCNa00tJop21w6" id="payment-form">
-                            @csrf
-                            <div class="row error mx-1 text-center collapse">
-                                <p style="color:#e31313; background: #cfcfcf82;font-weight: 600;" class="alert my-2 py-1 w-100"></p>
-                            </div> 
-
-                            <div class='form-row row my-3'>
+           <div class='form-row row my-2'>
                                 <div class='col-sm-12 form-group required'>
-                                    <label class='text-danger'><b>Amount(USD)</b> <small>5% + tax added</small></label> 
+                                    <label class=''><b>Amount(USD)</b> <small>5% + tax added</small></label> 
                                     <input class='form-control' size='4' name="price" id="price" type='number' value="{{$price}}" readonly>
                                 </div> 
-                            </div>  
-
-                            <div class='form-row row my-2'>
-                                <div class='col-sm-12 form-group required'>
-                                    <label class='control-label'><b>Email</b></label> 
-                                    <input class='form-control' size='4' name="email" id="" type='email'>
-                                </div> 
                             </div> 
-
-                            <div class='form-row row my-2'>
-                                <div class='col-sm-12 form-group required'>
-                                    <label class='control-label'><b>Name on Card</b></label> 
-                                    <input name="name" class='form-control' size='4' type='text'>
-                                </div>
-                            </div>
-
-                            <div class='form-row row my-2'>
-                                <div class='col-sm-12 form-group card required'>
-                                    <label class='control-label'><b>Card Number</b></label> 
-                                    <input autocomplete='on' autocomplete='off' class='form-control card-number' size='20' type='text'>
-                                </div>
-                            </div>
-
-                            <div class='form-row row my-2'>
+ <div class='form-row row my-2'>
                                 <div class='col-xs-12 col-md-4 form-group cvc required'>
                                     <label class='control-label'><b>CVC</b></label> 
                                     <input autocomplete='off' class='form-control card-cvc' placeholder='ex. 311' size='4' type='text'>
@@ -118,18 +67,138 @@
                                 </div>
                             </div>
 
-                            <div class="privacy-wrp">
-                                <input type="checkbox" required="" id="AND">
-                                <label for="AND" class="allterms d-inline"> 
-                                    <p class="d-inline   small" style="font-size: 12px;">I HAVE READ AND AGREE TO THE WEBSITE <a class="text-success" href="#" disabled>TERMS AND CONDITIONS</a></p>
-                                </label>
-                            </div>
+             <div class="privacy-wrp" style="display: flex; align-items: center;">
+    <label for="AND" class="allterms" style="display: flex; align-items: center; font-size: 12px;">
+            <input type="checkbox" required id="AND" style="margin-right: 5px;">
+
+        <span style="white-space: nowrap; text-transform: lowercase; font-size:13px;">I HAVE READ AND AGREE TO THE WEBSITE</span>
+        <a id="terms" class=" bold" href="#" disabled style="margin-left: 5px;" style="font-size: 12px; color:red; font-weight: bold;">TERMS AND CONDITIONS</a>
+    </label>
+</div>
+
 
                             <div class="row mt-2">
                                 <div class="col-sm-12 text-center">
-                                    <button id="" class="font-weight-bold btn btn-success m-auto btn-lg btn-block" type="submit">Pay <span id="paynow"></span><span id="stripBtn"></span></button>
+                                    <button id="pay" class="font-weight-bold btn  m-auto btn-lg btn-block" type="submit">Pay <span id="paynow"></span><span id="stripBtn"></span></button>
                                 </div>
-                            </div>
+                            </div>  
+
+
+
+
+    </div>
+
+
+
+
+    <div class="">
+        <div class="col-lg-6">
+
+            <div class="card bg-white shadow-md text-black" style="width: 95%;">
+                <div class="float-left " style="padding-top: 20px; margin-left: 20px; text-decoration: none; color:gray;">
+    <a href="{{ route('/') }}" class="btn btn-link text-dark"><i class="fas fa-home text-dark"></i> Home</a>
+</div>
+
+
+
+
+
+                <div class="card-body">
+                    @if (Session::has('success'))
+                    <div class="alert alert-success text-center">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                        <p>{{ Session::get('success') }}</p>
+                    </div>
+                    @endif
+                  <div class="pb-3 pt-2 text-center" style="background-color: ;">
+    <h6 class=" fw-bold" style="font-size: 1.25rem; color: rgb(22 101 52);">A Secure and Easy Checkout Experience</h6>
+    <h5 class="text-dark fw-bold" style="font-size: 1rem;">Pay with your Credit/Debit Card via Stripe</h5>
+</div>
+
+
+                     
+                    <div class="card-text right-contentz">
+                        <form role="form" action="{{ route('stripe.post.coversation') }}" method="post" class="require-validation m-auto" data-cc-on-file="false" data-stripe-publishable-key="pk_test_51JFWrpJkjwNxIm6zf1BN9frgMmLdlGWlSjkcdVpgVueYK5fosCf1fAKlMpGrkfGoiXGMb0PpcMEOdINTEVcJoCNa00tJop21w6" id="payment-form">
+                            @csrf
+                            <div class="row error mx-1 text-center collapse">
+                                <p style="color:#e31313; background: #cfcfcf82;font-weight: 600;" class="alert my-2 py-1 w-100"></p>
+                            </div> 
+
+                            <div class="errorPopup" id="errorPopup">
+    <div class="errorPopup-content">
+        <span class="close-button" onclick="closeErrorPopup()">&times;</span>
+        <p style="color:#e31313; background: #cfcfcf82; font-weight: 600;" class="alert my-2 py-1 w-100">Error message here</p>
+    </div>
+</div>
+
+                             <div class='col-sm-12 form-group required ms-content'>
+        <label class=''><b>Amount(USD)</b> <small>5% + tax added</small></label> 
+        <input class='form-control' size='4' name="price" id="price" type='number' value="{{$price}}" readonly>
+    </div> 
+
+                            <div class='form-row row my-2'>
+    <div class='col-sm-12 form-group required'>
+        <label class='control-label text-'><b>Email</b></label> 
+        <input class='form-control' size='4' name="email" id="" type='email' placeholder="Enter your email">
+    </div> 
+</div> 
+
+<div class='form-row row my-2'>
+    <div class='col-sm-12 form-group required'>
+        <label class='control-label'><b>Name on Card</b></label> 
+        <input name="name" class='form-control' size='4' type='text' placeholder="Enter name on card">
+    </div>
+</div>
+
+
+                           <div class='form-row row my-2'>
+    <div class='col-sm-12 form-group  required bd-rm'>
+        <label class='control-label'><b>Card Number</b></label> 
+        <div class="input-group">
+            <div  class="input-group-prepend ">
+                <span id="icon" class="input-group-text"><i class="fas fa-credit-card  "></i></span>
+            </div>
+            <input autocomplete='on' class='form-control card-number' size='20' type='text'>
+        </div>
+    </div>
+</div>
+
+
+<div class="ms-content  ">
+   
+
+    <div class='form-row row my-2'>
+        <div class='col-xs-12 col-md-4 form-group cvc required'>
+            <label class='control-label'><b>CVC</b></label> 
+            <input autocomplete='off' class='form-control card-cvc' placeholder='ex. 311' size='4' type='text'>
+        </div>
+        <div class='col-xs-12 col-md-4 form-group expiration required'>
+            <label class='control-label'><b>Exp. Month</b></label> 
+            <input autocomplete='on' class='form-control card-expiry-month' placeholder='MM/Ex. 07' size='2' type='text'>
+        </div>
+        <div class='col-xs-12 col-md-4 form-group expiration required'>
+            <label class='control-label'><b>Exp. Year</b></label> 
+            <input autocomplete='on' class='form-control card-expiry-year' placeholder='YYYY/Ex. 2022' size='4' type='text'>
+        </div>
+    </div>
+
+    <div class="privacy-wrp" style="display: flex; align-items: center;">
+        <label for="AND" class="allterms" style="display: flex; align-items: center; font-size: 12px;">
+            <input type="checkbox" required id="AND" style="margin-right: 5px;">
+            <span style="white-space: nowrap; text-transform: lowercase; font-size:13px;">I HAVE READ AND AGREE TO THE WEBSITE</span>
+            <a id="terms" class=" bold" href="#" disabled style="margin-left: 5px;" style="font-size: 12px; color:red; font-weight: bold;">TERMS AND CONDITIONS</a>
+        </label>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-sm-12 text-center">
+            <button id="pay" class="font-weight-bold btn  m-auto btn-lg btn-block" type="submit">Pay <span id="paynow"></span><span id="stripBtn"></span></button>
+        </div>
+    </div>
+</div>
+
+
+                           
                         </form>
                     </div>
                 </div>
@@ -158,6 +227,7 @@
 
 
 
+    <script src="js/slider2.js"></script>
 
 
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
