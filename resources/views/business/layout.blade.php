@@ -189,7 +189,7 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
             @endif
             @if($service->count())
             <hr class="">
-            <ul class="sidebar-main text-black px-2">
+            <ul class="sidebar-main text-black">
                 <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf8F_') ? 'active' : '' }}">
                     <a class="navLink flex items-center gap-4" href="{{route('services')}}">
                         <img src='../images/set.svg' alt=''>

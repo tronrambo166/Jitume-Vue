@@ -9755,6 +9755,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'business'],
   data: function data() {
@@ -74325,8 +74329,24 @@ var render = function () {
                 },
                 [
                   _c("div", {}, [
+                    _c("div", {
+                      staticClass: "float-right",
+                      attrs: { id: "staticRating" },
+                    }),
+                    _vm._v(" "),
                     _c("div", {}, [
                       _vm._v("(" + _vm._s(_vm.form.rating_count) + " reviews)"),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", {}, [
+                      _c(
+                        "p",
+                        {
+                          staticClass:
+                            "rating-star text-dark d-inline float-right",
+                        },
+                        [_vm._v("(" + _vm._s(_vm.form.rating) + ")")]
+                      ),
                     ]),
                   ]),
                   _vm._v(" "),

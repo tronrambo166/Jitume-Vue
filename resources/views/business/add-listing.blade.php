@@ -225,31 +225,34 @@
                                </div></div>
                 </div>
 
-                <div id="" class="col-md-4">
-                <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Company/Individual Pin * </p></label>
-               
-                <div class="upload-btn-wrapper">
-                      <label for="file-upload2" class="btnUp_listing">  
-                      <img src="../images/up.png" width="17px">Upload </label>
-                      <input style="" id="file-upload2" required type="file" name="pin" />
-                        <span class="docs_pdf ml-1 font-weight-bold d-block text-success" >Only docs & pdfs</span>
-                    </div>
-                </div>
 
 
-                <div id="" class="col-md-5">
+              <div id="" class="col-md-6">
+    <label class="mb-0 w-100">
+        <p class="mb-0 d-block w-100 float-left text-left small small_label">Company/Individual Pin * </p>
+    </label>
+    <div class="upload-btn-wrapper">
+        <label for="file-upload2" class="btnUp_listing">
+            <img src="../images/up.png" width="17px">Upload
+        </label>
+        <input class="border w-100 mr-1 input-with-placeholder" style="padding: 10px 15px; height: 45px;" id="file-upload2" required type="file" name="pin" />
+        <span class="docs_pdf ml-1 font-weight-bold d-block text-success">Only docs & pdfs</span>
+    </div>
+</div>
+
+                <div id="" class="col-md-6">
                 <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Directors Id/Passport* </p></label>
                
                 <div class="upload-btn-wrapper">
                       <label for="file-upload3" class="btnUp_listing"> Upload
                       <img src="../images/up.png" width="17px"> </label>
-                      <input style="" id="file-upload3" required="" type="file" name="identification" />
+              <input class="border w-100 mr-1 input-with-placeholder" style="padding: 10px 15px; height: 45px;" id="file-upload3" required="" type="file" name="identification" />
                       <span class="docs_pdf ml-1 font-weight-bold d-block text-success" >Only docs & pdfs</span>
                     </div>
                 </div>
 
 
-                <div id="" class="col-md-5">
+                <div id="" class="col-md-6">
                 <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">12 Months Financial Statements* </p></label>
                
                <div class="upload-btn-wrapper w-75  d-block">
@@ -264,7 +267,7 @@
 
 
                 <div class="row my-3">
-                <div id="" class="col-md-5">
+                <div id="" class="col-md-6">
                 <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Supporting Business Documents *</p></label>
                
                 <div class="upload-btn-wrapper w-75  d-block">

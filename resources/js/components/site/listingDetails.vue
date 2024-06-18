@@ -65,8 +65,12 @@
                 </div>
                 </div>-->
     <div class="">
-      
-      <div class="">({{ form.rating_count }} reviews)</div>
+       <div class="float-right" id="staticRating"></div>
+
+        <div class="">({{ form.rating_count }} reviews)</div>
+
+                      <div class=""> <p class="rating-star text-dark d-inline float-right" >({{ form.rating }})</p></div>
+
     </div>
     <div
       class=""
