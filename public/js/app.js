@@ -9759,6 +9759,101 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'business'],
   data: function data() {
@@ -9849,7 +9944,7 @@ __webpack_require__.r(__webpack_exports__);
 
         for (i = 1; i < 6; i++) {
           //console.log(parseInt(t.form.rating));
-          if (i <= parseInt(t.form.rating)) $('#staticRating').append('<img src="rating/images/g-star.svg" style="height: 15px;color:green" class="">');else $('#staticRating').append('<img src="rating/images/white.png" style="height: 15px;" class="">');
+          if (i <= parseInt(t.form.rating)) $('#staticRating').append('<img src="rating/images/g-star.svg" style="height: 15px;color:green; display:inline; " class="">');else $('#staticRating').append('<img src="rating/images/white.png" style="height: 15px; display:inline;" class="">');
         }
       });
     },
@@ -10058,6 +10153,10 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
       });
+      sessionStorage.setItem("purpose", "One time unlock - Small fee");
+    },
+    purpose: function purpose() {
+      sessionStorage.setItem("purpose", "Monthly basis subscription");
     },
     modal_hide: function modal_hide() {
       $('#investModalShow').removeClass('d-block');
@@ -74364,6 +74463,72 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _vm._m(1),
+                  _vm._v(" "),
+                  _vm.auth_user
+                    ? _c("div", { staticClass: "eqp-invest" }, [
+                        _vm.plan == "platinum" ||
+                        (_vm.plan == "gold" && _vm.range == _vm.form.range)
+                          ? _c(
+                              "a",
+                              {
+                                staticClass:
+                                  "business_btns py-2 text-center text-light buttonListing my-2",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.unlockBySubs(
+                                      _vm.form.listing_id,
+                                      _vm.subscrib_id,
+                                      "platinum"
+                                    )
+                                  },
+                                },
+                              },
+                              [
+                                _vm._v(
+                                  "Unlock More Business\n              Information To\n              Invest"
+                                ),
+                              ]
+                            )
+                          : _c(
+                              "a",
+                              {
+                                staticClass:
+                                  "business_btns py-2 text-center text-light buttonListing my-2",
+                                attrs: {
+                                  "data-target": "#investModal",
+                                  "data-toggle": "modal",
+                                },
+                              },
+                              [
+                                _vm._v(
+                                  "Unlock More Business\n              Information To\n              Invest"
+                                ),
+                              ]
+                            ),
+                      ])
+                    : _c("div", { staticClass: "eqp-invest" }, [
+                        _c(
+                          "a",
+                          {
+                            staticClass:
+                              "business_btns py-2 text-center text-light buttonListing my-3",
+                            attrs: {
+                              "data-target": "#loginModal",
+                              "data-toggle": "modal",
+                            },
+                            on: {
+                              click: function ($event) {
+                                return _vm.make_session(_vm.form.listing_id)
+                              },
+                            },
+                          },
+                          [
+                            _vm._v(
+                              "Unlock More Business Information To\n              Invest"
+                            ),
+                          ]
+                        ),
+                      ]),
                 ]
               ),
             ]),
@@ -74886,6 +75051,11 @@ var render = function () {
                                   to: "/subscribe/" + _vm.form.listing_id,
                                   "data-dismiss": "modal",
                                   "aria-label": "Close",
+                                },
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.purpose()
+                                  },
                                 },
                               },
                               [_vm._v("Subscribe")]

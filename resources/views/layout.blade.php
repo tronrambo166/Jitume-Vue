@@ -137,6 +137,7 @@
                         </div>
                         @endif
   <!-- login btn old version jitume-->
+  
 
 
 
@@ -365,7 +366,7 @@
 
 
 <!-- testing template-->
-    <div class="row hiddens w-75 m-auto border shadow text-center bg-light" style=" box-shadow: 3px 3px 7px 7px grey; width:70%; background: #fbfbfb;border: 1px solid black;">
+    <!-- <div class="row hiddens w-75 m-auto border shadow text-center bg-light" style=" box-shadow: 3px 3px 7px 7px grey; width:70%; background: #fbfbfb;border: 1px solid black;">
         <div class="container w-75 m-auto" style="box-shadow: 3px 3px 7px 7px grey; background: #fbfbfb;width:75%; margin:auto; text-align:center">
         
          <h2 style="text-align: left;color: black;font-family: sans-serif;">  
@@ -399,7 +400,7 @@
         </div>
         
         
-        </div>
+        </div> -->
   
         
 <!-- testing template end-->

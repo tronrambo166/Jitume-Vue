@@ -6,37 +6,19 @@
 
 <!--Hidden Cart view-->
 
-        <div class="row  w-75 m-auto border shadow text-center bg-light" style=" box-shadow: 3px 3px 7px 7px grey; width:70%; background: #fbfbfb;border: 1px solid black;">
-		<div class="container w-75 m-auto" style="box-shadow: 3px 3px 7px 7px grey; background: #fbfbfb;width:75%; margin:auto; text-align:center">
-		
-		 <h2 style="text-align: left;color: black;font-family: sans-serif;">  
-		 	<br> Project Manager Assigned!</h2>
-			
-			<div class="" style="width:100%; margin:auto;"> 
-	
-				Hi, thank you for assigning a Project Manager to facilitate the Asset Transaction, you can now Proceed to release the equipment. <br> <br>
-
-				Please be on alert of completion milestone emails as progress of their investment depends on your review. <br>
-				
-				<div style="width:100%;margin: auto; padding-bottom:20px;padding-top:15px;"> 
-				 <a target="_blank" href="https://test.jitume.com/#/equipmentRelease/{{$business_owner}}/{{$manager}}"
-				style="text-decoration:none;color: aliceblue;background:navy;padding:8px;border-radius:5px;display: block;width: 50%;margin: auto;margin-top: 20px;">
-				Proceed</a>
-
-			        </div>
-
-			</div>
-		
-		
-				
-				
-				<p style="font-weight: bold; color:#000000a1; line-height:22px; font-family:arial; padding-top:20px; padding-bottom:20px; text-align:center;" class="py-3 text-center"> Thanks! <br />   Jitume Admin.</p>
-
-		</div>
-		
-		
-		</div>
-  
+       
+    <!-- equipments release -->
+    <div class="email-container" style="width: 80%; margin: 50px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <div class="content" style="padding: 20px;">
+            <h2 style="font-size: 20px; margin-bottom: 20px;">Project Manager Assigned!</h2>
+            <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">Hi, thank you for assigning a Project Manager to facilitate the Asset Transaction, you can now Proceed to release the equipment.</p>
+            <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">Please be on alert of completion milestone emails as progress of their investment depends on your review.</p>
+            <div class="button-container" style="display: flex; margin-top: 20px;">
+                <a href="#" class="button" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Proceed</a>
+            </div>
+            <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px;">Thanks!<br>Jitume Admin</p>
+        </div>
+    </div>
              
       
 

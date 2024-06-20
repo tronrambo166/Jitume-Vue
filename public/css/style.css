@@ -2073,6 +2073,13 @@ input[type="checkbox"]:focus {
     }
 }
 
+
+.purpose{
+    color: #666666;
+    font-weight: bold;
+    font-size: 13px;
+}
+
 /* Hide on small and medium screens */
 @media (max-width: 992px) {
     .right-content {
@@ -2089,10 +2096,4 @@ input[type="checkbox"]:focus {
     }
 }
 
-.glass-bg {
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px); /* For Safari */
-    border-radius: 0.5rem; /* 8px */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-}
+

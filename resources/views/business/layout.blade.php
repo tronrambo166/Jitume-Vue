@@ -82,7 +82,7 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
 <div class="container-fluid  ">
    
 
- <div  class="row " ">
+ <div  class="row " >
 <div class='side-nav mt-[30px]'  >
     
   </div>   
@@ -115,7 +115,17 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
 
     <!-- Layout -->
 
+<div class="nav-item ">
+                                <a href="{{route('account')}}" class="header_buttons px-sm-3 my-1 mr-2 px-1 py-1 hidden"><i class="fa fa-dollar-sign"></i></a>
+                            </div>
+                            <div class="nav-item bg hidden">
 
+                                <a href="{{route('service-messages')}}" class="header_buttons px-sm-3 my-1 mr-2 px-1 py-1"><i class="fa fa-envelope"></i>
+                                    @if(count($messages) != 0)
+                                    <span class="new_msg font-weight-bold px-1">{{count($messages)}}</span>
+                                    @endif
+                                </a>
+                            </div>
 
     <div class="row">
             <div class="py-4 bid_header col-md-3 sidebar-inner slimscroll">
@@ -131,8 +141,12 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
                     <div id="dropdown-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-50">
                         <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</a>
                         <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Settings</a>
+
+
                         <a v-if="" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</a>
                     </div>
+
+
                 </div>
                 <button id="toggle-button" class="px-2 py-1 bg-gray-800 text-white rounded">☰</button>
             </div>
@@ -266,16 +280,17 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
       <h1>Pages / Dashboard</h1>
       <p>Dashboard</p>
 
+
     </div>
 
     <div class="flex items-center space-x-4 top-r sm:mr-3">
       <div class="flex items-center border border-gray-300 rounded-[15px] p-0 bg-white" style="height: 39.5px;">
-        <div class="flex items-center justify-center p-0" style="width: 37px;">
+        <div class="flex items-center justify-center p-0 hidden" style="width: 37px;">
           <div class="flex items-center gap-1 p-1.5 text-gray-700">
             <i class="fas fa-search" style="font-size: 12px;"></i>
           </div>
         </div>
-        <input type="text" placeholder="Type here..." class="w-full text-xs text-gray-400 font-normal px-0 py-2 rounded-[16px] border-none focus:ring-0" style="font-family: Outfit;" />
+        <input type="text" placeholder="Type here..." class="w-full text-xs text-gray-400 hidden font-normal px-0 py-2 rounded-[16px] border-none focus:ring-0" style="font-family: Outfit;" />
       </div>
       <a v-if="" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
         <div class="flex gap-1 font-bold font-outfit items-center pointer">
@@ -331,6 +346,14 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
         <img src="../images/doc2.svg">
         <span>add business</span>
       </a>
+      
+            <a href="{{route('account')}}" class=" flex items-center gap-1 px-sm-3 my-1 mr-2 px-1 py-1"><i class="fa fa-dollar-sign"></i>Account</a>
+
+            <a href="{{route('service-messages')}}" class="flex items-center gap-1 px-sm-3 my-1 mr-2 px-1 py-1"><i class="fa fa-envelope"></i>
+                                    @if(count($messages) != 0)
+                                    <span class="new_msg font-weight-bold px-1">{{count($messages)}}</span>
+                                    @endif
+                                Messages</a>
 
       <a href="{{route('add-services')}}" class="flex items-center gap-1"><i class="fa fa-wrench text-[11px]"></i> add service</a>
     </div>

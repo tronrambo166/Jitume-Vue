@@ -127,7 +127,7 @@
 
               
 <div class="row my-3 pt-6" style="display: flex; flex-wrap: nowrap; gap: 30px;">
-    <div class="col-md-5">
+    <!-- <div class="col-md-5">
         <label class="mb-0 w-100">
             <p class="mb-0 d-block w-100 float-left text-left small small_label">Cover* </p>
         </label>
@@ -137,7 +137,18 @@
                 Upload <img src="../images/up.png" width="17px" class="ml-2">
             </label>
         </div>
-    </div>
+    </div> -->
+
+    <div id="" class="col-md-4">
+                <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Cover* </p></label>
+               
+                <div class="upload-btn-wrapper">
+                      <label for="file-upload" class="btnUp2 custom-file-upload">
+                                Upload <img src="../images/up.png" width="17px">
+                              </label>
+                              <input id="file-upload" name='image' type="file" style="" required>
+                    </div>
+                </div>
 
     <div class="col-md-5">
         <label class="mb-0 w-100">
@@ -316,7 +327,7 @@
 
 
                  <div class="row my-5 w-75"> 
-                    <a onclick="msg();" id="save" style="width: 99%;" class="proceed_btn primary_bg  pt-3 m-auto btn text-white font-weight-bold">SAVE</a>
+                    <a onclick="msg();" id="save" style="width: 99%;" class=" proceed_btn primary_bg  pt-3 m-auto btn text-white font-weight-bold">SAVE</a>
 
                  <button id="save1" style="width:99%;background: #246424;" class="proceed_btn m-auto pt-3 btn text-white font-weight-bold collapse">SAVE</button>
                 
@@ -354,6 +365,8 @@
 
               if(file != null){
                 $('#save1').show();
+                $('#save1').removeClass("collapse");
+
                 $('#save').hide();
             }
             else{

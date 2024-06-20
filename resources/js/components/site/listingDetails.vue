@@ -88,6 +88,100 @@
       />
       <div class="float-right hidden">+1791205437</div>
     </div>
+
+
+    <!--unlock business-->
+
+
+       <div v-if="auth_user" class="eqp-invest">
+            <a v-if="plan == 'platinum' || (plan == 'gold' && range == form.range)" @click="unlockBySubs(form.listing_id,subscrib_id,'platinum');"
+              class=" business_btns py-2 text-center text-light buttonListing my-2">Unlock More Business
+              Information To
+              Invest</a>
+
+              <a v-else data-target="#investModal" data-toggle="modal"
+              class=" business_btns py-2 text-center text-light buttonListing my-2">Unlock More Business
+              Information To
+              Invest</a>
+
+            <!-- <a style="background:grey;" 
+             v-if="subscribed"
+              class=" business_btns btn-secondary py-2 text-center text-light buttonListing my-2">Subscribe</a>
+
+              <router-link :to="`/subscribe/${form.listing_id}`"
+              v-else
+              class=" business_btns py-2 text-center text-light buttonListing my-2">Subscribe</router-link> -->
+
+
+            <!-- INVEST MODAL -->
+         <!--    <div class="modal d-block" id="investModalShow" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <div class=" w-100">
+                      <button @click="modal_hide()" type="button" class="m-0  close" data-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col-sm-12 w-100 mx-auto">
+                        <div style="cursor:pointer;background:white;" class="p-3">
+
+                          <p style="font-size:16px;" class="text-dark smalls">This business requests a small fee of
+                            <b>${{ form.investors_fee }} </b> to view their full business information. Do you want to pay
+                            now?
+                          </p>
+
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <div class="card-header w-100 text-center">
+                      <form action="stripe" method="get">
+
+                        <input type="text" hidden id="price" name="price" :value="form.investors_fee">
+                        <input type="number" hidden id="listing_id" name="listing_id" :value="form.listing_id">
+                        <a @click="make_session(form.listing_id); stripeFee(form.listing_id, form.investors_fee);" type="submit"
+                          class="modal_ok_btn btn rounded w-25 d-inline  px-3 text-white  mr-3">
+                          Ok
+                        </a>
+                        <a @click="modal_hide()" type="button"
+                          class="modal_cancel_btn w-25 btn rounded d-inline px-3 m-0 " data-dismiss="modal"
+                          aria-label="Close">
+                          <span aria-hidden="true">Cancel</span>
+                        </a>
+
+                      </form>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div> -->
+            <!-- INVEST MODAL -->
+
+          </div>
+
+
+          <div v-else class="eqp-invest">
+            <a @click="make_session(form.listing_id);" data-target="#loginModal" data-toggle="modal"
+              class="business_btns py-2 text-center text-light buttonListing my-3">Unlock More Business Information To
+              Invest</a>
+
+            <!-- <a  @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal" class="py-2 text-center text-light buttonListing my-3"><b>Subscribe</b></a>
+
+                <a  @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal" class="py-2 text-center text-light buttonListing my-3"><b>Donate</b></a> -->
+
+
+          </div>
   </div>
 
      </div>
@@ -417,8 +511,9 @@
                   Subscription
                 </a>
 
-              <router-link :to="`/subscribe/${form.listing_id}`"
+              <router-link @click = "purpose();" :to="`/subscribe/${form.listing_id}`"
               v-else data-dismiss="modal" aria-label="Close"
+
               class="border w-25 d-inline  btn rounded mr-3 px-3 font-weight-bold">Subscribe</router-link>
           
             </div>
@@ -707,9 +802,9 @@ export default {
         for (i = 1; i < 6; i++) {
           //console.log(parseInt(t.form.rating));
           if (i <= parseInt(t.form.rating))
-            $('#staticRating').append('<img src="rating/images/g-star.svg" style="height: 15px;color:green" class="">');
+            $('#staticRating').append('<img src="rating/images/g-star.svg" style="height: 15px;color:green; display:inline; " class="">');
           else
-            $('#staticRating').append('<img src="rating/images/white.png" style="height: 15px;" class="">');
+            $('#staticRating').append('<img src="rating/images/white.png" style="height: 15px; display:inline;" class="">');
         }
 
       });
@@ -948,8 +1043,15 @@ export default {
           }
         });
 
+sessionStorage.setItem("purpose", "One time unlock - Small fee");
     },
 
+purpose: function(){
+
+sessionStorage.setItem("purpose", "Monthly basis subscription");
+
+
+},
     modal_hide: function () {
       $('#investModalShow').removeClass('d-block');
     },
@@ -1130,4 +1232,5 @@ export default {
 
 
 }
+
 </script>

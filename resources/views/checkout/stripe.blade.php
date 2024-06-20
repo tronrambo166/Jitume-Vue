@@ -44,6 +44,8 @@
         @endif
    
 <div class="container mt-5 mb-5">
+    <form role="form" action="{{ route('stripe.post.coversation') }}" method="post" class="require-validation m-auto" data-cc-on-file="false" data-stripe-publishable-key="pk_test_51JFWrpJkjwNxIm6zf1BN9frgMmLdlGWlSjkcdVpgVueYK5fosCf1fAKlMpGrkfGoiXGMb0PpcMEOdINTEVcJoCNa00tJop21w6" id="payment-form">
+                            @csrf
     <div class="right-content float-right bg-white shadow-md " style="margin-top: 50px; padding-left: 0;">
 
            <div class='form-row row my-2'>
@@ -52,20 +54,18 @@
                                     <input class='form-control' size='4' name="price" id="price" type='number' value="{{$price}}" readonly>
                                 </div> 
                             </div> 
- <div class='form-row row my-2'>
-                                <div class='col-xs-12 col-md-4 form-group cvc required'>
-                                    <label class='control-label'><b>CVC</b></label> 
-                                    <input autocomplete='off' class='form-control card-cvc' placeholder='ex. 311' size='4' type='text'>
-                                </div>
-                                <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                    <label class='control-label'><b>Exp. Month</b></label> 
-                                    <input autocomplete='on' class='form-control card-expiry-month' placeholder='MM/Ex. 07' size='2' type='text'>
-                                </div>
-                                <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                    <label class='control-label'><b>Exp. Year</b></label> 
-                                    <input autocomplete='on' class='form-control card-expiry-year' placeholder='YYYY/Ex. 2022' size='4' type='text'>
-                                </div>
-                            </div>
+ <div class="d-flex flex-column  gap-3">
+
+        <!-- Purpose -->
+        <label class=" purpose">Purpose</label>
+         <p id="purpose"></p>
+
+    </div>
+
+     <!-- total -->
+      <h2 class="py-2">Total:</h2>
+
+
 
              <div class="privacy-wrp" style="display: flex; align-items: center;">
     <label for="AND" class="allterms" style="display: flex; align-items: center; font-size: 12px;">
@@ -75,6 +75,10 @@
         <a id="terms" class=" bold" href="#" disabled style="margin-left: 5px;" style="font-size: 12px; color:red; font-weight: bold;">TERMS AND CONDITIONS</a>
     </label>
 </div>
+
+
+
+
 
 
                             <div class="row mt-2">
@@ -88,7 +92,7 @@
 
     </div>
 
-
+</form>
 
 
     <div class="">
@@ -133,7 +137,7 @@
 
                              <div class='col-sm-12 form-group required ms-content'>
         <label class=''><b>Amount(USD)</b> <small>5% + tax added</small></label> 
-        <input class='form-control' size='4' name="price" id="price" type='number' value="{{$price}}" readonly>
+        <input class='form-control' size='4' name="price2" id="price2" type='number' value="{{$price}}" readonly>
     </div> 
 
                             <div class='form-row row my-2'>
@@ -161,13 +165,10 @@
             <input autocomplete='on' class='form-control card-number' size='20' type='text'>
         </div>
     </div>
+
+
 </div>
-
-
-<div class="ms-content  ">
-   
-
-    <div class='form-row row my-2'>
+<div class='form-row row my-2'>
         <div class='col-xs-12 col-md-4 form-group cvc required'>
             <label class='control-label'><b>CVC</b></label> 
             <input autocomplete='off' class='form-control card-cvc' placeholder='ex. 311' size='4' type='text'>
@@ -182,19 +183,36 @@
         </div>
     </div>
 
+
+<div class="ms-content  ">
+   
+    
+<div class="d-flex flex-column  gap-3">
+
+        <!-- Purpose -->
+        <label class=" purpose">Purpose</label>
+
+        <p id="purpose"></p>
+    </div>
+
+     <!-- total -->
+      <h2 class="py-2">Total:</h2>
+
     <div class="privacy-wrp" style="display: flex; align-items: center;">
+         
+
+
         <label for="AND" class="allterms" style="display: flex; align-items: center; font-size: 12px;">
             <input type="checkbox" required id="AND" style="margin-right: 5px;">
             <span style="white-space: nowrap; text-transform: lowercase; font-size:13px;">I HAVE READ AND AGREE TO THE WEBSITE</span>
             <a id="terms" class=" bold" href="#" disabled style="margin-left: 5px;" style="font-size: 12px; color:red; font-weight: bold;">TERMS AND CONDITIONS</a>
         </label>
     </div>
-
-    <div class="row mt-2">
+ <div class="row mt-2">
         <div class="col-sm-12 text-center">
-            <button id="pay" class="font-weight-bold btn  m-auto btn-lg btn-block" type="submit">Pay <span id="paynow"></span><span id="stripBtn"></span></button>
+            <button id="pay" class="font-weight-bold btn  m-auto btn-lg btn-block" type="submit">Pay<span id="paynow"></span><span id="stripBtn"></span></button>
         </div>
-    </div>
+    </div> 
 </div>
 
 
@@ -238,6 +256,11 @@
 
    <script type="text/javascript">
 
+var x = sessionStorage.getItem("purpose");
+
+document.getElementById("purpose").innerHTML= x;
+
+        console.log(x)
 
     $(function() {
     var $form = $(".require-validation");
@@ -290,6 +313,9 @@
       function popupClose() {
             $('.success_message').css('display', 'none');
         }
+
+
+
    </script>
 
 </body>
