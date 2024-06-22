@@ -92,30 +92,35 @@
     <div v-for="(result, index) in Math.ceil(results.length / 3)" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }">
       <div class="flex justify-center items-center w-full">
         <!-- Loop through three cards for each carousel item -->
-        <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="w-full md:w-[calc(100% / 3 - 2rem)] px-2" v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]">
-          <div class="bg-white mt-4 w-full h-[90%] rounded-xl shadow-md p-3 mb-4 flex flex-col justify-center relative loading">
-            <div class="relative">
-              <img :src="results[index * 3 + offset].image" alt="Image" class="w-full h-[215px] object-cover rounded-lg mb-4">
-              <p class="absolute inset-t-4 mb-4 ml-2 font-bold px-2 rounded-xl bottom-4 bg-white text-black text-center py-1 text-xs">
-                <i class="fa fa-map-marker pr-2"></i>{{ results[index * 3 + offset].location }}
-              </p>
-            </div>
-            <footer class="text-sm text-gray-600">{{ results[index * 3 + offset].type }}</footer>
-            <div class="flex justify-between items-center">
-              <div>
-                <header>
-                  <h4 class="text-lg mt-2 hover:no-underline hover:text-green-800">{{ results[index * 3 + offset].name }}</h4>
-                </header>
-                <p class="text-sm text-gray-700">{{ results[index * 3 + offset].description }}</p>
-                <p class="text-sm text-gray-700">Name: {{ results[index * 3 + offset].name }}</p>
-                <p class="text-sm text-gray-700">Contact: {{ results[index * 3 + offset].contact }}</p>
+        <div v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]" class="w-full md:w-[calc(100% / 3 - 2rem)] px-2">
+          <router-link :to="`/serviceDetails/${results[index * 3 + offset].id}`">
+            <div class="bg-white mt-4 w-full h-[90%] rounded-xl shadow-md p-3 mb-4 flex flex-col justify-center relative loading">
+              <div class="relative">
+                <video v-if="results[index * 3 + offset].file" controls class="w-full h-[215px] object-cover rounded-lg mb-4">
+                  <source :src="results[index * 3 + offset].file" type="video/mp4">
+                </video>
+                <img v-else :src="results[index * 3 + offset].image" alt="Image" class="w-full h-[215px] object-cover rounded-lg mb-4">
+                <p class="absolute inset-t-4 mb-4 ml-2 font-bold px-2 rounded-xl bottom-4 bg-white text-black text-center py-1 text-xs">
+                  <i class="fa fa-map-marker pr-2"></i>{{ results[index * 3 + offset].location }}
+                </p>
               </div>
-              <div class="mt-auto flex justify-end">
-                <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="btn-learn-more inline-block bg-green-800 hover:bg-green-700 text-white py-1 px-2 md:px-3 lg:px-4 rounded text-xs md:text-sm lg:text-base lg:py-2 lg:px-3">Learn More</router-link>
+              <footer class="text-sm text-gray-600">{{ results[index * 3 + offset].type }}</footer>
+              <div class="flex justify-between items-center">
+                <div>
+                  <header>
+                    <h4 class="text-lg mt-2 hover:no-underline hover:text-green-800">{{ results[index * 3 + offset].name }}</h4>
+                  </header>
+                  <p class="text-sm text-gray-700">{{ results[index * 3 + offset].description }}</p>
+                  <p class="text-sm text-gray-700">Name: {{ results[index * 3 + offset].name }}</p>
+                  <p class="text-sm text-gray-700">Contact: {{ results[index * 3 + offset].contact }}</p>
+                </div>
+                <div class="mt-auto flex justify-end">
+                  <router-link :to="`/serviceDetails/${results[index * 3 + offset].id}`" class="btn-learn-more inline-block bg-green-800 hover:bg-green-700 text-white py-1 px-2 md:px-3 lg:px-4 rounded text-xs md:text-sm lg:text-base lg:py-2 lg:px-3">Learn More</router-link>
+                </div>
               </div>
             </div>
-          </div>
-        </router-link>
+          </router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -134,6 +139,7 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
+
 
               
     </div>
