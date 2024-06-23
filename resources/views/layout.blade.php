@@ -75,7 +75,6 @@
     </router-link>
   </div>
 
-  <!-- Centered Links -->
   <div class="hidden md:flex-1 md:flex md:items-center md:justify-center">
     <ul class="flex items-center justify-between w-full max-w-xs md:max-w-md lg:max-w-lg xl:max-w-[832.55px] px-4">
       <li class="text-sm font-bold text-gray-800 hover:text-green-700">
@@ -95,17 +94,17 @@
 
   <!-- Login Button -->
   @if(Auth::check())
-                        <div class="ml-3 ml-md-0 d-md-flex">
+                        <div class="ml-3 ml-md-0 d-md-flex align-items-center">
                             
 
                             <div class="nav-item mr-md-4">
-                                <a href="{{route('business')}}" class=" px-sm-3 my-1 mr-2 px-1 py-1 text-red-400"><b>Dashboard</b></a>
+                                <a href="{{route('business')}}" class=" px-sm-3 my-1 mr-2 px-1 py-1 text-black"><b>Dashboard</b></a>
                             </div>
 
                             <div class="nav-item">
                             <a  v-if="" onclick="event.preventDefault();
-                 document.getElementById('logout-form').submit();" class=" sign_in_btn  px-sm-3 header_buttons my-1 mr-2 px-1 py-1 "><b>Sign Out</b></a>
-                            </div>
+                 document.getElementById('logout-form').submit();" class=" sign_in_btn  px-sm-3 header_buttons my-1 mr-4 px-6 py-2"><b>Sign Out</b></a>
+</div>
 
                         </div>
 
