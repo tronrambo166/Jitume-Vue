@@ -27,12 +27,17 @@
         </div>
 
 
+ <div class="w-full">
+                <div class="map_style m-auto">
+                    <div id="map" style="height: 95%;"></div> 
+                </div>
+            </div>
 
 
 
         <div class="row mt-4 row flex-column-reverse flex-md-row">
 
-            <div class="col-md-6">
+            <div class="w-full">
                 <!-- Price Filter -->
                 <div class="row">
                     <div class="col-sm-3"><span style="background:black;" class="btn text-light px-2 py-1 rounded">Filter by
@@ -70,37 +75,56 @@
                 <!-- Price Filter -->
 
                 <div class="row" v-if="count != 0">
-                    <div v-for="( result, index ) in results" class="listing col-md-6 my-3">
-                        <router-link :to="`/serviceDetails/${result.id}`" class="shadow card border px-4">
+                    <div id="resource-slider" class="carousel w-full mx-auto">
+  <div class="carousel-inner w-[70%] mx-auto">
+    <!-- Loop through your results to generate carousel items -->
+    <div v-for="(result, index) in Math.ceil(results.length / 3)" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }">
+      <div class="flex justify-center items-center w-full">
+        <!-- Loop through three cards for each carousel item -->
+        <div v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]" class="w-full md:w-[calc(100% / 3 - 2rem)] px-2">
+          <router-link :to="`/serviceDetails/${results[index * 3 + offset].id}`">
+            <div class="bg-white mt-4 w-full h-[90%] rounded-xl shadow-md p-3 mb-4 flex flex-col justify-center relative loading">
+              <div class="relative">
+                <video v-if="results[index * 3 + offset].file" controls class="w-full h-[230px] object-cover rounded-lg mb-4">
+                  <source :src="results[index * 3 + offset].file" type="video/mp4">
+                </video>
+                <img v-else :src="results[index * 3 + offset].image" alt="Image" class="w-full h-[200px] object-cover rounded-lg mb-4">
+                <p class="absolute inset-t-4 mb-4 ml-2 font-bold px-2 rounded-xl bottom-4 bg-white text-black text-center py-1 text-xs">
+                  <i class="fa fa-map-marker pr-2"></i>{{ results[index * 3 + offset].location }}
+                </p>
+              </div>
+              <div class="p-1 pb-2">
+                <h5 class="card_heading mb-0 py-2">{{ results[index * 3 + offset].name }}</h5>
+                <p class="my-1 text_color_p font-weight-bold"><i class="mr-2 fa fa-dollar"></i>{{ results[index * 3 + offset].price }}</p>
+                <p class="loc_p card_text pt-1 text-left"><i class="mr-2 fa fa-map-marker"></i>{{ results[index * 3 + offset].location }}</p>
+                <p><span class="mt-1 rounded small"><i class="mr-2 fa fa-category"></i>Category: {{ results[index * 3 + offset].category }}</span></p>
+              </div>
+            </div>
+          </router-link>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                            <video v-if="result.file" controls style="width:100%; height:230px" alt="">
-                                <source :src="result.file" type="video/mp4">
-                            </video>
+  <!-- Carousel controls for manual scrolling -->
+  <a class="carousel-control-prev flex items-center justify-center" href="#resource-slider" role="button" data-slide="prev">
+    <div class="bg-black rounded-full p-1 w-6 h-6 flex items-center justify-center">
+      <span class="carousel-control-prev-icon text-white" aria-hidden="true"></span>
+    </div>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next flex items-center justify-center" href="#resource-slider" role="button" data-slide="next">
+    <div class="bg-black rounded-full p-1 w-6 h-6 flex items-center justify-center">
+      <span class="carousel-control-next-icon text-white" aria-hidden="true"></span>
+    </div>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
 
-                            <img class="pt-2" v-else :src="result.image" style="width:100%; height:200px" alt="" />
-
-                            <div class="p-1 pb-2">
-                                <h5 class="card_heading mb-0 py-2">{{ result.name }} </h5>
-                                <p class="my-1 text_color_p font-weight-bold"><i class="mr-2 fa fa-dollar"></i>{{
-                                    result.price }}</p>
-
-                                <p class="loc_p card_text pt-1 text-left"><i class="mr-2 fa fa-map-marker"></i>{{ result.location
-                                }}</p>
-
-                                <p><span class="mt-1 rounded small"><i class="mr-2 fa fa-category"></i>Category:
-                                        {{ result.category }}</span></p>
-                            </div>
-
-                        </router-link>
-                    </div>
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <div class="map_style m-auto">
-                    <div id="map" style="height: 95%;"></div> 
-                </div>
-            </div>
+           
 
         </div>
 
