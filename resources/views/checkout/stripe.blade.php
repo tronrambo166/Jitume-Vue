@@ -46,6 +46,9 @@
 <div class="container mt-5 mb-5">
     <form role="form" action="{{ route('stripe.post.coversation') }}" method="post" class="require-validation m-auto" data-cc-on-file="false" data-stripe-publishable-key="pk_test_51JFWrpJkjwNxIm6zf1BN9frgMmLdlGWlSjkcdVpgVueYK5fosCf1fAKlMpGrkfGoiXGMb0PpcMEOdINTEVcJoCNa00tJop21w6" id="payment-form">
                             @csrf
+
+                                                       <input hidden type="number" name="listing" value="{{$listing}}">
+
     <div class="right-content float-right bg-white shadow-md " style="margin-top: 50px; padding-left: 0;">
 
            <div class='form-row row my-2'>
@@ -125,11 +128,10 @@
 
                      
                     <div class="card-text right-contentz">
-                        <form role="form" action="{{ route('stripe.post.coversation') }}" method="post" class="require-validation m-auto" data-cc-on-file="false" data-stripe-publishable-key="pk_test_51JFWrpJkjwNxIm6zf1BN9frgMmLdlGWlSjkcdVpgVueYK5fosCf1fAKlMpGrkfGoiXGMb0PpcMEOdINTEVcJoCNa00tJop21w6" id="payment-form">
+                        <form role="form" action="{{ route('stripe.post.coversation') }}" method="post" class="class2 require-validation m-auto" data-cc-on-file="false" data-stripe-publishable-key="pk_test_51JFWrpJkjwNxIm6zf1BN9frgMmLdlGWlSjkcdVpgVueYK5fosCf1fAKlMpGrkfGoiXGMb0PpcMEOdINTEVcJoCNa00tJop21w6" id="payment-form">
                            @csrf 
 
-
-                           <input hidden type="number" name="listing" value="{{$listing}}">
+                                     
                             <div class="row error mx-1 text-center collapse">
                                 <p style="color:#e31313; background: #cfcfcf82;font-weight: 600;" class="alert my-2 py-1 w-100"></p>
                             </div> 
