@@ -174,7 +174,7 @@
           <div v-else class="eqp-invest">
             <a @click="make_session(form.listing_id);" data-target="#loginModal" data-toggle="modal"
               class="business_btns py-2 text-center text-light buttonListing my-3">Unlock More Business Information To
-              Invest</a>
+              Invest </a>
 
             <!-- <a  @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal" class="py-2 text-center text-light buttonListing my-3"><b>Subscribe</b></a>
 

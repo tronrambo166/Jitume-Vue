@@ -87,7 +87,7 @@
         <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">Add Your Business</a>
       </li>
       <li class="text-sm font-bold text-gray-800 hover:text-green-700">
-        <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">Create Investor Account</a>
+        <a class="nav-link" href="#" data-target="#loginmodal2" data-toggle="modal">Create Investor Account</a>
       </li>
     </ul>
   </div>
@@ -1145,9 +1145,9 @@
                     </button>
 
 
-    
+                    <button style="border-width: 1px; border-style: solid; border-color: darkblue darkblue rgb(8, 54, 8); border-image: initial; background: rgb(114, 197, 55); color: rgb(1, 72, 17);" id="logins" onclick="login()" class=" w-25 btn   px-1 mr-2">Log In</button>
 
-                     <!--<button  id="registers" onclick="register()" class="  rounded-lg text-black py-2 px-4 "> <i class="fas fa-user-plus mr-2"></i>{{ __('Create Investor Account') }}</button>-->
+                    <button  id="registers" onclick="register()" class="  rounded-lg text-black py-2 px-4 "> <i class="fas fa-user-plus mr-2"></i>{{ __('Create Investor Account') }}</button>
                 </div>
 
 
@@ -1557,6 +1557,7 @@
             $('#all_register').show();
             $('#user_regs').show();
             $('#user_reg').show();
+            $('#user_regs').removeClass("collapse");
 
 
         }
@@ -1785,6 +1786,7 @@
             if (c1 == 1 && c2 == 1) {
                 $('#b2').hide();
                 $('#b1').show();
+                $('#b1').removeClass("collapse");
             }
         }
 

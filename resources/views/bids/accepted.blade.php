@@ -4,11 +4,48 @@
 </head>
         
 
+
+        <div class="email-container" style="width: 80%; margin: 50px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <div class="content" style="padding: 20px;">
+            <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Bid Accepted!</h2>
+            <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 0.5; margin-bottom: 30px;">Hi,<br>Your bid to invest in the {{$business_name}} has been accepted.</p>
+            <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">
+            	@if($type == 'Monetery')
+            Proceed to progress with the milestones work?</p>
+            <div class="button-container" style="display: flex; margin-top: 20px;">
+                <a target="_blank" href="https://test.jitume.com/agreeToBid/{{$bid_id}}" class="button button-primary" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Ok</a>
+                <a href="#" class="button button-secondary" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #dc3545; border-radius: 6px; transition: background-color 0.3s ease; margin-left: 10px;">Cancel</a>
+            </div>
+             <!-- If you require a project manager, please click here (Please not that investor with assets must have a project manager) <a target="_blank" href="https://test.jitume.com/#/projectManagers/{{$bid_id}}"
+			style="text-decoration:none;color: aliceblue;background:navy;padding:8px;border-radius:5px;">
+			Request a Project Manager </a> -->
+
+			<p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">If you require a project manager, please <a target="_blank" href="https://test.jitume.com/#/projectManagers/{{$bid_id}}">click here</a> (Please note that investors with assets must have a project manager).</p>
+
+			@else
+			Please Request a Project Manager to Proceed with this Investment (Please note that investor with assets must have a project manager) <br>
+			
+			<div style="width:100%;margin: auto; padding-bottom:20px;padding-top:15px;"> 
+			 <a target="_blank" href="https://test.jitume.com/#/projectManagers/{{$bid_id}}"
+			style="text-decoration:none;color: aliceblue;background:navy;padding:8px;border-radius:5px;display: block;width: 50%;margin: auto;margin-top: 20px;">
+			Request</a>
+
+			<a href="https://test.jitume.com/#/projectManagerCancel/{{$bid_id}}"
+			style="text-decoration:none;color:white;background:red;padding:8px;border-radius:5px;display: block;width: 50%;margin: auto;margin-top: 20px;">
+			Cancel</a>
+		        </div>
+
+			@endif
+            
+            <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px;">Thanks!<br>Jitume Admin</p>
+        </div>
+    </div>
+
 <!--Hidden Cart view-->
 
          <!-- Bid accepted -->
 
-      <div class="row  w-75 m-auto border shadow text-center bg-light" style=" box-shadow: 3px 3px 7px 7px grey; width:70%; background: #fbfbfb;border: 1px solid black;">
+      <!-- <div class="row  w-75 m-auto border shadow text-center bg-light" style=" box-shadow: 3px 3px 7px 7px grey; width:70%; background: #fbfbfb;border: 1px solid black;">
 	<div class="container w-75 m-auto" style="box-shadow: 3px 3px 7px 7px grey; background: #fbfbfb;width:75%; margin:auto; text-align:center">
 	
 	 <h2 style="text-align: left;color: black;font-family: sans-serif;">  
@@ -29,7 +66,7 @@
 			style="width:50%;text-decoration:none;color: aliceblue;background:red;padding:10px 30px;border-radius:5px;margin-left:30px">
 			Cancel </a>
 		</div>
-				<!-- <p>Please be on alert of completion milestone emails as progress of your investment depends on your review. </p> -->
+				<!-- <p>Please be on alert of completion milestone emails as progress of your investment depends on your review. </p> 
 	            If you require a project manager, please click here (Please not that investor with assets must have a project manager) <a target="_blank" href="https://test.jitume.com/#/projectManagers/{{$bid_id}}"
 			style="text-decoration:none;color: aliceblue;background:navy;padding:8px;border-radius:5px;">
 			Request a Project Manager </a>
@@ -60,7 +97,7 @@
 	
 	
 	</div>
-
+ -->
          
   
 

@@ -424,6 +424,8 @@
         {
         $('#fakeBtn').hide();
         $('#fakeBtnR').hide();
+        $('#realBtn').removeClass("collapse");
+        $('#realBtnR').removeClass("collapse"); 
         $('#realBtn').show();
         $('#realBtnR').show();   
         }

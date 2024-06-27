@@ -74586,7 +74586,7 @@ var render = function () {
                           },
                           [
                             _vm._v(
-                              "Unlock More Business Information To\n              Invest"
+                              "Unlock More Business Information To\n              Invest "
                             ),
                           ]
                         ),

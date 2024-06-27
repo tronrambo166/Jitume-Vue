@@ -4,16 +4,29 @@
 
 <!--Hidden Cart view-->
 
-         <!-- milestone done -->
+       <div class="row  w-75 m-auto border shadow text-center bg-light" style=" box-shadow: 3px 3px 7px 7px grey; width:70%; background: #fbfbfb;border: 1px solid black;">
+		<div class="container w-75 m-auto" style="box-shadow: 3px 3px 7px 7px grey; background: #fbfbfb;width:75%; margin:auto; text-align:center">
+		
+		 <h2 style="text-align: left;color: black;font-family: sans-serif;">  
+		 	<br> Fulfills a milestone!</h2>
+			
+			<div class="" style="width:100%; margin:auto;">
+			<h4 style="line-height: 28px;font-weight:500; color: #000000a1;font-family: sans-serif;text-align:left;"> Hi,<br> 
+            Hi, A milestone now can be fulfilled for your business {{$business_name}}. You can also start reviewing other bids!
+					</h4>
+			
+			
+			</div>
+		
+		
+				
+				
+				<p style="font-weight: bold; color:#000000a1; line-height:22px; font-family:arial; padding-top:20px; padding-bottom:20px; text-align:center;" class="py-3 text-center"> Thanks! <br />   Jitume Admin.</p>
 
-    <div class="email-container" style="width: 80%; margin: 50px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-        <div class="content" style="padding: 20px;">
-            <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Congratulations!</h2>
-            <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">All Milestones are completed and Thomas Muller thanks you for your business!</p>
-            <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px;">Thanks!<br>Jitume Admin</p>
-        </div>
-    </div>
-        
+		</div>
+		
+		
+		</div>
 		
        
       
