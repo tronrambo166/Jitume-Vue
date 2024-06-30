@@ -92,7 +92,7 @@
 
     <!--unlock business-->
 
-
+<div v-if="!form.conv || !auth_user" class="card bg-light w-100 mx-auto py-3">
        <div v-if="auth_user" class="eqp-invest">
             <a v-if="plan == 'platinum' || (plan == 'gold' && range == form.range)" @click="unlockBySubs(form.listing_id,subscrib_id,'platinum');"
               class=" business_btns py-2 text-center text-light buttonListing my-2">Unlock More Business
@@ -182,6 +182,8 @@
 
 
           </div>
+
+        </div>
   </div>
 
      </div>

@@ -26,7 +26,7 @@
     <h3 class="text-[28px] text-black font-extrabold py-4">Real businesses, real <br>solutions, <span class="text-green-800 text-[30px]">real change</span></h3>
     <h3 class="font-bold text-[20px] pb-6">Invest in a business you believe in with as little as $100</h3>
     <div>
-      <button class="bg-green-800 w-[125px] h-[50px] text-slate-100 rounded-[14px] px-6 py-3">Join today</button>
+      <button data-target="#loginModal" data-toggle="modal" class="bg-green-800 w-[125px] h-[50px] text-slate-100 rounded-[14px] px-6 py-3">Join today</button>
     </div>
   </div>
 
@@ -517,7 +517,7 @@
 
 
  <!-- Your carousel HTML -->
-<div id="resource-slider" class="carousel  w-full mx-auto">
+<div  id="resource-slider" class="carousel  w-full mx-auto">
   <div class="carousel-inner w-[70%] mx-auto">
     <!-- Loop through your results to generate carousel items -->
     <div v-for="(result, index) in Math.ceil(results.length / 3)" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }">
@@ -641,11 +641,13 @@
 <div class=" bg-[#F4FBF7] flex flex-col justify-center items-center  py-[40px] max-w-[1440px] mx-auto my-6 ">
   <div class="w-[334px] pt-6 text-center">
     
-         <h2 class="text-[40px] font-bold text-black">Get started today!</h2>
+    
+  <h2 class="text-[40px] font-bold text-black">Get started today!</h2>
+
 
   </div>
 
-<button class="bg-[#198754] font-bold my-6 text-white rounded-[14px] w-[136px] h-[40px] py-[7px] text-sm text-center">
+<button onclick="scrollToSection()"  class="bg-[#198754] font-bold my-6 text-white rounded-[14px] w-[136px] h-[40px] py-[7px] text-sm text-center">
   Find a business
 </button>
 

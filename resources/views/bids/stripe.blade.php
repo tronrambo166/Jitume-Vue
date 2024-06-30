@@ -10,7 +10,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
     <meta name="keywords" content="bibimcart, ">
     <meta name="author" content="">
-    
+
+
+
    </head>
 
 
@@ -40,30 +42,13 @@
         @endif
 	
   <div class="col-sm-12">
-         <div class="row float-right"> <a class="btn btn-primary float-right" href="{{route('/')}}">Back to home</a></div>
-         <div class="row w-50 bg-black m-auto ">
 
-            <div class="col-md-9 m-auto col-md-offset-3 py-2">
-                <h5 class="text-center">Pay with your Credit/Debit Card via Stripe    <i  class="fab fa-cc-mastercard fa-1x"></i> <i style="color:red" class="fab fa-cc-visa fa-1x"></i> </h5>
-               <div class="panel m-auto panel-default credit-card-box">
-                  <div class="panel-heading display-table" >
-                     <div class="row display-tr" >
-                        <div class="display-td" >                            
-                           
-                        </div>
-                     </div>
-                  </div>
-                  <div class="panel-body">
-                     @if (Session::has('success'))
-                     <div class="alert alert-success text-center">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                        <p>{{ Session::get('success') }}</p>
-                     </div>
-                     @endif
+         </div>
+         <div class=" bg-black mx-auto ">
 
+<!-- main form wrapper -->
 
-
-                        <!-- Form Starts Here -->
+            <!-- Form Starts Here -->
                      <form     
                         role="form"
                         action="{{ route('bidCommits') }}"
@@ -75,52 +60,141 @@
                         @csrf
 
 
+           <div  class="col-md-12 d-flex m-auto col-md-offset-3 py-2"> <!-- main form sizing -->
+                                       
+               <div class="flex flex-col-reverse pt-5" style="margin-top: 40px !important; width: 45% !important; padding: 10px 25px !important; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;">
+
+                        <div class=" "> <a class="btn  text-dark font-weight-bold " href="{{route('/')}}">Back to home</a></div>
+
+
+                <h5 class="text-center py-3" style="color:rgb(22 101 52) !important;">Pay with your Credit/Debit Card via Stripe    <i  class="fab fa-cc-mastercard fa-1x"></i> <i style="color:red" class="fab fa-cc-visa fa-1x"></i> </h5>
+
+
+ <div class="leftside flex">
+                           <!-- email -->
+
+
+                            <div class='form-row row my-2'>
+                           <div class='col-sm-12  form-group required'>
+                              <label class='control-label  ' style="color: #666666; font-size: 12px;"><b>  Email </b></label> 
+                              <input class='form-control' size='4' name="email" id="" type='email'  >
+
+                           </div> 
+ 
+                        </div> 
+
+                        <!-- name on card -->
+
+                        <div class='form-row row my-2'>
+                           <div class='col-sm-12  form-group required'>
+                              <label class='control-label' style="color: #666666; font-size: 12px;"><b> Name on Card </b></label> <input name="name" 
+                                 class='form-control' size='4' type='text'>
+                           </div>
+
+
+                        </div>
+
+                        <!-- card number -->
+
+                        <div class='form-row row my-2'>
+                           <div class='col-sm-12 form-group  required'>
+                              <label class='control-label' style="color: #666666; font-size: 12px;"><b> Card Number </b></label> <input autocomplete='on'
+                                 autocomplete='off' class='form-control card-number' size='20'
+                                 type='text'>
+
+                                          
+
+                           </div>
+
+                         
+                        </div>
+
+          <div class='form-row row my-2'>
+                           <div class='col-xs-12 col-md-4 form-group cvc required'>
+                              <label class='control-label' style="color: #666666; font-size: 12px;"><b> CVC </b></label> <input autocomplete='off'
+                                 class='form-control card-cvc' placeholder='ex. 311' size='4'
+                                 type='text'>
+                           </div>
+                           <div class='col-xs-12 col-md-4 form-group expiration required'>
+                              <label class='control-label ' style="color: #666666; font-size: 12px;"><b> Exp. Month </b></label> <input autocomplete='on'
+                                 class='form-control card-expiry-month' placeholder='MM/Ex.  07' size='2'
+                                 type='text'>
+                           </div>
+                           <div class='col-xs-12 col-md-4 form-group expiration required'>
+                              <label class='control-label' style="color: #666666; font-size: 12px;"><b> Exp. Year </b></label> <input autocomplete='on'
+                                 class='form-control card-expiry-year' placeholder='YYYY/Ex. 2022' size='4'
+                                 type='text'>
+                           </div>
+                        </div>
+
+
+
+                       
+ 
+
+
+
+                       </div>
+
+
+                </div>
+
+               <div class="panel m-auto panel-default credit-card-box">
+                  <div class="panel-heading display-table" >
+                     <div class="row display-tr" >
+                        <div class="display-td" >                            
+                           
+                        </div>
+                     </div>
+                  </div>
+                  <div class="panel-body flex">
+                     @if (Session::has('success'))
+                     <div class="alert alert-success text-center">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                        <p>{{ Session::get('success') }}</p>
+                     </div>
+                     @endif
+
+
+
+                        
+
                         <!-- Shipping address  starts -->
 
                          
                      <div class="row error mx-1 text-center collapse"><p style="color:#e31313; background: #cfcfcf82;font-weight: 600;" class="alert my-2 py-1 w-100"></p></div> 
 
                          
-                        <div class='form-row row my-2'>
-                           <div class='col-sm-12  form-group required'>
-                              <label class='control-label'><b>  Amount(USD) </b> <small>5% + tax added</small></label> 
-                              <input class='form-control' size='4' name="price" id="price" type='number' value="{{$amount}}" readonly >
+                       <div class="main wrapper flex gap-4">
+                          
 
-                              <input class='form-control' size='4' name="amountReal" id="amountReal" type='number' value="{{$amountReal}}" readonly hidden>
+                          <div class="leftside flex">
+                           <!-- email -->
 
-                           </div> 
 
-                        </div>  
-
-                        <div class='form-row row my-2'>
+                            <!-- <div class='form-row row my-2'>
                            <div class='col-sm-12  form-group required'>
                               <label class='control-label'><b>  Email </b></label> 
                               <input class='form-control' size='4' name="email" id="" type='email'  >
 
                            </div> 
 
-                        </div> 
+                        </div>  -->
 
-                           <input step="0.01" hidden type="number" name="percent" value="{{$percent}}">                   
-                           <input hidden type="number" name="listing" value="{{$business_id}}">
-                           
-                                       
-                                       
+                        <!-- name on card -->
 
-                        <!-- Shipping address  ends --> 
-
-
-
-
-                        <div class='form-row row my-2'>
+                        <!-- <div class='form-row row my-2'>
                            <div class='col-sm-12  form-group required'>
                               <label class='control-label'><b> Name on Card </b></label> <input name="name" 
                                  class='form-control' size='4' type='text'>
                            </div>
 
 
-                        </div>
-                        <div class='form-row row my-2'>
+                        </div> -->
+
+                        <!-- card number -->
+
+                        <!-- <div class='form-row row my-2'>
                            <div class='col-sm-12 form-group card required'>
                               <label class='control-label'><b> Card Number </b></label> <input autocomplete='on'
                                  autocomplete='off' class='form-control card-number' size='20'
@@ -131,8 +205,9 @@
                            </div>
 
                          
-                        </div>
-                        <div class='form-row row my-2'>
+                        </div> -->
+
+         <!--  <div class='form-row row my-2'>
                            <div class='col-xs-12 col-md-4 form-group cvc required'>
                               <label class='control-label'><b> CVC </b></label> <input autocomplete='off'
                                  class='form-control card-cvc' placeholder='ex. 311' size='4'
@@ -148,11 +223,76 @@
                                  class='form-control card-expiry-year' placeholder='YYYY/Ex. 2022' size='4'
                                  type='text'>
                            </div>
-                        </div>
+                        </div> -->
+
+
+
+                       
+ 
+
+
+
+                       </div>
+
+
+
+
+                       <!-- right side -->
+
+
+
+                       
+                          
+                       </div>
+
+
+
                         
 
+                       
 
-                        <div class="privacy-wrp ">
+                           <input step="0.01" hidden type="number" name="percent" value="{{$percent}}">                   
+                           <input hidden type="number" name="listing" value="{{$business_id}}">
+                           
+                                       
+                                       
+
+                        <!-- Shipping address  ends --> 
+
+
+
+
+                        <div class="right flex flex-col">
+                          
+
+
+                          <div class='form-row row my-2'>
+                           <div class='col-sm-12  form-group required'>
+                              <label class='control-label'><b>  Amount(USD) </b> <small>5% + tax added</small></label> 
+                              <input class='form-control' size='4' name="price" id="price" type='number' value="{{$amount}}" readonly >
+
+                              <input class='form-control' size='4' name="amountReal" id="amountReal" type='number' value="{{$amountReal}}" readonly hidden>
+
+                           </div> 
+
+                        </div>  
+
+
+                        <div class="d-flex flex-column  gap-3">
+
+        <!-- Purpose -->
+        <label class=" purpose">Purpose</label>
+
+        <p id="purpose"></p>
+    </div>
+
+     <!-- total -->
+      <h2 class="py-2 " style="font-size:18px;">Total: {{$amountReal}}</h2>
+
+
+
+
+                         <div class="privacy-wrp py-2">
                                             
                                                 <input type="checkbox" required="" id="AND">
                                                 <label for="AND" class="allterms d-inline"> 
@@ -162,9 +302,19 @@
 
                         <div class="row">
                            <div class="col-sm-12 text-center">
-                              <button id ="" class=" font-weight-bold btn btn-info m-auto btn-lg btn-block" type="submit" >Pay <span id="paynow"></span><span id="stripBtn"></span></button>
+                              <button id ="" class=" font-weight-bold btn  m-auto btn-lg btn-block" type="submit" style="background-color: rgb(22 101 52); color:white;">Pay <span id="paynow"></span><span id="stripBtn"></span></button>
                            </div>
                         </div>
+                       </div> 
+                        
+
+                     
+
+                        
+                        
+
+
+                       
 
                      </form>
 

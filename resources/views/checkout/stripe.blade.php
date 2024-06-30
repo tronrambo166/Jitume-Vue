@@ -66,7 +66,7 @@
     </div>
 
      <!-- total -->
-      <h2 class="py-2">Total:</h2>
+      <h2 class="py-2">Total:  {{$price}} </h2>
 
 
 
@@ -101,7 +101,7 @@
     <div class="">
         <div class="col-lg-6">
 
-            <div class="card bg-white shadow-md text-black" style="width: 95%;">
+            <div class="card bg-black shadow-md text-black" style="width: 95%;">
                 <div class="float-left " style="padding-top: 20px; margin-left: 20px; text-decoration: none; color:gray;">
     <a href="{{ route('/') }}" class="btn btn-link text-dark"><i class="fas fa-home text-dark"></i> Home</a>
 </div>

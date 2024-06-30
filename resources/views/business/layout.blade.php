@@ -314,8 +314,12 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
       </div>
 
       <div class="mt-3">
-        <h1 class="font-bold text-[18px]">Emmanuel Nurul</h1>
-        <h3 class="text-gray-700">test@email.com</h3>
+        @if(isset($user_name))
+        <h1 class="font-bold text-[18px]">{{$user_name}}</h1>
+        @endif
+        @if(isset($user_email))
+        <h3 class="text-gray-700">{{$user_email}}</h3>
+        @endif
       </div>
     </div>
 

@@ -147,7 +147,11 @@ foreach($convs as $conv){
 }
 }
 //Investments
-return view('business.index',compact('business','investor','results','services'));
+// return view('business.index',compact('business','investor','results','services'));
+
+$user_email = Auth::user()->email;
+$user_name = Auth::user()->fname.' '.Auth::user()->lname;
+return view('business.index',compact('business','investor','results','services','user_email','user_name'));
 }
 
 

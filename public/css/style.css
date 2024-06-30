@@ -874,7 +874,7 @@
 
 
     .header_buttons:hover {
-        color: #e1e2e3 !important;
+        color: #rgb(22 101 52) !important;
     }
 
     .sign_in_btn {
@@ -894,7 +894,7 @@
     }
 
     .sign_in_btn:hover {
-        background: #083608 !important;
+        background: rgb(22 101 52) !important;
         color: white !important;
     }
 
@@ -2097,3 +2097,6 @@ input[type="checkbox"]:focus {
 }
 
 
+#investor-modal{
+    width: 800px !important;
+}

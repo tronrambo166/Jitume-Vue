@@ -83,12 +83,22 @@
       <li class="text-sm font-bold text-gray-800 hover:text-green-700">
         <router-link to="/services" class="hover:text-green-700">Services</router-link>
       </li>
+
+
+      @if(Auth::check())
+      <li class="text-sm font-bold text-gray-800 hover:text-green-700">
+        <a class="nav-link" href="{{route('add-listing')}}" >Add Your Business</a>
+      </li>
+
+      @else
       <li class="text-sm font-bold text-gray-800 hover:text-green-700">
         <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">Add Your Business</a>
       </li>
       <li class="text-sm font-bold text-gray-800 hover:text-green-700">
         <a class="nav-link" href="#" data-target="#loginmodal2" data-toggle="modal">Create Investor Account</a>
       </li>
+      @endif
+
     </ul>
   </div>
 
@@ -131,7 +141,7 @@
 
                            
 
-                            <a data-target="#loginModal" data-toggle="modal" class=" border sign_in_btn px-3 my-1 mr-1 px-1 py-1 text-center ml-md-3">Sign In</a>
+                            <a data-target="#loginModal" data-toggle="modal" class=" border sign_in_btn  my-1 mr-1 px-6 py-2 mr-4 text-center ml-md-3">Sign In</a>
 
                         </div>
                         @endif
@@ -329,8 +339,8 @@
     <div class="container mx-auto gap-[220px] flex flex-col md:flex-row justify-center md:justify-between gap-6 w-[959px]">
         <div class="md:w-1/3 flex flex-col items-start">
     <ul class="list-none">
-        <li><a href="#" class="text-[#3B856B] hover:text-green-700 font-light">Sign Up/Sign In as A Project Manager</a></li>
-        <li><a href="#" class="text-[#3B856B] hover:text-green-700">Add a Business Service</a></li>
+        <li><a onclick="c_to_actionS();" data-target="#loginModal" data-toggle="modal" class=" "><span id="c_to_ac">Sign Up/Sign In as A Project Manager</span></a></li>
+        <li><a onclick="c_to_actionS();" data-target="#loginModal" data-toggle="modal" class=" "><span id="c_to_ac">Add a Business Service</span></a></li>
         <li><a href="#" class="text-[#3B856B] hover:text-green-700">How It Works</a></li>
             </ul>
 </div>
@@ -1124,12 +1134,20 @@
 
     <div class="modal fade" id="loginmodal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content ">
-                <div class="modal-header">
+            <div id="investor-modal" class="modal-content ">
+                
 
-                  <div id="header" class="py-0 m-auto modal-header " style="border-bottom: 1px solid #66666630;"> <!-- Removed width style to allow responsiveness -->
 
-                    <div class="d-block mx-auto my-3 rounded-circle border-bottom text-center" style="background: #C4C4C4">
+                <div class="modal-header flex flex-col ">
+                  <button type="button" class="m-0 close items-start flex px-5 py-3" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+
+                        <!-- <button style="" class="ml-2 w-50 text-center text-dark  font-weight-bold btn px-2 mr-2">{{ __('Join Jitume') }}</button> -->
+                    </button>
+
+                  <div id="header" class="py-0 m-auto modal-header flex justify-center items-center " style="border-bottom: 1px solid #66666630;"> <!-- Removed width style to allow responsiveness -->
+
+                    <div class="flex w-full mx-auto my-3 rounded-circle border-bottom text-center" style="background: #C4C4C4">
                         <div class="mini_logo rounded-circle p-2">
                              <img width="31px" class=" pl-2" src="images/randomIcons/mini_logo.png">
                         </div>
@@ -1137,25 +1155,28 @@
                     </div>
                 </div>
 
-
-                    <button type="button" class="m-0 close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-
-                        <!-- <button style="" class="ml-2 w-50 text-center text-dark  font-weight-bold btn px-2 mr-2">{{ __('Join Jitume') }}</button> -->
-                    </button>
+<!-- top-buttons -->
 
 
-                    <button style="border-width: 1px; border-style: solid; border-color: darkblue darkblue rgb(8, 54, 8); border-image: initial; background: rgb(114, 197, 55); color: rgb(1, 72, 17);" id="logins" onclick="login()" class=" w-25 btn   px-1 mr-2">Log In</button>
 
-                    <button  id="registers" onclick="register()" class="  rounded-lg text-black py-2 px-4 "> <i class="fas fa-user-plus mr-2"></i>{{ __('Create Investor Account') }}</button>
+<div class="flex items-center justify-between gap-4 ">
+
+                    
+
+
+                    <button style="  color: rgb(1, 72, 17);" id="logins" onclick="login()" class=" w-25   px-1 mr-2">Log In</button>
+
+                    <button  id="registers" onclick="register()" class="  rounded-lg text-black py-2 px-4 block whitespace-nowrap ">{{ __('Create Investor Account') }}</button>
+
+                </div>
                 </div>
 
 
-                <div class="modal-body">
+                <div class="modal-body rounded-[20px] w-full mx-auto">
                     <div class="hidden_currency ">
 
-                        <div class="row justify-content-center py-3 ">
-                            <div class="px-0 w-100 py-2">
+                        <div class="w-full mx-auto py-3 px-4">
+                            <div class="px-0 w-100 ">
 
                                     <div class=" mt-2 text-center User-Artist-Select">
                                         <div class="col-md-5"></div>
@@ -1163,58 +1184,157 @@
 
                                     <!-- HIDDEN USER REG -->
 
-                                    <div id="user_regs" class=" collapse card-body">
+                                    <div id="user_regs" class="mx-auto w-full collapse card-body">
                                         <form method="POST" action="{{route('register')}}" enctype="multipart/form-data">
                                             @csrf
 
                                     <input hidden type="number" name="investor" value="1">
                                     <input type="text" hidden name="c_to_listing_reg" id="c_to_listing_reg" value="">
-<div class="pt-2">
-    <label for="name" class="col-md-4 col-form-label text-md-left ">{{ __('First Name') }} <span title="Required" class="text-danger">*</span></label>
+<div class="flex">
 
+    <!-- First Name -->
     <div class="col-md-6">
-        <input id="name" type="text" class="form-control pl-2" name="fname" @if(Session::has('old_fname')) value="{{Session::get('old_fname')}}" @endif required autocomplete="name" autofocus>
+        <label for="fname" class=" col-form-label text-md-left">{{ __('First Name') }} <span title="Required" class="text-danger">*</span></label>
+        <input id="fname" type="text" class="form-control pl-2 w-full" name="fname" @if(Session::has('old_fname')) value="{{Session::get('old_fname')}}" @endif required autocomplete="name" autofocus>
     </div>
+
+    <!-- Middle Name -->
+    <div class="col-md-6">
+        <label for="mname" class="col-form-label text-md-left">{{ __('Middle Name') }}</label>
+        <input id="mname" type="text" class="form-control pl-2 w-full @error('mname') is-invalid @enderror" name="mname" @if(Session::has('old_mname')) value="{{Session::get('old_mname')}}" @endif autocomplete="name" autofocus>
+    </div>
+
 </div>
 
-<div class="row mb-3 pt-2">
+
+<!-- <div class="row mb-3 pt-2">
     <label for="name" class="col-md-4 col-form-label text-md-left ">{{ __('Middle Name') }} <span title="Required" class="text-danger"></span></label>
 
     <div class="col-md-6">
         <input id="name" type="text" class=" form-control @error('name') is-invalid @enderror" name="mname" @if(Session::has('old_mname')) value="{{Session::get('old_mname')}}" @endif autocomplete="name" autofocus>
     </div>
+</div> -->
+
+
+<!-- last name and email -->
+<div class="flex">
+
+    <!-- Last Name -->
+    <div class="col-md-6">
+        <label for="lname" class="col-form-label text-md-left">{{ __('Last Name') }} <span title="Required" class="text-danger">*</span></label>
+        <input id="lname" type="text" class="form-control pl-2 w-full @error('name') is-invalid @enderror" name="lname" @if(Session::has('old_lname')) value="{{Session::get('old_lname')}}" @endif required autocomplete="name" autofocus>
+    </div>
+
+    <!-- E-Mail -->
+    <div class="col-md-6">
+        <label for="email" class="col-form-label text-md-left">{{ __('E-Mail') }} <span title="Required" class="text-danger">*</span></label>
+        <input id="email" type="email" class="form-control pl-2 w-full @error('email') is-invalid @enderror" name="email" @if(Session::has('old_email')) value="{{Session::get('old_email')}}" @endif required autocomplete="email" autofocus>
+    </div>
+
+</div>
+
+
+                                        <!-- last name and email  ends -->
+
+
+
+
+
+
+
+<!-- id no and company tax pin -->
+                                          <div class="flex items-center">
+
+    <!-- Passport/ID No -->
+    <div class="col-md-6">
+        <label for="id_no" class="col-form-label text-md-left">{{ __('Enter your passport/Id no*') }} <span title="Required" class="text-danger">*</span></label>
+        <input id="id_no" type="text" class="form-control pl-2 w-full @error('id_no') is-invalid @enderror" name="id_no" @if(Session::has('old_id_no')) value="{{Session::get('old_id_no')}}" @endif required>
+    </div>
+
+    <!-- Individual/Company Tax Pin -->
+    <div class="col-md-6">
+        <label for="tax_pin" class="col-md-4 col-form-label pr-4 text-md-left  flex items-center whitespace-nowrap">
+            {{ __('Enter your individual/company tax pin*') }}<span title="Required" class="text-danger">*</span>
+        </label>
+        <input id="tax_pin" type="text" class="form-control pl-2 w-full @error('tax_pin') is-invalid @enderror" name="tax_pin" @if(Session::has('old_tax_pin')) value="{{Session::get('old_tax_pin')}}" @endif required>
+    </div>
+
 </div>
 
 
 
-                                            <div class="row mb-3">
-                                                <label for="name" class="col-md-4 col-form-label text-md-left ">{{ __('Last Name') }} <span title="Required" class="text-danger">*</span></label>
-
-                                                <div class="col-md-6">
-                                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="lname" @if(Session::has('old_lname')) value="{{Session::get('old_lname')}}" @endif required autocomplete="name" autofocus>
-
-
-                                                </div>
-                                            </div>
+<!-- id no and company tax pin  ends-->
 
 
 
 
+<!-- upload passport and upload pin -->
 
-                                            <div class="row mb-3">
-                                                <label for="email" class="col-md-4 col-form-label text-md-left">{{ __('E-Mail') }} <span title="Required" class="text-danger">*</span></label>
+<!-- <div class="flex">
 
-                                                <div class="col-md-6">
-                                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" @if(Session::has('old_email')) value="{{Session::get('old_email')}}" @endif required autocomplete="email">
+    <!-- Last Name -->
+    <!-- <div class="col-md-6">
+        <label for="lname" class="col-form-label text-md-left">{{ __('Last Name') }} <span title="Required" class="text-danger">*</span></label>
+        <input id="lname" type="text" class="form-control pl-2 w-full @error('name') is-invalid @enderror" name="lname" @if(Session::has('old_lname')) value="{{Session::get('old_lname')}}" @endif required autocomplete="name" autofocus>
+    </div> -->
+
+    <!-- E-Mail -->
+    <!-- <div class="col-md-6">
+        <label for="email" class="col-form-label text-md-left">{{ __('E-Mail') }} <span title="Required" class="text-danger">*</span></label>
+        <input id="email" type="email" class="form-control pl-2 w-full @error('email') is-invalid @enderror" name="email" @if(Session::has('old_email')) value="{{Session::get('old_email')}}" @endif required autocomplete="email" autofocus>
+    </div>
+
+</div> -->
 
 
-                                                </div>
-                                            </div>
 
-                                            <div class="row mb-3">
+
+
+                                           <div class="flex ">
+
+    <div class="col-md-6">
+        <label for="id_passport" class=" col-form-label text-md-left pr-0 flex items-center whitespace-nowrap">
+            {{ __('Upload Id/Passport') }}<span title="Required" class="text-danger">*</span>
+        </label>
+        <div class="border border-black py-2 rounded-lg">
+
+            <div class="upload-btn-wrapper ml-2">
+                <button class="flex gap-4 mr-2"> Id / Passport
+                    <img src="images/up.svg" width="24px"> </button>
+                <input required="" type="file" id="id_passport" name="id_passport" class="form-control pl-2 w-full" />
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6"">
+        <label for="pin" class=" col-form-label text-md-left pr-0 flex items-center whitespace-nowrap">
+            {{ __('Upload Pin') }}<span title="Required" class="text-danger"></span>
+        </label>
+        <div class="border border-black py-2 rounded-lg">
+            <div class="upload-btn-wrapper ml-2">
+                <button class="flex gap-4  mr-2"> Pin
+                    <img src="images/up.svg" width="24px"> </button>
+                <input type="file" id="pin" name="pin" class="form-control pl-2 w-full" />
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- upload passport and upload pin ends-->
+
+
+
+
+
+
+<!-- pass word and confirm password -->
+
+                                            <div class="flex flex-col">
                                                 <label for="password" class="col-md-4 col-form-label text-md-left">{{ __('Password') }} <span title="Required" class="text-danger">*</span></label>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-12">
                                                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
 
 
@@ -1222,72 +1342,25 @@
                                             </div>
 
 
-                                            <div class="row mb-3">
+                                            <div class="flex flex-col">
                                                 <label for="password" class="col-md-4 col-form-label text-md-left">{{ __('Confirm Password') }}<span title="Required" class="text-danger">*</span></label>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-12">
                                                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password_confirmation" required autocomplete="new-password">
 
 
                                                 </div>
                                             </div>
 
-                                            <div class="row mb-3">
-                                                <label for="password" class="pr-0 col-md-5 col-form-label text-md-left">{{ __('Enter your passport/Id no*') }}<span title="Required" class="text-danger">*</span></label>
-
-                                                <div class="col-md-5">
-                                                    <input required class="text-left form-control" type="text" name="id_no" @if(Session::has('old_id_no')) value="{{Session::get('old_id_no')}}" @endif >
 
 
-                                                </div>
-                                            </div>
-
-
-                                            <div class="row mb-3">
-                                                <label for="password" class="pr-0 col-md-5 col-form-label text-md-left">{{ __('Enter your individual/company tax pin*') }}<span title="Required" class="text-danger">*</span></label>
-
-                                                <div class="col-md-5">
-                                                    <input required class="text-left form-control" type="text" name="tax_pin" @if(Session::has('old_tax_pin')) value="{{Session::get('old_tax_pin')}}" @endif >
-
-
-                                                </div>
-                                            </div>
+                                        <!-- pass word and confirm password -->
 
 
 
 
-                                            <div class="row mb-1">
-                                                <label for="password" class="col-md-4 col-form-label text-md-left">{{ __('Upload Id/Passport') }}<span title="Required" class="text-danger">*</span></label>
 
-                                                <div class="col-md-6">
-                                                    <div class="upload-btn-wrapper ml-2">
-                                                        <button class="btnUp_listing mr-2"> Id / Passport
-                                                            <img src="images/up.svg" width="24px"> </button>
-                                                        <input required="" type="file" name="id_passport" />
-                                                    </div>
-
-
-                                                </div>
-                                            </div>
-
-
-                                            <div class="row mb-3">
-                                                <label for="password" class="col-md-4 col-form-label text-md-left">{{ __('Upload Pin') }}<span title="Required" class="text-danger"></span></label>
-
-                                                <div class="col-md-6">
-                                                    <div class="upload-btn-wrapper ml-2">
-                                                        <button class="btnUp_listing mr-2"> Pin
-                                                            <img src="images/up.svg" width="24px"> </button>
-                                                        <input type="file" name="pin" />
-                                                    </div>
-
-
-                                                </div>
-                                            </div>
-
-
-
-                                            <div class="row mb-3">
+                                            <div class="flex py-3">
                                                 <label for="password" class="col-md-4 col-form-label text-md-left">{{ __('Potential Investment Range') }}<span title="Required" class="text-danger"></span></label>
 
                                                 <div class="col-md-6">
@@ -1321,7 +1394,7 @@
 
 
 
-                                            <div class="row mb-3">
+                                            <div class="flex">
                                                 <label for="password" class="col-md-4 col-form-label text-md-left">{{ __('Which industries are you interested in investing?') }}<span title="Required" class="text-danger"></span></label>
 
                                                 <div class="col-md-6">
@@ -1374,11 +1447,16 @@
                                             </div>
 
 
-                                            <div class="row mb-3">
+                                            <div class="flex flex-col">
                                                 <label for="password" class="col-md-12 col-form-label text-md-left">{{ __('Please Enter details of your past investments & track records') }}<span title="Required" class="text-danger"></span></label>
 
-                                                <div class="col-md-12">
-                                                    <textarea name="past_investment" rows="2" cols="50">
+                                                <div class="col-md-12 ">
+                                                    <!-- <textarea name="past_investment" rows="2" cols="50">
+                                                        @if(Session::has('old_past_investment')) value="{{Session::get('old_past_investment')}}" @endif
+                                                    </textarea> -->
+
+
+                                                    <textarea name="past_investment" rows="2" class="form-control pl-2 w-full" cols="50">
                                                         @if(Session::has('old_past_investment')) value="{{Session::get('old_past_investment')}}" @endif
                                                     </textarea>
 
@@ -1386,11 +1464,11 @@
                                             </div>
 
 
-                                            <div class="row mb-3">
+                                            <div class="flex flex-col">
                                                 <label for="password" class="col-md-12 col-form-label text-md-left">{{ __('Please Enter your current website or web presence') }}<span title="Required" class="text-danger"></span></label>
 
                                                 <div class="col-md-12">
-                                                    <input type="text" name="website" class="w-75" @if(Session::has('old_website')) value="{{Session::get('old_website')}}" @endif />
+                                                    <input type="text" name="website" class="form-control pl-2 w-full" @if(Session::has('old_website')) value="{{Session::get('old_website')}}" @endif />
 
                                                 </div>
                                             </div>
@@ -1398,13 +1476,13 @@
 
 
 
-                                            <div class="row w-75">
-                                                <div class="col-md-1">
+                                            <div class="flex pl-3 gap-2  py-3">
+                                                <div class="">
                                                     <input id="password" type="checkbox" class=" " name="terms" required>
                                                 </div>
 
-                                                <div class="col-md-10">
-                                                    <p style="font-family:system-ui;" class="text-secondary small mb-0">I have read and agree to the<a class="small d-inline" target="_black" href="terms">Terms of Use</a> and<a class="small d-inline" target="_black" href="privacy-policy">Privacy Policy</a></p>
+                                                <div class="">
+                                                    <p style="font-family:system-ui;" class="text-secondary small mb-0">I have read and agree to the<a class="small d-inline text-green-700" target="_black" href="terms">Terms of Use</a> and<a class="small d-inline font-bold" target="_black" href="privacy-policy">Privacy Policy</a></p>
                                                 </div>
                                             </div>
 
@@ -1412,9 +1490,9 @@
                                             <input type="number" hidden id="c1">
                                             <input type="number" hidden id="c2">
 
-                                            <div class="row mb-4">
-                                                <div class="col-md-12 text-center">
-                                                    <button id="b2" onclick="event.preventDefault();inv_range_check();" class="mt-3 w-25 mx-auto btn px-2 create">
+                                            <div class=" pl-3">
+                                                <div class=" ">
+                                                    <button id="b2" onclick="event.preventDefault();inv_range_check();" class="mt-3 w-25 mx-auto bg-green-700 text-white rounded-lg flex justify-center w-[80%] py-2 px-8 create">
                                                         {{ __('Create account') }}
                                                     </button>
 
@@ -1450,22 +1528,21 @@
 
                                 <div class="" id="all_logins">
 
-                                    <div id="user_logs" class="text-center py-0">
+                                    <div id="user_logs" class="flex justify-center items-center flex-col py-0">
 
                                         <form method="POST" class="" action="{{route('login')}}">
                                             @csrf
 
                                             <input type="text" hidden name="c_to_action_login2" id="c_to_action_login2" value="">
+ <div class="flex  flex-col  mb-3">
+        <span class="w-25 text-left text-xl mt-3">Email</span>
+        <input class="w-[300px] d-inline my-2 form-control px-2 py-1 mr-1 border rouned-lg" type="email" name="email" placeholder="" id="inputEmailAddress" value="" required />
+    </div>
 
-                                           <div class="row flex justify-center items-center mb-3">
-    <span class="w-25 text-left text-xl mt-3">Email</span>
-    <input  class="w-50 d-inline my-2 form-control px-2 py-1 mr-1 border rouned-lg" type="email" name="email" placeholder="" id="inputEmailAddress" value="" required />
-</div>
-
-<div class="row flex items-center justify-center mb-3">
-    <span class="text-xl w-25 text-left mt-3">Password</span>
-    <input class="w-50 d-inline my-2 form-control px-2 py-1 mr-1 border rouned-lg" name="password" id="inputPassword" type="password" placeholder="" value="" required />
-</div>
+    <div class=" flex  flex-col  mb-3">
+ <span class="w-25 text-left text-xl mt-3">Password</span>
+        <input class="w-[300px] d-inline my-2 form-control px-2 py-1 mr-1 border rouned-lg" name="password" id="inputPassword" type="password" placeholder="" value="" required />
+    </div>
 
 
 
@@ -1486,7 +1563,7 @@
                             <button style="" class="ml-2 w-50 text-center text-dark bg-green-700 font-weight-bold btn px-4 mr-2">{{ __('Join Jitume') }}</button>
                         </div>-->
 
-                        <button " id="logins" onclick="login()" class="bg-green-700 w-[78%] h-auto  text-white py-2 px-5  ml-2 rounded-lg ">{{ __('Log In') }}</button>
+                        <button " id="logins" onclick="login()" class="bg-green-700 w-[78%] h-auto ml-4  my-3 text-white py-2 px-5  ml-2 rounded-lg ">{{ __('Log In') }}</button>
                        
 
                         @if(Session::has('email')) <p class="text-danger ml-5">{{Session::get('email')}} @php Session::forget('email'); @endphp </p> @endif
@@ -1534,14 +1611,14 @@
 
     <script type="text/javascript">
         $('#login').css({borderBottom:'1px solid #083608', color:'#014811', background:'white'});
-        $('#logins').css({borderBottom:'1px solid #083608', color:'#014811'});
+        // $('#logins').css({borderBottom:'1px solid #083608', color:'#014811'});
         $('#register').css({background:'white', border:'none', color:'grey'})
         $('#business_reg').hide();
 
         function login() {
             $('#register').css({border:'none', color:'black'})
             $('#registers').css({border:'none', color:'black'});
-            $('#logins').css({borderBottom:'1px solid #083608', color:'#014811'});
+            // $('#logins').css({borderBottom:'1px solid #083608', color:'#014811'});
             $('#user_logs').show();
             $('#all_logins').show();
             $('#user_regs').hide();
@@ -1551,7 +1628,7 @@
         function register() {
             $('#logins').css({background:'none', color:'black'});
             $('#login').css({borderBottom:'1px solid white', color:'black'})
-            $('#registers').css({borderBottom:'1px solid #014811', color:'#014811'});
+            // $('#registers').css({borderBottom:'1px solid #014811', color:'#014811'});
 
             $('#user_logs').hide();
             $('#all_register').show();
