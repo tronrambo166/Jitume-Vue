@@ -237,7 +237,7 @@
               <a v-if="auth_user" data-toggle="modal" data-target="#reviewModal"
                 class="btn border border-bottom-success">Add review</a>
 
-              <a v-else @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal"
+              <a v-else @click="make_session(form.listing_id);" data-target="#loginmodal" data-toggle="modal"
                 class="btn border border-bottom-success">Add review</a>
 
               <hr>

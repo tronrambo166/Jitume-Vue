@@ -74743,7 +74743,7 @@ var render = function () {
                           {
                             staticClass: "btn border border-bottom-success",
                             attrs: {
-                              "data-target": "#loginmodal2",
+                              "data-target": "#loginmodal",
                               "data-toggle": "modal",
                             },
                             on: {
@@ -94129,9 +94129,3 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 	
 /******/ })()
 ;
-
-
-// scroll function for homepage
-function scrollToSection() {
-      document.getElementById('resource-slider').scrollIntoView({ behavior: 'smooth' });
-    }
