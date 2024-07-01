@@ -291,7 +291,7 @@
           </h4>
 
           <div v-if="auth_user" class="eqp-invest">
-            <a v-if="plan == 'platinum' || (plan == 'gold' && range == form.range)" @click="unlockBySubs(form.listing_id,subscrib_id,'platinum');"
+           <a v-if="plan == 'platinum' || (plan == 'gold' && range == form.range)" @click="unlockBySubs(form.listing_id,subscrib_id,'platinum');"
               class=" business_btns py-2 text-center text-light buttonListing my-2">Unlock More Business
               Information To
               Invest</a>
@@ -300,6 +300,7 @@
               class=" business_btns py-2 text-center text-light buttonListing my-2">Unlock More Business
               Information To
               Invest</a>
+
 
             <!-- <a style="background:grey;" 
              v-if="subscribed"
@@ -372,6 +373,7 @@
             <a @click="make_session(form.listing_id);" data-target="#loginModal" data-toggle="modal"
               class="business_btns py-2 text-center text-light buttonListing my-3">Unlock More Business Information To
               Invest</a>
+
 
             <!-- <a  @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal" class="py-2 text-center text-light buttonListing my-3"><b>Subscribe</b></a>
 
