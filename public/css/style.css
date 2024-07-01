@@ -2100,3 +2100,7 @@ input[type="checkbox"]:focus {
 #investor-modal{
     width: 800px !important;
 }
+
+ul li a:hover{
+    color: #198754 !important;
+}

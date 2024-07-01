@@ -232,7 +232,7 @@
 </div>
 <div class="text-center pb-0">
   <div id="category-slider" class="carousel slide">
-    <div class="">
+    <div class="list">
       <ul class="d-flex list-unstyled justify-content-center text-black py-0 my-0 flex-wrap pt-2">
         <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Arts-Culture" class="text-decoration-none">Arts/Culture</router-link></li>
         <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Auto" class="text-decoration-none">Auto</router-link></li>

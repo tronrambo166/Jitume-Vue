@@ -72717,7 +72717,7 @@ var render = function () {
                   attrs: { id: "category-slider" },
                 },
                 [
-                  _c("div", {}, [
+                  _c("div", { staticClass: "list" }, [
                     _c(
                       "ul",
                       {
