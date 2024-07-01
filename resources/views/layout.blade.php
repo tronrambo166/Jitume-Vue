@@ -1164,7 +1164,7 @@
                     
 
 
-                    <button style="  color: rgb(1, 72, 17);" id="logins" onclick="login()" class=" w-25  px-1 mr-2">Log In</button>
+                    <button style="  color: rgb(1, 72, 17);" id="logins" onclick="login()" class=" w-25  px-1 mr-2 whitespace-nowrap">Investor Sign in</button>
 
                     <button  id="registers" onclick="register()" class="  rounded-lg text-black py-2 px-4 block whitespace-nowrap ">{{ __('Create Investor Account') }}</button>
 
