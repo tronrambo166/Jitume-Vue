@@ -1,6 +1,6 @@
 <template>
-    <div class="container fixed bg-white pb-2" id="">
-
+    <div class="container fixed bg-white pb-2"  id="">
+<div style="overflow-y: scroll;"s>
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -18,13 +18,7 @@
 
 
 
-
-       <!--  <div class="content_bottom">
-            <div class="heading">
-                <h3 class="my-5 text-center secondary_heading">Listings</h3>
-            </div>
-            <div class="clear"></div>
-        </div> -->
+  
 
 
 
@@ -32,15 +26,22 @@
 
         <div class="mt-4 row flex-column-reverse flex-md-row">
 
-            <div class="col-md-6 pr-4" style="height: 100vh; overflow-y: scroll;">
+            <div class="col-md-8 pr-4 element-class" style="height: 100vh; overflow-y: scroll;  overflow-anchor: auto;">
                 <!-- Price Filter -->
                 <div class="row">
+
+                    <div class="content_bottom">
+            <div class="heading">
+                <h3 class="my-5 text-2xl font-bold   " style="color:#198754;">Listings</h3>
+            </div>
+            <div class="clear"></div>
+        </div> 
 
                     <div class="col-sm-3"><span style="background:black;font-size: 11px;" class="btn text-light px-2 py-1 small rounded">Filter by
                             Turnover Range:</span>
                     </div>
 
-                    <div id="" class="col-sm-5  mt-1">
+                    <div id="" class="col-sm-5  mt-1"> 
                         <div id="slider" class=""> </div>
                         <div class="row mt-3">
                             <div class="col-6  mt-1">
@@ -68,7 +69,7 @@
 
                 </div>
                 <div class="row">
-                    <p class="ml-1 my-0 text-secondary small">{{ count }} businesses found<!-- in your location --></p>
+                    <p class="ml-1 my-0 text-gray-600 small">{{ count }} businesses found<!-- in your location --></p>
                 </div>
                 <!-- Price Filter -->
 
@@ -76,7 +77,7 @@
                     <div v-for="( result, index ) in results" class="listing row  my-3">
                         <router-link :to="`/listingDetails/${result.id}`" class=" flex  px-4">
 
-                            <div class="flex items-center gap-4  shadow-sm rounded-[30px] h-[200px]" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                            <div class="flex items-center gap-4 mb-5  shadow-sm rounded-[30px] h-[200px]" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
                             <!-- image or video -->
 
 
@@ -105,7 +106,7 @@
                                 }}</span></p>
                             </div>
 
-                            <div class="amount float-right text-right w-100 py-0 my-0">
+                            <div class="amount float-right text-right w-100 py-0 my-0 pr-2">
                                 <h6 class="amount font-weight-bold text_color_p">Amount: <span
                                         class="font-weight-normal">${{
                                             result.investment_needed }}</span></h6>
@@ -130,7 +131,7 @@
             <h3 class="text-center font-weight-bold btn-light btn py-3 d-block">No Results Found! </h3>
         </div>
 
-
+</div>
     </div>
 </div>
 

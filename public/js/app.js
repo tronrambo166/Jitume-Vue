@@ -10492,6 +10492,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
 //import {myMap,success,failure,addMarker,addMarkerHome} from '../../../../public/js/map'
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'app_url'],
@@ -75881,187 +75882,197 @@ var render = function () {
     "div",
     { staticClass: "container fixed bg-white pb-2", attrs: { id: "" } },
     [
-      _c("link", {
-        attrs: {
-          rel: "stylesheet",
-          href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css",
-        },
-      }),
-      _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
-      _c("div", { staticClass: "clear" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "clear" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "mt-4 row flex-column-reverse flex-md-row" }, [
-        _c(
-          "div",
-          {
-            staticClass: "col-md-6 pr-4",
-            staticStyle: { height: "100vh", "overflow-y": "scroll" },
+      _c("div", { staticStyle: { "overflow-y": "scroll" }, attrs: { s: "" } }, [
+        _c("link", {
+          attrs: {
+            rel: "stylesheet",
+            href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css",
           },
-          [
-            _vm._m(1),
-            _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _c("p", { staticClass: "ml-1 my-0 text-secondary small" }, [
-                _vm._v(_vm._s(_vm.count) + " businesses found"),
+        }),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "clear" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "clear" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "mt-4 row flex-column-reverse flex-md-row" }, [
+          _c(
+            "div",
+            {
+              staticClass: "col-md-8 pr-4 element-class",
+              staticStyle: {
+                height: "100vh",
+                "overflow-y": "scroll",
+                "overflow-anchor": "auto",
+              },
+            },
+            [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c("p", { staticClass: "ml-1 my-0 text-gray-600 small" }, [
+                  _vm._v(_vm._s(_vm.count) + " businesses found"),
+                ]),
               ]),
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              {},
-              _vm._l(_vm.results, function (result, index) {
-                return _c(
-                  "div",
-                  { staticClass: "listing row my-3" },
-                  [
-                    _c(
-                      "router-link",
-                      {
-                        staticClass: "flex px-4",
-                        attrs: { to: "/listingDetails/" + result.id },
-                      },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "flex items-center gap-4 shadow-sm rounded-[30px] h-[200px]",
-                            staticStyle: {
-                              "box-shadow": "rgba(0, 0, 0, 0.16) 0px 1px 4px",
+              _vm._v(" "),
+              _c(
+                "div",
+                {},
+                _vm._l(_vm.results, function (result, index) {
+                  return _c(
+                    "div",
+                    { staticClass: "listing row my-3" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "flex px-4",
+                          attrs: { to: "/listingDetails/" + result.id },
+                        },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "flex items-center gap-4 mb-5 shadow-sm rounded-[30px] h-[200px]",
+                              staticStyle: {
+                                "box-shadow": "rgba(0, 0, 0, 0.16) 0px 1px 4px",
+                              },
                             },
-                          },
-                          [
-                            _c("div", { staticClass: "rounded-l-lg" }, [
-                              result.file
-                                ? _c(
-                                    "video",
-                                    {
+                            [
+                              _c("div", { staticClass: "rounded-l-lg" }, [
+                                result.file
+                                  ? _c(
+                                      "video",
+                                      {
+                                        staticStyle: {
+                                          width: "100%",
+                                          height: "200px",
+                                        },
+                                        attrs: { controls: "", alt: "" },
+                                      },
+                                      [
+                                        _c("source", {
+                                          attrs: {
+                                            src: result.file,
+                                            type: "video/mp4",
+                                          },
+                                        }),
+                                      ]
+                                    )
+                                  : _c("img", {
+                                      staticClass: "pt-2 rounded-l-lg",
                                       staticStyle: {
-                                        width: "100%",
+                                        width: "500px",
+                                        "border-left": "2px solid white",
+                                        "border-top-left-radius": "30px",
+                                        "border-bottom-left-radius": "30px",
+                                        "object-fit": "cover !important",
                                         height: "200px",
                                       },
-                                      attrs: { controls: "", alt: "" },
-                                    },
-                                    [
-                                      _c("source", {
-                                        attrs: {
-                                          src: result.file,
-                                          type: "video/mp4",
-                                        },
-                                      }),
-                                    ]
-                                  )
-                                : _c("img", {
-                                    staticClass: "pt-2 rounded-l-lg",
-                                    staticStyle: {
-                                      width: "500px",
-                                      "border-left": "2px solid white",
-                                      "border-top-left-radius": "30px",
-                                      "border-bottom-left-radius": "30px",
-                                      "object-fit": "cover !important",
-                                      height: "200px",
-                                    },
-                                    attrs: { src: result.image, alt: "" },
-                                  }),
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "p-1 pb-2" }, [
-                              _c(
-                                "h5",
-                                { staticClass: "card_heading mb-0 py-2" },
-                                [_vm._v(_vm._s(result.name) + " ")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "p",
-                                { staticClass: "card_text pt-0 text-left" },
-                                [
-                                  _c("b", [_vm._v("Category:")]),
-                                  _vm._v(" " + _vm._s(result.category)),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "p",
-                                {
-                                  staticClass: "loc_p card_text pt-1 text-left",
-                                },
-                                [
-                                  _c("i", {
-                                    staticClass: "mr-2 fa fa-map-marker",
-                                  }),
-                                  _vm._v(_vm._s(result.location)),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("p", { staticClass: "card_text" }, [
-                                _c("span", { staticClass: "rounded" }, [
-                                  _c("i", { staticClass: "mr-2 fa fa-phone" }),
-                                  _vm._v(_vm._s(result.contact)),
-                                ]),
+                                      attrs: { src: result.image, alt: "" },
+                                    }),
                               ]),
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "amount float-right text-right w-100 py-0 my-0",
-                              },
-                              [
+                              _vm._v(" "),
+                              _c("div", { staticClass: "p-1 pb-2" }, [
                                 _c(
-                                  "h6",
-                                  {
-                                    staticClass:
-                                      "amount font-weight-bold text_color_p",
-                                  },
+                                  "h5",
+                                  { staticClass: "card_heading mb-0 py-2" },
+                                  [_vm._v(_vm._s(result.name) + " ")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "p",
+                                  { staticClass: "card_text pt-0 text-left" },
                                   [
-                                    _vm._v("Amount: "),
-                                    _c(
-                                      "span",
-                                      { staticClass: "font-weight-normal" },
-                                      [
-                                        _vm._v(
-                                          "$" + _vm._s(result.investment_needed)
-                                        ),
-                                      ]
-                                    ),
+                                    _c("b", [_vm._v("Category:")]),
+                                    _vm._v(" " + _vm._s(result.category)),
                                   ]
                                 ),
-                              ]
-                            ),
-                          ]
-                        ),
-                      ]
-                    ),
-                  ],
-                  1
-                )
-              }),
-              0
-            ),
-          ]
-        ),
+                                _vm._v(" "),
+                                _c(
+                                  "p",
+                                  {
+                                    staticClass:
+                                      "loc_p card_text pt-1 text-left",
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "mr-2 fa fa-map-marker",
+                                    }),
+                                    _vm._v(_vm._s(result.location)),
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("p", { staticClass: "card_text" }, [
+                                  _c("span", { staticClass: "rounded" }, [
+                                    _c("i", {
+                                      staticClass: "mr-2 fa fa-phone",
+                                    }),
+                                    _vm._v(_vm._s(result.contact)),
+                                  ]),
+                                ]),
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "amount float-right text-right w-100 py-0 my-0 pr-2",
+                                },
+                                [
+                                  _c(
+                                    "h6",
+                                    {
+                                      staticClass:
+                                        "amount font-weight-bold text_color_p",
+                                    },
+                                    [
+                                      _vm._v("Amount: "),
+                                      _c(
+                                        "span",
+                                        { staticClass: "font-weight-normal" },
+                                        [
+                                          _vm._v(
+                                            "$" +
+                                              _vm._s(result.investment_needed)
+                                          ),
+                                        ]
+                                      ),
+                                    ]
+                                  ),
+                                ]
+                              ),
+                            ]
+                          ),
+                        ]
+                      ),
+                    ],
+                    1
+                  )
+                }),
+                0
+              ),
+            ]
+          ),
+          _vm._v(" "),
+          _vm._m(2),
+        ]),
         _vm._v(" "),
-        _vm._m(2),
+        this.ids == "0"
+          ? _c("div", { staticClass: "row mt-4" }, [
+              _c(
+                "h3",
+                {
+                  staticClass:
+                    "text-center font-weight-bold btn-light btn py-3 d-block",
+                },
+                [_vm._v("No Results Found! ")]
+              ),
+            ])
+          : _vm._e(),
       ]),
-      _vm._v(" "),
-      this.ids == "0"
-        ? _c("div", { staticClass: "row mt-4" }, [
-            _c(
-              "h3",
-              {
-                staticClass:
-                  "text-center font-weight-bold btn-light btn py-3 d-block",
-              },
-              [_vm._v("No Results Found! ")]
-            ),
-          ])
-        : _vm._e(),
     ]
   )
 }
@@ -76079,6 +76090,21 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "content_bottom" }, [
+        _c("div", { staticClass: "heading" }, [
+          _c(
+            "h3",
+            {
+              staticClass: "my-5 text-2xl font-bold",
+              staticStyle: { color: "#198754" },
+            },
+            [_vm._v("Listings")]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "clear" }),
+      ]),
+      _vm._v(" "),
       _c("div", { staticClass: "col-sm-3" }, [
         _c(
           "span",

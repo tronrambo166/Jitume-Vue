@@ -2104,3 +2104,35 @@ input[type="checkbox"]:focus {
 ul li a:hover{
     color: #198754 !important;
 }
+
+
+/* For WebKit based browsers like Chrome and Safari */
+.element-class::-webkit-scrollbar {
+    width: 12px; /* width of the scrollbar */
+    height: 12px; /* height of the scrollbar */
+}
+
+.element-class::-webkit-scrollbar-track {
+    background: #f1f1f1; /* color of the track */
+}
+
+.element-class::-webkit-scrollbar-thumb {
+    background-color: #888; /* color of the thumb */
+    border-radius: 6px; /* roundness of the thumb */
+    border: 3px solid #f1f1f1; /* border around the thumb */
+    /* Set the size of the thumb */
+    width: 8px; /* smaller width */
+    height: 40px; /* taller height */
+}
+
+/* For Firefox */
+.element-class {
+    scrollbar-width: thin; /* width of the scrollbar */
+    scrollbar-color: #888 #f1f1f1; /* color of the thumb and track */
+}
+
+/* Custom scrollbar size and appearance for Firefox */
+.element-class {
+    scrollbar-width: thin; /* width of the scrollbar */
+    scrollbar-color: #888 #f1f1f1; /* color of the thumb and track */
+}
