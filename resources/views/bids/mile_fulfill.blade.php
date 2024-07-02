@@ -4,31 +4,23 @@
 
 <!--Hidden Cart view-->
 
-       <div class="row  w-75 m-auto border shadow text-center bg-light" style=" box-shadow: 3px 3px 7px 7px grey; width:70%; background: #fbfbfb;border: 1px solid black;">
-		<div class="container w-75 m-auto" style="box-shadow: 3px 3px 7px 7px grey; background: #fbfbfb;width:75%; margin:auto; text-align:center">
-		
-		 <h2 style="text-align: left;color: black;font-family: sans-serif;">  
-		 	<br> Fulfills a milestone!</h2>
-			
-			<div class="" style="width:100%; margin:auto;">
-			<h4 style="line-height: 28px;font-weight:500; color: #000000a1;font-family: sans-serif;text-align:left;"> Hi,<br> 
-            Hi, A milestone now can be fulfilled for your business {{$business_name}}. You can also start reviewing other bids!
-					</h4>
-			
-			
-			</div>
-		
-		
-				
-				
-				<p style="font-weight: bold; color:#000000a1; line-height:22px; font-family:arial; padding-top:20px; padding-bottom:20px; text-align:center;" class="py-3 text-center"> Thanks! <br />   Jitume Admin.</p>
-
-		</div>
-		
-		
-		</div>
-		
-       
+       <div class="" style="width: 80%; margin: 50px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <div class="container w-75 m-auto" style=" background-color: #fff; width: 80%; margin: auto; padding: 20px; border-radius: 8px;">
+            
+            <h2 style="font-size: 25px; margin-bottom: 20px; text-align: left; color: rgb(16, 165, 16); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Fulfills a milestone!</h2>
+            
+            <div class="content" style="padding: 30px 0px;">
+                <h4 style="font-size: 13px; line-height: 1.8; font-weight: 500; color: #000000a1; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: left;">
+                    Hi,<br>
+                    A milestone {{$mile_name}} for your business {{$business_name}} can now be fulfilled. You can start reviewing other bids as well.
+                </h4>
+            </div>
+            
+            <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Thanks!<br />Jitume <span style="color:rgb(53, 87, 53); ;">Admin.</span></p>
+    
+        </div>
+    </div>
+    
       
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
