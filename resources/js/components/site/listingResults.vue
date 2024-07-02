@@ -1,5 +1,5 @@
 <template>
-    <div class="container bg-white pb-2" id="">
+    <div class="container fixed bg-white pb-2" id="">
 
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -19,7 +19,12 @@
 
 
 
-        
+       <!--  <div class="content_bottom">
+            <div class="heading">
+                <h3 class="my-5 text-center secondary_heading">Listings</h3>
+            </div>
+            <div class="clear"></div>
+        </div> -->
 
 
 
@@ -27,13 +32,7 @@
 
         <div class="mt-4 row flex-column-reverse flex-md-row">
 
-    <div class="w-full">
-                <div class="m-auto map_style">
-                     <div id="map" style="height: 90%;"></div> 
-                </div>
-            </div>
-
-            <div class="w-full pr-4">
+            <div class="col-md-6 pr-4" style="height: 100vh; overflow-y: scroll;">
                 <!-- Price Filter -->
                 <div class="row">
 
@@ -73,75 +72,56 @@
                 </div>
                 <!-- Price Filter -->
 
+                <div class="">
+                    <div v-for="( result, index ) in results" class="listing row  my-3">
+                        <router-link :to="`/listingDetails/${result.id}`" class=" flex  px-4">
 
-                <div class="content_bottom">
-            <div class="heading">
-                <h3 class="my-5 text-center secondary_heading">Featured-Listings</h3>
-            </div>
-            <div class="clear"></div>
-        </div>
+                            <div class="flex items-center gap-4  shadow-sm rounded-[30px] h-[200px]" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                            <!-- image or video -->
 
-                <div class="row py-8">
-     <div id="resource-slider" class="carousel w-full mx-auto">
-  <div class="carousel-inner w-[70%] mx-auto">
-    <!-- Loop through your results to generate carousel items -->
-    <div v-for="(result, index) in Math.ceil(results.length / 3)" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }">
-      <div class="flex justify-center items-center w-full">
-        <!-- Loop through three cards for each carousel item -->
-        <div v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]" class="w-full md:w-[calc(100% / 3 - 2rem)] px-2">
-          <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`">
-            <div class="bg-white mt-4 w-full h-[90%] rounded-xl shadow-md p-3 mb-4 flex flex-col justify-center relative loading">
-              <div class="relative">
-                <video v-if="results[index * 3 + offset].file" controls class="w-full h-[215px] object-cover rounded-lg mb-4">
-                  <source :src="results[index * 3 + offset].file" type="video/mp4">
-                </video>
-                <img v-else :src="results[index * 3 + offset].image" alt="Image" class="w-full h-[215px] object-cover rounded-lg mb-4">
-                <p class="absolute inset-t-4 mb-4 ml-2 font-bold px-2 rounded-xl bottom-4 bg-white text-black text-center py-1 text-xs">
-                  <i class="fa fa-map-marker pr-2"></i>{{ results[index * 3 + offset].location }}
-                </p>
-              </div>
-              <footer class="text-sm text-gray-600">{{ results[index * 3 + offset].category }}</footer>
-              <div class="flex justify-between items-center">
-                <div>
-                  <header>
-                    <h4 class="text-lg mt-2 hover:no-underline hover:text-green-800">{{ results[index * 3 + offset].name }}</h4>
-                  </header>
-                  <p class="text-sm text-gray-700">{{ results[index * 3 + offset].description }}</p>
-                  <p class="text-sm text-gray-700">Contact: {{ results[index * 3 + offset].contact }}</p>
-                </div>
-                <div class="mt-auto flex justify-end">
-                  <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="btn-learn-more inline-block bg-green-800 hover:bg-green-700 text-white py-1 px-2 md:px-3 lg:px-4 rounded text-xs md:text-sm lg:text-base lg:py-2 lg:px-3">Learn More</router-link>
-                </div>
-              </div>
-              <div class="amount float-right text-right w-100 py-0 my-0">
-                <h6 class="amount font-weight-bold text_color_p">Amount: <span class="font-weight-normal">${{ results[index * 3 + offset].investment_needed }}</span></h6>
-              </div>
-            </div>
-          </router-link>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Carousel controls for manual scrolling -->
-  <a class="carousel-control-prev flex items-center justify-center" href="#resource-slider" role="button" data-slide="prev">
-    <div class="bg-black rounded-full p-1 w-6 h-6 flex items-center justify-center">
-      <span class="carousel-control-prev-icon text-white" aria-hidden="true"></span>
-    </div>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next flex items-center justify-center" href="#resource-slider" role="button" data-slide="next">
-    <div class="bg-black rounded-full p-1 w-6 h-6 flex items-center justify-center">
-      <span class="carousel-control-next-icon text-white" aria-hidden="true"></span>
-    </div>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
+                            <div class="rounded-l-lg">
+                                
+                                 <video v-if="result.file" controls style="width:100%; height:200px" alt="">
+                                <source :src="result.file" type="video/mp4">
+                            </video>
 
+                            <img class="pt-2  rounded-l-lg" v-else :src="result.image" style="width:500px; border-left: 2px solid white; border-top-left-radius: 30px; border-bottom-left-radius: 30px; object-fit: cover !important; height:200px;" alt="" />
+
+                            </div>
+
+                           
+
+                            <div class="p-1 pb-2">
+                                <h5 class="card_heading mb-0 py-2">{{ result.name }} </h5>
+
+                                <p class="card_text pt-0 text-left"><b>Category:</b> {{ result.category
+                                }}</p>
+
+                                <p class="loc_p card_text pt-1 text-left"><i class="mr-2 fa fa-map-marker"></i>{{ result.location
+                                }}</p>
+
+                                <p class="card_text"><span class="rounded"><i class="mr-2 fa fa-phone"></i>{{ result.contact
+                                }}</span></p>
+                            </div>
+
+                            <div class="amount float-right text-right w-100 py-0 my-0">
+                                <h6 class="amount font-weight-bold text_color_p">Amount: <span
+                                        class="font-weight-normal">${{
+                                            result.investment_needed }}</span></h6>
+                            </div>
+
+                            </div>
+                        </router-link>
+                    </div>
                 </div>
             </div>
 
-            
+            <div class="col-md-4 ">
+                <div class="m-auto map_style" style=" position: fixed;" >
+                     <div id="map" style="height: 100%; border: 30px; position: fixed;"></div> 
+                </div>
+            </div>
 
         </div>
 

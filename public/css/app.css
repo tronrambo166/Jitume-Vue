@@ -5189,18 +5189,6 @@ textarea.form-control-lg {
   margin-bottom: var(--bs-toast-spacing);
 }
 
-/*form styling*/
-
-.payform{
-  margin-top: 30px !important;
-    width: 50% !important;
-    padding: 10px 20px !important;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;
-}
-
-
-
-
 .toast-header {
   display: flex;
   align-items: center;
@@ -11653,6 +11641,9 @@ video {
 .h-full {
   height: 100%;
 }
+.h-\[180px\] {
+  height: 180px;
+}
 .w-10 {
   width: 2.5rem;
 }
@@ -11900,6 +11891,9 @@ video {
 .rounded-\[20px\] {
   border-radius: 20px;
 }
+.rounded-\[30px\] {
+  border-radius: 30px;
+}
 .rounded-b-\[16px\] {
   border-bottom-right-radius: 16px;
   border-bottom-left-radius: 16px;
@@ -11907,6 +11901,14 @@ video {
 .rounded-b-md {
   border-bottom-right-radius: 0.375rem;
   border-bottom-left-radius: 0.375rem;
+}
+.rounded-l-\[30px\] {
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
+.rounded-l-lg {
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
 }
 .border {
   border-width: 1px;
@@ -11996,6 +11998,13 @@ video {
 .bg-\[\#f8fafc\] {
   --tw-bg-opacity: 1;
   background-color: rgb(248 250 252 / var(--tw-bg-opacity));
+}
+.bg-slate-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity));
+}
+.bg-slate-100\/50 {
+  background-color: rgb(241 245 249 / 0.5);
 }
 .bg-opacity-75 {
   --tw-bg-opacity: 0.75;
@@ -12194,6 +12203,12 @@ video {
 }
 .pt-9 {
   padding-top: 2.25rem;
+}
+.pt-5 {
+  padding-top: 1.25rem;
+}
+.pt-0 {
+  padding-top: 0px;
 }
 .text-left {
   text-align: left;
@@ -12778,10 +12793,4 @@ video {
     padding-left: 3rem;
     padding-right: 3rem;
   }
-}
-
-
-.dropdown-menu li a:hover{
-  text-decoration: none;
-  color:green !important;
 }

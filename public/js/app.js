@@ -10492,26 +10492,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //import {myMap,success,failure,addMarker,addMarkerHome} from '../../../../public/js/map'
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'app_url'],
@@ -75899,7 +75879,7 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container bg-white pb-2", attrs: { id: "" } },
+    { staticClass: "container fixed bg-white pb-2", attrs: { id: "" } },
     [
       _c("link", {
         attrs: {
@@ -75915,310 +75895,159 @@ var render = function () {
       _c("div", { staticClass: "clear" }),
       _vm._v(" "),
       _c("div", { staticClass: "mt-4 row flex-column-reverse flex-md-row" }, [
-        _vm._m(1),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-full pr-4" }, [
-          _vm._m(2),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("p", { staticClass: "ml-1 my-0 text-secondary small" }, [
-              _vm._v(_vm._s(_vm.count) + " businesses found"),
+        _c(
+          "div",
+          {
+            staticClass: "col-md-6 pr-4",
+            staticStyle: { height: "100vh", "overflow-y": "scroll" },
+          },
+          [
+            _vm._m(1),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("p", { staticClass: "ml-1 my-0 text-secondary small" }, [
+                _vm._v(_vm._s(_vm.count) + " businesses found"),
+              ]),
             ]),
-          ]),
-          _vm._v(" "),
-          _vm._m(3),
-          _vm._v(" "),
-          _c("div", { staticClass: "row py-8" }, [
+            _vm._v(" "),
             _c(
               "div",
-              {
-                staticClass: "carousel w-full mx-auto",
-                attrs: { id: "resource-slider" },
-              },
-              [
-                _c(
+              {},
+              _vm._l(_vm.results, function (result, index) {
+                return _c(
                   "div",
-                  { staticClass: "carousel-inner w-[70%] mx-auto" },
-                  _vm._l(
-                    Math.ceil(_vm.results.length / 3),
-                    function (result, index) {
-                      return _c(
-                        "div",
-                        {
-                          key: index,
-                          class: { "carousel-item": true, active: index === 0 },
-                        },
-                        [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "flex justify-center items-center w-full",
+                  { staticClass: "listing row my-3" },
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "flex px-4",
+                        attrs: { to: "/listingDetails/" + result.id },
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "flex items-center gap-4 shadow-sm rounded-[30px] h-[200px]",
+                            staticStyle: {
+                              "box-shadow": "rgba(0, 0, 0, 0.16) 0px 1px 4px",
                             },
-                            _vm._l([0, 1, 2], function (offset) {
-                              return _vm.results[index * 3 + offset]
+                          },
+                          [
+                            _c("div", { staticClass: "rounded-l-lg" }, [
+                              result.file
                                 ? _c(
-                                    "div",
+                                    "video",
                                     {
-                                      key: index * 3 + offset,
-                                      staticClass:
-                                        "w-full md:w-[calc(100% / 3 - 2rem)] px-2",
+                                      staticStyle: {
+                                        width: "100%",
+                                        height: "200px",
+                                      },
+                                      attrs: { controls: "", alt: "" },
                                     },
                                     [
-                                      _c(
-                                        "router-link",
-                                        {
-                                          attrs: {
-                                            to:
-                                              "/listingDetails/" +
-                                              _vm.results[index * 3 + offset]
-                                                .id,
-                                          },
+                                      _c("source", {
+                                        attrs: {
+                                          src: result.file,
+                                          type: "video/mp4",
                                         },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "bg-white mt-4 w-full h-[90%] rounded-xl shadow-md p-3 mb-4 flex flex-col justify-center relative loading",
-                                            },
-                                            [
-                                              _c(
-                                                "div",
-                                                { staticClass: "relative" },
-                                                [
-                                                  _vm.results[
-                                                    index * 3 + offset
-                                                  ].file
-                                                    ? _c(
-                                                        "video",
-                                                        {
-                                                          staticClass:
-                                                            "w-full h-[215px] object-cover rounded-lg mb-4",
-                                                          attrs: {
-                                                            controls: "",
-                                                          },
-                                                        },
-                                                        [
-                                                          _c("source", {
-                                                            attrs: {
-                                                              src: _vm.results[
-                                                                index * 3 +
-                                                                  offset
-                                                              ].file,
-                                                              type: "video/mp4",
-                                                            },
-                                                          }),
-                                                        ]
-                                                      )
-                                                    : _c("img", {
-                                                        staticClass:
-                                                          "w-full h-[215px] object-cover rounded-lg mb-4",
-                                                        attrs: {
-                                                          src: _vm.results[
-                                                            index * 3 + offset
-                                                          ].image,
-                                                          alt: "Image",
-                                                        },
-                                                      }),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "p",
-                                                    {
-                                                      staticClass:
-                                                        "absolute inset-t-4 mb-4 ml-2 font-bold px-2 rounded-xl bottom-4 bg-white text-black text-center py-1 text-xs",
-                                                    },
-                                                    [
-                                                      _c("i", {
-                                                        staticClass:
-                                                          "fa fa-map-marker pr-2",
-                                                      }),
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          _vm.results[
-                                                            index * 3 + offset
-                                                          ].location
-                                                        ) + "\n                "
-                                                      ),
-                                                    ]
-                                                  ),
-                                                ]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "footer",
-                                                {
-                                                  staticClass:
-                                                    "text-sm text-gray-600",
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    _vm._s(
-                                                      _vm.results[
-                                                        index * 3 + offset
-                                                      ].category
-                                                    )
-                                                  ),
-                                                ]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "div",
-                                                {
-                                                  staticClass:
-                                                    "flex justify-between items-center",
-                                                },
-                                                [
-                                                  _c("div", [
-                                                    _c("header", [
-                                                      _c(
-                                                        "h4",
-                                                        {
-                                                          staticClass:
-                                                            "text-lg mt-2 hover:no-underline hover:text-green-800",
-                                                        },
-                                                        [
-                                                          _vm._v(
-                                                            _vm._s(
-                                                              _vm.results[
-                                                                index * 3 +
-                                                                  offset
-                                                              ].name
-                                                            )
-                                                          ),
-                                                        ]
-                                                      ),
-                                                    ]),
-                                                    _vm._v(" "),
-                                                    _c(
-                                                      "p",
-                                                      {
-                                                        staticClass:
-                                                          "text-sm text-gray-700",
-                                                      },
-                                                      [
-                                                        _vm._v(
-                                                          _vm._s(
-                                                            _vm.results[
-                                                              index * 3 + offset
-                                                            ].description
-                                                          )
-                                                        ),
-                                                      ]
-                                                    ),
-                                                    _vm._v(" "),
-                                                    _c(
-                                                      "p",
-                                                      {
-                                                        staticClass:
-                                                          "text-sm text-gray-700",
-                                                      },
-                                                      [
-                                                        _vm._v(
-                                                          "Contact: " +
-                                                            _vm._s(
-                                                              _vm.results[
-                                                                index * 3 +
-                                                                  offset
-                                                              ].contact
-                                                            )
-                                                        ),
-                                                      ]
-                                                    ),
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "div",
-                                                    {
-                                                      staticClass:
-                                                        "mt-auto flex justify-end",
-                                                    },
-                                                    [
-                                                      _c(
-                                                        "router-link",
-                                                        {
-                                                          staticClass:
-                                                            "btn-learn-more inline-block bg-green-800 hover:bg-green-700 text-white py-1 px-2 md:px-3 lg:px-4 rounded text-xs md:text-sm lg:text-base lg:py-2 lg:px-3",
-                                                          attrs: {
-                                                            to:
-                                                              "/listingDetails/" +
-                                                              _vm.results[
-                                                                index * 3 +
-                                                                  offset
-                                                              ].id,
-                                                          },
-                                                        },
-                                                        [_vm._v("Learn More")]
-                                                      ),
-                                                    ],
-                                                    1
-                                                  ),
-                                                ]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "div",
-                                                {
-                                                  staticClass:
-                                                    "amount float-right text-right w-100 py-0 my-0",
-                                                },
-                                                [
-                                                  _c(
-                                                    "h6",
-                                                    {
-                                                      staticClass:
-                                                        "amount font-weight-bold text_color_p",
-                                                    },
-                                                    [
-                                                      _vm._v("Amount: "),
-                                                      _c(
-                                                        "span",
-                                                        {
-                                                          staticClass:
-                                                            "font-weight-normal",
-                                                        },
-                                                        [
-                                                          _vm._v(
-                                                            "$" +
-                                                              _vm._s(
-                                                                _vm.results[
-                                                                  index * 3 +
-                                                                    offset
-                                                                ]
-                                                                  .investment_needed
-                                                              )
-                                                          ),
-                                                        ]
-                                                      ),
-                                                    ]
-                                                  ),
-                                                ]
-                                              ),
-                                            ]
-                                          ),
-                                        ]
-                                      ),
-                                    ],
-                                    1
+                                      }),
+                                    ]
                                   )
-                                : _vm._e()
-                            }),
-                            0
-                          ),
-                        ]
-                      )
-                    }
-                  ),
-                  0
-                ),
-                _vm._v(" "),
-                _vm._m(4),
-                _vm._v(" "),
-                _vm._m(5),
-              ]
+                                : _c("img", {
+                                    staticClass: "pt-2 rounded-l-lg",
+                                    staticStyle: {
+                                      width: "500px",
+                                      "border-left": "2px solid white",
+                                      "border-top-left-radius": "30px",
+                                      "border-bottom-left-radius": "30px",
+                                      "object-fit": "cover !important",
+                                      height: "200px",
+                                    },
+                                    attrs: { src: result.image, alt: "" },
+                                  }),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "p-1 pb-2" }, [
+                              _c(
+                                "h5",
+                                { staticClass: "card_heading mb-0 py-2" },
+                                [_vm._v(_vm._s(result.name) + " ")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "p",
+                                { staticClass: "card_text pt-0 text-left" },
+                                [
+                                  _c("b", [_vm._v("Category:")]),
+                                  _vm._v(" " + _vm._s(result.category)),
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "p",
+                                {
+                                  staticClass: "loc_p card_text pt-1 text-left",
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "mr-2 fa fa-map-marker",
+                                  }),
+                                  _vm._v(_vm._s(result.location)),
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("p", { staticClass: "card_text" }, [
+                                _c("span", { staticClass: "rounded" }, [
+                                  _c("i", { staticClass: "mr-2 fa fa-phone" }),
+                                  _vm._v(_vm._s(result.contact)),
+                                ]),
+                              ]),
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "amount float-right text-right w-100 py-0 my-0",
+                              },
+                              [
+                                _c(
+                                  "h6",
+                                  {
+                                    staticClass:
+                                      "amount font-weight-bold text_color_p",
+                                  },
+                                  [
+                                    _vm._v("Amount: "),
+                                    _c(
+                                      "span",
+                                      { staticClass: "font-weight-normal" },
+                                      [
+                                        _vm._v(
+                                          "$" + _vm._s(result.investment_needed)
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            ),
+                          ]
+                        ),
+                      ]
+                    ),
+                  ],
+                  1
+                )
+              }),
+              0
             ),
-          ]),
-        ]),
+          ]
+        ),
+        _vm._v(" "),
+        _vm._m(2),
       ]),
       _vm._v(" "),
       this.ids == "0"
@@ -76243,16 +76072,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("h3", { staticClass: "text-center font-weight-bold" }, [
       _c("b", { staticClass: "h5 text-success" }),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "w-full" }, [
-      _c("div", { staticClass: "m-auto map_style" }, [
-        _c("div", { staticStyle: { height: "90%" }, attrs: { id: "map" } }),
-      ]),
     ])
   },
   function () {
@@ -76298,81 +76117,18 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "content_bottom" }, [
-      _c("div", { staticClass: "heading" }, [
-        _c("h3", { staticClass: "my-5 text-center secondary_heading" }, [
-          _vm._v("Featured-Listings"),
-        ]),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "clear" }),
+    return _c("div", { staticClass: "col-md-4" }, [
+      _c(
+        "div",
+        { staticClass: "m-auto map_style", staticStyle: { position: "fixed" } },
+        [
+          _c("div", {
+            staticStyle: { height: "100%", border: "30px", position: "fixed" },
+            attrs: { id: "map" },
+          }),
+        ]
+      ),
     ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "carousel-control-prev flex items-center justify-center",
-        attrs: {
-          href: "#resource-slider",
-          role: "button",
-          "data-slide": "prev",
-        },
-      },
-      [
-        _c(
-          "div",
-          {
-            staticClass:
-              "bg-black rounded-full p-1 w-6 h-6 flex items-center justify-center",
-          },
-          [
-            _c("span", {
-              staticClass: "carousel-control-prev-icon text-white",
-              attrs: { "aria-hidden": "true" },
-            }),
-          ]
-        ),
-        _vm._v(" "),
-        _c("span", { staticClass: "sr-only" }, [_vm._v("Previous")]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "carousel-control-next flex items-center justify-center",
-        attrs: {
-          href: "#resource-slider",
-          role: "button",
-          "data-slide": "next",
-        },
-      },
-      [
-        _c(
-          "div",
-          {
-            staticClass:
-              "bg-black rounded-full p-1 w-6 h-6 flex items-center justify-center",
-          },
-          [
-            _c("span", {
-              staticClass: "carousel-control-next-icon text-white",
-              attrs: { "aria-hidden": "true" },
-            }),
-          ]
-        ),
-        _vm._v(" "),
-        _c("span", { staticClass: "sr-only" }, [_vm._v("Next")]),
-      ]
-    )
   },
 ]
 render._withStripped = true
