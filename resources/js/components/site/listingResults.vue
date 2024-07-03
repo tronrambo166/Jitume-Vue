@@ -137,7 +137,7 @@
 
                     <div class="content_bottom">
             <div class="heading">
-                <h3 class="my-5 text-2xl font-bold   " style="color:#198754;">Listings</h3>
+                <h3 class="my-5 text-2xl font-bold   " style="color:#198754;">Businesses</h3>
             </div>
             <div class="clear"></div>
         </div> 

@@ -76501,7 +76501,7 @@ var staticRenderFns = [
               staticClass: "my-5 text-2xl font-bold",
               staticStyle: { color: "#198754" },
             },
-            [_vm._v("Listings")]
+            [_vm._v("Businesses")]
           ),
         ]),
         _vm._v(" "),
