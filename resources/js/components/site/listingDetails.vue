@@ -796,7 +796,12 @@ export default {
         t.form.investors_fee = data.data.data[0].investors_fee;
         if(t.form.investors_fee == null)
           t.form.conv = true;
-        
+        //PopUP
+        if(t.auth_user && !t.form.conv) {
+          $('#investModal').css('display','block');
+          $('#investModal').removeClass('fade');
+        }
+        //PopUp
         t.form.rating = parseFloat(data.data.data[0].rating) / parseFloat(data.data.data[0].rating_count);
         t.form.rating = t.form.rating.toFixed(2);
         t.form.rating_count = data.data.data[0].rating_count;
