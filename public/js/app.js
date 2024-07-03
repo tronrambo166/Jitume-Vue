@@ -9859,7 +9859,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'business'],
   data: function data() {
@@ -72828,7 +72827,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
+                              "border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72847,7 +72846,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
+                              "border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72866,7 +72865,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
+                              "border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72885,7 +72884,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
+                              "border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72904,7 +72903,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
+                              "border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72923,7 +72922,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
+                              "border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72942,7 +72941,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
+                              "border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72972,7 +72971,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
+                              "border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -72991,7 +72990,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
+                              "border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -73010,7 +73009,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
+                              "border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -73029,7 +73028,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
+                              "border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -73048,7 +73047,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
+                              "border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -73067,7 +73066,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
+                              "border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -73086,7 +73085,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
+                              "border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -73107,7 +73106,7 @@ var render = function () {
                           "li",
                           {
                             staticClass:
-                              "border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700",
+                              "border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700",
                           },
                           [
                             _c(
@@ -75178,486 +75177,520 @@ var render = function () {
               _c(
                 "div",
                 {
-                  staticClass: "modal-content",
-                  staticStyle: { "border-radius": "3px" },
+                  staticClass: "modal-content shadow-lg",
+                  staticStyle: { "border-radius": "30px" },
                 },
                 [
-                  _c("div", { staticClass: "modal-header" }, [
-                    _c(
-                      "div",
-                      { staticClass: "card-header w-100" },
-                      [
-                        _c(
-                          "a",
-                          {
-                            staticClass:
-                              "border w-25 d-inline bg-green-700 rounded mr-3 px-3 font-weight-bold",
-                            attrs: { id: "small_fee" },
-                            on: {
-                              click: function ($event) {
-                                return _vm.unlock_choose_button("a")
-                              },
-                            },
-                          },
-                          [
-                            _vm._v(
-                              "\n                  Small fee\n                "
-                            ),
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _vm.subscribed
-                          ? _c(
-                              "a",
-                              {
-                                staticClass:
-                                  "border modal_ok_btn w-25 d-inline btn rounded mr-3 px-3 font-weight-bold",
-                                attrs: { id: "subs" },
-                                on: {
-                                  click: function ($event) {
-                                    return _vm.unlock_choose_button("b")
-                                  },
-                                },
-                              },
-                              [
-                                _vm._v(
-                                  "\n                  Subscription\n                "
-                                ),
-                              ]
-                            )
-                          : _c(
-                              "router-link",
-                              {
-                                staticClass:
-                                  "border w-25 d-inline btn rounded mr-3 px-3 font-weight-bold",
-                                attrs: {
-                                  to: "/subscribe/" + _vm.form.listing_id,
-                                  "data-dismiss": "modal",
-                                  "aria-label": "Close",
-                                },
-                                on: {
-                                  click: function ($event) {
-                                    return _vm.purpose()
-                                  },
-                                },
-                              },
-                              [_vm._v("Subscribe")]
-                            ),
-                      ],
-                      1
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "modal-body" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "row collapse",
-                        attrs: { id: "small_fee_div" },
-                      },
-                      [
-                        _c("div", { staticClass: "col-sm-12 w-100 mx-auto" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "modal-header flex flex-col rounded-[30px]",
+                    },
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "modal-header p-4 border-b border-gray-300",
+                        },
+                        [
                           _c(
                             "div",
                             {
-                              staticClass: "p-3",
-                              staticStyle: {
-                                cursor: "pointer",
-                                background: "white",
-                              },
+                              staticClass: "w-full flex justify-between gap-4",
                             },
                             [
                               _c(
-                                "p",
+                                "a",
                                 {
-                                  staticClass: "text-dark smalls",
-                                  staticStyle: { "font-size": "16px" },
+                                  staticClass:
+                                    "bg-green-600 text-white rounded px-4 py-2 font-semibold cursor-pointer transition duration-200 ease-in-out hover:bg-green-700",
+                                  attrs: { id: "small_fee" },
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.unlock_choose_button("a")
+                                    },
+                                  },
+                                },
+                                [_vm._v("\n      Unlock Fee\n    ")]
+                              ),
+                              _vm._v(" "),
+                              _vm.subscribed
+                                ? _c(
+                                    "a",
+                                    {
+                                      staticClass:
+                                        "bg-blue-600 text-white rounded px-4 py-2 font-semibold cursor-pointer transition duration-200 ease-in-out hover:bg-blue-700",
+                                      attrs: { id: "subs" },
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.unlock_choose_button("b")
+                                        },
+                                      },
+                                    },
+                                    [_vm._v("\n      Subscription\n    ")]
+                                  )
+                                : _c(
+                                    "router-link",
+                                    {
+                                      staticClass:
+                                        "bg-black text-white rounded px-4 py-2 font-semibold cursor-pointer transition duration-200 ease-in-out hover:bg-yellow-700",
+                                      attrs: {
+                                        to: "/subscribe/" + _vm.form.listing_id,
+                                        "data-dismiss": "modal",
+                                        "aria-label": "Close",
+                                      },
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.purpose()
+                                        },
+                                      },
+                                    },
+                                    [_vm._v("\n      Subscribe\n    ")]
+                                  ),
+                            ],
+                            1
+                          ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "modal-body p-4" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "collapse",
+                            attrs: { id: "small_fee_div" },
+                          },
+                          [
+                            _c("div", { staticClass: "w-full mx-auto" }, [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "cursor-pointer bg-white p-4 rounded",
                                 },
                                 [
-                                  _vm._v(
-                                    "This business requests a small fee of\n                    "
+                                  _c(
+                                    "p",
+                                    {
+                                      staticClass:
+                                        "text-gray-800 text-center text-lg",
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n          This business requests a small unclock fee of "
+                                      ),
+                                      _c("b", [
+                                        _vm._v(
+                                          "$" + _vm._s(_vm.form.investors_fee)
+                                        ),
+                                      ]),
+                                      _vm._v(
+                                        " to view their full business information. \n        "
+                                      ),
+                                    ]
                                   ),
-                                  _c("b", [
-                                    _vm._v(
-                                      "$" + _vm._s(_vm.form.investors_fee) + " "
+                                  _vm._v(" "),
+                                  _c(
+                                    "p",
+                                    {
+                                      staticClass:
+                                        "text-center text-lg mx-auto w-[100%] py-3",
+                                    },
+                                    [_vm._v("Do you want to pay now?")]
+                                  ),
+                                ]
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "w-full text-center mt-4" },
+                              [
+                                _c(
+                                  "form",
+                                  {
+                                    attrs: { action: "stripe", method: "get" },
+                                  },
+                                  [
+                                    _c("input", {
+                                      attrs: {
+                                        type: "text",
+                                        hidden: "",
+                                        id: "price",
+                                        name: "price",
+                                      },
+                                      domProps: {
+                                        value: _vm.form.investors_fee,
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "number",
+                                        hidden: "",
+                                        id: "listing_id",
+                                        name: "listing_id",
+                                      },
+                                      domProps: { value: _vm.form.listing_id },
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "flex gap-4 justify-center items-center",
+                                      },
+                                      [
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass:
+                                              "bg-green-600 text-white rounded px-4 py-2 font-semibold cursor-pointer transition duration-200 ease-in-out hover:bg-green-700",
+                                            attrs: { type: "submit" },
+                                            on: {
+                                              click: function ($event) {
+                                                _vm.make_session(
+                                                  _vm.form.listing_id
+                                                )
+                                                _vm.stripeFee(
+                                                  _vm.form.listing_id,
+                                                  _vm.form.investors_fee
+                                                )
+                                              },
+                                            },
+                                          },
+                                          [_vm._v("\n          Ok\n        ")]
+                                        ),
+                                        _vm._v(" "),
+                                        _vm._m(9),
+                                      ]
                                     ),
-                                  ]),
-                                  _vm._v(
-                                    " to view their full business information. Do you want to pay now?\n                  "
+                                  ]
+                                ),
+                              ]
+                            ),
+                          ]
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _vm.subscribed
+                        ? _c(
+                            "div",
+                            { staticClass: "row", attrs: { id: "subs_div" } },
+                            [
+                              _c(
+                                "div",
+                                { staticClass: "col-sm-12 w-100 mx-auto" },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "px-3 py-2",
+                                      staticStyle: {
+                                        cursor: "pointer",
+                                        background: "white",
+                                      },
+                                    },
+                                    [
+                                      _c("p", {
+                                        staticClass:
+                                          "system_ui collapse mb-3 py-1 text-danger smalls bg-light text-center",
+                                        staticStyle: { "font-size": "14px" },
+                                        attrs: { id: "range_error" },
+                                      }),
+                                      _vm._v(" "),
+                                      _vm.token_left > 0 && _vm.trial
+                                        ? _c(
+                                            "p",
+                                            {
+                                              staticClass:
+                                                "mb-3 py-2 text-warning smalls bg-light text-center",
+                                              staticStyle: {
+                                                "font-size": "16px",
+                                              },
+                                            },
+                                            [
+                                              _vm._v(
+                                                "Your \n                     "
+                                              ),
+                                              _vm._v(" "),
+                                              _c("span", [_vm._v("plan")]),
+                                              _vm._v(
+                                                "\n                    expires in "
+                                              ),
+                                              _c("b", [
+                                                _vm._v(
+                                                  _vm._s(_vm.expire) + " "
+                                                ),
+                                              ]),
+                                              _vm._v(
+                                                " days.\n                    "
+                                              ),
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "text-dark small d-block",
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "Are you sure you want to use one of your " +
+                                                      _vm._s(_vm.token_left) +
+                                                      " business information tokens?"
+                                                  ),
+                                                ]
+                                              ),
+                                            ]
+                                          )
+                                        : _c(
+                                            "p",
+                                            {
+                                              staticClass:
+                                                "mb-3 py-2 text-dark smalls bg-light text-center",
+                                              staticStyle: {
+                                                "font-size": "16px",
+                                              },
+                                            },
+                                            [
+                                              _vm._v("Please use "),
+                                              _c("b", [_vm._v("'Small fee'")]),
+                                              _vm._v(" option to unlock"),
+                                            ]
+                                          ),
+                                      _vm._v(" "),
+                                      _vm.plan == "silver" ||
+                                      _vm.plan == "silver-trial"
+                                        ? _c("div", { staticClass: "row" }, [
+                                            _vm.token_left > 0
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "col-md-6" },
+                                                  [
+                                                    _c(
+                                                      "a",
+                                                      {
+                                                        staticClass:
+                                                          "modal_ok_btn w-75 m-auto d-inline btn rounded mr-3 px-3",
+                                                        attrs: {
+                                                          type: "submit",
+                                                        },
+                                                        on: {
+                                                          click: function (
+                                                            $event
+                                                          ) {
+                                                            _vm.make_session(
+                                                              _vm.form
+                                                                .listing_id
+                                                            )
+                                                            _vm.unlockBySubs(
+                                                              _vm.form
+                                                                .listing_id,
+                                                              _vm.subscrib_id,
+                                                              "token"
+                                                            )
+                                                          },
+                                                        },
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                  Use token "
+                                                        ),
+                                                        _c("small", [
+                                                          _vm._v(
+                                                            "(" +
+                                                              _vm._s(
+                                                                _vm.token_left
+                                                              ) +
+                                                              " left)"
+                                                          ),
+                                                        ]),
+                                                      ]
+                                                    ),
+                                                  ]
+                                                )
+                                              : _c(
+                                                  "div",
+                                                  { staticClass: "col-md-6" },
+                                                  [
+                                                    _c(
+                                                      "a",
+                                                      {
+                                                        staticClass:
+                                                          "modal_ok_btn w-75 m-auto d-inline btn rounded mr-3 px-3",
+                                                      },
+                                                      [
+                                                        _c("small", [
+                                                          _c("b", [
+                                                            _vm._v(
+                                                              "(" +
+                                                                _vm._s(
+                                                                  _vm.token_left
+                                                                ) +
+                                                                " token left)"
+                                                            ),
+                                                          ]),
+                                                        ]),
+                                                      ]
+                                                    ),
+                                                  ]
+                                                ),
+                                            _vm._v(" "),
+                                            _vm._m(10),
+                                          ])
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      _vm.plan == "gold" ||
+                                      _vm.plan == "gold-trial"
+                                        ? _c("div", { staticClass: "row" }, [
+                                            _vm.token_left > 0
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "col-md-6" },
+                                                  [
+                                                    _c(
+                                                      "a",
+                                                      {
+                                                        staticClass:
+                                                          "modal_ok_btn w-75 m-auto d-inline btn rounded mr-3 px-3",
+                                                        attrs: {
+                                                          type: "submit",
+                                                        },
+                                                        on: {
+                                                          click: function (
+                                                            $event
+                                                          ) {
+                                                            _vm.make_session(
+                                                              _vm.form
+                                                                .listing_id
+                                                            )
+                                                            _vm.unlockBySubs(
+                                                              _vm.form
+                                                                .listing_id,
+                                                              _vm.subscrib_id,
+                                                              "token"
+                                                            )
+                                                          },
+                                                        },
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                  Use token "
+                                                        ),
+                                                        _c("small", [
+                                                          _vm._v(
+                                                            "(" +
+                                                              _vm._s(
+                                                                _vm.token_left
+                                                              ) +
+                                                              " left)"
+                                                          ),
+                                                        ]),
+                                                      ]
+                                                    ),
+                                                  ]
+                                                )
+                                              : _c(
+                                                  "div",
+                                                  { staticClass: "col-md-6" },
+                                                  [
+                                                    _c(
+                                                      "a",
+                                                      {
+                                                        staticClass:
+                                                          "modal_ok_btn w-75 mx-auto d-block btn rounded mr-3 px-3",
+                                                      },
+                                                      [
+                                                        _c("small", [
+                                                          _c("b", [
+                                                            _vm._v(
+                                                              "(" +
+                                                                _vm._s(
+                                                                  _vm.token_left
+                                                                ) +
+                                                                " token left)"
+                                                            ),
+                                                          ]),
+                                                        ]),
+                                                      ]
+                                                    ),
+                                                  ]
+                                                ),
+                                            _vm._v(" "),
+                                            _vm._m(11),
+                                            _vm._v(" "),
+                                            _vm._m(12),
+                                          ])
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      _vm.plan == "platinum"
+                                        ? _c("div", { staticClass: "row" }, [
+                                            _c(
+                                              "a",
+                                              {
+                                                staticClass:
+                                                  "modal_ok_btn w-75 m-auto btn rounded mr-3 px-3",
+                                                attrs: { type: "submit" },
+                                                on: {
+                                                  click: function ($event) {
+                                                    _vm.make_session(
+                                                      _vm.form.listing_id
+                                                    )
+                                                    _vm.unlockBySubs(
+                                                      _vm.form.listing_id,
+                                                      _vm.subscrib_id,
+                                                      "platinum"
+                                                    )
+                                                  },
+                                                },
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                  Use platinum package\n                "
+                                                ),
+                                              ]
+                                            ),
+                                          ])
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      _vm.plan == "platinum-trial"
+                                        ? _c("div", { staticClass: "row" }, [
+                                            _c(
+                                              "a",
+                                              {
+                                                staticClass:
+                                                  "modal_ok_btn w-75 m-auto btn rounded mr-3 px-3",
+                                                attrs: { type: "submit" },
+                                                on: {
+                                                  click: function ($event) {
+                                                    _vm.make_session(
+                                                      _vm.form.listing_id
+                                                    )
+                                                    _vm.unlockBySubs(
+                                                      _vm.form.listing_id,
+                                                      _vm.subscrib_id,
+                                                      _vm.plan
+                                                    )
+                                                  },
+                                                },
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                  Use trial package\n                "
+                                                ),
+                                              ]
+                                            ),
+                                          ])
+                                        : _vm._e(),
+                                    ]
                                   ),
                                 ]
                               ),
                             ]
-                          ),
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "card-header w-100 text-center" },
-                          [
-                            _c(
-                              "form",
-                              { attrs: { action: "stripe", method: "get" } },
-                              [
-                                _c("input", {
-                                  attrs: {
-                                    type: "text",
-                                    hidden: "",
-                                    id: "price",
-                                    name: "price",
-                                  },
-                                  domProps: { value: _vm.form.investors_fee },
-                                }),
-                                _vm._v(" "),
-                                _c("input", {
-                                  attrs: {
-                                    type: "number",
-                                    hidden: "",
-                                    id: "listing_id",
-                                    name: "listing_id",
-                                  },
-                                  domProps: { value: _vm.form.listing_id },
-                                }),
-                                _vm._v(" "),
-                                _c(
-                                  "a",
-                                  {
-                                    staticClass:
-                                      "modal_ok_btn w-25 d-inline btn rounded mr-3 px-3 font-weight-bold",
-                                    attrs: { type: "submit" },
-                                    on: {
-                                      click: function ($event) {
-                                        _vm.make_session(_vm.form.listing_id)
-                                        _vm.stripeFee(
-                                          _vm.form.listing_id,
-                                          _vm.form.investors_fee
-                                        )
-                                      },
-                                    },
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                  Ok\n                "
-                                    ),
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _vm._m(9),
-                              ]
-                            ),
-                          ]
-                        ),
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _vm.subscribed
-                      ? _c(
-                          "div",
-                          { staticClass: "row", attrs: { id: "subs_div" } },
-                          [
-                            _c(
-                              "div",
-                              { staticClass: "col-sm-12 w-100 mx-auto" },
-                              [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "px-3 py-2",
-                                    staticStyle: {
-                                      cursor: "pointer",
-                                      background: "white",
-                                    },
-                                  },
-                                  [
-                                    _c("p", {
-                                      staticClass:
-                                        "system_ui collapse mb-3 py-1 text-danger smalls bg-light text-center",
-                                      staticStyle: { "font-size": "14px" },
-                                      attrs: { id: "range_error" },
-                                    }),
-                                    _vm._v(" "),
-                                    _vm.token_left > 0 && _vm.trial
-                                      ? _c(
-                                          "p",
-                                          {
-                                            staticClass:
-                                              "mb-3 py-2 text-warning smalls bg-light text-center",
-                                            staticStyle: {
-                                              "font-size": "16px",
-                                            },
-                                          },
-                                          [
-                                            _vm._v(
-                                              "Your \n                     "
-                                            ),
-                                            _vm._v(" "),
-                                            _c("span", [_vm._v("plan")]),
-                                            _vm._v(
-                                              "\n                    expires in "
-                                            ),
-                                            _c("b", [
-                                              _vm._v(_vm._s(_vm.expire) + " "),
-                                            ]),
-                                            _vm._v(
-                                              " days.\n                    "
-                                            ),
-                                            _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "text-dark small d-block",
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "Are you sure you want to use one of your " +
-                                                    _vm._s(_vm.token_left) +
-                                                    " business information tokens?"
-                                                ),
-                                              ]
-                                            ),
-                                          ]
-                                        )
-                                      : _c(
-                                          "p",
-                                          {
-                                            staticClass:
-                                              "mb-3 py-2 text-dark smalls bg-light text-center",
-                                            staticStyle: {
-                                              "font-size": "16px",
-                                            },
-                                          },
-                                          [
-                                            _vm._v("Please use "),
-                                            _c("b", [_vm._v("'Small fee'")]),
-                                            _vm._v(" option to unlock"),
-                                          ]
-                                        ),
-                                    _vm._v(" "),
-                                    _vm.plan == "silver" ||
-                                    _vm.plan == "silver-trial"
-                                      ? _c("div", { staticClass: "row" }, [
-                                          _vm.token_left > 0
-                                            ? _c(
-                                                "div",
-                                                { staticClass: "col-md-6" },
-                                                [
-                                                  _c(
-                                                    "a",
-                                                    {
-                                                      staticClass:
-                                                        "modal_ok_btn w-75 m-auto d-inline btn rounded mr-3 px-3",
-                                                      attrs: { type: "submit" },
-                                                      on: {
-                                                        click: function (
-                                                          $event
-                                                        ) {
-                                                          _vm.make_session(
-                                                            _vm.form.listing_id
-                                                          )
-                                                          _vm.unlockBySubs(
-                                                            _vm.form.listing_id,
-                                                            _vm.subscrib_id,
-                                                            "token"
-                                                          )
-                                                        },
-                                                      },
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        "\n                  Use token "
-                                                      ),
-                                                      _c("small", [
-                                                        _vm._v(
-                                                          "(" +
-                                                            _vm._s(
-                                                              _vm.token_left
-                                                            ) +
-                                                            " left)"
-                                                        ),
-                                                      ]),
-                                                    ]
-                                                  ),
-                                                ]
-                                              )
-                                            : _c(
-                                                "div",
-                                                { staticClass: "col-md-6" },
-                                                [
-                                                  _c(
-                                                    "a",
-                                                    {
-                                                      staticClass:
-                                                        "modal_ok_btn w-75 m-auto d-inline btn rounded mr-3 px-3",
-                                                    },
-                                                    [
-                                                      _c("small", [
-                                                        _c("b", [
-                                                          _vm._v(
-                                                            "(" +
-                                                              _vm._s(
-                                                                _vm.token_left
-                                                              ) +
-                                                              " token left)"
-                                                          ),
-                                                        ]),
-                                                      ]),
-                                                    ]
-                                                  ),
-                                                ]
-                                              ),
-                                          _vm._v(" "),
-                                          _vm._m(10),
-                                        ])
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    _vm.plan == "gold" ||
-                                    _vm.plan == "gold-trial"
-                                      ? _c("div", { staticClass: "row" }, [
-                                          _vm.token_left > 0
-                                            ? _c(
-                                                "div",
-                                                { staticClass: "col-md-6" },
-                                                [
-                                                  _c(
-                                                    "a",
-                                                    {
-                                                      staticClass:
-                                                        "modal_ok_btn w-75 m-auto d-inline btn rounded mr-3 px-3",
-                                                      attrs: { type: "submit" },
-                                                      on: {
-                                                        click: function (
-                                                          $event
-                                                        ) {
-                                                          _vm.make_session(
-                                                            _vm.form.listing_id
-                                                          )
-                                                          _vm.unlockBySubs(
-                                                            _vm.form.listing_id,
-                                                            _vm.subscrib_id,
-                                                            "token"
-                                                          )
-                                                        },
-                                                      },
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        "\n                  Use token "
-                                                      ),
-                                                      _c("small", [
-                                                        _vm._v(
-                                                          "(" +
-                                                            _vm._s(
-                                                              _vm.token_left
-                                                            ) +
-                                                            " left)"
-                                                        ),
-                                                      ]),
-                                                    ]
-                                                  ),
-                                                ]
-                                              )
-                                            : _c(
-                                                "div",
-                                                { staticClass: "col-md-6" },
-                                                [
-                                                  _c(
-                                                    "a",
-                                                    {
-                                                      staticClass:
-                                                        "modal_ok_btn w-75 mx-auto d-block btn rounded mr-3 px-3",
-                                                    },
-                                                    [
-                                                      _c("small", [
-                                                        _c("b", [
-                                                          _vm._v(
-                                                            "(" +
-                                                              _vm._s(
-                                                                _vm.token_left
-                                                              ) +
-                                                              " token left)"
-                                                          ),
-                                                        ]),
-                                                      ]),
-                                                    ]
-                                                  ),
-                                                ]
-                                              ),
-                                          _vm._v(" "),
-                                          _vm._m(11),
-                                          _vm._v(" "),
-                                          _vm._m(12),
-                                        ])
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    _vm.plan == "platinum"
-                                      ? _c("div", { staticClass: "row" }, [
-                                          _c(
-                                            "a",
-                                            {
-                                              staticClass:
-                                                "modal_ok_btn w-75 m-auto btn rounded mr-3 px-3",
-                                              attrs: { type: "submit" },
-                                              on: {
-                                                click: function ($event) {
-                                                  _vm.make_session(
-                                                    _vm.form.listing_id
-                                                  )
-                                                  _vm.unlockBySubs(
-                                                    _vm.form.listing_id,
-                                                    _vm.subscrib_id,
-                                                    "platinum"
-                                                  )
-                                                },
-                                              },
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                  Use platinum package\n                "
-                                              ),
-                                            ]
-                                          ),
-                                        ])
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    _vm.plan == "platinum-trial"
-                                      ? _c("div", { staticClass: "row" }, [
-                                          _c(
-                                            "a",
-                                            {
-                                              staticClass:
-                                                "modal_ok_btn w-75 m-auto btn rounded mr-3 px-3",
-                                              attrs: { type: "submit" },
-                                              on: {
-                                                click: function ($event) {
-                                                  _vm.make_session(
-                                                    _vm.form.listing_id
-                                                  )
-                                                  _vm.unlockBySubs(
-                                                    _vm.form.listing_id,
-                                                    _vm.subscrib_id,
-                                                    _vm.plan
-                                                  )
-                                                },
-                                              },
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                  Use trial package\n                "
-                                              ),
-                                            ]
-                                          ),
-                                        ])
-                                      : _vm._e(),
-                                  ]
-                                ),
-                              ]
-                            ),
-                          ]
-                        )
-                      : _vm._e(),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "modal-footer" }),
+                          )
+                        : _vm._e(),
+                    ]
+                  ),
                 ]
               ),
             ]
@@ -75863,13 +75896,8 @@ var staticRenderFns = [
     return _c(
       "a",
       {
-        staticClass:
-          "modal_cancel_btn btn rounded w-25 d-inline px-3 font-weight-bold m-0",
-        attrs: {
-          type: "button",
-          "data-dismiss": "modal",
-          "aria-label": "Close",
-        },
+        staticClass: "modal_cancel_btn btn rounded px-3 font-weight-bold m-0",
+        attrs: { "data-dismiss": "modal-content", "aria-label": "Close" },
       },
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("Cancel")])]
     )

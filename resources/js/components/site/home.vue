@@ -233,26 +233,26 @@
 <div class="text-center pb-0">
   <div id="category-slider" class="carousel slide">
     <div class="list">
-      <ul class="d-flex list-unstyled justify-content-center text-black py-0 my-0 flex-wrap pt-2">
-        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Arts-Culture" class="text-decoration-none">Arts/Culture</router-link></li>
-        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Auto" class="text-decoration-none">Auto</router-link></li>
-        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Domestic_Home" class="text-decoration-none">Domestic (HomeHelp etc)</router-link></li>
-        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Fashion" class="text-decoration-none">Fashion</router-link></li>
-        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Finance-Accounting" class="text-decoration-none">Finance/Accounting</router-link></li>
-        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Food" class="text-decoration-none">Food</router-link></li>
-        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Legal" class="text-decoration-none">Legal</router-link></li>
+      <ul class="d-flex list-unstyled  justify-content-center text-black py-0 my-0 flex-wrap pt-2">
+        <li class="border border-gray-300 text-black  rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Arts-Culture" class="text-decoration-none">Arts/Culture</router-link></li>
+        <li class="border border-gray-300 text-black  rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Auto" class="text-decoration-none">Auto</router-link></li>
+        <li class="border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Domestic_Home" class="text-decoration-none">Domestic (HomeHelp etc)</router-link></li>
+        <li class="border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Fashion" class="text-decoration-none">Fashion</router-link></li>
+        <li class="border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Finance-Accounting" class="text-decoration-none">Finance/Accounting</router-link></li>
+        <li class="border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Food" class="text-decoration-none">Food</router-link></li>
+        <li class="border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Legal" class="text-decoration-none">Legal</router-link></li>
       </ul>
     </div>
     <div class="carousel-inner">
       <ul class="d-flex list-unstyled justify-content-center text-black py-0 my-0 flex-wrap pt-2">
-        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Media-Internet" class="text-decoration-none">Media/Internet</router-link></li>
-        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Pets" class="text-decoration-none">Pets</router-link></li>
-        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Retail" class="text-decoration-none">Retail</router-link></li>
-        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Real-State" class="text-decoration-none">Real Estate</router-link></li>
-        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Security" class="text-decoration-none">Security</router-link></li>
-        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Sports-Gaming" class="text-decoration-none">Sports/Gaming</router-link></li>
-        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Technology-Communications" class="text-decoration-none">Technology/Communications</router-link></li>
-        <li class="border border-gray-300 rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Other" class="text-decoration-none">Other</router-link></li>
+        <li class="border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Media-Internet" class="text-decoration-none">Media/Internet</router-link></li>
+        <li class="border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Pets" class="text-decoration-none">Pets</router-link></li>
+        <li class="border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Retail" class="text-decoration-none">Retail</router-link></li>
+        <li class="border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Real-State" class="text-decoration-none">Real Estate</router-link></li>
+        <li class="border border-gray-300  text-black rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Security" class="text-decoration-none">Security</router-link></li>
+        <li class="border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Sports-Gaming" class="text-decoration-none">Sports/Gaming</router-link></li>
+        <li class="border border-gray-300 text-black rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Technology-Communications" class="text-decoration-none">Technology/Communications</router-link></li>
+        <li class="border border-gray-300  text-black rounded-md p-0.5 mx-1 hover:text-green-700"><router-link to="category/Other" class="text-decoration-none">Other</router-link></li>
       </ul>
     </div>
   </div>

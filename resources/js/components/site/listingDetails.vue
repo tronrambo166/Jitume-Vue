@@ -501,61 +501,60 @@
     <div class="modal fade" id="investModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
       aria-hidden="true">
       <div class="modal-dialog" role="document">
-        <div class="modal-content" style="border-radius:3px;">
-          <div class="modal-header">
+        <div class="modal-content shadow-lg" style="border-radius:30px;">
+          <div class="modal-header flex flex-col rounded-[30px]">
+<div class="modal-header  p-4 border-b border-gray-300">
+  <div class="w-full flex justify-between gap-4">
+    <a id="small_fee" @click="unlock_choose_button('a');"
+      class="bg-green-600 text-white rounded px-4 py-2 font-semibold cursor-pointer transition duration-200 ease-in-out hover:bg-green-700">
+      Unlock Fee
+    </a>
 
-            <div class="card-header w-100">
-              <a id="small_fee" @click="unlock_choose_button('a');"
-                  class="border w-25 d-inline  bg-green-700 rounded mr-3 px-3 font-weight-bold">
-                  Small fee
-                </a>
+    <a v-if="subscribed" id="subs" @click="unlock_choose_button('b');"
+      class="bg-blue-600 text-white rounded px-4 py-2 font-semibold cursor-pointer transition duration-200 ease-in-out hover:bg-blue-700">
+      Subscription
+    </a>
+    
+    <router-link @click="purpose();" :to="`/subscribe/${form.listing_id}`" v-else data-dismiss="modal" aria-label="Close"
+      class="bg-black text-white rounded px-4 py-2 font-semibold cursor-pointer transition duration-200 ease-in-out hover:bg-yellow-700">
+      Subscribe
+    </router-link>
+  </div>
+</div>
 
-                <a v-if="subscribed" id="subs" @click="unlock_choose_button('b');"
-                  class="border modal_ok_btn w-25 d-inline  btn rounded mr-3 px-3 font-weight-bold">
-                  Subscription
-                </a>
+<div class="modal-body p-4">
+  <div class="collapse" id="small_fee_div">
+    <div class="w-full mx-auto">
+      <div class="cursor-pointer bg-white p-4 rounded ">
+        <p class="text-gray-800 text-center text-lg">
+          This business requests a small unclock fee of <b>${{ form.investors_fee }}</b> to view their full business information. 
+        </p>
 
-              <router-link @click = "purpose();" :to="`/subscribe/${form.listing_id}`"
-              v-else data-dismiss="modal" aria-label="Close"
+        <p class="text-center  text-lg mx-auto w-[100%] py-3">Do you want to pay now?</p>
+      </div>
+    </div>
 
-              class="border w-25 d-inline  btn rounded mr-3 px-3 font-weight-bold">Subscribe</router-link>
-          
-            </div>
+    <div class="w-full text-center mt-4">
+      <form action="stripe" method="get">
+        <input type="text" hidden id="price" name="price" :value="form.investors_fee">
+        <input type="number" hidden id="listing_id" name="listing_id" :value="form.listing_id">
+        <div class="flex gap-4 justify-center items-center">
 
-          </div>
+        <a @click="make_session(form.listing_id);stripeFee(form.listing_id, form.investors_fee);" type="submit"
+          class="bg-green-600 text-white rounded px-4 py-2 font-semibold cursor-pointer transition duration-200 ease-in-out hover:bg-green-700">
+          Ok
+        </a>
+       <a  data-dismiss="modal-content" aria-label="Close" class="modal_cancel_btn btn rounded px-3 font-weight-bold m-0">
+  <span aria-hidden="true">Cancel</span>
+</a>
 
+        <!-- <a type="button" data-dismiss="modal" aria-label="Close" class="modal_cancel_btn btn rounded w-25 d-inline px-3 font-weight-bold m-0"><span aria-hidden="true">Cancel</span></a> -->
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
-          <div class="modal-body">
-
-            <div class="row collapse" id="small_fee_div">
-              <div class="col-sm-12 w-100 mx-auto">
-                <div style="cursor:pointer;background:white;" class="p-3">
-
-                  <p style="font-size:16px;" class="text-dark smalls">This business requests a small fee of
-                    <b>${{ form.investors_fee }} </b> to view their full business information. Do you want to pay now?
-                  </p>
-                </div>
-              </div>
-
-
-              <div class="card-header w-100 text-center">
-              <form action="stripe" method="get">
-                <input type="text" hidden id="price" name="price" :value="form.investors_fee">
-                <input type="number" hidden id="listing_id" name="listing_id" :value="form.listing_id">
-
-
-                <a @click="make_session(form.listing_id);stripeFee(form.listing_id, form.investors_fee);" type="submit"
-                  class="modal_ok_btn w-25 d-inline  btn rounded mr-3 px-3 font-weight-bold">
-                  Ok
-                </a>
-                <a type="button" class="modal_cancel_btn btn rounded w-25 d-inline px-3 font-weight-bold m-0 "
-                  data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">Cancel</span>
-                </a>
-              </form>
-            </div>
-
-            </div>
 
 
             <!-- SUBSCRIBE DIV -->
@@ -650,11 +649,11 @@
 
           </div>
 
-          <div class="modal-footer">
+          <!-- <div class="modal-footer">
 
 
 
-          </div>
+          </div> -->
 
         </div>
       </div>

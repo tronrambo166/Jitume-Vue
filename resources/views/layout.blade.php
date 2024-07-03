@@ -339,15 +339,16 @@
     <div class="container mx-auto gap-[220px] flex flex-col md:flex-row justify-center md:justify-between gap-6 w-[959px]">
         <div class="md:w-1/3 flex flex-col items-start">
     <ul class="list-none">
-        <li><a onclick="c_to_actionS();" data-target="#loginModal" data-toggle="modal" class=" "><span id="c_to_ac">Sign Up/Sign In as A Project Manager</span></a></li>
-        <li><a onclick="c_to_actionS();" data-target="#loginModal" data-toggle="modal" class=" "><span id="c_to_ac">Add a Business Service</span></a></li>
+        <li><a onclick="c_to_actionS();" data-target="#loginModal" data-toggle="modal" class="text-[#3B856B] " style="color:#3B856B !important;"><span id="c_to_ac">Sign Up/Sign In as A Project Manager</span></a></li>
+        <li><a onclick="c_to_actionS();" data-target="#loginModal" data-toggle="modal" class=" text-[]" style="color:#3B856B !important ;"><span id="c_to_ac">Add a Business Service</span></a></li>
         <li><a href="#" class="text-[#3B856B] hover:text-green-700">How It Works</a></li>
             </ul>
 </div>
 
       <div class="md:w-1/3 flex flex-col items-start">
-    <ul class="list-none text-center">
-        <li><a href="#" class="text-[#3B856B] hover:text-green-700">FAQs -</a></li>
+    <ul class="list-none ">
+        <li><a href="#" class="text-[#3B856B] hover:text-green-700">About</a></li>
+        <li><a href="#" class="text-[#3B856B] hover:text-green-700">FAQs</a></li>
         <li><a href="#" class="text-[#3B856B] hover:text-green-700">Contact Us</a></li>
         <li><a href="#" class="text-[#3B856B] hover:text-green-700">Help</a></li>
     </ul>
