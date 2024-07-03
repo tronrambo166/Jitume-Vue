@@ -506,7 +506,7 @@
 
             <div class="card-header w-100">
               <a id="small_fee" @click="unlock_choose_button('a');"
-                  class="border w-25 d-inline  btn rounded mr-3 px-3 font-weight-bold">
+                  class="border w-25 d-inline  bg-green-700 rounded mr-3 px-3 font-weight-bold">
                   Small fee
                 </a>
 

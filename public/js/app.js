@@ -75191,7 +75191,7 @@ var render = function () {
                           "a",
                           {
                             staticClass:
-                              "border w-25 d-inline btn rounded mr-3 px-3 font-weight-bold",
+                              "border w-25 d-inline bg-green-700 rounded mr-3 px-3 font-weight-bold",
                             attrs: { id: "small_fee" },
                             on: {
                               click: function ($event) {
