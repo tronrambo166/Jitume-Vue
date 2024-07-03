@@ -11366,6 +11366,9 @@ video {
 .order-1 {
   order: 1;
 }
+.float-end {
+  float: inline-end;
+}
 .float-right {
   float: right;
 }
@@ -11737,6 +11740,18 @@ video {
 .w-\[400px\] {
   width: 400px;
 }
+.w-\[40px\] {
+  width: 40px;
+}
+.w-\[90px\] {
+  width: 90px;
+}
+.w-auto {
+  width: auto;
+}
+.w-\[110px\] {
+  width: 110px;
+}
 .max-w-\[1440px\] {
   max-width: 1440px;
 }
@@ -11824,6 +11839,9 @@ video {
 }
 .gap-\[24px\] {
   gap: 24px;
+}
+.gap-\[70px\] {
+  gap: 70px;
 }
 .space-x-4 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
