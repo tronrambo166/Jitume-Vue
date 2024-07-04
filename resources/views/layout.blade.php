@@ -340,7 +340,7 @@
         <div class="md:w-1/3 flex flex-col items-start">
     <ul class="list-none">
         <li><a onclick="c_to_actionS();" data-target="#loginModal" data-toggle="modal" class="text-[#3B856B] " style="color:#3B856B !important;"><span id="c_to_ac">Sign Up/Sign In as A Project Manager</span></a></li>
-        <li><a onclick="c_to_actionS();" data-target="#loginModal" data-toggle="modal" class=" text-[]" style="color:#3B856B !important ;"><span id="c_to_ac">Add Business Service</span></a></li>
+        <li><a onclick="c_to_actionS();" data-target="#loginModal" data-toggle="modal" class=" text-[]" style="color:#3B856B !important ;"><span id="c_to_ac">Add a Service</span></a></li>
         <li><a href="#" class="text-[#3B856B] hover:text-green-700">How It Works</a></li>
             </ul>
 </div>
