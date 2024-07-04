@@ -19,7 +19,7 @@
 <!-- top -->
 
 
-<div>
+<div class="py-2">
     
     <form id="form" @submit.prevent="search();" method="post">
 
@@ -100,14 +100,45 @@
       
     </form>
 
+
+  
 <div class="flex py-4  gap-4">
 
-                    <div class="col-sm-3"><span style="background:black;font-size: 11px;" class="btn text-light px-2 py-1 small rounded">Filter by
+                  <!--   <div class="col-sm-3"><span style="background:black;font-size: 11px;" class="btn text-light px-2 py-1 small rounded">Filter by
+                            Turnover Range:</span>
+                    </div>   -->
+
+
+ 
+
+                </div>
+
+</div>
+
+
+
+
+
+        <div class="mt-4 row flex-column-reverse flex-md-row">
+
+
+
+            <div class="col-md-6 pr-4 element-class" style="height: 100vh; overflow-y: scroll;  overflow-anchor: auto;">
+                <!-- Price Filter -->
+
+
+
+
+                <div class="row">
+
+                    <div class="content_bottom">
+
+                        <div class="flex">
+<div class="col-sm-3"><span style="background:black;font-size: 11px;" class="btn text-light px-2 py-1 small rounded">Filter by
                             Turnover Range:</span>
                     </div>  
 
-
- <div id="" class="col-sm-3 mt-1"> 
+<div id="" class="col-sm-6 mt-1"> 
                         <div id="slider" class=""> </div>
                         <div class="row mt-3">
                             <div class="col-6  mt-1">
@@ -119,23 +150,8 @@
                         </div>
                     </div>
 
-                </div>
+                    </div>
 
-</div>
-
-  
-
-
-
-
-
-        <div class="mt-4 row flex-column-reverse flex-md-row">
-
-            <div class="col-md-6 pr-4 element-class" style="height: 100vh; overflow-y: scroll;  overflow-anchor: auto;">
-                <!-- Price Filter -->
-                <div class="row">
-
-                    <div class="content_bottom">
             <div class="heading">
                 <h3 class="my-5 text-2xl font-bold   " style="color:#198754;">Businesses</h3>
             </div>
@@ -164,6 +180,9 @@
                     <p class="ml-1 my-0 text-gray-600 small">{{ count }} businesses found<!-- in your location --></p>
                 </div>
                 <!-- Price Filter -->
+
+
+
 
                 <div class="">
                     <div v-for="( result, index ) in results" class="listing row  my-3">
@@ -204,7 +223,7 @@
                                 }}</span></p>
 
                                 <div class="amount float-right mt-4 text-right w-100 py-0 my-0 pr-2 ">
-                                <h6 class="amount whitespace-nowrap font-extrabold text-black">Amount: <span
+                                <h6 class="amount whitespace-nowrap font-extrabold text-black">Amount Required: <span
                                         class="font-weight-normal">${{
                                             result.investment_needed }}</span></h6>
 

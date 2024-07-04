@@ -10610,6 +10610,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //import {myMap,success,failure,addMarker,addMarkerHome} from '../../../../public/js/map'
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'app_url'],
@@ -75897,7 +75916,11 @@ var staticRenderFns = [
       "a",
       {
         staticClass: "modal_cancel_btn btn rounded px-3 font-weight-bold m-0",
-        attrs: { "data-dismiss": "modal-content", "aria-label": "Close" },
+        attrs: {
+          "data-dismiss": "modal-content",
+          "aria-label": "Close",
+          onclick: "closePop()",
+        },
       },
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("Cancel")])]
     )
@@ -76042,7 +76065,7 @@ var render = function () {
         _vm._v(" "),
         _c("div", { staticClass: "clear" }),
         _vm._v(" "),
-        _c("div", [
+        _c("div", { staticClass: "py-2" }, [
           _c(
             "form",
             {
@@ -76159,7 +76182,7 @@ var render = function () {
             ]
           ),
           _vm._v(" "),
-          _vm._m(4),
+          _c("div", { staticClass: "flex py-4 gap-4" }),
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "mt-4 row flex-column-reverse flex-md-row" }, [
@@ -76174,7 +76197,7 @@ var render = function () {
               },
             },
             [
-              _vm._m(5),
+              _vm._m(4),
               _vm._v(" "),
               _c("div", { staticClass: "row" }, [
                 _c("p", { staticClass: "ml-1 my-0 text-gray-600 small" }, [
@@ -76317,7 +76340,7 @@ var render = function () {
                                                 "amount whitespace-nowrap font-extrabold text-black",
                                             },
                                             [
-                                              _vm._v("Amount: "),
+                                              _vm._v("Amount Required: "),
                                               _c(
                                                 "span",
                                                 {
@@ -76354,7 +76377,7 @@ var render = function () {
             ]
           ),
           _vm._v(" "),
-          _vm._m(6),
+          _vm._m(5),
         ]),
         _vm._v(" "),
         this.ids == "0"
@@ -76490,45 +76513,41 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex py-4 gap-4" }, [
-      _c("div", { staticClass: "col-sm-3" }, [
-        _c(
-          "span",
-          {
-            staticClass: "btn text-light px-2 py-1 small rounded",
-            staticStyle: { background: "black", "font-size": "11px" },
-          },
-          [_vm._v("Filter by\n                            Turnover Range:")]
-        ),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-3 mt-1", attrs: { id: "" } }, [
-        _c("div", { attrs: { id: "slider" } }),
-        _vm._v(" "),
-        _c("div", { staticClass: "row mt-3" }, [
-          _c("div", { staticClass: "col-6 mt-1" }, [
-            _c("span", {
-              staticClass: "py-0 btn btn-light",
-              attrs: { id: "price_low", name: "min" },
-            }),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
-            _c("span", {
-              staticClass: "float-right py-0 btn btn-light",
-              attrs: { id: "price_high", name: "min" },
-            }),
-          ]),
-        ]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "content_bottom" }, [
+        _c("div", { staticClass: "flex" }, [
+          _c("div", { staticClass: "col-sm-3" }, [
+            _c(
+              "span",
+              {
+                staticClass: "btn text-light px-2 py-1 small rounded",
+                staticStyle: { background: "black", "font-size": "11px" },
+              },
+              [_vm._v("Filter by\n                            Turnover Range:")]
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-6 mt-1", attrs: { id: "" } }, [
+            _c("div", { attrs: { id: "slider" } }),
+            _vm._v(" "),
+            _c("div", { staticClass: "row mt-3" }, [
+              _c("div", { staticClass: "col-6 mt-1" }, [
+                _c("span", {
+                  staticClass: "py-0 btn btn-light",
+                  attrs: { id: "price_low", name: "min" },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
+                _c("span", {
+                  staticClass: "float-right py-0 btn btn-light",
+                  attrs: { id: "price_high", name: "min" },
+                }),
+              ]),
+            ]),
+          ]),
+        ]),
+        _vm._v(" "),
         _c("div", { staticClass: "heading" }, [
           _c(
             "h3",

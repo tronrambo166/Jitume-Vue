@@ -544,8 +544,8 @@
           class="bg-green-600 text-white rounded px-4 py-2 font-semibold cursor-pointer transition duration-200 ease-in-out hover:bg-green-700">
           Ok
         </a>
-       <a  data-dismiss="modal-content" aria-label="Close" class="modal_cancel_btn btn rounded px-3 font-weight-bold m-0">
-  <span aria-hidden="true">Cancel</span>
+       <a  data-dismiss="modal-content" aria-label="Close" onclick="closePop()"  class="modal_cancel_btn btn rounded px-3 font-weight-bold m-0">
+  <span   aria-hidden="true">Cancel</span>
 </a>
 
         <!-- <a type="button" data-dismiss="modal" aria-label="Close" class="modal_cancel_btn btn rounded w-25 d-inline px-3 font-weight-bold m-0"><span aria-hidden="true">Cancel</span></a> -->
