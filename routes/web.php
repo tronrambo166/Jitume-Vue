@@ -197,10 +197,10 @@ Route::post('reset/{remail}', 'testController@reset')->name('reset');
 
 Route::get('/clear', function() {
    \Artisan::call('config:cache');
-   // \Artisan::call('view:clear');
-    //\Artisan::call('route:clear');
-    //\Artisan::call('cache:clear');
-    //dd("Cache is cleared");
+    \Artisan::call('view:clear');
+    \Artisan::call('route:clear');
+    \Artisan::call('cache:clear');
+    dd("Cache is cleared");
 
 });
 

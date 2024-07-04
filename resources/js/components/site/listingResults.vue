@@ -223,9 +223,13 @@
                                 }}</span></p>
 
                                 <div class="amount float-right mt-4 text-right w-100 py-0 my-0 pr-2 ">
-                                <h6 class="amount whitespace-nowrap font-extrabold text-black">Amount Required: <span
+                                    <p class="small amount whitespace-nowrap font-extrabold text-black">Yearly Turnover: <span
                                         class="font-weight-normal">${{
-                                            result.investment_needed }}</span></h6>
+                                            result.y_turnover }}</span></p>
+
+                                <p class="my-1 small amount whitespace-nowrap font-extrabold text-black">Amount Required: <span
+                                        class="font-weight-normal">${{
+                                            result.investment_needed }}</span></p>
 
 
                                 </div>

@@ -199,7 +199,8 @@
       <!-- End of Search Options and Button Section -->
 
 
-      
+  <input type="text" name="lat" id="lat" hidden value="">
+  <input type="text" name="lng" id="lng" hidden value="">    
     </form>
 
     <div class="my-5 py-0">

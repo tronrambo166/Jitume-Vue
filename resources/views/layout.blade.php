@@ -2029,7 +2029,7 @@
         }
 
 
-function closePop(){ $('#investmodal').css('display', 'none'); }
+function closePop(){ $('#investModal').css('display', 'none'); }
 
 
         

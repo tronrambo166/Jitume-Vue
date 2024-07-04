@@ -8563,6 +8563,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -10356,6 +10357,10 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+//
+//
+//
+//
 //
 //
 //
@@ -67764,7 +67769,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -67894,7 +67899,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -68135,7 +68140,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\n    Name: "),
+        _vm._v("\r\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68170,7 +68175,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Desc: "),
+        _vm._v("\r\n\r\n     Desc: "),
         _c("textarea", {
           directives: [
             {
@@ -68207,7 +68212,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Cat Id:  "),
+        _vm._v("\r\n\r\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -68238,7 +68243,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Brand Id:  "),
+        _vm._v("\r\n\r\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -68269,7 +68274,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Price:  "),
+        _vm._v("\r\n\r\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -68299,7 +68304,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n     Qty:  "),
+        _vm._v("\r\n\r\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -68329,7 +68334,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n   Image: "),
+        _vm._v("\r\n\r\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -68391,7 +68396,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -68440,7 +68445,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\n    Name: "),
+        _vm._v("\r\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68475,7 +68480,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Desc: "),
+        _vm._v("\r\n\r\n     Desc: "),
         _c("input", {
           directives: [
             {
@@ -68506,7 +68511,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Cat Id:  "),
+        _vm._v("\r\n\r\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -68537,7 +68542,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Brand Id:  "),
+        _vm._v("\r\n\r\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -68568,7 +68573,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Price:  "),
+        _vm._v("\r\n\r\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -68598,7 +68603,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n     Qty:  "),
+        _vm._v("\r\n\r\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -68628,7 +68633,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n   Image: "),
+        _vm._v("\r\n\r\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -68690,7 +68695,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -72774,6 +72779,26 @@ var render = function () {
                           _vm._m(3),
                         ]
                       ),
+                      _vm._v(" "),
+                      _c("input", {
+                        attrs: {
+                          type: "text",
+                          name: "lat",
+                          id: "lat",
+                          hidden: "",
+                          value: "",
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c("input", {
+                        attrs: {
+                          type: "text",
+                          name: "lng",
+                          id: "lng",
+                          hidden: "",
+                          value: "",
+                        },
+                      }),
                     ]
                   ),
                   _vm._v(" "),
@@ -75253,7 +75278,7 @@ var render = function () {
                                     "router-link",
                                     {
                                       staticClass:
-                                        "bg-black text-white rounded px-4 py-2 font-semibold cursor-pointer transition duration-200 ease-in-out hover:bg-yellow-700",
+                                        "border text-dark rounded px-4 py-2 font-semibold cursor-pointer transition duration-200 ease-in-out",
                                       attrs: {
                                         to: "/subscribe/" + _vm.form.listing_id,
                                         "data-dismiss": "modal",
@@ -75915,11 +75940,11 @@ var staticRenderFns = [
     return _c(
       "a",
       {
-        staticClass: "modal_cancel_btn btn rounded px-3 font-weight-bold m-0",
+        staticClass: "border rounded px-3 font-weight-bold m-0",
         attrs: {
-          "data-dismiss": "modal-content",
+          "data-dismiss": "modal",
           "aria-label": "Close",
-          onclick: "closePop()",
+          onclick: "closePop();",
         },
       },
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("Cancel")])]
@@ -76334,10 +76359,34 @@ var render = function () {
                                         },
                                         [
                                           _c(
-                                            "h6",
+                                            "p",
                                             {
                                               staticClass:
-                                                "amount whitespace-nowrap font-extrabold text-black",
+                                                "small amount whitespace-nowrap font-extrabold text-black",
+                                            },
+                                            [
+                                              _vm._v("Yearly Turnover: "),
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "font-weight-normal",
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "$" +
+                                                      _vm._s(result.y_turnover)
+                                                  ),
+                                                ]
+                                              ),
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "p",
+                                            {
+                                              staticClass:
+                                                "my-1 small amount whitespace-nowrap font-extrabold text-black",
                                             },
                                             [
                                               _vm._v("Amount Required: "),
