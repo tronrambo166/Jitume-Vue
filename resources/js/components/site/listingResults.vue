@@ -246,9 +246,9 @@
                 </div>
             </div>
 
-           <!--  <div class="col-md-4 ">
+           <!--  <div class="col-md-4">
                 <div class="m-auto map_style" >
-                     <div id="map" style="height: 100%; border: 30px; "></div> 
+                     <div id="map" style="height: 100%; border: 30px;"></div> 
                 </div>
             </div> -->
 
