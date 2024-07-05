@@ -80,7 +80,7 @@
       <li class="text-sm font-bold text-gray-800 hover:text-green-700">
         <router-link to="/home" active-class="text-green-800" class="hover:text-green-700">Home</router-link>
       </li>
-      <li class="text-sm font-bold text-gray-800 hover:text-green-700">
+      <li class="text-sm font-bold text-green-800 hover:text-green-700">
         <router-link to="/services" class="hover:text-green-700">Services</router-link>
       </li>
 
