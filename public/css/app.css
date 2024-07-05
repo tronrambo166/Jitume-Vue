@@ -11990,6 +11990,14 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
+.bg-slate-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity));
+}
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity));
+}
 .bg-opacity-75 {
   --tw-bg-opacity: 0.75;
 }
@@ -12385,6 +12393,14 @@ video {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
+.text-slate-800 {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity));
+}
+.text-slate-700 {
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity));
+}
 .opacity-0 {
   opacity: 0;
 }
@@ -12435,10 +12451,6 @@ video {
 .hover\:bg-green-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(21 128 61 / var(--tw-bg-opacity));
-}
-.hover\:bg-yellow-700:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(161 98 7 / var(--tw-bg-opacity));
 }
 .hover\:text-green-400:hover {
   --tw-text-opacity: 1;
@@ -12785,4 +12797,14 @@ video {
     padding-left: 3rem;
     padding-right: 3rem;
   }
+}
+
+.glass-bg {
+    background: rgba(255, 255, 255, 0.2); /* White background with 20% opacity */
+    backdrop-filter: blur(10px); /* Blurs the content behind the element */
+    -webkit-backdrop-filter: blur(10px); /* For Safari support */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 20px; /* Internal padding */
+    color: #fff; /* White text color */
 }

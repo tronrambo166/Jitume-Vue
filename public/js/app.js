@@ -9860,6 +9860,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'business'],
   data: function data() {
@@ -67769,7 +67774,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -67899,7 +67904,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -68140,7 +68145,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\r\n    Name: "),
+        _vm._v("\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68175,7 +68180,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Desc: "),
+        _vm._v("\n\n     Desc: "),
         _c("textarea", {
           directives: [
             {
@@ -68212,7 +68217,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Cat Id:  "),
+        _vm._v("\n\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -68243,7 +68248,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Brand Id:  "),
+        _vm._v("\n\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -68274,7 +68279,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Price:  "),
+        _vm._v("\n\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -68304,7 +68309,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n     Qty:  "),
+        _vm._v("\n\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -68334,7 +68339,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n   Image: "),
+        _vm._v("\n\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -68396,7 +68401,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -68445,7 +68450,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\r\n    Name: "),
+        _vm._v("\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68480,7 +68485,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Desc: "),
+        _vm._v("\n\n     Desc: "),
         _c("input", {
           directives: [
             {
@@ -68511,7 +68516,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Cat Id:  "),
+        _vm._v("\n\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -68542,7 +68547,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Brand Id:  "),
+        _vm._v("\n\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -68573,7 +68578,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Price:  "),
+        _vm._v("\n\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -68603,7 +68608,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n     Qty:  "),
+        _vm._v("\n\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -68633,7 +68638,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n   Image: "),
+        _vm._v("\n\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -68695,7 +68700,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -74556,7 +74561,7 @@ var render = function () {
           _c("div", { staticClass: "col-md-4 px-6 pt-6" }, [
             _c("div", { staticClass: "div" }, [
               _c("div", { staticClass: "text-[#0A0A0A99] font-semibold" }, [
-                _vm._v("More business informations"),
+                _vm._v("More business information"),
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "py-3 font-bold" }, [
@@ -74578,7 +74583,8 @@ var render = function () {
                       ? _c(
                           "a",
                           {
-                            staticClass: "",
+                            staticClass:
+                              "bg-green-700 w-[45%] text-center text-white rounded-[16px]",
                             attrs: {
                               "data-toggle": "modal",
                               "data-target": "#reviewModal",
@@ -74615,7 +74621,7 @@ var render = function () {
             _c("div", [
               _c("div", { staticClass: "relative" }, [
                 _c("img", {
-                  staticClass: "shadow rounded-[16px]",
+                  staticClass: "shadow-sm rounded-[16px]",
                   staticStyle: { width: "100%", "max-height": "400px" },
                   attrs: { src: _vm.form.image, alt: "" },
                 }),
@@ -74682,7 +74688,9 @@ var render = function () {
                   !_vm.form.conv || !_vm.auth_user
                     ? _c(
                         "div",
-                        { staticClass: "card bg-light w-100 mx-auto py-3" },
+                        {
+                          staticClass: "card shadow-sm w-100 mx-auto py-3 mt-3",
+                        },
                         [
                           _vm.auth_user
                             ? _c("div", { staticClass: "eqp-invest" }, [
@@ -74706,7 +74714,7 @@ var render = function () {
                                       },
                                       [
                                         _vm._v(
-                                          "Unlock More Business\n              Information To\n              Invest"
+                                          "Unlock To Invest\n              "
                                         ),
                                       ]
                                     )
@@ -74722,12 +74730,25 @@ var render = function () {
                                       },
                                       [
                                         _vm._v(
-                                          "Unlock More Business\n              Information To\n              Invest"
+                                          "Unlock To Invest\n              "
                                         ),
                                       ]
                                     ),
+                                _vm._v(" "),
+                                _c(
+                                  "p",
+                                  {
+                                    staticClass:
+                                      "text-slate-700 text-[13px] px-2",
+                                  },
+                                  [
+                                    _vm._v(
+                                      "Unlock this business to learn more about it and invest"
+                                    ),
+                                  ]
+                                ),
                               ])
-                            : _c("div", { staticClass: "eqp-invest" }, [
+                            : _c("div", { staticClass: "eqp-invest mt-2" }, [
                                 _c(
                                   "a",
                                   {
@@ -74745,9 +74766,18 @@ var render = function () {
                                       },
                                     },
                                   },
+                                  [_vm._v("Unlock  To\n              Invest ")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "p",
+                                  {
+                                    staticClass:
+                                      "text-slate-700 text-[13px] px-2",
+                                  },
                                   [
                                     _vm._v(
-                                      "Unlock More Business Information To\n              Invest "
+                                      "Unlock this business to learn more about it and invest"
                                     ),
                                   ]
                                 ),
@@ -74946,11 +74976,7 @@ var render = function () {
                                     },
                                   },
                                 },
-                                [
-                                  _vm._v(
-                                    "Unlock More Business\n              Information To\n              Invest"
-                                  ),
-                                ]
+                                [_vm._v("Unlock To Invest\n          ")]
                               )
                             : _c(
                                 "a",
@@ -74962,12 +74988,14 @@ var render = function () {
                                     "data-toggle": "modal",
                                   },
                                 },
-                                [
-                                  _vm._v(
-                                    "Unlock More Business\n              Information To\n              Invest"
-                                  ),
-                                ]
+                                [_vm._v("Unlock To Invest\n             t")]
                               ),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "text slate-800" }, [
+                            _vm._v(
+                              "Unlock this business to learn more about it and invest"
+                            ),
+                          ]),
                         ])
                       : _c("div", { staticClass: "eqp-invest" }, [
                           _c(
@@ -74985,12 +75013,14 @@ var render = function () {
                                 },
                               },
                             },
-                            [
-                              _vm._v(
-                                "Unlock More Business Information To\n              Invest"
-                              ),
-                            ]
+                            [_vm._v("Unlock To\n              Invest")]
                           ),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "text slate-800" }, [
+                            _vm._v(
+                              "Unlock this business to learn more about it and invest"
+                            ),
+                          ]),
                         ]),
                   ]
                 )

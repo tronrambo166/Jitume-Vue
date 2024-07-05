@@ -184,7 +184,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\xampp\\htdocs\\laravel_projects\\jitumeLive\\storage\\framework/cache/data',
+        'path' => 'C:\\xampp\\htdocs\\Jitume-Vue\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -355,12 +355,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\xampp\\htdocs\\laravel_projects\\jitumeLive\\storage\\app',
+        'root' => 'C:\\xampp\\htdocs\\Jitume-Vue\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\xampp\\htdocs\\laravel_projects\\jitumeLive\\storage\\app/public',
+        'root' => 'C:\\xampp\\htdocs\\Jitume-Vue\\storage\\app/public',
         'url' => 'http:https://test.jitume.com//storage',
         'visibility' => 'public',
       ),
@@ -378,7 +378,7 @@
     ),
     'links' => 
     array (
-      'C:\\xampp\\htdocs\\laravel_projects\\jitumeLive\\public\\storage' => 'C:\\xampp\\htdocs\\laravel_projects\\jitumeLive\\storage\\app/public',
+      'C:\\xampp\\htdocs\\Jitume-Vue\\public\\storage' => 'C:\\xampp\\htdocs\\Jitume-Vue\\storage\\app/public',
     ),
   ),
   'hashing' => 
@@ -413,13 +413,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\xampp\\htdocs\\laravel_projects\\jitumeLive\\storage\\logs/laravel.log',
+        'path' => 'C:\\xampp\\htdocs\\Jitume-Vue\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\xampp\\htdocs\\laravel_projects\\jitumeLive\\storage\\logs/laravel.log',
+        'path' => 'C:\\xampp\\htdocs\\Jitume-Vue\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -470,7 +470,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\xampp\\htdocs\\laravel_projects\\jitumeLive\\storage\\logs/laravel.log',
+        'path' => 'C:\\xampp\\htdocs\\Jitume-Vue\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -536,7 +536,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\xampp\\htdocs\\laravel_projects\\jitumeLive\\resources\\views/vendor/mail',
+        0 => 'C:\\xampp\\htdocs\\Jitume-Vue\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -663,7 +663,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\xampp\\htdocs\\laravel_projects\\jitumeLive\\storage\\framework/sessions',
+    'files' => 'C:\\xampp\\htdocs\\Jitume-Vue\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -683,9 +683,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\xampp\\htdocs\\laravel_projects\\jitumeLive\\resources\\views',
+      0 => 'C:\\xampp\\htdocs\\Jitume-Vue\\resources\\views',
     ),
-    'compiled' => 'C:\\xampp\\htdocs\\laravel_projects\\jitumeLive\\storage\\framework\\views',
+    'compiled' => 'C:\\xampp\\htdocs\\Jitume-Vue\\storage\\framework\\views',
   ),
   'dompdf' => 
   array (
@@ -694,10 +694,10 @@
     'convert_entities' => true,
     'options' => 
     array (
-      'font_dir' => 'C:\\xampp\\htdocs\\laravel_projects\\jitumeLive\\storage\\fonts',
-      'font_cache' => 'C:\\xampp\\htdocs\\laravel_projects\\jitumeLive\\storage\\fonts',
-      'temp_dir' => 'C:\\Users\\tronr\\AppData\\Local\\Temp',
-      'chroot' => 'C:\\xampp\\htdocs\\laravel_projects\\jitumeLive',
+      'font_dir' => 'C:\\xampp\\htdocs\\Jitume-Vue\\storage\\fonts',
+      'font_cache' => 'C:\\xampp\\htdocs\\Jitume-Vue\\storage\\fonts',
+      'temp_dir' => 'C:\\Users\\user\\AppData\\Local\\Temp',
+      'chroot' => 'C:\\xampp\\htdocs\\Jitume-Vue',
       'allowed_protocols' => 
       array (
         'file://' => 

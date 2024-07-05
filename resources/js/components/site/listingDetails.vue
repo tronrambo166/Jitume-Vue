@@ -7,7 +7,7 @@
       <div class="col-md-4 px-6 pt-6">
 
         <div class="div">
-    <div class="text-[#0A0A0A99] font-semibold">More business informations</div>
+    <div class="text-[#0A0A0A99] font-semibold">More business information</div>
     <div class="py-3 font-bold">{{ form.name }}</div>
     <div class="py-3 ">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -19,7 +19,7 @@
               
 
               <a v-if="auth_user" data-toggle="modal" data-target="#reviewModal"
-                class=" ">Add review</a>
+                class="bg-green-700 w-[45%] text-center text-white rounded-[16px] ">Add review</a>
 
               <a v-else @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal"
                 class="w-[45%] text-center  bg-green-700 text-white rounded-[16px]">Add review</a>
@@ -47,7 +47,7 @@
                  
 
                <div class="relative">
-    <img style="width:100%; max-height: 400px;" class="shadow rounded-[16px] " :src="form.image" alt="" />
+    <img style="width:100%; max-height: 400px;" class="shadow-sm rounded-[16px] " :src="form.image" alt="" />
     <div class="absolute bottom-0 left-0 w-full glass-bg rounded-b-[16px] text-white text-center py-2 ">
         <p class="text-center"><i class="mr-2 fa fa-map-marker"></i>{{ form.location }}</p>
     </div>
@@ -92,17 +92,18 @@
 
     <!--unlock business-->
 
-<div v-if="!form.conv || !auth_user" class="card bg-light w-100 mx-auto py-3">
+<div v-if="!form.conv || !auth_user" class="card shadow-sm  w-100 mx-auto py-3 mt-3">
        <div v-if="auth_user" class="eqp-invest">
             <a v-if="plan == 'platinum' || (plan == 'gold' && range == form.range)" @click="unlockBySubs(form.listing_id,subscrib_id,'platinum');"
-              class=" business_btns py-2 text-center text-light buttonListing my-2">Unlock More Business
-              Information To
-              Invest</a>
+              class=" business_btns py-2 text-center text-light buttonListing my-2">Unlock To Invest
+              </a>
 
               <a v-else data-target="#investModal" data-toggle="modal"
-              class=" business_btns py-2 text-center text-light buttonListing my-2">Unlock More Business
-              Information To
-              Invest</a>
+              class=" business_btns py-2 text-center text-light buttonListing my-2">Unlock To Invest
+              </a>
+
+
+              <p class="text-slate-700 text-[13px] px-2">Unlock this business to learn more about it and invest</p>
 
             <!-- <a style="background:grey;" 
              v-if="subscribed"
@@ -171,10 +172,13 @@
           </div>
 
 
-          <div v-else class="eqp-invest">
+          <div v-else class="eqp-invest mt-2">
             <a @click="make_session(form.listing_id);" data-target="#loginModal" data-toggle="modal"
-              class="business_btns py-2 text-center text-light buttonListing my-3">Unlock More Business Information To
+              class="business_btns py-2 text-center text-light buttonListing my-3">Unlock  To
               Invest </a>
+
+
+              <p class="text-slate-700 text-[13px] px-2">Unlock this business to learn more about it and invest</p>
 
             <!-- <a  @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal" class="py-2 text-center text-light buttonListing my-3"><b>Subscribe</b></a>
 
@@ -292,15 +296,16 @@
 
           <div v-if="auth_user" class="eqp-invest">
            <a v-if="plan == 'platinum' || (plan == 'gold' && range == form.range)" @click="unlockBySubs(form.listing_id,subscrib_id,'platinum');"
-              class=" business_btns py-2 text-center text-light buttonListing my-2">Unlock More Business
-              Information To
-              Invest</a>
+              class=" business_btns py-2 text-center text-light buttonListing my-2">Unlock To Invest
+          </a>
 
               <a v-else data-target="#investModal" data-toggle="modal"
-              class=" business_btns py-2 text-center text-light buttonListing my-2">Unlock More Business
-              Information To
-              Invest</a>
+              class=" business_btns py-2 text-center text-light buttonListing my-2">Unlock To Invest
+             t</a>
+               
 
+             <p class="text slate-800">Unlock this business to learn more about it and invest</p>
+ 
 
             <!-- <a style="background:grey;" 
              v-if="subscribed"
@@ -371,10 +376,10 @@
 
           <div v-else class="eqp-invest">
             <a @click="make_session(form.listing_id);" data-target="#loginModal" data-toggle="modal"
-              class="business_btns py-2 text-center text-light buttonListing my-3">Unlock More Business Information To
+              class="business_btns py-2 text-center text-light buttonListing my-3">Unlock To
               Invest</a>
 
-
+            <p class="text slate-800">Unlock this business to learn more about it and invest</p>
             <!-- <a  @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal" class="py-2 text-center text-light buttonListing my-3"><b>Subscribe</b></a>
 
                 <a  @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal" class="py-2 text-center text-light buttonListing my-3"><b>Donate</b></a> -->
