@@ -146,10 +146,10 @@
 
 
                     <div class="flex">
-                    <div class="col-sm-3"><span style="background:black;font-size: 11px;" class="btn text-light px-2 py-1 small rounded">Filter by Amount:</span>
+                    <div class="col-sm-3"><span style="background:black;font-size: 11px;" class="btn text-light px-2 py-1 small rounded">Filter by Amount R.:</span>
                     </div>  
                     <div id="" class="col-sm-6 mt-1"> 
-                        <div id="slider" class=""> </div>
+                        <div id="slider2" class=""> </div>
                         <div class="row mt-3">
                             <div class="col-6  mt-1">
                                 <span id="price_low" class="py-0 btn btn-light" name="min"> </span>
@@ -354,6 +354,65 @@ export default {
 
             if(t.ids != 0) {
             var slider = document.getElementById('slider');
+            noUiSlider.create(slider, {
+                start: [0, 500000],
+                connect: true,
+                range: {
+                    'min': 0,
+                    'max': 500000
+                },
+
+                step: 10000,
+                margin: 600,
+                pips: {
+                    //mode: 'steps',
+                    stepped: true,
+                    density: 6
+                }
+            });
+            var skipValues = [
+                document.getElementById('price_low'),
+                document.getElementById('price_high')
+            ];
+            slider.noUiSlider.on('update', function (values, handle) {
+                skipValues[handle].innerHTML = '$' + values[handle];
+                //console.log(values[1] - values[0]);
+
+                axios.get('priceFilter/' + values[0] + '/' + values[1] + '/' + t.ids).then((data) => {
+
+                    // if(values[0]==0.00 && values[1]==500000.00){}
+                    //else{ 
+
+                    t.count = data.data.data.length;
+                    t.results = '';
+                    t.results = data.data.data;
+
+                    for (const [key, value] of Object.entries(t.results)) {
+                    
+                    value.id = btoa(value.id);
+                    value.id = btoa(value.id);
+                }
+
+                    t.queryLat = data.data.data[0].lat;
+                    t.queryLng = data.data.data[0].lng;
+                        
+
+                    //}
+                    //console.log(t.results);
+                }).catch((error) => { })
+
+            });
+        }
+
+        },
+
+
+            range_amount() {
+            this.ids = atob(this.$route.params.results);
+            let t = this;
+
+            if(t.ids != 0) {
+            var slider = document.getElementById('slider2');
             noUiSlider.create(slider, {
                 start: [0, 500000],
                 connect: true,

@@ -10753,6 +10753,54 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
       }
     },
+    range_amount: function range_amount() {
+      this.ids = atob(this.$route.params.results);
+      var t = this;
+
+      if (t.ids != 0) {
+        var slider = document.getElementById('slider2');
+        noUiSlider.create(slider, {
+          start: [0, 500000],
+          connect: true,
+          range: {
+            'min': 0,
+            'max': 500000
+          },
+          step: 10000,
+          margin: 600,
+          pips: {
+            //mode: 'steps',
+            stepped: true,
+            density: 6
+          }
+        });
+        var skipValues = [document.getElementById('price_low'), document.getElementById('price_high')];
+        slider.noUiSlider.on('update', function (values, handle) {
+          skipValues[handle].innerHTML = '$' + values[handle]; //console.log(values[1] - values[0]);
+
+          axios.get('priceFilter/' + values[0] + '/' + values[1] + '/' + t.ids).then(function (data) {
+            // if(values[0]==0.00 && values[1]==500000.00){}
+            //else{ 
+            t.count = data.data.data.length;
+            t.results = '';
+            t.results = data.data.data;
+
+            for (var _i3 = 0, _Object$entries3 = Object.entries(t.results); _i3 < _Object$entries3.length; _i3++) {
+              var _Object$entries3$_i = _slicedToArray(_Object$entries3[_i3], 2),
+                  key = _Object$entries3$_i[0],
+                  value = _Object$entries3$_i[1];
+
+              value.id = btoa(value.id);
+              value.id = btoa(value.id);
+            }
+
+            t.queryLat = data.data.data[0].lat;
+            t.queryLng = data.data.data[0].lng; //}
+            //console.log(t.results);
+          })["catch"](function (error) {});
+        });
+      }
+    },
     //MAP -- MAP
     success: function success(position) {
       var loc = this.loc;
@@ -10777,10 +10825,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
       map.addLayer(layer); //console.log(this.results);
 
-      for (var _i3 = 0, _Object$entries3 = Object.entries(this.results); _i3 < _Object$entries3.length; _i3++) {
-        var _Object$entries3$_i = _slicedToArray(_Object$entries3[_i3], 2),
-            key = _Object$entries3$_i[0],
-            value = _Object$entries3$_i[1];
+      for (var _i4 = 0, _Object$entries4 = Object.entries(this.results); _i4 < _Object$entries4.length; _i4++) {
+        var _Object$entries4$_i = _slicedToArray(_Object$entries4[_i4], 2),
+            key = _Object$entries4$_i[0],
+            value = _Object$entries4$_i[1];
 
         //INFO
         var contentString = '<a class="info_map py-0 font-weight-bold  text-center" target="_blank" href="https://test.jitume.com/#/listingDetails/' + value.id + '">' + value.name + '</a>'; //INFO
@@ -76685,12 +76733,12 @@ var staticRenderFns = [
                 staticClass: "btn text-light px-2 py-1 small rounded",
                 staticStyle: { background: "black", "font-size": "11px" },
               },
-              [_vm._v("Filter by Amount:")]
+              [_vm._v("Filter by Amount R.:")]
             ),
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col-sm-6 mt-1", attrs: { id: "" } }, [
-            _c("div", { attrs: { id: "slider" } }),
+            _c("div", { attrs: { id: "slider2" } }),
             _vm._v(" "),
             _c("div", { staticClass: "row mt-3" }, [
               _c("div", { staticClass: "col-6 mt-1" }, [
