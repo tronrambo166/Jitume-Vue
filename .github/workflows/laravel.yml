@@ -21,13 +21,13 @@ jobs:
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
     - name: Directory Permissions
-      run: sudo chmod -R 777 storage bootstrap/cache
-    - name: Permissions
       run: sudo chown -R www-data storage
+    - name: Permissions
+      run: sudo chown -R www-data public
     - name: Cache
       run: php artisan config:clear
     - name: Config dir
-      run: ls /var/www/test.jitume/bootstrap/cache
+      run:  ls ./..
     - name: Create Database
       run: |
         mkdir -p database
