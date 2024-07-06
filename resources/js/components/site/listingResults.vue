@@ -123,7 +123,7 @@
 
 
 
-            <div class="col-md-6 pr-4 element-class" style="height: 100vh; overflow-y: scroll;  overflow-anchor: auto;">
+            <div class="col-md-8 pr-4 element-class" style="height: 100vh; overflow-y: scroll;  overflow-anchor: auto;">
                 <!-- Price Filter -->
 
 
@@ -188,16 +188,16 @@
                     <div v-for="( result, index ) in results" class="listing row  my-3">
                         <router-link :to="`/listingDetails/${result.id}`" class=" flex  px-4">
 
-                            <div class="flex items-center gap-4 mb-5  shadow-sm rounded-[30px] h-[200px]" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+                            <div class="flex items-center gap-4 mb-5  rounded-[30px] h-[200px]" style="box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;">
                             <!-- image or video -->
 
 
-                           <div class="rounded-l-lg">
-    <video v-if="result.file" controls style="width:500px; border-left: 2px solid white; border-radius: 30px; object-fit: cover !important; height:200px;" alt="">
+                          <div class="rounded-l-lg">
+    <video v-if="result.file" controls style="width: 500px !important; height: 200px !important; border-left: 2px solid white; border-radius: 30px; object-fit: cover !important;" alt="">
         <source :src="result.file" type="video/mp4">
     </video>
 
-    <img class="pt-2 rounded-l-lg" v-else :src="result.image" style="width:500px; border-left: 2px solid white; border-radius: 30px; object-fit: cover !important; height:200px;" alt="" />
+    <img class="rounded-l-lg" v-else :src="result.image" style="width: 500px !important; height: 200px !important; border-left: 2px solid white; border-radius: 30px; object-fit: cover !important;" alt="" />
 </div>
 
                            
@@ -214,26 +214,39 @@
                                 <div class="pt-4">
 
 
-                                <p class="loc_p card_text pt-1 text-left"><i class="mr-2 fa fa-map-marker"></i>{{ result.location
+                               
+
+                               <div class="flex justify-between   gap-[70px]">
+<div class="flex justify-between items-center  gap-[40px]">
+    <div class="flex flex-col gap-2">
+         <p class=" text-gray-900 pt-1 text-left   truncate"><i class="mr-2 text-black fa fa-map-marker"></i>{{ result.location
                                 }}</p>
 
-                                <div class="flex items-center justify-between gap-[70px]">
-
-                                <p class="card_text flex"><span class="rounded"><i class="mr-2 fa fa-phone"></i>{{ result.contact
-                                }}</span></p>
-
-                                <div class="amount float-right mt-4 text-right w-100 py-0 my-0 pr-2 ">
-                                    <p class="small amount whitespace-nowrap font-extrabold text-black">Yearly Turnover: <span
-                                        class="font-weight-normal">${{
-                                            result.y_turnover }}</span></p>
-
-                                <p class="my-1 small amount whitespace-nowrap font-extrabold text-black">Amount Required: <span
-                                        class="font-weight-normal">${{
-                                            result.investment_needed }}</span></p>
-
-
+                                <div class="flex items-center gap-1">
+                                     
+                                    <i class="mr-2 fa fa-phone"></i>
+        <p class="card_text"><span class="rounded">{{ result.contact }}</span></p>
                                 </div>
-                            </div>
+        
+    </div>
+
+    <div class="flex flex-col whitespace-nowrap p-2">
+        <p class="mt-2">Yearly Turnover: <span class="font-normal">${{ result.y_turnover }}</span></p>
+        <p class="mt-1">Amount Required: <span class="font-normal">${{ result.investment_needed }}</span></p>
+    </div>
+</div>
+
+
+    <!-- <div class="flex flex-col items-end mt-4 pr-2 space-y-1">
+        <p class="small amount whitespace-nowrap font-extrabold text-black">Yearly Turnover: 
+            <span class="font-normal">${{ result.y_turnover }}</span>
+        </p>
+        <p class="small amount whitespace-nowrap font-extrabold text-black">Amount Required: 
+            <span class="font-normal">${{ result.investment_needed }}</span>
+        </p>
+    </div> -->
+</div>
+
 
                                 </div>
                             </div>
@@ -252,7 +265,7 @@
                 </div>
             </div> -->
 
-             <div class="col-md-6">
+             <div class="col-md-4">
                 <div class="m-auto map_style">
                      <div id="map" style="height: 95%;"></div> 
                 </div>

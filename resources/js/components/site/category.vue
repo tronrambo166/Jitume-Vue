@@ -42,7 +42,7 @@
             </div> -->
 
              
-         <div class="row mt-4 px-3">
+         <div class="row flex justify-center mt-4 px-3">
 
              
                 <div v-for="( result, index ) in results" class="listing col-sm-3 my-5">

@@ -10639,6 +10639,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //import {myMap,success,failure,addMarker,addMarkerHome} from '../../../../public/js/map'
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'app_url'],
@@ -72169,7 +72182,7 @@ var render = function () {
     _vm._v(" "),
     _c(
       "div",
-      { staticClass: "row mt-4 px-3" },
+      { staticClass: "row flex justify-center mt-4 px-3" },
       [
         _vm._l(_vm.results, function (result, index) {
           return _c(
@@ -76244,7 +76257,7 @@ var render = function () {
           _c(
             "div",
             {
-              staticClass: "col-md-6 pr-4 element-class",
+              staticClass: "col-md-8 pr-4 element-class",
               staticStyle: {
                 height: "100vh",
                 "overflow-y": "scroll",
@@ -76279,9 +76292,10 @@ var render = function () {
                             "div",
                             {
                               staticClass:
-                                "flex items-center gap-4 mb-5 shadow-sm rounded-[30px] h-[200px]",
+                                "flex items-center gap-4 mb-5 rounded-[30px] h-[200px]",
                               staticStyle: {
-                                "box-shadow": "rgba(0, 0, 0, 0.16) 0px 1px 4px",
+                                "box-shadow":
+                                  "rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px",
                               },
                             },
                             [
@@ -76291,11 +76305,11 @@ var render = function () {
                                       "video",
                                       {
                                         staticStyle: {
-                                          width: "500px",
+                                          width: "500px !important",
+                                          height: "200px !important",
                                           "border-left": "2px solid white",
                                           "border-radius": "30px",
                                           "object-fit": "cover !important",
-                                          height: "200px",
                                         },
                                         attrs: { controls: "", alt: "" },
                                       },
@@ -76309,13 +76323,13 @@ var render = function () {
                                       ]
                                     )
                                   : _c("img", {
-                                      staticClass: "pt-2 rounded-l-lg",
+                                      staticClass: "rounded-l-lg",
                                       staticStyle: {
-                                        width: "500px",
+                                        width: "500px !important",
+                                        height: "200px !important",
                                         "border-left": "2px solid white",
                                         "border-radius": "30px",
                                         "object-fit": "cover !important",
-                                        height: "200px",
                                       },
                                       attrs: { src: result.image, alt: "" },
                                     }),
@@ -76344,68 +76358,76 @@ var render = function () {
                                 _vm._v(" "),
                                 _c("div", { staticClass: "pt-4" }, [
                                   _c(
-                                    "p",
-                                    {
-                                      staticClass:
-                                        "loc_p card_text pt-1 text-left",
-                                    },
-                                    [
-                                      _c("i", {
-                                        staticClass: "mr-2 fa fa-map-marker",
-                                      }),
-                                      _vm._v(_vm._s(result.location)),
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
                                     "div",
                                     {
                                       staticClass:
-                                        "flex items-center justify-between gap-[70px]",
+                                        "flex justify-between gap-[70px]",
                                     },
                                     [
-                                      _c(
-                                        "p",
-                                        { staticClass: "card_text flex" },
-                                        [
-                                          _c(
-                                            "span",
-                                            { staticClass: "rounded" },
-                                            [
-                                              _c("i", {
-                                                staticClass: "mr-2 fa fa-phone",
-                                              }),
-                                              _vm._v(_vm._s(result.contact)),
-                                            ]
-                                          ),
-                                        ]
-                                      ),
-                                      _vm._v(" "),
                                       _c(
                                         "div",
                                         {
                                           staticClass:
-                                            "amount float-right mt-4 text-right w-100 py-0 my-0 pr-2",
+                                            "flex justify-between items-center gap-[40px]",
                                         },
                                         [
                                           _c(
-                                            "p",
+                                            "div",
                                             {
                                               staticClass:
-                                                "small amount whitespace-nowrap font-extrabold text-black",
+                                                "flex flex-col gap-2",
                                             },
                                             [
-                                              _vm._v("Yearly Turnover: "),
                                               _c(
-                                                "span",
+                                                "p",
                                                 {
                                                   staticClass:
-                                                    "font-weight-normal",
+                                                    "text-gray-900 pt-1 text-left truncate",
                                                 },
                                                 [
+                                                  _c("i", {
+                                                    staticClass:
+                                                      "mr-2 text-black fa fa-map-marker",
+                                                  }),
                                                   _vm._v(
-                                                    "$" +
-                                                      _vm._s(result.y_turnover)
+                                                    _vm._s(result.location)
+                                                  ),
+                                                ]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "flex items-center gap-1",
+                                                },
+                                                [
+                                                  _c("i", {
+                                                    staticClass:
+                                                      "mr-2 fa fa-phone",
+                                                  }),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "p",
+                                                    {
+                                                      staticClass: "card_text",
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "span",
+                                                        {
+                                                          staticClass:
+                                                            "rounded",
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            _vm._s(
+                                                              result.contact
+                                                            )
+                                                          ),
+                                                        ]
+                                                      ),
+                                                    ]
                                                   ),
                                                 ]
                                               ),
@@ -76413,28 +76435,47 @@ var render = function () {
                                           ),
                                           _vm._v(" "),
                                           _c(
-                                            "p",
+                                            "div",
                                             {
                                               staticClass:
-                                                "my-1 small amount whitespace-nowrap font-extrabold text-black",
+                                                "flex flex-col whitespace-nowrap p-2",
                                             },
                                             [
-                                              _vm._v("Amount Required: "),
-                                              _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "font-weight-normal",
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "$" +
-                                                      _vm._s(
-                                                        result.investment_needed
-                                                      )
-                                                  ),
-                                                ]
-                                              ),
+                                              _c("p", { staticClass: "mt-2" }, [
+                                                _vm._v("Yearly Turnover: "),
+                                                _c(
+                                                  "span",
+                                                  {
+                                                    staticClass: "font-normal",
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "$" +
+                                                        _vm._s(
+                                                          result.y_turnover
+                                                        )
+                                                    ),
+                                                  ]
+                                                ),
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("p", { staticClass: "mt-1" }, [
+                                                _vm._v("Amount Required: "),
+                                                _c(
+                                                  "span",
+                                                  {
+                                                    staticClass: "font-normal",
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "$" +
+                                                        _vm._s(
+                                                          result.investment_needed
+                                                        )
+                                                    ),
+                                                  ]
+                                                ),
+                                              ]),
                                             ]
                                           ),
                                         ]
@@ -76648,7 +76689,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-6" }, [
+    return _c("div", { staticClass: "col-md-4" }, [
       _c("div", { staticClass: "m-auto map_style" }, [
         _c("div", { staticStyle: { height: "95%" }, attrs: { id: "map" } }),
       ]),

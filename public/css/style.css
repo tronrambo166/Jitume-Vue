@@ -201,7 +201,7 @@
     .map_style {
 
         height: 100vh;
-        background: #f0fff2
+/*        background: #f0fff2*/
     }
 
     .header_btn_width {
@@ -2136,3 +2136,11 @@ ul li a:hover{
     scrollbar-width: thin; /* width of the scrollbar */
     scrollbar-color: #888 #f1f1f1; /* color of the thumb and track */
 }
+
+
+.truncate {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px; /* Adjust this value based on your layout needs */
+    }
