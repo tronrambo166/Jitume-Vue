@@ -15,3 +15,5 @@ sudo chown -R ubuntu:ubuntu .
 sudo chown -R www-data storage
 sudo chmod -R u+x .
 sudo chmod g+w -R storage
+sudo chown -R www-data public
+unlink bootstrap/cache/config.php
