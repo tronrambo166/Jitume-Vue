@@ -23,11 +23,11 @@ jobs:
     - name: Directory Permissions
       run: sudo chmod -R 777 storage bootstrap/cache
     - name: Permissions
-      run: sudo chown -R www-data public
+      run: sudo chown -R www-data storage
     - name: Cache
       run: php artisan config:clear
     - name: Config dir
-      run: ls bootstrap/cache
+      run: ls /var/www/test.jitume/bootstrap/cache
     - name: Create Database
       run: |
         mkdir -p database
