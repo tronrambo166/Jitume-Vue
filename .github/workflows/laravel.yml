@@ -26,8 +26,9 @@ jobs:
       run: sudo chown -R www-data public
     - name: Cache
       run: php artisan config:clear
-    - name: Config
+    - name: Config dir
       run: cd bootstrap/cache
+    - name: Config
       run: sudo rm -f config.php
     - name: Create Database
       run: |
