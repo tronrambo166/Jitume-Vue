@@ -27,7 +27,8 @@ jobs:
     - name: Cache
       run: php artisan config:clear
     - name: Config
-      run: ls -la
+      run: cd bootstrap/cache
+      run: sudo rm -f config.php
     - name: Create Database
       run: |
         mkdir -p database
