@@ -125,20 +125,13 @@
 
             <div class="col-md-8 pr-4 element-class" style="height: 100vh; overflow-y: scroll;  overflow-anchor: auto;">
                 <!-- Price Filter -->
-
-
-
-
                 <div class="row">
-
                     <div class="content_bottom">
 
-                        <div class="flex">
-<div class="col-sm-3"><span style="background:black;font-size: 11px;" class="btn text-light px-2 py-1 small rounded">Filter by
-                            Turnover Range:</span>
+                    <div class="flex">
+                    <div class="col-sm-3"><span style="background:black;font-size: 11px;" class="btn text-light px-2 py-1 small rounded">Filter by Turnover Range:</span>
                     </div>  
-
-<div id="" class="col-sm-6 mt-1"> 
+                    <div id="" class="col-sm-6 mt-1"> 
                         <div id="slider" class=""> </div>
                         <div class="row mt-3">
                             <div class="col-6  mt-1">
@@ -149,7 +142,23 @@
                             </div>
                         </div>
                     </div>
+                    </div>
 
+
+                    <div class="flex">
+                    <div class="col-sm-3"><span style="background:black;font-size: 11px;" class="btn text-light px-2 py-1 small rounded">Filter by Amount:</span>
+                    </div>  
+                    <div id="" class="col-sm-6 mt-1"> 
+                        <div id="slider" class=""> </div>
+                        <div class="row mt-3">
+                            <div class="col-6  mt-1">
+                                <span id="price_low" class="py-0 btn btn-light" name="min"> </span>
+                            </div>
+                            <div class="col-6 mt-1 pr-0">
+                                <span id="price_high" class="float-right py-0 btn btn-light" name="min"> </span>
+                            </div>
+                        </div>
+                    </div>
                     </div>
 
             <div class="heading">

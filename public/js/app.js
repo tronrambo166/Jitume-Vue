@@ -10652,6 +10652,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //import {myMap,success,failure,addMarker,addMarkerHome} from '../../../../public/js/map'
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'app_url'],
@@ -67787,7 +67796,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -67917,7 +67926,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -68158,7 +68167,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\n    Name: "),
+        _vm._v("\r\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68193,7 +68202,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Desc: "),
+        _vm._v("\r\n\r\n     Desc: "),
         _c("textarea", {
           directives: [
             {
@@ -68230,7 +68239,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Cat Id:  "),
+        _vm._v("\r\n\r\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -68261,7 +68270,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Brand Id:  "),
+        _vm._v("\r\n\r\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -68292,7 +68301,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Price:  "),
+        _vm._v("\r\n\r\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -68322,7 +68331,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n     Qty:  "),
+        _vm._v("\r\n\r\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -68352,7 +68361,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n   Image: "),
+        _vm._v("\r\n\r\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -68414,7 +68423,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -68463,7 +68472,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\n    Name: "),
+        _vm._v("\r\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68498,7 +68507,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Desc: "),
+        _vm._v("\r\n\r\n     Desc: "),
         _c("input", {
           directives: [
             {
@@ -68529,7 +68538,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Cat Id:  "),
+        _vm._v("\r\n\r\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -68560,7 +68569,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Brand Id:  "),
+        _vm._v("\r\n\r\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -68591,7 +68600,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Price:  "),
+        _vm._v("\r\n\r\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -68621,7 +68630,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n     Qty:  "),
+        _vm._v("\r\n\r\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -68651,7 +68660,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n   Image: "),
+        _vm._v("\r\n\r\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -68713,7 +68722,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -76643,7 +76652,40 @@ var staticRenderFns = [
                 staticClass: "btn text-light px-2 py-1 small rounded",
                 staticStyle: { background: "black", "font-size": "11px" },
               },
-              [_vm._v("Filter by\n                            Turnover Range:")]
+              [_vm._v("Filter by Turnover Range:")]
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-6 mt-1", attrs: { id: "" } }, [
+            _c("div", { attrs: { id: "slider" } }),
+            _vm._v(" "),
+            _c("div", { staticClass: "row mt-3" }, [
+              _c("div", { staticClass: "col-6 mt-1" }, [
+                _c("span", {
+                  staticClass: "py-0 btn btn-light",
+                  attrs: { id: "price_low", name: "min" },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
+                _c("span", {
+                  staticClass: "float-right py-0 btn btn-light",
+                  attrs: { id: "price_high", name: "min" },
+                }),
+              ]),
+            ]),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "flex" }, [
+          _c("div", { staticClass: "col-sm-3" }, [
+            _c(
+              "span",
+              {
+                staticClass: "btn text-light px-2 py-1 small rounded",
+                staticStyle: { background: "black", "font-size": "11px" },
+              },
+              [_vm._v("Filter by Amount:")]
             ),
           ]),
           _vm._v(" "),
