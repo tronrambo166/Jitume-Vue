@@ -27,7 +27,7 @@ jobs:
     - name: Cache
       run: php artisan config:clear
     - name: Config
-      run: unlink /var/www/test.jitume/bootstrap/cache/config.php
+      run: unlink /bootstrap/cache/config.php
     - name: Create Database
       run: |
         mkdir -p database
