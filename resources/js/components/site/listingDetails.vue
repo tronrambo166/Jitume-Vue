@@ -1,98 +1,33 @@
 <template>
   <div class="container mx-auto flex justify-center items-center">
 
-<div class="px-4 md:px-6 lg:px-8 xl:px-12 my-3 pt-3 w-full flex flex-col md:flex-row items-center justify-center mx-auto gap-4 md:gap-6 lg:gap-8">
+<div class="px-4 md:px-6 lg:px-8 xl:px-12 my-3 pt-3 w-full flex flex-col md:flex-row  justify-center mx-auto gap-4 md:gap-6 lg:gap-8">
 
 
-      <div class="col-md-4 px-6 pt-6">
+      <div class="col-md-4 px-6 ">
 
         <div class="div">
-    <div class="text-[#0A0A0A99] font-semibold">More business information</div>
-    <div class="py-3 font-bold">{{ form.name }}</div>
-    <div class="py-3 ">
+    <div class="text-black text-[15px] font-bold">More business information</div>
+    <div class="py-3  text-[13px] font-extrabold text-black">{{ form.name }}</div>
+    <div class="py-3 text-[12px] ">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
       tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
       veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
     </div>
     <div class="flex  gap-2">
-      <div class="col-md-12 flex items-center gap-2">
+      <div class="flex w-full  items-center gap-[40px]"> 
               
 
               <a v-if="auth_user" data-toggle="modal" data-target="#reviewModal"
-                class="bg-green-700 w-[45%] text-center text-white rounded-[16px] ">Add review</a>
+                class="bg-green-700 w-[50%] text-center text-white rounded-[16px] ">Add review</a>
 
               <a v-else @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal"
-                class="w-[45%] text-center  bg-green-700 text-white rounded-[16px]">Add review</a>
-      <div class=" text-green-700 text-center w-[50%]"><a class="">Overview</a>
+                class="w-[50%] text-center text-[12px] bg-green-700 text-white rounded-[16px]">Add review</a>
+      <div class=" text-green-700 text-center w-[50%]">
 
-           
-            </div>
+            <!--unlock business-->
 
-
-</div>
-    </div>
-  </div>
-        <!--<div class=" eqp-invest my-4 text-left">
-          <h3 class="secondary_heading my-3">About {{form.name}}</h3>
-          <p class="text-justify-center  ">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-            laboris nisi ut aliquip</p>
-        </div>-->
-      </div>
-
-<!--right section --->
-
-     <div class="col-md-4 flex mr-0">
-     <div>
-                 
-
-               <div class="relative">
-    <img style="width:100%; max-height: 400px;" class="shadow-sm rounded-[16px] " :src="form.image" alt="" />
-    <div class="absolute bottom-0 left-0 w-full glass-bg rounded-b-[16px] text-white text-center py-2 ">
-        <p class="text-center"><i class="mr-2 fa fa-map-marker"></i>{{ form.location }}</p>
-    </div>
-</div>
-
-  
-
-   <div class="w-[100%]  justify-end py-3 flex flex-col ml-60px text-right ">
-   <!--<div class="row ">
-                  <div class="col-10 flex " id="">
-                    <div class="float-right" id="staticRating">
-                <div class=""> <p class="rating-star text-dark  float-right" >({{ form.rating }})</p></div>
-
-                </div> 
-                </div>
-                </div>-->
-    <div class="">
-       <div class="float-right" id="staticRating"></div>
-
-        <div class="">({{ form.rating_count }} reviews)</div>
-
-                      <div class=""> <p class="rating-star text-dark d-inline float-right" >({{ form.rating }})</p></div>
-
-    </div>
-    <div
-      class=""
-    >
-      Amount: <span class="font-semibold text-green-700">${{ form.investment_needed }}</span>
-      <span class="text-xl">(Required)</span>
-    </div>
-    <div
-      class="flex items-center justify-end text-right"
-    >
-      <img
-        loading="lazy"
-        src="https://cdn.builder.io/api/v1/image/assets/TEMP/80bc96587703667588b7efe45b98824e0d7227f4bd4efbce0ee15df008a321fb?"
-        class="hidden"
-      />
-      <div class="float-right hidden">+1791205437</div>
-    </div>
-
-
-    <!--unlock business-->
-
-<div v-if="!form.conv || !auth_user" class="card shadow-sm  w-100 mx-auto py-3 mt-3">
+<div v-if="!form.conv || !auth_user" class=" w-100 mx-auto py-3 ">
        <div v-if="auth_user" class="eqp-invest">
             <a v-if="plan == 'platinum' || (plan == 'gold' && range == form.range)" @click="unlockBySubs(form.listing_id,subscrib_id,'platinum');"
               class=" business_btns py-2 text-center text-light buttonListing my-2">Unlock To Invest
@@ -172,22 +107,94 @@
           </div>
 
 
-          <div v-else class="eqp-invest mt-2">
+          <div v-else class="eqp-invest ">
             <a @click="make_session(form.listing_id);" data-target="#loginModal" data-toggle="modal"
-              class="business_btns py-2 text-center text-light buttonListing my-3">Unlock  To
+              class=" py-2 text-center text-white  text-[12px] bg-black rounded-[16px]"><i class="fa fa-lock"></i>
+Unlock  To
               Invest </a>
 
 
-              <p class="text-slate-700 text-[13px] px-2">Unlock this business to learn more about it and invest</p>
+              
 
             <!-- <a  @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal" class="py-2 text-center text-light buttonListing my-3"><b>Subscribe</b></a>
 
-                <a  @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal" class="py-2 text-center text-light buttonListing my-3"><b>Donate</b></a> -->
+   cb></a> -->
 
 
           </div>
 
         </div>
+
+
+            </div>
+
+</div>
+
+    </div>
+
+    <p class="text-slate-700 text-[13px] flex gap-2 items-center px-2"><i class="fa fa-info-circle text-[13px] text-black font-bold" aria-hidden="true"></i>
+Unlock this business to learn more about it and invest</p>
+
+  </div>
+        <!--<div class=" eqp-invest my-4 text-left">
+          <h3 class="secondary_heading my-3">About {{form.name}}</h3>
+          <p class="text-justify-center  ">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+            laboris nisi ut aliquip</p>
+        </div>-->
+      </div>
+
+<!--right section --->
+
+     <div class="col-md-4 flex mr-0">
+     <div>
+                 
+
+               <div class="relative">
+    <img style="width:100%; max-height: 400px;" class="shadow-sm rounded-[16px] " :src="form.image" alt="" />
+    <div class="absolute bottom-0 left-0 w-full glass-bg rounded-b-[16px] text-white text-center py-2 ">
+        <p class="text-center"><i class="mr-2 fa fa-map-marker"></i>{{ form.location }}</p>
+    </div>
+</div>
+
+  
+
+   <div class="w-[100%]  justify-end py-3 flex flex-col ml-60px text-right ">
+   <!--<div class="row ">
+                  <div class="col-10 flex " id="">
+                    <div class="float-right" id="staticRating">
+                <div class=""> <p class="rating-star text-dark  float-right" >({{ form.rating }})</p></div>
+
+                </div> 
+                </div>
+                </div>-->
+    <div class="">
+       <div class="float-right" id="staticRating"></div>
+
+        <div class="">({{ form.rating_count }} reviews)</div>
+
+                      <div class=""> <p class="rating-star text-dark d-inline float-right" >({{ form.rating }})</p></div>
+
+    </div>
+    <div
+      class="text-black font-bold"
+    >
+      Amount Requested: <span class="font-semibold text-green-700">${{ form.investment_needed }}</span>
+      <span class="text-xl"></span>
+    </div>
+    <div
+      class="flex items-center justify-end text-right"
+    >
+      <img
+        loading="lazy"
+        src="https://cdn.builder.io/api/v1/image/assets/TEMP/80bc96587703667588b7efe45b98824e0d7227f4bd4efbce0ee15df008a321fb?"
+        class="hidden"
+      />
+      <div class="float-right hidden">+1791205437</div>
+    </div>
+
+
+   
   </div>
 
      </div>

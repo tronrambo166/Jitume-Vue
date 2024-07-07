@@ -9865,6 +9865,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'business'],
   data: function data() {
@@ -73493,7 +73500,7 @@ var staticRenderFns = [
             [
               _c(
                 "h2",
-                { staticClass: "text-[20px] text-green-500 font-bold mb-4" },
+                { staticClass: "text-[20px] text-gray-500 font-bold mb-4" },
                 [_vm._v("Welcome to Jitume")]
               ),
               _vm._v(" "),
@@ -74625,20 +74632,22 @@ var render = function () {
         "div",
         {
           staticClass:
-            "px-4 md:px-6 lg:px-8 xl:px-12 my-3 pt-3 w-full flex flex-col md:flex-row items-center justify-center mx-auto gap-4 md:gap-6 lg:gap-8",
+            "px-4 md:px-6 lg:px-8 xl:px-12 my-3 pt-3 w-full flex flex-col md:flex-row justify-center mx-auto gap-4 md:gap-6 lg:gap-8",
         },
         [
-          _c("div", { staticClass: "col-md-4 px-6 pt-6" }, [
+          _c("div", { staticClass: "col-md-4 px-6" }, [
             _c("div", { staticClass: "div" }, [
-              _c("div", { staticClass: "text-[#0A0A0A99] font-semibold" }, [
+              _c("div", { staticClass: "text-black text-[15px] font-bold" }, [
                 _vm._v("More business information"),
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "py-3 font-bold" }, [
-                _vm._v(_vm._s(_vm.form.name)),
-              ]),
+              _c(
+                "div",
+                { staticClass: "py-3 text-[13px] font-extrabold text-black" },
+                [_vm._v(_vm._s(_vm.form.name))]
+              ),
               _vm._v(" "),
-              _c("div", { staticClass: "py-3" }, [
+              _c("div", { staticClass: "py-3 text-[12px]" }, [
                 _vm._v(
                   "\n      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod\n      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim\n      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip\n    "
                 ),
@@ -74647,14 +74656,14 @@ var render = function () {
               _c("div", { staticClass: "flex gap-2" }, [
                 _c(
                   "div",
-                  { staticClass: "col-md-12 flex items-center gap-2" },
+                  { staticClass: "flex w-full items-center gap-[40px]" },
                   [
                     _vm.auth_user
                       ? _c(
                           "a",
                           {
                             staticClass:
-                              "bg-green-700 w-[45%] text-center text-white rounded-[16px]",
+                              "bg-green-700 w-[50%] text-center text-white rounded-[16px]",
                             attrs: {
                               "data-toggle": "modal",
                               "data-target": "#reviewModal",
@@ -74666,7 +74675,7 @@ var render = function () {
                           "a",
                           {
                             staticClass:
-                              "w-[45%] text-center bg-green-700 text-white rounded-[16px]",
+                              "w-[50%] text-center text-[12px] bg-green-700 text-white rounded-[16px]",
                             attrs: {
                               "data-target": "#loginmodal2",
                               "data-toggle": "modal",
@@ -74680,10 +74689,103 @@ var render = function () {
                           [_vm._v("Add review")]
                         ),
                     _vm._v(" "),
-                    _vm._m(0),
+                    _c(
+                      "div",
+                      { staticClass: "text-green-700 text-center w-[50%]" },
+                      [
+                        !_vm.form.conv || !_vm.auth_user
+                          ? _c("div", { staticClass: "w-100 mx-auto py-3" }, [
+                              _vm.auth_user
+                                ? _c("div", { staticClass: "eqp-invest" }, [
+                                    _vm.plan == "platinum" ||
+                                    (_vm.plan == "gold" &&
+                                      _vm.range == _vm.form.range)
+                                      ? _c(
+                                          "a",
+                                          {
+                                            staticClass:
+                                              "business_btns py-2 text-center text-light buttonListing my-2",
+                                            on: {
+                                              click: function ($event) {
+                                                return _vm.unlockBySubs(
+                                                  _vm.form.listing_id,
+                                                  _vm.subscrib_id,
+                                                  "platinum"
+                                                )
+                                              },
+                                            },
+                                          },
+                                          [
+                                            _vm._v(
+                                              "Unlock To Invest\n              "
+                                            ),
+                                          ]
+                                        )
+                                      : _c(
+                                          "a",
+                                          {
+                                            staticClass:
+                                              "business_btns py-2 text-center text-light buttonListing my-2",
+                                            attrs: {
+                                              "data-target": "#investModal",
+                                              "data-toggle": "modal",
+                                            },
+                                          },
+                                          [
+                                            _vm._v(
+                                              "Unlock To Invest\n              "
+                                            ),
+                                          ]
+                                        ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "p",
+                                      {
+                                        staticClass:
+                                          "text-slate-700 text-[13px] px-2",
+                                      },
+                                      [
+                                        _vm._v(
+                                          "Unlock this business to learn more about it and invest"
+                                        ),
+                                      ]
+                                    ),
+                                  ])
+                                : _c("div", { staticClass: "eqp-invest" }, [
+                                    _c(
+                                      "a",
+                                      {
+                                        staticClass:
+                                          "py-2 text-center text-white text-[12px] bg-black rounded-[16px]",
+                                        attrs: {
+                                          "data-target": "#loginModal",
+                                          "data-toggle": "modal",
+                                        },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.make_session(
+                                              _vm.form.listing_id
+                                            )
+                                          },
+                                        },
+                                      },
+                                      [
+                                        _c("i", { staticClass: "fa fa-lock" }),
+                                        _vm._v(
+                                          "\nUnlock  To\n              Invest "
+                                        ),
+                                      ]
+                                    ),
+                                  ]),
+                            ])
+                          : _vm._e(),
+                      ]
+                    ),
                   ]
                 ),
               ]),
+              _vm._v(" "),
+              _vm._m(0),
             ]),
           ]),
           _vm._v(" "),
@@ -74740,121 +74842,18 @@ var render = function () {
                     ]),
                   ]),
                   _vm._v(" "),
-                  _c("div", {}, [
-                    _vm._v("\n      Amount: "),
+                  _c("div", { staticClass: "text-black font-bold" }, [
+                    _vm._v("\n      Amount Requested: "),
                     _c(
                       "span",
                       { staticClass: "font-semibold text-green-700" },
                       [_vm._v("$" + _vm._s(_vm.form.investment_needed))]
                     ),
                     _vm._v(" "),
-                    _c("span", { staticClass: "text-xl" }, [
-                      _vm._v("(Required)"),
-                    ]),
+                    _c("span", { staticClass: "text-xl" }),
                   ]),
                   _vm._v(" "),
                   _vm._m(1),
-                  _vm._v(" "),
-                  !_vm.form.conv || !_vm.auth_user
-                    ? _c(
-                        "div",
-                        {
-                          staticClass: "card shadow-sm w-100 mx-auto py-3 mt-3",
-                        },
-                        [
-                          _vm.auth_user
-                            ? _c("div", { staticClass: "eqp-invest" }, [
-                                _vm.plan == "platinum" ||
-                                (_vm.plan == "gold" &&
-                                  _vm.range == _vm.form.range)
-                                  ? _c(
-                                      "a",
-                                      {
-                                        staticClass:
-                                          "business_btns py-2 text-center text-light buttonListing my-2",
-                                        on: {
-                                          click: function ($event) {
-                                            return _vm.unlockBySubs(
-                                              _vm.form.listing_id,
-                                              _vm.subscrib_id,
-                                              "platinum"
-                                            )
-                                          },
-                                        },
-                                      },
-                                      [
-                                        _vm._v(
-                                          "Unlock To Invest\n              "
-                                        ),
-                                      ]
-                                    )
-                                  : _c(
-                                      "a",
-                                      {
-                                        staticClass:
-                                          "business_btns py-2 text-center text-light buttonListing my-2",
-                                        attrs: {
-                                          "data-target": "#investModal",
-                                          "data-toggle": "modal",
-                                        },
-                                      },
-                                      [
-                                        _vm._v(
-                                          "Unlock To Invest\n              "
-                                        ),
-                                      ]
-                                    ),
-                                _vm._v(" "),
-                                _c(
-                                  "p",
-                                  {
-                                    staticClass:
-                                      "text-slate-700 text-[13px] px-2",
-                                  },
-                                  [
-                                    _vm._v(
-                                      "Unlock this business to learn more about it and invest"
-                                    ),
-                                  ]
-                                ),
-                              ])
-                            : _c("div", { staticClass: "eqp-invest mt-2" }, [
-                                _c(
-                                  "a",
-                                  {
-                                    staticClass:
-                                      "business_btns py-2 text-center text-light buttonListing my-3",
-                                    attrs: {
-                                      "data-target": "#loginModal",
-                                      "data-toggle": "modal",
-                                    },
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.make_session(
-                                          _vm.form.listing_id
-                                        )
-                                      },
-                                    },
-                                  },
-                                  [_vm._v("Unlock  To\n              Invest ")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "p",
-                                  {
-                                    staticClass:
-                                      "text-slate-700 text-[13px] px-2",
-                                  },
-                                  [
-                                    _vm._v(
-                                      "Unlock this business to learn more about it and invest"
-                                    ),
-                                  ]
-                                ),
-                              ]),
-                        ]
-                      )
-                    : _vm._e(),
                 ]
               ),
             ]),
@@ -75903,9 +75902,19 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "text-green-700 text-center w-[50%]" }, [
-      _c("a", {}, [_vm._v("Overview")]),
-    ])
+    return _c(
+      "p",
+      {
+        staticClass: "text-slate-700 text-[13px] flex gap-2 items-center px-2",
+      },
+      [
+        _c("i", {
+          staticClass: "fa fa-info-circle text-[13px] text-black font-bold",
+          attrs: { "aria-hidden": "true" },
+        }),
+        _vm._v("\nUnlock this business to learn more about it and invest"),
+      ]
+    )
   },
   function () {
     var _vm = this

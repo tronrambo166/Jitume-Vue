@@ -11728,6 +11728,9 @@ video {
 .w-full {
   width: 100%;
 }
+.w-\[30px\] {
+  width: 30px;
+}
 .max-w-\[1440px\] {
   max-width: 1440px;
 }
@@ -12278,6 +12281,9 @@ video {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+.text-\[15px\] {
+  font-size: 15px;
 }
 .font-bold {
   font-weight: 700;
