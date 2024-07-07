@@ -8564,6 +8564,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -73296,13 +73298,13 @@ var render = function () {
                                 "div",
                                 {
                                   staticClass:
-                                    "bg-white mt-4 w-full h-[90%] rounded-xl shadow-md p-3 mb-4 flex flex-col justify-center relative loading",
+                                    "bg-white mt-4 w-[250px] h-[350px] mx-auto rounded-xl shadow-md p-3 mb-4 flex flex-col justify-between relative",
                                 },
                                 [
                                   _c("div", { staticClass: "relative" }, [
                                     _c("img", {
                                       staticClass:
-                                        "w-full h-[215px] object-cover rounded-lg mb-4",
+                                        "w-full h-[215px] object-cover rounded-lg",
                                       attrs: {
                                         src: _vm.results[index * 3 + offset]
                                           .image,
@@ -73314,7 +73316,7 @@ var render = function () {
                                       "p",
                                       {
                                         staticClass:
-                                          "absolute inset-t-4 mb-4 ml-2 font-bold px-2 rounded-xl bottom-4 bg-white text-black text-center py-1 text-xs",
+                                          "absolute inset-t-0 mb-4 font-bold px-2 mr-5 rounded-xl bottom-4 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs",
                                       },
                                       [
                                         _c("i", {
@@ -73324,7 +73326,7 @@ var render = function () {
                                           _vm._s(
                                             _vm.results[index * 3 + offset]
                                               .location
-                                          ) + "\n              "
+                                          ) + "\n        "
                                         ),
                                       ]
                                     ),
@@ -73346,106 +73348,111 @@ var render = function () {
                                     "div",
                                     {
                                       staticClass:
-                                        "flex justify-between items-center",
+                                        "flex flex-col justify-between px-1 gap-2",
                                     },
                                     [
-                                      _c("div", [
-                                        _c("header", [
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "flex flex-col justify-between",
+                                        },
+                                        [
+                                          _c("header", [
+                                            _c(
+                                              "h4",
+                                              {
+                                                staticClass:
+                                                  "text-lg mt-2 hover:no-underline hover:text-green-800",
+                                              },
+                                              [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    _vm.results[
+                                                      index * 3 + offset
+                                                    ].name
+                                                  )
+                                                ),
+                                              ]
+                                            ),
+                                          ]),
+                                          _vm._v(" "),
                                           _c(
-                                            "h4",
+                                            "p",
                                             {
                                               staticClass:
-                                                "text-lg mt-2 hover:no-underline hover:text-green-800",
+                                                "text-sm text-gray-700",
                                             },
                                             [
                                               _vm._v(
                                                 _vm._s(
                                                   _vm.results[
                                                     index * 3 + offset
-                                                  ].name
+                                                  ].description
                                                 )
                                               ),
                                             ]
                                           ),
-                                        ]),
-                                        _vm._v(" "),
-                                        _c(
-                                          "p",
-                                          {
-                                            staticClass:
-                                              "text-sm text-gray-700",
-                                          },
-                                          [
-                                            _vm._v(
-                                              _vm._s(
-                                                _vm.results[index * 3 + offset]
-                                                  .description
-                                              )
-                                            ),
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "p",
-                                          {
-                                            staticClass:
-                                              "text-sm text-gray-700",
-                                          },
-                                          [
-                                            _vm._v(
-                                              "Name: " +
-                                                _vm._s(
-                                                  _vm.results[
-                                                    index * 3 + offset
-                                                  ].name
-                                                )
-                                            ),
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "p",
-                                          {
-                                            staticClass:
-                                              "text-sm text-gray-700",
-                                          },
-                                          [
-                                            _vm._v(
-                                              "Contact: " +
-                                                _vm._s(
-                                                  _vm.results[
-                                                    index * 3 + offset
-                                                  ].contact
-                                                )
-                                            ),
-                                          ]
-                                        ),
-                                      ]),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "mt-auto flex justify-end",
-                                        },
-                                        [
+                                          _vm._v(" "),
                                           _c(
-                                            "router-link",
+                                            "p",
                                             {
                                               staticClass:
-                                                "btn-learn-more inline-block bg-green-800 hover:bg-green-700 text-white py-1 px-2 md:px-3 lg:px-4 rounded text-xs md:text-sm lg:text-base lg:py-2 lg:px-3",
-                                              attrs: {
-                                                to:
-                                                  "/listingDetails/" +
-                                                  _vm.results[
-                                                    index * 3 + offset
-                                                  ].id,
-                                              },
+                                                "text-sm text-gray-700 whitespace-nowrap font-bold",
                                             },
-                                            [_vm._v("Learn More")]
+                                            [
+                                              _vm._v(
+                                                "Name: " +
+                                                  _vm._s(
+                                                    _vm.results[
+                                                      index * 3 + offset
+                                                    ].name
+                                                  )
+                                              ),
+                                            ]
                                           ),
-                                        ],
-                                        1
+                                          _vm._v(" "),
+                                          _c(
+                                            "p",
+                                            {
+                                              staticClass:
+                                                "text-sm text-gray-700 whitespace-nowrap",
+                                            },
+                                            [
+                                              _vm._v(
+                                                "Contact: " +
+                                                  _vm._s(
+                                                    _vm.results[
+                                                      index * 3 + offset
+                                                    ].contact
+                                                  )
+                                              ),
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "hidden" },
+                                            [
+                                              _c(
+                                                "router-link",
+                                                {
+                                                  staticClass:
+                                                    "btn-learn-more bg-green-800 hover:bg-green-700 text-white py-2 px-4 rounded text-base whitespace-nowrap mb-2",
+                                                  attrs: {
+                                                    to:
+                                                      "/listingDetails/" +
+                                                      _vm.results[
+                                                        index * 3 + offset
+                                                      ].id,
+                                                  },
+                                                },
+                                                [_vm._v("Learn More")]
+                                              ),
+                                            ],
+                                            1
+                                          ),
+                                        ]
                                       ),
                                     ]
                                   ),
@@ -80062,7 +80069,7 @@ var render = function () {
                                   "div",
                                   {
                                     staticClass:
-                                      "bg-white mt-4 w-full h-[90%] rounded-xl shadow-md p-3 mb-4 flex flex-col justify-center relative loading",
+                                      "bg-white mt-4 w-[250px] h-[350px] rounded-xl shadow-md p-3 mb-4 flex flex-col justify-center relative loading",
                                   },
                                   [
                                     _c("div", { staticClass: "relative" }, [

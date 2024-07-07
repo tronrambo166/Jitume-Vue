@@ -94,7 +94,7 @@
         <!-- Loop through three cards for each carousel item -->
         <div v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]" class="w-full md:w-[calc(100% / 3 - 2rem)] px-2">
           <router-link :to="`/serviceDetails/${results[index * 3 + offset].id}`">
-            <div class="bg-white mt-4 w-full h-[90%] rounded-xl shadow-md p-3 mb-4 flex flex-col justify-center relative loading">
+            <div class="bg-white mt-4 w-[250px] h-[350px] rounded-xl shadow-md p-3 mb-4 flex flex-col justify-center relative loading">
               <div class="relative">
                 <video v-if="results[index * 3 + offset].file" controls class="w-full h-[215px] object-cover rounded-lg mb-4">
                   <source :src="results[index * 3 + offset].file" type="video/mp4">
