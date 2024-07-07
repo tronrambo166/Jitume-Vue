@@ -149,15 +149,16 @@
                     <div class="col-sm-3"><span style="background:black;font-size: 11px;" class="btn text-light px-2 py-1 small rounded">Filter by Amount R.:</span>
                     </div>  
                     <div id="" class="col-sm-6 mt-1"> 
-                        <div id="slider2" class=""> </div>
+                        <div id="slider2" class="mt-3"> </div>
                         <div class="row mt-3">
                             <div class="col-6  mt-1">
-                                <span id="price_low" class="py-0 btn btn-light" name="min"> </span>
+                                <span id="price_low2" class="py-0 btn btn-light" name="min"> </span>
                             </div>
                             <div class="col-6 mt-1 pr-0">
-                                <span id="price_high" class="float-right py-0 btn btn-light" name="min"> </span>
+                                <span id="price_high2" class="float-right py-0 btn btn-light" name="min"> </span>
                             </div>
                         </div>
+
                     </div>
                     </div>
 
@@ -241,7 +242,7 @@
 
     <div class="flex flex-col whitespace-nowrap p-2">
         <p class="mt-2">Yearly Turnover: <span class="font-normal">${{ result.y_turnover }}</span></p>
-        <p class="mt-1">Amount Required: <span class="font-normal">${{ result.investment_needed }}</span></p>
+        <p class="mt-1">Amount Requested: <span class="font-normal">${{ result.investment_needed }}</span></p>
     </div>
 </div>
 
@@ -406,19 +407,18 @@ export default {
 
         },
 
-
-            range_amount() {
+       range_amount() {
             this.ids = atob(this.$route.params.results);
             let t = this;
 
             if(t.ids != 0) {
             var slider = document.getElementById('slider2');
             noUiSlider.create(slider, {
-                start: [0, 500000],
+                start: [0, 15000000],
                 connect: true,
                 range: {
-                    'min': 0,
-                    'max': 500000
+                    'min': 10000,
+                    'max': 15000000
                 },
 
                 step: 10000,
@@ -430,14 +430,14 @@ export default {
                 }
             });
             var skipValues = [
-                document.getElementById('price_low'),
-                document.getElementById('price_high')
+                document.getElementById('price_low2'),
+                document.getElementById('price_high2')
             ];
             slider.noUiSlider.on('update', function (values, handle) {
                 skipValues[handle].innerHTML = '$' + values[handle];
                 //console.log(values[1] - values[0]);
 
-                axios.get('priceFilter/' + values[0] + '/' + values[1] + '/' + t.ids).then((data) => {
+                axios.get('priceFilter_amount/' + values[0] + '/' + values[1] + '/' + t.ids).then((data) => {
 
                     // if(values[0]==0.00 && values[1]==500000.00){}
                     //else{ 
@@ -554,6 +554,7 @@ export default {
         this.loc = this.$route.params.loc;
         this.setRes()
         this.range()
+        this.range_amount()
 
         var x = navigator.geolocation;
         setTimeout(() => x.getCurrentPosition(this.success, this.failure), 1000);

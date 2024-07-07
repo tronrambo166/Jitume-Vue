@@ -63,6 +63,8 @@ Route::post('search', 'PagesController@search')->name('search');
 Route::get('searchResults/{ids}', 'PagesController@searchResults')->name('searchResults');
 Route::get('priceFilter/{min}/{max}/{ids}', 'PagesController@priceFilter')->name('priceFilter');
 Route::get('priceFilterS/{min}/{max}/{ids}', 'PagesController@priceFilterS')->name('priceFilterS');
+Route::get('priceFilter_amount/{min}/{max}/{ids}', 'PagesController@priceFilter_amount')->name('priceFilter_amount');
+
 
 Route::post('searchService', 'PagesController@searchService')->name('searchService');
 Route::post('serviceBook', 'ServiceController@serviceBook')->name('serviceBook');

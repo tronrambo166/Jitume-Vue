@@ -587,6 +587,37 @@ public function priceFilterS($min, $max, $ids){
 }
 
 
+public function priceFilter_amount($min, $max, $ids){
+    $results = array();
+    $ids = explode(',',$ids); 
+    foreach($ids as $id){ 
+    if($id!=''){ 
+    $listing = Listing::where('id',$id)->first();
+    $range = $listing->investment_needed;
+    //$db_min = $range[0];$db_max = $range[1];
+
+//Video check
+    $files = businessDocs::where('business_id',$id)
+    ->where('media',1)->first();
+    if(isset($files->file))
+    $listing->file = $files->file;
+    else $listing->file = false;
+//Video check  
+
+    $listing->lat = (float)$listing->lat;
+    $listing->lng = (float)$listing->lng;
+    
+  
+    if((int)$min <= $range && (int)$max >= $range)
+        //return response()->json([ 'data' => (int)$min .'<='. $db_min .'//'.(int)$max .'>='. $db_max]);
+    $results[] = $listing;
+}
+}
+
+    return response()->json([ 'data' => $results]);
+}
+
+
 public function create_service(){
 $events = Events::latest()->get();
 return view('create_service',compact('events'));

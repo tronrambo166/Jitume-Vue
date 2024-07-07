@@ -2144,3 +2144,7 @@ ul li a:hover{
       text-overflow: ellipsis;
       max-width: 200px; /* Adjust this value based on your layout needs */
     }
+
+    #price_high, #price_low, #price_high2, #price_low2{
+        font-size: 12px !important;
+    }
