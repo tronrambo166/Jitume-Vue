@@ -65,7 +65,7 @@
     <h1 class="pb-2 text-[18px] md:text-[20px] text-gray-900">Discover local services</h1>
     <h3 class="py-2 text-[24px] md:text-[32px] font-bold">Find the best <span class="text-green-800">local service</span> <br> in your area</h3>
     <p class="text-black text-[13px] md:text-[20px]">Explore categories to suit your needs. Connect with businesses offering top-notch services.</p>
-    <button class="bg-green-800 text-white px-4 py-2 mt-4 md:px-6 md:py-3 rounded-[14px]">Get started</button>
+  <button data-target="#loginModal" data-toggle="modal" class="bg-green-800 text-white px-4 py-2 mt-4 md:px-6 md:py-3 rounded-[14px]">Get started</button>
   </div>
   </div>
   <div>

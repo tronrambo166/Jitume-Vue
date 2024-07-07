@@ -9,7 +9,7 @@
         <div class="div">
     <div class="text-black text-[15px] font-bold">More business information</div>
     <div class="py-3  text-[13px] font-extrabold text-black">{{ form.name }}</div>
-    <div class="py-3 text-[12px] ">
+    <div class="py-3 text-[13px] ">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
       tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
       veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip

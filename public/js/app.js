@@ -74647,7 +74647,7 @@ var render = function () {
                 [_vm._v(_vm._s(_vm.form.name))]
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "py-3 text-[12px]" }, [
+              _c("div", { staticClass: "py-3 text-[13px]" }, [
                 _vm._v(
                   "\n      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod\n      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim\n      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip\n    "
                 ),
@@ -80406,6 +80406,7 @@ var staticRenderFns = [
               {
                 staticClass:
                   "bg-green-800 text-white px-4 py-2 mt-4 md:px-6 md:py-3 rounded-[14px]",
+                attrs: { "data-target": "#loginModal", "data-toggle": "modal" },
               },
               [_vm._v("Get started")]
             ),
