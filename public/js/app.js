@@ -8566,6 +8566,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -67855,7 +67872,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -67985,7 +68002,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -68226,7 +68243,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\r\n    Name: "),
+        _vm._v("\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68261,7 +68278,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Desc: "),
+        _vm._v("\n\n     Desc: "),
         _c("textarea", {
           directives: [
             {
@@ -68298,7 +68315,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Cat Id:  "),
+        _vm._v("\n\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -68329,7 +68346,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Brand Id:  "),
+        _vm._v("\n\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -68360,7 +68377,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Price:  "),
+        _vm._v("\n\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -68390,7 +68407,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n     Qty:  "),
+        _vm._v("\n\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -68420,7 +68437,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n   Image: "),
+        _vm._v("\n\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -68482,7 +68499,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -68531,7 +68548,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\r\n    Name: "),
+        _vm._v("\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68566,7 +68583,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Desc: "),
+        _vm._v("\n\n     Desc: "),
         _c("input", {
           directives: [
             {
@@ -68597,7 +68614,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Cat Id:  "),
+        _vm._v("\n\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -68628,7 +68645,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Brand Id:  "),
+        _vm._v("\n\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -68659,7 +68676,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Price:  "),
+        _vm._v("\n\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -68689,7 +68706,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n     Qty:  "),
+        _vm._v("\n\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -68719,7 +68736,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n   Image: "),
+        _vm._v("\n\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -68781,7 +68798,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -72898,7 +72915,7 @@ var render = function () {
                             "router-link",
                             {
                               staticClass:
-                                "nav-link btn btn-success text-light mx-2",
+                                "nav-link btn bg-green-700 text-light mx-2",
                               attrs: { to: "category/Agriculture" },
                             },
                             [
@@ -73280,7 +73297,10 @@ var render = function () {
                 [
                   _c(
                     "div",
-                    { staticClass: "flex justify-center items-center w-full" },
+                    {
+                      staticClass:
+                        "flex justify-center gap-2 px-3 items-center w-full",
+                    },
                     _vm._l([0, 1, 2], function (offset) {
                       return _vm.results[index * 3 + offset]
                         ? _c(
@@ -73288,7 +73308,7 @@ var render = function () {
                             {
                               key: index * 3 + offset,
                               staticClass:
-                                "w-full md:w-[calc(100% / 3 - 2rem)] px-2",
+                                "w-[300px] md:w-[calc(100% / 3 - 2rem)] px-2",
                               attrs: {
                                 to:
                                   "/listingDetails/" +
@@ -73300,7 +73320,11 @@ var render = function () {
                                 "div",
                                 {
                                   staticClass:
-                                    "bg-white mt-4 w-[250px] h-[350px] mx-auto rounded-xl shadow-md p-3 mb-4 flex flex-col justify-between relative",
+                                    "bg-white mt-4 w-[280px] h-[380px] mx-auto rounded-xl p-3 mb-4 flex flex-col justify-between relative",
+                                  staticStyle: {
+                                    "box-shadow":
+                                      "rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px",
+                                  },
                                 },
                                 [
                                   _c("div", { staticClass: "relative" }, [
@@ -73318,7 +73342,7 @@ var render = function () {
                                       "p",
                                       {
                                         staticClass:
-                                          "absolute inset-t-0 mb-4 font-bold px-2 mr-5 rounded-xl bottom-4 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs",
+                                          "absolute inset-t-0 mb-4 pl-2 font-bold px-2 mr-5 rounded-xl bottom-4 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs",
                                       },
                                       [
                                         _c("i", {
@@ -73400,24 +73424,6 @@ var render = function () {
                                             "p",
                                             {
                                               staticClass:
-                                                "text-sm text-gray-700 whitespace-nowrap font-bold",
-                                            },
-                                            [
-                                              _vm._v(
-                                                "Name: " +
-                                                  _vm._s(
-                                                    _vm.results[
-                                                      index * 3 + offset
-                                                    ].name
-                                                  )
-                                              ),
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "p",
-                                            {
-                                              staticClass:
                                                 "text-sm text-gray-700 whitespace-nowrap",
                                             },
                                             [
@@ -73434,13 +73440,39 @@ var render = function () {
                                           _vm._v(" "),
                                           _c(
                                             "div",
-                                            { staticClass: "hidden" },
+                                            {
+                                              staticClass:
+                                                "text-black font-semibold",
+                                            },
                                             [
+                                              _vm._v(
+                                                "\n      Amount Requested: "
+                                              ),
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "font-bold text-black",
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "$" +
+                                                      _vm._s(
+                                                        _vm.results[
+                                                          index * 3 + offset
+                                                        ].investment_needed
+                                                      )
+                                                  ),
+                                                ]
+                                              ),
+                                              _vm._v(" "),
+                                              _c("span", {
+                                                staticClass: "text-xl",
+                                              }),
+                                              _vm._v(" "),
                                               _c(
                                                 "router-link",
                                                 {
-                                                  staticClass:
-                                                    "btn-learn-more bg-green-800 hover:bg-green-700 text-white py-2 px-4 rounded text-base whitespace-nowrap mb-2",
                                                   attrs: {
                                                     to:
                                                       "/listingDetails/" +
@@ -73449,7 +73481,16 @@ var render = function () {
                                                       ].id,
                                                   },
                                                 },
-                                                [_vm._v("Learn More")]
+                                                [
+                                                  _c(
+                                                    "button",
+                                                    {
+                                                      staticClass:
+                                                        "rounded-[10px] w-full bg-green-700 text-slate-100 py-2 px-6",
+                                                    },
+                                                    [_vm._v("learn more")]
+                                                  ),
+                                                ]
                                               ),
                                             ],
                                             1
@@ -73537,7 +73578,7 @@ var staticRenderFns = [
                   "button",
                   {
                     staticClass:
-                      "bg-green-800 w-[125px] h-[50px] text-slate-100 rounded-[14px] px-6 py-3",
+                      "bg-green-700 w-[125px] h-[50px] text-slate-100 rounded-[14px] px-6 py-3",
                     attrs: {
                       "data-target": "#loginModal",
                       "data-toggle": "modal",
@@ -73670,7 +73711,8 @@ var staticRenderFns = [
     return _c(
       "a",
       {
-        staticClass: "carousel-control-prev flex items-center justify-center",
+        staticClass:
+          "carousel-control-prev mr-2 px-3 flex items-center justify-center",
         attrs: {
           href: "#resource-slider",
           role: "button",
@@ -73703,7 +73745,8 @@ var staticRenderFns = [
     return _c(
       "a",
       {
-        staticClass: "carousel-control-next flex items-center justify-center",
+        staticClass:
+          "carousel-control-next px-3 flex items-center justify-center",
         attrs: {
           href: "#resource-slider",
           role: "button",

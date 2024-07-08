@@ -26,7 +26,7 @@
     <h3 class="text-[28px] text-black font-extrabold py-4">Real businesses, real <br>solutions, <span class="text-green-800 text-[30px]">real change</span></h3>
     <h3 class="font-bold text-[20px] pb-6">Invest in a business you believe in with as little as $100</h3>
     <div>
-      <button data-target="#loginModal" data-toggle="modal" class="bg-green-800 w-[125px] h-[50px] text-slate-100 rounded-[14px] px-6 py-3">Join today</button>
+      <button data-target="#loginModal" data-toggle="modal" class="bg-green-700 w-[125px] h-[50px] text-slate-100 rounded-[14px] px-6 py-3">Join today</button>
     </div>
   </div>
 
@@ -206,7 +206,7 @@
     <div class="my-5 py-0">
   <ul class="nav justify-content-center">
     <li class="nav-item">
-      <router-link class="nav-link btn btn-success text-light mx-2" to="category/Agriculture">
+      <router-link class="nav-link btn bg-green-700 text-light mx-2" to="category/Agriculture">
         <i class="bi bi-bag"></i> Agriculture
       </router-link>
     </li>
@@ -522,13 +522,13 @@
   <div class="carousel-inner w-[70%] mx-auto">
     <!-- Loop through your results to generate carousel items -->
     <div v-for="(result, index) in Math.ceil(results.length / 3)" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }">
-      <div class="flex justify-center items-center w-full">
+      <div class="flex justify-center gap-2 px-3  items-center w-full">
         <!-- Loop through three cards for each carousel item -->
-        <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="w-full md:w-[calc(100% / 3 - 2rem)] px-2" v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]">
-         <div class="bg-white mt-4 w-[250px] h-[350px] mx-auto rounded-xl shadow-md p-3 mb-4 flex flex-col justify-between relative">
+        <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="w-[300px] md:w-[calc(100% / 3 - 2rem)] px-2" v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]">
+         <div class="bg-white mt-4 w-[280px] h-[380px] mx-auto rounded-xl  p-3 mb-4 flex flex-col justify-between relative" style="box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;">
     <div class="relative">
         <img :src="results[index * 3 + offset].image" alt="Image" class="w-full h-[215px] object-cover rounded-lg ">
-        <p class="absolute inset-t-0 mb-4  font-bold px-2 mr-5 rounded-xl bottom-4 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs">
+        <p class="absolute inset-t-0 mb-4 pl-2 font-bold px-2 mr-5 rounded-xl bottom-4 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs">
             <i class="fa fa-map-marker pr-2"></i>{{ results[index * 3 + offset].location }}
         </p>
     </div>
@@ -539,11 +539,28 @@
                 <h4 class="text-lg mt-2 hover:no-underline hover:text-green-800">{{ results[index * 3 + offset].name }}</h4>
             </header>
             <p class="text-sm text-gray-700">{{ results[index * 3 + offset].description }}</p>
-            <p class="text-sm text-gray-700 whitespace-nowrap font-bold">Name: {{ results[index * 3 + offset].name }}</p>
+            <!-- <p class="text-sm text-gray-700 whitespace-nowrap font-bold">Name: {{ results[index * 3 + offset].name }}</p> -->
             <p class="text-sm text-gray-700 whitespace-nowrap">Contact: {{ results[index * 3 + offset].contact }}</p>
-            <div class="hidden">
+<!-- <div class="amount px-3 pb-0">
+    <p class="font-weight-bold">Amount: <span class="font-weight-light"><b>${{ results[index * 3 + offset].investment_needed }}</b></span></p>
+</div> -->
+<div
+      class="text-black font-semibold"
+    >
+      Amount Requested: <span class="font-bold text-black">${{ results[index * 3 + offset].investment_needed }}</span>
+      <span class="text-xl"></span>
+
+
+      <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`">
+
+          <button class=" rounded-[10px] w-full bg-green-700  text-slate-100 py-2 px-6">learn more</button>
+</router-link>
+
+    </div>
+    
+            <!-- <div class="hidden">
             <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="btn-learn-more  bg-green-800 hover:bg-green-700 text-white py-2 px-4 rounded text-base whitespace-nowrap mb-2">Learn More</router-link>
-        </div>
+        </div> -->
         </div>
         
     </div>
@@ -555,13 +572,13 @@
   </div>
 
   <!-- Carousel controls for manual scrolling -->
-  <a class="carousel-control-prev flex items-center justify-center" href="#resource-slider" role="button" data-slide="prev">
+  <a class="carousel-control-prev mr-2 px-3 flex items-center justify-center" href="#resource-slider" role="button" data-slide="prev">
     <div class="bg-black rounded-full p-1 w-6 h-6 flex items-center justify-center">
       <span class="carousel-control-prev-icon text-white" aria-hidden="true"></span>
     </div>
     <span class="sr-only">Previous</span>
   </a>
-  <a class="carousel-control-next flex items-center justify-center" href="#resource-slider" role="button" data-slide="next">
+  <a class="carousel-control-next px-3 flex items-center justify-center" href="#resource-slider" role="button" data-slide="next">
     <div class="bg-black rounded-full p-1 w-6 h-6 flex items-center justify-center">
       <span class="carousel-control-next-icon text-white" aria-hidden="true"></span>
     </div>
@@ -575,7 +592,7 @@
 <!--cards-->
 
 
-<section>
+<section> 
   <Slider/>
   
 </section>
