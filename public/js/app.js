@@ -73458,7 +73458,7 @@ var render = function () {
                                                 "div",
                                                 {
                                                   staticClass:
-                                                    "flex justify-end w-full pt-[10px]",
+                                                    "flex justify-start w-full pt-[10px]",
                                                 },
                                                 [
                                                   _c(
@@ -73477,7 +73477,7 @@ var render = function () {
                                                         "button",
                                                         {
                                                           staticClass:
-                                                            "rounded-[10px] bg-green-700 text-slate-100 py-2 px-8",
+                                                            "rounded-[8px] bg-green-700 text-slate-100 py-2 px-6",
                                                         },
                                                         [_vm._v("Learn more")]
                                                       ),

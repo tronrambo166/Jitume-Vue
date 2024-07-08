@@ -551,9 +551,9 @@
       <span class="text-xl"></span>
 
 
-     <div class="flex justify-end w-full pt-[10px]">
+     <div class="flex justify-start w-full pt-[10px]">
     <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`">
-        <button class="rounded-[10px] bg-green-700 text-slate-100 py-2 px-8">Learn more</button>
+        <button class="rounded-[8px] bg-green-700 text-slate-100 py-2 px-6">Learn more</button>
     </router-link>
 </div>
 

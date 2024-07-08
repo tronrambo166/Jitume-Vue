@@ -11958,6 +11958,9 @@ video {
 .rounded-\[10px\] {
   border-radius: 10px;
 }
+.rounded-\[8px\] {
+  border-radius: 8px;
+}
 .rounded-b-\[16px\] {
   border-bottom-right-radius: 16px;
   border-bottom-left-radius: 16px;
