@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto flex justify-center items-center">
+  <div class="container mx-auto sm:flex-row-reverse flex-row flex justify-center items-center py-4 lg:py-8 mt-3">
 
 <div class="px-4 md:px-6 lg:px-8 xl:px-12 my-3 pt-3 w-full flex flex-col md:flex-row  justify-center mx-auto gap-4 md:gap-6 lg:gap-8">
 

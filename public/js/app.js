@@ -8583,6 +8583,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -73471,29 +73473,38 @@ var render = function () {
                                               }),
                                               _vm._v(" "),
                                               _c(
-                                                "router-link",
+                                                "div",
                                                 {
-                                                  attrs: {
-                                                    to:
-                                                      "/listingDetails/" +
-                                                      _vm.results[
-                                                        index * 3 + offset
-                                                      ].id,
-                                                  },
+                                                  staticClass:
+                                                    "flex justify-end w-full pt-[10px]",
                                                 },
                                                 [
                                                   _c(
-                                                    "button",
+                                                    "router-link",
                                                     {
-                                                      staticClass:
-                                                        "rounded-[10px] w-full bg-green-700 mx-auto text-slate-100 py-2 px-8",
+                                                      attrs: {
+                                                        to:
+                                                          "/listingDetails/" +
+                                                          _vm.results[
+                                                            index * 3 + offset
+                                                          ].id,
+                                                      },
                                                     },
-                                                    [_vm._v("Learn more")]
+                                                    [
+                                                      _c(
+                                                        "button",
+                                                        {
+                                                          staticClass:
+                                                            "rounded-[10px] bg-green-700 text-slate-100 py-2 px-8",
+                                                        },
+                                                        [_vm._v("Learn more")]
+                                                      ),
+                                                    ]
                                                   ),
-                                                ]
+                                                ],
+                                                1
                                               ),
-                                            ],
-                                            1
+                                            ]
                                           ),
                                         ]
                                       ),
@@ -74678,7 +74689,10 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container mx-auto flex justify-center items-center" },
+    {
+      staticClass:
+        "container mx-auto sm:flex-row-reverse flex-row flex justify-center items-center py-4 lg:py-8 mt-3",
+    },
     [
       _c(
         "div",

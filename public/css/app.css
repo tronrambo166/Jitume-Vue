@@ -11557,6 +11557,9 @@ video {
 .mr-5 {
   margin-right: 1.25rem;
 }
+.mt-\[20px\] {
+  margin-top: 20px;
+}
 .block {
   display: block;
 }
@@ -11797,6 +11800,9 @@ video {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
+}
+.flex-row {
+  flex-direction: row;
 }
 .flex-col {
   flex-direction: column;
@@ -12263,6 +12269,12 @@ video {
 .pb-4 {
   padding-bottom: 1rem;
 }
+.pt-\[20px\] {
+  padding-top: 20px;
+}
+.pt-\[10px\] {
+  padding-top: 10px;
+}
 .text-left {
   text-align: left;
 }
@@ -12631,6 +12643,10 @@ video {
     flex-direction: row;
   }
 
+  .sm\:flex-row-reverse {
+    flex-direction: row-reverse;
+  }
+
   .sm\:items-center {
     align-items: center;
   }
@@ -12846,6 +12862,16 @@ video {
   .lg\:py-2 {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
+  }
+
+  .lg\:py-6 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .lg\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
 
   .lg\:text-base {
