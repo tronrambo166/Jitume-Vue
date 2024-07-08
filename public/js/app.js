@@ -9893,6 +9893,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'business'],
   data: function data() {
@@ -10390,30 +10396,6 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -74691,7 +74673,7 @@ var render = function () {
     "div",
     {
       staticClass:
-        "container mx-auto sm:flex-row-reverse flex-row flex justify-center items-center py-4 lg:py-8 mt-3",
+        "container mx-auto flex-row flex justify-center items-center py-4 lg:py-8 mt-3",
     },
     [
       _c(
@@ -74703,21 +74685,20 @@ var render = function () {
         [
           _c("div", { staticClass: "col-md-4 px-6" }, [
             _c("div", { staticClass: "div" }, [
-              _c("div", { staticClass: "text-black text-[15px] font-bold" }, [
-                _vm._v("More business information"),
-              ]),
+              _vm._m(0),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "py-3 text-[13px] font-extrabold text-black" },
-                [_vm._v(_vm._s(_vm.form.name))]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "py-3 text-[13px]" }, [
-                _vm._v(
-                  "\n      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod\n      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim\n      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip\n    "
+              _c("div", { staticClass: "py-3" }, [
+                _c(
+                  "p",
+                  {
+                    staticClass:
+                      "text-[13px] sm:text-[12px] md:text-[13px] lg:text-[14px] font-extrabold text-black",
+                  },
+                  [_vm._v(_vm._s(_vm.form.name))]
                 ),
               ]),
+              _vm._v(" "),
+              _vm._m(1),
               _vm._v(" "),
               _c("div", { staticClass: "flex gap-2" }, [
                 _c(
@@ -74851,7 +74832,7 @@ var render = function () {
                 ),
               ]),
               _vm._v(" "),
-              _vm._m(0),
+              _vm._m(2),
             ]),
           ]),
           _vm._v(" "),
@@ -74919,7 +74900,7 @@ var render = function () {
                     _c("span", { staticClass: "text-xl" }),
                   ]),
                   _vm._v(" "),
-                  _vm._m(1),
+                  _vm._m(3),
                 ]
               ),
             ]),
@@ -74977,7 +74958,7 @@ var render = function () {
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "row" }, [
-                            _vm._m(2),
+                            _vm._m(4),
                             _vm._v(" "),
                             _c("div", { staticClass: "col-2" }, [
                               _c(
@@ -75016,7 +74997,7 @@ var render = function () {
                   ]),
                   _vm.auth_user
                     ? _c("div", { staticClass: "float-right w-25" }, [
-                        _vm._m(3),
+                        _vm._m(5),
                         _vm._v(" "),
                         _c("span", [
                           _vm._v(_vm._s(_vm.progress) + "% Invested"),
@@ -75090,7 +75071,7 @@ var render = function () {
                   "div",
                   { staticClass: "card bg-light w-100 mx-auto py-3 hidden" },
                   [
-                    _vm._m(4),
+                    _vm._m(6),
                     _vm._v(" "),
                     _vm.auth_user
                       ? _c("div", { staticClass: "eqp-invest" }, [
@@ -75240,7 +75221,7 @@ var render = function () {
                         _vm.running && _vm.amount_required > 0
                           ? _c("div", { staticClass: "Invest-Payout" }, [
                               _c("div", { staticClass: "w-75 mx-auto row" }, [
-                                _vm._m(5),
+                                _vm._m(7),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "col-sm-12 px-1" }, [
                                   _c("div", { staticClass: "row" }, [
@@ -75268,7 +75249,7 @@ var render = function () {
                                     ]),
                                   ]),
                                   _vm._v(" "),
-                                  _vm._m(6),
+                                  _vm._m(8),
                                 ]),
                               ]),
                               _vm._v(" "),
@@ -75296,7 +75277,7 @@ var render = function () {
                               ),
                               _vm._v(" "),
                               _c("div", { staticClass: "w-75 mx-auto row" }, [
-                                _vm._m(7),
+                                _vm._m(9),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "col-sm-12 px-1" }, [
                                   _c("div", { staticClass: "row" }, [
@@ -75324,7 +75305,7 @@ var render = function () {
                                     ]),
                                   ]),
                                   _vm._v(" "),
-                                  _vm._m(8),
+                                  _vm._m(10),
                                 ]),
                               ]),
                               _vm._v(" "),
@@ -75572,7 +75553,7 @@ var render = function () {
                                           [_vm._v("\n          Ok\n        ")]
                                         ),
                                         _vm._v(" "),
-                                        _vm._m(9),
+                                        _vm._m(11),
                                       ]
                                     ),
                                   ]
@@ -75745,7 +75726,7 @@ var render = function () {
                                                   ]
                                                 ),
                                             _vm._v(" "),
-                                            _vm._m(10),
+                                            _vm._m(12),
                                           ])
                                         : _vm._e(),
                                       _vm._v(" "),
@@ -75826,9 +75807,9 @@ var render = function () {
                                                   ]
                                                 ),
                                             _vm._v(" "),
-                                            _vm._m(11),
+                                            _vm._m(13),
                                             _vm._v(" "),
-                                            _vm._m(12),
+                                            _vm._m(14),
                                           ])
                                         : _vm._e(),
                                       _vm._v(" "),
@@ -75925,11 +75906,11 @@ var render = function () {
             { staticClass: "modal-dialog", attrs: { role: "document" } },
             [
               _c("div", { staticClass: "modal-content" }, [
-                _vm._m(13),
+                _vm._m(15),
                 _vm._v(" "),
                 _c("div", { staticClass: "modal-body" }, [
                   _c("form", [
-                    _vm._m(14),
+                    _vm._m(16),
                     _vm._v(" "),
                     _c("h5", { staticClass: "font-weight-bold" }, [
                       _vm._v("Leave a review"),
@@ -75964,6 +75945,40 @@ var render = function () {
   )
 }
 var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c(
+        "h2",
+        {
+          staticClass:
+            "text-black text-[15px] sm:text-[14px] md:text-[15px] lg:text-[16px] font-bold",
+        },
+        [_vm._v("More business information")]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "py-3" }, [
+      _c(
+        "p",
+        {
+          staticClass:
+            "text-[13px] sm:text-[12px] md:text-[13px] lg:text-[14px]",
+        },
+        [
+          _vm._v(
+            "\n    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip\n  "
+          ),
+        ]
+      ),
+    ])
+  },
   function () {
     var _vm = this
     var _h = _vm.$createElement
@@ -76389,7 +76404,7 @@ var render = function () {
           _c(
             "div",
             {
-              staticClass: "col-md-8 pr-4 element-class",
+              staticClass: "col-md-7 pr-4 element-class",
               staticStyle: {
                 height: "100vh",
                 "overflow-y": "scroll",
@@ -76418,6 +76433,13 @@ var render = function () {
                         {
                           staticClass: "flex px-4",
                           attrs: { to: "/listingDetails/" + result.id },
+                          on: {
+                            click: function ($event) {
+                              return _vm.openInNewTab(
+                                "/listingDetails/" + result.id
+                              )
+                            },
+                          },
                         },
                         [
                           _c(
@@ -76471,7 +76493,7 @@ var render = function () {
                                 _c(
                                   "h5",
                                   { staticClass: "card_heading mb-0 py-2" },
-                                  [_vm._v(_vm._s(result.name) + " ")]
+                                  [_vm._v(_vm._s(result.name))]
                                 ),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "rounded-full" }, [
@@ -76483,7 +76505,11 @@ var render = function () {
                                     },
                                     [
                                       _c("b"),
-                                      _vm._v(" " + _vm._s(result.category)),
+                                      _vm._v(
+                                        " " +
+                                          _vm._s(result.category) +
+                                          "\n        "
+                                      ),
                                     ]
                                   ),
                                 ]),
@@ -76493,7 +76519,7 @@ var render = function () {
                                     "div",
                                     {
                                       staticClass:
-                                        "flex justify-between gap-[70px]",
+                                        "flex justify-between gap-[50px]",
                                     },
                                     [
                                       _c(
@@ -76522,7 +76548,8 @@ var render = function () {
                                                       "mr-2 text-black fa fa-map-marker",
                                                   }),
                                                   _vm._v(
-                                                    _vm._s(result.location)
+                                                    _vm._s(result.location) +
+                                                      "\n                    "
                                                   ),
                                                 ]
                                               ),
@@ -76779,7 +76806,7 @@ var staticRenderFns = [
             ),
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "col-sm-6 mt-1", attrs: { id: "" } }, [
+          _c("div", { staticClass: "col-sm-8 mt-1", attrs: { id: "" } }, [
             _c("div", { attrs: { id: "slider" } }),
             _vm._v(" "),
             _c("div", { staticClass: "row mt-3" }, [
@@ -76812,7 +76839,7 @@ var staticRenderFns = [
             ),
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "col-sm-6 mt-1", attrs: { id: "" } }, [
+          _c("div", { staticClass: "col-sm-8 mt-1", attrs: { id: "" } }, [
             _c("div", { staticClass: "mt-3", attrs: { id: "slider2" } }),
             _vm._v(" "),
             _c("div", { staticClass: "row mt-3" }, [
@@ -76854,7 +76881,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-4" }, [
+    return _c("div", { staticClass: "col-md-5" }, [
       _c("div", { staticClass: "m-auto map_style" }, [
         _c("div", { staticStyle: { height: "95%" }, attrs: { id: "map" } }),
       ]),

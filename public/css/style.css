@@ -1425,7 +1425,7 @@
     }
 
     .noUi-target {
-        height: 10px;
+        height: 8px;
         background: black;
     }
 
@@ -1434,10 +1434,13 @@
     }
 
     .noUi-horizontal .noUi-handle {
-        width: 23px;
-        height: 14px;
-        right: -17px;
-        top: -3px;
+        width: 14px;
+        height: 16px;
+        right: -12px;
+        top: -6px;
+        border-radius: 50%;
+        background: black;
+        box-shadow: none !important;
     }
 
     #price_high,

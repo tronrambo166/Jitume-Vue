@@ -203,6 +203,12 @@ function closeErrorPopup() {
 
 
 
+methods: {
+  formatAmount(amount) {
+    return amount.toLocaleString();
+  }
+}
+
 
 
 function scrollToSection() {

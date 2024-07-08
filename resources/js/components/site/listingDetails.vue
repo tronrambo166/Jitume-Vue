@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto sm:flex-row-reverse flex-row flex justify-center items-center py-4 lg:py-8 mt-3">
+  <div class="container mx-auto  flex-row flex justify-center items-center py-4 lg:py-8 mt-3">
 
 <div class="px-4 md:px-6 lg:px-8 xl:px-12 my-3 pt-3 w-full flex flex-col md:flex-row  justify-center mx-auto gap-4 md:gap-6 lg:gap-8">
 
@@ -7,13 +7,19 @@
       <div class="col-md-4 px-6 ">
 
         <div class="div">
-    <div class="text-black text-[15px] font-bold">More business information</div>
-    <div class="py-3  text-[13px] font-extrabold text-black">{{ form.name }}</div>
-    <div class="py-3 text-[13px] ">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-    </div>
+    <div>
+  <h2 class="text-black text-[15px] sm:text-[14px] md:text-[15px] lg:text-[16px] font-bold">More business information</h2>
+</div>
+
+<div class="py-3">
+  <p class="text-[13px] sm:text-[12px] md:text-[13px] lg:text-[14px] font-extrabold text-black">{{ form.name }}</p>
+</div>
+
+<div class="py-3">
+  <p class="text-[13px] sm:text-[12px] md:text-[13px] lg:text-[14px]">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+  </p>
+</div>
     <div class="flex  gap-2">
       <div class="flex w-full  items-center gap-[40px]"> 
               
