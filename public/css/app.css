@@ -11761,6 +11761,9 @@ video {
 .w-\[100px\] {
   width: 100px;
 }
+.w-\[200px\] {
+  width: 200px;
+}
 .max-w-\[1440px\] {
   max-width: 1440px;
 }
@@ -12174,6 +12177,10 @@ video {
 .py-\[7px\] {
   padding-top: 7px;
   padding-bottom: 7px;
+}
+.px-\[10px\] {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .pb-0 {
   padding-bottom: 0px;

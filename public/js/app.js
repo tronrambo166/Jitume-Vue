@@ -73330,7 +73330,7 @@ var render = function () {
                                   _c("div", { staticClass: "relative" }, [
                                     _c("img", {
                                       staticClass:
-                                        "w-full h-[215px] object-cover rounded-lg",
+                                        "w-[350px] h-[215px] object-cover rounded-lg",
                                       attrs: {
                                         src: _vm.results[index * 3 + offset]
                                           .image,
@@ -73342,7 +73342,7 @@ var render = function () {
                                       "p",
                                       {
                                         staticClass:
-                                          "absolute inset-t-0 mb-4 pl-2 font-bold px-2 mr-5 rounded-xl bottom-4 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs",
+                                          "absolute inset-t-0 mb-3 ml-2 font-bold px-2 mr-5 rounded-xl bottom-4 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs",
                                       },
                                       [
                                         _c("i", {
@@ -73486,9 +73486,9 @@ var render = function () {
                                                     "button",
                                                     {
                                                       staticClass:
-                                                        "rounded-[10px] w-full bg-green-700 text-slate-100 py-2 px-6",
+                                                        "rounded-[10px] w-full bg-green-700 mx-auto text-slate-100 py-2 px-8",
                                                     },
-                                                    [_vm._v("learn more")]
+                                                    [_vm._v("Learn more")]
                                                   ),
                                                 ]
                                               ),
@@ -74017,7 +74017,7 @@ var staticRenderFns = [
           "button",
           {
             staticClass:
-              "bg-[#198754] font-bold my-6 text-white rounded-[14px] w-[136px] h-[40px] py-[7px] text-sm text-center",
+              "bg-[#198754] px-[10px] font-bold my-6 text-white rounded-[14px] w-[136px] h-[40px] py-[7px] text-sm text-center",
             attrs: { onclick: "scrollToSection()" },
           },
           [_vm._v("\n  Find a business\n")]

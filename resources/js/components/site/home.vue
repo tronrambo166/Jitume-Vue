@@ -527,8 +527,8 @@
         <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="w-[300px] md:w-[calc(100% / 3 - 2rem)] px-2" v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]">
          <div class="bg-white mt-4 w-[280px] h-[380px] mx-auto rounded-xl  p-3 mb-4 flex flex-col justify-between relative" style="box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;">
     <div class="relative">
-        <img :src="results[index * 3 + offset].image" alt="Image" class="w-full h-[215px] object-cover rounded-lg ">
-        <p class="absolute inset-t-0 mb-4 pl-2 font-bold px-2 mr-5 rounded-xl bottom-4 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs">
+        <img :src="results[index * 3 + offset].image" alt="Image" class="w-[350px] h-[215px] object-cover rounded-lg ">
+        <p class="absolute inset-t-0 mb-3 ml-2 font-bold px-2 mr-5 rounded-xl bottom-4 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs">
             <i class="fa fa-map-marker pr-2"></i>{{ results[index * 3 + offset].location }}
         </p>
     </div>
@@ -553,7 +553,7 @@
 
       <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`">
 
-          <button class=" rounded-[10px] w-full bg-green-700  text-slate-100 py-2 px-6">learn more</button>
+          <button class=" rounded-[10px] w-full bg-green-700  mx-auto text-slate-100 py-2 px-8">Learn more</button>
 </router-link>
 
     </div>
@@ -667,7 +667,7 @@
 
   </div>
 
-<button onclick="scrollToSection()"  class="bg-[#198754] font-bold my-6 text-white rounded-[14px] w-[136px] h-[40px] py-[7px] text-sm text-center">
+<button onclick="scrollToSection()"  class="bg-[#198754] px-[10px] font-bold my-6 text-white rounded-[14px] w-[136px] h-[40px] py-[7px] text-sm text-center">
   Find a business
 </button>
 
