@@ -123,7 +123,7 @@
 
 
 
-            <div class="col-md-7 pr-4 element-class" style="height: 100vh; overflow-y: scroll;  overflow-anchor: auto;">
+            <div class="col-md-6 pr-4 element-class" style="height: 100vh; overflow-y: scroll;  overflow-anchor: auto;">
                 <!-- Price Filter -->
                 <div class="row">
                     <div class="content_bottom">
@@ -197,42 +197,47 @@
                 <div class="">
                     <div v-for="( result, index ) in results" class="listing row  my-3">
                        <router-link :to="`/listingDetails/${result.id}`" @click="openInNewTab('/listingDetails/' + result.id)" class="flex px-4">
-                            <div class="flex items-center gap-4 mb-5  rounded-[30px] h-[200px]" style="box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;">
+                            <div class="flex items-center gap-[30px] mb-5 w-full rounded-[30px] h-[200px]" style="box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;">
                             <!-- image or video -->
 
 
                       <div class="rounded-l-lg">
-    <video v-if="result.file" controls style="width: 500px !important; height: 200px !important; border-left: 2px solid white; border-radius: 30px; object-fit: cover !important;" alt="">
+    <video v-if="result.file" controls style="width: 200px !important; height: 200px !important; border-left: 2px solid white; border-radius: 30px; object-fit: cover !important;" alt="">
         <source :src="result.file" type="video/mp4">
     </video>
-    <img class="rounded-l-lg" v-else :src="result.image" style="width: 500px !important; height: 200px !important; border-left: 2px solid white; border-radius: 30px; object-fit: cover !important;" alt="" />
+    <img class="rounded-l-lg" v-else :src="result.image" style="width: 200px !important; height: 200px !important; border-left: 2px solid white; border-radius: 30px; object-fit: cover !important;" alt="" />
 </div>
 
-<div class="p-1 pb-2">
+<div class="pt-2 pb-2">
     <h5 class="card_heading mb-0 py-2">{{ result.name }}</h5>
     <div class="rounded-full">
         <p class="my-2 text-center bg-black rounded-full w-[110px] text-white">
             <b></b> {{ result.category }}
         </p>
     </div>
-    <div class="pt-4">
+    <div class="pt-1">
         <div class="flex justify-between gap-[50px]">
             <div class="flex justify-between items-center gap-[40px]">
                 <div class="flex flex-col gap-2">
                     <p class="text-gray-900 pt-1 text-left truncate">
                         <i class="mr-2 text-black fa fa-map-marker"></i>{{ result.location }}
                     </p>
-                    <div class="flex items-center gap-1">
-                        <i class="mr-2 fa fa-phone"></i>
-                        <p class="card_text">
-                            <span class="rounded">{{ result.contact }}</span>
-                        </p>
-                    </div>
+                    <div class="flex flex-col  gap-1">
+    <div class="flex items-center gap-2">
+        <i class="fa fa-phone"></i>
+        <p class="card_text">
+            <span class="rounded">{{ result.contact }}</span>
+        </p>
+    </div>
+
+    <div class="whitespace-nowrap text-[12px] mb-2">
+        <p class="mt-2">Yearly Turnover: <span class="font-normal">${{ result.y_turnover }}</span></p>
+        <p class="mt-1">Amount Requested: <span class="font-normal">${{ result.investment_needed }}</span></p>
+    </div>
+</div>
+
                 </div>
-                <div class="flex flex-col whitespace-nowrap p-2">
-                    <p class="mt-2">Yearly Turnover: <span class="font-normal">${{ result.y_turnover }}</span></p>
-                    <p class="mt-1">Amount Requested: <span class="font-normal">${{ result.investment_needed }}</span></p>
-                </div>
+               
             </div>
         </div>
     </div>
@@ -251,7 +256,7 @@
                 </div>
             </div> -->
 
-             <div class="col-md-5">
+             <div class="col-md-6">
                 <div class="m-auto map_style">
                      <div id="map" style="height: 95%;"></div> 
                 </div>
