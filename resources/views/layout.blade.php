@@ -339,44 +339,49 @@
 
 
 
-<footer class="bg-white text-green-600 px-[100px] w-full mt-6 py-2">
+<footer class="bg-white px-[100px] w-full mt-6 py-2">
     <div class="container mx-auto gap-[220px] flex flex-col md:flex-row justify-center md:justify-between gap-6 w-[959px]">
-        <div class="md:w-1/3 flex flex-col items-start">
-    <ul class="list-none">
-        <li><a onclick="c_to_actionS();" data-target="#loginModal" data-toggle="modal" class="text-[#3B856B] " style="color:#3B856B !important;"><span id="c_to_ac">Sign Up/Sign In as A Project Manager</span></a></li>
-        <li><a onclick="c_to_actionS();" data-target="#loginModal" data-toggle="modal" class=" text-[]" style="color:#3B856B !important ;"><span id="c_to_ac">Add a Service</span></a></li>
-        <li><a href="#" class="text-[#3B856B] hover:text-green-700">How It Works</a></li>
-            </ul>
-</div>
 
-      <div class="md:w-1/3 flex flex-col items-start">
-    <ul class="list-none ">
-        <li><a href="#" class="text-[#3B856B] hover:text-green-700">About</a></li>
-        <li><a href="#" class="text-[#3B856B] hover:text-green-700">FAQs</a></li>
-        <li><a href="#" class="text-[#3B856B] hover:text-green-700">Contact Us</a></li>
-        <li><a href="#" class="text-[#3B856B] hover:text-green-700">Help</a></li>
-    </ul>
-</div>
-<div class="md:w-1/3 flex flex-col items-start">
-    <ul class="list-none">
-        <li><a href="./policy" target="_blank" class="text-[#3B856B] hover:text-green-700">Privacy Policy</a></li>
-        <li><a href="./terms" target="_blank" class="text-[#3B856B] hover:text-green-700">Terms and Conditions</a></li>
-    </ul>
-    <ul class="flex">
-        <li><a href="#" class="text-black bold"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 8.293a1 1 0 0 1 1.414 1.414L11.414 12l2.707 2.293a1 1 0 1 1-1.414 1.414L10 13.414l-2.293 2.707a1 1 0 1 1-1.414-1.414L8.586 12 5.879 9.707a1 1 0 1 1 1.414-1.414L10 10.586l2.293-2.707a1 1 0 0 1 1.414 0z" clip-rule="evenodd" /></svg></a></li>
-        <li><a href="#" class="text-success"><i class="fab fa-instagram"></i></a></li>
-        <li><a href="#" class="text-blue-500"><i class="fab fa-facebook"></i></a></li>
-        <li><a href="#" class="text-red-600"><i class="fab fa-youtube"></i></a></li>
-    </ul>
-</div>
+        <!-- First column -->
+        <div class="md:w-1/3 flex flex-col items-start">
+            <ul class="list-none">
+                <li><a onclick="c_to_actionS();" data-target="#loginModal" data-toggle="modal" class="footer-link">Sign Up/Sign In as A Project Manager</a></li>
+                <li><a onclick="c_to_actionS();" data-target="#loginModal" data-toggle="modal" class="footer-link">Add a Service</a></li>
+                <li><a href="#" class="footer-link">How It Works</a></li>
+            </ul>
+        </div>
+
+        <!-- Second column -->
+        <div class="md:w-1/3 flex flex-col items-start">
+            <ul class="list-none">
+                <li><a href="#" class="footer-link">About</a></li>
+                <li><a href="#" class="footer-link">FAQs</a></li>
+                <li><a href="#" class="footer-link">Contact Us</a></li>
+                <li><a href="#" class="footer-link">Help</a></li>
+            </ul>
+        </div>
+
+        <!-- Third column -->
+        <div class="md:w-1/3 flex flex-col items-start">
+            <ul class="list-none">
+                <li><a href="./policy" target="_blank" class="footer-link">Privacy Policy</a></li>
+                <li><a href="./terms" target="_blank" class="footer-link">Terms and Conditions</a></li>
+            </ul>
+            <ul class="flex">
+                <li><a href="#" class="text-black bold hover:text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 8.293a1 1 0 0 1 1.414 1.414L11.414 12l2.707 2.293a1 1 0 1 1-1.414 1.414L10 13.414l-2.293 2.707a1 1 0 1 1-1.414-1.414L8.586 12 5.879 9.707a1 1 0 1 1 1.414-1.414L10 10.586l2.293-2.707a1 1 0 0 1 1.414 0z" clip-rule="evenodd" /></svg></a></li>
+                <li><a href="#" class="text-success hover:text-green-700"><i class="fab fa-instagram"></i></a></li>
+                <li><a href="#" class="text-blue-500 hover:text-blue-700"><i class="fab fa-facebook"></i></a></li>
+                <li><a href="#" class="text-red-600 hover:text-red-800"><i class="fab fa-youtube"></i></a></li>
+            </ul>
+        </div>
 
     </div>
     <hr class="my-6 border-gray-300">
     <div class="container mx-auto flex justify-between items-center">
-       <!-- <p class="text-sm text-gray-600">&copy; JITUME. All Rights Reserved (2024).</p>-->
-        
+        <!-- Additional content here if needed -->
     </div>
 </footer>
+
 
 
 <!-- testing template-->

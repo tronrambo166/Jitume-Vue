@@ -2151,3 +2151,15 @@ ul li a:hover{
     #price_high, #price_low, #price_high2, #price_low2{
         font-size: 12px !important;
     }
+
+
+    /* CSS for footer links */
+    .footer-link {
+        color: #3B856B !important; /* Green color for links */
+        transition: color 0.3s ease; /* Smooth transition on color change */
+        cursor: pointer !important;
+    }
+
+    .footer-link:hover {
+        color: black !important; /* Black color on hover */
+    }
