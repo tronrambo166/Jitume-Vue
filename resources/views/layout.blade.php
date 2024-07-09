@@ -77,12 +77,16 @@
 
   <div class="hidden md:flex-1 md:flex md:items-center md:justify-center">
     <ul class="flex items-center justify-between w-full max-w-xs md:max-w-md lg:max-w-lg xl:max-w-[832.55px] px-4">
-      <li class="text-sm font-bold text-gray-800 hover:text-green-700">
-        <router-link to="/home" active-class="text-green-800" class="hover:text-green-700">Home</router-link>
-      </li>
-      <li class="text-sm font-bold text-green-800 hover:text-green-700">
-        <router-link to="/services" class="hover:text-green-700">Services</router-link>
-      </li>
+     <li>
+      <router-link to="/home"
+                   class="text-sm font-bold text-gray-700 hover:text-green-700"
+                   :class="{ 'text-green-700 border-b-2 border-green-700': $route.path === '/home' }">Home</router-link>
+    </li>
+    <li>
+      <router-link to="/services"
+                   class="text-sm font-bold text-gray-700 hover:text-green-700"
+                   :class="{ 'text-green-700 border-b-2 border-green-700': $route.path === '/services' }">Services</router-link>
+    </li>
 
 
       @if(Auth::check())
