@@ -72266,7 +72266,7 @@ var render = function () {
               _c(
                 "router-link",
                 {
-                  staticClass: "shadow card border px-3",
+                  staticClass: "shadow-sm rounded-[20px] card border px-3",
                   attrs: { to: "/listingDetails/" + result.id },
                 },
                 [
@@ -72313,7 +72313,7 @@ var render = function () {
                     "div",
                     {
                       staticClass:
-                        "amount float-right text-right w-100 py-0 my-0",
+                        "amount float-right text-left w-100 py-0 my-0",
                     },
                     [
                       _c("h6", { staticClass: "amount font-weight-bold" }, [
@@ -74678,7 +74678,7 @@ var render = function () {
     "div",
     {
       staticClass:
-        "container mx-auto flex-row flex justify-center items-center py-4 lg:py-8 mt-3",
+        "container mx-auto sm:flex-row-reverse flex-row flex justify-center items-center py-4 lg:py-8 mt-3",
     },
     [
       _c(
@@ -75991,7 +75991,8 @@ var staticRenderFns = [
     return _c(
       "p",
       {
-        staticClass: "text-slate-700 text-[13px] flex gap-2 items-center px-2",
+        staticClass:
+          "text-slate-700 text-[13px] flex gap-2 items-center py-2 px-2",
       },
       [
         _c("i", {

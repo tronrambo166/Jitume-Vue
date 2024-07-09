@@ -1,7 +1,7 @@
 <template>
-  <div class="container mx-auto  flex-row flex justify-center items-center py-4 lg:py-8 mt-3">
+  <div class="container mx-auto sm:flex-row-reverse flex-row flex justify-center items-center py-4 lg:py-8 mt-3">
 
-<div class="px-4 md:px-6 lg:px-8 xl:px-12 my-3 pt-3 w-full flex flex-col md:flex-row  justify-center mx-auto gap-4 md:gap-6 lg:gap-8">
+<div class="px-4 md:px-6 lg:px-8 xl:px-12 my-3 pt-3 w-full flex flex-col md:flex-row justify-center mx-auto gap-4 md:gap-6 lg:gap-8">
 
 
       <div class="col-md-4 px-6 ">
@@ -138,7 +138,7 @@ Unlock  To
 
     </div>
 
-    <p class="text-slate-700 text-[13px] flex gap-2 items-center px-2"><i class="fa fa-info-circle text-[13px] text-black font-bold" aria-hidden="true"></i>
+    <p class="text-slate-700 text-[13px] flex gap-2 items-center py-2 px-2"><i class="fa fa-info-circle text-[13px] text-black font-bold" aria-hidden="true"></i>
 Unlock this business to learn more about it and invest</p>
 
   </div>

@@ -46,7 +46,7 @@
 
              
                 <div v-for="( result, index ) in results" class="listing col-sm-3 my-5">
-                    <router-link :to="`/listingDetails/${result.id}`" class="shadow card border px-3">
+                    <router-link :to="`/listingDetails/${result.id}`" class="shadow-sm rounded-[20px] card border px-3">
 
                      <video v-if="result.file" controls style="max-width:332px; height:230px" alt="">
                     <source :src="result.file" type="video/mp4">
@@ -62,7 +62,7 @@
                       <p class="card_text"><span class="rounded"><i class="mr-2 fa fa-phone"></i>{{ result.contact }}</span></p>
                     </div>
 
-                    <div class="amount float-right text-right w-100 py-0 my-0">   
+                    <div class="amount float-right text-left w-100 py-0 my-0">   
                         <h6 class="amount font-weight-bold" >Amount: <span class="font-weight-light"><b>${{result.investment_needed}}</b></span></h6>
                     </div>
 
