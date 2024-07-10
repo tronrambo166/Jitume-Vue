@@ -375,6 +375,7 @@ $results = array();
     foreach($listings as $listing){
         if(strlen($listing->location) > 30)
         $listing->location = substr($listing->location,0,30).'...';
+        $listing->investment_needed = number_format($listing->investment_needed);
         $listing->file=null;
         if($i<11)
          $results[] = $listing;$i++;
@@ -389,6 +390,7 @@ $results = array();
     foreach($listings as $listing){
         if(strlen($listing->location) > 30)
         $listing->location = substr($listing->location,0,30).'...';
+        $listing->price = number_format($listing->price);
         $listing->file=null;
         if($i<11)
          $results[] = $listing;$i++;

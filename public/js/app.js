@@ -10676,6 +10676,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //import {myMap,success,failure,addMarker,addMarkerHome} from '../../../../public/js/map'
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'app_url'],
@@ -10688,10 +10704,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       count: 0,
       loc: '',
       queryLat: '',
-      queryLng: ''
+      queryLng: '',
+      max: 1000000,
+      min: 0
     };
   },
   methods: {
+    collapse: function collapse() {
+      $('#collapseExample').removeClass('collapse');
+      $('#colBut').addClass('collapse');
+    },
+    hide: function hide() {
+      $('#collapseExample').addClass('collapse');
+    },
     setRes: function setRes() {
       var t = this;
       this.ids = atob(this.$route.params.results); //this.results = this.ids.split(",");
@@ -10778,8 +10803,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           start: [0, 15000000],
           connect: true,
           range: {
-            'min': 10000,
-            'max': 15000000
+            'min': parseFloat(t.min),
+            'max': parseFloat(t.max)
           },
           step: 10000,
           margin: 600,
@@ -10791,7 +10816,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
         var skipValues = [document.getElementById('price_low2'), document.getElementById('price_high2')];
         slider.noUiSlider.on('update', function (values, handle) {
-          skipValues[handle].innerHTML = '$' + values[handle]; //console.log(values[1] - values[0]);
+          skipValues[handle].innerHTML = values[handle]; //console.log(values[1] - values[0]);
 
           axios.get('priceFilter_amount/' + values[0] + '/' + values[1] + '/' + t.ids).then(function (data) {
             // if(values[0]==0.00 && values[1]==500000.00){}
@@ -10893,8 +10918,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
     this.loc = this.$route.params.loc;
     this.setRes();
-    this.range();
-    this.range_amount();
+    this.range(); //this.range_amount()
+
     var x = navigator.geolocation;
     setTimeout(function () {
       return x.getCurrentPosition(_this.success, _this.failure);
@@ -76417,7 +76442,122 @@ var render = function () {
               },
             },
             [
-              _vm._m(4),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "content_bottom" }, [
+                  _vm._m(4),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "flex" }, [
+                    _vm._m(5),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col-sm-8 mt-1", attrs: { id: "" } },
+                      [
+                        _c("div", {
+                          staticClass: "mt-3",
+                          attrs: { id: "slider2" },
+                        }),
+                        _vm._v(" "),
+                        _vm._m(6),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "row mt-3 collapse",
+                            attrs: { id: "collapseExample" },
+                          },
+                          [
+                            _c("div", { staticClass: "col-6 mt-1" }, [
+                              _c("span", { staticClass: "d-inline" }, [
+                                _vm._v("Min:"),
+                              ]),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.min,
+                                    expression: "min",
+                                  },
+                                ],
+                                staticClass: "d-inline w-75 py-0 border",
+                                attrs: {
+                                  type: "number",
+                                  id: "price_low3",
+                                  name: "min",
+                                  value: "",
+                                },
+                                domProps: { value: _vm.min },
+                                on: {
+                                  input: function ($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.min = $event.target.value
+                                  },
+                                },
+                              }),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
+                              _c("span", { staticClass: "d-inline" }, [
+                                _vm._v("Max:"),
+                              ]),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.max,
+                                    expression: "max",
+                                  },
+                                ],
+                                staticClass:
+                                  "d-inline w-75 float-right py-0 border",
+                                attrs: {
+                                  type: "number",
+                                  id: "price_high3",
+                                  name: "min",
+                                  value: "",
+                                },
+                                domProps: { value: _vm.max },
+                                on: {
+                                  input: function ($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.max = $event.target.value
+                                  },
+                                },
+                              }),
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "border w-25 mt-3 mx-auto",
+                                on: {
+                                  click: function ($event) {
+                                    _vm.range_amount()
+                                    _vm.hide()
+                                  },
+                                },
+                              },
+                              [_vm._v("Set")]
+                            ),
+                          ]
+                        ),
+                      ]
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(7),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "clear" }),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-sm-4" }),
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "row" }, [
                 _c("p", { staticClass: "ml-1 my-0 text-gray-600 small" }, [
@@ -76691,7 +76831,7 @@ var render = function () {
             ]
           ),
           _vm._v(" "),
-          _vm._m(5),
+          _vm._m(8),
         ]),
         _vm._v(" "),
         this.ids == "0"
@@ -76827,89 +76967,87 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "content_bottom" }, [
-        _c("div", { staticClass: "flex" }, [
-          _c("div", { staticClass: "col-sm-3" }, [
-            _c(
-              "span",
-              {
-                staticClass: "btn text-light px-2 py-1 small rounded",
-                staticStyle: { background: "black", "font-size": "11px" },
-              },
-              [_vm._v("Filter by Turnover Range:")]
-            ),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-sm-8 mt-1", attrs: { id: "" } }, [
-            _c("div", { attrs: { id: "slider" } }),
-            _vm._v(" "),
-            _c("div", { staticClass: "row mt-3" }, [
-              _c("div", { staticClass: "col-6 mt-1" }, [
-                _c("span", {
-                  staticClass: "py-0 btn btn-light",
-                  attrs: { id: "price_low", name: "min" },
-                }),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
-                _c("span", {
-                  staticClass: "float-right py-0 btn btn-light",
-                  attrs: { id: "price_high", name: "min" },
-                }),
-              ]),
-            ]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "flex" }, [
-          _c("div", { staticClass: "col-sm-3" }, [
-            _c(
-              "span",
-              {
-                staticClass: "btn text-light px-2 py-1 small rounded",
-                staticStyle: { background: "black", "font-size": "11px" },
-              },
-              [_vm._v("Filter by Amount R.:")]
-            ),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-sm-8 mt-1", attrs: { id: "" } }, [
-            _c("div", { staticClass: "mt-3", attrs: { id: "slider2" } }),
-            _vm._v(" "),
-            _c("div", { staticClass: "row mt-3" }, [
-              _c("div", { staticClass: "col-6 mt-1" }, [
-                _c("span", {
-                  staticClass: "py-0 btn btn-light",
-                  attrs: { id: "price_low2", name: "min" },
-                }),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
-                _c("span", {
-                  staticClass: "float-right py-0 btn btn-light",
-                  attrs: { id: "price_high2", name: "min" },
-                }),
-              ]),
-            ]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "heading" }, [
-          _c(
-            "h3",
-            {
-              staticClass: "my-5 text-2xl font-bold",
-              staticStyle: { color: "#198754" },
-            },
-            [_vm._v("Businesses")]
-          ),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "clear" }),
+    return _c("div", { staticClass: "flex" }, [
+      _c("div", { staticClass: "col-sm-3" }, [
+        _c(
+          "span",
+          {
+            staticClass: "btn text-light px-2 py-1 small rounded",
+            staticStyle: { background: "black", "font-size": "11px" },
+          },
+          [_vm._v("Filter by Turnover Range:")]
+        ),
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-sm-4" }),
+      _c("div", { staticClass: "col-sm-8 mt-1", attrs: { id: "" } }, [
+        _c("div", { attrs: { id: "slider" } }),
+        _vm._v(" "),
+        _c("div", { staticClass: "row mt-3" }, [
+          _c("div", { staticClass: "col-6 mt-1" }, [
+            _c("span", {
+              staticClass: "py-0 btn btn-light",
+              attrs: { id: "price_low", name: "min" },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
+            _c("span", {
+              staticClass: "float-right py-0 btn btn-light",
+              attrs: { id: "price_high", name: "min" },
+            }),
+          ]),
+        ]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-3" }, [
+      _c(
+        "span",
+        {
+          staticClass: "btn text-light px-2 my-3 small rounded",
+          staticStyle: { background: "black", "font-size": "11px" },
+        },
+        [_vm._v("Filter by Amount R.:")]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row mt-3" }, [
+      _c("div", { staticClass: "col-6 mt-1" }, [
+        _c("span", {
+          staticClass: "py-0 btn btn-light",
+          attrs: { id: "price_low2", name: "min" },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
+        _c("span", {
+          staticClass: "float-right py-0 btn btn-light",
+          attrs: { id: "price_high2", name: "min" },
+        }),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "heading" }, [
+      _c(
+        "h3",
+        {
+          staticClass: "my-5 text-2xl font-bold",
+          staticStyle: { color: "#198754" },
+        },
+        [_vm._v("Businesses")]
+      ),
     ])
   },
   function () {
