@@ -146,18 +146,34 @@
 
 
                     <div class="flex">
-                    <div class="col-sm-3"><span style="background:black;font-size: 11px;" class="btn text-light px-2 py-1 small rounded">Filter by Amount R.:</span>
+                    <div class="col-sm-3"><span style="background:black;font-size: 11px;" class="btn text-light px-2 my-3 small rounded">Filter by Amount R.:</span>
                     </div>  
                     <div id="" class="col-sm-8 mt-1"> 
                         <div id="slider2" class="mt-3"> </div>
                         <div class="row mt-3">
+                              
                             <div class="col-6  mt-1">
                                 <span id="price_low2" class="py-0 btn btn-light" name="min"> </span>
                             </div>
                             <div class="col-6 mt-1 pr-0">
                                 <span id="price_high2" class="float-right py-0 btn btn-light" name="min"> </span>
                             </div>
+                            <!-- <button @click="collapse" id="colBut" class="py-0 btn btn-light" name="min">Set range </button> -->
                         </div>
+
+                        <!-- COLLAPSE RANGE -->
+                        <div class="row mt-3 collapse" id="collapseExample">
+                            <div class="col-6  mt-1">
+                                <span class="d-inline">Min:</span><input  type="number"  v-model="min" id="price_low3" class="d-inline w-75 py-0 border" name="min" value="" />
+                            </div>
+                            <div class="col-6 mt-1 pr-0">
+                                <span class="d-inline">Max:</span><input type="number" v-model="max" id="price_high3" class="d-inline w-75 float-right py-0 border" name="min" value="" />
+                            </div>
+
+                            <button class="border w-25 mt-3 mx-auto" @click="range_amount();hide();" >Set</button>
+                        </div>
+                        <!-- COLLAPSE RANGE -->
+
 
                     </div>
                     </div>
@@ -293,11 +309,21 @@ export default {
         count: 0,
         loc:'',
         queryLat:'',
-        queryLng:''
+        queryLng:'',
+        max:1000000,
+        min:0
     }),
 
     
     methods: {
+        collapse: function() {
+            $('#collapseExample').removeClass('collapse');
+            $('#colBut').addClass('collapse');
+        },
+        hide: function() {
+            $('#collapseExample').addClass('collapse');
+
+        },
         setRes: function () {
             let t = this;
             this.ids = atob(this.$route.params.results);
@@ -391,16 +417,16 @@ export default {
        range_amount() {
             this.ids = atob(this.$route.params.results);
             let t = this;
-
             if(t.ids != 0) {
             var slider = document.getElementById('slider2');
             noUiSlider.create(slider, {
                 start: [0, 15000000],
                 connect: true,
                 range: {
-                    'min': 10000,
-                    'max': 15000000
+                    'min': parseFloat(t.min),
+                    'max': parseFloat(t.max)
                 },
+
 
                 step: 10000,
                 margin: 600,
@@ -415,7 +441,7 @@ export default {
                 document.getElementById('price_high2')
             ];
             slider.noUiSlider.on('update', function (values, handle) {
-                skipValues[handle].innerHTML = '$' + values[handle];
+                skipValues[handle].innerHTML = values[handle];
                 //console.log(values[1] - values[0]);
 
                 axios.get('priceFilter_amount/' + values[0] + '/' + values[1] + '/' + t.ids).then((data) => {
@@ -535,7 +561,7 @@ export default {
         this.loc = this.$route.params.loc;
         this.setRes()
         this.range()
-        this.range_amount()
+        //this.range_amount()
 
         var x = navigator.geolocation;
         setTimeout(() => x.getCurrentPosition(this.success, this.failure), 1000);

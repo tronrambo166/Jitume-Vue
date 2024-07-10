@@ -11608,9 +11608,6 @@ video {
 .h-\[32px\] {
   height: 32px;
 }
-.h-\[350px\] {
-  height: 350px;
-}
 .h-\[369px\] {
   height: 369px;
 }
@@ -11643,9 +11640,6 @@ video {
 }
 .h-full {
   height: 100%;
-}
-.h-\[100px\] {
-  height: 100px;
 }
 .w-10 {
   width: 2.5rem;
@@ -11682,6 +11676,9 @@ video {
 }
 .w-\[136px\] {
   width: 136px;
+}
+.w-\[160px\] {
+  width: 160px;
 }
 .w-\[162px\] {
   width: 162px;
@@ -11739,12 +11736,6 @@ video {
 }
 .w-full {
   width: 100%;
-}
-.w-\[60px\] {
-  width: 60px;
-}
-.w-\[160px\] {
-  width: 160px;
 }
 .max-w-\[1440px\] {
   max-width: 1440px;
@@ -12228,9 +12219,6 @@ video {
 .pt-9 {
   padding-top: 2.25rem;
 }
-.pt-\[10px\] {
-  padding-top: 10px;
-}
 .text-left {
   text-align: left;
 }
@@ -12265,6 +12253,9 @@ video {
 }
 .text-\[13px\] {
   font-size: 13px;
+}
+.text-\[14px\] {
+  font-size: 14px;
 }
 .text-\[15px\] {
   font-size: 15px;
@@ -12313,9 +12304,6 @@ video {
   font-size: 0.75rem;
   line-height: 1rem;
 }
-.text-\[14px\] {
-  font-size: 14px;
-}
 .font-bold {
   font-weight: 700;
 }
@@ -12359,6 +12347,9 @@ video {
 .text-\[\#198754\] {
   --tw-text-opacity: 1;
   color: rgb(25 135 84 / var(--tw-text-opacity));
+}
+.text-\[15x\] {
+  color: 15x;
 }
 .text-black {
   --tw-text-opacity: 1;
@@ -12428,9 +12419,6 @@ video {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
-.text-\[15x\] {
-  color: 15x;
-}
 .opacity-0 {
   opacity: 0;
 }
@@ -12464,11 +12452,6 @@ video {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
-.transition-colors {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
 .duration-200 {
   transition-duration: 200ms;
 }
@@ -12486,10 +12469,6 @@ video {
 .hover\:bg-green-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(21 128 61 / var(--tw-bg-opacity));
-}
-.hover\:bg-green-600:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(22 163 74 / var(--tw-bg-opacity));
 }
 .hover\:bg-green-800:hover {
   --tw-bg-opacity: 1;
@@ -12518,10 +12497,6 @@ video {
 .hover\:text-red-800:hover {
   --tw-text-opacity: 1;
   color: rgb(153 27 27 / var(--tw-text-opacity));
-}
-.hover\:text-green-600:hover {
-  --tw-text-opacity: 1;
-  color: rgb(22 163 74 / var(--tw-text-opacity));
 }
 .hover\:text-white:hover {
   --tw-text-opacity: 1;
