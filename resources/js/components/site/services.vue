@@ -90,16 +90,16 @@
   <div class="carousel-inner w-[70%] mx-auto">
     <!-- Loop through your results to generate carousel items -->
     <div v-for="(result, index) in Math.ceil(results.length / 3)" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }">
-      <div class="flex justify-center items-center w-full">
+       <div class="flex justify-center gap-2 px-3  items-center w-full">
         <!-- Loop through three cards for each carousel item -->
-        <div v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]" class="w-full md:w-[calc(100% / 3 - 2rem)] px-2">
+        <div v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]" class="w-[300px] md:w-[calc(100% / 3 - 2rem)] px-2">
           <router-link :to="`/serviceDetails/${results[index * 3 + offset].id}`">
-            <div class="bg-white mt-4 w-[250px] h-[350px] rounded-xl shadow-md p-3 mb-4 flex flex-col justify-center relative loading">
+            <div class="bg-white mt-4 w-[280px] h-[380px] mx-auto rounded-xl  p-3 mb-4 flex flex-col justify-between relative" style="box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;">
               <div class="relative">
-                <video v-if="results[index * 3 + offset].file" controls class="w-full h-[215px] object-cover rounded-lg mb-4">
+                <video v-if="results[index * 3 + offset].file" controls class="w-[350px] h-[215px] object-cover rounded-lg ">
                   <source :src="results[index * 3 + offset].file" type="video/mp4">
                 </video>
-                <img v-else :src="results[index * 3 + offset].image" alt="Image" class="w-full h-[215px] object-cover rounded-lg mb-4">
+                <img v-else :src="results[index * 3 + offset].image" alt="Image" class="w-[350px] h-[215px] object-cover rounded-lg ">
                 <p class="absolute inset-t-4 mb-4 ml-2 font-bold px-2 rounded-xl bottom-4 bg-white text-black text-center py-1 text-xs">
                   <i class="fa fa-map-marker pr-2"></i>{{ results[index * 3 + offset].location }}
                 </p>

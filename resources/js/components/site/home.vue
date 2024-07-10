@@ -528,7 +528,7 @@
          <div class="bg-white mt-4 w-[280px] h-[380px] mx-auto rounded-xl  p-3 mb-4 flex flex-col justify-between relative" style="box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;">
     <div class="relative">
         <img :src="results[index * 3 + offset].image" alt="Image" class="w-[350px] h-[215px] object-cover rounded-lg ">
-        <p class="absolute inset-t-0 mb-3 ml-2 font-bold px-2 mr-5 rounded-xl bottom-4 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs">
+        <p class="absolute inset-t-0  ml-2 font-bold px-2 mr-5 rounded-xl bottom-4 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs">
             <i class="fa fa-map-marker pr-2"></i>{{ results[index * 3 + offset].location }}
         </p>
     </div>
@@ -550,9 +550,9 @@
       Amount Requested: <span class="font-bold text-black">${{ results[index * 3 + offset].investment_needed }}</span>
       <span class="text-xl"></span>
 
-<div class="flex items-center justify-start rounded-[8px] bg-green-700 text-slate-100 py-2 mt-1 px-6 w-[160px] h-[40px]">
+<div class="flex items-center justify-start rounded-[8px] bg-green-700 hover:bg-green-800  hover:text-white  text-slate-100 py-2 px-6 w-[160px] h-[40px]">
     <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`">
-        <button class="w-full h-full flex items-center justify-center">Learn more</button>
+        <button class="w-full h-full flex items-center justify-center  focus:outline-none ">Learn more</button>
     </router-link>
 </div>
 

@@ -73330,7 +73330,7 @@ var render = function () {
                                       "p",
                                       {
                                         staticClass:
-                                          "absolute inset-t-0 mb-3 ml-2 font-bold px-2 mr-5 rounded-xl bottom-4 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs",
+                                          "absolute inset-t-0 ml-2 font-bold px-2 mr-5 rounded-xl bottom-4 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs",
                                       },
                                       [
                                         _c("i", {
@@ -73462,7 +73462,7 @@ var render = function () {
                                                 "div",
                                                 {
                                                   staticClass:
-                                                    "flex items-center justify-start rounded-[8px] bg-green-700 text-slate-100 py-2 mt-1 px-6 w-[160px] h-[40px]",
+                                                    "flex items-center justify-start rounded-[8px] bg-green-700 hover:bg-green-800 hover:text-white text-slate-100 py-2 px-6 w-[160px] h-[40px]",
                                                 },
                                                 [
                                                   _c(
@@ -73481,7 +73481,7 @@ var render = function () {
                                                         "button",
                                                         {
                                                           staticClass:
-                                                            "w-full h-full flex items-center justify-center",
+                                                            "w-full h-full flex items-center justify-center focus:outline-none",
                                                         },
                                                         [_vm._v("Learn more")]
                                                       ),
@@ -74696,7 +74696,7 @@ var render = function () {
                   "p",
                   {
                     staticClass:
-                      "text-[13px] sm:text-[12px] md:text-[13px] lg:text-[14px] font-extrabold text-black",
+                      "text-[15x] sm:text-[12px] md:text-[13px] lg:text-[14px] font-extrabold text-black",
                   },
                   [_vm._v(_vm._s(_vm.form.name))]
                 ),
@@ -75973,7 +75973,7 @@ var staticRenderFns = [
         "p",
         {
           staticClass:
-            "text-[13px] sm:text-[12px] md:text-[13px] lg:text-[14px]",
+            "text-[14px] sm:text-[12px] md:text-[13px] lg:text-[14px]",
         },
         [
           _vm._v(
@@ -80162,7 +80162,10 @@ var render = function () {
               [
                 _c(
                   "div",
-                  { staticClass: "flex justify-center items-center w-full" },
+                  {
+                    staticClass:
+                      "flex justify-center gap-2 px-3 items-center w-full",
+                  },
                   _vm._l([0, 1, 2], function (offset) {
                     return _vm.results[index * 3 + offset]
                       ? _c(
@@ -80170,7 +80173,7 @@ var render = function () {
                           {
                             key: index * 3 + offset,
                             staticClass:
-                              "w-full md:w-[calc(100% / 3 - 2rem)] px-2",
+                              "w-[300px] md:w-[calc(100% / 3 - 2rem)] px-2",
                           },
                           [
                             _c(
@@ -80187,7 +80190,11 @@ var render = function () {
                                   "div",
                                   {
                                     staticClass:
-                                      "bg-white mt-4 w-[250px] h-[350px] rounded-xl shadow-md p-3 mb-4 flex flex-col justify-center relative loading",
+                                      "bg-white mt-4 w-[280px] h-[380px] mx-auto rounded-xl p-3 mb-4 flex flex-col justify-between relative",
+                                    staticStyle: {
+                                      "box-shadow":
+                                        "rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px",
+                                    },
                                   },
                                   [
                                     _c("div", { staticClass: "relative" }, [
@@ -80196,7 +80203,7 @@ var render = function () {
                                             "video",
                                             {
                                               staticClass:
-                                                "w-full h-[215px] object-cover rounded-lg mb-4",
+                                                "w-[350px] h-[215px] object-cover rounded-lg",
                                               attrs: { controls: "" },
                                             },
                                             [
@@ -80212,7 +80219,7 @@ var render = function () {
                                           )
                                         : _c("img", {
                                             staticClass:
-                                              "w-full h-[215px] object-cover rounded-lg mb-4",
+                                              "w-[350px] h-[215px] object-cover rounded-lg",
                                             attrs: {
                                               src: _vm.results[
                                                 index * 3 + offset

@@ -12,11 +12,11 @@
 </div>
 
 <div class="py-3">
-  <p class="text-[13px] sm:text-[12px] md:text-[13px] lg:text-[14px] font-extrabold text-black">{{ form.name }}</p>
+  <p class="text-[15x] sm:text-[12px] md:text-[13px] lg:text-[14px] font-extrabold text-black">{{ form.name }}</p>
 </div>
 
 <div class="py-3">
-  <p class="text-[13px] sm:text-[12px] md:text-[13px] lg:text-[14px]">
+  <p class="text-[14px] sm:text-[12px] md:text-[13px] lg:text-[14px]">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
   </p>
 </div>
