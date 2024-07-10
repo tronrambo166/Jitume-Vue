@@ -76613,7 +76613,10 @@ var render = function () {
                                                     [
                                                       _c(
                                                         "p",
-                                                        { staticClass: "mt-2" },
+                                                        {
+                                                          staticClass:
+                                                            "mt-2 font-bold text-black",
+                                                        },
                                                         [
                                                           _vm._v(
                                                             "Yearly Turnover: "
