@@ -550,12 +550,12 @@
       Amount Requested: <span class="font-bold text-black">${{ results[index * 3 + offset].investment_needed }}</span>
       <span class="text-xl"></span>
 
-
-     <div class="flex justify-start w-full pt-[10px]">
+<div class="flex items-center justify-start rounded-[8px] bg-green-700 text-slate-100 py-2 mt-1 px-6 w-[160px] h-[40px]">
     <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`">
-        <button class="rounded-[8px] bg-green-700 text-slate-100 py-2 px-6">Learn more</button>
+        <button class="w-full h-full flex items-center justify-center">Learn more</button>
     </router-link>
 </div>
+
 
 
     </div>
@@ -672,7 +672,6 @@
 <button onclick="scrollToSection()"  class="bg-[#198754] px-[10px] font-bold my-6 text-white rounded-[14px] w-[136px] h-[40px] py-[7px] text-sm text-center">
   Find a business
 </button>
-
 
 
 </div>

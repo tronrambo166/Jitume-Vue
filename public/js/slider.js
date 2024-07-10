@@ -103,3 +103,9 @@
     }());
 
     var slider = multiItemSlider('.slider')
+
+
+    function scrollToSection() {
+      document.getElementById('resource-slider').scrollIntoView({ behavior: 'smooth' });
+      console.log("hey test")
+    }

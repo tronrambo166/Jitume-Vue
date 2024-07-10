@@ -219,7 +219,7 @@
         <div class="flex justify-between gap-[50px]">
             <div class="flex justify-between items-center gap-[40px]">
                 <div class="flex flex-col gap-2">
-                    <p class="text-gray-900 pt-1 text-left truncate">
+                    <p class="text-gray-900 pt-1 text-left ">
                         <i class="mr-2 text-black fa fa-map-marker"></i>{{ result.location }}
                     </p>
                     <div class="flex flex-col  gap-1">
@@ -230,9 +230,9 @@
         </p>
     </div>
 
-    <div class="whitespace-nowrap text-[12px] mb-2">
+    <div class="whitespace-nowrap  mb-2">
         <p class="mt-2">Yearly Turnover: <span class="font-normal">${{ result.y_turnover }}</span></p>
-        <p class="mt-1">Amount Requested: <span class="font-normal">${{ result.investment_needed }}</span></p>
+        <p class="mt-1 font-bold text-black">Amount Requested: <span class="font-normal">${{ result.investment_needed }}</span></p>
     </div>
 </div>
 

@@ -8584,7 +8584,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -73463,7 +73462,7 @@ var render = function () {
                                                 "div",
                                                 {
                                                   staticClass:
-                                                    "flex justify-start w-full pt-[10px]",
+                                                    "flex items-center justify-start rounded-[8px] bg-green-700 text-slate-100 py-2 mt-1 px-6 w-[160px] h-[40px]",
                                                 },
                                                 [
                                                   _c(
@@ -73482,7 +73481,7 @@ var render = function () {
                                                         "button",
                                                         {
                                                           staticClass:
-                                                            "rounded-[8px] bg-green-700 text-slate-100 py-2 px-6",
+                                                            "w-full h-full flex items-center justify-center",
                                                         },
                                                         [_vm._v("Learn more")]
                                                       ),
@@ -76546,7 +76545,7 @@ var render = function () {
                                                 "p",
                                                 {
                                                   staticClass:
-                                                    "text-gray-900 pt-1 text-left truncate",
+                                                    "text-gray-900 pt-1 text-left",
                                                 },
                                                 [
                                                   _c("i", {
@@ -76609,7 +76608,7 @@ var render = function () {
                                                     "div",
                                                     {
                                                       staticClass:
-                                                        "whitespace-nowrap text-[12px] mb-2",
+                                                        "whitespace-nowrap mb-2",
                                                     },
                                                     [
                                                       _c(
@@ -76639,7 +76638,10 @@ var render = function () {
                                                       _vm._v(" "),
                                                       _c(
                                                         "p",
-                                                        { staticClass: "mt-1" },
+                                                        {
+                                                          staticClass:
+                                                            "mt-1 font-bold text-black",
+                                                        },
                                                         [
                                                           _vm._v(
                                                             "Amount Requested: "
