@@ -527,8 +527,8 @@
         <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="w-[300px] md:w-[calc(100% / 3 - 2rem)] px-2" v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]">
          <div class="bg-white mt-4 w-[280px] h-[380px] mx-auto rounded-xl  p-3 mb-4 flex flex-col justify-between relative" style="box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;">
     <div class="relative">
-        <img :src="results[index * 3 + offset].image" alt="Image" class="w-[350px] h-[215px] object-cover rounded-lg ">
-        <p class="absolute inset-t-0  ml-2 font-bold px-2 mr-5 rounded-xl bottom-4 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs">
+        <img :src="results[index * 3 + offset].image" alt="Image" class="w-[350px] h-[215px] object-cover rounded-[20px] ">
+        <p class="absolute inset-t-0  ml-2 font-bold px-2 mr-5 rounded-xl bottom-2 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs">
             <i class="fa fa-map-marker pr-2"></i>{{ results[index * 3 + offset].location }}
         </p>
     </div>

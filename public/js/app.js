@@ -73353,7 +73353,7 @@ var render = function () {
                                   _c("div", { staticClass: "relative" }, [
                                     _c("img", {
                                       staticClass:
-                                        "w-[350px] h-[215px] object-cover rounded-lg",
+                                        "w-[350px] h-[215px] object-cover rounded-[20px]",
                                       attrs: {
                                         src: _vm.results[index * 3 + offset]
                                           .image,
@@ -73365,7 +73365,7 @@ var render = function () {
                                       "p",
                                       {
                                         staticClass:
-                                          "absolute inset-t-0 ml-2 font-bold px-2 mr-5 rounded-xl bottom-4 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs",
+                                          "absolute inset-t-0 ml-2 font-bold px-2 mr-5 rounded-xl bottom-2 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs",
                                       },
                                       [
                                         _c("i", {
