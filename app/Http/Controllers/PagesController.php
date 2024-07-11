@@ -356,6 +356,7 @@ foreach($ids as $id){
     if(isset($files->file))
     $listing->file = $files->file;
     else $listing->file = false;
+    $listing->investment_needed = number_format($listing->investment_needed);
 
     $listing->lat = (float)$listing->lat;
     $listing->lng = (float)$listing->lng;
@@ -448,6 +449,7 @@ $ids = explode(',',$ids);
 foreach($ids as $id){ 
     if($id!='' && $id != 'no-results'){
     $listing = Services::where('id',$id)->first();
+    $listing->price = number_format($listing->price);
 
     $listing->lat = (float)$listing->lat;
     $listing->lng = (float)$listing->lng;
@@ -479,6 +481,8 @@ foreach($listing as $list){
     if(isset($files->file))
     $list->file = $files->file;
     else $list->file = false;
+
+    $list->investment_needed = number_format($list->investment_needed);
 
     $results[] = $list;
 }
@@ -555,7 +559,8 @@ public function priceFilter($min, $max, $ids){
     $listing->lat = (float)$listing->lat;
     $listing->lng = (float)$listing->lng;
     
-  
+    $listing->investment_needed = number_format($listing->investment_needed);
+    
     if((int)$min <= $db_min && (int)$max >= $db_max)
         //return response()->json([ 'data' => (int)$min .'<='. $db_min .'//'.(int)$max .'>='. $db_max]);
     $results[] = $listing;
@@ -578,7 +583,8 @@ public function priceFilterS($min, $max, $ids){
 
     $listing->lat = (float)$listing->lat;
     $listing->lng = (float)$listing->lng;
-  
+
+    $listing->price = number_format($listing->price);
     if((int)$min <= $db_price && (int)$max >= $db_price)
         //return response()->json([ 'data' => (int)$min .'<='. $db_min .'//'.(int)$max .'>='. $db_max]);
     $results[] = $listing;
@@ -609,7 +615,7 @@ public function priceFilter_amount($min, $max, $ids){
     $listing->lat = (float)$listing->lat;
     $listing->lng = (float)$listing->lng;
     
-  
+    $listing->investment_needed = number_format($listing->investment_needed);
     if((int)$min <= $range && (int)$max >= $range)
         //return response()->json([ 'data' => (int)$min .'<='. $db_min .'//'.(int)$max .'>='. $db_max]);
     $results[] = $listing;

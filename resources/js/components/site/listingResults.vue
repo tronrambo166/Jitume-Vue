@@ -147,18 +147,22 @@
 
                     <div class="flex">
                     <div class="col-sm-3"><span style="background:black;font-size: 11px;" class="btn text-light px-2 my-3 small rounded">Filter by Amount R.:</span>
+                         <button @click="collapse" id="colBut2" class="px-2 mx-auto py-0 border float-right collapse" name="min">Set range </button>
                     </div>  
                     <div id="" class="col-sm-8 mt-1"> 
                         <div id="slider2" class="mt-3"> </div>
                         <div class="row mt-3">
                               
+                            <!-- <button @click="collapse" id="colBut" class="w-75 mx-auto py-0 border " name="min">Set range </button> -->
                             <div class="col-6  mt-1">
                                 <span id="price_low2" class="py-0 btn btn-light" name="min"> </span>
                             </div>
                             <div class="col-6 mt-1 pr-0">
                                 <span id="price_high2" class="float-right py-0 btn btn-light" name="min"> </span>
                             </div>
-                            <!-- <button @click="collapse" id="colBut" class="py-0 btn btn-light" name="min">Set range </button> -->
+
+                           
+                            
                         </div>
 
                         <!-- COLLAPSE RANGE -->
@@ -317,8 +321,14 @@ export default {
     
     methods: {
         collapse: function() {
+            var slider = document.getElementById('slider2');
+
+            if(slider && slider.noUiSlider){
+            slider.noUiSlider.destroy();
+            }
             $('#collapseExample').removeClass('collapse');
             $('#colBut').addClass('collapse');
+            $('#colBut2').removeClass('collapse');
         },
         hide: function() {
             $('#collapseExample').addClass('collapse');
