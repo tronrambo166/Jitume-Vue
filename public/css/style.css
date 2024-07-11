@@ -2163,3 +2163,16 @@ ul li a:hover{
     .footer-link:hover {
         color: black !important; /* Black color on hover */
     }
+
+
+.learn:hover i {
+        transform: translateX(5px);
+    }
+
+
+.arrow-icon {
+        transition: transform 0.3s ease-in-out;
+    }
+
+
+    
