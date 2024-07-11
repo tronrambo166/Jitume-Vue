@@ -13124,6 +13124,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -80337,7 +80342,7 @@ var render = function () {
                   "div",
                   {
                     staticClass:
-                      "flex justify-center gap-2 px-3 items-center w-full",
+                      "flex justify-center gap-2 px-6 items-center w-full",
                   },
                   _vm._l([0, 1, 2], function (offset) {
                     return _vm.results[index * 3 + offset]
@@ -80405,7 +80410,7 @@ var render = function () {
                                         "p",
                                         {
                                           staticClass:
-                                            "absolute inset-t-4 mb-4 ml-2 font-bold px-2 rounded-xl bottom-4 bg-white text-black text-center py-1 text-xs",
+                                            "absolute inset-t-0 ml-2 font-bold px-2 mr-5 rounded-xl bottom-2 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs",
                                         },
                                         [
                                           _c("i", {
@@ -80416,7 +80421,7 @@ var render = function () {
                                             _vm._s(
                                               _vm.results[index * 3 + offset]
                                                 .location
-                                            ) + "\n                "
+                                            ) + "\n        "
                                           ),
                                         ]
                                       ),
@@ -80438,7 +80443,7 @@ var render = function () {
                                       "div",
                                       {
                                         staticClass:
-                                          "flex justify-between items-center",
+                                          "flex flex-col justify-between px-1 gap-2",
                                       },
                                       [
                                         _c("div", [
@@ -80514,32 +80519,21 @@ var render = function () {
                                             ]
                                           ),
                                         ]),
-                                        _vm._v(" "),
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "mt-auto flex justify-end",
-                                          },
-                                          [
-                                            _c(
-                                              "router-link",
-                                              {
-                                                staticClass:
-                                                  "btn-learn-more inline-block bg-green-800 hover:bg-green-700 text-white py-1 px-2 md:px-3 lg:px-4 rounded text-xs md:text-sm lg:text-base lg:py-2 lg:px-3",
-                                                attrs: {
-                                                  to:
-                                                    "/serviceDetails/" +
-                                                    _vm.results[
-                                                      index * 3 + offset
-                                                    ].id,
-                                                },
-                                              },
-                                              [_vm._v("Learn More")]
-                                            ),
-                                          ],
-                                          1
-                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass:
+                                          "learn border-black border border-1 px-3 text-green-700 py-2 mt-2 rounded-full hover:bg-slate-100;",
+                                      },
+                                      [
+                                        _vm._v("\n    Learn more "),
+                                        _c("i", {
+                                          staticClass:
+                                            "fas fa-arrow-right arrow-icon",
+                                        }),
                                       ]
                                     ),
                                   ]

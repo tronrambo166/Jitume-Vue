@@ -90,7 +90,7 @@
   <div class="carousel-inner w-[70%] mx-auto">
     <!-- Loop through your results to generate carousel items -->
     <div v-for="(result, index) in Math.ceil(results.length / 3)" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }">
-       <div class="flex justify-center gap-2 px-3  items-center w-full">
+       <div class="flex justify-center gap-2 px-6  items-center w-full">
         <!-- Loop through three cards for each carousel item -->
         <div v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]" class="w-[300px] md:w-[calc(100% / 3 - 2rem)] px-2">
           <router-link :to="`/serviceDetails/${results[index * 3 + offset].id}`">
@@ -100,12 +100,12 @@
                   <source :src="results[index * 3 + offset].file" type="video/mp4">
                 </video>
                 <img v-else :src="results[index * 3 + offset].image" alt="Image" class="w-[350px] h-[215px] object-cover rounded-lg ">
-                <p class="absolute inset-t-4 mb-4 ml-2 font-bold px-2 rounded-xl bottom-4 bg-white text-black text-center py-1 text-xs">
-                  <i class="fa fa-map-marker pr-2"></i>{{ results[index * 3 + offset].location }}
-                </p>
+                 <p class="absolute inset-t-0  ml-2 font-bold px-2 mr-5 rounded-xl bottom-2 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs">
+            <i class="fa fa-map-marker pr-2"></i>{{ results[index * 3 + offset].location }}
+        </p>
               </div>
               <footer class="text-sm text-gray-600">{{ results[index * 3 + offset].type }}</footer>
-              <div class="flex justify-between items-center">
+              <div class="flex flex-col justify-between px-1  gap-2">
                 <div>
                   <header>
                     <h4 class="text-lg mt-2 hover:no-underline hover:text-green-800">{{ results[index * 3 + offset].name }}</h4>
@@ -114,10 +114,15 @@
                   <p class="text-sm text-gray-700">Name: {{ results[index * 3 + offset].name }}</p>
                   <p class="text-sm text-gray-700">Contact: {{ results[index * 3 + offset].contact }}</p>
                 </div>
-                <div class="mt-auto flex justify-end">
-                  <router-link :to="`/serviceDetails/${results[index * 3 + offset].id}`" class="btn-learn-more inline-block bg-green-800 hover:bg-green-700 text-white py-1 px-2 md:px-3 lg:px-4 rounded text-xs md:text-sm lg:text-base lg:py-2 lg:px-3">Learn More</router-link>
-                </div>
+                
               </div>
+
+              <button class="learn border-black border border-1 px-3 text-green-700 py-2 mt-2 rounded-full hover:bg-slate-100;">
+    Learn more <i class="fas fa-arrow-right arrow-icon"></i>
+</button>
+    
+
+
             </div>
           </router-link>
         </div>
