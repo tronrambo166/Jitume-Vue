@@ -69,7 +69,7 @@
   --bs-border-radius-2xl: 2rem;
   --bs-border-radius-pill: 50rem;
   --bs-link-color: #0d6efd;
-/*  --bs-link-hover-color: #0a58ca;*/
+  --bs-link-hover-color: #0a58ca;
   --bs-code-color: #d63384;
   --bs-highlight-bg: #fff3cd;
 }
@@ -12303,6 +12303,9 @@ video {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+.text-\[25px\] {
+  font-size: 25px;
 }
 .font-bold {
   font-weight: 700;

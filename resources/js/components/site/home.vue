@@ -22,7 +22,7 @@
 <div class="lg:flex justify-center items-center mx-auto w-full lg:w-[832.55px] h-[406.54px] my-[20px]">
   <!-- Text on the left -->
   <div class="w-[338px] h-[371px] flex flex-col gap-[24px] px-6">
-    <h2 class="text-[20px] text-gray-500 font-bold mb-4">Welcome to Jitume</h2>
+    <h2 class="text-[25px] text-black font-bold mb-4">Welcome to Jitume</h2>
     <h3 class="text-[28px] text-black font-extrabold py-4">Real businesses, real <br>solutions, <span class="text-green-800 text-[30px]">real change</span></h3>
     <h3 class="font-bold text-[20px] pb-6">Invest in a business you believe in with as little as $100</h3>
     <div>

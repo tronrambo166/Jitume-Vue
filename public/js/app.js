@@ -73572,7 +73572,7 @@ var staticRenderFns = [
             [
               _c(
                 "h2",
-                { staticClass: "text-[20px] text-gray-500 font-bold mb-4" },
+                { staticClass: "text-[25px] text-black font-bold mb-4" },
                 [_vm._v("Welcome to Jitume")]
               ),
               _vm._v(" "),
