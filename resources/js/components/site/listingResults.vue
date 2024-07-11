@@ -19,7 +19,7 @@
 <!-- top -->
 
 
-<div class="py-2">
+<div class="py-6">
     
     <form id="form" @submit.prevent="search();" method="post">
 
@@ -102,7 +102,7 @@
 
 
   
-<div class="flex py-4  gap-4">
+<!-- <div class="flex py-4  gap-4"> -->
 
                   <!--   <div class="col-sm-3"><span style="background:black;font-size: 11px;" class="btn text-light px-2 py-1 small rounded">Filter by
                             Turnover Range:</span>
@@ -111,7 +111,7 @@
 
  
 
-                </div>
+                <!-- </div> -->
 
 </div>
 

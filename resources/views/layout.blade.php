@@ -340,7 +340,7 @@
 
 
 <footer class="bg-white px-[100px] w-full mt-6 py-2">
-    <div class="container mx-auto gap-[220px] flex flex-col md:flex-row justify-center md:justify-between gap-6 w-[959px]">
+    <div class="container mx-auto gap-[220px] flex flex-col md:flex-row justify-between md:justify-between gap-6 w-[959px]">
 
         <!-- First column -->
         <div class="md:w-1/3 flex flex-col items-start">
@@ -352,7 +352,7 @@
         </div>
 
         <!-- Second column -->
-        <div class="md:w-1/3 flex flex-col items-start">
+        <div class="md:w-1/3 flex justify-center pl-10 flex-col items-start">
             <ul class="list-none">
                 <li><a href="#" class="footer-link">About</a></li>
                 <li><a href="#" class="footer-link">FAQs</a></li>
@@ -362,7 +362,7 @@
         </div>
 
         <!-- Third column -->
-        <div class="md:w-1/3 flex flex-col items-start">
+        <div class="md:w-1/3 flex  flex-col items-start">
             <ul class="list-none">
                 <li><a href="./policy" target="_blank" class="footer-link">Privacy Policy</a></li>
                 <li><a href="./terms" target="_blank" class="footer-link">Terms and Conditions</a></li>

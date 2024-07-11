@@ -99,7 +99,7 @@
                 <video v-if="results[index * 3 + offset].file" controls class="w-[350px] h-[215px] object-cover rounded-lg ">
                   <source :src="results[index * 3 + offset].file" type="video/mp4">
                 </video>
-                <img v-else :src="results[index * 3 + offset].image" alt="Image" class="w-[350px] h-[215px] object-cover rounded-lg ">
+                <img v-else :src="results[index * 3 + offset].image" alt="Image" class="w-[350px] h-[215px] object-cover rounded-[15px] ">
                  <p class="absolute inset-t-0  ml-2 font-bold px-2 mr-5 rounded-xl bottom-2 bg-white/60 text-black text-start whitespace-nowrap py-1 text-xs">
             <i class="fa fa-map-marker pr-2"></i>{{ results[index * 3 + offset].location }}
         </p>

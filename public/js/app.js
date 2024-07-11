@@ -73358,7 +73358,7 @@ var render = function () {
                                   _c("div", { staticClass: "relative" }, [
                                     _c("img", {
                                       staticClass:
-                                        "w-[350px] h-[215px] object-cover rounded-[20px]",
+                                        "w-[350px] h-[215px] object-cover rounded-[15px]",
                                       attrs: {
                                         src: _vm.results[index * 3 + offset]
                                           .image,
@@ -73637,7 +73637,7 @@ var staticRenderFns = [
                   "button",
                   {
                     staticClass:
-                      "bg-green-700 w-[125px] h-[50px] text-slate-100 rounded-[14px] px-6 py-3",
+                      "bg-green-700 w-[125px] h-[50px] font-bold text-slate-100 rounded-[14px] px-6 py-3",
                     attrs: {
                       "data-target": "#loginModal",
                       "data-toggle": "modal",
@@ -76347,7 +76347,7 @@ var render = function () {
         _vm._v(" "),
         _c("div", { staticClass: "clear" }),
         _vm._v(" "),
-        _c("div", { staticClass: "py-2" }, [
+        _c("div", { staticClass: "py-6" }, [
           _c(
             "form",
             {
@@ -76463,8 +76463,6 @@ var render = function () {
               ),
             ]
           ),
-          _vm._v(" "),
-          _c("div", { staticClass: "flex py-4 gap-4" }),
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "mt-4 row flex-column-reverse flex-md-row" }, [
@@ -80397,7 +80395,7 @@ var render = function () {
                                           )
                                         : _c("img", {
                                             staticClass:
-                                              "w-[350px] h-[215px] object-cover rounded-lg",
+                                              "w-[350px] h-[215px] object-cover rounded-[15px]",
                                             attrs: {
                                               src: _vm.results[
                                                 index * 3 + offset

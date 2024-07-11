@@ -12232,6 +12232,9 @@ video {
 .pt-9 {
   padding-top: 2.25rem;
 }
+.pl-8 {
+  padding-left: 2rem;
+}
 .text-left {
   text-align: left;
 }
