@@ -76497,11 +76497,9 @@ var render = function () {
                       _c(
                         "span",
                         {
-                          staticClass: "btn text-light px-2 my-3 small rounded",
-                          staticStyle: {
-                            background: "black",
-                            "font-size": "11px",
-                          },
+                          staticClass:
+                            "btn text-black px-2 font-bold my-3 small rounded",
+                          staticStyle: { color: "black", "font-size": "11px" },
                         },
                         [_vm._v("Filter by Amount R.:")]
                       ),
@@ -77055,8 +77053,9 @@ var staticRenderFns = [
         _c(
           "span",
           {
-            staticClass: "btn text-light px-2 py-1 small rounded",
-            staticStyle: { background: "black", "font-size": "11px" },
+            staticClass:
+              "btn text-black px-2 py-1 small rounded whitespace-nowrap font-bold",
+            staticStyle: { color: "black", "font-size": "11px" },
           },
           [_vm._v("Filter by Turnover Range:")]
         ),
