@@ -76498,7 +76498,7 @@ var render = function () {
                         "span",
                         {
                           staticClass:
-                            "btn text-black px-2 font-bold my-3 small rounded",
+                            "text-black px-2 font-bold my-3 small rounded",
                           staticStyle: { color: "black", "font-size": "11px" },
                         },
                         [_vm._v("Filter by Amount R.:")]
@@ -76518,7 +76518,7 @@ var render = function () {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-sm-8 mt-1", attrs: { id: "" } },
+                      { staticClass: "col-sm-9 mt-1", attrs: { id: "" } },
                       [
                         _c("div", {
                           staticClass: "mt-3",
@@ -77054,14 +77054,14 @@ var staticRenderFns = [
           "span",
           {
             staticClass:
-              "btn text-black px-2 py-1 small rounded whitespace-nowrap font-bold",
+              "text-black px-2 py-1 small rounded whitespace-nowrap font-bold",
             staticStyle: { color: "black", "font-size": "11px" },
           },
           [_vm._v("Filter by Turnover Range:")]
         ),
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-sm-8 mt-1", attrs: { id: "" } }, [
+      _c("div", { staticClass: "col-sm-9 mt-1", attrs: { id: "" } }, [
         _c("div", { attrs: { id: "slider" } }),
         _vm._v(" "),
         _c("div", { staticClass: "row mt-3" }, [

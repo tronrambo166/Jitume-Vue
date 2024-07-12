@@ -129,9 +129,9 @@
                     <div class="content_bottom">
 
                     <div class="flex">
-                    <div class="col-sm-3"><span style="color:black;font-size: 11px;" class="btn text-black px-2 py-1 small rounded whitespace-nowrap font-bold">Filter by Turnover Range:</span>
+                    <div class="col-sm-3"><span style="color:black;font-size: 11px;" class=" text-black px-2 py-1 small rounded whitespace-nowrap font-bold">Filter by Turnover Range:</span>
                     </div>  
-                    <div id="" class="col-sm-8 mt-1"> 
+                    <div id="" class="col-sm-9 mt-1"> 
                         <div id="slider" class=""> </div>
                         <div class="row mt-3">
                             <div class="col-6  mt-1">
@@ -146,10 +146,10 @@
 
 
                     <div class="flex">
-                    <div class="col-sm-3"><span style="color:black;font-size: 11px;" class="btn text-black px-2 font-bold my-3 small rounded">Filter by Amount R.:</span>
+                    <div class="col-sm-3"><span style="color:black;font-size: 11px;" class=" text-black px-2 font-bold my-3 small rounded">Filter by Amount R.:</span>
                          <button @click="collapse" id="colBut2" class="px-2 mx-auto py-0 border float-right collapse" name="min">Set range </button>
                     </div>  
-                    <div id="" class="col-sm-8 mt-1"> 
+                    <div id="" class="col-sm-9 mt-1"> 
                         <div id="slider2" class="mt-3"> </div>
                         <div class="row mt-3">
                               
