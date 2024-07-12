@@ -153,7 +153,7 @@
                         <div id="slider2" class="mt-3"> </div>
                         <div class="row mt-3">
                               
-                            <!-- <button @click="collapse" id="colBut" class="w-75 mx-auto py-0 border " name="min">Set range </button> -->
+                            <button @click="collapse" id="colBut" class="w-75 mx-auto py-0 border " name="min">Set range </button>
                             <div class="col-6  mt-1">
                                 <span id="price_low2" class="py-0 btn btn-light" name="min"> </span>
                             </div>

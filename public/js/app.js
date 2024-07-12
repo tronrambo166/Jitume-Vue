@@ -67911,7 +67911,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -68041,7 +68041,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -68282,7 +68282,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\r\n    Name: "),
+        _vm._v("\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68317,7 +68317,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Desc: "),
+        _vm._v("\n\n     Desc: "),
         _c("textarea", {
           directives: [
             {
@@ -68354,7 +68354,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Cat Id:  "),
+        _vm._v("\n\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -68385,7 +68385,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Brand Id:  "),
+        _vm._v("\n\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -68416,7 +68416,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Price:  "),
+        _vm._v("\n\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -68446,7 +68446,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n     Qty:  "),
+        _vm._v("\n\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -68476,7 +68476,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n   Image: "),
+        _vm._v("\n\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -68538,7 +68538,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -68587,7 +68587,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\r\n    Name: "),
+        _vm._v("\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68622,7 +68622,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Desc: "),
+        _vm._v("\n\n     Desc: "),
         _c("input", {
           directives: [
             {
@@ -68653,7 +68653,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Cat Id:  "),
+        _vm._v("\n\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -68684,7 +68684,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Brand Id:  "),
+        _vm._v("\n\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -68715,7 +68715,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Price:  "),
+        _vm._v("\n\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -68745,7 +68745,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n     Qty:  "),
+        _vm._v("\n\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -68775,7 +68775,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n   Image: "),
+        _vm._v("\n\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -68837,7 +68837,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -76527,7 +76527,21 @@ var render = function () {
                           attrs: { id: "slider2" },
                         }),
                         _vm._v(" "),
-                        _vm._m(5),
+                        _c("div", { staticClass: "row mt-3" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "w-75 mx-auto py-0 border",
+                              attrs: { id: "colBut", name: "min" },
+                              on: { click: _vm.collapse },
+                            },
+                            [_vm._v("Set range ")]
+                          ),
+                          _vm._v(" "),
+                          _vm._m(5),
+                          _vm._v(" "),
+                          _vm._m(6),
+                        ]),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -76620,7 +76634,7 @@ var render = function () {
                     ),
                   ]),
                   _vm._v(" "),
-                  _vm._m(6),
+                  _vm._m(7),
                   _vm._v(" "),
                   _c("div", { staticClass: "clear" }),
                 ]),
@@ -76900,7 +76914,7 @@ var render = function () {
             ]
           ),
           _vm._v(" "),
-          _vm._m(7),
+          _vm._m(8),
         ]),
         _vm._v(" "),
         this.ids == "0"
@@ -77073,20 +77087,22 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row mt-3" }, [
-      _c("div", { staticClass: "col-6 mt-1" }, [
-        _c("span", {
-          staticClass: "py-0 btn btn-light",
-          attrs: { id: "price_low2", name: "min" },
-        }),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
-        _c("span", {
-          staticClass: "float-right py-0 btn btn-light",
-          attrs: { id: "price_high2", name: "min" },
-        }),
-      ]),
+    return _c("div", { staticClass: "col-6 mt-1" }, [
+      _c("span", {
+        staticClass: "py-0 btn btn-light",
+        attrs: { id: "price_low2", name: "min" },
+      }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
+      _c("span", {
+        staticClass: "float-right py-0 btn btn-light",
+        attrs: { id: "price_high2", name: "min" },
+      }),
     ])
   },
   function () {
