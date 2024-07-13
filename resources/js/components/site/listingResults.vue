@@ -56,7 +56,7 @@
 
 
 
-        <div class="w-[162px] my-2">
+<div class="w-[162px] my-2">
   <div class="relative">
     <select id="category" name="category"
       class="py-2 px-4 w-full border border-gray-300 rounded-full appearance-none">
@@ -97,7 +97,8 @@
       <!-- End of Search Options and Button Section -->
 
 
-      
+    <input type="text" name="lat" id="lat" hidden value="">
+    <input type="text" name="lng" id="lng" hidden value="">    
     </form>
 
 
@@ -130,7 +131,10 @@
 
                     <div class="flex">
                     <div class="col-sm-3"><span style="color:black;font-size: 11px;" class=" text-black px-2 py-1 small rounded whitespace-nowrap font-bold">Filter by Turnover Range:</span>
+                        <button @click="collapse2" id="colBut4" class="px-2 mx-auto py-0 border float-right collapse" name="min">Set range </button>
+                         <button @click="collapse2" id="colBut3" class="px-2 mx-auto py-0 border float-right" name="min">Set range </button>
                     </div>  
+
                     <div id="" class="col-sm-9 mt-1"> 
                         <div id="slider" class=""> </div>
                         <div class="row mt-3">
@@ -141,6 +145,20 @@
                                 <span id="price_high" class="float-right py-0 btn btn-light" name="min"> </span>
                             </div>
                         </div>
+
+                        <!-- COLLAPSE RANGE 2-->
+                        <div class="row mt-3 collapse" id="collapseExample2">
+                            <div class="col-6  mt-1">
+                                <span class="d-inline">Min:</span><input  type="number"  v-model="min2" id="price_low4" class="d-inline w-75 py-0 border" name="min" value="" />
+                            </div>
+                            <div class="col-6 mt-1 pr-0">
+                                <span class="d-inline">Max:</span><input type="number" v-model="max2" id="price_high4" class="d-inline w-75 float-right py-0 border" name="min" value="" />
+                            </div>
+
+                            <button class="border w-25 mt-3 mx-auto" @click="range();hide2();" >Set</button>
+                        </div>
+                        <!-- COLLAPSE RANGE -->
+                        
                     </div>
                     </div>
 
@@ -148,12 +166,12 @@
                     <div class="flex">
                     <div class="col-sm-3"><span style="color:black;font-size: 11px;" class=" text-black px-2 font-bold my-3 small rounded">Filter by Amount R.:</span>
                          <button @click="collapse" id="colBut2" class="px-2 mx-auto py-0 border float-right collapse" name="min">Set range </button>
+                         <button @click="collapse" id="colBut" class="px-2 mx-auto py-0 border float-right" name="min">Set range </button>
                     </div>  
                     <div id="" class="col-sm-9 mt-1"> 
                         <div id="slider2" class="mt-3"> </div>
                         <div class="row mt-3">
                               
-                            <button @click="collapse" id="colBut" class="w-75 mx-auto py-0 border " name="min">Set range </button>
                             <div class="col-6  mt-1">
                                 <span id="price_low2" class="py-0 btn btn-light" name="min"> </span>
                             </div>
@@ -177,6 +195,8 @@
                             <button class="border w-25 mt-3 mx-auto" @click="range_amount();hide();" >Set</button>
                         </div>
                         <!-- COLLAPSE RANGE -->
+
+                        
 
 
                     </div>
@@ -315,11 +335,15 @@ export default {
         queryLat:'',
         queryLng:'',
         max:1000000,
-        min:0
+        min:0,
+        max2:1000000,
+        min2:0
     }),
 
     
     methods: {
+
+        //Range Func.
         collapse: function() {
             var slider = document.getElementById('slider2');
 
@@ -331,9 +355,25 @@ export default {
             $('#colBut2').removeClass('collapse');
         },
         hide: function() {
-            $('#collapseExample').addClass('collapse');
+            $('#collapseExample2').addClass('collapse');
 
         },
+        collapse2: function() {
+            var slider = document.getElementById('slider');
+
+            if(slider && slider.noUiSlider){
+            slider.noUiSlider.destroy();
+            }
+            $('#collapseExample2').removeClass('collapse');
+            $('#colBut3').addClass('collapse');
+            $('#colBut4').removeClass('collapse');
+        },
+        hide2: function() {
+            $('#collapseExample2').addClass('collapse');
+
+        },
+        //Range Func.
+
         setRes: function () {
             let t = this;
             this.ids = atob(this.$route.params.results);
@@ -376,8 +416,8 @@ export default {
                 start: [0, 500000],
                 connect: true,
                 range: {
-                    'min': 0,
-                    'max': 500000
+                    'min': parseFloat(t.min2),
+                    'max': parseFloat(t.max2),
                 },
 
                 step: 10000,
@@ -565,13 +605,50 @@ export default {
         failure(){},
         //MAP -- MAP
 
+            search() {
+      const form = $('#form');
+      var thiss = this;
+      var ids = '';
+      var lat = $('#lat').val();
+      var lng = $('#lng').val();
+
+      $.ajax({
+        url: 'search',
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+        dataType: 'json',
+        data: form.serialize(),
+        success: function (response) {
+          //console.log(response);
+
+          Object.entries(response.results).forEach(entry => {
+            const [index, row] = entry;
+            ids = ids + row.id + ',';
+          }); //console.log(ids);
+
+          if (!ids) ids = 0;
+
+          //thiss.$router.push({ path: '/listingResults', query: { result: response } })
+
+          sessionStorage.setItem('queryLat', lat);
+          sessionStorage.setItem('queryLng', lng);
+          thiss.$router.push({ name: 'listingResults', params: { results: btoa(ids), loc: response.loc } })
+        },
+        error: function (response) {
+          //console.log(response);
+        }
+      });
+
+      setTimeout(() => window.location.reload(), 500);
+    }
+
     },
 
     mounted() {
         this.loc = this.$route.params.loc;
         this.setRes()
         this.range()
-        //this.range_amount()
+        this.range_amount()
 
         var x = navigator.geolocation;
         setTimeout(() => x.getCurrentPosition(this.success, this.failure), 1000);

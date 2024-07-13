@@ -13,7 +13,7 @@
 
             <div class="content_bottom">
                 <div class="heading">
-                     <h3 class="my-4 font-weight-bold text-center text-secondary">Listings</h3>
+                     <h3 class="my-4 font-weight-bold text-center text-secondary">{{catName}} Business</h3>
                 </div>
                 <div class="clear"></div>
             </div>
