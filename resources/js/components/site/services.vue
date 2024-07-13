@@ -113,14 +113,16 @@
                   <p class="text-sm text-gray-700">{{ results[index * 3 + offset].description }}</p>
                   <p class="text-sm text-gray-700">Name: {{ results[index * 3 + offset].name }}</p>
                   <p class="text-sm text-gray-700">Contact: {{ results[index * 3 + offset].contact }}</p>
+
+                  
+          <p class="learn font-bold text-black text-green-700 py-2 mt-2 rounded-full hover:bg-slate-100">
+  Learn more <i class="fa fa-chevron-right pt-1" aria-hidden="true"></i>
+</p>
+
+
                 </div>
                 
               </div>
-
-              <button class="learn border-black border border-1 px-3 text-green-700 py-2 mt-2 rounded-full hover:bg-slate-100;">
-    Learn more <i class="fas fa-arrow-right arrow-icon"></i>
-</button>
-    
 
 
             </div>

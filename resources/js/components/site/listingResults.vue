@@ -19,7 +19,7 @@
 <!-- top -->
 
 
-<div class="py-6">
+<div class="pb-6 pt-0">
     
     <form id="form" @submit.prevent="search();" method="post">
 
@@ -116,26 +116,14 @@
 
 </div>
 
-
-
-
-
-        <div class="mt-4 row flex-column-reverse flex-md-row">
-
-
-
-            <div class="col-md-6 pr-4 element-class" style="height: 100vh; overflow-y: scroll;  overflow-anchor: auto;">
-                <!-- Price Filter -->
-                <div class="row">
-                    <div class="content_bottom">
-
-                    <div class="flex">
+<div class="row flex items-center">
+  <div class="flex items-center col-sm-6">
                     <div class="col-sm-3"><span style="color:black;font-size: 11px;" class=" text-black px-2 py-1 small rounded whitespace-nowrap font-bold">Filter by Turnover Range:</span>
                         <button @click="collapse2" id="colBut4" class="px-2 mx-auto py-0 border float-right collapse" name="min">Set range </button>
                          <button @click="collapse2" id="colBut3" class="px-2 mx-auto py-0 border float-right" name="min">Set range </button>
                     </div>  
 
-                    <div id="" class="col-sm-9 mt-1"> 
+                    <div id="" class="col-sm-9 mt-4"> 
                         <div id="slider" class=""> </div>
                         <div class="row mt-3">
                             <div class="col-6  mt-1">
@@ -163,7 +151,8 @@
                     </div>
 
 
-                    <div class="flex">
+
+                        <div class="flex items-center col-sm-6">
                     <div class="col-sm-3"><span style="color:black;font-size: 11px;" class=" text-black px-2 font-bold my-3 small rounded">Filter by Amount R.:</span>
                          <button @click="collapse" id="colBut2" class="px-2 mx-auto py-0 border float-right collapse" name="min">Set range </button>
                          <button @click="collapse" id="colBut" class="px-2 mx-auto py-0 border float-right" name="min">Set range </button>
@@ -201,6 +190,21 @@
 
                     </div>
                     </div>
+
+</div>
+
+        <div class="mt-4 row flex-column-reverse flex-md-row">
+
+
+
+            <div class="col-md-6 pr-4 element-class" style="height: 100vh; overflow-y: scroll;  overflow-anchor: auto;">
+                <!-- Price Filter -->
+                <div class="row">
+                    <div class="content_bottom">
+
+                  
+
+                
 
             <div class="heading">
                 <h3 class="my-5 text-2xl font-bold   " style="color:#198754;">Businesses</h3>

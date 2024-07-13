@@ -10727,6 +10727,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
 //import {myMap,success,failure,addMarker,addMarkerHome} from '../../../../public/js/map'
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'app_url'],
@@ -13064,6 +13068,8 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+//
+//
 //
 //
 //
@@ -67993,7 +67999,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -68123,7 +68129,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -68364,7 +68370,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\r\n    Name: "),
+        _vm._v("\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68399,7 +68405,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Desc: "),
+        _vm._v("\n\n     Desc: "),
         _c("textarea", {
           directives: [
             {
@@ -68436,7 +68442,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Cat Id:  "),
+        _vm._v("\n\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -68467,7 +68473,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Brand Id:  "),
+        _vm._v("\n\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -68498,7 +68504,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Price:  "),
+        _vm._v("\n\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -68528,7 +68534,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n     Qty:  "),
+        _vm._v("\n\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -68558,7 +68564,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n   Image: "),
+        _vm._v("\n\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -68620,7 +68626,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -68669,7 +68675,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\r\n    Name: "),
+        _vm._v("\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68704,7 +68710,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Desc: "),
+        _vm._v("\n\n     Desc: "),
         _c("input", {
           directives: [
             {
@@ -68735,7 +68741,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Cat Id:  "),
+        _vm._v("\n\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -68766,7 +68772,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Brand Id:  "),
+        _vm._v("\n\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -68797,7 +68803,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Price:  "),
+        _vm._v("\n\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -68827,7 +68833,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n     Qty:  "),
+        _vm._v("\n\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -68857,7 +68863,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n   Image: "),
+        _vm._v("\n\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -68919,7 +68925,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -76437,7 +76443,7 @@ var render = function () {
         _vm._v(" "),
         _c("div", { staticClass: "clear" }),
         _vm._v(" "),
-        _c("div", { staticClass: "py-6" }, [
+        _c("div", { staticClass: "pb-6 pt-0" }, [
           _c(
             "form",
             {
@@ -76575,6 +76581,253 @@ var render = function () {
           ),
         ]),
         _vm._v(" "),
+        _c("div", { staticClass: "row flex items-center" }, [
+          _c("div", { staticClass: "flex items-center col-sm-6" }, [
+            _c("div", { staticClass: "col-sm-3" }, [
+              _c(
+                "span",
+                {
+                  staticClass:
+                    "text-black px-2 py-1 small rounded whitespace-nowrap font-bold",
+                  staticStyle: { color: "black", "font-size": "11px" },
+                },
+                [_vm._v("Filter by Turnover Range:")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "px-2 mx-auto py-0 border float-right collapse",
+                  attrs: { id: "colBut4", name: "min" },
+                  on: { click: _vm.collapse2 },
+                },
+                [_vm._v("Set range ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "px-2 mx-auto py-0 border float-right",
+                  attrs: { id: "colBut3", name: "min" },
+                  on: { click: _vm.collapse2 },
+                },
+                [_vm._v("Set range ")]
+              ),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-9 mt-4", attrs: { id: "" } }, [
+              _c("div", { attrs: { id: "slider" } }),
+              _vm._v(" "),
+              _vm._m(4),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "row mt-3 collapse",
+                  attrs: { id: "collapseExample2" },
+                },
+                [
+                  _c("div", { staticClass: "col-6 mt-1" }, [
+                    _c("span", { staticClass: "d-inline" }, [_vm._v("Min:")]),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.min2,
+                          expression: "min2",
+                        },
+                      ],
+                      staticClass: "d-inline w-75 py-0 border",
+                      attrs: {
+                        type: "number",
+                        id: "price_low4",
+                        name: "min",
+                        value: "",
+                      },
+                      domProps: { value: _vm.min2 },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.min2 = $event.target.value
+                        },
+                      },
+                    }),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
+                    _c("span", { staticClass: "d-inline" }, [_vm._v("Max:")]),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.max2,
+                          expression: "max2",
+                        },
+                      ],
+                      staticClass: "d-inline w-75 float-right py-0 border",
+                      attrs: {
+                        type: "number",
+                        id: "price_high4",
+                        name: "min",
+                        value: "",
+                      },
+                      domProps: { value: _vm.max2 },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.max2 = $event.target.value
+                        },
+                      },
+                    }),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "border w-25 mt-3 mx-auto",
+                      on: {
+                        click: function ($event) {
+                          _vm.range()
+                          _vm.hide2()
+                        },
+                      },
+                    },
+                    [_vm._v("Set")]
+                  ),
+                ]
+              ),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex items-center col-sm-6" }, [
+            _c("div", { staticClass: "col-sm-3" }, [
+              _c(
+                "span",
+                {
+                  staticClass: "text-black px-2 font-bold my-3 small rounded",
+                  staticStyle: { color: "black", "font-size": "11px" },
+                },
+                [_vm._v("Filter by Amount R.:")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "px-2 mx-auto py-0 border float-right collapse",
+                  attrs: { id: "colBut2", name: "min" },
+                  on: { click: _vm.collapse },
+                },
+                [_vm._v("Set range ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "px-2 mx-auto py-0 border float-right",
+                  attrs: { id: "colBut", name: "min" },
+                  on: { click: _vm.collapse },
+                },
+                [_vm._v("Set range ")]
+              ),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-9 mt-1", attrs: { id: "" } }, [
+              _c("div", { staticClass: "mt-3", attrs: { id: "slider2" } }),
+              _vm._v(" "),
+              _vm._m(5),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "row mt-3 collapse",
+                  attrs: { id: "collapseExample" },
+                },
+                [
+                  _c("div", { staticClass: "col-6 mt-1" }, [
+                    _c("span", { staticClass: "d-inline" }, [_vm._v("Min:")]),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.min,
+                          expression: "min",
+                        },
+                      ],
+                      staticClass: "d-inline w-75 py-0 border",
+                      attrs: {
+                        type: "number",
+                        id: "price_low3",
+                        name: "min",
+                        value: "",
+                      },
+                      domProps: { value: _vm.min },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.min = $event.target.value
+                        },
+                      },
+                    }),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
+                    _c("span", { staticClass: "d-inline" }, [_vm._v("Max:")]),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.max,
+                          expression: "max",
+                        },
+                      ],
+                      staticClass: "d-inline w-75 float-right py-0 border",
+                      attrs: {
+                        type: "number",
+                        id: "price_high3",
+                        name: "min",
+                        value: "",
+                      },
+                      domProps: { value: _vm.max },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.max = $event.target.value
+                        },
+                      },
+                    }),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "border w-25 mt-3 mx-auto",
+                      on: {
+                        click: function ($event) {
+                          _vm.range_amount()
+                          _vm.hide()
+                        },
+                      },
+                    },
+                    [_vm._v("Set")]
+                  ),
+                ]
+              ),
+            ]),
+          ]),
+        ]),
+        _vm._v(" "),
         _c("div", { staticClass: "mt-4 row flex-column-reverse flex-md-row" }, [
           _c(
             "div",
@@ -76587,284 +76840,7 @@ var render = function () {
               },
             },
             [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "content_bottom" }, [
-                  _c("div", { staticClass: "flex" }, [
-                    _c("div", { staticClass: "col-sm-3" }, [
-                      _c(
-                        "span",
-                        {
-                          staticClass:
-                            "text-black px-2 py-1 small rounded whitespace-nowrap font-bold",
-                          staticStyle: { color: "black", "font-size": "11px" },
-                        },
-                        [_vm._v("Filter by Turnover Range:")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass:
-                            "px-2 mx-auto py-0 border float-right collapse",
-                          attrs: { id: "colBut4", name: "min" },
-                          on: { click: _vm.collapse2 },
-                        },
-                        [_vm._v("Set range ")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "px-2 mx-auto py-0 border float-right",
-                          attrs: { id: "colBut3", name: "min" },
-                          on: { click: _vm.collapse2 },
-                        },
-                        [_vm._v("Set range ")]
-                      ),
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "col-sm-9 mt-1", attrs: { id: "" } },
-                      [
-                        _c("div", { attrs: { id: "slider" } }),
-                        _vm._v(" "),
-                        _vm._m(4),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "row mt-3 collapse",
-                            attrs: { id: "collapseExample2" },
-                          },
-                          [
-                            _c("div", { staticClass: "col-6 mt-1" }, [
-                              _c("span", { staticClass: "d-inline" }, [
-                                _vm._v("Min:"),
-                              ]),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.min2,
-                                    expression: "min2",
-                                  },
-                                ],
-                                staticClass: "d-inline w-75 py-0 border",
-                                attrs: {
-                                  type: "number",
-                                  id: "price_low4",
-                                  name: "min",
-                                  value: "",
-                                },
-                                domProps: { value: _vm.min2 },
-                                on: {
-                                  input: function ($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.min2 = $event.target.value
-                                  },
-                                },
-                              }),
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
-                              _c("span", { staticClass: "d-inline" }, [
-                                _vm._v("Max:"),
-                              ]),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.max2,
-                                    expression: "max2",
-                                  },
-                                ],
-                                staticClass:
-                                  "d-inline w-75 float-right py-0 border",
-                                attrs: {
-                                  type: "number",
-                                  id: "price_high4",
-                                  name: "min",
-                                  value: "",
-                                },
-                                domProps: { value: _vm.max2 },
-                                on: {
-                                  input: function ($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.max2 = $event.target.value
-                                  },
-                                },
-                              }),
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "button",
-                              {
-                                staticClass: "border w-25 mt-3 mx-auto",
-                                on: {
-                                  click: function ($event) {
-                                    _vm.range()
-                                    _vm.hide2()
-                                  },
-                                },
-                              },
-                              [_vm._v("Set")]
-                            ),
-                          ]
-                        ),
-                      ]
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "flex" }, [
-                    _c("div", { staticClass: "col-sm-3" }, [
-                      _c(
-                        "span",
-                        {
-                          staticClass:
-                            "text-black px-2 font-bold my-3 small rounded",
-                          staticStyle: { color: "black", "font-size": "11px" },
-                        },
-                        [_vm._v("Filter by Amount R.:")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass:
-                            "px-2 mx-auto py-0 border float-right collapse",
-                          attrs: { id: "colBut2", name: "min" },
-                          on: { click: _vm.collapse },
-                        },
-                        [_vm._v("Set range ")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "px-2 mx-auto py-0 border float-right",
-                          attrs: { id: "colBut", name: "min" },
-                          on: { click: _vm.collapse },
-                        },
-                        [_vm._v("Set range ")]
-                      ),
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "col-sm-9 mt-1", attrs: { id: "" } },
-                      [
-                        _c("div", {
-                          staticClass: "mt-3",
-                          attrs: { id: "slider2" },
-                        }),
-                        _vm._v(" "),
-                        _vm._m(5),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "row mt-3 collapse",
-                            attrs: { id: "collapseExample" },
-                          },
-                          [
-                            _c("div", { staticClass: "col-6 mt-1" }, [
-                              _c("span", { staticClass: "d-inline" }, [
-                                _vm._v("Min:"),
-                              ]),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.min,
-                                    expression: "min",
-                                  },
-                                ],
-                                staticClass: "d-inline w-75 py-0 border",
-                                attrs: {
-                                  type: "number",
-                                  id: "price_low3",
-                                  name: "min",
-                                  value: "",
-                                },
-                                domProps: { value: _vm.min },
-                                on: {
-                                  input: function ($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.min = $event.target.value
-                                  },
-                                },
-                              }),
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
-                              _c("span", { staticClass: "d-inline" }, [
-                                _vm._v("Max:"),
-                              ]),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.max,
-                                    expression: "max",
-                                  },
-                                ],
-                                staticClass:
-                                  "d-inline w-75 float-right py-0 border",
-                                attrs: {
-                                  type: "number",
-                                  id: "price_high3",
-                                  name: "min",
-                                  value: "",
-                                },
-                                domProps: { value: _vm.max },
-                                on: {
-                                  input: function ($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.max = $event.target.value
-                                  },
-                                },
-                              }),
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "button",
-                              {
-                                staticClass: "border w-25 mt-3 mx-auto",
-                                on: {
-                                  click: function ($event) {
-                                    _vm.range_amount()
-                                    _vm.hide()
-                                  },
-                                },
-                              },
-                              [_vm._v("Set")]
-                            ),
-                          ]
-                        ),
-                      ]
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(6),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "clear" }),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-4" }),
-              ]),
+              _vm._m(6),
               _vm._v(" "),
               _c("div", { staticClass: "row" }, [
                 _c("p", { staticClass: "ml-1 my-0 text-gray-600 small" }, [
@@ -77314,15 +77290,23 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "heading" }, [
-      _c(
-        "h3",
-        {
-          staticClass: "my-5 text-2xl font-bold",
-          staticStyle: { color: "#198754" },
-        },
-        [_vm._v("Businesses")]
-      ),
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "content_bottom" }, [
+        _c("div", { staticClass: "heading" }, [
+          _c(
+            "h3",
+            {
+              staticClass: "my-5 text-2xl font-bold",
+              staticStyle: { color: "#198754" },
+            },
+            [_vm._v("Businesses")]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "clear" }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-sm-4" }),
     ])
   },
   function () {
@@ -80756,22 +80740,25 @@ var render = function () {
                                               ),
                                             ]
                                           ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "p",
+                                            {
+                                              staticClass:
+                                                "learn font-bold text-black text-green-700 py-2 mt-2 rounded-full hover:bg-slate-100",
+                                            },
+                                            [
+                                              _vm._v("\n  Learn more "),
+                                              _c("i", {
+                                                staticClass:
+                                                  "fa fa-chevron-right pt-1",
+                                                attrs: {
+                                                  "aria-hidden": "true",
+                                                },
+                                              }),
+                                            ]
+                                          ),
                                         ]),
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass:
-                                          "learn border-black border border-1 px-3 text-green-700 py-2 mt-2 rounded-full hover:bg-slate-100;",
-                                      },
-                                      [
-                                        _vm._v("\n    Learn more "),
-                                        _c("i", {
-                                          staticClass:
-                                            "fas fa-arrow-right arrow-icon",
-                                        }),
                                       ]
                                     ),
                                   ]
