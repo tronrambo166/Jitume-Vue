@@ -8594,6 +8594,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -73510,7 +73511,7 @@ var render = function () {
                                                 "div",
                                                 {
                                                   staticClass:
-                                                    "flex hidden items-center justify-start rounded-[8px] bg-green-700 hover:bg-green-800 hover:text-white text-slate-100 py-2 px-6 w-[160px] h-[40px]",
+                                                    "flex hidden justify-start rounded-[8px] bg-green-700 hover:bg-green-800 hover:text-white text-slate-100 py-2",
                                                 },
                                                 [
                                                   _c(
@@ -73552,16 +73553,19 @@ var render = function () {
                                           ),
                                           _vm._v(" "),
                                           _c(
-                                            "button",
+                                            "p",
                                             {
                                               staticClass:
-                                                "learn border-black border border-1 px-3 text-green-700 py-2 mt-2 rounded-full hover:bg-slate-100;",
+                                                "learn font-bold text-black text-green-700 py-2 mt-2 rounded-full hover:bg-slate-100;",
                                             },
                                             [
                                               _vm._v("\n    Learn more "),
                                               _c("i", {
                                                 staticClass:
-                                                  "fas fa-arrow-right arrow-icon",
+                                                  "fa fa-chevron-right pt-1",
+                                                attrs: {
+                                                  "aria-hidden": "true",
+                                                },
                                               }),
                                             ]
                                           ),

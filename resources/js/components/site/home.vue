@@ -554,7 +554,7 @@
 
     
 
-<div class="flex hidden items-center justify-start rounded-[8px] bg-green-700 hover:bg-green-800  hover:text-white  text-slate-100 py-2 px-6 w-[160px] h-[40px]">
+<div class="flex hidden  justify-start rounded-[8px] bg-green-700 hover:bg-green-800  hover:text-white  text-slate-100 py-2 ">
     <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`">
         <button class="w-full h-full flex items-center justify-center  focus:outline-none ">Learn more<i class="fa fa-arrow-right" aria-hidden="true"></i>
 </button>
@@ -566,9 +566,10 @@
     </div>
 
     <!-- <button class="darksoul-hover-fill-button2" type="button"><div class="color-fill-2"></div><p>Button</p></button> -->
-<button class="learn border-black border border-1 px-3 text-green-700 py-2 mt-2 rounded-full hover:bg-slate-100;">
-    Learn more <i class="fas fa-arrow-right arrow-icon"></i>
-</button>
+<p class="learn font-bold  text-black text-green-700 py-2 mt-2 rounded-full hover:bg-slate-100; ">
+    Learn more <i class="fa fa-chevron-right pt-1" aria-hidden="true"></i>
+
+</p>
     
             <!-- <div class="hidden">
             <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="btn-learn-more  bg-green-800 hover:bg-green-700 text-white py-2 px-4 rounded text-base whitespace-nowrap mb-2">Learn More</router-link>
