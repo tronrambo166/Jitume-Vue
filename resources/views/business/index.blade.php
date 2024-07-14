@@ -154,24 +154,32 @@
 <div class="flex flex-col pt-9 pb-5 bg-white rounded-2xl shadow-sm">
   <div class="flex flex-col px-5 w-full max-md:px-5 max-md:max-w-full">
     <div class="flex gap-5 justify-between w-full font-bold max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
-      <div class="flex flex-col">
-        <div class="text-lg leading-6 text-gray-700">My Businesses</div>
-        <div class="mt-7 text-xs leading-4 text-slate-400">NAME</div>
-      </div>
-      <div class="flex gap-5 justify-between mt-12 text-xs leading-4 whitespace-nowrap text-slate-400 max-md:flex-wrap max-md:mt-10 max-md:max-w-full">
-        <div>CATEGORY</div>
-        <div>DETAILS</div>
-        <div>REQUIRED</div>
-      </div>
+    
+      
     </div>
+        <div class="text-lg leading-6 text-gray-700">My Businesses</div>
 
+    <div class="flex justify-between py-3 justify-start items-center ">
+  <h1 class="mr-8 w-50">Name</h1>
+
+  <!-- Content aligned to the left -->
+  <div class="flex w-50 mr-[180px] gap-5 items-center max-w-full">
+    <div>CATEGORY</div>
+    <div>DETAILS</div>
+    <div>REQUIRED</div>
+  </div>
+</div>
     <!-- Loop through each business -->
     @foreach($business as $ev)
     @php
       $coded_id = base64_encode($ev->id);
       $coded_id = base64_encode($coded_id);
     @endphp
+
     <div class="flex gap-5 justify-between pr-10 pb-3 mt-7 w-full text-sm leading-5 max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
+
+
+
       <div class="flex gap-4 whitespace-nowrap">
         <img
           loading="lazy"
@@ -185,11 +193,9 @@
       </div>
       <div class="flex gap-5 justify-between items-center max-md:flex-wrap max-md:max-w-full">
         <div class="flex flex-col self-stretch">
-          <div>CATEGORY</div>
           <div class="font-bold text-gray-700">{{$ev->category}}</div>
         </div>
         <div class="flex flex-col self-stretch">
-          <div>DETAILS</div>
           <div class="self-stretch my-auto text-slate-500">{{$ev->details}}</div>
         </div>
         <div class="flex flex-col self-stretch">
