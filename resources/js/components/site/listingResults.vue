@@ -255,10 +255,11 @@
 <div class="pt-2 pb-2">
     <h5 class="card_heading mb-0 py-2">{{ result.name }}</h5>
     <div class="rounded-full">
-        <p class="my-2 text-center bg-black rounded-full w-[110px] text-white">
-            <b></b> {{ result.category }}
-        </p>
-    </div>
+    <p class="my-1 text-center bg-black text-white rounded-full inline-block py-1 px-2">
+        <b>{{ result.category }}</b>
+    </p>
+</div>
+
     <div class="pt-1">
         <div class="flex justify-between gap-[50px]">
             <div class="flex justify-between items-center gap-[40px]">
