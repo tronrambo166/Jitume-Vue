@@ -128,7 +128,7 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
                             </div>
 
     <div class="row">
-            <div class="py-4 bid_header col-md-3 sidebar-inner slimscroll">
+            <div class="py-1 bid_header col-md-3 sidebar-inner slimscroll">
     <div id="sidebar-menu" class="sidebar-menu">
         <!-- Navbar (Logo and Toggle Button) visible only on small and medium screens -->
         <div class="flex items-center justify-between md:hidden lg:hidden">
@@ -155,14 +155,14 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
         <!-- Sidebar Menu Items visible on small and medium screens -->
         <ul id="menu-items" class="sidebar-main text-black px-2 hidden md:block lg:block" style="color:white;">
             <!-- Logo visible only on medium screens -->
-            <div class="hidden md:flex lg:flex items-center justify-center gap-5 px-4">
-                <router-link to="/" class="text-xl font-bold text-gray-800 md:text-2xl hover:text-green-400">
+            <div class="hidden md:flex lg:flex items-center  gap-5 ">
+                <router-link to="/" class="text-xl pl-2 pb-3 font-bold text-gray-800 md:text-2xl hover:text-green-400">
                     <img class="img-fluid" width="100px" height="45px" src="../images/logo3.png" alt="Logo">
                 </router-link>
             </div>
             <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf1E_') || Request::is('business/') ? 'active' : '' }}">
-                <a class="navLink bg-shadow-lg" href="{{route('business')}}">
-                    <img src='../images/default.png' alt=''>
+                <a class="navLink text- bg-shadow-lg flex items-center gap-4" href="{{route('business')}}">
+                    <svg style="color: rgba(25, 135, 84, 1) !important;"   class=" text-green-500 fill-current" width=15 height=15 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/></svg>
                     <span>Dashboard</span>
                 </a>
             </li>
@@ -278,8 +278,11 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
 <div class="custom-div mb-[50px] mx-0 sm:mb-[50px] sm:mx-4 hidden sm:block">
     <div class="top-left flex flex-col justify-start">
       <h1>Pages / Dashboard</h1>
+      <div class="flex items-center">
       <p>Dashboard</p>
+          <a href="{{ route('/') }}"class="navLink flex items-center gap-1"><i class="fas fa-home text-dark"></i> Home</a>
 
+</div>
 
     </div>
 
@@ -325,7 +328,6 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
 
     <div class="flex justify-between mt-4 text-[10px] font-bold uppercase">
 
-    <a href="{{ route('/') }}"class="navLink flex items-center gap-1"><i class="fas fa-home text-dark"></i> Home</a>
 
         
       <a href="{{route('business')}}" class="flex items-center gap-[0.5]"><svg class="" xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11" fill="none">
