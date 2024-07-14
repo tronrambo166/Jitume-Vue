@@ -156,9 +156,9 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
         <ul id="menu-items" class="sidebar-main text-black px-2 hidden md:block lg:block" style="color:white;">
             <!-- Logo visible only on medium screens -->
             <div class="hidden md:flex lg:flex items-center  gap-5 ">
-                <router-link to="/" class="text-xl pl-2 pb-3 font-bold text-gray-800 md:text-2xl hover:text-green-400">
+                <a href="{{ route('/') }}" class="text-xl pl-2 pb-3 font-bold text-gray-800 md:text-2xl hover:text-green-400">
                     <img class="img-fluid" width="100px" height="45px" src="../images/logo3.png" alt="Logo">
-                </router-link>
+                </a>
             </div>
             <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf1E_') || Request::is('business/') ? 'active' : '' }}">
                 <a class="navLink text- bg-shadow-lg flex items-center gap-4" href="{{route('business')}}">
