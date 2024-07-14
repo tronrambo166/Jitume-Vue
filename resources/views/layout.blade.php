@@ -94,6 +94,9 @@
         <a class="nav-link" href="{{route('add-listing')}}" >Add Your Business</a>
       </li>
 
+<li class="text-sm font-bold text-gray-800 hover:text-green-700">
+        <a class="nav-link" href="#" data-target="#loginmodal2" data-toggle="modal">Create Investor Account</a>
+      </li>
       @else
       <li class="text-sm font-bold text-gray-800 hover:text-green-700">
         <a class="nav-link" href="#" data-target="#loginModal" data-toggle="modal">Add Your Business</a>
