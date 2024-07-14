@@ -278,15 +278,16 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
 <div class="custom-div mb-[50px] mx-0 sm:mb-[50px] sm:mx-4 hidden sm:block">
     <div class="top-left flex flex-col justify-start">
       <h1>Pages / Dashboard</h1>
-      <div class="flex items-center">
+      <div class="flex items-center gap-[20px]">
       <p>Dashboard</p>
-          <a href="{{ route('/') }}"class="navLink flex items-center gap-1"><i class="fas fa-home text-dark"></i> Home</a>
+          
 
 </div>
 
     </div>
 
     <div class="flex items-center space-x-4 top-r sm:mr-3">
+        <a href="{{ route('/') }}"class="navLink flex items-center gap-1"><i class="fas fa-home text-white"></i> Home</a>
       <div class="flex items-center border border-gray-300 rounded-[15px] p-0 bg-white" style="height: 39.5px;">
         <div class="flex items-center justify-center p-0 hidden" style="width: 37px;">
           <div class="flex items-center gap-1 p-1.5 text-gray-700">
