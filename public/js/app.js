@@ -76591,12 +76591,12 @@ var render = function () {
         _vm._v(" "),
         _c("div", { staticClass: "row flex items-center" }, [
           _c("div", { staticClass: "flex items-center col-sm-6" }, [
-            _c("div", { staticClass: "col-sm-3" }, [
+            _c("div", {}, [
               _c(
                 "span",
                 {
                   staticClass:
-                    "text-black px-2 py-1 small rounded whitespace-nowrap font-bold",
+                    "text-black py-1 small rounded whitespace-nowrap font-bold",
                   staticStyle: { color: "black", "font-size": "11px" },
                 },
                 [_vm._v("Filter by Turnover Range:")]
@@ -76605,7 +76605,7 @@ var render = function () {
               _c(
                 "button",
                 {
-                  staticClass: "px-2 mx-auto py-0 border float-right collapse",
+                  staticClass: "mr-4 my-2 py-0 border float-right collapse",
                   attrs: { id: "colBut4", name: "min" },
                   on: { click: _vm.collapse2 },
                 },
@@ -76615,7 +76615,7 @@ var render = function () {
               _c(
                 "button",
                 {
-                  staticClass: "px-2 mx-auto py-0 border float-right",
+                  staticClass: "mr-4 my-2 py-0 border float-right",
                   attrs: { id: "colBut3", name: "min" },
                   on: { click: _vm.collapse2 },
                 },
@@ -76623,7 +76623,7 @@ var render = function () {
               ),
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-sm-9 mt-4", attrs: { id: "" } }, [
+            _c("div", { staticClass: "col-sm-9", attrs: { id: "" } }, [
               _c("div", { attrs: { id: "slider" } }),
               _vm._v(" "),
               _vm._m(4),
@@ -76714,20 +76714,21 @@ var render = function () {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "flex items-center col-sm-6" }, [
-            _c("div", { staticClass: "col-sm-3" }, [
+            _c("div", {}, [
               _c(
                 "span",
                 {
-                  staticClass: "text-black px-2 font-bold my-3 small rounded",
+                  staticClass: "text-black font-bold my-3 small rounded",
                   staticStyle: { color: "black", "font-size": "11px" },
                 },
-                [_vm._v("Filter by Amount R.:")]
+                [_vm._v("Filter by Amount :")]
               ),
               _vm._v(" "),
               _c(
                 "button",
                 {
-                  staticClass: "px-2 mx-auto py-0 border float-right collapse",
+                  staticClass:
+                    "mr-4 my-2 mx-auto py-0 border float-right collapse",
                   attrs: { id: "colBut2", name: "min" },
                   on: { click: _vm.collapse },
                 },
@@ -76737,7 +76738,7 @@ var render = function () {
               _c(
                 "button",
                 {
-                  staticClass: "px-2 mx-auto py-0 border float-right",
+                  staticClass: "my-2 py-0 border border ml-4",
                   attrs: { id: "colBut", name: "min" },
                   on: { click: _vm.collapse },
                 },
@@ -76746,7 +76747,7 @@ var render = function () {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col-sm-9 mt-1", attrs: { id: "" } }, [
-              _c("div", { staticClass: "mt-3", attrs: { id: "slider2" } }),
+              _c("div", { attrs: { id: "slider2" } }),
               _vm._v(" "),
               _vm._m(5),
               _vm._v(" "),
@@ -77279,7 +77280,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row mt-3" }, [
-      _c("div", { staticClass: "col-6 mt-1" }, [
+      _c("div", { staticClass: "col-6" }, [
         _c("span", {
           staticClass: "py-0 btn btn-light",
           attrs: { id: "price_low2", name: "min" },

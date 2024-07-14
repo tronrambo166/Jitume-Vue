@@ -118,12 +118,12 @@
 
 <div class="row flex items-center">
   <div class="flex items-center col-sm-6">
-                    <div class="col-sm-3"><span style="color:black;font-size: 11px;" class=" text-black px-2 py-1 small rounded whitespace-nowrap font-bold">Filter by Turnover Range:</span>
-                        <button @click="collapse2" id="colBut4" class="px-2 mx-auto py-0 border float-right collapse" name="min">Set range </button>
-                         <button @click="collapse2" id="colBut3" class="px-2 mx-auto py-0 border float-right" name="min">Set range </button>
+                    <div class=""><span style="color:black;font-size: 11px;" class=" text-black  py-1 small rounded whitespace-nowrap font-bold">Filter by Turnover Range:</span>
+                        <button @click="collapse2" id="colBut4" class="mr-4 my-2 py-0 border float-right collapse" name="min">Set range </button>
+                         <button @click="collapse2" id="colBut3" class="mr-4 my-2 py-0 border float-right" name="min">Set range </button>
                     </div>  
 
-                    <div id="" class="col-sm-9 mt-4"> 
+                    <div id="" class="col-sm-9 "> 
                         <div id="slider" class=""> </div>
                         <div class="row mt-3">
                             <div class="col-6  mt-1">
@@ -153,15 +153,15 @@
 
 
                         <div class="flex items-center col-sm-6">
-                    <div class="col-sm-3"><span style="color:black;font-size: 11px;" class=" text-black px-2 font-bold my-3 small rounded">Filter by Amount R.:</span>
-                         <button @click="collapse" id="colBut2" class="px-2 mx-auto py-0 border float-right collapse" name="min">Set range </button>
-                         <button @click="collapse" id="colBut" class="px-2 mx-auto py-0 border float-right" name="min">Set range </button>
+                    <div class=""><span style="color:black;font-size: 11px;" class=" text-black  font-bold my-3 small rounded">Filter by Amount :</span>
+                         <button @click="collapse" id="colBut2" class="mr-4 my-2 mx-auto py-0 border float-right collapse" name="min">Set range </button>
+                         <button @click="collapse" id="colBut" class=" my-2 py-0 border border ml-4" name="min">Set range </button>
                     </div>  
                     <div id="" class="col-sm-9 mt-1"> 
-                        <div id="slider2" class="mt-3"> </div>
+                        <div id="slider2" class=""> </div>
                         <div class="row mt-3">
                               
-                            <div class="col-6  mt-1">
+                            <div class="col-6  ">
                                 <span id="price_low2" class="py-0 btn btn-light" name="min"> </span>
                             </div>
                             <div class="col-6 mt-1 pr-0">
