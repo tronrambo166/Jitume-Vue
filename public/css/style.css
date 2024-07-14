@@ -753,7 +753,7 @@
         -webkit-text-fill-color: transparent;
     }
 
-    .sidebar li .navLink {
+    .sidebar li .navLink:hover {
         color: black;
         font-weight: 600;
         font-family: Outfit-Regular;
@@ -1795,7 +1795,20 @@ table tr td{padding-left: 12px;}
 
 #add_listing textarea { height: 45px; }
 
+.sidebar-main li {
+  margin: 10px 0;
+  padding: 10px;
+  
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), background 0.6s, border-radius 0.6s;
+}
 
+.sidebar-main li:hover,
+.sidebar-main li.active {
+  background: ghostwhite;
+  border-radius: 20px;
+  white-space: nowrap;
+  transform: translateX(20px);
+}
 
 .navlink, li{
 gap:3em;
