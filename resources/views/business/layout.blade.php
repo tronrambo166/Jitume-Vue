@@ -276,10 +276,10 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
    <div class="col-md-9 bg-white px-0 ">
 <div class="relative">
 <div class="custom-div mb-[50px] mx-0 sm:mb-[50px] sm:mx-4 hidden sm:block">
-    <div class="top-left flex flex-col justify-start">
+    <div class="top-left  flex flex-col justify-start">
       <h1>Pages / Dashboard</h1>
       <div class="flex items-center gap-[20px]">
-      <p>Dashboard</p>
+      <h2 class="text-[20px] font-bold">Dashboard</h2>
           
 
 </div>

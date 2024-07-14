@@ -1968,7 +1968,7 @@ background: linear-gradient(113deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255,
 }
 
 .form-group label{
-    color: #666666;
+/*    color: #666666;*/
     font-size: 12px;
     font: outfit;
 }

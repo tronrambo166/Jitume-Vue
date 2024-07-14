@@ -123,7 +123,7 @@
 
                         <div class="col-sm-3 px-1">
                             <div class="pload-btn-wrapper w-100">
-                                <label for="file-upload" class="border btnUp3 custom-file-upload">
+                                <label for="file-upload" class="border text-white btnUp3 custom-file-upload">
                                 Upload Milestone Documentaion <i class="ml-2 fa fa-arrow-up"></i>
                               </label>
                               <input required="" id="file-upload" name='file' type="file" style="display:none;">
