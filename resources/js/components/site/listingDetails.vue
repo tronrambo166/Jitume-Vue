@@ -40,11 +40,11 @@
               </a>
 
               <a v-else data-target="#investModal" data-toggle="modal"
-              class=" business_btns py-2 text-center text-light buttonListing my-2">Unlock To Invest
+              class=" py-2 text-center text-white  text-[12px] bg-black rounded-[16px]"><i class="fa fa-lock"></i>Unlock To Invest
               </a>
 
+             
 
-              <p class="text-slate-700 text-[13px] px-2">Unlock this business to learn more about it and invest</p>
 
             <!-- <a style="background:grey;" 
              v-if="subscribed"
@@ -309,7 +309,7 @@ Unlock this business to learn more about it and invest</p>
 
           <div v-if="auth_user" class="eqp-invest">
            <a v-if="plan == 'platinum' || (plan == 'gold' && range == form.range)" @click="unlockBySubs(form.listing_id,subscrib_id,'platinum');"
-              class=" business_btns py-2 text-center text-light buttonListing my-2">Unlock To Invest
+              class=" business_btn py-2 text-center text-light buttonListing my-2">Unlock To Invest
           </a>
 
               <a v-else data-target="#investModal" data-toggle="modal"

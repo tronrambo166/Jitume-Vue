@@ -115,11 +115,13 @@
                   <p class="text-sm text-gray-700">Contact: {{ results[index * 3 + offset].contact }}</p>
 
                   
-          <p class="learn font-bold text-black text-green-700 py-2 mt-2 rounded-full hover:bg-slate-100">
-  Learn more <i class="fa fa-chevron-right pt-1" aria-hidden="true"></i>
-</p>
-
-
+          <div class="flex items-center gap-1">
+  <p class="learn font-bold text-black text-green-700 py-2  rounded-full hover:text-green-700">
+    <span class="underline">Learn more</span>
+  </p>
+  <i class="fa fa-chevron-right pt-1 text-black" aria-hidden="true"></i>
+</div>
+    
                 </div>
                 
               </div>

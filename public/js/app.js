@@ -8595,6 +8595,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -13068,6 +13070,8 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+//
+//
 //
 //
 //
@@ -73611,20 +73615,18 @@ var render = function () {
                                                         "button",
                                                         {
                                                           staticClass:
-                                                            "w-full h-full flex items-center justify-center focus:outline-none",
+                                                            "border-b-2 border-transparent hover:border-black focus:outline-none focus:border-black transition duration-300",
                                                         },
-                                                        [
-                                                          _vm._v("Learn more"),
-                                                          _c("i", {
-                                                            staticClass:
-                                                              "fa fa-arrow-right",
-                                                            attrs: {
-                                                              "aria-hidden":
-                                                                "true",
-                                                            },
-                                                          }),
-                                                        ]
+                                                        [_vm._v("Learn more")]
                                                       ),
+                                                      _vm._v(" "),
+                                                      _c("i", {
+                                                        staticClass:
+                                                          "fa fa-arrow-right",
+                                                        attrs: {
+                                                          "aria-hidden": "true",
+                                                        },
+                                                      }),
                                                     ]
                                                   ),
                                                 ],
@@ -73634,16 +73636,32 @@ var render = function () {
                                           ),
                                           _vm._v(" "),
                                           _c(
-                                            "p",
+                                            "div",
                                             {
                                               staticClass:
-                                                "learn font-bold text-black text-green-700 py-2 mt-2 rounded-full hover:bg-slate-100;",
+                                                "flex items-center gap-1",
                                             },
                                             [
-                                              _vm._v("\n    Learn more "),
+                                              _c(
+                                                "p",
+                                                {
+                                                  staticClass:
+                                                    "learn font-bold text-black text-green-700 py-2 rounded-full hover:text-green-700",
+                                                },
+                                                [
+                                                  _c(
+                                                    "span",
+                                                    {
+                                                      staticClass: "underline",
+                                                    },
+                                                    [_vm._v("Learn more")]
+                                                  ),
+                                                ]
+                                              ),
+                                              _vm._v(" "),
                                               _c("i", {
                                                 staticClass:
-                                                  "fa fa-chevron-right pt-1",
+                                                  "fa fa-chevron-right pt-1 text-black",
                                                 attrs: {
                                                   "aria-hidden": "true",
                                                 },
@@ -74934,31 +74952,21 @@ var render = function () {
                                           "a",
                                           {
                                             staticClass:
-                                              "business_btns py-2 text-center text-light buttonListing my-2",
+                                              "py-2 text-center text-white text-[12px] bg-black rounded-[16px]",
                                             attrs: {
                                               "data-target": "#investModal",
                                               "data-toggle": "modal",
                                             },
                                           },
                                           [
+                                            _c("i", {
+                                              staticClass: "fa fa-lock",
+                                            }),
                                             _vm._v(
                                               "Unlock To Invest\n              "
                                             ),
                                           ]
                                         ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "p",
-                                      {
-                                        staticClass:
-                                          "text-slate-700 text-[13px] px-2",
-                                      },
-                                      [
-                                        _vm._v(
-                                          "Unlock this business to learn more about it and invest"
-                                        ),
-                                      ]
-                                    ),
                                   ])
                                 : _c("div", { staticClass: "eqp-invest" }, [
                                     _c(
@@ -75243,7 +75251,7 @@ var render = function () {
                                 "a",
                                 {
                                   staticClass:
-                                    "business_btns py-2 text-center text-light buttonListing my-2",
+                                    "business_btn py-2 text-center text-light buttonListing my-2",
                                   on: {
                                     click: function ($event) {
                                       return _vm.unlockBySubs(
@@ -80742,16 +80750,32 @@ var render = function () {
                                           ),
                                           _vm._v(" "),
                                           _c(
-                                            "p",
+                                            "div",
                                             {
                                               staticClass:
-                                                "learn font-bold text-black text-green-700 py-2 mt-2 rounded-full hover:bg-slate-100",
+                                                "flex items-center gap-1",
                                             },
                                             [
-                                              _vm._v("\n  Learn more "),
+                                              _c(
+                                                "p",
+                                                {
+                                                  staticClass:
+                                                    "learn font-bold text-black text-green-700 py-2 rounded-full hover:text-green-700",
+                                                },
+                                                [
+                                                  _c(
+                                                    "span",
+                                                    {
+                                                      staticClass: "underline",
+                                                    },
+                                                    [_vm._v("Learn more")]
+                                                  ),
+                                                ]
+                                              ),
+                                              _vm._v(" "),
                                               _c("i", {
                                                 staticClass:
-                                                  "fa fa-chevron-right pt-1",
+                                                  "fa fa-chevron-right pt-1 text-black",
                                                 attrs: {
                                                   "aria-hidden": "true",
                                                 },
