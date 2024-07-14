@@ -73430,14 +73430,14 @@ var render = function () {
                     _vm._l([0, 1, 2], function (offset) {
                       return _vm.results[index * 3 + offset]
                         ? _c(
-                            "router-link",
+                            "a",
                             {
                               key: index * 3 + offset,
                               staticClass:
                                 "w-[300px] md:w-[calc(100% / 3 - 2rem)] px-2",
                               attrs: {
-                                to:
-                                  "/listingDetails/" +
+                                href:
+                                  "./#/listingDetails/" +
                                   _vm.results[index * 3 + offset].id,
                               },
                             },
@@ -73636,39 +73636,7 @@ var render = function () {
                                             ]
                                           ),
                                           _vm._v(" "),
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "flex items-center gap-1",
-                                            },
-                                            [
-                                              _c(
-                                                "p",
-                                                {
-                                                  staticClass:
-                                                    "learn font-bold text-black text-green-700 py-2 rounded-full hover:text-green-700",
-                                                },
-                                                [
-                                                  _c(
-                                                    "span",
-                                                    {
-                                                      staticClass: "underline",
-                                                    },
-                                                    [_vm._v("Learn more")]
-                                                  ),
-                                                ]
-                                              ),
-                                              _vm._v(" "),
-                                              _c("i", {
-                                                staticClass:
-                                                  "fa fa-chevron-right pt-1 text-black",
-                                                attrs: {
-                                                  "aria-hidden": "true",
-                                                },
-                                              }),
-                                            ]
-                                          ),
+                                          _vm._m(4, true),
                                         ]
                                       ),
                                     ]
@@ -73679,7 +73647,7 @@ var render = function () {
                           )
                         : _vm._e()
                     }),
-                    1
+                    0
                   ),
                 ]
               )
@@ -73687,19 +73655,19 @@ var render = function () {
             0
           ),
           _vm._v(" "),
-          _vm._m(4),
-          _vm._v(" "),
           _vm._m(5),
+          _vm._v(" "),
+          _vm._m(6),
         ]
       ),
       _vm._v(" "),
       _c("section", [_c("Slider")], 1),
       _vm._v(" "),
-      _vm._m(6),
-      _vm._v(" "),
       _vm._m(7),
       _vm._v(" "),
       _vm._m(8),
+      _vm._v(" "),
+      _vm._m(9),
     ]
   )
 }
@@ -73877,6 +73845,26 @@ var staticRenderFns = [
         ),
       ]
     )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "flex items-center gap-1" }, [
+      _c(
+        "p",
+        {
+          staticClass:
+            "learn font-bold text-black text-green-700 py-2 rounded-full hover:text-green-700",
+        },
+        [_c("span", { staticClass: "underline" }, [_vm._v("Learn more")])]
+      ),
+      _vm._v(" "),
+      _c("i", {
+        staticClass: "fa fa-chevron-right pt-1 text-black",
+        attrs: { "aria-hidden": "true" },
+      }),
+    ])
   },
   function () {
     var _vm = this

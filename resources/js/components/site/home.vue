@@ -524,7 +524,7 @@
     <div v-for="(result, index) in Math.ceil(results.length / 3)" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }">
       <div class="flex justify-center gap-2 px-3  items-center w-full">
         <!-- Loop through three cards for each carousel item -->
-        <router-link :to="`/listingDetails/${results[index * 3 + offset].id}`" class="w-[300px] md:w-[calc(100% / 3 - 2rem)] px-2" v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]">
+        <a :href="'./#/listingDetails/'+results[index * 3 + offset].id"  class="w-[300px] md:w-[calc(100% / 3 - 2rem)] px-2" v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]">
          <div class="bg-white mt-4 w-[280px] h-[380px] mx-auto rounded-xl  p-3 mb-4 flex flex-col justify-between relative" style="box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;">
     <div class="relative">
         <img :src="results[index * 3 + offset].image" alt="Image" class="w-[350px] h-[215px] object-cover rounded-[15px] ">
@@ -581,7 +581,7 @@
     </div>
 </div>
 
-        </router-link>
+        </a>
       </div>
     </div>
   </div>
