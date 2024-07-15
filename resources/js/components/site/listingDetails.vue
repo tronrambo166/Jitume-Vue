@@ -756,10 +756,9 @@ export default {
   }),
 
   created() {
-
-
-    if (sessionStorage.getItem('invest') != null)
-      sessionStorage.clear();
+    // if (sessionStorage.getItem('invest') != null){
+    //   sessionStorage.clear();
+    // }
 
     this.form.raw_id = this.$route.params.id;
 
@@ -793,6 +792,7 @@ export default {
       },
 
     getDetails: function () {
+      var popup;
       var id = this.$route.params.id; var t = this;
       id = atob(id); id = atob(id); 
 
@@ -813,12 +813,16 @@ export default {
         t.form.investors_fee = data.data.data[0].investors_fee;
         if(t.form.investors_fee == null)
           t.form.conv = true;
+
         //PopUP
-        if(t.auth_user && !t.form.conv) {
+        
+        if(t.auth_user && !t.form.conv && sessionStorage.getItem('invest') != null) {
           $('#investModal').css('display','block');
           $('#investModal').removeClass('fade');
-        }
+          sessionStorage.clear();
+          }
         //PopUp
+
         t.form.rating = parseFloat(data.data.data[0].rating) / parseFloat(data.data.data[0].rating_count);
         t.form.rating = t.form.rating.toFixed(2);
         t.form.rating_count = data.data.data[0].rating_count;

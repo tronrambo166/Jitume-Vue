@@ -240,7 +240,7 @@
 
                 <div class="">
                     <div v-for="( result, index ) in results" class="listing row  my-3">
-                       <router-link :to="`/listingDetails/${result.id}`" @click="openInNewTab('/listingDetails/' + result.id)" class="flex px-4">
+                <a :href="'./#/listingDetails/'+result.id" @click="openInNewTab('/listingDetails/' + result.id)" class="flex px-4">
                             <div class="flex items-center gap-[30px] mb-5 w-full rounded-[30px] h-[200px]" style="box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;">
                             <!-- image or video -->
 
@@ -290,7 +290,7 @@
 
 
                             </div>
-                        </router-link>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -418,7 +418,7 @@ export default {
             if(t.ids != 0) {
             var slider = document.getElementById('slider');
             noUiSlider.create(slider, {
-                start: [0, 500000],
+                start: [0, 1000000],
                 connect: true,
                 range: {
                     'min': parseFloat(t.min2),
