@@ -11575,6 +11575,12 @@ video {
 .mr-\[180px\] {
   margin-right: 180px;
 }
+.mr-\[100px\] {
+  margin-right: 100px;
+}
+.mr-\[110px\] {
+  margin-right: 110px;
+}
 .block {
   display: block;
 }

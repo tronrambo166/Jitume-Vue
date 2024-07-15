@@ -61,15 +61,23 @@
 <div class="flex flex-col pt-9 pb-5 bg-white rounded-2xl shadow-sm my-3">
   <div class="flex flex-col px-5 w-full max-md:px-5 max-md:max-w-full">
     <div class="flex gap-5 justify-between w-full font-bold max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
-      <div class="flex flex-col">
+      <!-- <div class="flex flex-col">
         <div class="text-lg leading-6 text-gray-700">My Services</div>
         <div class="mt-7 text-xs leading-4 text-slate-400">NAME</div>
-      </div>
-      <div class="flex gap-5 justify-between mt-12 text-xs leading-4 whitespace-nowrap text-slate-400 max-md:flex-wrap max-md:mt-10 max-md:max-w-full">
-        <div>CATEGORY</div>
-        <div>DETAILS</div>
-        <div>REQUIRED</div>
-      </div>
+      </div> -->
+      
+</div>
+<div class="text-lg leading-6 text-gray-700">My Services</div>
+
+    <div class="flex justify-between py-3  ">
+  <h1 class=" w-50">Name</h1>
+
+  <!-- Content aligned to the left -->
+  <div class="flex w-50 mr-[110px] gap-5 items-center max-w-full">
+    <div>CATEGORY</div>
+    <div>DETAILS</div>
+    <div>REQUIRED</div>
+  </div>
     </div>
 
     <!-- Loop through each service -->
@@ -78,27 +86,38 @@
       $coded_id = base64_encode($ev->id);
       $coded_id = base64_encode($coded_id);
     @endphp
-    <div class="flex gap-5 justify-between pr-10 pb-3 mt-7 w-full text-sm leading-5 max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
-         <div class="flex gap-4 whitespace-nowrap">
-                  <img class="rounded" width="72px" height="40px" src="../{{$ev->image}}">
+   <div class="flex gap-5 justify-between pr-10 pb-3 mt-7 w-full text-sm leading-5 max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
 
+
+
+      <div class="flex w-40 gap-4 whitespace-nowrap">
+        <img
+          loading="lazy"
+          src="../{{$ev->image}}"
+          class="shrink-0 w-10 aspect-square"
+        />
         <div class="flex flex-col my-auto">
           <div class="font-bold text-gray-700">{{$ev->name}}</div>
           <div class="mt-2 text-slate-500">{{$ev->contact}}</div>
         </div>
       </div>
-      
-      <div class="flex gap-5 justify-between items-center max-md:flex-wrap max-md:max-w-full">
-        <div class="flex flex-col self-stretch">
+      <div class="flex w-50 gap-5 justify-between items-center max-md:flex-wrap max-md:max-w-full">
+        <div class="flex flex-col ">
           <div class="font-bold text-gray-700">{{$ev->category}}</div>
-          <div class="text-slate-500">Price: {{$ev->price}}</div>
         </div>
-        <div class="self-stretch my-auto text-slate-500">{{$ev->details}}</div>
+        <div class="flex flex-col self-stretch">
+          <div class="self-stretch my-auto text-slate-500">{{$ev->details}}</div>
+        </div>
+        <div class="flex flex-col self-stretch">
+         
+          <div class="self-stretch my-auto font-bold text-center text-gray-700"> {{$ev->price}}</div>
+        </div>
         
         <div class="self-stretch my-auto text-xs font-bold leading-5 text-slate-500">
-         <a href="./../#/service-milestone/{{$coded_id}}" class="text-success btn small px-3 py-1 my-1 d-inline-block py-0 border">View Milestone</a>
+          <a href="./../#/business-milestone/{{$coded_id}}" class="text-success btn small px-3 py-1 my-1 d-inline-block py-0 border">View Milestone</a>
         </div>
       </div>
+
     </div>
     @endforeach
   </div>
@@ -192,14 +211,14 @@
         </div>
       </div>
       <div class="flex gap-5 justify-between items-center max-md:flex-wrap max-md:max-w-full">
-        <div class="flex flex-col self-stretch">
-          <div class="font-bold text-gray-700">{{$ev->category}}</div>
+        <div class="flex flex-col ">
+          <div class="font-bold text-gray-700 pr-4">{{$ev->category}}</div>
         </div>
         <div class="flex flex-col self-stretch">
           <div class="self-stretch my-auto text-slate-500">{{$ev->details}}</div>
         </div>
         <div class="flex flex-col self-stretch">
-          <div>REQUIRED</div>
+         
           <div class="self-stretch my-auto font-bold text-center text-gray-700">{{$ev->investment_needed}}</div>
         </div>
         <div class="self-stretch my-auto text-xs font-bold leading-5 text-slate-500">
