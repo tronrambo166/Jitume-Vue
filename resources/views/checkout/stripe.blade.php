@@ -74,7 +74,7 @@
     <label for="AND" class="allterms" style="display: flex; align-items: center; font-size: 12px;">
             <input type="checkbox" required id="AND" style="margin-right: 5px;">
 
-        <span style="white-space: nowrap; text-transform: lowercase; font-size:13px;">I HAVE READ AND AGREE TO THE WEBSITE</span>
+        <span style="white-space: nowrap; text-transform: lowercase; font-size:13px;">I HAVE READ AND AGREE TO THE </span>
         <a id="terms" class=" bold" href="#" disabled style="margin-left: 5px;" style="font-size: 12px; color:red; font-weight: bold;">TERMS AND CONDITIONS</a>
     </label>
 </div>

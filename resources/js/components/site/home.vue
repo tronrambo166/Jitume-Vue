@@ -26,7 +26,7 @@
     <h3 class="text-[28px] text-black font-extrabold py-4">Real businesses, real <br>solutions, <span class="text-green-800 text-[30px]">real change</span></h3>
     <h3 class="font-bold text-[20px] pb-6">Invest in a business you believe in with as little as $100</h3>
     <div>
-      <button data-target="#loginModal" data-toggle="modal" class="bg-green-700 w-[125px] h-[50px] font-bold text-slate-100 rounded-[14px] px-6 py-3">Join today</button>
+      <button data-target="#loginModal" data-toggle="modal" class="join w-[125px] h-[50px] font-bold text-slate-100 rounded-[14px] px-6 py-3">Join today</button>
     </div>
   </div>
 
@@ -192,8 +192,8 @@
 </div>
 
 
-        <div class="w-12 h-12 my-2 bg-green-700 rounded-[50%] flex items-center justify-center">
-          <button type="submit" class="py-2 px-6  text-white rounded-full"><i class="fa fa-search"></i></button>
+        <div class="w-12 h-12 my-2 hover:bg-green-600 hover:shadow-lg bg-green-700 rounded-[50%] flex items-center justify-center">
+          <button type="submit" class="py-2 px-6  text-white hover:text-green-700 rounded-full"><i class="fa fa-search"></i></button>
         </div>
       </div>
       <!-- End of Search Options and Button Section -->
@@ -206,12 +206,12 @@
     <div class="my-5 py-0">
   <ul class="nav justify-content-center">
     <li class="nav-item">
-      <router-link class="nav-link btn bg-green-700 text-light mx-2" to="category/Agriculture">
+      <router-link class="nav-link join rounded-md bg-green-700 text-white hover:text-black mx-2" to="category/Agriculture">
         <i class="bi bi-bag"></i> Agriculture
       </router-link>
     </li>
     <li class="nav-item">
-      <router-link class="nav-link btn bg-black mx-2 text-light" to="category/Renewable-Energy">
+      <router-link class="nav-link join rounded-md bg-black mx-2 text-white hover:text-green-700" to="category/Renewable-Energy">
         <i class="bi bi-lightning-charge"></i> Renewable Energy
       </router-link>
     </li>
@@ -682,7 +682,7 @@
 
   </div>
 
-<button onclick="scrollToSection()"  class="bg-[#198754] px-[10px] font-bold my-6 text-white rounded-[14px] w-[136px] h-[40px] py-[7px] text-sm text-center">
+<button onclick="scrollToSection()"  class="bg-[#198754] unlock px-[10px] font-bold my-6 text-white rounded-[14px] w-[136px] h-[40px] py-[7px] text-sm text-center">
   Find a business
 </button>
 

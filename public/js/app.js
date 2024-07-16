@@ -73183,7 +73183,7 @@ var render = function () {
                             "router-link",
                             {
                               staticClass:
-                                "nav-link btn bg-green-700 text-light mx-2",
+                                "nav-link join rounded-md bg-green-700 text-white hover:text-black mx-2",
                               attrs: { to: "category/Agriculture" },
                             },
                             [
@@ -73203,7 +73203,7 @@ var render = function () {
                             "router-link",
                             {
                               staticClass:
-                                "nav-link btn bg-black mx-2 text-light",
+                                "nav-link join rounded-md bg-black mx-2 text-white hover:text-green-700",
                               attrs: { to: "category/Renewable-Energy" },
                             },
                             [
@@ -73862,7 +73862,7 @@ var staticRenderFns = [
                   "button",
                   {
                     staticClass:
-                      "bg-green-700 w-[125px] h-[50px] font-bold text-slate-100 rounded-[14px] px-6 py-3",
+                      "join w-[125px] h-[50px] font-bold text-slate-100 rounded-[14px] px-6 py-3",
                     attrs: {
                       "data-target": "#loginModal",
                       "data-toggle": "modal",
@@ -73974,13 +73974,14 @@ var staticRenderFns = [
       "div",
       {
         staticClass:
-          "w-12 h-12 my-2 bg-green-700 rounded-[50%] flex items-center justify-center",
+          "w-12 h-12 my-2 hover:bg-green-600 hover:shadow-lg bg-green-700 rounded-[50%] flex items-center justify-center",
       },
       [
         _c(
           "button",
           {
-            staticClass: "py-2 px-6 text-white rounded-full",
+            staticClass:
+              "py-2 px-6 text-white hover:text-green-700 rounded-full",
             attrs: { type: "submit" },
           },
           [_c("i", { staticClass: "fa fa-search" })]
@@ -74321,7 +74322,7 @@ var staticRenderFns = [
           "button",
           {
             staticClass:
-              "bg-[#198754] px-[10px] font-bold my-6 text-white rounded-[14px] w-[136px] h-[40px] py-[7px] text-sm text-center",
+              "bg-[#198754] unlock px-[10px] font-bold my-6 text-white rounded-[14px] w-[136px] h-[40px] py-[7px] text-sm text-center",
             attrs: { onclick: "scrollToSection()" },
           },
           [_vm._v("\n  Find a business\n")]
@@ -77425,7 +77426,7 @@ var staticRenderFns = [
           _c(
             "h3",
             {
-              staticClass: "my-5 text-2xl font-bold",
+              staticClass: "text-2xl font-bold",
               staticStyle: { color: "#198754" },
             },
             [_vm._v("Businesses")]
@@ -80282,10 +80283,10 @@ var render = function () {
                           },
                           [
                             _c(
-                              "router-link",
+                              "a",
                               {
                                 attrs: {
-                                  to:
+                                  href:
                                     "/serviceDetails/" +
                                     _vm.results[index * 3 + offset].id,
                                 },
@@ -80446,39 +80447,7 @@ var render = function () {
                                             ]
                                           ),
                                           _vm._v(" "),
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "flex items-center gap-1",
-                                            },
-                                            [
-                                              _c(
-                                                "p",
-                                                {
-                                                  staticClass:
-                                                    "learn font-bold text-black text-green-700 py-2 rounded-full hover:text-green-700",
-                                                },
-                                                [
-                                                  _c(
-                                                    "span",
-                                                    {
-                                                      staticClass: "underline",
-                                                    },
-                                                    [_vm._v("Learn more")]
-                                                  ),
-                                                ]
-                                              ),
-                                              _vm._v(" "),
-                                              _c("i", {
-                                                staticClass:
-                                                  "fa fa-chevron-right pt-1 text-black",
-                                                attrs: {
-                                                  "aria-hidden": "true",
-                                                },
-                                              }),
-                                            ]
-                                          ),
+                                          _vm._m(4, true),
                                         ]),
                                       ]
                                     ),
@@ -80486,8 +80455,7 @@ var render = function () {
                                 ),
                               ]
                             ),
-                          ],
-                          1
+                          ]
                         )
                       : _vm._e()
                   }),
@@ -80499,9 +80467,9 @@ var render = function () {
           0
         ),
         _vm._v(" "),
-        _vm._m(4),
-        _vm._v(" "),
         _vm._m(5),
+        _vm._v(" "),
+        _vm._m(6),
       ]
     ),
   ])
@@ -80665,6 +80633,26 @@ var staticRenderFns = [
         ]),
       ]
     )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "flex items-center gap-1" }, [
+      _c(
+        "p",
+        {
+          staticClass:
+            "learn font-bold text-black text-green-700 py-2 rounded-full hover:text-green-700",
+        },
+        [_c("span", { staticClass: "underline" }, [_vm._v("Learn more")])]
+      ),
+      _vm._v(" "),
+      _c("i", {
+        staticClass: "fa fa-chevron-right pt-1 text-black",
+        attrs: { "aria-hidden": "true" },
+      }),
+    ])
   },
   function () {
     var _vm = this

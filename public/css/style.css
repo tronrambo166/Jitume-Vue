@@ -1483,6 +1483,31 @@
 
 }
 
+
+.join{
+    background-color: rgb(21 128 61 );
+    color: #FFFFFF !important;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.join:hover {
+    background-color: #fafafa !important;
+    color: rgb(21 128 61 ) !important;
+    font-weight: bold;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+
+}
+
+
+.cen:hover {
+    background-color: #fafafa !important;
+    color: black !important;
+    font-weight: bold;
+
+}
+
+
     .bg_light{background: #e5eef5b8}
 
     .bid-accept {
