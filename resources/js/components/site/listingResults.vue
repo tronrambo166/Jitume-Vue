@@ -360,7 +360,7 @@ export default {
             $('#colBut2').removeClass('collapse');
         },
         hide: function() {
-            $('#collapseExample2').addClass('collapse');
+            $('#collapseExample').addClass('collapse');
 
         },
         collapse2: function() {

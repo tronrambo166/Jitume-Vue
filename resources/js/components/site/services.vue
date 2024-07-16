@@ -93,7 +93,7 @@
        <div class="flex justify-center gap-2 px-6  items-center w-full">
         <!-- Loop through three cards for each carousel item -->
         <div v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]" class="w-[300px] md:w-[calc(100% / 3 - 2rem)] px-2">
-            <a :href="'/serviceDetails/' + results[index * 3 + offset].id">
+            <a :href="'./#/serviceDetails/' + results[index * 3 + offset].id">
                         <div class="bg-white mt-4 w-[280px] h-[380px] mx-auto rounded-xl  p-3 mb-4 flex flex-col justify-between relative" style="box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;">
               <div class="relative">
                 <video v-if="results[index * 3 + offset].file" controls class="w-[350px] h-[215px] object-cover rounded-lg ">
