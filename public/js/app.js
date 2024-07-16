@@ -76784,6 +76784,7 @@ var render = function () {
                       staticClass: "d-inline w-75 py-0 border",
                       attrs: {
                         type: "number",
+                        min: "0",
                         id: "price_low4",
                         name: "min",
                         value: "",
@@ -76906,6 +76907,7 @@ var render = function () {
                       staticClass: "d-inline w-75 py-0 border",
                       attrs: {
                         type: "number",
+                        min: "0",
                         id: "price_low3",
                         name: "min",
                         value: "",
