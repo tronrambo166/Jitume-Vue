@@ -356,7 +356,13 @@ foreach($ids as $id){
     if(isset($files->file))
     $listing->file = $files->file;
     else $listing->file = false;
-    $listing->investment_needed = number_format($listing->investment_needed);
+    $listing->investment_needed = $listing->investment_needed;
+
+
+    $range = explode('-', $listing->y_turnover);
+    $range[0] = number_format($range[0]);
+    $range[1] = number_format($range[1]);
+    $listing->y_turnover = implode('-', $range);
 
     $listing->lat = (float)$listing->lat;
     $listing->lng = (float)$listing->lng;
@@ -560,6 +566,9 @@ public function priceFilter($min, $max, $ids){
     $listing->lng = (float)$listing->lng;
     
     $listing->investment_needed = number_format($listing->investment_needed);
+
+    $range[0] = number_format($range[0]); $range[1] = number_format($range[1]);
+    $listing->y_turnover = implode('-', $range);
     
     if((int)$min <= $db_min && (int)$max >= $db_max)
         //return response()->json([ 'data' => (int)$min .'<='. $db_min .'//'.(int)$max .'>='. $db_max]);
@@ -616,6 +625,11 @@ public function priceFilter_amount($min, $max, $ids){
     $listing->lng = (float)$listing->lng;
     
     $listing->investment_needed = number_format($listing->investment_needed);
+    $turnover = explode('-', $listing->y_turnover);
+    $turnover[0] = number_format($turnover[0]); 
+    $turnover[1] = number_format($turnover[1]);
+    $listing->y_turnover = implode('-', $turnover);
+
     if((int)$min <= $range && (int)$max >= $range)
         //return response()->json([ 'data' => (int)$min .'<='. $db_min .'//'.(int)$max .'>='. $db_max]);
     $results[] = $listing;

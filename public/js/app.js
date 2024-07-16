@@ -8592,11 +8592,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -9947,12 +9942,17 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    // if (sessionStorage.getItem('invest') != null){
-    //   sessionStorage.clear();
-    // }
+    if (sessionStorage.getItem('invest') != null) {
+      sessionStorage.setItem('invest', null); //sessionStorage.clear();
+    }
+
     this.form.raw_id = this.$route.params.id;
   },
   methods: {
+    format: function format(x) {
+      x = new Intl.NumberFormat().format(x);
+      return x;
+    },
     isSubscribed: function isSubscribed() {
       var id = this.$route.params.id;
       var t = this;
@@ -9997,7 +9997,7 @@ __webpack_require__.r(__webpack_exports__);
         t.form.investors_fee = data.data.data[0].investors_fee;
         if (t.form.investors_fee == null) t.form.conv = true; //PopUP
 
-        if (t.auth_user && !t.form.conv && sessionStorage.getItem('invest') != null) {
+        if (t.auth_user && !t.form.conv && sessionStorage.getItem('popup') != null) {
           $('#investModal').css('display', 'block');
           $('#investModal').removeClass('fade');
           sessionStorage.clear();
@@ -10052,6 +10052,7 @@ __webpack_require__.r(__webpack_exports__);
     make_session: function make_session(id) {
       id = btoa(id);
       id = btoa(id);
+      sessionStorage.setItem('popup', id);
       sessionStorage.setItem('invest', id);
       document.getElementById('c_to_action').value = 'loginFromService';
       document.getElementById('c_to_action_login').value = 'loginFromService';
@@ -73577,7 +73578,7 @@ var render = function () {
                             {
                               key: index * 3 + offset,
                               staticClass:
-                                "w-[300px] md:w-[calc(100% / 3 - 2rem)] px-2",
+                                "card_link w-[300px] md:w-[calc(100% / 3 - 2rem)] px-2",
                               attrs: {
                                 href:
                                   "./#/listingDetails/" +
@@ -73658,7 +73659,7 @@ var render = function () {
                                               "h4",
                                               {
                                                 staticClass:
-                                                  "text-lg mt-2 hover:no-underline hover:text-green-800",
+                                                  "text-lg mt-2 hover:no-underline card_title",
                                               },
                                               [
                                                 _vm._v(
@@ -73804,7 +73805,7 @@ var render = function () {
         ]
       ),
       _vm._v(" "),
-      _c("section", [_c("Slider")], 1),
+      _c("section"),
       _vm._v(" "),
       _vm._m(7),
       _vm._v(" "),
@@ -73835,13 +73836,13 @@ var staticRenderFns = [
             [
               _c(
                 "h2",
-                { staticClass: "text-[25px] text-black font-bold mb-4" },
+                { staticClass: "text-[25px] text-black font-bold mb-1" },
                 [_vm._v("Welcome to Jitume !")]
               ),
               _vm._v(" "),
               _c(
                 "h3",
-                { staticClass: "text-[28px] text-black font-extrabold py-4" },
+                { staticClass: "text-[28px] text-black font-extrabold py-2" },
                 [
                   _vm._v("Real businesses, real "),
                   _c("br"),
@@ -75199,7 +75200,11 @@ var render = function () {
                     _c(
                       "span",
                       { staticClass: "font-semibold text-green-700" },
-                      [_vm._v("$" + _vm._s(_vm.form.investment_needed))]
+                      [
+                        _vm._v(
+                          "$" + _vm._s(_vm.format(_vm.form.investment_needed))
+                        ),
+                      ]
                     ),
                     _vm._v(" "),
                     _c("span", { staticClass: "text-xl" }),
@@ -77188,7 +77193,7 @@ var render = function () {
                                                             _vm._v(
                                                               "$" +
                                                                 _vm._s(
-                                                                  result.y_turnover
+                                                                  result.y_turnover.toLocaleString()
                                                                 )
                                                             ),
                                                           ]
@@ -81136,11 +81141,11 @@ var render = function () {
                                             },
                                             [
                                               _vm._v(
-                                                "Contact: " +
+                                                "Price: $" +
                                                   _vm._s(
                                                     _vm.results[
                                                       index * 3 + offset
-                                                    ].contact
+                                                    ].price
                                                   )
                                               ),
                                             ]

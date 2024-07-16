@@ -112,7 +112,7 @@
                   </header>
                   <p class="text-sm text-gray-700">{{ results[index * 3 + offset].description }}</p>
                   <p class="text-sm text-gray-700">Name: {{ results[index * 3 + offset].name }}</p>
-                  <p class="text-sm text-gray-700">Contact: {{ results[index * 3 + offset].contact }}</p>
+                  <p class="text-sm text-gray-700">Price: ${{ results[index * 3 + offset].price }}</p>
 
                   
           <div class="flex items-center gap-1">

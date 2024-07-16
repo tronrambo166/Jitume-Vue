@@ -2237,5 +2237,6 @@ ul li a:hover{
         transition: transform 0.3s ease-in-out;
     }
 
-
-    
+.card_link:hover{
+    .card_title{color:rgb(21 128 61 );}
+    }
