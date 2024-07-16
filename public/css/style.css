@@ -1457,6 +1457,31 @@
     .table_head {
         background: #e5edf542;
     }
+.unlock {
+    background: black;
+    color: white;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.unlock:hover {
+    background-color: ghostwhite !important;
+    color: black !important;
+}
+
+.add{
+    background-color: rgb(21 128 61 );
+    color: #FFFFFF !important;
+    padding: 7px 0;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.add:hover {
+    background-color: ghostwhite !important;
+    color: rgb(21 128 61 ) !important;
+    font-weight: bold;
+
+}
 
     .bg_light{background: #e5eef5b8}
 

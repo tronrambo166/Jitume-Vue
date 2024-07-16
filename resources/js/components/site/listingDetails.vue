@@ -25,10 +25,10 @@
               
 
               <a v-if="auth_user" data-toggle="modal" data-target="#reviewModal"
-                class="bg-green-700 w-[50%] text-center text-white rounded-[16px] ">Add review</a>
+                class="bg-green-700 w-[50%] text-center  add rounded-[16px] ">Add review</a>
 
               <a v-else @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal"
-                class="w-[50%] text-center text-[12px] bg-green-700 text-white rounded-[16px]">Add review</a>
+                class="w-[50%] text-center text-[12px] add rounded-[16px]">Add review</a>
       <div class=" text-green-700 text-center w-[50%]">
 
             <!--unlock business-->
@@ -36,11 +36,11 @@
 <div v-if="!form.conv || !auth_user" class=" w-100 mx-auto py-3 ">
        <div v-if="auth_user" class="eqp-invest">
             <a v-if="plan == 'platinum' || (plan == 'gold' && range == form.range)" @click="unlockBySubs(form.listing_id,subscrib_id,'platinum');"
-              class=" business_btns py-2 text-center text-light buttonListing my-2">Unlock To Invest
+              class=" business_btns py-2 text-center text-light buttonListing my-2" >Unlock To Invest
               </a>
 
               <a v-else data-target="#investModal" data-toggle="modal"
-              class=" py-2 text-center text-white  text-[12px] bg-black rounded-[16px]"><i class="fa fa-lock"></i>Unlock To Invest
+              class=" py-2 text-center text-white  text-[12px] rounded-[16px] unlock pointer"><i class="fa fa-lock"></i>Unlock To Invest
               </a>
 
              
@@ -115,7 +115,7 @@
 
           <div v-else class="eqp-invest ">
             <a @click="make_session(form.listing_id);" data-target="#loginModal" data-toggle="modal"
-              class=" py-2 text-center text-white  text-[12px] bg-black rounded-[16px]"><i class="fa fa-lock"></i>
+              class=" py-2 text-center text-white  text-[12px]  rounded-[16px] unlock pointer "><i class="fa fa-lock pl-1"></i>
 Unlock  To
               Invest </a>
 
