@@ -230,7 +230,7 @@
 
 
                             </div>
-                        </a>
+                        </router-link>
                     </div>
                     <div v-for="( result, index ) in results" class="listing col-md-6 my-3 hidden">
                         <router-link :to="`/serviceDetails/${result.id}`" class="shadow card border px-4">
