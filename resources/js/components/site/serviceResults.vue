@@ -174,7 +174,7 @@
 
                 </div>
                 <div class="row">
-                    <p class="ml-1 my-0 text-black font-bold small">{{ count }} Services  found<!-- your location --></p>
+                    <p class="ml-1 my-0 text-black text-[15px] font-bold small">{{ count }} Services  found<!-- your location --></p>
                 </div>
                 <!-- Price Filter -->
 

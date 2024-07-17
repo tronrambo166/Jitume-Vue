@@ -76996,7 +76996,10 @@ var render = function () {
               _c("div", { staticClass: "row" }, [
                 _c(
                   "p",
-                  { staticClass: "ml-1 my-0 text-black font-bold small" },
+                  {
+                    staticClass:
+                      "ml-1 my-0 text-black text-[15px] font-bold small",
+                  },
                   [_vm._v(_vm._s(_vm.count) + " businesses found")]
                 ),
               ]),
@@ -80274,9 +80277,13 @@ var render = function () {
           _vm._m(5),
           _vm._v(" "),
           _c("div", { staticClass: "row" }, [
-            _c("p", { staticClass: "ml-1 my-0 text-black font-bold small" }, [
-              _vm._v(_vm._s(_vm.count) + " Services  found"),
-            ]),
+            _c(
+              "p",
+              {
+                staticClass: "ml-1 my-0 text-black text-[15px] font-bold small",
+              },
+              [_vm._v(_vm._s(_vm.count) + " Services  found")]
+            ),
           ]),
           _vm._v(" "),
           _vm.count != 0
