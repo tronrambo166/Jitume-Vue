@@ -195,7 +195,7 @@
 <div class="pt-2 pb-2">
     <h5 class="card_heading mb-0 py-2">{{ result.name }}</h5>
     <div class="rounded-full">
-    <p class="my-1 text-center bg-black text-white rounded-full inline-block py-1 px-2">
+    <p class="my-1 text-center bg-black text-white rounded-full inline-block py-1 px-3">
         <b>{{ result.category }}</b>
     </p>
 </div>

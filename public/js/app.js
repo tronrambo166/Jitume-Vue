@@ -77079,7 +77079,7 @@ var render = function () {
                                   "p",
                                   {
                                     staticClass:
-                                      "my-1 text-center bg-black text-white rounded-full inline-block py-1 px-2",
+                                      "my-1 text-center bg-black text-white rounded-full inline-block py-1 px-3",
                                   },
                                   [_c("b", [_vm._v(_vm._s(result.category))])]
                                 ),
@@ -80352,7 +80352,7 @@ var render = function () {
                                     "p",
                                     {
                                       staticClass:
-                                        "my-1 text-center bg-black text-white rounded-full inline-block py-1 px-2",
+                                        "my-1 text-center bg-black text-white rounded-full inline-block py-1 px-3",
                                     },
                                     [_c("b", [_vm._v(_vm._s(result.category))])]
                                   ),
