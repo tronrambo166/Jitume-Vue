@@ -206,7 +206,7 @@
 
                 
 
-            <div class="heading">
+            <div class="heading hidden">
                 <h3 class=" text-2xl font-bold   " style="color:#198754;">Businesses</h3>
             </div>
             <div class="clear"></div>
@@ -231,7 +231,7 @@
 
                 </div>
                 <div class="row">
-                    <p class="ml-1 my-0 text-gray-600 small">{{ count }} businesses found<!-- in your location --></p>
+                    <p class="ml-1 my-0 text-black font-bold small">{{ count }} businesses found<!-- in your location --></p>
                 </div>
                 <!-- Price Filter -->
 

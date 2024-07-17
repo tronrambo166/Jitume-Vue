@@ -75092,7 +75092,7 @@ var render = function () {
                                           },
                                           [
                                             _c("i", {
-                                              staticClass: "fa fa-lock",
+                                              staticClass: "fa fa-lock pr-2",
                                             }),
                                             _vm._v(
                                               "Unlock To Invest\n              "
@@ -75120,7 +75120,7 @@ var render = function () {
                                       },
                                       [
                                         _c("i", {
-                                          staticClass: "fa fa-lock pl-1",
+                                          staticClass: "fa fa-lock pr-2",
                                         }),
                                         _vm._v(
                                           "\nUnlock  To\n              Invest "
@@ -76985,9 +76985,11 @@ var render = function () {
               _vm._m(6),
               _vm._v(" "),
               _c("div", { staticClass: "row" }, [
-                _c("p", { staticClass: "ml-1 my-0 text-gray-600 small" }, [
-                  _vm._v(_vm._s(_vm.count) + " businesses found"),
-                ]),
+                _c(
+                  "p",
+                  { staticClass: "ml-1 my-0 text-black font-bold small" },
+                  [_vm._v(_vm._s(_vm.count) + " businesses found")]
+                ),
               ]),
               _vm._v(" "),
               _c(
@@ -77421,7 +77423,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "content_bottom" }, [
-        _c("div", { staticClass: "heading" }, [
+        _c("div", { staticClass: "heading hidden" }, [
           _c(
             "h3",
             {
@@ -80415,34 +80417,6 @@ var render = function () {
                                                           "whitespace-nowrap mb-2",
                                                       },
                                                       [
-                                                        _c(
-                                                          "p",
-                                                          {
-                                                            staticClass:
-                                                              "mt-2 font-bold text-black",
-                                                          },
-                                                          [
-                                                            _vm._v(
-                                                              "Yearly Turnover: "
-                                                            ),
-                                                            _c(
-                                                              "span",
-                                                              {
-                                                                staticClass:
-                                                                  "font-normal",
-                                                              },
-                                                              [
-                                                                _vm._v(
-                                                                  "$" +
-                                                                    _vm._s(
-                                                                      result.y_turnover
-                                                                    )
-                                                                ),
-                                                              ]
-                                                            ),
-                                                          ]
-                                                        ),
-                                                        _vm._v(" "),
                                                         _c(
                                                           "p",
                                                           {

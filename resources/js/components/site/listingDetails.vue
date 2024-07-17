@@ -40,7 +40,7 @@
               </a>
 
               <a v-else data-target="#investModal" data-toggle="modal"
-              class=" py-2 text-center text-white  text-[12px] rounded-[16px] unlock pointer"><i class="fa fa-lock"></i>Unlock To Invest
+              class=" py-2 text-center text-white  text-[12px] rounded-[16px] unlock pointer"><i class="fa fa-lock pr-2"></i>Unlock To Invest
               </a>
 
              
@@ -115,7 +115,7 @@
 
           <div v-else class="eqp-invest ">
             <a @click="make_session(form.listing_id);" data-target="#loginModal" data-toggle="modal"
-              class=" py-2 text-center text-white  text-[12px]  rounded-[16px] unlock pointer "><i class="fa fa-lock pl-1"></i>
+              class=" py-2 text-center text-white  text-[12px]  rounded-[16px] unlock pointer "><i class="fa fa-lock pr-2"></i>
 Unlock  To
               Invest </a>
 
