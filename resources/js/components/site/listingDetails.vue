@@ -185,7 +185,7 @@ Unlock this business to learn more about it and invest</p>
     <div
       class="text-black font-bold"
     >
-      Amount Requested: <span class="font-semibold text-green-700">${{ form.investment_needed }}</span>
+      Amount Requested: <span class="font-semibold text-green-700">${{ format(form.investment_needed) }}</span>
       <span class="text-xl"></span>
     </div>
     <div
@@ -756,14 +756,22 @@ export default {
   }),
 
   created() {
-    // if (sessionStorage.getItem('invest') != null){
-    //   sessionStorage.clear();
-    // }
+     if (sessionStorage.getItem('invest') != null){
+         sessionStorage.setItem('invest',null);
+       //sessionStorage.clear();
+     }
 
     this.form.raw_id = this.$route.params.id;
 
   },
   methods: {
+
+    format:function (x) {
+    
+     x = new Intl.NumberFormat().format(x);
+     return x;
+
+    },
 
     isSubscribed: function () {
       var id = this.$route.params.id; var t = this;
@@ -816,7 +824,7 @@ export default {
 
         //PopUP
         
-        if(t.auth_user && !t.form.conv && sessionStorage.getItem('invest') != null) {
+        if(t.auth_user && !t.form.conv && sessionStorage.getItem('popup') != null) {
           $('#investModal').css('display','block');
           $('#investModal').removeClass('fade');
           sessionStorage.clear();
@@ -881,6 +889,7 @@ export default {
 
     make_session(id) {
       id = btoa(id); id = btoa(id);
+      sessionStorage.setItem('popup', id);
       sessionStorage.setItem('invest', id);
       document.getElementById('c_to_action').value = 'loginFromService';
       document.getElementById('c_to_action_login').value = 'loginFromService';

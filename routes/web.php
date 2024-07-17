@@ -86,17 +86,34 @@ Route::get('download_statement/{id}', 'PagesController@download_statement')->nam
 Route::get('getMilestones/{id}', 'BusinessController@getMilestones')->name('getMilestones');
 Route::get('getMilestonesS/{id}', 'ServiceController@getMilestones')->name('getMilestonesS');
 //Route::get('milestoneCommits/{amount}/{business_id}/{percent}', 'BusinessController@milestoneCommits')->name('milestoneCommits');
-Route::get('milestoneCommitsEQP/{ids}', 'BusinessController@milestoneCommitsEQP')->name('milestoneCommitsEQP');
 
+//MIDDLEWARE --- MIDDLEWARE 
+Route::group(['middleware'=>['auth']], function(){ 
+
+Route::get('milestoneCommitsEQP/{ids}', 'BusinessController@milestoneCommitsEQP')->name('milestoneCommitsEQP');
 
 Route::get('download_milestoneDoc/{id}/{mile_id}', 'BusinessController@download_milestone_doc')->name('download_milestoneDoc');
 Route::get('download_milestoneDocS/{id}/{mile_id}', 'ServiceController@download_milestone_doc')->name('download_milestoneDocS');
 // <--milestones-->
-Route::get('latBusiness', 'PagesController@latBusiness')->name('latBusiness');
-Route::get('latServices', 'PagesController@latServices')->name('latServices');
 Route::get('ratingListing/{id}/{rating}', 'BusinessController@ratingListing')->name('ratingListing');
 Route::get('ratingService/{id}/{rating}', 'ServiceController@ratingService')->name('ratingService');
 Route::get('unlockBySubs/{id}/{sub_id}/{plan}', 'BusinessController@unlockBySubs')->name('unlockBySubs');
+
+//BIDS
+Route::post('bidCommitsEQP', 'bidsEmailController@bidCommitsEQP')->name('bidCommitsEQP');
+Route::get('bidCommits/{amount}/{business_id}/{percent}', 'checkoutController@bidCommitsForm')->name('bidCommits');
+Route::post('bidCommits', 'checkoutController@bidCommits')->name('bidCommits');
+Route::get('agreeToBid/{bidId}', 'bidsEmailController@agreeToBid')->name('agreeToBid');
+Route::get('agreeToNextmile/{bidId}', 'bidsEmailController@agreeToNextmile')->name('agreeToNextmile');
+Route::post('bookingAccepted', 'bidsEmailController@bookingAccepted')->name('bookingAccepted');
+Route::get('agreeToMileS/{s_id}/{booker_id}', 'bidsEmailController@agreeToMileS')->name('agreeToMileS');
+Route::get('FindProjectManagers/{bid_id}', 'BusinessController@FindProjectManagers')->name('FindProjectManagers');
+Route::get('releaseEquipment/{b_owner_id}/{manager_id}', 'BusinessController@releaseEquipment')->name('releaseEquipment');
+
+});
+
+Route::get('latBusiness', 'PagesController@latBusiness')->name('latBusiness');
+Route::get('latServices', 'PagesController@latServices')->name('latServices');
 
 //MAIN/BACKEND/VUE
 
@@ -238,15 +255,7 @@ Route::get('milestoneInvestEQP/{listing_id}/{mile_id}/{investor_id}/{owner_id}',
 Route::get('CancelAssetBid/{id}', 'bidsEmailController@CancelAssetBid')->name('CancelAssetBid');
 
 Route::post('bidsAccepted', 'bidsEmailController@bidsAccepted')->name('bidsAccepted');
-Route::post('bidCommitsEQP', 'bidsEmailController@bidCommitsEQP')->name('bidCommitsEQP');
-Route::get('bidCommits/{amount}/{business_id}/{percent}', 'checkoutController@bidCommitsForm')->name('bidCommits');
-Route::post('bidCommits', 'checkoutController@bidCommits')->name('bidCommits');
-Route::get('agreeToBid/{bidId}', 'bidsEmailController@agreeToBid')->name('agreeToBid');
-Route::get('agreeToNextmile/{bidId}', 'bidsEmailController@agreeToNextmile')->name('agreeToNextmile');
-Route::post('bookingAccepted', 'bidsEmailController@bookingAccepted')->name('bookingAccepted');
-Route::get('agreeToMileS/{s_id}/{booker_id}', 'bidsEmailController@agreeToMileS')->name('agreeToMileS');
-Route::get('FindProjectManagers/{bid_id}', 'BusinessController@FindProjectManagers')->name('FindProjectManagers');
-Route::get('releaseEquipment/{b_owner_id}/{manager_id}', 'BusinessController@releaseEquipment')->name('releaseEquipment');
+
 //<!-- BIDS -->
 
 // Payment Routes

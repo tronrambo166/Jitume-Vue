@@ -24,6 +24,7 @@
   <div class="w-[338px] h-[371px] flex flex-col gap-[24px] px-6">
     <h2 class="text-[25px] text-black font-bold mb-4">Welcome to Jitume!</h2>
     <h3 class="text-[28px] text-black font-extrabold py-4">Real businesses, real <br>solutions, <span class="text-green-800 text-[30px]">real change</span></h3>
+   
     <h3 class="font-bold text-[20px] pb-6">Invest in a business you believe in with as little as $100</h3>
     <div>
       <button data-target="#loginModal" data-toggle="modal" class="join w-[125px] h-[50px] font-bold text-slate-100 rounded-[14px] px-6 py-3">Join today</button>
@@ -524,7 +525,7 @@
     <div v-for="(result, index) in Math.ceil(results.length / 3)" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }">
       <div class="flex justify-center gap-2 px-3  items-center w-full">
         <!-- Loop through three cards for each carousel item -->
-        <a :href="'./#/listingDetails/'+results[index * 3 + offset].id"  class="w-[300px] md:w-[calc(100% / 3 - 2rem)] px-2" v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]">
+        <a :href="'./#/listingDetails/'+results[index * 3 + offset].id"  class="card_link w-[300px] md:w-[calc(100% / 3 - 2rem)] px-2" v-for="offset in [0, 1, 2]" :key="index * 3 + offset" v-if="results[index * 3 + offset]">
          <div class="bg-white mt-4 w-[280px] h-[380px] mx-auto rounded-xl  p-3 mb-4 flex flex-col justify-between relative" style="box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;">
     <div class="relative">
         <img :src="results[index * 3 + offset].image" alt="Image" class="w-[350px] h-[215px] object-cover rounded-[15px] ">
@@ -536,7 +537,7 @@
     <div class="flex flex-col justify-between px-1  gap-2">
         <div class="flex flex-col justify-between">
             <header>
-                <h4 class="text-lg mt-2 hover:no-underline hover:text-green-800">{{ results[index * 3 + offset].name }}</h4>
+                <h4 class="text-lg mt-2 hover:no-underline card_title">{{ results[index * 3 + offset].name }}</h4>
             </header>
             <p class="text-sm text-gray-700">{{ results[index * 3 + offset].description }}</p>
             <!-- <p class="text-sm text-gray-700 whitespace-nowrap font-bold">Name: {{ results[index * 3 + offset].name }}</p> -->
@@ -602,13 +603,8 @@
 </div>
 
 
-
-
 <!--cards-->
-
-
 <section> 
-  <Slider/>
   
 </section>
 

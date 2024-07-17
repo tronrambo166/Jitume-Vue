@@ -137,7 +137,7 @@
                         <!-- COLLAPSE RANGE 2-->
                         <div class="row mt-3 collapse" id="collapseExample2">
                             <div class="col-6  mt-1">
-                                <span class="d-inline">Min:</span><input  type="number"  v-model="min2" id="price_low4" class="d-inline w-75 py-0 border" name="min" value="" />
+                                <span class="d-inline">Min:</span><input  type="number" min="0"  v-model="min2" id="price_low4" class="d-inline w-75 py-0 border" name="min" value="" />
                             </div>
                             <div class="col-6 mt-1 pr-0">
                                 <span class="d-inline">Max:</span><input type="number" v-model="max2" id="price_high4" class="d-inline w-75 float-right py-0 border" name="min" value="" />
@@ -175,7 +175,7 @@
                         <!-- COLLAPSE RANGE -->
                         <div class="row mt-3 collapse" id="collapseExample">
                             <div class="col-6  mt-1">
-                                <span class="d-inline">Min:</span><input  type="number"  v-model="min" id="price_low3" class="d-inline w-75 py-0 border" name="min" value="" />
+                                <span class="d-inline">Min:</span><input  type="number" min="0"  v-model="min" id="price_low3" class="d-inline w-75 py-0 border" name="min" value="" />
                             </div>
                             <div class="col-6 mt-1 pr-0">
                                 <span class="d-inline">Max:</span><input type="number" v-model="max" id="price_high3" class="d-inline w-75 float-right py-0 border" name="min" value="" />
@@ -276,7 +276,7 @@
     </div>
 
     <div class="whitespace-nowrap  mb-2">
-        <p class="mt-2 font-bold text-black">Yearly Turnover: <span class="font-normal">${{ result.y_turnover }}</span></p>
+        <p class="mt-2 font-bold text-black">Yearly Turnover: <span class="font-normal">${{ result.y_turnover.toLocaleString() }}</span></p>
         <p class="mt-1 font-bold text-black">Amount Requested: <span class="font-normal">${{ result.investment_needed }}</span></p>
     </div>
 </div>
@@ -360,7 +360,7 @@ export default {
             $('#colBut2').removeClass('collapse');
         },
         hide: function() {
-            $('#collapseExample2').addClass('collapse');
+            $('#collapseExample').addClass('collapse');
 
         },
         collapse2: function() {
