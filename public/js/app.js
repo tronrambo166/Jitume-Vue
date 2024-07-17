@@ -76746,7 +76746,8 @@ var render = function () {
               _c(
                 "button",
                 {
-                  staticClass: "mr-4 my-2 py-0 border collapse",
+                  staticClass:
+                    "mr-4 my-2 py-0 border rounded-full px-3 py-1 collapse",
                   attrs: { id: "colBut4", name: "min" },
                   on: { click: _vm.collapse2 },
                 },
@@ -76756,7 +76757,8 @@ var render = function () {
               _c(
                 "button",
                 {
-                  staticClass: "mr-4 my-2 py-0 border f",
+                  staticClass:
+                    "mr-4 my-2 py-0 border rounded-full px-3 py-1 text-black rounded-full px-3 py-1 border f",
                   attrs: { id: "colBut3", name: "min" },
                   on: { click: _vm.collapse2 },
                 },
@@ -76840,7 +76842,8 @@ var render = function () {
                   _c(
                     "button",
                     {
-                      staticClass: "border w-25 mt-3 mx-auto",
+                      staticClass:
+                        "border rounded-full px-3 py-1 rounded-full px-3 py-1 w-25 mt-3 mx-auto",
                       on: {
                         click: function ($event) {
                           _vm.range()
@@ -76869,7 +76872,8 @@ var render = function () {
               _c(
                 "button",
                 {
-                  staticClass: "mr-4 my-2 mx-auto py-0 border collapse",
+                  staticClass:
+                    "mr-4 my-2 mx-auto py-0 border rounded-full px-3 py-1 collapse",
                   attrs: { id: "colBut2", name: "min" },
                   on: { click: _vm.collapse },
                 },
@@ -76879,7 +76883,8 @@ var render = function () {
               _c(
                 "button",
                 {
-                  staticClass: "my-2 py-0 border border",
+                  staticClass:
+                    "my-2 py-0 border rounded-full px-3 py-1 border-black",
                   attrs: { id: "colBut", name: "min" },
                   on: { click: _vm.collapse },
                 },
@@ -76963,7 +76968,8 @@ var render = function () {
                   _c(
                     "button",
                     {
-                      staticClass: "border w-25 mt-3 mx-auto",
+                      staticClass:
+                        "border rounded-full px-3 py-1 w-25 mt-3 mx-auto",
                       on: {
                         click: function ($event) {
                           _vm.range_amount()

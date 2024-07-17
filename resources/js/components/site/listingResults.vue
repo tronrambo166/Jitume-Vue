@@ -119,8 +119,8 @@
 <div class="row flex items-center">
   <div class="flex items-center col-sm-6">
                     <div class=""><span style="color:black;font-size: 11px;" class=" text-black  py-1 small rounded whitespace-nowrap font-bold">Filter by Turnover Range:</span>
-                        <button @click="collapse2" id="colBut4" class="mr-4 my-2 py-0 border  collapse" name="min">Set range </button>
-                         <button @click="collapse2" id="colBut3" class="mr-4 my-2 py-0 border f" name="min">Set range </button>
+                        <button @click="collapse2" id="colBut4" class="mr-4 my-2 py-0 border rounded-full px-3 py-1  collapse" name="min">Set range </button>
+                         <button @click="collapse2" id="colBut3" class="mr-4 my-2 py-0 border rounded-full px-3 py-1 text-black rounded-full px-3 py-1 border f" name="min">Set range </button>
                     </div>  
 
                     <div id="" class="col-sm-9 "> 
@@ -143,7 +143,7 @@
                                 <span class="d-inline">Max:</span><input type="number" v-model="max2" id="price_high4" class="d-inline w-75 float-right py-0 border" name="min" value="" />
                             </div>
 
-                            <button class="border w-25 mt-3 mx-auto" @click="range();hide2();" >Set</button>
+                            <button class="border rounded-full px-3 py-1 rounded-full px-3 py-1 w-25 mt-3 mx-auto" @click="range();hide2();" >Set</button>
                         </div>
                         <!-- COLLAPSE RANGE -->
                         
@@ -154,8 +154,8 @@
 
                         <div class="flex items-center col-sm-6">
                     <div class=""><span style="color:black;font-size: 11px;" class=" text-black  font-bold my-3 small rounded">Filter by Amount :</span>
-                         <button @click="collapse" id="colBut2" class="mr-4 my-2 mx-auto py-0 border  collapse" name="min">Set range </button>
-                         <button @click="collapse" id="colBut" class=" my-2 py-0 border border " name="min">Set range </button>
+                         <button @click="collapse" id="colBut2" class="mr-4 my-2 mx-auto py-0 border rounded-full px-3 py-1 collapse" name="min">Set range </button>
+                         <button @click="collapse" id="colBut" class=" my-2 py-0 border rounded-full px-3 py-1 border-black " name="min">Set range </button>
                     </div>  
                     <div id="" class="col-sm-9 mt-1"> 
                         <div id="slider2" class=""> </div>
@@ -181,7 +181,7 @@
                                 <span class="d-inline">Max:</span><input type="number" v-model="max" id="price_high3" class="d-inline w-75 float-right py-0 border" name="min" value="" />
                             </div>
 
-                            <button class="border w-25 mt-3 mx-auto" @click="range_amount();hide();" >Set</button>
+                            <button class="border rounded-full px-3 py-1 w-25 mt-3 mx-auto" @click="range_amount();hide();" >Set</button>
                         </div>
                         <!-- COLLAPSE RANGE -->
 
