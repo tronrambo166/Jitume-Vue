@@ -108,7 +108,7 @@
 
 
 
-<div class="flex  gap-1 ">
+<div class="flex  gap-1 " style="margin-left:270px !important; margin-top: 30px !important;">
                     <div class=""><span style="" class=" text-black px-2 py-1 rounded">Filter by
                             Price:</span></div>
                     <div id="" class="col-sm-5  mt-1">
@@ -123,7 +123,7 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-4">
+                    <!-- <div class="col-sm-4 hi"> -->
                         <!-- <a class="py-0 float-right border border-dark rounded" style="width:70px; height:40px;">
                             <div class="row">
                                 <div class="col-6 pr-0">
@@ -134,8 +134,7 @@
                                 </div>
                             </div>
                         </a>
- -->
-                    </div>
+                    <!-- </div> -->
 
                 </div>
 
@@ -158,7 +157,7 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-4">
+                    <!-- <div class="col-sm-4"> -->
                         <!-- <a class="py-0 float-right border border-dark rounded" style="width:70px; height:40px;">
                             <div class="row">
                                 <div class="col-6 pr-0">
@@ -170,7 +169,7 @@
                             </div>
                         </a>
  -->
-                    </div>
+                    <!-- </div> -->
 
                 </div>
                 <div class="row">

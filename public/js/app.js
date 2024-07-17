@@ -13002,7 +13002,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user'],
   data: function data() {
@@ -80706,35 +80705,43 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex gap-1" }, [
-      _c("div", {}, [
-        _c("span", { staticClass: "text-black px-2 py-1 rounded" }, [
-          _vm._v("Filter by\n                            Price:"),
+    return _c(
+      "div",
+      {
+        staticClass: "flex gap-1",
+        staticStyle: {
+          "margin-left": "270px !important",
+          "margin-top": "30px !important",
+        },
+      },
+      [
+        _c("div", {}, [
+          _c("span", { staticClass: "text-black px-2 py-1 rounded" }, [
+            _vm._v("Filter by\n                            Price:"),
+          ]),
         ]),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-5 mt-1", attrs: { id: "" } }, [
-        _c("div", { attrs: { id: "slider" } }),
         _vm._v(" "),
-        _c("div", { staticClass: "row mt-3" }, [
-          _c("div", { staticClass: "col-6 mt-1" }, [
-            _c("span", {
-              staticClass: "py-0 btn btn-light",
-              attrs: { id: "price_low", name: "min" },
-            }),
-          ]),
+        _c("div", { staticClass: "col-sm-5 mt-1", attrs: { id: "" } }, [
+          _c("div", { attrs: { id: "slider" } }),
           _vm._v(" "),
-          _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
-            _c("span", {
-              staticClass: "float-right py-0 btn btn-light",
-              attrs: { id: "price_high", name: "min" },
-            }),
+          _c("div", { staticClass: "row mt-3" }, [
+            _c("div", { staticClass: "col-6 mt-1" }, [
+              _c("span", {
+                staticClass: "py-0 btn btn-light",
+                attrs: { id: "price_low", name: "min" },
+              }),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
+              _c("span", {
+                staticClass: "float-right py-0 btn btn-light",
+                attrs: { id: "price_high", name: "min" },
+              }),
+            ]),
           ]),
         ]),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-4" }),
-    ])
+      ]
+    )
   },
   function () {
     var _vm = this
@@ -80771,8 +80778,6 @@ var staticRenderFns = [
           ]),
         ]),
       ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-4" }),
     ])
   },
   function () {
