@@ -1426,11 +1426,16 @@
 
     .noUi-target {
         height: 8px;
-        background: black;
+        background: #998787bd !important;
+
     }
 
     .noUi-base {
-        height: auto;
+
+    }
+
+    .noUi-connect{
+        background: #aee3df !important;
     }
 
     .noUi-horizontal .noUi-handle {

@@ -954,7 +954,12 @@ export default {
       var id = this.$route.params.id; var t = this;
       id = atob(id); id = atob(id);
 
-      axios.get('download_statement/' + id).then((data) => {
+      axios({
+         url: 'download_statement/' + id, //your url
+          method: 'GET',
+          responseType: 'blob',
+        
+      }).then((data) => {
         if(data.data.status == 404){
           $.alert({
           title: 'Alert!',
@@ -965,11 +970,22 @@ export default {
             text: 'Close',
             btnClass: 'btn-red',
             action: function(){
+
             }
         }}  
         });
         }
-        //console.log(data);
+          const href = URL.createObjectURL(data.data);
+          const link = document.createElement('a');
+          link.href = href;
+
+          if(data.data.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+          link.setAttribute('download', 'statement.docx'); //or any other extension
+          else
+           link.setAttribute('download', 'statement.pdf');
+            
+          document.body.appendChild(link);
+          link.click();
 
       });
     },

@@ -127,10 +127,10 @@
                         <div id="slider" class=""> </div>
                         <div class="row mt-3">
                             <div class="col-6  mt-1">
-                                <span id="price_low" class="py-0 btn btn-light" name="min"> </span>
+                                <span id="price_low" class="py-0 btn-light" name="min"> </span>
                             </div>
                             <div class="col-6 mt-1 pr-0">
-                                <span id="price_high" class="float-right py-0 btn btn-light" name="min"> </span>
+                                <span id="price_high" class="float-right py-0 btn-light" name="min"> </span>
                             </div>
                         </div>
 
@@ -162,10 +162,10 @@
                         <div class="row mt-3">
                               
                             <div class="col-6  ">
-                                <span id="price_low2" class="py-0 btn btn-light" name="min"> </span>
+                                <span id="price_low2" class="py-0 btn-light" name="min"> </span>
                             </div>
                             <div class="col-6 mt-1 pr-0">
-                                <span id="price_high2" class="float-right py-0 btn btn-light" name="min"> </span>
+                                <span id="price_high2" class="float-right py-0 btn-light" name="min"> </span>
                             </div>
 
                            

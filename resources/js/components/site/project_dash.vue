@@ -2,6 +2,11 @@
     <div class="main">
         <div class="container mt-3 mb-5">
 
+            <div class="col-sm-1 px-0">
+                    <a @click="$router.go(-1)" style="width: 100%;" class="m-auto border btn px-1 py-0 font-weight-bold">Back</a>
+            </div>
+
+
             <div v-if="no_mile" class="w-75 h-100 py-5 my-5 my-auto justify-content-center my-2 text-center mx-auto">
                 <h5 class="w-75 mx-auto bg-light py-3 my-3 text-secondary">No Milestones Yet!</h5>
             </div>

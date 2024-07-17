@@ -2,6 +2,9 @@
     <div class="main">
         <div class="container">
 
+            <div class="col-sm-1 px-0 mt-1">
+                    <a @click="$router.go(-1)" style="width: 100%;" class="m-auto border btn px-1 py-0 font-weight-bold">Back</a>
+            </div>
 
             <div v-if="!auth_user" class="w-75 h-100 py-5 my-5 my-auto justify-content-center my-2 text-center mx-auto">
                 <a style="cursor:pointer; width:40%;" @click="make_session2()"

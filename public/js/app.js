@@ -10115,7 +10115,12 @@ __webpack_require__.r(__webpack_exports__);
       var t = this;
       id = atob(id);
       id = atob(id);
-      axios.get('download_statement/' + id).then(function (data) {
+      axios({
+        url: 'download_statement/' + id,
+        //your url
+        method: 'GET',
+        responseType: 'blob'
+      }).then(function (data) {
         if (data.data.status == 404) {
           $.alert({
             title: 'Alert!',
@@ -10129,8 +10134,15 @@ __webpack_require__.r(__webpack_exports__);
               }
             }
           });
-        } //console.log(data);
+        }
 
+        var href = URL.createObjectURL(data.data);
+        var link = document.createElement('a');
+        link.href = href;
+        if (data.data.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') link.setAttribute('download', 'statement.docx'); //or any other extension
+        else link.setAttribute('download', 'statement.pdf');
+        document.body.appendChild(link);
+        link.click();
       });
     },
     getMilestones: function getMilestones() {
@@ -11724,6 +11736,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user'],
   data: function data() {
@@ -11801,6 +11818,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
 //
 //
 //
@@ -68148,7 +68168,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -68278,7 +68298,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -68519,7 +68539,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\n    Name: "),
+        _vm._v("\r\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68554,7 +68574,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Desc: "),
+        _vm._v("\r\n\r\n     Desc: "),
         _c("textarea", {
           directives: [
             {
@@ -68591,7 +68611,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Cat Id:  "),
+        _vm._v("\r\n\r\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -68622,7 +68642,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Brand Id:  "),
+        _vm._v("\r\n\r\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -68653,7 +68673,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Price:  "),
+        _vm._v("\r\n\r\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -68683,7 +68703,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n     Qty:  "),
+        _vm._v("\r\n\r\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -68713,7 +68733,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n   Image: "),
+        _vm._v("\r\n\r\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -68775,7 +68795,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -68824,7 +68844,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\n    Name: "),
+        _vm._v("\r\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68859,7 +68879,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Desc: "),
+        _vm._v("\r\n\r\n     Desc: "),
         _c("input", {
           directives: [
             {
@@ -68890,7 +68910,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Cat Id:  "),
+        _vm._v("\r\n\r\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -68921,7 +68941,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Brand Id:  "),
+        _vm._v("\r\n\r\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -68952,7 +68972,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Price:  "),
+        _vm._v("\r\n\r\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -68982,7 +69002,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n     Qty:  "),
+        _vm._v("\r\n\r\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -69012,7 +69032,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n   Image: "),
+        _vm._v("\r\n\r\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -69074,7 +69094,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -73836,13 +73856,13 @@ var staticRenderFns = [
             [
               _c(
                 "h2",
-                { staticClass: "text-[25px] text-black font-bold mb-4" },
+                { staticClass: "text-[25px] text-black font-bold mb-1" },
                 [_vm._v("Welcome to Jitume!")]
               ),
               _vm._v(" "),
               _c(
                 "h3",
-                { staticClass: "text-[28px] text-black font-extrabold py-4" },
+                { staticClass: "text-[28px] text-black font-extrabold py-1" },
                 [
                   _vm._v("Real businesses, real "),
                   _c("br"),
@@ -77401,14 +77421,14 @@ var staticRenderFns = [
     return _c("div", { staticClass: "row mt-3" }, [
       _c("div", { staticClass: "col-6 mt-1" }, [
         _c("span", {
-          staticClass: "py-0 btn btn-light",
+          staticClass: "py-0 btn-light",
           attrs: { id: "price_low", name: "min" },
         }),
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
         _c("span", {
-          staticClass: "float-right py-0 btn btn-light",
+          staticClass: "float-right py-0 btn-light",
           attrs: { id: "price_high", name: "min" },
         }),
       ]),
@@ -77421,14 +77441,14 @@ var staticRenderFns = [
     return _c("div", { staticClass: "row mt-3" }, [
       _c("div", { staticClass: "col-6" }, [
         _c("span", {
-          staticClass: "py-0 btn btn-light",
+          staticClass: "py-0 btn-light",
           attrs: { id: "price_low2", name: "min" },
         }),
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
         _c("span", {
-          staticClass: "float-right py-0 btn btn-light",
+          staticClass: "float-right py-0 btn-light",
           attrs: { id: "price_high2", name: "min" },
         }),
       ]),
@@ -78073,6 +78093,22 @@ var render = function () {
       "div",
       { staticClass: "container mt-3 mb-5" },
       [
+        _c("div", { staticClass: "col-sm-1 px-0" }, [
+          _c(
+            "a",
+            {
+              staticClass: "m-auto border btn px-1 py-0 font-weight-bold",
+              staticStyle: { width: "100%" },
+              on: {
+                click: function ($event) {
+                  return _vm.$router.go(-1)
+                },
+              },
+            },
+            [_vm._v("Back")]
+          ),
+        ]),
+        _vm._v(" "),
         _vm.no_mile
           ? _c(
               "div",
@@ -78762,6 +78798,22 @@ var render = function () {
       "div",
       { staticClass: "container" },
       [
+        _c("div", { staticClass: "col-sm-1 px-0 mt-1" }, [
+          _c(
+            "a",
+            {
+              staticClass: "m-auto border btn px-1 py-0 font-weight-bold",
+              staticStyle: { width: "100%" },
+              on: {
+                click: function ($event) {
+                  return _vm.$router.go(-1)
+                },
+              },
+            },
+            [_vm._v("Back")]
+          ),
+        ]),
+        _vm._v(" "),
         !_vm.auth_user
           ? _c(
               "div",
