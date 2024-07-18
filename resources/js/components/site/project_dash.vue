@@ -51,7 +51,7 @@
 
                             <div class="col px-1 mt-2 mt-sm-0">
                                 <div class="upload-btn-wrapper w-100 d-flex justify-content-start">
-                                    <a @click="download_milestone_doc(result.id)"
+                                    <a @click="download_milestone_doc(result.id)" 
                                         class="text-white  placeH btnUp3 w-100 d-flex align-items-center border rounded">Download Milestone
                                         Documentaion <i class="ml-2 fa fa-arrow-down"></i></a>
 
@@ -146,7 +146,7 @@
 
                             <div class="col my-2 my-sm-0">
                                 <div class="upload-btn-wrapper d-flex justify-content-start">
-                                    <a class="text-white disabled placeH_done btnUp_done w-100 d-flex align-items-center border rounded">Download
+                                    <a @click="download_milestone_doc(result.id)" class="text-white disabled placeH_done btnUp_done w-100 d-flex align-items-center border rounded">Download
                                         Milestone Documentaion <i class=" ml-2 fa fa-arrow-down"></i>
                                     </a>
 
@@ -307,10 +307,39 @@ export default {
             var id = this.$route.params.id; 
             id = atob(id); id = atob(id);
             var t = this;
-            axios.get('download_milestoneDoc/' + id + '/' + mile_id).then((data) => {
-                console.log(data);
+            axios({
+                url: 'download_milestoneDoc/' + id + '/' + mile_id,
+                method: 'GET',
+                responseType: 'blob',
 
-            });
+                }).then((data) => {
+                if(data.data.status == 404){
+                  $.alert({
+                  title: 'Alert!',
+                  content: 'The business has no such document or the file not found!',
+                   type: 'red',
+                    buttons: {
+                    tryAgain: {
+                    text: 'Close',
+                    btnClass: 'btn-red',
+                    action: function(){
+                    }
+                }}  
+                });
+                } console.log(data);
+                  const href = URL.createObjectURL(data.data);
+                  const link = document.createElement('a');
+                  link.href = href;
+
+                  if(data.data.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+                  link.setAttribute('download', 'statement.docx'); //or any other extension
+                  else
+                   link.setAttribute('download', 'statement.pdf');
+                    
+                  document.body.appendChild(link);
+                  link.click();
+
+                    });
         }
 
 

@@ -8957,8 +8957,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     content: response.data.success
                   });
                   $('#ok').css('display', 'none');
-                } else toastr.success(response.data.failed, {
-                  timeout: 5000
+                } else $.alert({
+                  title: 'Alert!',
+                  content: response.data.failed
                 }); // this.$router.push('/manage-category');
 
 
@@ -10092,7 +10093,12 @@ __webpack_require__.r(__webpack_exports__);
       var t = this;
       id = atob(id);
       id = atob(id);
-      axios.get('download_business/' + id).then(function (data) {
+      axios({
+        url: 'download_business/' + id,
+        //your url
+        method: 'GET',
+        responseType: 'blob'
+      }).then(function (data) {
         //console.log(data);
         if (data.data.status == 404) {
           $.alert({
@@ -10108,6 +10114,15 @@ __webpack_require__.r(__webpack_exports__);
             }
           });
         }
+
+        console.log(data);
+        var href = URL.createObjectURL(data.data);
+        var link = document.createElement('a');
+        link.href = href;
+        if (data.data.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') link.setAttribute('download', 'statement.docx'); //or any other extension
+        else link.setAttribute('download', 'statement.pdf');
+        document.body.appendChild(link);
+        link.click();
       });
     },
     download_statement: function download_statement() {
@@ -10255,6 +10270,7 @@ __webpack_require__.r(__webpack_exports__);
       } else document.getElementById('bid_percent').innerHTML = percent + '%';
 
       document.getElementById('bid_percent2').value = percent;
+      console.log(bid + '>' + this.amount_required);
     },
     calculate2: function calculate2(bid) {
       var total = this.form.investment_needed;
@@ -11795,8 +11811,34 @@ __webpack_require__.r(__webpack_exports__);
       id = atob(id);
       id = atob(id);
       var t = this;
-      axios.get('download_milestoneDoc/' + id + '/' + mile_id).then(function (data) {
+      axios({
+        url: 'download_milestoneDoc/' + id + '/' + mile_id,
+        method: 'GET',
+        responseType: 'blob'
+      }).then(function (data) {
+        if (data.data.status == 404) {
+          $.alert({
+            title: 'Alert!',
+            content: 'The business has no such document or the file not found!',
+            type: 'red',
+            buttons: {
+              tryAgain: {
+                text: 'Close',
+                btnClass: 'btn-red',
+                action: function action() {}
+              }
+            }
+          });
+        }
+
         console.log(data);
+        var href = URL.createObjectURL(data.data);
+        var link = document.createElement('a');
+        link.href = href;
+        if (data.data.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') link.setAttribute('download', 'statement.docx'); //or any other extension
+        else link.setAttribute('download', 'statement.pdf');
+        document.body.appendChild(link);
+        link.click();
       });
     }
   },
@@ -11818,7 +11860,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
 //
 //
 //
@@ -12116,8 +12157,34 @@ __webpack_require__.r(__webpack_exports__);
       id = atob(id);
       id = atob(id);
       var t = this;
-      axios.get('download_milestoneDocS/' + id + '/' + mile_id).then(function (data) {
+      axios({
+        url: 'download_milestoneDocS/' + id + '/' + mile_id,
+        method: 'GET',
+        responseType: 'blob'
+      }).then(function (data) {
+        if (data.data.status == 404) {
+          $.alert({
+            title: 'Alert!',
+            content: 'The business has no such document or the file not found!',
+            type: 'red',
+            buttons: {
+              tryAgain: {
+                text: 'Close',
+                btnClass: 'btn-red',
+                action: function action() {}
+              }
+            }
+          });
+        }
+
         console.log(data);
+        var href = URL.createObjectURL(data.data);
+        var link = document.createElement('a');
+        link.href = href;
+        if (data.data.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') link.setAttribute('download', 'statement.docx'); //or any other extension
+        else link.setAttribute('download', 'statement.pdf');
+        document.body.appendChild(link);
+        link.click();
       });
     },
     pay_milestone: function pay_milestone(mile_id, amount) {
@@ -12442,6 +12509,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     if (sessionStorage.getItem('serviceDetails') != null) sessionStorage.clear();
   },
   methods: {
+    contact: function contact() {
+      $('#collapseExample').removeClass('collapse');
+    },
     getDetails: function getDetails() {
       var id = this.$route.params.id;
       id = atob(id);
@@ -12602,7 +12672,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     title: 'Alert!',
                     content: response.data.success
                   });
-                  $('#collapseExample').removeClass('show');
+                  $('#collapseExample').addClass('collapse');
                 } else $.alert({
                   title: 'Alert!',
                   content: response.data.failed,
@@ -68168,7 +68238,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -68298,7 +68368,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -68539,7 +68609,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\n    Name: "),
+        _vm._v("\r\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68574,7 +68644,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Desc: "),
+        _vm._v("\r\n\r\n     Desc: "),
         _c("textarea", {
           directives: [
             {
@@ -68611,7 +68681,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Cat Id:  "),
+        _vm._v("\r\n\r\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -68642,7 +68712,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Brand Id:  "),
+        _vm._v("\r\n\r\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -68673,7 +68743,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Price:  "),
+        _vm._v("\r\n\r\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -68703,7 +68773,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n     Qty:  "),
+        _vm._v("\r\n\r\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -68733,7 +68803,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n   Image: "),
+        _vm._v("\r\n\r\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -68795,7 +68865,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -68844,7 +68914,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\n    Name: "),
+        _vm._v("\r\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68879,7 +68949,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Desc: "),
+        _vm._v("\r\n\r\n     Desc: "),
         _c("input", {
           directives: [
             {
@@ -68910,7 +68980,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Cat Id:  "),
+        _vm._v("\r\n\r\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -68941,7 +69011,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Brand Id:  "),
+        _vm._v("\r\n\r\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -68972,7 +69042,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Price:  "),
+        _vm._v("\r\n\r\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -69002,7 +69072,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n     Qty:  "),
+        _vm._v("\r\n\r\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -69032,7 +69102,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n   Image: "),
+        _vm._v("\r\n\r\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -69094,7 +69164,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -74453,6 +74523,7 @@ var render = function () {
                         expression: "form.serial",
                       },
                     ],
+                    staticClass: "border",
                     attrs: {
                       required: "",
                       name: "serial",
@@ -75220,11 +75291,7 @@ var render = function () {
                     _c(
                       "span",
                       { staticClass: "font-semibold text-green-700" },
-                      [
-                        _vm._v(
-                          "$" + _vm._s(_vm.format(_vm.form.investment_needed))
-                        ),
-                      ]
+                      [_vm._v("$" + _vm._s(_vm.format(_vm.amount_required)))]
                     ),
                     _vm._v(" "),
                     _c("span", { staticClass: "text-xl" }),
@@ -78539,9 +78606,42 @@ var render = function () {
                                   ]
                                 ),
                                 _vm._v(" "),
-                                _vm._m(2, true),
+                                _c("div", { staticClass: "col my-2 my-sm-0" }, [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "upload-btn-wrapper d-flex justify-content-start",
+                                    },
+                                    [
+                                      _c(
+                                        "a",
+                                        {
+                                          staticClass:
+                                            "text-white disabled placeH_done btnUp_done w-100 d-flex align-items-center border rounded",
+                                          on: {
+                                            click: function ($event) {
+                                              return _vm.download_milestone_doc(
+                                                result.id
+                                              )
+                                            },
+                                          },
+                                        },
+                                        [
+                                          _vm._v(
+                                            "Download\n                                    Milestone Documentaion "
+                                          ),
+                                          _c("i", {
+                                            staticClass:
+                                              "ml-2 fa fa-arrow-down",
+                                          }),
+                                        ]
+                                      ),
+                                    ]
+                                  ),
+                                ]),
                                 _vm._v(" "),
-                                _vm._m(3, true),
+                                _vm._m(2, true),
                               ]
                             ),
                           ]
@@ -78635,9 +78735,9 @@ var render = function () {
                                   ]),
                                 ]),
                                 _vm._v(" "),
-                                _vm._m(4, true),
+                                _vm._m(3, true),
                                 _vm._v(" "),
-                                _vm._m(5, true),
+                                _vm._m(4, true),
                               ]
                             ),
                           ]
@@ -78678,32 +78778,6 @@ var staticRenderFns = [
       _c("p", { staticClass: "placeH_active text-success due d-inline" }, [
         _vm._v("Due in:\n                                    "),
       ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col my-2 my-sm-0" }, [
-      _c(
-        "div",
-        { staticClass: "upload-btn-wrapper d-flex justify-content-start" },
-        [
-          _c(
-            "a",
-            {
-              staticClass:
-                "text-white disabled placeH_done btnUp_done w-100 d-flex align-items-center border rounded",
-            },
-            [
-              _vm._v(
-                "Download\n                                    Milestone Documentaion "
-              ),
-              _c("i", { staticClass: "ml-2 fa fa-arrow-down" }),
-            ]
-          ),
-        ]
-      ),
     ])
   },
   function () {
@@ -78929,7 +79003,8 @@ var render = function () {
                                     expression: "result.title",
                                   },
                                 ],
-                                staticClass: "placeH w-100 border rounded py-1",
+                                staticClass:
+                                  "placeH w-100 text-light border rounded py-1",
                                 attrs: {
                                   readonly: "",
                                   required: "",
@@ -78964,7 +79039,8 @@ var render = function () {
                                     expression: "result.amount",
                                   },
                                 ],
-                                staticClass: "placeH w-100 border rounded py-1",
+                                staticClass:
+                                  "placeH w-100 text-light border rounded py-1",
                                 attrs: {
                                   readonly: "",
                                   required: "",
@@ -79364,7 +79440,7 @@ var render = function () {
                                   },
                                 ],
                                 staticClass:
-                                  "btn-secondary placeH_inactive w-100 py-1 border rounded",
+                                  "btn-secondary text-light placeH_inactive w-100 py-1 border rounded",
                                 attrs: {
                                   readonly: "",
                                   required: "",
@@ -79400,7 +79476,7 @@ var render = function () {
                                   },
                                 ],
                                 staticClass:
-                                  "btn-secondary placeH_inactive w-100 py-1 border rounded",
+                                  "btn-secondary text-light placeH_inactive w-100 py-1 border rounded",
                                 attrs: {
                                   readonly: "",
                                   required: "",
@@ -79424,11 +79500,40 @@ var render = function () {
                             ]),
                           ]),
                           _vm._v(" "),
+                          _c("div", { staticClass: "col px-0 my-2 my-sm-0" }, [
+                            _c(
+                              "div",
+                              { staticClass: "upload-btn-wrapper w-100" },
+                              [
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass:
+                                      "btn-secondary disabled placeH_inactive btnUp4 w-100",
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.download_milestone_doc(
+                                          result.id
+                                        )
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _vm._v(
+                                      "Download Milestone\n                                    Documentaion "
+                                    ),
+                                    _c("i", {
+                                      staticClass: "ml-2 fa fa-arrow-down",
+                                    }),
+                                  ]
+                                ),
+                              ]
+                            ),
+                          ]),
+                          _vm._v(" "),
                           _vm._m(0, true),
                           _vm._v(" "),
                           _vm._m(1, true),
-                          _vm._v(" "),
-                          _vm._m(2, true),
                         ]),
                       ]
                     ),
@@ -79442,27 +79547,6 @@ var render = function () {
   ])
 }
 var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col px-0 my-2 my-sm-0" }, [
-      _c("div", { staticClass: "upload-btn-wrapper w-100" }, [
-        _c(
-          "a",
-          {
-            staticClass: "btn-secondary disabled placeH_inactive btnUp4 w-100",
-          },
-          [
-            _vm._v(
-              "Download Milestone\n                                    Documentaion "
-            ),
-            _c("i", { staticClass: "ml-2 fa fa-arrow-down" }),
-          ]
-        ),
-      ]),
-    ])
-  },
   function () {
     var _vm = this
     var _h = _vm.$createElement
@@ -79689,10 +79773,8 @@ var render = function () {
                               cursor: "pointer",
                               color: "#015601",
                             },
-                            attrs: {
-                              "data-toggle": "collapse",
-                              href: "#collapseExample",
-                            },
+                            attrs: { "data-toggle": "collapse" },
+                            on: { click: _vm.contact },
                           },
                           [_vm._v("Contact Me")]
                         )

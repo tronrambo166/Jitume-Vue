@@ -56,7 +56,7 @@
                                </div>
                     
                     <div class="col-sm-10"> 
-                      <textarea  required="" v-model="form.serial" name="serial" rows="2" cols="35"></textarea>
+                      <textarea class="border"  required="" v-model="form.serial" name="serial" rows="2" cols="35"></textarea>
                         </div>
                     </div> 
                 </div>
@@ -179,7 +179,10 @@ if(sessionStorage.getItem('invest')!=null)
         $('#ok').css('display','none');
     }
     else
-    toastr.success(response.data.failed, { timeout:5000 });
+    $.alert({
+          title: 'Alert!',
+          content: response.data.failed,
+        });
     
 
  // this.$router.push('/manage-category');

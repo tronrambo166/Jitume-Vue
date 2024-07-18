@@ -47,7 +47,7 @@
                             <div class="col px-1 my-2 my-sm-0">
                                 <div class=" ">
                                     <input readonly required="" name="title" type="text" v-model="result.title"
-                                        class="placeH w-100 border rounded py-1">
+                                        class="placeH w-100 text-light border rounded py-1">
                                 </div>
                             </div>
 
@@ -56,7 +56,7 @@
                                 <div class="">
 
                                     <input readonly required="" type="number" v-model="result.amount" name="amount"
-                                        class="placeH w-100  border rounded py-1">
+                                        class="placeH w-100 text-light  border rounded py-1">
                                 </div>
                             </div>
 
@@ -189,22 +189,21 @@
                             <div class="col px-1 my-2 my-sm-0">
                                 <div class=" ">
                                     <input readonly required="" name="title" type="text" v-model="result.title"
-                                        class="btn-secondary placeH_inactive w-100 py-1 border rounded ">
+                                        class="btn-secondary text-light placeH_inactive w-100 py-1 border rounded ">
                                 </div>
                             </div>
 
 
                             <div class="col px-1 my-2 my-sm-0 ">
                                 <div class="">
-
                                     <input readonly required="" type="number" v-model="result.amount" name="amount"
-                                        class="btn-secondary placeH_inactive w-100 py-1 border rounded">
+                                        class="btn-secondary text-light placeH_inactive w-100 py-1 border rounded">
                                 </div>
                             </div>
 
                             <div class="col px-0 my-2 my-sm-0">
                                 <div class="upload-btn-wrapper w-100">
-                                    <a class="btn-secondary disabled placeH_inactive btnUp4 w-100">Download Milestone
+                                    <a @click="download_milestone_doc(result.id)" class="btn-secondary disabled placeH_inactive btnUp4 w-100">Download Milestone
                                         Documentaion <i class="ml-2 fa fa-arrow-down"></i></a>
 
                                 </div>
@@ -307,8 +306,37 @@ export default {
             var id = this.$route.params.id;
             id = atob(id); id = atob(id);
             var t = this;
-            axios.get('download_milestoneDocS/' + id + '/' + mile_id).then((data) => {
-                console.log(data);
+            axios({
+                url: 'download_milestoneDocS/' + id + '/' + mile_id,
+                method: 'GET',
+                responseType: 'blob',
+
+                }).then((data) => {
+                                if(data.data.status == 404){
+                  $.alert({
+                  title: 'Alert!',
+                  content: 'The business has no such document or the file not found!',
+                   type: 'red',
+                    buttons: {
+                    tryAgain: {
+                    text: 'Close',
+                    btnClass: 'btn-red',
+                    action: function(){
+                    }
+                }}  
+                });
+                } console.log(data);
+                  const href = URL.createObjectURL(data.data);
+                  const link = document.createElement('a');
+                  link.href = href;
+
+                  if(data.data.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+                  link.setAttribute('download', 'statement.docx'); //or any other extension
+                  else
+                   link.setAttribute('download', 'statement.pdf');
+                    
+                  document.body.appendChild(link);
+                  link.click();
 
             });
         },

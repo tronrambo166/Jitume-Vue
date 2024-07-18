@@ -505,6 +505,7 @@
         text-align: left;
         /* height: 27px; */
         text-wrap: nowrap;
+        cursor: pointer;
     }
 
     .modal_ok_btn {
@@ -542,6 +543,7 @@
         width: 100%;
         text-align: left;
         /* height: 27px; */
+        cursor: pointer;
     }
 
     .btnUp_done {
@@ -556,6 +558,7 @@
         text-align: left;
         height: 33px;
         /* height: 27px; */
+        cursor: pointer;
     }
 
     .placeH {

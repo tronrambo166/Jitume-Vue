@@ -185,7 +185,7 @@ Unlock this business to learn more about it and invest</p>
     <div
       class="text-black font-bold"
     >
-      Amount Requested: <span class="font-semibold text-green-700">${{ format(form.investment_needed) }}</span>
+      Amount Requested: <span class="font-semibold text-green-700">${{ format(amount_required) }}</span>
       <span class="text-xl"></span>
     </div>
     <div
@@ -930,10 +930,14 @@ export default {
       var id = this.$route.params.id; var t = this;
       id = atob(id); id = atob(id);
 
-      axios.get('download_business/' + id).then((data) => {
+      axios({
+          url: 'download_business/' + id, //your url
+          method: 'GET',
+          responseType: 'blob',
+        }).then((data) => {
         //console.log(data);
         if(data.data.status == 404){
-           $.alert({
+          $.alert({
           title: 'Alert!',
           content: 'The business has no such document or the file not found!',
            type: 'red',
@@ -945,7 +949,18 @@ export default {
             }
         }}  
         });
-        }
+        } console.log(data);
+          const href = URL.createObjectURL(data.data);
+          const link = document.createElement('a');
+          link.href = href;
+
+          if(data.data.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+          link.setAttribute('download', 'statement.docx'); //or any other extension
+          else
+           link.setAttribute('download', 'statement.pdf');
+            
+          document.body.appendChild(link);
+          link.click();
 
       });
     },
@@ -1122,7 +1137,9 @@ sessionStorage.setItem("purpose", "Monthly basis subscription");
       }
       else
         document.getElementById('bid_percent').innerHTML = percent + '%';
-      document.getElementById('bid_percent2').value = percent;
+        document.getElementById('bid_percent2').value = percent;
+
+        console.log(bid +'>'+ this.amount_required);
     },
 
     calculate2: function (bid) {

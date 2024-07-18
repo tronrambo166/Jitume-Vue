@@ -74,7 +74,7 @@ Route::post('serviceReply', 'ServiceController@serviceReply')->name('serviceRepl
 Route::get('ServiceResults/{ids}', 'PagesController@ServiceResults')->name('ServiceResults'); 
 Route::get('categoryResults/{catName}', 'PagesController@categoryResults')->name('categoryResults');
 
-Route::get('equipments/{id}', 'PagesController@equipments')->name('equipments');
+Route::get('equipments/{id}', 'PagesController@equipments')->name('equipment');
 Route::get('invest/{listing_id}/{id}/{value}/{amount}/{type}', 'PagesController@invest')->name('equipments');
 Route::get('addToCart/{id}-{qty}', 'PagesController@addToCart')->name('addToCart');
 Route::get('removeCart/{id}', 'PagesController@removeCart')->name('removeCart');

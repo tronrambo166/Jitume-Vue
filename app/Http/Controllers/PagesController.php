@@ -692,15 +692,19 @@ public function removeCart($id){
     }
 
 
-  public function download_business($id){
+  public function download_business($id){ 
     $doc = Listing::where('id',$id)->first();
-    $file=$doc->document; 
-    if($file == null){
+    $file=$doc->document;
+    if($file == null || !file_exists(public_path($file))){
         return response()->json(['status'=>404]);
     }
 
     $headers = array('Content-Type'=> 'application/pdf');
-    return Response::download($file, 'business_details.pdf', $headers); 
+    $url= public_path($file);
+    $extension = pathinfo($url, PATHINFO_EXTENSION);
+
+    response()->json(['type'=>$extension]);
+    return response()->download($url); 
     //return response()->json(['data'=>'success']);
 
     }

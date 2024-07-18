@@ -658,9 +658,16 @@ return response()->json([ 'data' => 'Failed!', 'progress' => 0, 'length' => 0 ])
     
     $doc = Milestones::where('id',$mile_id)->first();
     $file=$doc->document;
+    if($file == null){
+        return response()->json(['status'=>404]);
+    }
+    
     $headers = array('Content-Type'=> 'application/pdf');
-    return Response::download($file, 'milestone.pdf', $headers);
-    return response()->json(['data'=>'success']);
+    $url= public_path($file);
+    $extension = pathinfo($url, PATHINFO_EXTENSION);
+
+    response()->json(['type'=>$extension]);
+    return response()->download($url);
 
     }
 

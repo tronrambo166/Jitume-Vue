@@ -77,7 +77,7 @@
 
                     <!-- Message -->
                     <a style="cursor:pointer;color:#015601;" v-if="auth_user"
-                    class="my-4 border border-dark w-50 mx-auto text-center convBtn rounded" data-toggle="collapse" href="#collapseExample">Contact Me</a>
+                    class="my-4 border border-dark w-50 mx-auto text-center convBtn rounded" data-toggle="collapse" @click="contact">Contact Me</a>
 
                   <a style="cursor:pointer;color:#015601;" v-else @click="make_session()"
                     class="my-4 border border-dark w-50 mx-auto text-center convBtn" data-target="#loginModal"
@@ -280,6 +280,10 @@ export default {
   },
   methods: {
 
+    contact: function () {
+      $('#collapseExample').removeClass('collapse');
+    },
+
     getDetails: function () {
       var id = this.$route.params.id;
       id = atob(id); id = atob(id);
@@ -427,7 +431,7 @@ export default {
           title: 'Alert!',
           content: response.data.success,
         });
-        $('#collapseExample').removeClass('show');
+        $('#collapseExample').addClass('collapse');
       }
       else
         $.alert({
