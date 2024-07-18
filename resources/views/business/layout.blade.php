@@ -299,7 +299,7 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
       <a v-if="" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
         <div class="flex gap-1 font-bold font-outfit items-center pointer">
           <img src="../images/signouticon.svg" alt="icon" />
-          <span class="text-white">signout</span>
+          <h1 class="text-white">Sign Out</h1>
         </div>
       </a>
 
