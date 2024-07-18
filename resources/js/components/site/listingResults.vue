@@ -119,8 +119,8 @@
 <div class="row flex items-center">
   <div class="flex items-center col-sm-6">
                     <div class=""><span style="color:black;font-size: 11px;" class=" text-black  py-1 small rounded whitespace-nowrap font-bold">Filter by Turnover Range:</span>
-                        <button @click="collapse2" id="colBut4" class="mr-4 my-2 py-0 border rounded-full px-3 py-1  collapse" name="min">Set range </button>
-                         <button @click="collapse2" id="colBut3" class="mr-4 my-2 py-0 border rounded-full px-3 py-1 text-black rounded-full px-3 py-1 border f" name="min">Set range </button>
+                        <button @click="collapse2" id="colBut4" class="mr-4 my-2 py-0 border rounded-full px-3 py-1  collapse" name="min">Set Range </button>
+                         <button @click="collapse2" id="colBut3" class="mr-4 my-2 py-0 border rounded-full px-3 py-1 text-black rounded-full px-3 py-1 border f" name="min">Set Range </button>
                     </div>  
 
                     <div id="" class="col-sm-9 "> 
@@ -154,8 +154,8 @@
 
                         <div class="flex items-center col-sm-6">
                     <div class=""><span style="color:black;font-size: 11px;" class=" text-black  font-bold my-3 small rounded">Filter by Amount :</span>
-                         <button @click="collapse" id="colBut2" class="mr-4 my-2 mx-auto py-0 border rounded-full px-3 py-1 collapse" name="min">Set range </button>
-                         <button @click="collapse" id="colBut" class=" my-2 py-0 border rounded-full px-3 py-1 border-black " name="min">Set range </button>
+                         <button @click="collapse" id="colBut2" class="mr-4 my-2 mx-auto py-0 border rounded-full px-3 py-1 collapse" name="min">Set Range </button>
+                         <button @click="collapse" id="colBut" class=" my-2 py-0 border rounded-full px-3 py-1 border-black " name="min">Set Range </button>
                     </div>  
                     <div id="" class="col-sm-9 mt-1"> 
                         <div id="slider2" class=""> </div>

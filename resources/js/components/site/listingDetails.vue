@@ -686,7 +686,7 @@ Unlock this business to learn more about it and invest</p>
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Submit a review</h5>
+            <h5 class="text-[15px]  font-bold text-black" id="exampleModalLabel">Submit a review</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -694,14 +694,14 @@ Unlock this business to learn more about it and invest</p>
           <div class="modal-body">
             <form>
               <h5 class="my-3 font-weight-bold">Service rating
-                <div class="ml-5 d-inline-block" id="demo"></div>
+                <div class="py-3 flex gap-2" id="demo"></div>
               </h5>
 
 
               <h5 class="font-weight-bold">Leave a review</h5>
               <textarea name="reply" class="bg-light border border-none" cols="55" rows="3"></textarea>
 
-              <a @click="rating()" class="font-weight-bold btn btn-light w-50 m-auto">Submit</a>
+              <a @click="rating()" class="font-weight-bold  text-white bg-green-700 w-50 text-center rounded-lg mt-2">Submit</a>
             </form>
 
           </div>
