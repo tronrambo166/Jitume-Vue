@@ -75050,7 +75050,7 @@ var render = function () {
                               "data-target": "#reviewModal",
                             },
                           },
-                          [_vm._v("Add review")]
+                          [_vm._v("Add Review")]
                         )
                       : _c(
                           "a",
@@ -75067,7 +75067,7 @@ var render = function () {
                               },
                             },
                           },
-                          [_vm._v("Add review")]
+                          [_vm._v("Add Review")]
                         ),
                     _vm._v(" "),
                     _c(
@@ -75356,7 +75356,7 @@ var render = function () {
                               "data-target": "#reviewModal",
                             },
                           },
-                          [_vm._v("Add review")]
+                          [_vm._v("Add Review")]
                         )
                       : _c(
                           "a",
@@ -75372,7 +75372,7 @@ var render = function () {
                               },
                             },
                           },
-                          [_vm._v("Add review")]
+                          [_vm._v("Add Review")]
                         ),
                     _vm._v(" "),
                     _c("hr"),

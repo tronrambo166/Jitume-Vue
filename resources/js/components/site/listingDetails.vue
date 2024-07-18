@@ -25,10 +25,10 @@
               
 
               <a v-if="auth_user" data-toggle="modal" data-target="#reviewModal"
-                class="bg-green-700 w-[50%] text-center  add rounded-[16px] ">Add review</a>
+                class="bg-green-700 w-[50%] text-center  add rounded-[16px] ">Add Review</a>
 
               <a v-else @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal"
-                class="w-[50%] text-center text-[12px] add rounded-[16px]">Add review</a>
+                class="w-[50%] text-center text-[12px] add rounded-[16px]">Add Review</a>
       <div class=" text-green-700 text-center w-[50%]">
 
             <!--unlock business-->
@@ -252,10 +252,10 @@ Unlock this business to learn more about it and invest</p>
               <a class="btn border border-bottom-success">Overview</a>
 
               <a v-if="auth_user" data-toggle="modal" data-target="#reviewModal"
-                class="btn border border-bottom-success">Add review</a>
+                class="btn border border-bottom-success">Add Review</a>
 
               <a v-else @click="make_session(form.listing_id);" data-target="#loginmodal" data-toggle="modal"
-                class="btn border border-bottom-success">Add review</a>
+                class="btn border border-bottom-success">Add Review</a>
 
               <hr>
             </div>
