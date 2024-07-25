@@ -110,7 +110,13 @@
 
 <div class="flex  gap-1 " style="margin-left:270px !important; margin-top: 30px !important;">
                     <div class=""><span style="" class=" text-black px-2 py-1 rounded">Filter by
-                            Price:</span></div>
+                            Price:</span>
+                            <button @click="collapse" id="colBut" class="d-block  my-2 py-0 border rounded-full px-3 py-1 border-black " name="min">Set Range </button>
+
+                        <button @click="collapse" id="colBut2" class="d-block mr-4 my-2 mx-auto py-0 border rounded-full px-3 py-1 collapse" name="min">Set Range </button>
+                         
+                     </div>
+
                     <div id="" class="col-sm-5  mt-1">
                         <div id="slider" class=""> </div>
                         <div class="row mt-3">
@@ -121,7 +127,23 @@
                                 <span id="price_high" class="float-right py-0 btn btn-light" name="min"> </span>
                             </div>
                         </div>
+
+                        <!-- COLLAPSE RANGE -->
+                        <div class="row mt-3 collapse" id="collapseExample">
+                            <div class="col-6  mt-1">
+                                <span class="d-inline">Min:</span><input  type="number" min="0"  v-model="min" id="price_low2" class="d-inline w-75 py-0 border" name="min" value="" />
+                            </div>
+                            <div class="col-6 mt-1 pr-0">
+                                <span class="d-inline">Max:</span><input type="number" v-model="max" id="price_high2" class="d-inline w-75 float-right py-0 border" name="min" value="" />
+                            </div>
+
+                            <button class="border rounded-full px-3 py-1 w-25 mt-3 mx-auto" @click="range();hide();" >Set</button>
+                        </div>
+                        <!-- COLLAPSE RANGE -->
+
                     </div>
+
+                    
 
                     <!-- <div class="col-sm-4 hi"> -->
                         <!-- <a class="py-0 float-right border border-dark rounded" style="width:70px; height:40px;">
@@ -179,7 +201,7 @@
 
                 <div class="row" v-if="count != 0">
                     <div v-for="( result, index ) in results" class="listing row  my-3">
-                       <a :href="'./#/serviceDetails/'+result.id" class="flex px-4">
+                       <a target="_blank" :href="'./#/serviceDetails/'+result.id" class="flex px-4">
                             <div class="flex items-center gap-[30px] mb-5 w-full rounded-[30px] h-[200px]" style="box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;">
                             <!-- image or video -->
 
@@ -285,9 +307,28 @@ export default {
         count: 0,
          loc:'',
         queryLat:'',
-        queryLng:''
+        queryLng:'',
+        max:500000,
+        min:0
     }),
     methods: {
+
+        //Range Func.
+        collapse: function() {
+            var slider = document.getElementById('slider');
+
+            if(slider && slider.noUiSlider){
+            slider.noUiSlider.destroy();
+            }
+            $('#collapseExample').removeClass('collapse');
+            $('#colBut').addClass('collapse');
+            $('#colBut').removeClass('d-block');
+            $('#colBut2').removeClass('collapse');
+        },
+        hide: function() {
+            $('#collapseExample').addClass('collapse');
+
+        },
         setRes: function () {
             let t = this;
             this.ids = atob(this.$route.params.results);
@@ -322,8 +363,8 @@ export default {
                 start: [0, 500000],
                 connect: true,
                 range: {
-                    'min': 0,
-                    'max': 500000
+                    'min': parseFloat(t.min),
+                    'max': parseFloat(t.max),
                 },
 
                 step: 10000,

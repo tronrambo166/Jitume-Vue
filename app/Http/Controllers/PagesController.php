@@ -570,8 +570,9 @@ public function priceFilter($min, $max, $ids){
     $range[0] = number_format($range[0]); $range[1] = number_format($range[1]);
     $listing->y_turnover = implode('-', $range);
     
-    if((int)$min <= $db_min && (int)$max >= $db_max)
+    if((int)$min <= $db_max && (int)$max >= $db_max)
         //return response()->json([ 'data' => (int)$min .'<='. $db_min .'//'.(int)$max .'>='. $db_max]);
+    //if($db_max >= (int)$max)
     $results[] = $listing;
 }
 }

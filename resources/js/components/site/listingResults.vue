@@ -152,7 +152,7 @@
 
 
 
-                        <div class="flex items-center col-sm-6">
+                    <div class="flex items-center col-sm-6">
                     <div class=""><span style="color:black;font-size: 11px;" class=" text-black  font-bold my-3 small rounded">Filter by Amount :</span>
                          <button @click="collapse" id="colBut2" class="mr-4 my-2 mx-auto py-0 border rounded-full px-3 py-1 collapse" name="min">Set Range </button>
                          <button @click="collapse" id="colBut" class=" my-2 py-0 border rounded-full px-3 py-1 border-black " name="min">Set Range </button>
@@ -240,7 +240,7 @@
 
                 <div class="">
                     <div v-for="( result, index ) in results" class="listing row  my-3">
-                <a :href="'./#/listingDetails/'+result.id" @click="openInNewTab('/listingDetails/' + result.id)" class="flex px-4">
+                <a target="_blank" :href="'./#/listingDetails/'+result.id" @click="openInNewTab('/listingDetails/' + result.id)" class="flex px-4">
                             <div class="flex items-center gap-[30px] mb-5 w-full rounded-[30px] h-[200px]" style="box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;">
                             <!-- image or video -->
 

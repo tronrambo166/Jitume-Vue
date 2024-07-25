@@ -13092,6 +13092,28 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user'],
   data: function data() {
@@ -13102,10 +13124,28 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       count: 0,
       loc: '',
       queryLat: '',
-      queryLng: ''
+      queryLng: '',
+      max: 500000,
+      min: 0
     };
   },
   methods: {
+    //Range Func.
+    collapse: function collapse() {
+      var slider = document.getElementById('slider');
+
+      if (slider && slider.noUiSlider) {
+        slider.noUiSlider.destroy();
+      }
+
+      $('#collapseExample').removeClass('collapse');
+      $('#colBut').addClass('collapse');
+      $('#colBut').removeClass('d-block');
+      $('#colBut2').removeClass('collapse');
+    },
+    hide: function hide() {
+      $('#collapseExample').addClass('collapse');
+    },
     setRes: function setRes() {
       var t = this;
       this.ids = atob(this.$route.params.results); //this.results = this.ids.split(",");
@@ -13143,8 +13183,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           start: [0, 500000],
           connect: true,
           range: {
-            'min': 0,
-            'max': 500000
+            'min': parseFloat(t.min),
+            'max': parseFloat(t.max)
           },
           step: 10000,
           margin: 600,
@@ -77108,7 +77148,10 @@ var render = function () {
                       "a",
                       {
                         staticClass: "flex px-4",
-                        attrs: { href: "./#/listingDetails/" + result.id },
+                        attrs: {
+                          target: "_blank",
+                          href: "./#/listingDetails/" + result.id,
+                        },
                         on: {
                           click: function ($event) {
                             return _vm.openInNewTab(
@@ -80402,7 +80445,136 @@ var render = function () {
       ]
     ),
     _vm._v(" "),
-    _vm._m(4),
+    _c(
+      "div",
+      {
+        staticClass: "flex gap-1",
+        staticStyle: {
+          "margin-left": "270px !important",
+          "margin-top": "30px !important",
+        },
+      },
+      [
+        _c("div", {}, [
+          _c("span", { staticClass: "text-black px-2 py-1 rounded" }, [
+            _vm._v("Filter by\n                            Price:"),
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass:
+                "d-block my-2 py-0 border rounded-full px-3 py-1 border-black",
+              attrs: { id: "colBut", name: "min" },
+              on: { click: _vm.collapse },
+            },
+            [_vm._v("Set Range ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass:
+                "d-block mr-4 my-2 mx-auto py-0 border rounded-full px-3 py-1 collapse",
+              attrs: { id: "colBut2", name: "min" },
+              on: { click: _vm.collapse },
+            },
+            [_vm._v("Set Range ")]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-sm-5 mt-1", attrs: { id: "" } }, [
+          _c("div", { attrs: { id: "slider" } }),
+          _vm._v(" "),
+          _vm._m(4),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "row mt-3 collapse",
+              attrs: { id: "collapseExample" },
+            },
+            [
+              _c("div", { staticClass: "col-6 mt-1" }, [
+                _c("span", { staticClass: "d-inline" }, [_vm._v("Min:")]),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.min,
+                      expression: "min",
+                    },
+                  ],
+                  staticClass: "d-inline w-75 py-0 border",
+                  attrs: {
+                    type: "number",
+                    min: "0",
+                    id: "price_low2",
+                    name: "min",
+                    value: "",
+                  },
+                  domProps: { value: _vm.min },
+                  on: {
+                    input: function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.min = $event.target.value
+                    },
+                  },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
+                _c("span", { staticClass: "d-inline" }, [_vm._v("Max:")]),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.max,
+                      expression: "max",
+                    },
+                  ],
+                  staticClass: "d-inline w-75 float-right py-0 border",
+                  attrs: {
+                    type: "number",
+                    id: "price_high2",
+                    name: "min",
+                    value: "",
+                  },
+                  domProps: { value: _vm.max },
+                  on: {
+                    input: function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.max = $event.target.value
+                    },
+                  },
+                }),
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "border rounded-full px-3 py-1 w-25 mt-3 mx-auto",
+                  on: {
+                    click: function ($event) {
+                      _vm.range()
+                      _vm.hide()
+                    },
+                  },
+                },
+                [_vm._v("Set")]
+              ),
+            ]
+          ),
+        ]),
+      ]
+    ),
     _vm._v(" "),
     _c("div", { staticClass: "row mt-4 row flex-column-reverse flex-md-row" }, [
       _c(
@@ -80439,7 +80611,10 @@ var render = function () {
                         "a",
                         {
                           staticClass: "flex px-4",
-                          attrs: { href: "./#/serviceDetails/" + result.id },
+                          attrs: {
+                            target: "_blank",
+                            href: "./#/serviceDetails/" + result.id,
+                          },
                         },
                         [
                           _c(
@@ -80842,43 +81017,21 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "flex gap-1",
-        staticStyle: {
-          "margin-left": "270px !important",
-          "margin-top": "30px !important",
-        },
-      },
-      [
-        _c("div", {}, [
-          _c("span", { staticClass: "text-black px-2 py-1 rounded" }, [
-            _vm._v("Filter by\n                            Price:"),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-sm-5 mt-1", attrs: { id: "" } }, [
-          _c("div", { attrs: { id: "slider" } }),
-          _vm._v(" "),
-          _c("div", { staticClass: "row mt-3" }, [
-            _c("div", { staticClass: "col-6 mt-1" }, [
-              _c("span", {
-                staticClass: "py-0 btn btn-light",
-                attrs: { id: "price_low", name: "min" },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
-              _c("span", {
-                staticClass: "float-right py-0 btn btn-light",
-                attrs: { id: "price_high", name: "min" },
-              }),
-            ]),
-          ]),
-        ]),
-      ]
-    )
+    return _c("div", { staticClass: "row mt-3" }, [
+      _c("div", { staticClass: "col-6 mt-1" }, [
+        _c("span", {
+          staticClass: "py-0 btn btn-light",
+          attrs: { id: "price_low", name: "min" },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-6 mt-1 pr-0" }, [
+        _c("span", {
+          staticClass: "float-right py-0 btn btn-light",
+          attrs: { id: "price_high", name: "min" },
+        }),
+      ]),
+    ])
   },
   function () {
     var _vm = this
