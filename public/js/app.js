@@ -10100,7 +10100,7 @@ __webpack_require__.r(__webpack_exports__);
         responseType: 'blob'
       }).then(function (data) {
         //console.log(data);
-        if (data.data.status == 404) {
+        if (data.data.size == 3) {
           $.alert({
             title: 'Alert!',
             content: 'The business has no such document or the file not found!',
@@ -10113,16 +10113,16 @@ __webpack_require__.r(__webpack_exports__);
               }
             }
           });
+        } //console.log(data);
+        else {
+          var href = URL.createObjectURL(data.data);
+          var link = document.createElement('a');
+          link.href = href;
+          if (data.data.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') link.setAttribute('download', 'statement.docx'); //or any other extension
+          else link.setAttribute('download', 'statement.pdf');
+          document.body.appendChild(link);
+          link.click();
         }
-
-        console.log(data);
-        var href = URL.createObjectURL(data.data);
-        var link = document.createElement('a');
-        link.href = href;
-        if (data.data.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') link.setAttribute('download', 'statement.docx'); //or any other extension
-        else link.setAttribute('download', 'statement.pdf');
-        document.body.appendChild(link);
-        link.click();
       });
     },
     download_statement: function download_statement() {
@@ -10136,7 +10136,8 @@ __webpack_require__.r(__webpack_exports__);
         method: 'GET',
         responseType: 'blob'
       }).then(function (data) {
-        if (data.data.status == 404) {
+        //console.log(data.data.size);
+        if (data.data.size == 3) {
           $.alert({
             title: 'Alert!',
             content: 'The business has no such document or the file not found!',
@@ -10149,15 +10150,15 @@ __webpack_require__.r(__webpack_exports__);
               }
             }
           });
+        } else {
+          var href = URL.createObjectURL(data.data);
+          var link = document.createElement('a');
+          link.href = href;
+          if (data.data.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') link.setAttribute('download', 'statement.docx'); //or any other extension
+          else link.setAttribute('download', 'statement.pdf');
+          document.body.appendChild(link);
+          link.click();
         }
-
-        var href = URL.createObjectURL(data.data);
-        var link = document.createElement('a');
-        link.href = href;
-        if (data.data.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') link.setAttribute('download', 'statement.docx'); //or any other extension
-        else link.setAttribute('download', 'statement.pdf');
-        document.body.appendChild(link);
-        link.click();
       });
     },
     getMilestones: function getMilestones() {

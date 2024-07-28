@@ -702,8 +702,8 @@ public function removeCart($id){
   public function download_business($id){ 
     $doc = Listing::where('id',$id)->first();
     $file=$doc->document;
-    if($file == null || !file_exists(public_path($file))){
-        return response()->json(['status'=>404]);
+    if( $file == null || !file_exists(public_path($file)) ){
+        return response('404');
     }
 
     $headers = array('Content-Type'=> 'application/pdf');
@@ -719,16 +719,20 @@ public function removeCart($id){
     public function download_statement($id){ 
     $doc = Listing::where('id',$id)->first();
     $file=$doc->yeary_fin_statement;
-    if($file == null){
-        return response()->json(['status'=>404]);
+    if( $file == null || !file_exists(public_path($file)) ){
+
+        return response('404');
     }
 
+
+    else{
     $headers = array('Content-Type'=> 'application/pdf');
     $url= public_path($file);
     $extension = pathinfo($url, PATHINFO_EXTENSION);
 
     response()->json(['type'=>$extension]);
     return response()->download($url);
+    }
     //return Response::download($file, 'business_statement.pdf', $headers); 
 
     } 

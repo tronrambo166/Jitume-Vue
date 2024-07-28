@@ -936,7 +936,7 @@ export default {
           responseType: 'blob',
         }).then((data) => {
         //console.log(data);
-        if(data.data.status == 404){
+        if((data.data.size == 3)){
           $.alert({
           title: 'Alert!',
           content: 'The business has no such document or the file not found!',
@@ -949,7 +949,8 @@ export default {
             }
         }}  
         });
-        } console.log(data);
+        } //console.log(data);
+        else{
           const href = URL.createObjectURL(data.data);
           const link = document.createElement('a');
           link.href = href;
@@ -961,6 +962,7 @@ export default {
             
           document.body.appendChild(link);
           link.click();
+        }
 
       });
     },
@@ -974,8 +976,8 @@ export default {
           method: 'GET',
           responseType: 'blob',
         
-      }).then((data) => {
-        if(data.data.status == 404){
+      }).then((data) => { //console.log(data.data.size);
+        if(data.data.size == 3){
           $.alert({
           title: 'Alert!',
           content: 'The business has no such document or the file not found!',
@@ -990,6 +992,7 @@ export default {
         }}  
         });
         }
+        else{
           const href = URL.createObjectURL(data.data);
           const link = document.createElement('a');
           link.href = href;
@@ -1001,6 +1004,7 @@ export default {
             
           document.body.appendChild(link);
           link.click();
+        }
 
       });
     },
