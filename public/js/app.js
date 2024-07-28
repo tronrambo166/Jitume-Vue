@@ -12476,6 +12476,44 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user'],
   data: function data() {
@@ -68278,7 +68316,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -68408,7 +68446,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -68649,7 +68687,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\r\n    Name: "),
+        _vm._v("\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68684,7 +68722,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Desc: "),
+        _vm._v("\n\n     Desc: "),
         _c("textarea", {
           directives: [
             {
@@ -68721,7 +68759,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Cat Id:  "),
+        _vm._v("\n\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -68752,7 +68790,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Brand Id:  "),
+        _vm._v("\n\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -68783,7 +68821,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Price:  "),
+        _vm._v("\n\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -68813,7 +68851,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n     Qty:  "),
+        _vm._v("\n\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -68843,7 +68881,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n   Image: "),
+        _vm._v("\n\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -68905,7 +68943,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -68954,7 +68992,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\r\n    Name: "),
+        _vm._v("\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68989,7 +69027,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Desc: "),
+        _vm._v("\n\n     Desc: "),
         _c("input", {
           directives: [
             {
@@ -69020,7 +69058,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Cat Id:  "),
+        _vm._v("\n\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -69051,7 +69089,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Brand Id:  "),
+        _vm._v("\n\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -69082,7 +69120,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\r\n\r\n     Price:  "),
+        _vm._v("\n\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -69112,7 +69150,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n     Qty:  "),
+        _vm._v("\n\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -69142,7 +69180,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\r\n\r\n   Image: "),
+        _vm._v("\n\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -69204,7 +69242,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\r\n     Save\r\n    ")]
+          [_vm._v("\n     Save\n    ")]
         ),
       ]
     ),
@@ -79659,38 +79697,62 @@ var render = function () {
     _vm._v(" "),
     _c("div", { staticClass: "heading row mx-auto my-3 pt-4" }, [
       _c("div", {}, [
-        _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "row flex justify-center" }, [
           _c("div", { staticClass: "col-md-4" }, [
-            _c(
-              "div",
-              { staticClass: "grid images_3_of_2 rounded listing px-3" },
-              [
-                _c("img", {
-                  staticClass: "card",
-                  staticStyle: { width: "100%", height: "280px" },
-                  attrs: { src: _vm.form.image, alt: "" },
-                }),
-              ]
-            ),
+            _c("div", { staticClass: "relative" }, [
+              _c("img", {
+                staticClass: "shadow-sm rounded-[16px]",
+                staticStyle: { width: "100%", "max-height": "400px" },
+                attrs: { src: _vm.form.image, alt: "" },
+              }),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "absolute bottom-0 left-0 w-full glass-bg rounded-b-[16px] text-white text-center py-2",
+                },
+                [
+                  _c("p", { staticClass: "text-center" }, [
+                    _c("i", { staticClass: "mr-2 fa fa-map-marker" }),
+                    _vm._v(_vm._s(_vm.form.location)),
+                  ]),
+                ]
+              ),
+            ]),
             _vm._v(" "),
-            _c("div", { staticClass: "pl-4 row mt-4" }, [
+            _c("div", { staticClass: "row mt-4" }, [
               _c("div", { staticClass: "col-sm-6" }, [
                 _c("h5", { staticClass: "text-left text-dark" }, [
                   _vm._v(_vm._s(_vm.form.name)),
                 ]),
                 _vm._v(" "),
                 _c("p", { staticClass: "my-1 small" }, [
-                  _vm._v("$" + _vm._s(_vm.form.price) + " "),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-sm-6 text-center" }, [
-                _c("p", { staticClass: "small text-left" }, [
-                  _vm._v(_vm._s(_vm.form.location)),
+                  _vm._v("Amount$" + _vm._s(_vm.form.price) + " "),
                 ]),
                 _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "text-black flex gap-1 items-center font-bold",
+                  },
+                  [
+                    _c("h2", { staticClass: "whitespace-nowrap" }, [
+                      _vm._v(" Amount Requested:"),
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "font-semibold text-green-700" },
+                      [_vm._v("$" + _vm._s(_vm.form.price))]
+                    ),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "text-xl" }),
+                  ]
+                ),
+                _vm._v(" "),
                 _c("div", {
-                  staticClass: "float-right d-inline-block",
+                  staticClass: "float-left flex",
                   attrs: { id: "staticRating" },
                 }),
                 _vm._v(" "),
@@ -79699,7 +79761,7 @@ var render = function () {
                 _c(
                   "p",
                   {
-                    staticClass: "text-dark d-block float-right",
+                    staticClass: "text-dark d-block float-left text-[13px]",
                     staticStyle: { "font-size": "11px" },
                   },
                   [_vm._v("(" + _vm._s(_vm.form.rating_count) + " reviews)")]
@@ -79707,286 +79769,7 @@ var render = function () {
               ]),
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "row my-2" }, [
-              _c("div", { staticClass: "col-sm-12" }, [
-                _c("a", { staticClass: "btn border border-bottom-success" }, [
-                  _vm._v("Overview"),
-                ]),
-                _vm._v(" "),
-                _vm.auth_user
-                  ? _c(
-                      "a",
-                      {
-                        staticClass: "btn border border-bottom-success",
-                        attrs: {
-                          "data-toggle": "modal",
-                          "data-target": "#reviewModal",
-                        },
-                      },
-                      [_vm._v("Add review")]
-                    )
-                  : _c(
-                      "a",
-                      {
-                        staticClass: "btn border border-bottom-success",
-                        attrs: {
-                          "data-target": "#loginModal",
-                          "data-toggle": "modal",
-                        },
-                        on: {
-                          click: function ($event) {
-                            return _vm.make_session()
-                          },
-                        },
-                      },
-                      [_vm._v("Add review")]
-                    ),
-                _vm._v(" "),
-                _c("hr"),
-              ]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-4 col-lg-5" }, [
-            _c(
-              "div",
-              {
-                staticClass: "Overview text-center",
-                attrs: { id: "Overview" },
-              },
-              [
-                _c("h4", { staticClass: "text-center secondary_heading" }, [
-                  _vm._v("About"),
-                ]),
-                _vm._v(" "),
-                _c("p", { staticClass: "my-4 text-left h6 px-3" }, [
-                  _vm._v(
-                    _vm._s(_vm.form.details) +
-                      " Lorem ipsum dolor. Lorem ipsum dolor.\n              Lorem ipsum dolor. Lorem ipsum dolor. Lorem ipsum dolor. "
-                  ),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "cart text-center" }, [
-                  _c("form", { staticClass: "text-center" }, [
-                    _vm.auth_user
-                      ? _c(
-                          "a",
-                          {
-                            staticClass:
-                              "border border-dark w-50 mx-auto text-center convBtn rounded",
-                            staticStyle: { cursor: "pointer" },
-                            on: {
-                              click: function ($event) {
-                                return _vm.service_milestones()
-                              },
-                            },
-                          },
-                          [
-                            _vm._v(
-                              "Service Milestone\n                  Breakdown"
-                            ),
-                          ]
-                        )
-                      : _c(
-                          "a",
-                          {
-                            staticClass:
-                              "border border-dark w-50 mx-auto text-center convBtn",
-                            staticStyle: { cursor: "pointer" },
-                            attrs: {
-                              "data-target": "#loginModal",
-                              "data-toggle": "modal",
-                            },
-                            on: {
-                              click: function ($event) {
-                                return _vm.make_session()
-                              },
-                            },
-                          },
-                          [_vm._v("Service Milestone Breakdown")]
-                        ),
-                    _vm._v(" "),
-                    _vm.auth_user
-                      ? _c(
-                          "a",
-                          {
-                            staticClass:
-                              "my-4 border border-dark w-50 mx-auto text-center convBtn rounded",
-                            staticStyle: {
-                              cursor: "pointer",
-                              color: "#015601",
-                            },
-                            attrs: { "data-toggle": "collapse" },
-                            on: { click: _vm.contact },
-                          },
-                          [_vm._v("Contact Me")]
-                        )
-                      : _c(
-                          "a",
-                          {
-                            staticClass:
-                              "my-4 border border-dark w-50 mx-auto text-center convBtn",
-                            staticStyle: {
-                              cursor: "pointer",
-                              color: "#015601",
-                            },
-                            attrs: {
-                              "data-target": "#loginModal",
-                              "data-toggle": "modal",
-                            },
-                            on: {
-                              click: function ($event) {
-                                return _vm.make_session()
-                              },
-                            },
-                          },
-                          [_vm._v("Contact Me")]
-                        ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "collapse",
-                        attrs: { id: "collapseExample" },
-                      },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "card card-body py-2 mx-auto",
-                            staticStyle: { width: "90%" },
-                          },
-                          [
-                            _c("div", { staticClass: "p-0" }, [
-                              _c(
-                                "form",
-                                {
-                                  staticClass: "p-3",
-                                  on: {
-                                    submit: function ($event) {
-                                      $event.preventDefault()
-                                      return _vm.sendMessage.apply(
-                                        null,
-                                        arguments
-                                      )
-                                    },
-                                  },
-                                },
-                                [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "d-flex p-2 justify-content-center",
-                                    },
-                                    [
-                                      _c("div", {}, [
-                                        _c("textarea", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: _vm.formMsg.msg,
-                                              expression: "formMsg.msg",
-                                            },
-                                          ],
-                                          staticClass: "rounded",
-                                          attrs: {
-                                            placeholder: "Enter message...",
-                                            rows: "2",
-                                            cols: "36",
-                                            required: "",
-                                            name: "msg",
-                                          },
-                                          domProps: { value: _vm.formMsg.msg },
-                                          on: {
-                                            input: function ($event) {
-                                              if ($event.target.composing) {
-                                                return
-                                              }
-                                              _vm.$set(
-                                                _vm.formMsg,
-                                                "msg",
-                                                $event.target.value
-                                              )
-                                            },
-                                          },
-                                        }),
-                                      ]),
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.formMsg.service_id,
-                                        expression: "formMsg.service_id",
-                                      },
-                                    ],
-                                    attrs: {
-                                      hidden: "",
-                                      type: "number",
-                                      name: "service_id",
-                                    },
-                                    domProps: { value: _vm.formMsg.service_id },
-                                    on: {
-                                      input: function ($event) {
-                                        if ($event.target.composing) {
-                                          return
-                                        }
-                                        _vm.$set(
-                                          _vm.formMsg,
-                                          "service_id",
-                                          $event.target.value
-                                        )
-                                      },
-                                    },
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "p-0 d-flex justify-content-center",
-                                    },
-                                    [
-                                      _vm.auth_user
-                                        ? _c(
-                                            "button",
-                                            {
-                                              staticClass:
-                                                "my-3 py-1 primary_bg w-50 header_buttons text-light float-right",
-                                            },
-                                            [
-                                              _vm._v(
-                                                "Send\n                          "
-                                              ),
-                                            ]
-                                          )
-                                        : _vm._e(),
-                                    ]
-                                  ),
-                                ]
-                              ),
-                            ]),
-                          ]
-                        ),
-                      ]
-                    ),
-                  ]),
-                ]),
-              ]
-            ),
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "col-md-4 col-lg-3 rounded my-3 my-md-0 primary_bg",
-            },
-            [
+            _c("div", { staticClass: "row rounded my-3 my-md-0" }, [
               !_vm.booked
                 ? _c("div", { staticClass: "p-2", attrs: { id: "booked" } }, [
                     _c(
@@ -80000,103 +79783,115 @@ var render = function () {
                         },
                       },
                       [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "d-flex p-2 justify-content-center justify-content-md-end",
-                          },
-                          [
-                            _c(
-                              "p",
-                              {
-                                staticClass:
-                                  "d-inline text-left text-light mr-2",
+                        _c("div", { staticClass: "flex flex-col gap-2 py-2" }, [
+                          _c(
+                            "p",
+                            { staticClass: "d-inline text-left text-gray-500" },
+                            [_vm._v("Desired start date: ")]
+                          ),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "pl-0 d-inline" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.formBook.date,
+                                  expression: "formBook.date",
+                                },
+                              ],
+                              staticClass: "border border-gray-200 p-2",
+                              attrs: {
+                                required: "",
+                                id: "date",
+                                type: "date",
+                                name: "date",
                               },
-                              [_vm._v("Desired start date: ")]
-                            ),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "pl-0 d-inline" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.formBook.date,
-                                    expression: "formBook.date",
-                                  },
-                                ],
-                                attrs: {
-                                  required: "",
-                                  id: "date",
-                                  type: "date",
-                                  name: "date",
+                              domProps: { value: _vm.formBook.date },
+                              on: {
+                                input: function ($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.formBook,
+                                    "date",
+                                    $event.target.value
+                                  )
                                 },
-                                domProps: { value: _vm.formBook.date },
-                                on: {
-                                  input: function ($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.formBook,
-                                      "date",
-                                      $event.target.value
-                                    )
-                                  },
-                                },
-                              }),
-                            ]),
-                          ]
-                        ),
+                              },
+                            }),
+                          ]),
+                        ]),
                         _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "d-flex p-2 justify-content-center justify-content-md-end",
-                          },
-                          [
-                            _c("div", {}, [
-                              _c(
-                                "p",
-                                { staticClass: "text-start text-light" },
-                                [_vm._v("Enter additional notes ")]
-                              ),
-                              _vm._v(" "),
-                              _c("textarea", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.formBook.note,
-                                    expression: "formBook.note",
-                                  },
-                                ],
-                                staticClass: "rounded",
-                                attrs: {
-                                  rows: "10",
-                                  cols: "32",
-                                  required: "",
-                                  name: "note",
-                                },
-                                domProps: { value: _vm.formBook.note },
-                                on: {
-                                  input: function ($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.formBook,
-                                      "note",
-                                      $event.target.value
-                                    )
-                                  },
-                                },
-                              }),
+                        _c("div", { staticClass: "" }, [
+                          _c("div", {}, [
+                            _c("p", { staticClass: "text-start text-black" }, [
+                              _vm._v("Enter additional notes "),
                             ]),
-                          ]
-                        ),
+                            _vm._v(" "),
+                            _c("textarea", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.formBook.note,
+                                  expression: "formBook.note",
+                                },
+                              ],
+                              staticClass:
+                                "rounded border border-slate-200 w-90 h-20",
+                              attrs: {
+                                rows: "10",
+                                cols: "32",
+                                required: "",
+                                name: "note",
+                              },
+                              domProps: { value: _vm.formBook.note },
+                              on: {
+                                input: function ($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.formBook,
+                                    "note",
+                                    $event.target.value
+                                  )
+                                },
+                              },
+                            }),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "py-2" }, [
+                            _vm.auth_user
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass:
+                                      "mt-1 py-2 bg-green-800 w-50 rounded-lg text-light float-left",
+                                  },
+                                  [_vm._v("Book\n                  ")]
+                                )
+                              : _c(
+                                  "a",
+                                  {
+                                    staticClass:
+                                      "my-3 py-2 bg-green-800 w-50 rounded-lg text-light float-left",
+                                    attrs: {
+                                      "data-target": "#loginModal",
+                                      "data-toggle": "modal",
+                                    },
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.make_session()
+                                      },
+                                    },
+                                  },
+                                  [_vm._v("Book")]
+                                ),
+                          ]),
+                        ]),
                         _vm._v(" "),
                         _c("input", {
                           directives: [
@@ -80126,42 +79921,6 @@ var render = function () {
                             },
                           },
                         }),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "p-2 d-flex justify-content-center justify-content-md-end",
-                          },
-                          [
-                            _vm.auth_user
-                              ? _c(
-                                  "button",
-                                  {
-                                    staticClass:
-                                      "my-3 py-1 primary_bg w-50 header_buttons text-light float-right",
-                                  },
-                                  [_vm._v("Book\n                ")]
-                                )
-                              : _c(
-                                  "a",
-                                  {
-                                    staticClass:
-                                      "my-3 py-1 primary_bg w-50 header_buttons text-light float-right",
-                                    attrs: {
-                                      "data-target": "#loginModal",
-                                      "data-toggle": "modal",
-                                    },
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.make_session()
-                                      },
-                                    },
-                                  },
-                                  [_vm._v("Book")]
-                                ),
-                          ]
-                        ),
                       ]
                     ),
                   ])
@@ -80175,8 +79934,285 @@ var render = function () {
                       [_vm._v(" You booked this service. ")]
                     ),
                   ]),
-            ]
-          ),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-4 col-lg-5 pt-8" }, [
+            _c("div", { staticClass: "Overview", attrs: { id: "Overview" } }, [
+              _c(
+                "h2",
+                {
+                  staticClass:
+                    "text-black text-[15px] sm:text-[14px] md:text-[15px] lg:text-[16px] font-bold",
+                },
+                [_vm._v("More business information")]
+              ),
+              _vm._v(" "),
+              _c(
+                "p",
+                {
+                  staticClass:
+                    "text-[14px] sm:text-[12px] md:text-[13px] py-6 lg:text-[14px]",
+                },
+                [
+                  _vm._v(
+                    "\n" +
+                      _vm._s(_vm.form.details) +
+                      " Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum. "
+                  ),
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "cart text-center" }, [
+                _c("form", { staticClass: "text-center" }, [
+                  _c("div", { staticClass: "row my-2" }, [
+                    _c("div", { staticClass: "col-sm-12" }, [
+                      _vm.auth_user
+                        ? _c(
+                            "a",
+                            {
+                              staticClass:
+                                "btn border border-gray-200 float-left",
+                              attrs: {
+                                "data-toggle": "modal",
+                                "data-target": "#reviewModal",
+                              },
+                            },
+                            [_vm._v("Add review")]
+                          )
+                        : _c(
+                            "a",
+                            {
+                              staticClass:
+                                "btn border border-gray-200 float-left",
+                              attrs: {
+                                "data-target": "#loginModal",
+                                "data-toggle": "modal",
+                              },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.make_session()
+                                },
+                              },
+                            },
+                            [_vm._v("Add review")]
+                          ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "flex items-center gap-2" }, [
+                    _vm.auth_user
+                      ? _c(
+                          "a",
+                          {
+                            staticClass:
+                              "border border-gray-200 w-50 mx-auto text-center convBtn rounded",
+                            staticStyle: { cursor: "pointer" },
+                            on: {
+                              click: function ($event) {
+                                return _vm.service_milestones()
+                              },
+                            },
+                          },
+                          [
+                            _vm._v(
+                              "Service Milestone\n                    Breakdown"
+                            ),
+                          ]
+                        )
+                      : _c(
+                          "a",
+                          {
+                            staticClass:
+                              "border border-gray-200 w-50 mx-auto text-center convBtn",
+                            staticStyle: { cursor: "pointer" },
+                            attrs: {
+                              "data-target": "#loginModal",
+                              "data-toggle": "modal",
+                            },
+                            on: {
+                              click: function ($event) {
+                                return _vm.make_session()
+                              },
+                            },
+                          },
+                          [_vm._v("Service Milestone Breakdown")]
+                        ),
+                    _vm._v(" "),
+                    _vm.auth_user
+                      ? _c(
+                          "a",
+                          {
+                            staticClass:
+                              "my-4 border border-gray-200 w-50 mx-auto text-center convBtn rounded",
+                            staticStyle: {
+                              cursor: "pointer",
+                              color: "#015601",
+                            },
+                            attrs: { "data-toggle": "collapse" },
+                            on: { click: _vm.contact },
+                          },
+                          [_vm._v("Contact Me")]
+                        )
+                      : _c(
+                          "a",
+                          {
+                            staticClass:
+                              "my-4 border border-gray-200 w-50 mx-auto text-center convBtn",
+                            staticStyle: {
+                              cursor: "pointer",
+                              color: "#015601",
+                            },
+                            attrs: {
+                              "data-target": "#loginModal",
+                              "data-toggle": "modal",
+                            },
+                            on: {
+                              click: function ($event) {
+                                return _vm.make_session()
+                              },
+                            },
+                          },
+                          [_vm._v("Contact Me")]
+                        ),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "collapse",
+                      attrs: { id: "collapseExample" },
+                    },
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "card card-body py-2 mx-auto",
+                          staticStyle: { width: "90%" },
+                        },
+                        [
+                          _c("div", { staticClass: "p-0" }, [
+                            _c(
+                              "form",
+                              {
+                                staticClass: "p-3",
+                                on: {
+                                  submit: function ($event) {
+                                    $event.preventDefault()
+                                    return _vm.sendMessage.apply(
+                                      null,
+                                      arguments
+                                    )
+                                  },
+                                },
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "d-flex p-2 justify-content-center",
+                                  },
+                                  [
+                                    _c("div", {}, [
+                                      _c("textarea", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.formMsg.msg,
+                                            expression: "formMsg.msg",
+                                          },
+                                        ],
+                                        staticClass: "rounded",
+                                        attrs: {
+                                          placeholder: "Enter message...",
+                                          rows: "2",
+                                          cols: "36",
+                                          required: "",
+                                          name: "msg",
+                                        },
+                                        domProps: { value: _vm.formMsg.msg },
+                                        on: {
+                                          input: function ($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              _vm.formMsg,
+                                              "msg",
+                                              $event.target.value
+                                            )
+                                          },
+                                        },
+                                      }),
+                                    ]),
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.formMsg.service_id,
+                                      expression: "formMsg.service_id",
+                                    },
+                                  ],
+                                  attrs: {
+                                    hidden: "",
+                                    type: "number",
+                                    name: "service_id",
+                                  },
+                                  domProps: { value: _vm.formMsg.service_id },
+                                  on: {
+                                    input: function ($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.formMsg,
+                                        "service_id",
+                                        $event.target.value
+                                      )
+                                    },
+                                  },
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "p-0 d-flex justify-content-center",
+                                  },
+                                  [
+                                    _vm.auth_user
+                                      ? _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "my-3 py-1 primary_bg w-50 header_buttons text-light float-right",
+                                          },
+                                          [
+                                            _vm._v(
+                                              "Send\n                            "
+                                            ),
+                                          ]
+                                        )
+                                      : _vm._e(),
+                                  ]
+                                ),
+                              ]
+                            ),
+                          ]),
+                        ]
+                      ),
+                    ]
+                  ),
+                ]),
+              ]),
+            ]),
+          ]),
         ]),
       ]),
       _vm._v(" "),
@@ -80268,7 +80304,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("h5", { staticClass: "my-3 font-weight-bold" }, [
-      _vm._v("Service rating\n              "),
+      _vm._v("Service rating\n                "),
       _c("div", { staticClass: "ml-5 d-inline-block", attrs: { id: "demo" } }),
     ])
   },

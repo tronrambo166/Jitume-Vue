@@ -9,80 +9,161 @@
 
       <div class="">
 
-        <div class="row">
+        <div class="row flex justify-center">
 
           <div class="col-md-4">
 
-            <div class="grid images_3_of_2 rounded listing px-3">
-              <img style="width:100%;height:280px" class="card" :src="form.image" alt="" />
-            </div>
 
-            <div class="pl-4 row mt-4">
+                 <div class="relative">
+    <img style="width:100%; max-height: 400px;" class="shadow-sm rounded-[16px] " :src="form.image" alt="" />
+    <div class="absolute bottom-0 left-0 w-full glass-bg rounded-b-[16px] text-white text-center py-2 ">
+        <p class="text-center"><i class="mr-2 fa fa-map-marker"></i>{{ form.location }}</p>
+    </div>
+</div>
+
+            <div class=" row mt-4">
               <div class="col-sm-6">
                 <h5 class="text-left text-dark ">{{ form.name }}</h5>
 
-                <p class="my-1 small">${{ form.price }} </p>
-              </div>
+                <p class="my-1 small">Amount${{ form.price }} </p>
 
-              <div class="col-sm-6 text-center">
-                <p class="small text-left">{{ form.location }}</p>
+                <div
+      class="text-black flex gap-1 items-center font-bold"
+    >
+     <h2 class="whitespace-nowrap"> Amount Requested:</h2> <span class="font-semibold text-green-700">${{ form.price }}</span>
+      <span class="text-xl"></span>
+    </div>
 
-                <div class="float-right d-inline-block" id="staticRating">
+
+
+
+                <div class="float-left flex" id="staticRating">
 
                 </div> <br>
 
-                <p class="text-dark d-block float-right" style="font-size:11px;">({{ form.rating_count }} reviews)</p>
+                <p class="text-dark d-block float-left text-[13px]" style="font-size:11px;">({{ form.rating_count }} reviews)</p>
+
+
 
               </div>
 
+
+
+             <!--  <div class="col-sm-6 text-center">
+                <p class="small text-left">{{ form.location }}</p>
+
+
+              </div> -->
+
             </div>
 
-            <div class="row my-2">
-              <div class="col-sm-12">
-                <a class="btn border border-bottom-success">Overview</a>
+           
+
+     <div class="row rounded my-3 my-md-0 ">
+            <div id="booked" v-if="!booked" class="p-2">
+              <form @submit.prevent="serviceBook">
+
+                <!-- <div class="d-flex p-2 justify-content-center justify-content-md-end">
+                  <a class="w-50 my-3 btn header_buttons text-light float-right">Message</a>
+                </div> -->
+
+                <div class="flex flex-col gap-2  py-2 ">
+                  <p class="d-inline  text-left text-gray-500 ">Desired start date: </p>
+                  <span class="pl-0 d-inline  "><input required v-model="formBook.date" id="date" type="date" class="border border-gray-200 p-2" name="date"></span>
+                </div>
+
+                <div class=" ">
+                  <div class="">
+                    <p class="text-start text-black">Enter additional notes </p>
+                    <textarea rows="10" cols="32" required v-model="formBook.note" name="note" class="rounded border border-slate-200 w-90 h-20"></textarea>
+                  </div>
+
+                   <div class="py-2">
+                  <button v-if="auth_user"
+                    class="mt-1 py-2 bg-green-800 w-50 rounded-lg text-light float-left">Book
+                  </button>
+
+                  <a v-else @click="make_session()" data-target="#loginModal" data-toggle="modal"
+                    class="my-3 py-2 bg-green-800 w-50 rounded-lg text-light  float-left">Book</a>
+                </div>
+
+                </div>
+
+                <input hidden type="number" name="service_id" v-model="formBook.service_id">
+
+               
+
+
+              </form>
+
+            </div>
+
+            <div id="booked" v-else class=" p-2">
+              <p class="font-weight-bold text-center bg-light border border-dark py-3 text-dark"> You booked this service. </p>
+            </div>
+
+          </div>
+
+
+          </div>
+
+          <div class="col-md-4 col-lg-5 pt-8">
+
+
+            <div class="Overview " id="Overview">
+                <h2 class="text-black text-[15px] sm:text-[14px] md:text-[15px] lg:text-[16px] font-bold">More business information</h2>
+
+                <p class="text-[14px] sm:text-[12px] md:text-[13px] py-6 lg:text-[14px]">
+{{ form.details }} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
+
+              <div class="cart text-center">
+                <form class="text-center">
+                  <!--  <input id="qty" min="1" class="w-25 form-control d-inline" type="number" name="qty" value="1"> -->
+
+                  <div class="row my-2">
+              <div class="col-sm-12 ">
+                <!-- <a class="btn border border-bottom-success">Overview</a> -->
                 <a v-if="auth_user" data-toggle="modal" data-target="#reviewModal"
-                  class="btn border border-bottom-success">Add review</a>
+                  class="btn border border-gray-200 float-left">Add review</a>
 
                 <a v-else @click="make_session();" data-target="#loginModal" data-toggle="modal"
-                  class="btn border border-bottom-success">Add review</a>
+                  class="btn border border-gray-200 float-left">Add review</a>
 
-                <hr>
+                
                 <!-- <p> <span class="ml-2 font-weight-bold">Details:{{form.details}}</span></p> -->
 
               </div>
             </div>
 
 
-          </div>
-
-          <div class="col-md-4 col-lg-5">
-
-
-            <div class="Overview text-center" id="Overview">
-              <h4 class="text-center secondary_heading">About</h4>
-              <p class="my-4 text-left h6 px-3">{{ form.details }} Lorem ipsum dolor. Lorem ipsum dolor.
-                Lorem ipsum dolor. Lorem ipsum dolor. Lorem ipsum dolor. </p>
-
-              <div class="cart text-center">
-                <form class="text-center">
-                  <!--  <input id="qty" min="1" class="w-25 form-control d-inline" type="number" name="qty" value="1"> -->
+                    <div class="flex items-center gap-2">
 
                   <a style="cursor:pointer;" v-if="auth_user" @click="service_milestones()"
-                    class="border border-dark w-50 mx-auto text-center convBtn rounded">Service Milestone
+                    class="border border-gray-200 w-50 mx-auto text-center convBtn rounded">Service Milestone
                     Breakdown</a>
 
+
                   <a style="cursor:pointer;" v-else @click="make_session()"
-                    class="border border-dark w-50 mx-auto text-center convBtn" data-target="#loginModal"
+                    class="border border-gray-200 w-50 mx-auto text-center convBtn" data-target="#loginModal"
                     data-toggle="modal">Service Milestone Breakdown</a>
 
                     <!-- Message -->
                     <a style="cursor:pointer;color:#015601;" v-if="auth_user"
-                    class="my-4 border border-dark w-50 mx-auto text-center convBtn rounded" data-toggle="collapse" @click="contact">Contact Me</a>
+                    class="my-4 border border-gray-200 w-50 mx-auto text-center convBtn rounded" data-toggle="collapse" @click="contact">Contact Me</a>
 
                   <a style="cursor:pointer;color:#015601;" v-else @click="make_session()"
-                    class="my-4 border border-dark w-50 mx-auto text-center convBtn" data-target="#loginModal"
+                    class="my-4 border border-gray-200 w-50 mx-auto text-center convBtn" data-target="#loginModal"
                     data-toggle="modal">Contact Me</a>
 
+                  </div>
+
+
+                     
                   <div class="collapse" id="collapseExample">
                     <div class="card card-body py-2 mx-auto" style="width: 90%;">
                       <div  class="p-0">
@@ -119,48 +200,7 @@
 
           </div>
 
-          <div class="col-md-4 col-lg-3 rounded my-3 my-md-0 primary_bg">
-            <div id="booked" v-if="!booked" class="p-2">
-              <form @submit.prevent="serviceBook">
-
-                <!-- <div class="d-flex p-2 justify-content-center justify-content-md-end">
-                  <a class="w-50 my-3 btn header_buttons text-light float-right">Message</a>
-                </div> -->
-
-                <div class="d-flex p-2 justify-content-center justify-content-md-end">
-                  <p class="d-inline  text-left text-light mr-2">Desired start date: </p>
-                  <span class="pl-0 d-inline "><input required v-model="formBook.date" id="date" type="date" name="date"></span>
-                </div>
-
-                <div class="d-flex p-2 justify-content-center justify-content-md-end">
-                  <div class="">
-                    <p class="text-start text-light">Enter additional notes </p>
-                    <textarea rows="10" cols="32" required v-model="formBook.note" name="note" class="rounded"></textarea>
-                  </div>
-
-                </div>
-
-                <input hidden type="number" name="service_id" v-model="formBook.service_id">
-
-                <div class="p-2 d-flex justify-content-center justify-content-md-end">
-                  <button v-if="auth_user"
-                    class="my-3 py-1 primary_bg w-50 header_buttons text-light float-right">Book
-                  </button>
-
-                  <a v-else @click="make_session()" data-target="#loginModal" data-toggle="modal"
-                    class="my-3 py-1 primary_bg w-50 header_buttons text-light float-right">Book</a>
-                </div>
-
-
-              </form>
-
-            </div>
-
-            <div id="booked" v-else class=" p-2">
-              <p class="font-weight-bold text-center bg-light border border-dark py-3 text-dark"> You booked this service. </p>
-            </div>
-
-          </div>
+     
 
         </div>
 
@@ -171,8 +211,6 @@
 
                 <button class="w-25 searchListing">Add Review</button>
             </div> -->
-
-
 
       </div>
 
