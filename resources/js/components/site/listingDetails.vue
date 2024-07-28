@@ -25,7 +25,7 @@
               
 
               <a v-if="auth_user" data-toggle="modal" data-target="#reviewModal"
-                class="bg-green-700 w-[50%] text-center  add rounded-[16px] ">Add Review</a>
+                style="cursor:pointer" class="bg-green-700 w-[50%] text-center  add rounded-[16px] ">Add Review</a>
 
               <a v-else @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal"
                 class="w-[50%] text-center text-[12px] add rounded-[16px]">Add Review</a>

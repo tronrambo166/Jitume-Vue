@@ -68316,7 +68316,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -68446,7 +68446,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -68687,7 +68687,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\n    Name: "),
+        _vm._v("\r\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -68722,7 +68722,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Desc: "),
+        _vm._v("\r\n\r\n     Desc: "),
         _c("textarea", {
           directives: [
             {
@@ -68759,7 +68759,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Cat Id:  "),
+        _vm._v("\r\n\r\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -68790,7 +68790,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Brand Id:  "),
+        _vm._v("\r\n\r\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -68821,7 +68821,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Price:  "),
+        _vm._v("\r\n\r\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -68851,7 +68851,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n     Qty:  "),
+        _vm._v("\r\n\r\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -68881,7 +68881,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n   Image: "),
+        _vm._v("\r\n\r\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -68943,7 +68943,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -68992,7 +68992,7 @@ var render = function () {
         },
       },
       [
-        _vm._v("\n    Name: "),
+        _vm._v("\r\n    Name: "),
         _c("input", {
           directives: [
             {
@@ -69027,7 +69027,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Desc: "),
+        _vm._v("\r\n\r\n     Desc: "),
         _c("input", {
           directives: [
             {
@@ -69058,7 +69058,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Cat Id:  "),
+        _vm._v("\r\n\r\n     Cat Id:  "),
         _c("input", {
           directives: [
             {
@@ -69089,7 +69089,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Brand Id:  "),
+        _vm._v("\r\n\r\n     Brand Id:  "),
         _c("input", {
           directives: [
             {
@@ -69120,7 +69120,7 @@ var render = function () {
           : _vm._e(),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n\n     Price:  "),
+        _vm._v("\r\n\r\n     Price:  "),
         _c("input", {
           directives: [
             {
@@ -69150,7 +69150,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n     Qty:  "),
+        _vm._v("\r\n\r\n     Qty:  "),
         _c("input", {
           directives: [
             {
@@ -69180,7 +69180,7 @@ var render = function () {
             })
           : _vm._e(),
         _c("br"),
-        _vm._v("\n\n   Image: "),
+        _vm._v("\r\n\r\n   Image: "),
         _c("input", {
           attrs: { multiple: "", type: "file", name: "image[]" },
           on: { change: _vm.handleFile },
@@ -69242,7 +69242,7 @@ var render = function () {
             staticClass: "btn btn-primary",
             attrs: { type: "submit", disabled: _vm.form.busy },
           },
-          [_vm._v("\n     Save\n    ")]
+          [_vm._v("\r\n     Save\r\n    ")]
         ),
       ]
     ),
@@ -75194,6 +75194,7 @@ var render = function () {
                           {
                             staticClass:
                               "bg-green-700 w-[50%] text-center add rounded-[16px]",
+                            staticStyle: { cursor: "pointer" },
                             attrs: {
                               "data-toggle": "modal",
                               "data-target": "#reviewModal",
@@ -81319,7 +81320,7 @@ var render = function () {
                                   "div",
                                   {
                                     staticClass:
-                                      "bg-white mt-4 w-[280px] h-[380px] mx-auto rounded-xl p-3 mb-4 flex flex-col justify-between relative",
+                                      "card_link bg-white mt-4 w-[280px] h-[380px] mx-auto rounded-xl p-3 mb-4 flex flex-col justify-between relative",
                                     staticStyle: {
                                       "box-shadow":
                                         "rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px",
@@ -81403,7 +81404,7 @@ var render = function () {
                                               "h4",
                                               {
                                                 staticClass:
-                                                  "text-lg mt-2 hover:no-underline hover:text-green-800",
+                                                  "card_title text-lg mt-2 hover:no-underline hover:text-green-800",
                                               },
                                               [
                                                 _vm._v(

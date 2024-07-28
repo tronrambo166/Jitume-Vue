@@ -2265,3 +2265,6 @@ ul li a:hover{
 .card_link:hover{
     .card_title{color:rgb(21 128 61 );}
     }
+.dash_link:hover{
+    color:rgb(21 128 61 ) !important;
+}

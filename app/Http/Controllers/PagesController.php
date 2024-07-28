@@ -378,13 +378,19 @@ return response()->json([ 'data' => $results, 'conv'=>$conv, 'count'=>count($res
 
 public function latBusiness(){
 $results = array();
+
+    $listingSpecial = Listing::where('active',1)->
+    where('category','Agriculture')->
+    orWhere('category','Renewable/Energy')->latest()->get();
+    $results = $listingSpecial;
+
     $listings = Listing::where('active',1)->latest()->get();$i=1;
     foreach($listings as $listing){
         if(strlen($listing->location) > 30)
         $listing->location = substr($listing->location,0,30).'...';
         $listing->investment_needed = number_format($listing->investment_needed);
         $listing->file=null;
-        if($i<11)
+        if($i<11 && ($listing->category!='Agriculture' && $listing->category!='Renewable/Energy') )
          $results[] = $listing;$i++;
      }
 

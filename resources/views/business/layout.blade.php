@@ -331,7 +331,7 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
 
 
         
-      <a href="{{route('business')}}" class="flex items-center gap-[0.5]"><svg class="" xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11" fill="none">
+      <a href="{{route('business')}}" class="dash_link flex items-center gap-[0.5]"><svg class="" xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11" fill="none">
           <g clip-path="url(#clip0_881_4550)">
             <path d="M1.78101 3.64844V7.87914L5.906 10.3086V6.09766L1.78101 3.64844Z" fill="#2D3748" />
             <path d="M6.59351 10.3086L10.7185 7.87914V3.64844L6.59351 6.09766V10.3086Z" fill="#2D3748" />
@@ -349,20 +349,20 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
 
 
 
-      <a class="navLink flex items-center gap-1" href="{{route('add-listing')}}">
+      <a class="dash_link navLink flex items-center gap-1" href="{{route('add-listing')}}">
         <img src="../images/doc2.svg">
         <span>add business</span>
       </a>
       
-            <a href="{{route('account')}}" class=" flex items-center gap-1 px-sm-3 my-1 mr-2 px-1 py-1"><i class="fa fa-dollar-sign"></i>Account</a>
+            <a href="{{route('account')}}" class="dash_link flex items-center gap-1 px-sm-3 my-1 mr-2 px-1 py-1"><i class="fa fa-dollar-sign"></i>Account</a>
 
-            <a href="{{route('service-messages')}}" class="flex items-center gap-1 px-sm-3 my-1 mr-2 px-1 py-1"><i class="fa fa-envelope"></i>
+            <a href="{{route('service-messages')}}" class="dash_link flex items-center gap-1 px-sm-3 my-1 mr-2 px-1 py-1"><i class="fa fa-envelope"></i>
                                     @if(count($messages) != 0)
                                     <span class="new_msg font-weight-bold px-1">{{count($messages)}}</span>
                                     @endif
                                 Messages</a>
 
-      <a href="{{route('add-services')}}" class="flex items-center gap-1"><i class="fa fa-wrench text-[11px]"></i> add service</a>
+      <a href="{{route('add-services')}}" class="dash_link flex items-center gap-1"><i class="fa fa-wrench text-[11px]"></i> add service</a>
     </div>
   </div>
 </div>
