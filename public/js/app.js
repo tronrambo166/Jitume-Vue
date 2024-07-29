@@ -9940,6 +9940,7 @@ __webpack_require__.r(__webpack_exports__);
       }),
       results: [],
       details: [],
+      review: [],
       progress: '',
       share: '',
       amount_required: '',
@@ -9972,7 +9973,6 @@ __webpack_require__.r(__webpack_exports__);
       id = atob(id);
       id = atob(id);
       axios.get('isSubscribed/' + id).then(function (data) {
-        //console.log(data.data.data);
         if (data.data.count > 0) {
           t.subscribed = data.data.data.subscribed;
           t.trial = data.data.data.trial;
@@ -9986,6 +9986,8 @@ __webpack_require__.r(__webpack_exports__);
           $('#small_fee_div').removeClass('collapse');
           $('#small_fee').addClass('modal_ok_btn');
         }
+
+        t.review = data.data.reviews;
       });
     },
     getDetails: function getDetails() {
@@ -10048,6 +10050,8 @@ __webpack_require__.r(__webpack_exports__);
       id = atob(id);
       id = atob(id);
       var rating = $('#demoRating').val();
+      var text = $("#text").val();
+      text = btoa(text);
 
       if (rating == 0) {
         $.alert({
@@ -10055,7 +10059,7 @@ __webpack_require__.r(__webpack_exports__);
           content: 'A rating cannot be 0!'
         });
       } else {
-        axios.get('ratingListing/' + id + '/' + rating).then(function (data) {
+        axios.get('ratingListing/' + id + '/' + rating + '/' + text).then(function (data) {
           sessionStorage.setItem('alert', 'Rating submitted successfully!');
           location.reload();
           ;
@@ -75308,7 +75312,41 @@ var render = function () {
               _vm._m(2),
             ]),
             _vm._v(" "),
-            _vm._m(3),
+            _c(
+              "div",
+              { staticClass: "eqp-invest my-4 text-left" },
+              [
+                _c(
+                  "h3",
+                  { staticClass: "secondary_heading my-3 font-weight-bold" },
+                  [_vm._v("Reviews")]
+                ),
+                _vm._v(" "),
+                _vm._l(_vm.review, function (rev) {
+                  return _c("div", [
+                    _c("img", {
+                      staticClass: "d-inline",
+                      attrs: { src: "images/user.jpg", width: "30px" },
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "p",
+                      { staticClass: "text-justify-center d-inline small" },
+                      [
+                        _c(
+                          "b",
+                          { staticClass: "text-success font-weight-bold" },
+                          [_vm._v(_vm._s(rev.user_name))]
+                        ),
+                        _vm._v(" - " + _vm._s(rev.text) + " "),
+                        _c("span", [_vm._v("(" + _vm._s(rev.rating) + ")")]),
+                      ]
+                    ),
+                  ])
+                }),
+              ],
+              2
+            ),
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col-md-4 flex mr-0" }, [
@@ -75375,7 +75413,7 @@ var render = function () {
                     _c("span", { staticClass: "text-xl" }),
                   ]),
                   _vm._v(" "),
-                  _vm._m(4),
+                  _vm._m(3),
                 ]
               ),
             ]),
@@ -75433,7 +75471,7 @@ var render = function () {
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "row" }, [
-                            _vm._m(5),
+                            _vm._m(4),
                             _vm._v(" "),
                             _c("div", { staticClass: "col-2" }, [
                               _c(
@@ -75472,7 +75510,7 @@ var render = function () {
                   ]),
                   _vm.auth_user
                     ? _c("div", { staticClass: "float-right w-25" }, [
-                        _vm._m(6),
+                        _vm._m(5),
                         _vm._v(" "),
                         _c("span", [
                           _vm._v(_vm._s(_vm.progress) + "% Invested"),
@@ -75546,7 +75584,7 @@ var render = function () {
                   "div",
                   { staticClass: "card bg-light w-100 mx-auto py-3 hidden" },
                   [
-                    _vm._m(7),
+                    _vm._m(6),
                     _vm._v(" "),
                     _vm.auth_user
                       ? _c("div", { staticClass: "eqp-invest" }, [
@@ -75696,7 +75734,7 @@ var render = function () {
                         _vm.running && _vm.amount_required > 0
                           ? _c("div", { staticClass: "Invest-Payout" }, [
                               _c("div", { staticClass: "w-75 mx-auto row" }, [
-                                _vm._m(8),
+                                _vm._m(7),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "col-sm-12 px-1" }, [
                                   _c("div", { staticClass: "row" }, [
@@ -75724,7 +75762,7 @@ var render = function () {
                                     ]),
                                   ]),
                                   _vm._v(" "),
-                                  _vm._m(9),
+                                  _vm._m(8),
                                 ]),
                               ]),
                               _vm._v(" "),
@@ -75752,7 +75790,7 @@ var render = function () {
                               ),
                               _vm._v(" "),
                               _c("div", { staticClass: "w-75 mx-auto row" }, [
-                                _vm._m(10),
+                                _vm._m(9),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "col-sm-12 px-1" }, [
                                   _c("div", { staticClass: "row" }, [
@@ -75780,7 +75818,7 @@ var render = function () {
                                     ]),
                                   ]),
                                   _vm._v(" "),
-                                  _vm._m(11),
+                                  _vm._m(10),
                                 ]),
                               ]),
                               _vm._v(" "),
@@ -76028,7 +76066,7 @@ var render = function () {
                                           [_vm._v("\n          Ok\n        ")]
                                         ),
                                         _vm._v(" "),
-                                        _vm._m(12),
+                                        _vm._m(11),
                                       ]
                                     ),
                                   ]
@@ -76201,7 +76239,7 @@ var render = function () {
                                                   ]
                                                 ),
                                             _vm._v(" "),
-                                            _vm._m(13),
+                                            _vm._m(12),
                                           ])
                                         : _vm._e(),
                                       _vm._v(" "),
@@ -76282,9 +76320,9 @@ var render = function () {
                                                   ]
                                                 ),
                                             _vm._v(" "),
-                                            _vm._m(14),
+                                            _vm._m(13),
                                             _vm._v(" "),
-                                            _vm._m(15),
+                                            _vm._m(14),
                                           ])
                                         : _vm._e(),
                                       _vm._v(" "),
@@ -76381,11 +76419,11 @@ var render = function () {
             { staticClass: "modal-dialog", attrs: { role: "document" } },
             [
               _c("div", { staticClass: "modal-content" }, [
-                _vm._m(16),
+                _vm._m(15),
                 _vm._v(" "),
                 _c("div", { staticClass: "modal-body" }, [
                   _c("form", [
-                    _vm._m(17),
+                    _vm._m(16),
                     _vm._v(" "),
                     _c("h5", { staticClass: "font-weight-bold" }, [
                       _vm._v("Leave a review"),
@@ -76393,7 +76431,12 @@ var render = function () {
                     _vm._v(" "),
                     _c("textarea", {
                       staticClass: "bg-light border border-none",
-                      attrs: { name: "reply", cols: "55", rows: "3" },
+                      attrs: {
+                        id: "text",
+                        name: "text",
+                        cols: "55",
+                        rows: "3",
+                      },
                     }),
                     _vm._v(" "),
                     _c(
@@ -76401,6 +76444,7 @@ var render = function () {
                       {
                         staticClass:
                           "font-weight-bold text-white bg-green-700 w-50 text-center rounded-lg mt-2",
+                        staticStyle: { cursor: "pointer" },
                         on: {
                           click: function ($event) {
                             return _vm.rating()
@@ -76472,30 +76516,6 @@ var staticRenderFns = [
         _vm._v("\nUnlock this business to learn more about it and invest"),
       ]
     )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "eqp-invest my-4 text-left" }, [
-      _c("h3", { staticClass: "secondary_heading my-3 font-weight-bold" }, [
-        _vm._v("Reviews"),
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c("img", {
-          staticClass: "d-inline",
-          attrs: { src: "images/user.jpg", width: "30px" },
-        }),
-        _vm._v(" "),
-        _c("p", { staticClass: "text-justify-center d-inline small" }, [
-          _c("b", { staticClass: "text-success font-weight-bold" }, [
-            _vm._v("Person"),
-          ]),
-          _vm._v(" Lorem ipsum dolor sit amet, consectetur adipiscing elit "),
-        ]),
-      ]),
-    ])
   },
   function () {
     var _vm = this

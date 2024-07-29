@@ -13,6 +13,7 @@ use App\Models\Milestones;
 use App\Models\Conversation;
 use App\Models\BusinessBids;
 use App\Models\AcceptedBids;
+use App\Models\Review;
 use App\Models\BusinessSubscriptions;
 
 use Stripe\StripeClient;
@@ -1091,6 +1092,10 @@ public function assetEquip_download($id, $type){
     $subs = BusinessSubscriptions::where('investor_id',$investor_id)
     ->where('active',1)->orderBy('id','DESC')->first();
 
+    //Review
+    $reviews = array();
+    $reviews = Review::where('listing_id',$listing_id)->get();
+
     if($subs){
 
     //Get Stripe Subscription
@@ -1104,7 +1109,7 @@ public function assetEquip_download($id, $type){
     catch(\Exception $e){
       $count = 0;
       $results['subscribed'] = 0;
-      return response()->json([ 'data' => $results, 'count' => $count] );
+      return response()->json([ 'data' => $results, 'count' => $count, 'reviews' => $reviews] );
     }
 
       $expire_date = date('Y-m-d',$stripe_sub->current_period_end);
@@ -1134,7 +1139,8 @@ public function assetEquip_download($id, $type){
       $results['plan'] = $subs->plan;
 
     }
-    return response()->json([ 'data' => $results, 'count' => $count] );
+
+    return response()->json([ 'data' => $results, 'count' => $count, 'reviews' => $reviews] );
 }
 
 
@@ -1239,7 +1245,7 @@ $user_id = Auth::id();
 }
 
 //Rating
-public function ratingListing($id, $rating){
+public function ratingListing($id, $rating, $text){
 $user_id = Auth::id();
 $listing = Listing::where('id',$id)->first();
 $new_rating = $rating + $listing->rating;
@@ -1248,6 +1254,14 @@ $rating_count = 1 + $listing->rating_count;
         $listing = Listing::where('id',$id)->update([
         'rating' => $new_rating,
         'rating_count' => $rating_count,
+       ]);
+
+       $rate = Review::create([
+        'user_id' => $user_id,
+        'listing_id' => $id,
+        'user_name' => Auth::user()->fname,
+        'text' => base64_decode($text),
+        'rating' => $rating
        ]);
 
         return response()->json(['success' => 'Success!']);

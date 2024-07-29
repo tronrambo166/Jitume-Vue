@@ -146,9 +146,9 @@ Unlock this business to learn more about it and invest</p>
 
   <div class=" eqp-invest my-4 text-left">
           <h3 class="secondary_heading my-3 font-weight-bold">Reviews</h3>
-          <div>
+          <div v-for="rev in review">
             <img class="d-inline" src="images/user.jpg" width="30px">
-            <p class="text-justify-center d-inline small"><b class="text-success font-weight-bold">Person</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit </p>
+            <p  class="text-justify-center d-inline small"><b class="text-success font-weight-bold">{{rev.user_name}}</b> - {{rev.text}} <span>({{rev.rating}})</span> </p>
           </div> 
   </div>
 
@@ -709,9 +709,9 @@ Unlock this business to learn more about it and invest</p>
 
 
               <h5 class="font-weight-bold">Leave a review</h5>
-              <textarea name="reply" class="bg-light border border-none" cols="55" rows="3"></textarea>
+              <textarea id="text" name="text" class="bg-light border border-none" cols="55" rows="3"></textarea>
 
-              <a @click="rating()" class="font-weight-bold  text-white bg-green-700 w-50 text-center rounded-lg mt-2">Submit</a>
+              <a style="cursor: pointer;" @click="rating()" class="font-weight-bold  text-white bg-green-700 w-50 text-center rounded-lg mt-2">Submit</a>
             </form>
 
           </div>
@@ -751,6 +751,7 @@ export default {
 
     results: [],
     details: [],
+    review: [],
     progress: '',
     share: '',
     amount_required: '',
@@ -789,7 +790,6 @@ export default {
       id = atob(id); id = atob(id);
 
       axios.get('isSubscribed/'+id).then((data) => {
-        //console.log(data.data.data);
         if(data.data.count > 0){
         t.subscribed = data.data.data.subscribed;
         t.trial = data.data.data.trial;
@@ -806,6 +806,8 @@ export default {
         $('#small_fee_div').removeClass('collapse');
         $('#small_fee').addClass('modal_ok_btn');
       } 
+      t.review = data.data.reviews;
+
 
         });
       },
@@ -884,6 +886,8 @@ export default {
       id = atob(id); id = atob(id);
 
       var rating = $('#demoRating').val();
+      var text = $("#text").val();
+      text = btoa(text);
       if(rating == 0){
         $.alert({
           title: 'Alert!',
@@ -891,7 +895,7 @@ export default {
         });
       }
       else{
-      axios.get('ratingListing/' + id + '/' + rating).then((data) => {
+      axios.get('ratingListing/' + id + '/' + rating + '/' + text).then((data) => {
         sessionStorage.setItem('alert', 'Rating submitted successfully!');
         location.reload();;
       });
