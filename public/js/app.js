@@ -9908,6 +9908,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user', 'business'],
   data: function data() {
@@ -9940,7 +9950,8 @@ __webpack_require__.r(__webpack_exports__);
       token_left: '',
       range: '',
       plan: '',
-      expire: ''
+      expire: '',
+      allowToReview: false
     };
   },
   created: function created() {
@@ -10167,7 +10178,8 @@ __webpack_require__.r(__webpack_exports__);
       id = atob(id);
       id = atob(id);
       axios.get('getMilestones/' + id).then(function (data) {
-        //console.log(data);
+        //console.log(data.data.allowToReview);
+        t.allowToReview = data.data.allowToReview;
         t.results = data.data.data;
         t.progress = data.data.progress;
         $('#progress').css('width', t.progress + '%');
@@ -11817,7 +11829,7 @@ __webpack_require__.r(__webpack_exports__);
         method: 'GET',
         responseType: 'blob'
       }).then(function (data) {
-        if (data.data.status == 404) {
+        if (data.data.size == 3) {
           $.alert({
             title: 'Alert!',
             content: 'The business has no such document or the file not found!',
@@ -11830,16 +11842,16 @@ __webpack_require__.r(__webpack_exports__);
               }
             }
           });
+        } else {
+          //console.log(data);
+          var href = URL.createObjectURL(data.data);
+          var link = document.createElement('a');
+          link.href = href;
+          if (data.data.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') link.setAttribute('download', 'statement.docx'); //or any other extension
+          else link.setAttribute('download', 'statement.pdf');
+          document.body.appendChild(link);
+          link.click();
         }
-
-        console.log(data);
-        var href = URL.createObjectURL(data.data);
-        var link = document.createElement('a');
-        link.href = href;
-        if (data.data.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') link.setAttribute('download', 'statement.docx'); //or any other extension
-        else link.setAttribute('download', 'statement.pdf');
-        document.body.appendChild(link);
-        link.click();
       });
     }
   },
@@ -12163,7 +12175,7 @@ __webpack_require__.r(__webpack_exports__);
         method: 'GET',
         responseType: 'blob'
       }).then(function (data) {
-        if (data.data.status == 404) {
+        if (data.data.size == 3) {
           $.alert({
             title: 'Alert!',
             content: 'The business has no such document or the file not found!',
@@ -12176,16 +12188,16 @@ __webpack_require__.r(__webpack_exports__);
               }
             }
           });
+        } else {
+          //console.log(data);
+          var href = URL.createObjectURL(data.data);
+          var link = document.createElement('a');
+          link.href = href;
+          if (data.data.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') link.setAttribute('download', 'statement.docx'); //or any other extension
+          else link.setAttribute('download', 'statement.pdf');
+          document.body.appendChild(link);
+          link.click();
         }
-
-        console.log(data);
-        var href = URL.createObjectURL(data.data);
-        var link = document.createElement('a');
-        link.href = href;
-        if (data.data.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') link.setAttribute('download', 'statement.docx'); //or any other extension
-        else link.setAttribute('download', 'statement.pdf');
-        document.body.appendChild(link);
-        link.click();
       });
     },
     pay_milestone: function pay_milestone(mile_id, amount) {
@@ -75189,7 +75201,7 @@ var render = function () {
                   "div",
                   { staticClass: "flex w-full items-center gap-[40px]" },
                   [
-                    _vm.auth_user
+                    _vm.allowToReview
                       ? _c(
                           "a",
                           {
@@ -75203,23 +75215,7 @@ var render = function () {
                           },
                           [_vm._v("Add Review")]
                         )
-                      : _c(
-                          "a",
-                          {
-                            staticClass:
-                              "w-[50%] text-center text-[12px] add rounded-[16px]",
-                            attrs: {
-                              "data-target": "#loginmodal2",
-                              "data-toggle": "modal",
-                            },
-                            on: {
-                              click: function ($event) {
-                                return _vm.make_session(_vm.form.listing_id)
-                              },
-                            },
-                          },
-                          [_vm._v("Add Review")]
-                        ),
+                      : _vm._e(),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -75311,6 +75307,8 @@ var render = function () {
               _vm._v(" "),
               _vm._m(2),
             ]),
+            _vm._v(" "),
+            _vm._m(3),
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col-md-4 flex mr-0" }, [
@@ -75377,7 +75375,7 @@ var render = function () {
                     _c("span", { staticClass: "text-xl" }),
                   ]),
                   _vm._v(" "),
-                  _vm._m(3),
+                  _vm._m(4),
                 ]
               ),
             ]),
@@ -75435,7 +75433,7 @@ var render = function () {
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "row" }, [
-                            _vm._m(4),
+                            _vm._m(5),
                             _vm._v(" "),
                             _c("div", { staticClass: "col-2" }, [
                               _c(
@@ -75474,7 +75472,7 @@ var render = function () {
                   ]),
                   _vm.auth_user
                     ? _c("div", { staticClass: "float-right w-25" }, [
-                        _vm._m(5),
+                        _vm._m(6),
                         _vm._v(" "),
                         _c("span", [
                           _vm._v(_vm._s(_vm.progress) + "% Invested"),
@@ -75548,7 +75546,7 @@ var render = function () {
                   "div",
                   { staticClass: "card bg-light w-100 mx-auto py-3 hidden" },
                   [
-                    _vm._m(6),
+                    _vm._m(7),
                     _vm._v(" "),
                     _vm.auth_user
                       ? _c("div", { staticClass: "eqp-invest" }, [
@@ -75698,7 +75696,7 @@ var render = function () {
                         _vm.running && _vm.amount_required > 0
                           ? _c("div", { staticClass: "Invest-Payout" }, [
                               _c("div", { staticClass: "w-75 mx-auto row" }, [
-                                _vm._m(7),
+                                _vm._m(8),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "col-sm-12 px-1" }, [
                                   _c("div", { staticClass: "row" }, [
@@ -75726,7 +75724,7 @@ var render = function () {
                                     ]),
                                   ]),
                                   _vm._v(" "),
-                                  _vm._m(8),
+                                  _vm._m(9),
                                 ]),
                               ]),
                               _vm._v(" "),
@@ -75754,7 +75752,7 @@ var render = function () {
                               ),
                               _vm._v(" "),
                               _c("div", { staticClass: "w-75 mx-auto row" }, [
-                                _vm._m(9),
+                                _vm._m(10),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "col-sm-12 px-1" }, [
                                   _c("div", { staticClass: "row" }, [
@@ -75782,7 +75780,7 @@ var render = function () {
                                     ]),
                                   ]),
                                   _vm._v(" "),
-                                  _vm._m(10),
+                                  _vm._m(11),
                                 ]),
                               ]),
                               _vm._v(" "),
@@ -76030,7 +76028,7 @@ var render = function () {
                                           [_vm._v("\n          Ok\n        ")]
                                         ),
                                         _vm._v(" "),
-                                        _vm._m(11),
+                                        _vm._m(12),
                                       ]
                                     ),
                                   ]
@@ -76203,7 +76201,7 @@ var render = function () {
                                                   ]
                                                 ),
                                             _vm._v(" "),
-                                            _vm._m(12),
+                                            _vm._m(13),
                                           ])
                                         : _vm._e(),
                                       _vm._v(" "),
@@ -76284,9 +76282,9 @@ var render = function () {
                                                   ]
                                                 ),
                                             _vm._v(" "),
-                                            _vm._m(13),
-                                            _vm._v(" "),
                                             _vm._m(14),
+                                            _vm._v(" "),
+                                            _vm._m(15),
                                           ])
                                         : _vm._e(),
                                       _vm._v(" "),
@@ -76383,11 +76381,11 @@ var render = function () {
             { staticClass: "modal-dialog", attrs: { role: "document" } },
             [
               _c("div", { staticClass: "modal-content" }, [
-                _vm._m(15),
+                _vm._m(16),
                 _vm._v(" "),
                 _c("div", { staticClass: "modal-body" }, [
                   _c("form", [
-                    _vm._m(16),
+                    _vm._m(17),
                     _vm._v(" "),
                     _c("h5", { staticClass: "font-weight-bold" }, [
                       _vm._v("Leave a review"),
@@ -76474,6 +76472,30 @@ var staticRenderFns = [
         _vm._v("\nUnlock this business to learn more about it and invest"),
       ]
     )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "eqp-invest my-4 text-left" }, [
+      _c("h3", { staticClass: "secondary_heading my-3 font-weight-bold" }, [
+        _vm._v("Reviews"),
+      ]),
+      _vm._v(" "),
+      _c("div", [
+        _c("img", {
+          staticClass: "d-inline",
+          attrs: { src: "images/user.jpg", width: "30px" },
+        }),
+        _vm._v(" "),
+        _c("p", { staticClass: "text-justify-center d-inline small" }, [
+          _c("b", { staticClass: "text-success font-weight-bold" }, [
+            _vm._v("Person"),
+          ]),
+          _vm._v(" Lorem ipsum dolor sit amet, consectetur adipiscing elit "),
+        ]),
+      ]),
+    ])
   },
   function () {
     var _vm = this

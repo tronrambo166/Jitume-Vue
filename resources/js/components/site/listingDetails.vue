@@ -24,11 +24,12 @@
       <div class="flex w-full  items-center gap-[40px]"> 
               
 
-              <a v-if="auth_user" data-toggle="modal" data-target="#reviewModal"
+              <a v-if="allowToReview" data-toggle="modal" data-target="#reviewModal"
                 style="cursor:pointer" class="bg-green-700 w-[50%] text-center  add rounded-[16px] ">Add Review</a>
 
-              <a v-else @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal"
-                class="w-[50%] text-center text-[12px] add rounded-[16px]">Add Review</a>
+              <!-- <a @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal"
+                class="w-[50%] text-center text-[12px] add rounded-[16px]">Add Review</a> -->
+      
       <div class=" text-green-700 text-center w-[50%]">
 
             <!--unlock business-->
@@ -142,6 +143,15 @@ Unlock  To
 Unlock this business to learn more about it and invest</p>
 
   </div>
+
+  <div class=" eqp-invest my-4 text-left">
+          <h3 class="secondary_heading my-3 font-weight-bold">Reviews</h3>
+          <div>
+            <img class="d-inline" src="images/user.jpg" width="30px">
+            <p class="text-justify-center d-inline small"><b class="text-success font-weight-bold">Person</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit </p>
+          </div> 
+  </div>
+
         <!--<div class=" eqp-invest my-4 text-left">
           <h3 class="secondary_heading my-3">About {{form.name}}</h3>
           <p class="text-justify-center  ">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -752,7 +762,8 @@ export default {
     token_left:'',
     range:'',
     plan:'',
-    expire:''
+    expire:'',
+    allowToReview:false
   }),
 
   created() {
@@ -1014,7 +1025,8 @@ export default {
       id = atob(id); id = atob(id);
 
       axios.get('getMilestones/' + id).then((data) => {
-        //console.log(data);
+        //console.log(data.data.allowToReview);
+        t.allowToReview = data.data.allowToReview;
         t.results = data.data.data;
         t.progress = data.data.progress;
         $('#progress').css('width', t.progress + '%');

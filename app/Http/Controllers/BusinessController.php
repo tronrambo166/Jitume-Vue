@@ -562,14 +562,20 @@ Equipments::create([
 
 //MILESTONES
 public function activate_milestone($id){
-  $thisMile = Milestones::where('listing_id',$id)->first();
-
-  if(!$thisMile){
-    Session::put('failed','A business must have at least 1 milestone to be activated!');
+  $total = 0;
+  $this_business = Listing::where('id',$id)->first();
+  $thisMile = Milestones::where('listing_id',$id)->get();
+  foreach ($thisMile as $key) {
+    $total = $total + $key->amount;
+  }
+  //return $total.' = '.$this_business->investment_needed;
+  if($total != $this_business->investment_needed){
+    Session::put('failed','A business must have one or multiple milestones that covers the amount required, before activated!');
             return redirect()->back();
   }
   
-  $milestones = Milestones::where('id',$thisMile->id)
+  $thisMile2 = Milestones::where('listing_id',$id)->first();
+  $milestones = Milestones::where('id',$thisMile2->id)
   ->update([
   'status' => 'In Progress'
   ]);
@@ -601,6 +607,14 @@ public function getMilestones($id){
       }
       else $investor_id = null;
     }
+
+//Last check
+    $next_mile = Milestones::where('listing_id',$id)->where('status','To Do')->first();
+    $invest_check = AcceptedBids::where('business_id',$id)->where('investor_id',$investor_id)->first();
+    if(!$next_mile && $invest_check)
+    $allowToReview = true;
+    else $allowToReview = false;
+//Last check
 
  $milestones = Milestones::where('listing_id',$id)->get(); $done = 0;
   $c=0;$d=0; $progress=0;$share=0; $amount_covered = 0; $running = 0;
@@ -646,20 +660,23 @@ $amount_required = $list->investment_needed - $amount_covered;
 $progress = ($amount_covered/$list->investment_needed)*100;
 
 return response()->json([ 'data' => $milestones, 'progress' => $progress,
-'share' => $share, 'amount_required' => $amount_required,'running' => $running ]);
+'share' => $share, 'amount_required' => $amount_required,'running' => $running,
+ 'allowToReview' => $allowToReview ]);
 }
 
 else
 return response()->json([ 'data' => 'Failed!', 'progress' => 0, 'length' => 0 ]);
 
- }
+}
+
 
  public function download_milestone_doc($id, $mile_id){
     
     $doc = Milestones::where('id',$mile_id)->first();
     $file=$doc->document;
-    if($file == null){
-        return response()->json(['status'=>404]);
+    if( $file == null || !file_exists(public_path($file)) ){
+
+        return response('404');
     }
     
     $headers = array('Content-Type'=> 'application/pdf');
@@ -777,7 +794,29 @@ try{
 
   if($request->status == 'Done'){
     // Release this milestone payment from Escrow
-    // Release this milestone payment from Escrow
+
+    //Last Milestone Check
+    $next_mile = Milestones::where('listing_id',$listing_id)->where('status','To Do')->first();
+    if(!$next_mile){
+        $bids = AcceptedBids::where('business_id',$listing_id)->get();
+        foreach($bids as $bid){
+        $investor = User::where('id',$bid->investor_id)->first();
+        $investor_mail = $investor->email;
+
+        $list = listing::where('id',$bid->business_id)->first();
+        $info=[ 'business_name'=>$list->name,'business_id' => base64_encode(base64_encode($list->id)) ];
+        $user['to'] =  $investor_mail; //'tottenham266@gmail.com';
+        //Email
+        Mail::send('bids.invest_completion_alert', $info, function($msg) use ($user){
+             $msg->to($user['to']);
+             $msg->subject('Investment completion alert!');
+         });
+        }
+        //Email
+
+      return redirect()->back();
+    }
+    //Last Milestone Check
 
     $bids = AcceptedBids::where('business_id',$listing_id)->get();
     $nextMileAgree = AcceptedBids::where('business_id',$listing_id)

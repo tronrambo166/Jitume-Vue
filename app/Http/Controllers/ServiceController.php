@@ -608,8 +608,9 @@ return response()->json([ 'data' => $milestones, 'done_msg' => $done_msg,
     
     $doc = Smilestones::where('id',$mile_id)->first();
     $file=$doc->document;
-    if($file == null){
-        return response()->json(['status'=>404]);
+    if( $file == null || !file_exists(public_path($file)) ){
+
+        return response('404');
     }
     $headers = array('Content-Type'=> 'application/pdf');
     $url= public_path($file);

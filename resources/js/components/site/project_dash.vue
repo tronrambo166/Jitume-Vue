@@ -313,7 +313,7 @@ export default {
                 responseType: 'blob',
 
                 }).then((data) => {
-                if(data.data.status == 404){
+                if((data.data.size == 3)){
                   $.alert({
                   title: 'Alert!',
                   content: 'The business has no such document or the file not found!',
@@ -326,7 +326,9 @@ export default {
                     }
                 }}  
                 });
-                } console.log(data);
+                } 
+                else{
+                  //console.log(data);
                   const href = URL.createObjectURL(data.data);
                   const link = document.createElement('a');
                   link.href = href;
@@ -338,6 +340,7 @@ export default {
                     
                   document.body.appendChild(link);
                   link.click();
+                }
 
                     });
         }
