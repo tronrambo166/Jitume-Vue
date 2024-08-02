@@ -571,7 +571,7 @@ public function activate_milestone($id){
   }
   //return $total.' = '.$this_business->investment_needed;
   if($total != $this_business->investment_needed){
-    Session::put('failed','A business must have one or multiple milestones that covers the amount required, before activated!');
+    Session::put('failed','A business must have one or more milestones that cover the full amount requested before activation!');
             return redirect()->back();
   }
   
@@ -610,7 +610,8 @@ public function getMilestones($id){
     }
 
 //Last check
-    $next_mile = Milestones::where('listing_id',$id)->where('status','To Do')->first();
+    $next_mile = Milestones::where('listing_id',$id)->where(function($q){
+    $q->where('status','To Do')->orWhere('status','In Progress'); })->first();
     $invest_check = AcceptedBids::where('business_id',$id)->where('investor_id',$investor_id)->first();
     if(!$next_mile && $invest_check)
     $allowToReview = true;
@@ -797,7 +798,9 @@ try{
     // Release this milestone payment from Escrow
 
     //Last Milestone Check
-    $next_mile = Milestones::where('listing_id',$listing_id)->where('status','To Do')->first();
+    $next_mile = Milestones::where('listing_id',$listing_id)->where(function($q){
+    $q->where('status','To Do')->orWhere('status','In Progress'); })->first();
+
     if(!$next_mile){
         $bids = AcceptedBids::where('business_id',$listing_id)->get();
         foreach($bids as $bid){
@@ -1025,7 +1028,6 @@ foreach($res as $r){
 
 $remove_new = BusinessBids::where('owner_id', Auth::id())
 ->update(['new'=>0]);
-
 return view('business.bids',compact('bids'));
 }
  catch(\Exception $e){

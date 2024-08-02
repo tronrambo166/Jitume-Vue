@@ -9952,17 +9952,21 @@ __webpack_require__.r(__webpack_exports__);
       range: '',
       plan: '',
       expire: '',
-      allowToReview: false
+      allowToReview: false,
+      reviewPop: false
     };
   },
   created: function created() {
     if (sessionStorage.getItem('invest') != null) {
       sessionStorage.setItem('invest', null); //sessionStorage.clear();
-    }
 
-    this.form.raw_id = this.$route.params.id;
+      this.form.raw_id = this.$route.params.id;
+    }
   },
   methods: {
+    closePop2: function closePop2() {
+      $('#reviewModal').removeClass('d-block');
+    },
     format: function format(x) {
       x = new Intl.NumberFormat().format(x);
       return x;
@@ -9991,6 +9995,13 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     getDetails: function getDetails() {
+      this.reviewPop = this.$route.query.xxvii;
+
+      if (this.reviewPop == 'true') {
+        alert(this.reviewPop);
+        $('#reviewModal').addClass('d-block');
+      }
+
       var popup;
       var id = this.$route.params.id;
       var t = this;
@@ -10182,7 +10193,7 @@ __webpack_require__.r(__webpack_exports__);
       id = atob(id);
       id = atob(id);
       axios.get('getMilestones/' + id).then(function (data) {
-        //console.log(data.data.allowToReview);
+        console.log(data.data.allowToReview);
         t.allowToReview = data.data.allowToReview;
         t.results = data.data.data;
         t.progress = data.data.progress;
@@ -10191,8 +10202,11 @@ __webpack_require__.r(__webpack_exports__);
         t.share = data.data.share;
         t.amount_required = data.data.amount_required;
         t.running = data.data.running;
-        if (data.data.data == "Failed!") t.progress = 0;
-      });
+        if (data.data.data == "Failed!") t.progress = 0; // if(t.allowToReview == true){ alert('hi');
+        //     $('#reviewModal').addClass('d-block');
+        //     $('#reviewModal').removeClass('collapse');
+        //   }
+      }); // price_descending
     },
     bidCommits: function bidCommits() {
       var checked = ''; //[...document.querySelectorAll('input[name="miles"]:checked')]
@@ -76404,7 +76418,7 @@ var render = function () {
       _c(
         "div",
         {
-          staticClass: "modal fade",
+          staticClass: "modal",
           attrs: {
             id: "reviewModal",
             tabindex: "-1",
@@ -76419,11 +76433,34 @@ var render = function () {
             { staticClass: "modal-dialog", attrs: { role: "document" } },
             [
               _c("div", { staticClass: "modal-content" }, [
-                _vm._m(15),
+                _c("div", { staticClass: "modal-header" }, [
+                  _c(
+                    "h5",
+                    {
+                      staticClass: "text-[15px] font-bold text-black",
+                      attrs: { id: "exampleModalLabel" },
+                    },
+                    [_vm._v("Submit a review")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "close",
+                      attrs: {
+                        type: "button",
+                        "data-dismiss": "modal",
+                        "aria-label": "Close",
+                      },
+                      on: { click: _vm.closePop2 },
+                    },
+                    [_c("span", [_vm._v("×")])]
+                  ),
+                ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "modal-body" }, [
                   _c("form", [
-                    _vm._m(16),
+                    _vm._m(15),
                     _vm._v(" "),
                     _c("h5", { staticClass: "font-weight-bold" }, [
                       _vm._v("Leave a review"),
@@ -76729,36 +76766,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        {
-          staticClass: "text-[15px] font-bold text-black",
-          attrs: { id: "exampleModalLabel" },
-        },
-        [_vm._v("Submit a review")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close",
-          },
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      ),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("h5", { staticClass: "my-3 font-weight-bold" }, [
-      _vm._v("Service rating\n                "),
+      _vm._v("Business rating\n                "),
       _c("div", { staticClass: "py-3 flex gap-2", attrs: { id: "demo" } }),
     ])
   },

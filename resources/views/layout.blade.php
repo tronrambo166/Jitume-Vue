@@ -2042,8 +2042,6 @@
 
 
 function closePop(){ $('#investModal').css('display', 'none'); }
-
-
         
 
 //For Register

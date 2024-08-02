@@ -691,19 +691,19 @@ Unlock this business to learn more about it and invest</p>
     <!-- INVEST MODAL -->
 
     <!-- Review -->
-    <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
       aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="text-[15px]  font-bold text-black" id="exampleModalLabel">Submit a review</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+            <button @click="closePop2" type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span >&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <form>
-              <h5 class="my-3 font-weight-bold">Service rating
+              <h5 class="my-3 font-weight-bold">Business rating
                 <div class="py-3 flex gap-2" id="demo"></div>
               </h5>
 
@@ -764,20 +764,21 @@ export default {
     range:'',
     plan:'',
     expire:'',
-    allowToReview:false
+    allowToReview:false,
+    reviewPop:false
   }),
 
   created() {
      if (sessionStorage.getItem('invest') != null){
          sessionStorage.setItem('invest',null);
        //sessionStorage.clear();
+        this.form.raw_id = this.$route.params.id;
      }
-
-    this.form.raw_id = this.$route.params.id;
-
+    
   },
   methods: {
 
+    closePop2:function(){ $('#reviewModal').removeClass('d-block'); },
     format:function (x) {
     
      x = new Intl.NumberFormat().format(x);
@@ -813,6 +814,12 @@ export default {
       },
 
     getDetails: function () {
+    
+      this.reviewPop = this.$route.query.xxvii;
+      if(this.reviewPop=='true'){alert(this.reviewPop)
+        $('#reviewModal').addClass('d-block');
+      }
+
       var popup;
       var id = this.$route.params.id; var t = this;
       id = atob(id); id = atob(id); 
@@ -1029,7 +1036,7 @@ export default {
       id = atob(id); id = atob(id);
 
       axios.get('getMilestones/' + id).then((data) => {
-        //console.log(data.data.allowToReview);
+        console.log(data.data.allowToReview);
         t.allowToReview = data.data.allowToReview;
         t.results = data.data.data;
         t.progress = data.data.progress;
@@ -1042,7 +1049,15 @@ export default {
         t.running = data.data.running;
         if(data.data.data == "Failed!")
           t.progress = 0;
+
+        // if(t.allowToReview == true){ alert('hi');
+        //     $('#reviewModal').addClass('d-block');
+        //     $('#reviewModal').removeClass('collapse');
+        //   }
       });
+
+      // price_descending
+
 
     },
 
@@ -1228,6 +1243,7 @@ sessionStorage.setItem("purpose", "Monthly basis subscription");
       alert('Review successfully taken!');
       sessionStorage.clear();
     }
+    
 
     // SCRIPT
 

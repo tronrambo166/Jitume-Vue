@@ -254,9 +254,9 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
                     <img src="../images/btmicon.png" alt="heading">
                 </h1>
                 <div class="bottom-left-content absolute bottom-5 left-5">
-                    <p class="custom-paragraph">Need help?</p>
-                    <p class="custom-paragraph2">Please check our docs</p>
-                    <button class="custom-button">contact us</button>
+                    <p class="font_default custom-paragraph">Need help?</p>
+                    <p class="font_default custom-paragraph2">Please check our docs</p>
+                    <button class="font_default custom-button">contact us</button>
                 </div>
             </div>
 @if(isset($subscribed->id))
@@ -279,7 +279,7 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
     <div class="top-left  flex flex-col justify-start">
       <h1>Pages / Dashboard</h1>
       <div class="flex items-center gap-[20px]">
-      <h2 class="text-[20px] font-bold">Dashboard</h2>
+      <h2 class="font_default text-[20px] font-bold">Dashboard</h2>
           
 
 </div>
