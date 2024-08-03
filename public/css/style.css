@@ -727,6 +727,7 @@
         font-family: Outfit-Regular;
         text-align: center;
         text-decoration: none;
+        padding:0 !important;
     }
 
     .social_btn img{

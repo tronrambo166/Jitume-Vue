@@ -730,7 +730,7 @@
                                             </div>
 
 
-                                           <div class="row my-3 form_fields_black" style="width: 80%;">
+                                           <div class="row my-3 form_fields_black" style="width: 100%;">
                                             <div class="col-md-12">
                                                 <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left ">What's your gender?(optional) </p></label>
                                             </div>
@@ -2042,6 +2042,8 @@
 
 
 function closePop(){ $('#investModal').css('display', 'none'); }
+
+
         
 
 //For Register
