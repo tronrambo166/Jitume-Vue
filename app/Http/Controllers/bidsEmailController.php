@@ -195,6 +195,8 @@ public function agreeToMileS($s_id,$booker_id)
 {
     $mileLat = ServiceMileStatus::where('service_id',$s_id)->where('booker_id',$booker_id)->where('status','To Do')->first();
 
+    $s_id = base64_encode(base64_encode($s_id));
+
     if($mileLat)
     ServiceMileStatus::where('id',$mileLat->id)->update([ 'active' => 1]);
     Session::put('login_success','Thanks for your review, next milestone can be paid for to begin!!');

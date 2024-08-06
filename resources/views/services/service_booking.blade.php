@@ -218,8 +218,8 @@
         {
         $('#fakeBtn').hide();
         $('#fakeBtnR').hide();
-        $('#realBtn').show();
-        $('#realBtnR').show();   
+        $('#realBtn').removeClass('collapse');
+        $('#realBtnR').removeClass('collapse');   
         }
         else{
         $('#fakeBtn').show();

@@ -568,7 +568,7 @@ public function getMilestones($id){
     $milestones = Smilestones::where('listing_id',$id)->get();
   }
   
- $c=0;$d=0;$test='';
+ $c=0;$d=0;$test='';$allow=false;
 
 try{
   foreach($milestones as $mile){
@@ -589,7 +589,8 @@ if($time_now > $time_due_date)
 } 
 
 if($d == count($milestones) && count($milestones)!=0)
-{
+{ 
+  $allow = true;
   $done_msg = 'Milestone completed! Service Delivered!';
 }
 else $done_msg = null;
@@ -600,7 +601,7 @@ catch(\Exception $e){
 }
 
 return response()->json([ 'data' => $milestones, 'done_msg' => $done_msg,
-'booked' => $booked ]);
+'booked' => $booked, 'allow' => $allow ]);
 
  }
 
@@ -824,9 +825,9 @@ $milestones = ServiceMileStatus::where('id',$request->id)
          });  
 //Mail
 
-    if(!$notLastMile)
-      $booking = serviceBook::where('service_id',$mile->service_id)
-        ->where('booker_id',$mile->booker_id)->orderBy("id", "DESC")->delete();
+    // if(!$notLastMile)
+    //   $booking = serviceBook::where('service_id',$mile->service_id)
+    //     ->where('booker_id',$mile->booker_id)->orderBy("id", "DESC")->delete();
  }
       catch(\Exception $e){
       return redirect('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf4F_-all')->with('failed', $e->getMessage());
@@ -956,6 +957,11 @@ public function serviceBook(Request $request){
     }
     $owner = Services::where('id',$request->service_id)->first();
 
+    //
+    $previous_booking = ServiceMileStatus::where('service_id',$request->service_id)
+    ->where('booker_id', Auth::id())->delete(); 
+    //
+
     $booking = serviceBook::create([
       'date' => $request->date,
       'booker_id' => $booker_id,
@@ -971,6 +977,13 @@ public function serviceBook(Request $request){
     catch(\Exception $e){
       return response()->json(['failed' => $e->getMessage()]);
     }
+}
+
+public function rebook_service($id){ 
+       $booking = serviceBook::where('service_id',$id)
+         ->where('booker_id', Auth::id())->orderBy("id", "DESC")->delete();
+         if($booking) return 'success';
+         else return 'failed';
 }
 
 

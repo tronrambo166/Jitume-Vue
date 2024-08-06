@@ -204,7 +204,7 @@ function closeErrorPopup() {
 
 
 methods: {
-  formatAmount(amount) {
+  function formatAmount(amount) {
     return amount.toLocaleString();
   }
 }

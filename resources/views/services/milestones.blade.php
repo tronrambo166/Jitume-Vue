@@ -163,12 +163,14 @@
                 url: 'getBookers/' + s_id,
                 method: 'get',
                 dataType: 'json',
-                success: function(response) {
+                success: function(response) { console.log(response);
                     for (i = 0; i < response.data.length; i++) {
+                        if(response.data[i] != null){
                             var name = response.data[i].fname+' '+
                             response.data[i].lname;
                             var id = response.data[i].id;
                             $("#bookers").append('<option class="form-control" value="'+id+'">'+name+'</option>');
+                        }
                     } 
 
                 },

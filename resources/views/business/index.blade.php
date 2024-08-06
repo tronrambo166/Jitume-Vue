@@ -114,7 +114,7 @@
         </div>
         
         <div class="self-stretch my-auto text-xs font-bold leading-5 text-slate-500">
-          <a href="./../#/business-milestone/{{$coded_id}}" class="text-success btn small px-3 py-1 my-1 d-inline-block py-0 border">View Milestone</a>
+          <a href="./../#/service-milestone/{{$coded_id}}" class="text-success btn small px-3 py-1 my-1 d-inline-block py-0 border">View Milestone</a>
         </div>
       </div>
 

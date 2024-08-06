@@ -216,8 +216,8 @@ $new_books = serviceBook::where('service_owner_id', $user_id)
                         <span>Add Service</span>
                     </a>
                 </li>
-                <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf6F__') ? 'active' : '' }}">
-                    <a class="navLink flex items-center gap-4" href="{{route('booker-milestones')}}">
+                <li class="{{ Request::is('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf4F_-all') ? 'active' : '' }}">
+                    <a class="navLink flex items-center gap-4" href="{{route('s_milestones','all')}}">
                         <img src='../images/add.svg' alt=''>
                         <span>Milestones</span>
                     </a>

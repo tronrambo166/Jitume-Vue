@@ -126,11 +126,16 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
               <div class="row my-2">
               <div class="col-sm-12 ">
                 <!-- <a class="btn border border-bottom-success">Overview</a> -->
-                <!-- <a v-if="auth_user" data-toggle="modal" data-target="#reviewModal"
+
+                <div v-if="auth_user && allowToReview">
+                  <a data-toggle="modal" data-target="#reviewModal"
                   class="btn border border-gray-200 float-left">Add review</a>
 
-                <a v-else @click="make_session();" data-target="#loginModal" data-toggle="modal"
-                  class="btn border border-gray-200 float-left">Add review</a> -->
+                  <a @click="rebook" 
+                  class="ml-3 text-success btn border border-gray-200 float-left">Rebook</a>
+                </div>
+                
+
 
                 
                 <!-- <p> <span class="ml-2 font-weight-bold">Details:{{form.details}}</span></p> -->
@@ -307,7 +312,8 @@ export default {
     }),
     details: [],
     service_id: '',
-    booked:false
+    booked:false,
+    allowToReview:false
   }),
 
   created() {
@@ -318,6 +324,18 @@ export default {
 
     contact: function () {
       $('#collapseExample').removeClass('collapse');
+    },
+
+    rebook: function() {
+      var id = this.$route.params.id;
+      id = atob(id); id = atob(id);
+      axios.get('rebook_service/' + id).then((data) => {
+
+            if(data.data == 'success')
+              location.reload();
+            else alert('something went wrong!');
+
+            });
     },
 
     getDetails: function () {
@@ -370,6 +388,19 @@ export default {
       document.getElementById('date').setAttribute("min", currentDate);
 
     },
+
+    getMilestones: function () {
+            var id = this.$route.params.id;
+            id = atob(id); id = atob(id);
+             var t = this;
+
+            axios.get('getMilestonesS/' + id).then((data) => {
+                t.allowToReview = data.data.allow;
+                console.log(t.allowToReview);
+
+            });
+
+        },
 
     addToCart(id) {
       var qty = $('#qty').val();
@@ -494,6 +525,7 @@ export default {
   mounted() {
     this.replaceText();
     this.getDetails();
+    this.getMilestones();
 
     if (sessionStorage.getItem('alert') != null) {
       alert('Review successfully taken!');

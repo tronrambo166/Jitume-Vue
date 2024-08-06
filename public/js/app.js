@@ -12543,6 +12543,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user'],
   data: function data() {
@@ -12569,7 +12574,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }),
       details: [],
       service_id: '',
-      booked: false
+      booked: false,
+      allowToReview: false
     };
   },
   created: function created() {
@@ -12578,6 +12584,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   methods: {
     contact: function contact() {
       $('#collapseExample').removeClass('collapse');
+    },
+    rebook: function rebook() {
+      var id = this.$route.params.id;
+      id = atob(id);
+      id = atob(id);
+      axios.get('rebook_service/' + id).then(function (data) {
+        if (data.data == 'success') location.reload();else alert('something went wrong!');
+      });
     },
     getDetails: function getDetails() {
       var id = this.$route.params.id;
@@ -12621,6 +12635,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var year = date.getFullYear();
       var currentDate = "".concat(year, "-").concat(month, "-").concat(day);
       document.getElementById('date').setAttribute("min", currentDate);
+    },
+    getMilestones: function getMilestones() {
+      var id = this.$route.params.id;
+      id = atob(id);
+      id = atob(id);
+      var t = this;
+      axios.get('getMilestonesS/' + id).then(function (data) {
+        t.allowToReview = data.data.allow;
+        console.log(t.allowToReview);
+      });
     },
     addToCart: function addToCart(id) {
       var _this = this;
@@ -12766,6 +12790,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   mounted: function mounted() {
     this.replaceText();
     this.getDetails();
+    this.getMilestones();
 
     if (sessionStorage.getItem('alert') != null) {
       alert('Review successfully taken!');
@@ -80016,7 +80041,36 @@ var render = function () {
               _vm._v(" "),
               _c("div", { staticClass: "cart text-center" }, [
                 _c("form", { staticClass: "text-center" }, [
-                  _vm._m(0),
+                  _c("div", { staticClass: "row my-2" }, [
+                    _c("div", { staticClass: "col-sm-12" }, [
+                      _vm.auth_user && _vm.allowToReview
+                        ? _c("div", [
+                            _c(
+                              "a",
+                              {
+                                staticClass:
+                                  "btn border border-gray-200 float-left",
+                                attrs: {
+                                  "data-toggle": "modal",
+                                  "data-target": "#reviewModal",
+                                },
+                              },
+                              [_vm._v("Add review")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "a",
+                              {
+                                staticClass:
+                                  "ml-3 text-success btn border border-gray-200 float-left",
+                                on: { click: _vm.rebook },
+                              },
+                              [_vm._v("Rebook")]
+                            ),
+                          ])
+                        : _vm._e(),
+                    ]),
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "flex items-center gap-2" }, [
                     _vm.auth_user
@@ -80255,11 +80309,11 @@ var render = function () {
           { staticClass: "modal-dialog", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(1),
+              _vm._m(0),
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [
                 _c("form", [
-                  _vm._m(2),
+                  _vm._m(1),
                   _vm._v(" "),
                   _c("h5", { staticClass: "font-weight-bold" }, [
                     _vm._v("Leave a review"),
@@ -80292,14 +80346,6 @@ var render = function () {
   ])
 }
 var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row my-2" }, [
-      _c("div", { staticClass: "col-sm-12" }),
-    ])
-  },
   function () {
     var _vm = this
     var _h = _vm.$createElement

@@ -68,6 +68,7 @@ Route::get('priceFilter_amount/{min}/{max}/{ids}', 'PagesController@priceFilter_
 
 Route::post('searchService', 'PagesController@searchService')->name('searchService');
 Route::post('serviceBook', 'ServiceController@serviceBook')->name('serviceBook');
+Route::get('rebook_service/{id}', 'ServiceController@rebook_service')->name('rebook_service');
 Route::post('serviceMsg', 'ServiceController@serviceMsg')->name('serviceMsg');
 Route::post('serviceReply', 'ServiceController@serviceReply')->name('serviceReply');
 
