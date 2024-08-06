@@ -671,17 +671,21 @@ public function booker_milestones(){
   $booker_id = Auth::id();
   $book = serviceBook::where('booker_id', $booker_id)->first();
   $results = [];
+
+  if ($book){
   $milestones = Smilestones::where('listing_id', $book->service_id)->
   where('status', 'In Progress')->get();
+  
  
- foreach($milestones as $miles){
+  foreach($milestones as $miles){
   $listing = Services::where('id', $miles->listing_id)->first();
 
   if($listing){
   $miles->service = $listing->name;
   $results[] = $miles;
+    }
+   }
   }
-}
 
 return view('services.booker-milestones',compact('results'));
 }

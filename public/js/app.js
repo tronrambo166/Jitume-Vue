@@ -12543,8 +12543,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user'],
   data: function data() {
@@ -80018,40 +80016,7 @@ var render = function () {
               _vm._v(" "),
               _c("div", { staticClass: "cart text-center" }, [
                 _c("form", { staticClass: "text-center" }, [
-                  _c("div", { staticClass: "row my-2" }, [
-                    _c("div", { staticClass: "col-sm-12" }, [
-                      _vm.auth_user
-                        ? _c(
-                            "a",
-                            {
-                              staticClass:
-                                "btn border border-gray-200 float-left",
-                              attrs: {
-                                "data-toggle": "modal",
-                                "data-target": "#reviewModal",
-                              },
-                            },
-                            [_vm._v("Add review")]
-                          )
-                        : _c(
-                            "a",
-                            {
-                              staticClass:
-                                "btn border border-gray-200 float-left",
-                              attrs: {
-                                "data-target": "#loginModal",
-                                "data-toggle": "modal",
-                              },
-                              on: {
-                                click: function ($event) {
-                                  return _vm.make_session()
-                                },
-                              },
-                            },
-                            [_vm._v("Add review")]
-                          ),
-                    ]),
-                  ]),
+                  _vm._m(0),
                   _vm._v(" "),
                   _c("div", { staticClass: "flex items-center gap-2" }, [
                     _vm.auth_user
@@ -80290,11 +80255,11 @@ var render = function () {
           { staticClass: "modal-dialog", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(0),
+              _vm._m(1),
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [
                 _c("form", [
-                  _vm._m(1),
+                  _vm._m(2),
                   _vm._v(" "),
                   _c("h5", { staticClass: "font-weight-bold" }, [
                     _vm._v("Leave a review"),
@@ -80327,6 +80292,14 @@ var render = function () {
   ])
 }
 var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row my-2" }, [
+      _c("div", { staticClass: "col-sm-12" }),
+    ])
+  },
   function () {
     var _vm = this
     var _h = _vm.$createElement

@@ -122,17 +122,15 @@ cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
 
               <div class="cart text-center">
-                <form class="text-center">
-                  <!--  <input id="qty" min="1" class="w-25 form-control d-inline" type="number" name="qty" value="1"> -->
-
-                  <div class="row my-2">
+              <form class="text-center">
+              <div class="row my-2">
               <div class="col-sm-12 ">
                 <!-- <a class="btn border border-bottom-success">Overview</a> -->
-                <a v-if="auth_user" data-toggle="modal" data-target="#reviewModal"
+                <!-- <a v-if="auth_user" data-toggle="modal" data-target="#reviewModal"
                   class="btn border border-gray-200 float-left">Add review</a>
 
                 <a v-else @click="make_session();" data-target="#loginModal" data-toggle="modal"
-                  class="btn border border-gray-200 float-left">Add review</a>
+                  class="btn border border-gray-200 float-left">Add review</a> -->
 
                 
                 <!-- <p> <span class="ml-2 font-weight-bold">Details:{{form.details}}</span></p> -->
