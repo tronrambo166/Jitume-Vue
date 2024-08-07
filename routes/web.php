@@ -97,7 +97,7 @@ Route::get('download_milestoneDoc/{id}/{mile_id}', 'BusinessController@download_
 Route::get('download_milestoneDocS/{id}/{mile_id}', 'ServiceController@download_milestone_doc')->name('download_milestoneDocS');
 // <--milestones-->
 Route::get('ratingListing/{id}/{rating}/{text}', 'BusinessController@ratingListing')->name('ratingListing');
-Route::get('ratingService/{id}/{rating}', 'ServiceController@ratingService')->name('ratingService');
+Route::get('ratingService/{id}/{rating}/{text}', 'ServiceController@ratingService')->name('ratingService');
 Route::get('unlockBySubs/{id}/{sub_id}/{plan}', 'BusinessController@unlockBySubs')->name('unlockBySubs');
 
 //BIDS

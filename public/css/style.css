@@ -2270,3 +2270,7 @@ ul li a:hover{
     color:rgb(21 128 61 ) !important;
 }
 .font_default{font-family: 'Outfit-Regular';}
+.review_modal{
+    border-radius: 3px !important;
+    background: whitesmoke !important;
+}

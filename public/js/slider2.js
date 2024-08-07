@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-    console.log("hello kioko")
+    //console.log("hello kioko")
 
 
 

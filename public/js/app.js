@@ -12548,6 +12548,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth_user'],
   data: function data() {
@@ -12573,9 +12585,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         service_id: ''
       }),
       details: [],
+      review: [],
       service_id: '',
       booked: false,
-      allowToReview: false
+      allowToReview: false,
+      reviewPop: false
     };
   },
   created: function created() {
@@ -12617,8 +12631,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         t.form.image = data.data.data[0].image;
         t.form.category = data.data.data[0].category;
         t.form.shop_id = data.data.data[0].shop_id;
-        t.form.rating = data.data.data[0].rating / data.data.data[0].rating_count;
-        t.form.rating = t.form.rating.toFixed();
+        t.form.rating = parseFloat(data.data.data[0].rating) / parseFloat(data.data.data[0].rating_count);
+        t.form.rating = t.form.rating.toFixed(2);
         t.form.rating_count = data.data.data[0].rating_count;
         t.booked = data.data.data[0].booked;
         var i;
@@ -12643,6 +12657,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var t = this;
       axios.get('getMilestonesS/' + id).then(function (data) {
         t.allowToReview = data.data.allow;
+        t.review = data.data.reviews;
         console.log(t.allowToReview);
       });
     },
@@ -12670,6 +12685,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       id = atob(id);
       id = atob(id);
       var rating = $('#demoRating').val();
+      var text = $("#text").val();
+      text = btoa(text);
 
       if (rating == 0) {
         $.alert({
@@ -12677,7 +12694,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           content: 'A rating cannot be 0!'
         });
       } else {
-        axios.get('ratingService/' + id + '/' + rating).then(function (data) {
+        axios.get('ratingService/' + id + '/' + rating + '/' + text).then(function (data) {
           //console.log(data);
           sessionStorage.setItem('alert', 'Rating submitted successfully!');
           location.reload();
@@ -79828,9 +79845,15 @@ var render = function () {
                 ),
                 _vm._v(" "),
                 _c("div", {
-                  staticClass: "float-left flex",
+                  staticClass: "float-left flex mt-1",
                   attrs: { id: "staticRating" },
                 }),
+                _vm._v(" "),
+                _c(
+                  "p",
+                  { staticClass: "mt-0 ml-2 rating-star text-dark d-inline" },
+                  [_vm._v("(" + _vm._s(_vm.form.rating) + ")")]
+                ),
                 _vm._v(" "),
                 _c("br"),
                 _vm._v(" "),
@@ -80021,7 +80044,7 @@ var render = function () {
                   staticClass:
                     "text-black text-[15px] sm:text-[14px] md:text-[15px] lg:text-[16px] font-bold",
                 },
-                [_vm._v("More business information")]
+                [_vm._v("More information")]
               ),
               _vm._v(" "),
               _c(
@@ -80284,6 +80307,46 @@ var render = function () {
                 ]),
               ]),
             ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "w-75 mx-auto text-center eqp-invest mt-5" },
+              [
+                _c(
+                  "h3",
+                  { staticClass: "secondary_heading my-3 font-weight-bold" },
+                  [_vm._v("Reviews")]
+                ),
+                _vm._v(" "),
+                _vm._l(_vm.review, function (rev) {
+                  return _c(
+                    "div",
+                    { staticClass: "justify-content-center text-left ml-5" },
+                    [
+                      _c("img", {
+                        staticClass: "d-inline",
+                        attrs: { src: "images/user.jpg", width: "30px" },
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "p",
+                        { staticClass: "text-justify-center d-inline small" },
+                        [
+                          _c(
+                            "b",
+                            { staticClass: "text-success font-weight-bold" },
+                            [_vm._v(_vm._s(rev.user_name))]
+                          ),
+                          _vm._v(" - " + _vm._s(rev.text) + " "),
+                          _c("span", [_vm._v("(" + _vm._s(rev.rating) + ")")]),
+                        ]
+                      ),
+                    ]
+                  )
+                }),
+              ],
+              2
+            ),
           ]),
         ]),
       ]),
@@ -80308,37 +80371,53 @@ var render = function () {
           "div",
           { staticClass: "modal-dialog", attrs: { role: "document" } },
           [
-            _c("div", { staticClass: "modal-content" }, [
-              _vm._m(0),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c("form", [
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _c("h5", { staticClass: "font-weight-bold" }, [
-                    _vm._v("Leave a review"),
-                  ]),
-                  _vm._v(" "),
-                  _c("textarea", {
-                    staticClass: "bg-light border border-none",
-                    attrs: { name: "reply", cols: "55", rows: "3" },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      staticClass: "font-weight-bold btn btn-light w-50 m-auto",
-                      on: {
-                        click: function ($event) {
-                          return _vm.rating()
+            _c(
+              "div",
+              {
+                staticClass: "modal-content review_modal",
+                staticStyle: {
+                  "border-radius": "3px !important",
+                  background: "whitesmoke !important",
+                },
+              },
+              [
+                _vm._m(0),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("form", [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c("h5", { staticClass: "font-weight-bold" }, [
+                      _vm._v("Leave a review"),
+                    ]),
+                    _vm._v(" "),
+                    _c("textarea", {
+                      staticClass: "bg-light border border-none",
+                      attrs: {
+                        id: "text",
+                        name: "reply",
+                        cols: "55",
+                        rows: "3",
+                      },
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass:
+                          "text-success border my-3 font-weight-bold btn w-50 m-auto",
+                        on: {
+                          click: function ($event) {
+                            return _vm.rating()
+                          },
                         },
                       },
-                    },
-                    [_vm._v("Submit")]
-                  ),
+                      [_vm._v("Submit")]
+                    ),
+                  ]),
                 ]),
-              ]),
-            ]),
+              ]
+            ),
           ]
         ),
       ]
@@ -80377,7 +80456,10 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("h5", { staticClass: "my-3 font-weight-bold" }, [
       _vm._v("Service rating\n                "),
-      _c("div", { staticClass: "ml-5 d-inline-block", attrs: { id: "demo" } }),
+      _c("div", {
+        staticClass: "my-3 d-inline-block d-flex",
+        attrs: { id: "demo" },
+      }),
     ])
   },
 ]

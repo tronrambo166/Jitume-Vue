@@ -37,9 +37,10 @@
 
 
 
-                <div class="float-left flex" id="staticRating">
+                <div class="float-left flex mt-1" id="staticRating">
 
-                </div> <br>
+                </div> <p class="mt-0 ml-2 rating-star text-dark d-inline" >({{ form.rating }})</p>
+                 <br>
 
                 <p class="text-dark d-block float-left text-[13px]" style="font-size:11px;">({{ form.rating_count }} reviews)</p>
 
@@ -111,7 +112,7 @@
 
 
             <div class="Overview " id="Overview">
-                <h2 class="text-black text-[15px] sm:text-[14px] md:text-[15px] lg:text-[16px] font-bold">More business information</h2>
+                <h2 class="text-black text-[15px] sm:text-[14px] md:text-[15px] lg:text-[16px] font-bold">More information</h2>
 
                 <p class="text-[14px] sm:text-[12px] md:text-[13px] py-6 lg:text-[14px]">
 {{ form.details }} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -201,6 +202,16 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
 
 
 
+        <div class=" w-75 mx-auto text-center eqp-invest mt-5 ">
+          <h3 class="secondary_heading my-3 font-weight-bold">Reviews</h3>
+          <div v-for="rev in review" class="justify-content-center text-left ml-5">
+            <img class="d-inline" src="images/user.jpg" width="30px">
+            <p  class="text-justify-center d-inline small"><b class="text-success font-weight-bold">{{rev.user_name}}</b> - {{rev.text}} <span>({{rev.rating}})</span> </p>
+          </div> 
+        </div>
+
+
+
           </div>
 
      
@@ -218,6 +229,7 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
       </div>
 
       <div class="col-md-5">
+
         <!--  <div class="card bg-light w-75 mx-auto py-3">
              <h5 class="mx-4 text-secondary shadow border border-light py-2 d-block text-center">Seed investors spot open
                 <i class="ml-1 fa fa-angle-up"></i></h5>
@@ -252,7 +264,7 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
     <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
       aria-hidden="true">
       <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content review_modal" style="border-radius: 3px !important;background: whitesmoke !important;">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Submit a review</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -262,14 +274,14 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
           <div class="modal-body">
             <form>
               <h5 class="my-3 font-weight-bold">Service rating
-                <div class="ml-5 d-inline-block" id="demo"></div>
+                <div class="my-3 d-inline-block d-flex" id="demo"></div>
               </h5>
 
 
               <h5 class="font-weight-bold">Leave a review</h5>
-              <textarea name="reply" class="bg-light border border-none" cols="55" rows="3"></textarea>
+              <textarea id="text" name="reply" class="bg-light border border-none" cols="55" rows="3"></textarea>
 
-              <a @click="rating()" class="font-weight-bold btn btn-light w-50 m-auto">Submit</a>
+              <a @click="rating()" class="text-success border my-3 font-weight-bold btn  w-50 m-auto">Submit</a>
             </form>
 
           </div>
@@ -311,9 +323,11 @@ export default {
     service_id: ''
     }),
     details: [],
+    review: [],
     service_id: '',
     booked:false,
-    allowToReview:false
+    allowToReview:false,
+    reviewPop:false
   }),
 
   created() {
@@ -361,8 +375,8 @@ export default {
         t.form.image = data.data.data[0].image;
         t.form.category = data.data.data[0].category;
         t.form.shop_id = data.data.data[0].shop_id;
-        t.form.rating = data.data.data[0].rating / data.data.data[0].rating_count;
-        t.form.rating = t.form.rating.toFixed();
+        t.form.rating = parseFloat(data.data.data[0].rating) / parseFloat(data.data.data[0].rating_count);
+        t.form.rating = t.form.rating.toFixed(2);
 
         t.form.rating_count = data.data.data[0].rating_count;
         t.booked = data.data.data[0].booked;
@@ -396,6 +410,7 @@ export default {
 
             axios.get('getMilestonesS/' + id).then((data) => {
                 t.allowToReview = data.data.allow;
+                t.review = data.data.reviews;
                 console.log(t.allowToReview);
 
             });
@@ -425,6 +440,9 @@ export default {
       id = atob(id); id = atob(id);
 
       var rating = $('#demoRating').val();
+      var text = $("#text").val();
+      text = btoa(text);
+
       if(rating == 0){
         $.alert({
           title: 'Alert!',
@@ -432,7 +450,7 @@ export default {
         });
       }
       else{
-      axios.get('ratingService/' + id + '/' + rating).then((data) => {
+      axios.get('ratingService/' + id + '/' + rating + '/' + text).then((data) => {
         //console.log(data);
         sessionStorage.setItem('alert', 'Rating submitted successfully!');
         location.reload();

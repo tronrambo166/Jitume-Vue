@@ -12,6 +12,7 @@ use App\Models\serviceDocs;
 use App\Models\serviceBook;
 use App\Models\ServiceMileStatus;
 use App\Models\ServiceMessages; 
+use App\Models\ServiceReviews;
 use App\Models\User;
 use DateTime;
 use Session; 
@@ -600,8 +601,12 @@ catch(\Exception $e){
   return response()->json([ 'data' => $e->getMessage() ]);
 }
 
+//Review
+    $reviews = array();
+    $reviews = ServiceReviews::where('listing_id',$id)->get();
+
 return response()->json([ 'data' => $milestones, 'done_msg' => $done_msg,
-'booked' => $booked, 'allow' => $allow ]);
+'booked' => $booked, 'allow' => $allow, 'reviews' => $reviews ]);
 
  }
 
@@ -1048,7 +1053,7 @@ public function serviceReply(Request $request){
 
 
 //Rating
-public function ratingService($id, $rating){
+public function ratingService($id, $rating,$text){
 $user_id = Auth::id();
 $listing = Services::where('id',$id)->first();
 $new_rating = $rating + $listing->rating;
@@ -1057,6 +1062,14 @@ $rating_count = 1 + $listing->rating_count;
         $listing = Services::where('id',$id)->update([
         'rating' => $new_rating,
         'rating_count' => $rating_count,
+       ]);
+
+        $rate = ServiceReviews::create([
+        'user_id' => $user_id,
+        'listing_id' => $id,
+        'user_name' => Auth::user()->fname,
+        'text' => base64_decode($text),
+        'rating' => $rating
        ]);
 
         return response()->json(['success' => 'Success!']);
