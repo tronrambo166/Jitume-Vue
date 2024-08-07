@@ -8637,7 +8637,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   created: function created() {
     //console.log(this.auth_user);
     this.checkListing = sessionStorage.getItem('invest');
-    if (this.checkListing != null) this.$router.push("listingDetails/".concat(this.checkListing));
+    if (this.checkListing != null && this.checkListing != '') this.$router.push("listingDetails/".concat(this.checkListing));
     this.serviceDetails = sessionStorage.getItem('serviceDetails');
     if (this.serviceDetails != null) this.$router.push("serviceDetails/".concat(this.serviceDetails));
     this.milestone = sessionStorage.getItem('milestone');
@@ -9958,7 +9958,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     if (sessionStorage.getItem('invest') != null) {
-      sessionStorage.setItem('invest', null); //sessionStorage.clear();
+      sessionStorage.setItem('invest', ''); //sessionStorage.clear();
 
       this.form.raw_id = this.$route.params.id;
     }
@@ -10360,8 +10360,9 @@ __webpack_require__.r(__webpack_exports__);
     if (sessionStorage.getItem('alert') != null) {
       alert('Review successfully taken!');
       sessionStorage.clear();
-    } // SCRIPT
+    }
 
+    this.form.raw_id = this.$route.params.id; // SCRIPT
 
     (function ($) {
       $.fn.rates = function (options) {
@@ -75259,7 +75260,7 @@ var render = function () {
                   "div",
                   { staticClass: "flex w-full items-center gap-[40px]" },
                   [
-                    _vm.allowToReview
+                    _vm.allowToReview && _vm.form.conv
                       ? _c(
                           "a",
                           {

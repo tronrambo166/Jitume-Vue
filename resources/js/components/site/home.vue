@@ -741,7 +741,7 @@ export default {
   created() {
     //console.log(this.auth_user);
     this.checkListing = sessionStorage.getItem('invest');
-    if (this.checkListing != null)
+    if (this.checkListing != null && this.checkListing != '')
       this.$router.push(`listingDetails/${this.checkListing}`)
 
     this.serviceDetails = sessionStorage.getItem('serviceDetails');

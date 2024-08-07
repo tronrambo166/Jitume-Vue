@@ -1,10 +1,7 @@
 <!DOCTYPE HTML>
 
 <head>
-    <script type="module" src="places.js"></script>
-    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnKB7p3g8iG6IGE9nXX4PqlZ6EPHNUo3w&callback=initAutocomplete&libraries=places&v=weekly" async ></script> -->
-
-    
+    <!-- <script type="module" src="places.js"></script>    -->
 
     <title>JITUME</title>
     <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
@@ -16,15 +13,7 @@
 
     <!-- Rating CSS -->
     <link rel="stylesheet" href="rating/css/rates.css" />
-
-    <style type="text/css">
-        .btn-success {
-            background: #266A2E; /*#72c537;*/
-            color: white;
-        }
-    </style>
     <!-- Rating CSS -->
-
 
     <link href="slider/dist/nouislider.css" rel="stylesheet">
     <script src="slider/dist/nouislider.js"></script>
@@ -35,10 +24,6 @@
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/style.css') }}" rel="stylesheet" />
 
-    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- {{-- Vue component files --}}
         <script src="https://unpkg.com/vue"></script>
@@ -59,22 +44,16 @@
 
 
 <body class="">
-
-
-
-<div class="app relative" style="background: white; height: 100%;">
-
-   
-
-<nav class="w-full py-3 mx-auto flex justify-between items-center bg-white border-b border-gray-300">
-  <!-- Logo -->
-  <div class="flex items-center ml-4 lg:ml-10 xl:ml-20">
+    <div class="app relative" style="background: white; height: 100%;">
+    <nav class="w-full py-3 mx-auto flex justify-between items-center bg-white border-b border-gray-300">
+    <!-- Logo -->
+    <div class="flex items-center ml-4 lg:ml-10 xl:ml-20">
     <router-link to="/" class="text-xl font-bold text-gray-800 md:text-2xl hover:text-green-400">
       <img class="img-fluid" width="100px" height="45px" src="images/logo.png" alt="Logo">
     </router-link>
-  </div>
+    </div>
 
-  <div class="hidden md:flex-1 md:flex md:items-center md:justify-center">
+    <div class="hidden md:flex-1 md:flex md:items-center md:justify-center">
     <ul class="flex items-center justify-between w-full max-w-xs md:max-w-md lg:max-w-lg xl:max-w-[832.55px] px-4">
      <li>
       <router-link to="/home"
@@ -93,7 +72,7 @@
         <a class="nav-link" href="{{route('add-listing')}}" >Add Your Business</a>
       </li>
 
-<li class="text-sm font-bold text-gray-800 hover:text-green-700">
+    <li class="text-sm font-bold text-gray-800 hover:text-green-700">
         <a class="nav-link" href="#" data-target="#loginmodal2" data-toggle="modal">Create Investor Account</a>
       </li>
       @else
@@ -106,85 +85,84 @@
       @endif
 
     </ul>
-  </div>
+    </div>
 
   <!-- Login Button -->
   @if(Auth::check())
-                        <div class="ml-3 ml-md-0 d-md-flex align-items-center">
-                            
+    <div class="ml-3 ml-md-0 d-md-flex align-items-center">
+        
 
-                            <div class="nav-item mr-md-4">
-                                <a href="{{route('business')}}" class=" px-sm-3 my-1 mr-2 px-1 py-1 text-black"><b>Dashboard</b></a>
-                            </div>
+        <div class="nav-item mr-md-4">
+            <a href="{{route('business')}}" class=" px-sm-3 my-1 mr-2 px-1 py-1 text-black"><b>Dashboard</b></a>
+        </div>
 
-                            <div class="nav-item">
-                            <a  v-if="" onclick="event.preventDefault();
-                 document.getElementById('logout-form').submit();" class=" sign_in_btn  px-sm-3 header_buttons my-1 mr-4 px-6 py-2"><b>Sign Out</b></a>
-</div>
+        <div class="nav-item">
+        <a  v-if="" onclick="event.preventDefault();
+        document.getElementById('logout-form').submit();" class=" sign_in_btn  px-sm-3 header_buttons my-1 mr-4 px-6 py-2"><b>Sign Out</b></a>
+    </div>
 
-                        </div>
+    </div>
 
+    @elseif (Session::has('investor_auth') && Session::get('investor_auth') == true)
 
-                        @elseif (Session::has('investor_auth') && Session::get('investor_auth') == true)
+    <div class="ml-3 ml-md-0 d-flex">
+        <div class="nav-item mr-4">
 
-                        <div class="ml-3 ml-md-0 d-flex">
-                            <div class="nav-item mr-4">
+            <a href="{{route('business')}}" class="header_buttons px-sm-3 my-1 mr-2 px-1 py-1"><b>Dashboard</b></a>
+        </div>
 
-                                <a href="{{route('business')}}" class="header_buttons px-sm-3 my-1 mr-2 px-1 py-1"><b>Dashboard</b></a>
-                            </div>
+        <div class="nav-item">
+            <a v-if="" onclick="event.preventDefault();
+         document.getElementById('logout-form').submit();" class=" hover:text-green-700 border border-gray-500 rounded-md py-2 px-4 sm:px-5 md:px-6 sign_in_btn header_buttons px-sm-3 my-1 mr-2 px-1 py-1"><b>Sign Out</b>
+            </a>
+        </div>
 
-                            <div class="nav-item">
-                                <a v-if="" onclick="event.preventDefault();
-                             document.getElementById('logout-form').submit();" class=" hover:text-green-700 border border-gray-500 rounded-md py-2 px-4 sm:px-5 md:px-6 sign_in_btn header_buttons px-sm-3 my-1 mr-2 px-1 py-1"><b>Sign Out</b>
-                                </a>
-                            </div>
+    </div>
 
-                        </div>
+    @else
 
-                        @else
+    <div class="ml-3 ml-md-0">
 
-                        <div class="ml-3 ml-md-0">
+       
 
-                           
+        <a data-target="#loginModal" data-toggle="modal" class=" border sign_in_btn  my-1 mr-1 px-6 py-2 mr-4 text-center ml-md-3">Sign In</a>
 
-                            <a data-target="#loginModal" data-toggle="modal" class=" border sign_in_btn  my-1 mr-1 px-6 py-2 mr-4 text-center ml-md-3">Sign In</a>
-
-                        </div>
-                        @endif
+    </div>
+    @endif
   <!-- login btn old version jitume-->
   
 
 
 
   <!-- Toggle Button -->
-  <div class="md:hidden flex items-center mr-4">
+    <div class="md:hidden flex items-center mr-4">
     <button class="text-xl text-gray-800 focus:outline-none" id="toggleButton">
       <i class="fas fa-bars"></i>
     </button>
-  </div>
-</nav>
+    </div>
+    </nav>
 
 
 
-<!-- Offcanvas Navbar -->
-<div class="fixed inset-0 bg-gray-600 bg-opacity-75 z-50 hidden md:hidden" id="offcanvasNavbar">
-  <div class="flex justify-end">
-    <button class="text-white text-3xl mr-4 mt-4" id="closeButton">&times;</button>
-  </div>
-  <div class="flex items-center justify-center ml-4 text-center  text-lg h-full">
-    <ul class=" ">
-      <li><router-link to="/home" class="text-white">Home</router-link></li>
-      <li><router-link to="/services" class="text-white">Services</router-link></li>
-      <li><a href="#" class="text-white">Add Your Business</a></li>
-      <li><a href="#" class="text-white">Create Investor Account</a></li>
-    </ul>
-  </div>
-</div>
+    <!-- Offcanvas Navbar -->
+    <div class="fixed inset-0 bg-gray-600 bg-opacity-75 z-50 hidden md:hidden" id="offcanvasNavbar">
+      <div class="flex justify-end">
+        <button class="text-white text-3xl mr-4 mt-4" id="closeButton">&times;</button>
+      </div>
+      <div class="flex items-center justify-center ml-4 text-center  text-lg h-full">
+        <ul class=" ">
+          <li><router-link to="/home" class="text-white">Home</router-link></li>
+          <li><router-link to="/services" class="text-white">Services</router-link></li>
+          <li><a href="#" class="text-white">Add Your Business</a></li>
+          <li><a href="#" class="text-white">Create Investor Account</a></li>
+        </ul>
+      </div>
+    </div>
 
 
 
      
-<!-- Layout -->
+    <!-- Layout -->
         <!-- Body -->
 
         <div class="">
@@ -266,7 +244,7 @@
 
             @endif
 
-            <!--  @error('email')
+        <!--  @error('email')
         <div class="w-50 m-auto alert alert-danger alert-dismissible fade show" role="alert">
           <p class="font-weight-bold">{{$message}} </p>
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -341,7 +319,7 @@
 
 
 
-<footer class="bg-white px-[100px] w-full mt-6 py-2">
+    <footer class="bg-white px-[100px] w-full mt-6 py-2">
     <div class="container mx-auto gap-[220px] flex flex-col md:flex-row justify-between md:justify-between gap-6 w-[959px]">
 
         <!-- First column -->
@@ -382,56 +360,9 @@
     <div class="container mx-auto flex justify-between items-center">
         <!-- Additional content here if needed -->
     </div>
-</footer>
-
-
-
-<!-- testing template-->
-    <!-- <div class="row hiddens w-75 m-auto border shadow text-center bg-light" style=" box-shadow: 3px 3px 7px 7px grey; width:70%; background: #fbfbfb;border: 1px solid black;">
-        <div class="container w-75 m-auto" style="box-shadow: 3px 3px 7px 7px grey; background: #fbfbfb;width:75%; margin:auto; text-align:center">
-        
-         <h2 style="text-align: left;color: black;font-family: sans-serif;">  
-            <br> Completion of milestone!</h2>
-            
-            <div class="" style="width:100%; margin:auto;">
-            <h4 style="line-height: 28px;font-weight:500; color: #000000a1;font-family: sans-serif;text-align:left;"> Hi,<br> 
-                    milestone $mile_name of business $business_name is done and you can now review with the entrepreneur. <br> 
-
-                   Do you want to Continue to the Next Milestone?
-                <div style="width:100%;margin: auto; padding-bottom:20px;padding-top:15px;"> 
-                    <a target="_blank" href="https://test.jitume.com/agreeToNextmile/$bid_id"
-                style="width:50%;text-decoration:none;color: aliceblue;background:green;padding:10px 30px;border-radius:5px;margin-left:30px">
-                Continue</a>
-
-                <a
-                style="width:50%;text-decoration:none;color: aliceblue;background:red;padding:10px 30px;border-radius:5px;margin-left:30px">
-                Cancel </a>
-            </div>
-
-            </h4>
-            
-            
-            </div>
-        
-        
-                
-                
-                <p style="font-weight: bold; color:#000000a1; line-height:22px; font-family:arial; padding-top:20px; padding-bottom:20px; text-align:center;" class="py-3 text-center"> Thanks! <br />   Jitume Admin.</p>
-
-        </div>
-        
-        
-        </div> -->
-  
-        
-<!-- testing template end-->
- 
-
-
+    </footer>
 
     </div>
-
-
     </div>
 
 
@@ -497,14 +428,6 @@
 
     <script type="text/javascript" src="js/app.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-
-
-
     <script type="text/javascript">
         function address(place,lat2,lng2) {
             document.getElementById('searchbox').value = place;
@@ -516,102 +439,17 @@
 
               lat.value = lat2;
               lng.value = lng2;
-
         }
     </script>
 
     <!-- DATEPICKER -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-    <!-- DATEPICKER -->
-
-    <!-- Price SLIDER -->
+    <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script> -->
 
 
-
-    <script type="text/javascript"></script>
-    <!-- Price SLIDER -->
-
-    <script>
-        $(function() {
-            //DATE
-            $("#datepicker").datepicker();
-            $("#datepicker3").datepicker();
-            $("#datepicker4").datepicker();
-            $("#datepickerHome1").datepicker();
-            $("#datepickerHome2").datepicker();
-
-            //Start
-            $("#datepicker").datepicker({
-                dateFormat: "yy-mm-dd"
-            });
-            var dateFormat = $("#datepicker").datepicker("option", "dateFormat");
-            $("#datepicker").datepicker("option", "dateFormat", "yy-mm-dd");
-            //Min Date
-            $("#datepicker").datepicker({
-                minDate: new Date()
-            });
-            var minDate = $("#datepicker").datepicker("option", "minDate");
-            $("#datepicker").datepicker("option", "minDate", new Date());
-
-            //End
-            $("#datepicker2").datepicker({
-                dateFormat: "yy-mm-dd"
-            });
-            var dateFormat = $("#datepicker2").datepicker("option", "dateFormat");
-            $("#datepicker2").datepicker("option", "dateFormat", "yy-mm-dd");
-            //Min Date
-            $("#datepicker2").datepicker({
-                minDate: new Date()
-            });
-            var minDate = $("#datepicker2").datepicker("option", "minDate");
-            $("#datepicker2").datepicker("option", "minDate", new Date());
-
-        });
-
-
-        //if(currentDate !=null) console.log(currentDate);
-    </script>
-
-    <script type="text/javascript">
-        //EndDate
-        $("#datepicker2").datepicker({
-            onSelect: function(date, datepicker) {
-                var date_start = $('#datepicker').val();
-                if (date != "") {
-                    if (date_start > date)
-                        alert('End date cannot be earlier than start date!!')
-                    const date1 = new Date(date_start);
-                    const date2 = new Date(date);
-                    const diffTime = Math.abs(date2 - date1);
-                    var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                    diffDays = diffDays + 1;
-                    $('#days').html(diffDays);
-
-                    var per_day = $('#per_day').val();
-                    var price = (per_day * diffDays);
-                    var s_fee = 200;
-                    var total = price + s_fee;
-                    $('#price').html('$' + price);
-                    $('#total_price').html('$' + total);
-                    $('#t_price').html('$' + total);
-                    $('#due').html('$' + total);
-
-                }
-            }
-        });
-        //DATE
-    </script>
-
-
-
-
+  
     <!-- LOGIN MODAL -->
-   
-    <!-- LOGIN MODAL -->
-  <!-- LOGIN MODAL -->
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content" style="border-radius: 20px;">
@@ -650,20 +488,10 @@
                     </div>
 
 
-                   <!--  <div id="choose" class="px-0 collapse">
-                        <h5 class="text-secondary font-weight-bold text-center btn btn-light w-100 m-auto">Please choose the account type!</h5>
-                    </div> -->
-
-
                     <div class="hidden_currency ">
-
                         <div class="row justify-content-center py-2 mb-2">
                             <div class="px-0 w-100 py-0">
-
-
-                                <div class="collapse" id="all_registers">
-
-                               
+                                <div class="collapse" id="all_registers">                              
                                     <div class="text-center User-Artist-Select">
                                         <a style="cursor: pointer;" id="reg_back" class="float-left bg-light collapse" onclick="step_one();">
                                             <i class="fa fa-arrow-left"></i> back</a>
@@ -677,10 +505,7 @@
                                             <div class="col-md-12 text-center sinup_text">
                                                 <h2 class="">Registration</h2>
                                                 <h4 >Step <span id="steps">1 </span> of 2</h4>
-                                            </div>
-
-                                            
-
+                                            </div>                                      
                                             </div>
                                         </div>
                                     </div>
@@ -689,444 +514,444 @@
 
 
 
-                                    <!-- User REG -->
+                <!-- User REG -->
 
-                                    <div id="user_reg" class="px-4 card-body">
-                                        <!-- onsubmit="register_main(event);" -->
-                                        <form method="POST" action="{{ route('register') }}" id="register_main" enctype="multipart/form-data">
-                                            @csrf
+                <div id="user_reg" class="px-4 card-body">
+                    <!-- onsubmit="register_main(event);" -->
+                    <form method="POST" action="{{ route('register') }}" id="register_main" enctype="multipart/form-data">
+                        @csrf
 
-                                        <div class="" id="step_one">
+                    <div class="" id="step_one">
 
-                                            <input hidden id="c_to_action" type="text" class="form-control" name="c_to_action" value="">
+                        <input hidden id="c_to_action" type="text" class="form-control" name="c_to_action" value="">
 
-                                            <div class="row">
-                                            <div id="form_fields" class="col-md-6">
-                                            <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">First Name </p></label>
-                                           
-                                            <input onkeyup="fill(this.value);" class="border w-100 pl-2 py-2 mr-1" type="text" name="fname" value="{{ old('fname') }}" id="fname" required />
+                        <div class="row">
+                        <div id="form_fields" class="col-md-6">
+                        <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">First Name </p></label>
+                       
+                        <input onkeyup="fill(this.value);" class="border w-100 pl-2 py-2 mr-1" type="text" name="fname" value="{{ old('fname') }}" id="fname" required />
 
-                                            <span id="er_fname" class="collapse float-left text-danger small">Error: Invalid email</span>
-                                            </div>
+                        <span id="er_fname" class="collapse float-left text-danger small">Error: Invalid email</span>
+                        </div>
 
-                                            <div id="form_fields" class="col-md-6">
-                                            <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Middle Name </p></label>
-                                           
-                                            <input onkeyup="fill(this.value);" class="border w-100 py-2 pl-2 mr-1" type="text" name="mname" value="{{ old('mname') }}" id="mname" required />
+                        <div id="form_fields" class="col-md-6">
+                        <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Middle Name </p></label>
+                       
+                        <input onkeyup="fill(this.value);" class="border w-100 py-2 pl-2 mr-1" type="text" name="mname" value="{{ old('mname') }}" id="mname" required />
 
-                                            <span id="er_mname" class="collapse float-left text-danger small">Error: Invalid email</span>
-                                            </div>
+                        <span id="er_mname" class="collapse float-left text-danger small">Error: Invalid email</span>
+                        </div>
 
-                                            </div>
-
-
-                                            <div id="form_fields">
-                                            <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Last Name </p></label>
-                                           
-                                            <input onkeyup="fill(this.value);" class="border w-100 pl-2 py-2 mr-1" type="text" name="lname" value="{{ old('lname') }}" id="lname" required />
-
-                                            <span id="er_lname" class="collapse float-left text-danger small">Error: Invalid email</span>
-                                            </div>
+                        </div>
 
 
-                                           <div class="row my-3 form_fields_black" style="width: 100%;">
-                                            <div class="col-md-12">
-                                                <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left ">What's your gender?(optional) </p></label>
-                                            </div>
+                        <div id="form_fields">
+                        <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Last Name </p></label>
+                       
+                        <input onkeyup="fill(this.value);" class="border w-100 pl-2 py-2 mr-1" type="text" name="lname" value="{{ old('lname') }}" id="lname" required />
 
-                                            <div id="" class="form_fields_black col-md-4">
-                                            
-                                            <div class="row">
-                                            <div class="col-sm-1"><input class="" type="radio" name="gender" value="F" id="F" />
-                                             </div>
-                                            <div class="col-sm-8">
-                                            <label class="mb-0 w-100">
-                                                <p class="mb-0 d-block w-100 float-left text-left small">Female
-                                            </p></label>                                 
-                                            </div>
-                                            </div>   
-                                            </div>
+                        <span id="er_lname" class="collapse float-left text-danger small">Error: Invalid email</span>
+                        </div>
 
-                                            <div id="" class="form_fields_black col-md-3">
-                                            
-                                            <div class="row">
-                                            <div class="col-sm-1"><input class="" type="radio" name="gender" value="M" id="M" />
-                                             </div>
-                                            <div class="col-sm-8">
-                                            <label class="mb-0 w-100">
-                                                <p class="mb-0 d-block w-100 float-left text-left small">Male
-                                            </p></label>                                 
-                                            </div>
-                                            </div>   
-                                            </div>
 
-                                            <div id="" class="form_fields_black col-md-5">
-                                            
-                                            <div class="row">
-                                            <div class="col-sm-1"><input class="" type="radio" name="gender" value="N/A" id="N/A" />
-                                             </div>
-                                            <div class="col-sm-9">
-                                            <label class="mb-0 w-100">
-                                                <p class="mb-0 d-block w-100 float-left text-left small">Non-Binary
-                                            </p></label>                                 
-                                            </div>
-                                            </div>   
-                                            </div>
+                       <div class="row my-3 form_fields_black" style="width: 100%;">
+                        <div class="col-md-12">
+                            <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left ">What's your gender?(optional) </p></label>
+                        </div>
 
-                                            </div>
+                        <div id="" class="form_fields_black col-md-4">
+                        
+                        <div class="row">
+                        <div class="col-sm-1"><input class="" type="radio" name="gender" value="F" id="F" />
+                         </div>
+                        <div class="col-sm-8">
+                        <label class="mb-0 w-100">
+                            <p class="mb-0 d-block w-100 float-left text-left small">Female
+                        </p></label>                                 
+                        </div>
+                        </div>   
+                        </div>
+
+                        <div id="" class="form_fields_black col-md-3">
+                        
+                        <div class="row">
+                        <div class="col-sm-1"><input class="" type="radio" name="gender" value="M" id="M" />
+                         </div>
+                        <div class="col-sm-8">
+                        <label class="mb-0 w-100">
+                            <p class="mb-0 d-block w-100 float-left text-left small">Male
+                        </p></label>                                 
+                        </div>
+                        </div>   
+                        </div>
+
+                        <div id="" class="form_fields_black col-md-5">
+                        
+                        <div class="row">
+                        <div class="col-sm-1"><input class="" type="radio" name="gender" value="N/A" id="N/A" />
+                         </div>
+                        <div class="col-sm-9">
+                        <label class="mb-0 w-100">
+                            <p class="mb-0 d-block w-100 float-left text-left small">Non-Binary
+                        </p></label>                                 
+                        </div>
+                        </div>   
+                        </div>
+
+                        </div>
+            
+
+
+                        <div class="row my-2">
+                        <div class="col-md-12 form_fields_black">
+                            <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left ">What's your date of birth? </p></label>
+                        </div>
+
+                        <div id="form_fields_black" class="col-md-4">
+                        
+                        <div class="row">
+                        <div class="col-sm-12">
+                        <label class="mb-0 w-100">
+                            <p class="mb-0 d-block w-100 float-left text-left py-1 small">Month
+                        </p></label>                                 
+                        </div>
+
+                        <div class="col-sm-12">
+                            <select  onchange="fill(this.value);" name="month" id="month" class="text-center dob border w-100 ">
+                                <option value="">Month</option>
+                                <option value="01">January</option>
+                                <option value="02">February</option>
+                                <option value="03">March</option>
+                                <option value="04">April</option>
+                                <option value="05">May</option>
+                                <option value="06">June</option>
+                                <option value="07">July</option>
+                                <option value="08">August</option>
+                                <option value="09">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                         </div>
+
+                        </div>   
+                        </div>
+
+                        <div id="form_fields_black" class="col-md-4">
+                        
+                        <div class="row">
+                        <div class="col-sm-12">
+                        <label class="mb-0 w-100">
+                            <p class="mb-0 d-block w-100 float-left text-left py-1 small">Day
+                        </p></label>                                 
+                        </div>
+
+                        <div class="col-sm-12">
+                            <select  onchange="fill(this.value);" id="day" name="day" class="text-center dob border w-100 ">
+                                <option value="">day</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="24">24</option>
+                                <option value="25">25</option>
+                                <option value="26">26</option>
+                                <option value="27">27</option>
+                                <option value="28">28</option>
+                                <option value="29">29</option>
+                                <option value="30">30</option>
+                                <option value="31">31</option>
                                 
+                            </select>
+                         </div>
+
+                        </div>  
+                        </div>
+
+                        <div id="form_fields_black" class="col-md-4">
+                        
+                        <div class="row">
+                        <div class="col-sm-12">
+                        <label class="mb-0 w-100">
+                            <p class="mb-0 d-block w-100 float-left text-left py-1 small">Year
+                        </p></label>                                 
+                        </div>
+
+                        <div class="col-sm-12">
+                            <select  onchange="fill(this.value);" id="year" name="year" class="text-center dob border w-100 ">
+                                <option value="">Year</option>
+                                <option value="1960">1960</option>
+                                <option value="1961">1961</option>
+                                <option value="1962">1962</option>
+                                <option value="1963">1963</option>
+                                <option value="1964">1964</option>
+                                <option value="1965">1965</option>
+                                <option value="1966">1966</option>
+                                <option value="1967">1967</option>
+                                <option value="1968">1968</option>
+                                <option value="1969">1969</option>
+                                <option value="1970">1970</option>
+                                <option value="1971">1971</option>
+                                <option value="1972">1972</option>
+                                <option value="1973">1973</option>
+                                <option value="1974">1974</option>
+                                <option value="1975">1975</option>
+                                <option value="1976">1976</option>
+                                <option value="1977">1977</option>
+                                <option value="1978">1978</option>
+                                <option value="1979">1979</option>
+                                <option value="1980">1980</option>
+                                <option value="1981">1981</option>
+                                <option value="1982">1982</option>
+                                <option value="1983">1983</option>
+                                <option value="1984">1984</option>
+                                <option value="1985">1985</option>
+                                <option value="1986">1986</option>
+                                <option value="1987">1987</option>
+                                <option value="1988">1988</option>
+                                <option value="1989">1989</option>
+                                <option value="1990">1990</option>
+                                <option value="1991">1991</option>
+                                <option value="1992">1992</option>
+                                <option value="1993">1993</option>
+                                <option value="1994">1994</option>
+                                <option value="1995">1995</option>
+                                <option value="1996">1996</option>
+                                <option value="1997">1997</option>
+                                <option value="1998">1998</option>
+                                <option value="1999">1999</option>
+                                <option value="2000">2000</option>
+                                <option value="2001">2001</option>
+                                <option value="2002">2002</option>
+                                <option value="2003">2003</option>
+                                <option value="2004">2004</option>
+                                <option value="2005">2005</option>
+                                <option value="2006">2006</option>
+                                <option value="2007">2007</option>
+                                <option value="2008">2008</option>
+                                <option value="2009">2009</option>
+                                <option value="2010">2010</option>
+                            </select>
+                         </div>
+
+                        </div>  
+                        </div>
+
+                        </div>
+
+                        <div class="row mb-3 w-75 m-auto">
+                            <!-- <div class="col-md-12">
+            @if(config('services.recaptcha.key'))
+                <div class="g-recaptcha"
+                    data-sitekey="{{config('services.recaptcha.key')}}">
+                </div>
+            @endif
+        </div> -->
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-12 ">
+                                <button id="next_reg" onclick="next();" style="width: 99%;" class="d-block mx-auto my-3 pt-3 proceed_btn" disabled> Next </button>
+                            </div>
+                        </div>
+
+                        </div>
+                        <!-- Step 1 ENDS -->
+                        <input type="number" hidden id="filled" value="">
 
 
-                                            <div class="row my-2">
-                                            <div class="col-md-12 form_fields_black">
-                                                <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left ">What's your date of birth? </p></label>
-                                            </div>
+<!-- Step 2 -->
+                        <div id="step_two" class="collapse">
 
-                                            <div id="form_fields_black" class="col-md-4">
-                                            
-                                            <div class="row">
-                                            <div class="col-sm-12">
-                                            <label class="mb-0 w-100">
-                                                <p class="mb-0 d-block w-100 float-left text-left py-1 small">Month
-                                            </p></label>                                 
-                                            </div>
+                        <div id="form_fields">
+                        <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Email Address</p></label>
+                       
+                        <input onkeyup="fill2(this.value);" onkeyup="email_ck2(this.value);" class="border w-100 py-2 mr-1" type="email" name="email" placeholder="" id="inputEmailAddress2" value="" required />
 
-                                            <div class="col-sm-12">
-                                                <select  onchange="fill(this.value);" name="month" id="month" class="text-center dob border w-100 ">
-                                                    <option value="">Month</option>
-                                                    <option value="01">January</option>
-                                                    <option value="02">February</option>
-                                                    <option value="03">March</option>
-                                                    <option value="04">April</option>
-                                                    <option value="05">May</option>
-                                                    <option value="06">June</option>
-                                                    <option value="07">July</option>
-                                                    <option value="08">August</option>
-                                                    <option value="09">September</option>
-                                                    <option value="10">October</option>
-                                                    <option value="11">November</option>
-                                                    <option value="12">December</option>
-                                                </select>
-                                             </div>
+                        <span id="er_email2" class="collapse float-left text-danger small">Error: Invalid email</span>
+                        </div>
 
-                                            </div>   
-                                            </div>
+                        <div id="form_fields2" class="mt-3">
+                            <label class="mb-0 w-100"><p class="mb-0 d-block w-50 float-left small small_label">Password</p>
+                                <span id="hideButton3" onclick="passShow3();" class="float-right p-0 w-50 text-right small_label px-2">
+                                 <img id="passIcon3" width="15px" src="images/randomIcons/see.png"> <span id="hide3">Show</span>  
+                                </span>
+                            </label>
+                       
+                        <input onkeyup="pass_match1(this.value); fill2(this.value);" class="border w-100 py-2 mr-1" name="password" id="inputPassword3" type="password" value="" required />
+                        </div>
 
-                                            <div id="form_fields_black" class="col-md-4">
-                                            
-                                            <div class="row">
-                                            <div class="col-sm-12">
-                                            <label class="mb-0 w-100">
-                                                <p class="mb-0 d-block w-100 float-left text-left py-1 small">Day
-                                            </p></label>                                 
-                                            </div>
+                        <div id="form_fields2" class="my-3">
+                            <label class="mb-0 w-100"><p class="mb-0 d-block w-50 float-left small small_label">Confirm Password</p>
+                                <span id="hideButton2" onclick="passShow2();" class="float-right p-0 w-50 text-right small_label px-2">
+                                 <img id="passIcon2" width="15px" src="images/randomIcons/see.png"> <span id="hide2">Show</span>  
+                                </span>
+                            </label>
+                       
+                        <input onkeyup="pass_match2(this.value); fill2(this.value);" class="border w-100 py-2 mr-1" name="password_confirmation" id="inputPassword2" type="password" value="" required />
 
-                                            <div class="col-sm-12">
-                                                <select  onchange="fill(this.value);" id="day" name="day" class="text-center dob border w-100 ">
-                                                    <option value="">day</option>
-                                                    <option value="01">01</option>
-                                                    <option value="02">02</option>
-                                                    <option value="03">03</option>
-                                                    <option value="04">04</option>
-                                                    <option value="05">05</option>
-                                                    <option value="06">06</option>
-                                                    <option value="07">07</option>
-                                                    <option value="08">08</option>
-                                                    <option value="09">09</option>
-                                                    <option value="10">10</option>
-                                                    <option value="11">11</option>
-                                                    <option value="12">12</option>
-                                                    <option value="13">13</option>
-                                                    <option value="14">14</option>
-                                                    <option value="15">15</option>
-                                                    <option value="16">16</option>
-                                                    <option value="17">17</option>
-                                                    <option value="18">18</option>
-                                                    <option value="19">19</option>
-                                                    <option value="20">20</option>
-                                                    <option value="21">21</option>
-                                                    <option value="22">22</option>
-                                                    <option value="23">23</option>
-                                                    <option value="24">24</option>
-                                                    <option value="25">25</option>
-                                                    <option value="26">26</option>
-                                                    <option value="27">27</option>
-                                                    <option value="28">28</option>
-                                                    <option value="29">29</option>
-                                                    <option value="30">30</option>
-                                                    <option value="31">31</option>
-                                                    
-                                                </select>
-                                             </div>
+                        <span id="er_pass" class="collapse float-left text-danger small">Error: Passwords do not match!</span>
 
-                                            </div>  
-                                            </div>
+                        </div>
+                        
 
-                                            <div id="form_fields_black" class="col-md-4">
-                                            
-                                            <div class="row">
-                                            <div class="col-sm-12">
-                                            <label class="mb-0 w-100">
-                                                <p class="mb-0 d-block w-100 float-left text-left py-1 small">Year
-                                            </p></label>                                 
-                                            </div>
+                        <div id="form_fields">
+                        <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label2">By creating an account, you agree to the<a class="small d-inline" target="_black" href="terms">Terms of Use</a> and <a class="small d-inline" target="_black" href="privacy-policy">Privacy Policy</a></p></label>                                            
+                        </div>
 
-                                            <div class="col-sm-12">
-                                                <select  onchange="fill(this.value);" id="year" name="year" class="text-center dob border w-100 ">
-                                                    <option value="">Year</option>
-                                                    <option value="1960">1960</option>
-                                                    <option value="1961">1961</option>
-                                                    <option value="1962">1962</option>
-                                                    <option value="1963">1963</option>
-                                                    <option value="1964">1964</option>
-                                                    <option value="1965">1965</option>
-                                                    <option value="1966">1966</option>
-                                                    <option value="1967">1967</option>
-                                                    <option value="1968">1968</option>
-                                                    <option value="1969">1969</option>
-                                                    <option value="1970">1970</option>
-                                                    <option value="1971">1971</option>
-                                                    <option value="1972">1972</option>
-                                                    <option value="1973">1973</option>
-                                                    <option value="1974">1974</option>
-                                                    <option value="1975">1975</option>
-                                                    <option value="1976">1976</option>
-                                                    <option value="1977">1977</option>
-                                                    <option value="1978">1978</option>
-                                                    <option value="1979">1979</option>
-                                                    <option value="1980">1980</option>
-                                                    <option value="1981">1981</option>
-                                                    <option value="1982">1982</option>
-                                                    <option value="1983">1983</option>
-                                                    <option value="1984">1984</option>
-                                                    <option value="1985">1985</option>
-                                                    <option value="1986">1986</option>
-                                                    <option value="1987">1987</option>
-                                                    <option value="1988">1988</option>
-                                                    <option value="1989">1989</option>
-                                                    <option value="1990">1990</option>
-                                                    <option value="1991">1991</option>
-                                                    <option value="1992">1992</option>
-                                                    <option value="1993">1993</option>
-                                                    <option value="1994">1994</option>
-                                                    <option value="1995">1995</option>
-                                                    <option value="1996">1996</option>
-                                                    <option value="1997">1997</option>
-                                                    <option value="1998">1998</option>
-                                                    <option value="1999">1999</option>
-                                                    <option value="2000">2000</option>
-                                                    <option value="2001">2001</option>
-                                                    <option value="2002">2002</option>
-                                                    <option value="2003">2003</option>
-                                                    <option value="2004">2004</option>
-                                                    <option value="2005">2005</option>
-                                                    <option value="2006">2006</option>
-                                                    <option value="2007">2007</option>
-                                                    <option value="2008">2008</option>
-                                                    <option value="2009">2009</option>
-                                                    <option value="2010">2010</option>
-                                                </select>
-                                             </div>
 
-                                            </div>  
-                                            </div>
-
-                                            </div>
-
-                                            <div class="row mb-3 w-75 m-auto">
-                                                <!-- <div class="col-md-12">
+                        <input type="text" id="captcha" hidden value="" name="">
+                        <div id="form_fields4">
+                            <div class="col-md-12 px-0">
                                 @if(config('services.recaptcha.key'))
-                                    <div class="g-recaptcha"
+                                    <div class="g-recaptcha" data-callback="thecallback"
                                         data-sitekey="{{config('services.recaptcha.key')}}">
                                     </div>
                                 @endif
-                            </div> -->
-                                            </div>
-                                            <div class="row mb-4">
-                                                <div class="col-md-12 ">
-                                                    <button id="next_reg" onclick="next();" style="width: 99%;" class="d-block mx-auto my-3 pt-3 proceed_btn" disabled> Next </button>
-                                                </div>
-                                            </div>
+                            </div>                                       </div>
 
-                                            </div>
-                                            <!-- Step 1 ENDS -->
-                                            <input type="number" hidden id="filled" value="">
+                        <div class="row my-4">
+                            <div class="col-md-12 ">
+                                <button id="proceed_reg" type="submit" style="width: 99%;" class="d-block mx-auto my-3 pt-2 proceed_btn text-light " disabled> Register </button>
 
 
-                    <!-- Step 2 -->
-                                            <div id="step_two" class="collapse">
-
-                                            <div id="form_fields">
-                                            <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label">Email Address</p></label>
-                                           
-                                            <input onkeyup="fill2(this.value);" onkeyup="email_ck2(this.value);" class="border w-100 py-2 mr-1" type="email" name="email" placeholder="" id="inputEmailAddress2" value="" required />
-
-                                            <span id="er_email2" class="collapse float-left text-danger small">Error: Invalid email</span>
-                                            </div>
-
-                                            <div id="form_fields2" class="mt-3">
-                                                <label class="mb-0 w-100"><p class="mb-0 d-block w-50 float-left small small_label">Password</p>
-                                                    <span id="hideButton3" onclick="passShow3();" class="float-right p-0 w-50 text-right small_label px-2">
-                                                     <img id="passIcon3" width="15px" src="images/randomIcons/see.png"> <span id="hide3">Show</span>  
-                                                    </span>
-                                                </label>
-                                           
-                                            <input onkeyup="pass_match1(this.value); fill2(this.value);" class="border w-100 py-2 mr-1" name="password" id="inputPassword3" type="password" value="" required />
-                                            </div>
-
-                                            <div id="form_fields2" class="my-3">
-                                                <label class="mb-0 w-100"><p class="mb-0 d-block w-50 float-left small small_label">Confirm Password</p>
-                                                    <span id="hideButton2" onclick="passShow2();" class="float-right p-0 w-50 text-right small_label px-2">
-                                                     <img id="passIcon2" width="15px" src="images/randomIcons/see.png"> <span id="hide2">Show</span>  
-                                                    </span>
-                                                </label>
-                                           
-                                            <input onkeyup="pass_match2(this.value); fill2(this.value);" class="border w-100 py-2 mr-1" name="password_confirmation" id="inputPassword2" type="password" value="" required />
-
-                                            <span id="er_pass" class="collapse float-left text-danger small">Error: Passwords do not match!</span>
-
-                                            </div>
-                                            
-
-                                            <div id="form_fields">
-                                            <label class="mb-0 w-100"><p class="mb-0 d-block w-100 float-left text-left small small_label2">By creating an account, you agree to the<a class="small d-inline" target="_black" href="terms">Terms of Use</a> and <a class="small d-inline" target="_black" href="privacy-policy">Privacy Policy</a></p></label>                                            
-                                            </div>
-
-
-                                            <input type="text" id="captcha" hidden value="" name="">
-                                            <div id="form_fields4">
-                                                <div class="col-md-12 px-0">
-                                                    @if(config('services.recaptcha.key'))
-                                                        <div class="g-recaptcha" data-callback="thecallback"
-                                                            data-sitekey="{{config('services.recaptcha.key')}}">
-                                                        </div>
-                                                    @endif
-                                                </div>                                       </div>
-
-                                            <div class="row my-4">
-                                                <div class="col-md-12 ">
-                                                    <button id="proceed_reg" type="submit" style="width: 99%;" class="d-block mx-auto my-3 pt-2 proceed_btn text-light " disabled> Register </button>
-
-
-                                                </div>
-                                            </div>
-
-                                        </div>
-                    <!-- Step 2 ENDS -->
-
-                                        </form>
-
-                                        <div class="row">
-                                            <div class="col-md-4 px-0">
-                                                <hr class="thick_border">
-                                            </div>
-                                            <div class="mb-0 col-md-4 form_fields_black">
-                                                <p>Or continue with</p>
-                                            </div>
-                                            <div class="col-md-4 px-0">
-                                                <hr class="thick_border">
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3 w-50 px-4 m-auto">
-                                            <div class="col-md-6">
-                                                <a href="{{route('login.facebook')}}" class="social_btn text-light">
-                                                    <img class="shadow" src="images/randomIcons/fb.png"></a>
-                                            </div>
-                                        
-                                            <div class="col-md-6">
-                                                <a href="{{route('login.google')}}" class="social_btn text-dark">
-                                                    <img class="shadow" src="images/randomIcons/google.png"></a>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                 <!-- HIDDEN USER REG -->
-                                    
-                                </div>
-
-
-
-                                <!-- Logout-->
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-
-
-
-                                <!-- HIDDEN login--> <!-- HIDDEN login--> <!-- HIDDEN login--> <!-- login-->
-
-                                <div class="" id="all_logins">
-                                    <div id="user_log" class="px-4 py-0">
-
-                                        <div class="card-header d-block w-75 mx-auto mt-5 mb-4">
-                                            <div class="row">
-                                                
-                                            <div class="col-md-12 text-center sign_text">
-                                                <h2 class="font-weight-bold">Sign In</h2>
-                                                <h4>Enter details to log in</h4>
-                                            </div>
-
-                                            
-
-                                            </div>
-                                        </div>
-
-                                        <form method="POST" class="" action="{{route('login')}}">
-                                            @csrf
-
-
-                                            <input type="text" hidden name="c_to_action_login" id="c_to_action_login" value="">
-
-                                            <div id="form_fields">
-                                                <label class="mb-0 w-100"><p class="mb-0  d-block w-100 float-left text-left small small_label">Email Address</p></label>
-                                           
-                                            <input onkeyup="email_ck(this.value);" class="border w-100 pl-2 py-2 mr-1" type="email" name="email" placeholder="" id="inputEmailAddress" value="{{ old('email') }}" required />
-
-                                            <span id="er_email" class="collapse float-left text-danger small">Error: Invalid email</span>
-                                            </div>
-
-                                            <div id="form_fields2" class="mt-3">
-                                                <label class="mb-0 w-100"><p class="mb-0 d-block w-50 float-left small small_label">Password</p>
-                                                    <span id="hideButton" onclick="passShow();" class="float-right p-0 w-50 text-right small_label px-2">
-                                                     <img id="passIcon" width="15px" src="images/randomIcons/see.png"> <span id="hide">Show</span>  
-                                                    </span>
-                                                </label>
-                                           
-                                            <input onkeyup="pass_ck(this.value);" class="border w-100 pl-2 py-2 mr-1" name="password" id="inputPassword" type="password" value="" required />
-                                            </div>
-
-
-
-
-                                            <!--  @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                           @enderror -->
-                                           <div class="row">
-                                            <div class="col-sm-12 pr-1 text-center">
-                                                <a href="{{ route('forgot','email') }}" style="color:black;" class=" text-responsive font-weight-bold mx-auto my-2 d-inline-block py-0 small">Forgot Password?</a>
-                                            </div>
-                                        </div>
-
-
-                                            @if (Route::has('forgetPass'))
-                                            <a href="{{ route('password.request') }}" class="small text">Forgot password ?</a> @endif
-
-                                            <button id="login_btn" type="submit" style="width: 99%;" class="d-block mx-auto my-3 pt-2 proceed_btn text-light " disabled> Proceed </button>
-                                        </form>
-
-                                    </div>   
-
-                                </div>
                             </div>
                         </div>
 
                     </div>
+<!-- Step 2 ENDS -->
+
+                    </form>
+
+                    <div class="row">
+                        <div class="col-md-4 px-0">
+                            <hr class="thick_border">
+                        </div>
+                        <div class="mb-0 col-md-4 form_fields_black">
+                            <p>Or continue with</p>
+                        </div>
+                        <div class="col-md-4 px-0">
+                            <hr class="thick_border">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 w-50 px-4 m-auto">
+                        <div class="col-md-6">
+                            <a href="{{route('login.facebook')}}" class="social_btn text-light">
+                                <img class="shadow" src="images/randomIcons/fb.png"></a>
+                        </div>
+                    
+                        <div class="col-md-6">
+                            <a href="{{route('login.google')}}" class="social_btn text-dark">
+                                <img class="shadow" src="images/randomIcons/google.png"></a>
+                        </div>
+                    </div>
+
+
+                </div>
+
+             <!-- HIDDEN USER REG -->
+                
+            </div>
+
+
+
+            <!-- Logout-->
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
+
+
+
+            <!-- HIDDEN login--> <!-- HIDDEN login--> <!-- HIDDEN login--> <!-- login-->
+
+            <div class="" id="all_logins">
+                <div id="user_log" class="px-4 py-0">
+
+                    <div class="card-header d-block w-75 mx-auto mt-5 mb-4">
+                        <div class="row">
+                            
+                        <div class="col-md-12 text-center sign_text">
+                            <h2 class="font-weight-bold">Sign In</h2>
+                            <h4>Enter details to log in</h4>
+                        </div>
+
+                        
+
+                        </div>
+                    </div>
+
+                    <form method="POST" class="" action="{{route('login')}}">
+                        @csrf
+
+
+                        <input type="text" hidden name="c_to_action_login" id="c_to_action_login" value="">
+
+                        <div id="form_fields">
+                            <label class="mb-0 w-100"><p class="mb-0  d-block w-100 float-left text-left small small_label">Email Address</p></label>
+                       
+                        <input onkeyup="email_ck(this.value);" class="border w-100 pl-2 py-2 mr-1" type="email" name="email" placeholder="" id="inputEmailAddress" value="{{ old('email') }}" required />
+
+                        <span id="er_email" class="collapse float-left text-danger small">Error: Invalid email</span>
+                        </div>
+
+                        <div id="form_fields2" class="mt-3">
+                            <label class="mb-0 w-100"><p class="mb-0 d-block w-50 float-left small small_label">Password</p>
+                                <span id="hideButton" onclick="passShow();" class="float-right p-0 w-50 text-right small_label px-2">
+                                 <img id="passIcon" width="15px" src="images/randomIcons/see.png"> <span id="hide">Show</span>  
+                                </span>
+                            </label>
+                       
+                        <input onkeyup="pass_ck(this.value);" class="border w-100 pl-2 py-2 mr-1" name="password" id="inputPassword" type="password" value="" required />
+                        </div>
+
+
+
+
+                        <!--  @error('password')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                       @enderror -->
+                       <div class="row">
+                        <div class="col-sm-12 pr-1 text-center">
+                            <a href="{{ route('forgot','email') }}" style="color:black;" class=" text-responsive font-weight-bold mx-auto my-2 d-inline-block py-0 small">Forgot Password?</a>
+                        </div>
+                    </div>
+
+
+                        @if (Route::has('forgetPass'))
+                        <a href="{{ route('password.request') }}" class="small text">Forgot password ?</a> @endif
+
+                        <button id="login_btn" type="submit" style="width: 99%;" class="d-block mx-auto my-3 pt-2 proceed_btn text-light " disabled> Proceed </button>
+                    </form>
+
+                </div>   
+
+            </div>
+        </div>
+        </div>
+
+    </div>
 
 
                 </div>
@@ -1167,15 +992,8 @@
                     </div>
                 </div>
 
-<!-- top-buttons -->
-
-
-
-<div class="flex items-center justify-between gap-4 ">
-
-                    
-
-
+            <!-- top-buttons -->
+            <div class="flex items-center justify-between gap-4 ">           
                     <button style="  color: rgb(1, 72, 17);" id="logins" onclick="login()" class=" w-25  px-1 mr-2 whitespace-nowrap">Investor Sign in</button>
 
                     <button  id="registers" onclick="register()" class="  rounded-lg text-black py-2 px-4 block whitespace-nowrap ">{{ __('Create Investor Account') }}</button>
@@ -1202,7 +1020,7 @@
 
                                     <input hidden type="number" name="investor" value="1">
                                     <input type="text" hidden name="c_to_listing_reg" id="c_to_listing_reg" value="">
-<div class="flex">
+    <div class="flex">
 
     <!-- First Name -->
     <div class="col-md-6">
@@ -1216,20 +1034,12 @@
         <input id="mname" type="text" class="form-control pl-2 w-full @error('mname') is-invalid @enderror" name="mname" @if(Session::has('old_mname')) value="{{Session::get('old_mname')}}" @endif autocomplete="name" autofocus>
     </div>
 
-</div>
-
-
-<!-- <div class="row mb-3 pt-2">
-    <label for="name" class="col-md-4 col-form-label text-md-left ">{{ __('Middle Name') }} <span title="Required" class="text-danger"></span></label>
-
-    <div class="col-md-6">
-        <input id="name" type="text" class=" form-control @error('name') is-invalid @enderror" name="mname" @if(Session::has('old_mname')) value="{{Session::get('old_mname')}}" @endif autocomplete="name" autofocus>
     </div>
-</div> -->
 
 
-<!-- last name and email -->
-<div class="flex">
+
+    <!-- last name and email -->
+    <div class="flex">
 
     <!-- Last Name -->
     <div class="col-md-6">
@@ -1243,10 +1053,8 @@
         <input id="email" type="email" class="form-control pl-2 w-full @error('email') is-invalid @enderror" name="email" @if(Session::has('old_email')) value="{{Session::get('old_email')}}" @endif required autocomplete="email" autofocus>
     </div>
 
-</div>
-
-
-                                        <!-- last name and email  ends -->
+    </div>
+    <!-- last name and email  ends -->
 
 
 
@@ -1254,372 +1062,322 @@
 
 
 
-<!-- id no and company tax pin -->
-                                          <div class="flex items-center">
-
+    <!-- id no and company tax pin -->
+    <div class="flex items-center">
     <!-- Passport/ID No -->
-    <div class="col-md-6">
-        <label for="id_no" class="col-form-label text-md-left">{{ __('Enter your passport/Id no*') }} <span title="Required" class="text-danger">*</span></label>
-        <input id="id_no" type="text" class="form-control pl-2 w-full @error('id_no') is-invalid @enderror" name="id_no" @if(Session::has('old_id_no')) value="{{Session::get('old_id_no')}}" @endif required>
+        <div class="col-md-6">
+            <label for="id_no" class="col-form-label text-md-left">{{ __('Enter your passport/Id no*') }} <span title="Required" class="text-danger">*</span></label>
+            <input id="id_no" type="text" class="form-control pl-2 w-full @error('id_no') is-invalid @enderror" name="id_no" @if(Session::has('old_id_no')) value="{{Session::get('old_id_no')}}" @endif required>
+        </div>
+
+        <!-- Individual/Company Tax Pin -->
+        <div class="col-md-6">
+            <label for="tax_pin" class="col-md-4 col-form-label pr-4 text-md-left  flex items-center whitespace-nowrap">
+                {{ __('Enter your individual/company tax pin*') }}<span title="Required" class="text-danger">*</span>
+            </label>
+            <input id="tax_pin" type="text" class="form-control pl-2 w-full @error('tax_pin') is-invalid @enderror" name="tax_pin" @if(Session::has('old_tax_pin')) value="{{Session::get('old_tax_pin')}}" @endif required>
+        </div>
+
     </div>
 
-    <!-- Individual/Company Tax Pin -->
-    <div class="col-md-6">
-        <label for="tax_pin" class="col-md-4 col-form-label pr-4 text-md-left  flex items-center whitespace-nowrap">
-            {{ __('Enter your individual/company tax pin*') }}<span title="Required" class="text-danger">*</span>
-        </label>
-        <input id="tax_pin" type="text" class="form-control pl-2 w-full @error('tax_pin') is-invalid @enderror" name="tax_pin" @if(Session::has('old_tax_pin')) value="{{Session::get('old_tax_pin')}}" @endif required>
-    </div>
-
-</div>
 
 
+    <!-- id no and company tax pin  ends-->
 
-<!-- id no and company tax pin  ends-->
+    <div class="flex ">
+        <div class="col-md-6">
+            <label for="id_passport" class=" col-form-label text-md-left pr-0 flex items-center whitespace-nowrap">
+                {{ __('Upload Id/Passport') }}<span title="Required" class="text-danger">*</span>
+            </label>
+            <div class="border border-black py-2 rounded-lg">
 
-
-
-
-<!-- upload passport and upload pin -->
-
-<!-- <div class="flex">
-
-    <!-- Last Name -->
-    <!-- <div class="col-md-6">
-        <label for="lname" class="col-form-label text-md-left">{{ __('Last Name') }} <span title="Required" class="text-danger">*</span></label>
-        <input id="lname" type="text" class="form-control pl-2 w-full @error('name') is-invalid @enderror" name="lname" @if(Session::has('old_lname')) value="{{Session::get('old_lname')}}" @endif required autocomplete="name" autofocus>
-    </div> -->
-
-    <!-- E-Mail -->
-    <!-- <div class="col-md-6">
-        <label for="email" class="col-form-label text-md-left">{{ __('E-Mail') }} <span title="Required" class="text-danger">*</span></label>
-        <input id="email" type="email" class="form-control pl-2 w-full @error('email') is-invalid @enderror" name="email" @if(Session::has('old_email')) value="{{Session::get('old_email')}}" @endif required autocomplete="email" autofocus>
-    </div>
-
-</div> -->
-
-
-
-
-
-                                           <div class="flex ">
-
-    <div class="col-md-6">
-        <label for="id_passport" class=" col-form-label text-md-left pr-0 flex items-center whitespace-nowrap">
-            {{ __('Upload Id/Passport') }}<span title="Required" class="text-danger">*</span>
-        </label>
-        <div class="border border-black py-2 rounded-lg">
-
-            <div class="upload-btn-wrapper ml-2">
-                <button class="flex gap-4 mr-2"> Id / Passport
-                    <img src="images/up.svg" width="24px"> </button>
-                <input required="" type="file" id="id_passport" name="id_passport" class="form-control pl-2 w-full" />
+                <div class="upload-btn-wrapper ml-2">
+                    <button class="flex gap-4 mr-2"> Id / Passport
+                        <img src="images/up.svg" width="24px"> </button>
+                    <input required="" type="file" id="id_passport" name="id_passport" class="form-control pl-2 w-full" />
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-6"">
-        <label for="pin" class=" col-form-label text-md-left pr-0 flex items-center whitespace-nowrap">
-            {{ __('Upload Pin') }}<span title="Required" class="text-danger"></span>
-        </label>
-        <div class="border border-black py-2 rounded-lg">
-            <div class="upload-btn-wrapper ml-2">
-                <button class="flex gap-4  mr-2"> Pin
-                    <img src="images/up.svg" width="24px"> </button>
-                <input type="file" id="pin" name="pin" class="form-control pl-2 w-full" />
+        <div class="col-md-6"">
+            <label for="pin" class=" col-form-label text-md-left pr-0 flex items-center whitespace-nowrap">
+                {{ __('Upload Pin') }}<span title="Required" class="text-danger"></span>
+            </label>
+            <div class="border border-black py-2 rounded-lg">
+                <div class="upload-btn-wrapper ml-2">
+                    <button class="flex gap-4  mr-2"> Pin
+                        <img src="images/up.svg" width="24px"> </button>
+                    <input type="file" id="pin" name="pin" class="form-control pl-2 w-full" />
+                </div>
             </div>
         </div>
-    </div>
 
-</div>
-
-
-<!-- upload passport and upload pin ends-->
-
-
-
-
-
-
-<!-- pass word and confirm password -->
-
-                                            <div class="flex flex-col">
-                                                <label for="password" class="col-md-4 col-form-label text-md-left">{{ __('Password') }} <span title="Required" class="text-danger">*</span></label>
-
-                                                <div class="col-md-12">
-                                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-
-                                                </div>
-                                            </div>
-
-
-                                            <div class="flex flex-col">
-                                                <label for="password" class="col-md-4 col-form-label text-md-left">{{ __('Confirm Password') }}<span title="Required" class="text-danger">*</span></label>
-
-                                                <div class="col-md-12">
-                                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password_confirmation" required autocomplete="new-password">
-
-
-                                                </div>
-                                            </div>
-
-
-
-                                        <!-- pass word and confirm password -->
-
-
-
-
-
-                                            <div class="flex py-3">
-                                                <label for="password" class="col-md-4 col-form-label text-md-left">{{ __('Potential Investment Range') }}<span title="Required" class="text-danger"></span></label>
-
-                                                <div class="col-md-6">
-
-                                                    <div class="dropdown show d-block ml-2">
-                                                        <a class="mile btn mt-2 py-1 w-75 dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            Select
-                                                        </a>
-                                                        <div class="dropdown-menu py-0" aria-labelledby="dropdownMenuLink">
-                                                            <li style="list-style-type: none;" class="mt-3 nav-item p-0 text-secondary">
-
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c1');" class="mr-2" type="checkbox" name="inv_range[]" value="0-10000" id="inv_range">$0-$10000</a>
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c1');" class="mr-2" type="checkbox" name="inv_range[]" value="10000-100000">$10000-$100000</a>
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c1');" class="mr-2" type="checkbox" name="inv_range[]" value="100000-250000">$100000-$250000</a>
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c1');" class="mr-2" type="checkbox" name="inv_range[]" value="250000-500000">$250000-$500000</a>
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c1');" class="mr-2" type="checkbox" name="inv_range[]" value="500000-">$500000+</a>
-
-                                                            </li>
-                                                        </div>
-                                                    </div>
-                                                    <p class="text-danger ml-2 small" id="sudo"></p>
-
-                                                </div>
-
-                                            </div>
-
-
-
-                                            <div class="flex">
-                                                <label for="password" class="col-md-4 col-form-label text-md-left">{{ __('Which industries are you interested in investing?') }}<span title="Required" class="text-danger"></span></label>
-
-                                                <div class="col-md-6">
-
-                                                    <div class="dropdown show d-block ml-2">
-                                                        <a class="mile btn mt-2 py-1 w-75 dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            Select
-                                                        </a>
-                                                        <div class="dropdown-menu py-0" aria-labelledby="dropdownMenuLink">
-                                                            <li style="list-style-type: none;" class="mt-3 nav-item p-0 text-secondary">
-
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Agriculture">Agriculture</a>
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Arts / Culture">Arts/Culture</a>
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Auto">Auto</a>
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Sports/Gaming">Sports/Gaming</a>
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Real State">Real State</a>
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Food">Food</a>
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Legal">Legal</a>
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Security">Security</a>
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Media / Internet">Media/Internet</a>
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Fashion">Fashion</a>
-
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Technology / Communications">Technology/Communications</a>
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Retail">Retail</a>
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[]" value="Finance/Accounting">Finance/Accounting</a>
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[]" value="Pets">Pets</a>
-                                                                <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
-                                                                    <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[]" value="Domestic (Home Help etc)">Domestic (Home Help etc)</a>
-
-                                                            </li>
-                                                        </div>
-                                                    </div>
-                                                    <p class="text-danger ml-2 small" id="sudo2"></p>
-
-                                                </div>
-                                            </div>
-
-
-                                            <div class="flex flex-col">
-                                                <label for="password" class="col-md-12 col-form-label text-md-left">{{ __('Please Enter details of your past investments & track records') }}<span title="Required" class="text-danger"></span></label>
-
-                                                <div class="col-md-12 ">
-                                                    <!-- <textarea name="past_investment" rows="2" cols="50">
-                                                        @if(Session::has('old_past_investment')) value="{{Session::get('old_past_investment')}}" @endif
-                                                    </textarea> -->
-
-
-                                                    <textarea name="past_investment" rows="2" class="form-control pl-2 w-full" cols="50">
-                                                        @if(Session::has('old_past_investment')) value="{{Session::get('old_past_investment')}}" @endif
-                                                    </textarea>
-
-                                                </div>
-                                            </div>
-
-
-                                            <div class="flex flex-col">
-                                                <label for="password" class="col-md-12 col-form-label text-md-left">{{ __('Please Enter your current website or web presence') }}<span title="Required" class="text-danger"></span></label>
-
-                                                <div class="col-md-12">
-                                                    <input type="text" name="website" class="form-control pl-2 w-full" @if(Session::has('old_website')) value="{{Session::get('old_website')}}" @endif />
-
-                                                </div>
-                                            </div>
-
-
-
-
-                                            <div class="flex pl-3 gap-2  py-3">
-                                                <div class="">
-                                                    <input id="password" type="checkbox" class=" " name="terms" required>
-                                                </div>
-
-                                                <div class="">
-                                                    <p style="font-family:system-ui;" class="text-secondary small mb-0">I have read and agree to the<a class="small d-inline text-green-700" target="_black" href="terms">Terms of Use</a> and<a class="small d-inline font-bold" target="_black" href="privacy-policy">Privacy Policy</a></p>
-                                                </div>
-                                            </div>
-
-
-                                            <input type="number" hidden id="c1">
-                                            <input type="number" hidden id="c2">
-
-                                            <div class=" pl-3">
-                                                <div class=" ">
-                                                    <button id="b2" onclick="event.preventDefault();inv_range_check();" class="mt-3 w-25 mx-auto bg-green-700 text-white rounded-lg flex justify-center w-[80%] py-2 px-8 create">
-                                                        {{ __('Create account') }}
-                                                    </button>
-
-                                                    <button id="b1" type="submit" class="collapse mt-3 w-25 mx-auto btn px-2 create">
-                                                        {{ __('Create account') }}
-                                                    </button>
-                                                </div>
-
-
-
-
-
-                                            </div>
-                                        </form>
-
-                                    </div>
-
-                                    <!-- HIDDEN USER REG -->
-
-                                </div>
-                                <!-- Logout-->
-
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-
-
-
-                                <!-- HIDDEN login-->
-                                <!-- HIDDEN login-->
-                                <!-- HIDDEN login-->
-
-                                <div class="" id="all_logins">
-
-                                    <div id="user_logs" class="flex justify-center items-center flex-col py-0">
-
-                                        <form method="POST" class="" action="{{route('login')}}">
-                                            @csrf
-
-                                            <input type="text" hidden name="c_to_action_login2" id="c_to_action_login2" value="">
- <div class="flex  flex-col  mb-3">
-        <span class="w-25 text-left text-xl mt-3">Email</span>
-        <input class="w-[300px] d-inline my-2 form-control px-2 py-1 mr-1 border rouned-lg" type="email" name="email" placeholder="" id="inputEmailAddress" value="" required />
-    </div>
-
-    <div class=" flex  flex-col  mb-3">
- <span class="w-25 text-left text-xl mt-3">Password</span>
-        <input class="w-[300px] d-inline my-2 form-control px-2 py-1 mr-1 border rouned-lg" name="password" id="inputPassword" type="password" placeholder="" value="" required />
     </div>
 
 
+    <!-- upload passport and upload pin ends-->
+    <!-- pass word and confirm password -->
+
+                <div class="flex flex-col">
+                    <label for="password" class="col-md-4 col-form-label text-md-left">{{ __('Password') }} <span title="Required" class="text-danger">*</span></label>
+
+                    <div class="col-md-12">
+                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
 
 
-                                            @error('password')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-
-
-
-                                            @if (Route::has('forgetPass'))
-                                            <a href="{{ route('password.request') }}" class="small text">Forgot password ?</a> @endif
-
-                                              <div class="card-header w-100">
-                       <!-- <div class=" my-2">
-                            <button style="" class="ml-2 w-50 text-center text-dark bg-green-700 font-weight-bold btn px-4 mr-2">{{ __('Join Jitume') }}</button>
-                        </div>-->
-
-                        <button " id="logins" onclick="login()" class="bg-green-700 w-[78%] h-auto ml-4  my-3 text-white py-2 px-5  ml-2 rounded-lg ">{{ __('Log In') }}</button>
-                       
-
-                        @if(Session::has('email')) <p class="text-danger ml-5">{{Session::get('email')}} @php Session::forget('email'); @endphp </p> @endif
                     </div>
+                </div>
+
+
+                <div class="flex flex-col">
+                    <label for="password" class="col-md-4 col-form-label text-md-left">{{ __('Confirm Password') }}<span title="Required" class="text-danger">*</span></label>
+
+                    <div class="col-md-12">
+                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password_confirmation" required autocomplete="new-password">
+
+
+                    </div>
+                </div>
 
 
 
-                                            <!--<input type="submit" class=" d-block w-25 mx-auto my-2 btn bg-black text-white font-weight-bold " href="" name="Log In" value="Sign In" />-->
-                                        </form>
+            <!-- pass word and confirm password -->
 
 
 
 
 
-                                        <div class="row">
-                                            <div class="col-sm-12 pr-1">
-                                                <a href="{{ route('forgot','email') }}" class="  text-black text-md mx-auto my-2 d-inline-block py-0 ">Forgot Password?</a>
-                                            </div>
+                <div class="flex py-3">
+                    <label for="password" class="col-md-4 col-form-label text-md-left">{{ __('Potential Investment Range') }}<span title="Required" class="text-danger"></span></label>
 
+                    <div class="col-md-6">
 
-                                        </div>
+                        <div class="dropdown show d-block ml-2">
+                            <a class="mile btn mt-2 py-1 w-75 dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Select
+                            </a>
+                            <div class="dropdown-menu py-0" aria-labelledby="dropdownMenuLink">
+                                <li style="list-style-type: none;" class="mt-3 nav-item p-0 text-secondary">
 
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c1');" class="mr-2" type="checkbox" name="inv_range[]" value="0-10000" id="inv_range">$0-$10000</a>
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c1');" class="mr-2" type="checkbox" name="inv_range[]" value="10000-100000">$10000-$100000</a>
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c1');" class="mr-2" type="checkbox" name="inv_range[]" value="100000-250000">$100000-$250000</a>
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c1');" class="mr-2" type="checkbox" name="inv_range[]" value="250000-500000">$250000-$500000</a>
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c1');" class="mr-2" type="checkbox" name="inv_range[]" value="500000-">$500000+</a>
 
-                                    </div>
-
-                                </div>
+                                </li>
                             </div>
                         </div>
+                        <p class="text-danger ml-2 small" id="sudo"></p>
 
                     </div>
-
 
                 </div>
 
 
 
+                <div class="flex">
+                    <label for="password" class="col-md-4 col-form-label text-md-left">{{ __('Which industries are you interested in investing?') }}<span title="Required" class="text-danger"></span></label>
+
+                    <div class="col-md-6">
+
+                        <div class="dropdown show d-block ml-2">
+                            <a class="mile btn mt-2 py-1 w-75 dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Select
+                            </a>
+                            <div class="dropdown-menu py-0" aria-labelledby="dropdownMenuLink">
+                                <li style="list-style-type: none;" class="mt-3 nav-item p-0 text-secondary">
+
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Agriculture">Agriculture</a>
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Arts / Culture">Arts/Culture</a>
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Auto">Auto</a>
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Sports/Gaming">Sports/Gaming</a>
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Real State">Real State</a>
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Food">Food</a>
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Legal">Legal</a>
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Security">Security</a>
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Media / Internet">Media/Internet</a>
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Fashion">Fashion</a>
+
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Technology / Communications">Technology/Communications</a>
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[][]" value="Retail">Retail</a>
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[]" value="Finance/Accounting">Finance/Accounting</a>
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[]" value="Pets">Pets</a>
+                                    <a class="pr-0 py-1" style="font-size:13px;" class="dropdown-item">
+                                        <input onchange="inv_record('c2');" class="mr-2" type="checkbox" name="interested_cats[]" value="Domestic (Home Help etc)">Domestic (Home Help etc)</a>
+
+                                </li>
+                            </div>
+                        </div>
+                        <p class="text-danger ml-2 small" id="sudo2"></p>
+
+                    </div>
+                </div>
+
+
+                <div class="flex flex-col">
+                    <label for="password" class="col-md-12 col-form-label text-md-left">{{ __('Please Enter details of your past investments & track records') }}<span title="Required" class="text-danger"></span></label>
+
+                    <div class="col-md-12 ">
+                        <!-- <textarea name="past_investment" rows="2" cols="50">
+                            @if(Session::has('old_past_investment')) value="{{Session::get('old_past_investment')}}" @endif
+                        </textarea> -->
+
+
+                        <textarea name="past_investment" rows="2" class="form-control pl-2 w-full" cols="50">
+                            @if(Session::has('old_past_investment')) value="{{Session::get('old_past_investment')}}" @endif
+                        </textarea>
+
+                    </div>
+                </div>
+
+
+                <div class="flex flex-col">
+                    <label for="password" class="col-md-12 col-form-label text-md-left">{{ __('Please Enter your current website or web presence') }}<span title="Required" class="text-danger"></span></label>
+
+                    <div class="col-md-12">
+                        <input type="text" name="website" class="form-control pl-2 w-full" @if(Session::has('old_website')) value="{{Session::get('old_website')}}" @endif />
+
+                    </div>
+                </div>
+
+
+
+
+                <div class="flex pl-3 gap-2  py-3">
+                    <div class="">
+                        <input id="password" type="checkbox" class=" " name="terms" required>
+                    </div>
+
+                    <div class="">
+                        <p style="font-family:system-ui;" class="text-secondary small mb-0">I have read and agree to the<a class="small d-inline text-green-700" target="_black" href="terms">Terms of Use</a> and<a class="small d-inline font-bold" target="_black" href="privacy-policy">Privacy Policy</a></p>
+                    </div>
+                </div>
+
+
+                <input type="number" hidden id="c1">
+                <input type="number" hidden id="c2">
+
+                <div class=" pl-3">
+                    <div class=" ">
+                        <button id="b2" onclick="event.preventDefault();inv_range_check();" class="mt-3 w-25 mx-auto bg-green-700 text-white rounded-lg flex justify-center w-[80%] py-2 px-8 create">
+                            {{ __('Create account') }}
+                        </button>
+
+                        <button id="b1" type="submit" class="collapse mt-3 w-25 mx-auto btn px-2 create">
+                            {{ __('Create account') }}
+                        </button>
+                    </div>
+
+
+
+
+
+                </div>
+            </form>
+
+        </div>
+
+        <!-- HIDDEN USER REG -->
+
+    </div>
+    <!-- Logout-->
+
+
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+        @csrf
+    </form>
+
+
+                                <!-- HIDDEN login-->
+                                <!-- HIDDEN login-->
+                                <!-- HIDDEN login-->
+
+                    <div class="" id="all_logins">
+
+                        <div id="user_logs" class="flex justify-center items-center flex-col py-0">
+
+                            <form method="POST" class="" action="{{route('login')}}">
+                                @csrf
+
+                                <input type="text" hidden name="c_to_action_login2" id="c_to_action_login2" value="">
+                                <div class="flex  flex-col  mb-3">
+                                    <span class="w-25 text-left text-xl mt-3">Email</span>
+                                    <input class="w-[300px] d-inline my-2 form-control px-2 py-1 mr-1 border rouned-lg" type="email" name="email" placeholder="" id="inputEmailAddress" value="" required />
+                                </div>
+
+                                <div class=" flex  flex-col  mb-3">
+                                    <span class="w-25 text-left text-xl mt-3">Password</span>
+                                    <input class="w-[300px] d-inline my-2 form-control px-2 py-1 mr-1 border rouned-lg" name="password" id="inputPassword" type="password" placeholder="" value="" required />
+                                </div>
+
+
+
+
+                                @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+
+
+
+                                @if (Route::has('forgetPass'))
+                                <a href="{{ route('password.request') }}" class="small text">Forgot password ?</a> @endif
+
+                                  <div class="card-header w-100">
+                                    <button id="logins" onclick="login()" class="bg-green-700 w-[78%] h-auto ml-4  my-3 text-white py-2 px-5  ml-2 rounded-lg ">{{ __('Log In') }}</button>
+                                   
+
+                                    @if(Session::has('email')) <p class="text-danger ml-5">{{Session::get('email')}} @php Session::forget('email'); @endphp </p> @endif
+                                    </div>
+
+                                <!--<input type="submit" class=" d-block w-25 mx-auto my-2 btn bg-black text-white font-weight-bold " href="" name="Log In" value="Sign In" />-->
+                            </form>
+
+
+
+
+
+                            <div class="row">
+                                <div class="col-sm-12 pr-1">
+                                    <a href="{{ route('forgot','email') }}" class="  text-black text-md mx-auto my-2 d-inline-block py-0 ">Forgot Password?</a>
+                                </div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                </div>
             </div>
         </div>
-    </div>
 
     <!-- INVEST/Susbcribe LOGIN MODAL --> <!-- INVEST LOGIN MODAL --> <!-- INVEST LOGIN MODAL -->
 
 
-
+<!-- RAW CSS -->
 
     <script type="text/javascript">
         $('#login').css({borderBottom:'1px solid #083608', color:'#014811', background:'white'});
@@ -1687,7 +1445,6 @@
             //     $('#all_registers').show();
             //     $('#user_reg').show();
             // }
-
         }
     </script>
 
@@ -2059,11 +1816,6 @@ function closePop(){ $('#investModal').css('display', 'none'); }
     <script src="js/slider2.js"></script>
 
 
-<!-- GOOGLE MAP 
-<script src="sddjs/map.js"> </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnKB7p3g8iG6IGE9nXX4PqlZ6EPHNUo3w&callback=myMap" async ></script>
- GOOGLE MAP -->
-
 <script>
   const toggleButton = document.getElementById('toggleButton');
   const offcanvasNavbar = document.getElementById('offcanvasNavbar');
@@ -2081,23 +1833,7 @@ function closePop(){ $('#investModal').css('display', 'none'); }
 
 
 
-<script type="text/javascript">
-    if (window.location.hash && window.location.hash == '#_=_') {
-        if (window.history && history.pushState) {
-            window.history.pushState("", document.title, window.location.pathname);
-        } else {
-            // Prevent scrolling by storing the page's current scroll offset
-            var scroll = {
-                top: document.body.scrollTop,
-                left: document.body.scrollLeft
-            };
-            window.location.hash = '';
-            // Restore the scroll offset, should be flicker free
-            document.body.scrollTop = scroll.top;
-            document.body.scrollLeft = scroll.left;
-        }
-    }
-
+<script type="text/javascript">  
 //To refresh the page if back button click after login
     window.addEventListener( "pageshow", function ( event ) {
           var historyTraversal = event.persisted || 
@@ -2109,7 +1845,6 @@ function closePop(){ $('#investModal').css('display', 'none'); }
           }
     });
 //To refresh the page if back button click after login
-
 window.addEventListener('load', () => {
   const $recaptcha = document.querySelector('#g-recaptcha-response');
   if ($recaptcha) {
@@ -2117,14 +1852,23 @@ window.addEventListener('load', () => {
   }
 })
 
+
+ // if (window.location.hash && window.location.hash == '#_=_') {
+    //     if (window.history && history.pushState) {
+    //         window.history.pushState("", document.title, window.location.pathname);
+    //     } else {
+    //         // Prevent scrolling by storing the page's current scroll offset
+    //         var scroll = {
+    //             top: document.body.scrollTop,
+    //             left: document.body.scrollLeft
+    //         };
+    //         window.location.hash = '';
+    //         // Restore the scroll offset, should be flicker free
+    //         document.body.scrollTop = scroll.top;
+    //         document.body.scrollLeft = scroll.left;
+    //     }
+    // }
 </script>
 
-
-
-
-
-
-
 </body>
-
 </html>

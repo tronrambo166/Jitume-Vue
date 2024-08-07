@@ -980,6 +980,10 @@
         color: #585858f0 !important;
     }
 
+    .btn-success {
+            background: #266A2E; /*#72c537;*/
+            color: white;
+        }
 
     .primary_bg {
         background: #083608;

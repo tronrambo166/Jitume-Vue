@@ -24,7 +24,7 @@
       <div class="flex w-full  items-center gap-[40px]"> 
               
 
-              <a v-if="allowToReview" data-toggle="modal" data-target="#reviewModal"
+              <a v-if="allowToReview && form.conv" data-toggle="modal" data-target="#reviewModal"
                 style="cursor:pointer" class="bg-green-700 w-[50%] text-center  add rounded-[16px] ">Add Review</a>
 
               <!-- <a @click="make_session(form.listing_id);" data-target="#loginmodal2" data-toggle="modal"
@@ -770,7 +770,7 @@ export default {
 
   created() {
      if (sessionStorage.getItem('invest') != null){
-         sessionStorage.setItem('invest',null);
+         sessionStorage.setItem('invest','');
        //sessionStorage.clear();
         this.form.raw_id = this.$route.params.id;
      }
@@ -1243,6 +1243,7 @@ sessionStorage.setItem("purpose", "Monthly basis subscription");
       alert('Review successfully taken!');
       sessionStorage.clear();
     }
+    this.form.raw_id = this.$route.params.id;
     
 
     // SCRIPT
