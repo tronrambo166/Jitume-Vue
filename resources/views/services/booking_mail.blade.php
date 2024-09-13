@@ -9,8 +9,8 @@
         <div class="content" style="padding: 20px;">
             <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Booking Accepted!</h2>
             <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">Hi,<br>Your booking request to {{$business_name}} has been accepted.</p>
-            <div class="button-container" style="display: flex; margin-top: 20px;">
-             	<a target="_blank" href="https://test.jitume.com/#/service-milestone/{{$s_id}}" class="button button-primary" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Pay Here</a>
+            <div class="button-container" style="display: flex; margin-top: 20px;"> <!-- https://test.jitume.com -->
+             	<a target="_blank" href="http://127.0.0.1:5173/service-milestones/{{$s_id}}" class="button button-primary" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Pay Here</a>
             </div>
             <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px;">Thanks!<br>Jitume Admin</p>
         </div>

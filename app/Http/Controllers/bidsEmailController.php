@@ -35,10 +35,9 @@ public function __construct(StripeClient $client)
 
 public function bidsAccepted(Request $request)
 {
-
-    try { 
+    //return $request->all();
+    try {
         $bid_ids = $request->bid_ids;
-        $business_id = $request->business_id;
 
         //REJECT
         if(isset($request->reject) && $request->reject == 1){
@@ -64,9 +63,10 @@ public function bidsAccepted(Request $request)
            }
           }
         Session::put('success','Rejected!');
-        return redirect()->back();
+        return response()->json(['message' => 'Rejected!']);
         }
         //REJECT 
+
 
         foreach($bid_ids as $id){
         if($id !=''){
@@ -134,13 +134,12 @@ public function bidsAccepted(Request $request)
          //remove
          }
        }
-        Session::put('success','Accepted!');
-        return redirect()->back();
+      Session::put('success','Accepted!');
+      return response()->json(['message' => 'Accepted!']);
      
        }
         catch(\Exception $e){
-            Session::put('failed',$e->getMessage());
-            return redirect()->back();
+            return response()->json(['status' => 'failed', 'message' => $e->getMessage()]);
        }  
 
    }
@@ -153,12 +152,12 @@ public function agreeToBid($bidId)
               'investor_agree' => 1       
         ]);
         Session::put('login_success','Thanks for your review, you will get an email when this milestone completes!');
-        return redirect('/');
+       return redirect()->to('http://127.0.0.1:5173/');
      
        }
         catch(\Exception $e){
             Session::put('failed',$e->getMessage());
-            return redirect()->back();
+            return redirect()->to('http://127.0.0.1:5173/');
        }  
 }
 
@@ -200,7 +199,7 @@ public function agreeToMileS($s_id,$booker_id)
     if($mileLat)
     ServiceMileStatus::where('id',$mileLat->id)->update([ 'active' => 1]);
     Session::put('login_success','Thanks for your review, next milestone can be paid for to begin!!');
-       return redirect()->to('/#/service-milestone/'.$s_id);
+       return redirect()->to('http://127.0.0.1:5173/service-milestones/'.$s_id);
 }
 
 public function agreeToNextmile($bidId)
@@ -235,17 +234,18 @@ public function agreeToNextmile($bidId)
         }
         catch(\Exception $e){
             Session::put('failed',$e->getMessage());
-            return redirect('/');
+            return redirect()->to('http://127.0.0.1:5173/');
        } 
         }
 
         Session::put('login_success','Thanks for your review, you will get an email when this milestone completes!');
-        return redirect('/');
+        return redirect()->to('http://127.0.0.1:5173/');
+        //return redirect('/');
      
        }
         catch(\Exception $e){
             Session::put('failed',$e->getMessage());
-            return redirect()->back();
+            return redirect()->to('http://127.0.0.1:5173/');
        }  
 }  
 
@@ -408,11 +408,14 @@ public function bidCommitsEQP(Request $request){
 
 public function bookingAccepted(Request $request)
 {
-    try { 
+    
         $bid_ids = $request->bid_ids;
+
+        try {
         foreach($bid_ids as $id){
         if($id !=''){
         $bid = serviceBook::where('id',$id)->first();
+        if($bid){ 
         $investor = User::where('id',$bid->booker_id)->first();
         $investor_mail = $investor->email;
 
@@ -451,13 +454,14 @@ public function bookingAccepted(Request $request)
 
          }
        }
+       }
         Session::put('success','Confirmed!');
-        return redirect()->back();
+        return response()->json(['message' => 'Success']);
      
        }
         catch(\Exception $e){
             Session::put('failed',$e->getMessage());
-            return redirect()->back();
+            return response()->json(['message' => $e->getMessage()]);
        }  
 
    }

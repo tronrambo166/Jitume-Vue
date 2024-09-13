@@ -29,7 +29,7 @@ class ServiceController extends Controller
 
 public function __construct()
     {
-        $this->middleware('business');
+        //$this->middleware('business');
     }
 
 public function auth_id(){
@@ -72,7 +72,7 @@ return view('services.listings',compact('listings'));
 
 
 public function save_listing(Request $request){ 
-
+//return $request->all();
 $title = $request->title;
 $category = $request->category; 
 $details = $request->details;
@@ -94,8 +94,7 @@ if($image) {
           $ext=strtolower($image->getClientOriginalExtension());
           if($ext!='jpg' && $ext!= 'png' && $ext!='jpeg' && $ext!= 'svg'&& $ext!='gif')
           {
-            Session::put('error','For Cover, Only images are allowed!');
-            return redirect()->back();
+            return response()->json([ 'status' => 404, 'message' => 'For Cover, Only images are allowed!']);
           } }
 
   $pin=$request->file('pin');
@@ -103,8 +102,7 @@ if($image) {
           $ext=strtolower($pin->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
           {
-            Session::put('error','For pin, Only pdf & docx are allowed!');
-            return redirect()->back();
+            return response()->json([ 'status' => 404, 'message' => 'Only pdf & docx are allowed!']);
           } }
 
  $identification=$request->file('identification');
@@ -112,8 +110,7 @@ if($image) {
           $ext=strtolower($identification->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
           {
-            Session::put('error','For identification, Only pdf & docx are allowed!');           
-            return redirect()->back();
+            return response()->json([ 'status' => 404, 'message' => 'Only pdf & docx are allowed!']);
           } }
 
 
@@ -122,8 +119,7 @@ if($image) {
           $ext=strtolower($document->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
           {
-            Session::put('error','For service document, Only pdf & docx are allowed!');          
-            return redirect()->back();
+            return response()->json([ 'status' => 404, 'message' => 'Only pdf & docx are allowed!']);
           } }
 
 
@@ -133,9 +129,8 @@ $video=$request->file('video');
           if($ext!='mpg' && $ext!= 'mpeg' && $ext!='webm' && $ext!= 'mp4' 
             && $ext!='avi' && $ext!= 'wmv')
           { 
-            Session::put('error','For video, Only mpg || mpeg || webm || mp4 
-            avi || wmv are allowed!');          
-            return redirect()->back();
+            return response()->json([ 'status' => 404, 'message' => 'For video, Only mpg || mpeg || webm || mp4 
+            avi || wmv are allowed!']);
           } }
 
 
@@ -160,10 +155,10 @@ $listing = Services::create([
           $uniqid=hexdec(uniqid());
           $ext=strtolower($image->getClientOriginalExtension());
           $create_name=$uniqid.'.'.$ext;
-          $loc='images/services/';
+          $loc='../React/images/services/';
           //Move uploaded file
           $image->move($loc, $create_name);
-          $final_img=$loc.$create_name;
+          $final_img='images/services/'.$create_name;
              }
           else $final_img='';
 
@@ -232,7 +227,7 @@ $listing = Services::create([
           
 
 //FILES End
-Services::where('id',$listing)->update([
+$S = Services::where('id',$listing)->update([
             'image' => $final_img,
             'pin' => $final_pin,
             'identification' => $final_identification,
@@ -255,13 +250,13 @@ Services::where('id',$listing)->update([
              ]);   
     }      
 // <!-- Asset Service -->
+    if($S)
+    return response()->json([ 'status' => 200, 'message' => 'Success!']);
 
   }
   catch(\Exception $e){
-  Session::put('failed', $e->getMessage()); ;
-}
-        Session::put('success','Service added!');
-        return redirect()->back();
+    return response()->json([ 'status' => 404, 'message' => $e->getMessage() ]);
+    }
 
 }
 
@@ -550,10 +545,16 @@ return redirect()->back();
 public function add_milestones(){
 $milestones = Smilestones::where('user_id',Auth::id())->latest()->get();
 $business = Services::where('shop_id',Auth::id())->get();
-return view('services.add_milestones',compact('business','milestones'));
+
+foreach($business as $b)
+  foreach($milestones as $m)
+     if($m->listing_id == $b->id)
+      $m->service_name = $b->name;
+
+return response()->json([ 'business' => $business, 'milestones' => $milestones ]);
 }
 
-public function getMilestones($id){ 
+public function getMilestones($id){
 
   //Booking check
   $booking = serviceBook::where('service_id',$id)
@@ -592,9 +593,9 @@ if($time_now > $time_due_date)
 if($d == count($milestones) && count($milestones)!=0)
 { 
   $allow = true;
-  $done_msg = 'Milestone completed! Service Delivered!';
+  $done_msg = true;
 }
-else $done_msg = null;
+else $done_msg = false;
 
 }
 catch(\Exception $e){
@@ -613,6 +614,7 @@ return response()->json([ 'data' => $milestones, 'done_msg' => $done_msg,
  public function download_milestone_doc($id, $mile_id){
     
     $doc = Smilestones::where('id',$mile_id)->first();
+    if($doc)
     $file=$doc->document;
     if( $file == null || !file_exists(public_path($file)) ){
 
@@ -645,30 +647,33 @@ if($id == 'all'){
 // }
 
 $business = Services::where('shop_id',Auth::id())->get();
-return view('services.milestones',compact('milestones','business', 'business_name'));
+// return view('services.milestones',compact('milestones','business', 'business_name'));
+return response()->json(['milestones' => $milestones, 'business'=>$business, 'business_name' =>$business_name ]);
 }
 
-public function findMilestones(Request $request){
 
-  $service_id = $request->service_id;
-  $booker_id = $request->booker_id;
+public function findMilestones($service_id, $booker_id){
+
+  // $service_id = $request->service_id;
+  // $booker_id = $request->booker_id;
   //Optional
   $service = Services::where('id',$service_id)->first();
   if($service)
   $s_name = $service->name;
-  else $s_name = '';
+  else $s_name = 'N/A';
 
   $booker = User::where('id',$booker_id)->first();
   if($booker)
   $booker_name = $booker->fname.' '.$booker->lname;
-  else $booker_name = '';
+  else $booker_name = 'N/A';
   //Optional
 
   $milestones = ServiceMileStatus::where('service_id', $service_id)
   ->where('booker_id', $booker_id)->get();
  
   $business = Services::where('shop_id',Auth::id())->get();
-  return view('services.milestones',compact('milestones','business','s_name', 'booker_name'));
+  //return view('services.milestones',compact('milestones','business','s_name', 'booker_name'));
+  return response()->json(['milestones' => $milestones, 'business'=>$business, 's_name' => $s_name, 'booker_name' => $booker_name ]);
 }
 
 
@@ -703,7 +708,10 @@ public function getBookers($s_id){
   ->where('status', 'Confirmed')->get();
   foreach($book as $b){
     $booker = User::where('id',$b->booker_id)->first();
+    if($booker){
+    $booker->name = $booker->fname. ' ' .$booker->lname;
     $results[] = $booker;
+  }
   }
 return response()->json(['data' => $results]);
 }
@@ -739,8 +747,7 @@ $total_share_amount = $total_share_amount+$single->amount;
 }
 $total_share_amount = $total_share_amount+$amount;
 if($total_share_amount>$serv->price){
-Session::put('error','The amount exceeds the total service price!');
-        return redirect()->back();
+return response()->json([ 'status' => 404, 'message' => 'The amount exceeds the total investment needed!']);
 }
 //Amount
 
@@ -756,8 +763,7 @@ try{
           $ext=strtolower($single_img->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
           {
-            Session::put('error','Only pdf & docx are allowed!');
-            return redirect()->back();
+            return response()->json([ 'status' => 404, 'message' => 'Only pdf & docx are allowed!']);
           }
 
           $create_name=$uniqid.'.'.$ext;
@@ -779,13 +785,13 @@ Smilestones::create([
             'document' => $final_file,
             'n_o_days' => $n_o_days,
             'status' => $status       
-           ]);       
+           ]);     
+
+           return response()->json([ 'status' => 200, 'message' => 'Success']);  
 }
 catch(\Exception $e){
-  Session::put('failed', $e->getMessage()); ;
-}
-        Session::put('success','Milestone added!');
-        return redirect()->back();
+    return response()->json([ 'status' => 404, 'message' => $e->getMessage() ]);
+    }
 
 }
 
@@ -828,17 +834,17 @@ $milestones = ServiceMileStatus::where('id',$request->id)
              $msg->to($user['to']);
              $msg->subject('Milestone Done!');
          });  
+         return response()->json(['message' => 'Status set success, mail sent!']);
 //Mail
 
     // if(!$notLastMile)
     //   $booking = serviceBook::where('service_id',$mile->service_id)
     //     ->where('booker_id',$mile->booker_id)->orderBy("id", "DESC")->delete();
  }
-      catch(\Exception $e){
-      return redirect('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf4F_-all')->with('failed', $e->getMessage());
-    }
-Session::put('success', 'Status Changed!');
-return redirect('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf4F_-all'); //->back();
+      catch(\Exception $e){ 
+        return response()->json([ 'message' => $e->getMessage() ]);
+      }
+
 }
 
 
@@ -895,7 +901,7 @@ foreach($booking as $book)
   $results[] = $book;
 }
 }
-return view('services.my_booking',compact('results'));
+return response()->json([ 'results' => $results ]);
 }
 
 
@@ -919,7 +925,7 @@ foreach($messages as $book)
 
 $remove_new = ServiceMessages::where('to_id',Auth::id())->update(['new'=>0]);
 
-return view('services.messages',compact('results'));
+return response()->json(['messages' => $results]);
 }
 
 
@@ -949,7 +955,7 @@ foreach($booking as $book)
 $remove_new = serviceBook::where('service_owner_id',Auth::id())
 ->update(['new'=>0]);
 
-return view('services.service_booking',compact('results'));
+return response()->json(['results' => $results]);
 }
 
 public function serviceBook(Request $request){ 

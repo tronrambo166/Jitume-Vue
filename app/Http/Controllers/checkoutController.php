@@ -60,20 +60,21 @@ class checkoutController extends Controller
      */
 
      public function stripeConversation(Request $request)
-    {
+    {   
         $listing_id=$request->listing;
         $package=$request->package;
 
         //Stripe
-    try{
+    try{ 
 
         $curr='USD'; //$request->currency; 
-        $amount= Session::get('small_fee_new_price'); //$request->price;
+        $amount= $request->amount; //Session::get('small_fee_new_price'); //$request->price;
         $transferAmount= round($amount-($amount*.05),2);
+
 
         $this->validate($request, [
             'stripeToken' => ['required', 'string']
-        ]);
+        ]); 
         $charge = $this->Client->charges->create ([ 
                 //"billing_address_collection": null,
                 "amount" => $amount*100, //100 * 100,
@@ -81,11 +82,13 @@ class checkoutController extends Controller
                 "source" => $request->stripeToken,
                 "description" => "This payment is test purpose only!"
         ]);
+        
         }
       catch(\Exception $e){
-      Session::put('Stripe_failed',$e->getMessage());
-      return redirect()->back();
+      return response()->json(['status' => 400, 'message' => $e->getMessage()]);
+      //return redirect()->back();
     }
+
 
     $business_id = $request->listing;
     $Business = listing::where('id',$business_id)->first();
@@ -102,45 +105,32 @@ class checkoutController extends Controller
                 "source_transaction" => $charge->id,
                 'destination' => $owner->connect_id
         ]);
-        }
 
-catch(\Exception $e){
-  Session::put('Stripe_failed',$e->getMessage());
-    return redirect()->back();
+        //DB INSERT
+        Conversation::create([
+            'investor_id' => Auth::id(),
+            'listing_id' => $listing_id,
+            'package' => $package,
+            'price' => $amount
+        ]); 
+       return response()->json(['status' => 200, 'message' => 'success']);
+      }
+
+ catch(\Exception $e){
+  return response()->json(['status' => 400, 'message' => $e->getMessage()]);
 }
 
  //Stripe
 
 
-//DB INSERT
-    Conversation::create([
-        'investor_id' => Auth::id(),
-        'listing_id' => $listing_id,
-        'package' => $package,
-        'price' => $amount
-    ]);
-
-        // $info=['eq_name'=>$Equipment->eq_name, 
-        //     'Name'=>$investor->name,'amount'=>$amount,
-        //     'email' => $investor->email, 'type'=>'invest']; 
-        // $user['to'] = 'sohaankane@gmail.com';//$listing->contact_mail;
-
-        // Mail::send('invest_mail', $info, function($msg) use ($user){
-        //     $msg->to($user['to']);
-        //     $msg->subject('Test Invest Alert!');
-        // });  
-
-       Session::put('Stripe_pay','Success!');
-       return redirect("/");
-
-    }
+}
 
     //UNLOCK PAYMENT
 
 
 
      //__________________________SUBSCRIBE________________________
-     public function stripeSubscribeGet($amount,$plan,$days,$range)
+     public function stripeSubscribeGet($amount,$plan,$days,$range,$inv_id)
     {
       //$listing=base64_decode($listing_id);
       $days=base64_decode($days);
@@ -159,8 +149,10 @@ catch(\Exception $e){
       else if($plan == 'platinum-trial'){ $trial_price = 69.99; $payLink = 'https://buy.stripe.com/test_00g9DGeZr15V88w5km'; }
 
       else $trial_price = $price;
+
       if($price == 0)
-        return view('checkoutSubscribe.stripe',compact('price','plan','payLink','trial_price','base_price'));
+        echo "<script>location.href='$payLink'</script>";
+        //return view('checkoutSubscribe.stripe',compact('price','plan','payLink','trial_price','base_price'));
     //If trial
 
       if($plan == 'silver' && $days == 30) $price_id = 'price_1O6uaiJkjwNxIm6zzQ5b2t46';
@@ -170,17 +162,18 @@ catch(\Exception $e){
       if($plan == 'silver' && $days == 365) $price_id = 'price_1O7bXyJkjwNxIm6zpTcQdjYg';
       if($plan == 'gold' && $days == 365) $price_id = 'price_1O7bdzJkjwNxIm6zwGCyyLpg';
       if($plan == 'platinum' && $days == 365) $price_id = 'price_1O7bhfJkjwNxIm6zMLsZZTGP';
-
+//
       $session = $this->Client->checkout->sessions->create([
-              'success_url' => 'https://test.jitume.com/stripeSubscribeSuccess?session_id={CHECKOUT_SESSION_ID}',
+              //'/', https://test.jitume.com
+              'success_url' => 'http://127.0.0.1:8000/stripeSubscribeSuccess?session_id={CHECKOUT_SESSION_ID}',
               'cancel_url' => 'https://example.com/canceled.html',
               'mode' => 'subscription',
               'line_items' => [[
                 'price' => $price_id,
                 // For metered billing, do not pass quantity
-                'quantity' => 1,
+                'quantity' => 1
               ]],
-              'client_reference_id' =>$plan.'_'.$range
+              'client_reference_id' =>$plan.'_'.$range.'_'.$inv_id
             ]);
             echo "<script>location.href='$session->url'</script>";
             //header("Location: " . $session->url);
@@ -196,13 +189,23 @@ catch(\Exception $e){
           $session_id,
           []
         );
+
         //echo '<pre>'; print_r($checkout);  echo '<pre>'; exit;
         $stripe_sub_id = $checkout->subscription;
+        $user_email = $checkout->customer_details->email;
 
         if($checkout->amount_total == 0){
+          $inv = User::where('email', $user_email)->first();
+
+          if(!$inv)
+          return response()->json(['error' => 'Your email was not found in Jitume database!']);
+
+          $investor_id = $inv->id;
+
             $sub = $this->Client->subscriptions->retrieve(
               $stripe_sub_id, []
         );
+          
         $transferAmount=0;
         $original_amount = ($sub->items->data[0]->plan->amount)/100;
         if($original_amount == 69.99) $plan = 'platinum-trial';
@@ -212,18 +215,23 @@ catch(\Exception $e){
        }
 
        else{
+
+        $original_amount = ($checkout->amount_total)/100;
         $transferAmount=($checkout->amount_total)/100;
         $plan_range=explode('_',$checkout->client_reference_id);
         $plan = $plan_range[0];
         $range = $plan_range[1];
+        $investor_id = $plan_range[2];
        }
+
+       //echo $investor_id; exit;
 
        
         $start_date = date('Y-m-d');
         $expire_date = date('Y-m-d', strtotime($start_date. '+30 days'));
 
         $token_remaining = null;
-        if($plan == 'silver' || $plan == 'gold' || $plan=='silver-trial' || $plan=='gold-trial'){
+        if($plan == 'silver' || $plan=='silver-trial' || $plan=='gold-trial'){
             $token_remaining = 10;
         }
 
@@ -233,13 +241,21 @@ catch(\Exception $e){
             $expire_date = date('Y-m-d', strtotime($start_date. '+7 days'));
         }
 
+        if($plan == 'gold')
+          $token_remaining = 30;
+
     //Stripe
+    //$investor_id = base64_decode($investor_id);
+
+    if($investor_id == '' || $investor_id == null)
+      $investor_id = Auth::id();
+
     try{
 
          //DB INSERT
          BusinessSubscriptions::create([
         'plan' => $plan,
-        'investor_id' => Auth::id(),
+        'investor_id' => $investor_id,
         'amount' => $transferAmount,
         'start_date' => $start_date,
         'expire_date' => $expire_date,
@@ -256,12 +272,13 @@ catch(\Exception $e){
         else
         $message = 'Your '.ucwords($plan).' plan expires in 30 days';
        Session::put('Stripe_pay','Success! '.$message);
-       return redirect("/");
+       return redirect("http://127.0.0.1:5173/");
 
         }
       catch(\Exception $e){
-      Session::put('Stripe_failed',$e->getMessage());
-      return redirect("/");
+        Session::put('Stripe_failed',$e->getMessage());
+        return $e;
+        //return response()->json(['message' => $e->getMessage()]);
     }
 
     //Stripe
@@ -538,7 +555,7 @@ catch(\Exception $e){
 
    
     public function milestoneStripePostS(Request $request)
-    {
+    { 
 
     if(Auth::check())
         $investor_id = Auth::id();
@@ -558,20 +575,25 @@ catch(\Exception $e){
     $mile = Smilestones::where('id',$id)->first();    
     $tax = taxes::where('id',1)->first();$tax = $tax->tax+$tax->vat;
 
-        $amount= Session::get('service_part_amount');//$request->price; 
-        $amountReal= Session::get('service_part_amount_real');
-    //$amount =($mile->amount)+($mile->amount)*($tax/100);
+        $amount= $request->amount; 
+        $transferAmount= round($amount-($amount*.05),2);
+        $amountReal= $request->amountOriginal; //$request->amountReal;
+        $transferAmount=round($amountReal,2);
+
+        // $amount= Session::get('service_part_amount');//$request->price; 
+        // $amountReal= Session::get('service_part_amount_real');
+
 
     $user_id = $mile->user_id;
     $business_id = $mile->listing_id;
 
 
     //Stripe
-    try{
+    try{ 
 
         $curr='USD'; //$request->currency; 
         $amount=round($amount,2);
-        $transferAmount=round($amountReal,2);
+        $transferAmount=round($transferAmount,2);
 
         $this->validate($request, [
             'stripeToken' => ['required', 'string']
@@ -585,9 +607,10 @@ catch(\Exception $e){
         ]);
         }
       catch(\Exception $e){
-      Session::put('Stripe_failed',$e->getMessage());
-      return redirect()->back();
+      return response()->json(['message' =>  $e->getMessage(),'status' => 400 ]);
     }
+
+    //return $request->all();
 
     
     $Business = Services::where('id',$business_id)->first();
@@ -628,10 +651,9 @@ catch(\Exception $e){
     //Check if Asset-related Milestone
         }
 
-catch(\Exception $e){
-    Session::put('Stripe_failed',$e->getMessage());
-    return redirect()->back();
-}
+  catch(\Exception $e){
+      return response()->json(['message' =>  $e->getMessage(),'status' => 400 ]);
+    }
 
  //Stripe
    
@@ -676,8 +698,9 @@ catch(\Exception $e){
 // }
 // }
 
-       Session::put('Stripe_pay','Milestone paid successfully!');
-       return redirect("/");
+       return response()->json(['message' =>  'Stripe_pay','Bid placed! you will get a notification if your bid is accepted!', 'status' => 200]);
+
+
 
     }
 
@@ -730,7 +753,7 @@ public function bidCommitsForm($amount,$business_id,$percent)
 }
 
 public function bidCommits(Request $request){
- //return config('services.stripe.secret_key');
+ //return $request->all();
    if(Auth::check())
         $investor_id = Auth::id();
     else {
@@ -744,8 +767,8 @@ public function bidCommits(Request $request){
  try{
     //Stripe
         $curr='USD'; //$request->currency;
-        $amount= Session::get('bid_new_price');//$request->price; 
-        $amountReal= Session::get('bid_original_price'); //$request->amountReal;
+        $amount= $request->amount; 
+        $amountReal= $request->amountOriginal; //$request->amountReal;
 
         $transferAmount=round($amountReal,2);
         $amount = round($amount,2);
@@ -764,61 +787,61 @@ public function bidCommits(Request $request){
 
         }
 
-catch(\Exception $e){
-  return response()->json(['failed' =>  $e->getMessage()]);
-}
+    catch(\Exception $e){
+      return response()->json(['message' =>  $e->getMessage(),'status' => 400 ]);
+    }
 
 
     $business_id = $request->listing;
     $Business = listing::where('id',$business_id)->first();
     $owner = User::where('id', $Business->user_id)->first();
 
-$business_id = $request->listing;
-$percent = $request->percent;
+    $business_id = $request->listing;
+    $percent = $request->percent;
 
- try{
-    $type = 'Monetery';
-    $bids = BusinessBids::create([
-      'date' => date('Y-m-d'),
-      'investor_id' => $investor_id,
-      'business_id' => $business_id,
-      'owner_id' => $Business->user_id,
-      'type' => $type,
-      'amount' => $transferAmount,
-      'representation' => $percent,
-      'stripe_charge_id' => $charge->id
-    ]);
+     try{
+        $type = 'Monetery';
+        $bids = BusinessBids::create([
+          'date' => date('Y-m-d'),
+          'investor_id' => $investor_id,
+          'business_id' => $business_id,
+          'owner_id' => $Business->user_id,
+          'type' => $type,
+          'amount' => $transferAmount,
+          'representation' => $percent,
+          'stripe_charge_id' => $charge->id
+        ]);
 
-// Milestone Fulfill check
-    $total_bid_amount = 0;
-    $mile1 = Milestones::where('listing_id',$business_id)
-    ->where('status','In Progress')->first();
-    $this_bids = BusinessBids::where('business_id',$business_id)->get();
-    foreach($this_bids as $b)
-    $total_bid_amount = $total_bid_amount+($b->amount);
+    // Milestone Fulfill check
+        $total_bid_amount = 0;
+        $mile1 = Milestones::where('listing_id',$business_id)
+        ->where('status','In Progress')->first();
+        $this_bids = BusinessBids::where('business_id',$business_id)->get();
+        foreach($this_bids as $b)
+        if($b)
+        $total_bid_amount = $total_bid_amount+($b->amount);
 
-    if($total_bid_amount >= $mile1->amount){
-        $list = listing::where('id',$business_id)->first();
-        $owner = User::where('id',$list->user_id)->first();
-        $info=[ 'business_name'=>$list->name ];
-        $user['to'] = $owner->email; //'tottenham266@gmail.com'; //
-         Mail::send('bids.mile_fulfill', $info, function($msg) use ($user){
-             $msg->to($user['to']);
-             $msg->subject('Fulfills a milestone!');
-         });
+        if($mile1)
+        if($total_bid_amount >= $mile1->amount){
+            $list = listing::where('id',$business_id)->first();
+            $owner = User::where('id',$list->user_id)->first();
+            $info=[ 'business_name'=>$list->name ];
+            $user['to'] = $owner->email; //'tottenham266@gmail.com'; //
+             Mail::send('bids.mile_fulfill', $info, function($msg) use ($user){
+                 $msg->to($user['to']);
+                 $msg->subject('Fulfills a milestone!');
+             });
      }
 // Milestone Fulfill check
 
 }
 
 catch(\Exception $e){
-  Session::put('Stripe_failed',$e->getMessage());
-    return redirect()->back();
+  return response()->json(['message' =>  $e->getMessage(), 'status' => 400]);
 }
 
 if($bids){
-    Session::put('Stripe_pay','Bid placed! you will get a notification if your bid is accepted!');
-    return redirect("/");
+    return response()->json(['message' =>  'Stripe_pay','Bid placed! you will get a notification if your bid is accepted!', 'status' => 200]);
     //return redirect("/#/listingDetails/".$business_id);
          }
 
@@ -828,7 +851,7 @@ if($bids){
 
 
 // Onboarding / Connect to stripe 
- public function connect($id) {
+ public function connect($id) { 
     $seller = User::where('id',$id)->first();
     if(!$seller->completed_onboarding){
         $token = hexdec(uniqid());
@@ -857,13 +880,15 @@ $account_links = $this->Client->accountLinks->create([
               'refresh_url' => route('connect.stripe',['id'=>$id]),
               'return_url' => route('return.stripe',['token'=>$token]),
               'type' => 'account_onboarding',
-            ]);
-    return redirect($account_links->url);
+            ]); 
+
+    redirect()->to($account_links->url)->send();
+    //echo "<script>window.location.href='$account_links->url'</script>";
 
     }
     catch(\Exception $e){
     Session::put('loginFailed', $e->getMessage());
-    return redirect()->back();
+    return response()->json(['message' =>  $e->getMessage(), 'status' => 400]);
     }
     }
 
@@ -876,7 +901,7 @@ $account_links = $this->Client->accountLinks->create([
               Session::put('failed',$e->getMessage());
               DB::table('users')->where('id',$seller->id)
               ->update(['completed_onboarding'=>0]);
-              return redirect()->back();
+              return response()->json(['message' =>  $e->getMessage(), 'status' => 400]);
 }
     
 //echo '<pre>'; print_r($account_links); echo '<pre>';
@@ -890,7 +915,9 @@ public function saveStripe($token) {
         DB::table('users')->where('id',$seller->id)
         ->update(['completed_onboarding'=>1]);
     }
-    return redirect('business/add-listing');
+
+    redirect()->to('http://127.0.0.1:5173/dashboard/add-business')->send();
+    //return redirect('http://127.0.0.1:5173/dashboard/add-business');
  }
 // CONNECT
 

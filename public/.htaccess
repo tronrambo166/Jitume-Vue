@@ -18,9 +18,4 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
-	
-	#Masking
-
-
-	RewriteRule ^public/business/([0-9a-zA-Z_-]+) public/business/index [NC,L]
 </IfModule>

@@ -44,7 +44,7 @@
    
 	
   <div class="col-sm-12">
-         <div class="row float-right"> <a class="btn btn-primary float-right" href="{{route('/')}}">Back to home</a></div>
+         <div class="row float-right"> <a class="btn btn-primary float-right" href="/">Back to home</a></div>
 
          <h5 class="text-center w-75 my-3 text-left">Pay with your Credit/Debit Card via Stripe    <i  class="fab fa-cc-mastercard fa-1x"></i> <i style="color:red" class="fab fa-cc-visa fa-1x"></i> </h5>
 
@@ -176,7 +176,7 @@
 
                      </form> -->
 
-                     <a href="{{$payLink}}" class=" font-weight-bold btn pay_btns mx-auto my-5 btn-lg btn-block text-light" type="submit" >Continue <span id="paynow"></span><span id="stripBtn"></span></a>
+                     <a href="{{$payLink}}" class=" font-weight-bold btn btn-success mx-auto my-5 btn-lg btn-block text-light" type="submit" >Continue <span id="paynow"></span><span id="stripBtn"></span></a>
 
 
                   </div>

@@ -30,14 +30,16 @@ class BusinessController extends Controller
 {
 
   public function test(){
-    return response()->json(['data' => 'OKAY']);
+    $business = listing::get();
+	//$services = Services::where('shop_id',Auth::id())->get();
+	return response()->json(['business' => $business]);
   }
 
 //private $auth_id;
    public function __construct(StripeClient $client)
     {   
         $this->Client = $client;
-        $this->middleware('business');
+        //$this->middleware('business');
   
     }
 
@@ -55,7 +57,9 @@ public function logoutB(){
 
 public function account(){
 $user = User::where('id',Auth::id())->first();
-if($user->connect_id)
+$user2 = array(); $user2[] = $user;
+
+if($user->connect_id && $user->completed_onboarding)
 $connected = 1;
 else $connected = 0;
 
@@ -71,7 +75,9 @@ $balanceP = '$'.(float)($balanceP/100);
 }
 else $balanceA = $balanceP ='N/A';
 $user_id = $user->id;
-return view('business.account', compact('user', 'balanceA','balanceP', 'connected', 'user_id'));
+
+return response()->json(['user' => $user2, 'balanceA'=>$balanceA, 'balanceP'=>$balanceP, 'connected'=>$connected, 'user_id'=>$user_id ]);
+
 }
 
 
@@ -97,37 +103,34 @@ return view('business.applyForShow');
 }
 
 public function home(){
-if(Session::has('c_to_action') && Session::get('c_to_action') == true){
-  Session::forget('c_to_action');
-  return redirect('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf2E_');
-}
+// if(Session::has('c_to_action') && Session::get('c_to_action') == true){
+//   Session::forget('c_to_action');
+//   return redirect('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf2E_');
+// }
 
-else if(Session::has('c_to_actionS') && Session::get('c_to_actionS') == true){
-  Session::forget('c_to_actionS');
-  return redirect('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf2F_');
-}
-else if(Session::has('c_to_action_Service') && Session::get('c_to_action_Service') == true){
-  Session::forget('c_to_action_Service');
-  return redirect('/');
-}
+// else if(Session::has('c_to_actionS') && Session::get('c_to_actionS') == true){
+//   Session::forget('c_to_actionS');
+//   return redirect('business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf2F_');
+// }
+// else if(Session::has('c_to_action_Service') && Session::get('c_to_action_Service') == true){
+//   Session::forget('c_to_action_Service');
+//   return redirect('/');
+// }
+$user_email = Auth::user()->email;
+$user_name = Auth::user()->fname.' '.Auth::user()->lname;
 
 $investor ='';
 $business = listing::where('user_id',Auth::id())->get();
 $services = Services::where('shop_id',Auth::id())->get();
 $investor_ck = User::where('id',Auth::id())->first();
 
-if($investor_ck == null){
-if(Session::has('investor_email')){   
-$mail = Session::get('investor_email');
-$investor_ck = User::where('email',$mail)->first();
+// if($investor_ck == null){
+// if(Session::has('investor_email')){   
+// $mail = Session::get('investor_email');
+
 if ($investor_ck->investor == 1) $investor = true;
 else $investor = false;
 
-} }
-else{
-if ($investor_ck->investor == 1) $investor = true;
-else $investor = false;
-} 
 
 //Investments
 $results = []; $t_share = 0;
@@ -150,9 +153,7 @@ foreach($convs as $conv){
 //Investments
 // return view('business.index',compact('business','investor','results','services'));
 
-$user_email = Auth::user()->email;
-$user_name = Auth::user()->fname.' '.Auth::user()->lname;
-return view('business.index',compact('business','investor','results','services','user_email','user_name'));
+return response()->json(['business'=>$business,'investor'=>$investor,'results'=>$results,'services'=>$services,'user_email'=>$user_email,'user_name'=>$user_name]);
 }
 
 
@@ -164,11 +165,13 @@ $listings = Listing::where('user_id',Auth::id())->latest()->get();
 //   ->where('status','In Progress')->first();
 //   if($mile) $list->active = true;else $list->active = false;
 // }
-return view('business.listings',compact('listings'));
+// return view('business.listings',compact('listings'));
+return response()->json(['business'=>$listings]);
 }
 
 
 public function save_listing(Request $request){
+//return $request->file('document');
 $title = $request->title;
 $contact = $request->contact;
 $category = $request->category;
@@ -198,8 +201,7 @@ if($image) {
           $ext=strtolower($image->getClientOriginalExtension());
           if($ext!='jpg' && $ext!= 'png' && $ext!='jpeg' && $ext!= 'svg'&& $ext!='gif')
           {
-            Session::put('error','For Cover, Only images are allowed!');
-            return redirect()->back();
+            return response()->json([ 'status' => 404, 'message' => 'For Cover, Only images are allowed!']);
           } }
 
   $pin=$request->file('pin');
@@ -207,8 +209,7 @@ if($image) {
           $ext=strtolower($pin->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
           {
-            Session::put('error','For pin, Only pdf & docx are allowed!');
-            return redirect()->back();
+            return response()->json([ 'status' => 404, 'message' => 'For Cover, Only images are allowed!']);
           } }
 
 
@@ -217,8 +218,7 @@ if($image) {
           $ext=strtolower($identification->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
           {
-            Session::put('error','For pin, Only pdf & docx are allowed!');
-            return redirect()->back();
+            return response()->json([ 'status' => 404, 'message' => 'For Cover, Only images are allowed!']);
           } }
 
 
@@ -227,8 +227,7 @@ if($image) {
           $ext=strtolower($yeary_fin_statement->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
           {
-            Session::put('error','For financial statement, Only pdf & docx are allowed!');           
-            return redirect()->back();
+            return response()->json([ 'status' => 404, 'message' => 'For Cover, Only images are allowed!']);
           } }
 
 
@@ -237,20 +236,18 @@ if($image) {
           $ext=strtolower($document->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
           {
-            Session::put('error','For supportive document, Only pdf & docx are allowed!');          
-            return redirect()->back();
+            return response()->json([ 'status' => 404, 'message' => 'For Cover, Only images are allowed!']);
           } }
 
 
 $video=$request->file('video');
- if($video) {     
+ if($video && $video !='') {     
           $ext=strtolower($video->getClientOriginalExtension());
           if($ext!='mpg' && $ext!= 'mpeg' && $ext!='webm' && $ext!= 'mp4' 
             && $ext!='avi' && $ext!= 'wmv')
           { 
-            Session::put('error','For video, Only mpg || mpeg || webm || mp4 
-            avi || wmv are allowed!');          
-            return redirect()->back();
+            return response()->json([ 'status' => 404, 'message' => 'For video, Only mpg || mpeg || webm || mp4 
+            avi || wmv are allowed!']);
           } }
 
 
@@ -284,10 +281,10 @@ try{
           $uniqid=hexdec(uniqid());
           $ext=strtolower($image->getClientOriginalExtension());
           $create_name=$uniqid.'.'.$ext;
-          $loc='images/listing/';
+          $loc='../React/images/listing/';
           //Move uploaded file
           $image->move($loc, $create_name);
-          $final_img=$loc.$create_name;
+          $final_img='images/listing/'.$create_name;
              }
           else $final_img='';
 
@@ -362,12 +359,12 @@ try{
           //Move uploaded file
           $video->move($loc, $create_name);
           $final_video=$loc.$create_name;
-             }else $final_video=$request->link;                     
+             }else $final_video=$request->videoLink;                     
       
 
 //FILES END
 
-Listing::where('id',$listing)->update([          
+$B = Listing::where('id',$listing)->update([          
             'image' => $final_img,            
             'pin' => $final_pin,  
             'identification' => $final_identification,         
@@ -376,14 +373,12 @@ Listing::where('id',$listing)->update([
             'yeary_fin_statement' => $final_statement         
            ]);       
 
-        Session::put('success','Business added!');
-        return redirect()->back();
-}
-catch (\Exception $e) {
-
-    Session::put('loginFailed',$e->getMessage());
-    return redirect()->back(); 
-}
+    if($B)
+    return response()->json([ 'status' => 200, 'message' => 'Success!']);
+  }
+  catch(\Exception $e){
+    return response()->json([ 'status' => 404, 'message' => $e->getMessage() ]);
+    }
 }
 
 public function up_listing(Request $request){
@@ -571,8 +566,7 @@ public function activate_milestone($id){
   }
   //return $total.' = '.$this_business->investment_needed;
   if($total != $this_business->investment_needed){
-    Session::put('failed','A business must have one or more milestones that cover the full amount requested before activation!');
-            return redirect()->back();
+    return response()->json([ 'status' => 404, 'message' => 'A business must have one or more milestones that cover the full amount requested before activation!']);
   }
   
   $thisMile2 = Milestones::where('listing_id',$id)->first();
@@ -580,21 +574,26 @@ public function activate_milestone($id){
   ->update([
   'status' => 'In Progress'
   ]);
-   Listing::where('id',$id)->update(['active' => 1]);
+   $activate = Listing::where('id',$id)->update(['active' => 1]);
 
-  Session::put('success','The business is activated and ready to accept investment!');
-  return redirect()->back();
+  if($activate)
+    return response()->json([ 'status' => 200, 'message' => 'Activated!']);
 }
 
 public function delete_milestone($id){
 $milestones = Milestones::where('id',$id)->delete();
-return redirect()->back();
+return "success" ;//redirect()->back();
 }
 
 public function add_milestones(){
 $milestones = Milestones::where('user_id',Auth::id())->latest()->get();
 $business = listing::where('user_id',Auth::id())->get();
-return view('business.add_milestones',compact('business','milestones'));
+foreach($business as $b)
+  foreach($milestones as $m)
+     if($m->listing_id == $b->id)
+      $m->business_name = $b->name;
+
+  return response()->json([ 'business' => $business, 'milestones' => $milestones]);
 }
 
 public function getMilestones($id){
@@ -675,6 +674,7 @@ return response()->json([ 'data' => 'Failed!', 'progress' => 0, 'length' => 0 ])
  public function download_milestone_doc($id, $mile_id){
     
     $doc = Milestones::where('id',$mile_id)->first();
+    if($doc)
     $file=$doc->document;
     if( $file == null || !file_exists(public_path($file)) ){
 
@@ -708,12 +708,19 @@ else{
 }
 
 $business = listing::where('user_id',Auth::id())->get();
-return view('business.milestones',compact('milestones','business', 'business_name'));
+
+foreach($business as $b)
+  foreach($milestones as $m)
+     if($m->listing_id == $b->id)
+      $m->business_name = $b->name;
+    
+return response()->json(['milestones' => $milestones, 'business'=>$business, 'business_name' =>$business_name ]);
 }
 
 
 
 public function save_milestone(Request $request){
+//return $request->file('file');
 $title = $request->title;
 $business_id = $request->business_id;
 $amount = $request->amount;
@@ -730,30 +737,30 @@ $n_o_days = 30*$n_o_days;
 //$mile = Milestones::where('listing_id',$business_id)->latest()->first();
 //if($mile  &&  ($mile->status ==  'Created' || $mile->status ==  'In Progress'))
 //$status = 'On Hold';if($mile  && $mile->status ==  'Done') $status = 'In Progress';
+try{
+    $this_listing = Listing::where('id',$business_id)->first();
+    $inv_need = $this_listing->investment_needed;
+    $share = round(( round($amount)/round($inv_need) )*$this_listing->share, 2);
 
-$this_listing = Listing::where('id',$business_id)->first();
-$inv_need = $this_listing->investment_needed;
-$share = round(( round($amount)/round($inv_need) )*$this_listing->share, 2);
+    $mile_shares = Milestones::where('listing_id',$business_id)->get();
+    $total_share_amount = 0;
+    foreach($mile_shares as $single){
+    $total_share_amount = $total_share_amount+$single->amount;
+    }
+    $total_share_amount = $total_share_amount+$amount;
+    if($total_share_amount>$inv_need){
+      return response()->json([ 'status' => 404, 'message' => 'The amount exceeds the total investment needed!']);
+    
+    }
 
-$mile_shares = Milestones::where('listing_id',$business_id)->get();
-$total_share_amount = 0;
-foreach($mile_shares as $single){
-$total_share_amount = $total_share_amount+$single->amount;
-}
-$total_share_amount = $total_share_amount+$amount;
-if($total_share_amount>$inv_need){
-Session::put('failed','The amount exceeds the total investment needed!');
-        return redirect()->back();
-}
-
- $single_img=$request->file('file');
+    $single_img=$request->file('file');
  
           $uniqid=hexdec(uniqid());
           $ext=strtolower($single_img->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
           {
-            Session::put('error','Only pdf & docx are allowed!');
-            return redirect()->back();
+            
+            return response()->json([ 'status' => 404, 'message' => 'Only pdf & docx are allowed!']);
           }
 
           $create_name=$uniqid.'.'.$ext;
@@ -767,7 +774,7 @@ Session::put('failed','The amount exceeds the total investment needed!');
           $final_file=$loc.$create_name;
            
 
-Milestones::create([
+            Milestones::create([
             'user_id' => $user_id,
             'title' => $title,
             'listing_id' => $business_id,
@@ -776,16 +783,23 @@ Milestones::create([
       			'n_o_days' => $n_o_days,
             'status' => $status,
             'share'  => $share           
-           ]);       
+           ]);  
 
-        Session::put('success','Milestone added!');
-        return redirect()->back();
+            return response()->json([ 'status' => 200, 'message' => 'Success']);
+  
+
+    }   
+
+    catch(\Exception $e){
+    return response()->json([ 'status' => 404, 'message' => $e->getMessage() ]);
+    }
+
 
 }
 
 
 public function mile_status(Request $request){
-try{
+try{ 
   $mile_id = $request->id;
   $thisMile = Milestones::where('id',$mile_id)->first();
   $listing_id = $thisMile->listing_id;
@@ -794,7 +808,7 @@ try{
   'status' => $request->status
   ]);
 
-  if($request->status == 'Done'){
+  if($request->status == 'Done'){ 
     // Release this milestone payment from Escrow
 
     //Last Milestone Check
@@ -805,7 +819,9 @@ try{
         $bids = AcceptedBids::where('business_id',$listing_id)->get();
         foreach($bids as $bid){
         $investor = User::where('id',$bid->investor_id)->first();
+        if($investor)
         $investor_mail = $investor->email;
+        else $investor_mail = 'tottenham266@gmail.com';
 
         $list = listing::where('id',$bid->business_id)->first();
         $info=[ 'business_name'=>$list->name,'business_id' => base64_encode(base64_encode($list->id)) ];
@@ -818,7 +834,7 @@ try{
         }
         //Email
 
-      return redirect()->back();
+       return response()->json(['message' => 'Status set success, mail sent!']);
     }
     //Last Milestone Check
 
@@ -828,13 +844,16 @@ try{
 
     foreach($bids as $bid){
         $investor = User::where('id',$bid->investor_id)->first();
+        if($investor)
         $investor_mail = $investor->email;
+        else $investor_mail = 'tottenham266@gmail.com';
 
         $list = listing::where('id',$bid->business_id)->first();
         $info=[ 'business_name'=>$list->name, 'mile_name'=>$thisMile->title,
         'bid_id' => $bid->id ];
         $user['to'] =  $investor_mail; //'tottenham266@gmail.com';
         //Email
+
         Mail::send('bids.milecompletion_alert', $info, function($msg) use ($user){
              $msg->to($user['to']);
              $msg->subject('Milestone completion alert!');
@@ -842,19 +861,21 @@ try{
       //Email
          
     }
+    return response()->json(['message' => 'Status set success, mail sent!']);
       
   }
+
+  else {
+    return 'ok';
+  }
 }
-catch(\Exception $e){
-  Session::put('failed',$e->getMessage());
-  return redirect()->back();
+catch(\Exception $e){ 
+  return response()->json($e->getMessage());
  }
 
 //$next_mile = Milestones::where('listing_id',$thisMile->listing_id)->where('status','To Do')->first();
 //if($next_mile && $next_mile->id > $request->id)
 //Milestones::where('id',$next_mile->id)->update(['status' => 'In Progress' ]);
-
-return redirect()->back();
 }
 
 
@@ -995,12 +1016,6 @@ return view('business.investor_bids',compact('bids'));
 public function business_bids(){
   if(Auth::check())
       $investor = User::where('id', Auth::id())->first();
-  else {
-      if(Session::has('investor_email')){   
-      $mail = Session::get('investor_email');
-      $investor = User::where('email',$mail)->first();
-    }
-  }
 
 $res = BusinessBids::where('owner_id', Auth::id())->latest()->get();
 $bids = array();
@@ -1028,11 +1043,11 @@ foreach($res as $r){
 
 $remove_new = BusinessBids::where('owner_id', Auth::id())
 ->update(['new'=>0]);
-return view('business.bids',compact('bids'));
+return response()->json(['bids' => $bids]);
 }
  catch(\Exception $e){
   Session::put('failed',$e->getMessage());
-  return redirect()->back();
+  return response()->json(['status' => 'failed', 'message' => $e->getMessage()]);
  }
 }
 
@@ -1091,6 +1106,12 @@ public function assetEquip_download($id, $type){
     $results = array();
     $investor_id = Auth::id();
     $count = 0;
+
+    $conv = Conversation::where('investor_id',Auth::id())->
+    where('listing_id',$listing_id)->where('active',1)->first();
+    if($conv!=null)$conv = true;else $conv=false;
+
+
     $subs = BusinessSubscriptions::where('investor_id',$investor_id)
     ->where('active',1)->orderBy('id','DESC')->first();
 
@@ -1111,8 +1132,10 @@ public function assetEquip_download($id, $type){
     catch(\Exception $e){
       $count = 0;
       $results['subscribed'] = 0;
-      return response()->json([ 'data' => $results, 'count' => $count, 'reviews' => $reviews] );
+      return response()->json([ 'data' => $results, 'conv'=>$conv, 'count' => $count, 'reviews' => $reviews] );
     }
+      if($subs->plan == 'platinum' || $subs->plan == 'platinum-trial' || $subs->plan == 'silver-trial')
+      $conv = true;
 
       $expire_date = date('Y-m-d',$stripe_sub->current_period_end);
       //Get Stripe Subscription
@@ -1142,7 +1165,7 @@ public function assetEquip_download($id, $type){
 
     }
 
-    return response()->json([ 'data' => $results, 'count' => $count, 'reviews' => $reviews] );
+    return response()->json([ 'data' => $results, 'conv'=>$conv, 'count' => $count, 'reviews' => $reviews] );
 }
 
 
@@ -1307,7 +1330,7 @@ else{
     ]);
 }
 
-        return response()->json(['success' => 'Success']);
+        return response()->json(['status' => 200]);
 
 }
 
@@ -1363,9 +1386,9 @@ $info=['investor_name'=>$investor_name, 'contact'=>$investor->email,
          });
 
 if($mail1 && $mail2)
-return response()->json(['status' => 'success']);
+return response()->json(['status' => 200]);
 else
-return response()->json(['status' => 'failed']);
+return response()->json(['status' => 400]);
 }
 
 

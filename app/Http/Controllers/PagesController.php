@@ -296,7 +296,7 @@ return response()->json(['data'=>$results]);
 public function search(Request $request){
 $listing_name = $request->listing_name;
 
-$location = $request->search;
+$location = $request->location;
 $lat = (float)$request->lat;
 $lng = (float)$request->lng;
 $category = $request->category;
@@ -334,18 +334,17 @@ return response()->json(['results'=>$listings, 'loc' => $loc, 'success' => "Succ
 
 public function searchResults($ids){
 
-//TEMP
-// $json = file_get_contents("js/airports.json");
-// $array = json_decode($json, true);
-// $i=0;
-//TEMP
-
 $results = array();
-$ids = explode(',',$ids); 
+
+if($ids==0)
+  return response()->json([ 'data' => $results, 'count'=>0] );
+
+  $ids = explode(',',$ids); 
+
+
 foreach($ids as $id){ 
 
      //if(strlen($id) > 3) $id = dechex($id); return $id;
-
     if($id!=''){
     $conv = Conversation::where('investor_id',Auth::id())->
     where('listing_id',$id)->where('active',1)->first();
@@ -353,9 +352,12 @@ foreach($ids as $id){
     $listing = Listing::where('id',$id)->first();
     $files = businessDocs::where('business_id',$id)
     ->where('media',1)->first();
+
+  if($listing){
     if(isset($files->file))
     $listing->file = $files->file;
-    else $listing->file = false;
+    else 
+      $listing->file = false;
     $listing->investment_needed = $listing->investment_needed;
 
 
@@ -368,11 +370,12 @@ foreach($ids as $id){
     $listing->lng = (float)$listing->lng;
 
     $listing->id = $listing->id;
+  }
     $results[] = $listing;
 }
 }
 if($conv!=null)$conv = true;else $conv=false;
-return response()->json([ 'data' => $results, 'conv'=>$conv, 'count'=>count($results)] );
+return response()->json([ 'data' => $results, 'count'=>count($results)] );
 }
 
 
@@ -461,18 +464,51 @@ $ids = explode(',',$ids);
 foreach($ids as $id){ 
     if($id!='' && $id != 'no-results'){
     $listing = Services::where('id',$id)->first();
+
+    if($listing){
     $listing->price = number_format($listing->price);
 
     $listing->lat = (float)$listing->lat;
     $listing->lng = (float)$listing->lng;
+
 
 //Booking check
 $booking = serviceBook::where('service_id',$id)
 ->where('booker_id', Auth::id())->first();
 if($booking) $listing->booked = 1; else $listing->booked = 0;
 
-    if($listing) $count++;
+    $count++;
     $results[] = $listing;
+}
+}
+}
+
+return response()->json([ 'data' => $results, 'count'=>$count] );
+}
+
+
+public function serviceResultsAuth($ids){
+$results = array();$count = 0;
+$ids = explode(',',$ids); 
+foreach($ids as $id){ 
+    if($id!='' && $id != 'no-results'){
+    $listing = Services::where('id',$id)->first();
+
+    if($listing){
+    $listing->price = number_format($listing->price);
+
+    $listing->lat = (float)$listing->lat;
+    $listing->lng = (float)$listing->lng;
+
+
+//Booking check
+$booking = serviceBook::where('service_id',$id)
+->where('booker_id', Auth::id())->first();
+if($booking) $listing->booked = 1; else $listing->booked = 0;
+
+    $count++;
+    $results[] = $listing;
+}
 }
 }
 
@@ -587,25 +623,32 @@ public function priceFilter($min, $max, $ids){
 }
 
 
-public function priceFilterS($min, $max, $ids){
+public function priceFilterS($min, $max, $ids){  //return $ids;
 
     $results = array();
-    $ids = explode(',',$ids); 
+    $ids = explode(',',$ids);
+
+    try {
     foreach($ids as $id){ 
-    if($id!=''){ 
+    if($id!=''){
     $listing = Services::where('id',$id)->first();
-    $range = $listing->price;
-    $db_price = $range;  
+        if($listing){
+        $range = $listing->price;
+        $db_price = $range;  
 
-    $listing->lat = (float)$listing->lat;
-    $listing->lng = (float)$listing->lng;
+        $listing->lat = (float)$listing->lat;
+        $listing->lng = (float)$listing->lng;
 
-    $listing->price = number_format($listing->price);
-    if((int)$min <= $db_price && (int)$max >= $db_price)
-        //return response()->json([ 'data' => (int)$min .'<='. $db_min .'//'.(int)$max .'>='. $db_max]);
-    $results[] = $listing;
+        $listing->price = number_format($listing->price);
+        if((int)$min <= $db_price && (int)$max >= $db_price)
+        $results[] = $listing; 
+    }
 }
-}
+} 
+} 
+catch (Exception $e) {
+       return response()->json($e->getMessage());
+} 
 
     return response()->json([ 'data' => $results]);
 }

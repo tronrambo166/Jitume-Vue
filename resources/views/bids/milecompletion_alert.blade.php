@@ -17,7 +17,7 @@
                 Do you want to Continue to the Next Milestone?
             </p>
             <div class="button-container" style="display: flex; margin-top: 20px;">
-                <a target="_blank" href="https://test.jitume.com/agreeToNextmile/{{$bid_id}}" class="button continue" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Continue</a>
+                <a target="_blank" href="http://127.0.0.1:8000/api/agreeToNextmile/{{$bid_id}}" class="button continue" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Continue</a>
                 <a href="#" class="button cancel" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #dc3545; border-radius: 6px; transition: background-color 0.3s ease; margin-left: 10px;">Cancel</a>
             </div>
             <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px;">Thanks!<br />Jitume Admin.</p>

@@ -19,7 +19,7 @@
 
 			 Do you want to Continue to the Next Milestone?
 		        <div style="width:100%;margin: auto; padding-bottom:20px;padding-top:15px; text-align:center;"> 
-		        	<a target="_blank" href="https://test.jitume.com/agreeToMileS/{{$s_id}}/{{$booker_id}}"
+		        	<a target="_blank" href="http://127.0.0.1:8000/api/agreeToMileS/{{$s_id}}/{{$booker_id}}"
 				style="width:50%;text-decoration:none;color: aliceblue;background:green;padding:10px 30px;border-radius:5px;margin-left:30px">
 				Continue</a>
 

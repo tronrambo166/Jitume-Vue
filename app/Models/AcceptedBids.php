@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class AcceptedBids extends Model
 {
-    protected $guarded = [];
     use HasFactory;
+    protected $guarded = [];
 }
