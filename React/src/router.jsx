@@ -32,7 +32,7 @@ import Register from './views/register';
 import Login from './views/login';
 import ServiceTable from './components/partials/servicestable';
 import CategoryPage from './components/partials/Categorypage';
-import ProjectManagers from './components/partials/projectManagers';
+import ProjectManagers from './components/partials/ProjectManagers';
 import EquipmentRelease from './components/partials/EquipmentRelease';
 import InvestorRegistration from './components/partials/Investreg';
 import Addservicemilestone from './components/partials/Addservicemilestone';

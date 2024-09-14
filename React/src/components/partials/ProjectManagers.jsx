@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axiosClient from "../../axiosClient";
 import { useStateContext } from "../../contexts/contextProvider";
 
-const projectManagers = () => {
+const ProjectManagers = () => {
   const{token,setUser,setAuth, auth} = useStateContext();
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -117,4 +117,4 @@ const projectManagers = () => {
   );
 };
 
-export default projectManagers;
+export default ProjectManagers;
