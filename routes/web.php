@@ -15,7 +15,7 @@ use App\Http\Controllers\checkoutController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return 'Welcome!';
 
 });
 
