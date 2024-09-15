@@ -15,7 +15,7 @@ use App\Http\Controllers\checkoutController;
 */
 
 Route::get('/', function () {
-    return 'Welcome!';
+    return phpinfo(); exit; //'Welcome!';
 
 });
 
