@@ -66,8 +66,25 @@ const ListingResults = () => {
            res = data.data;
            console.log(data);
             var x = navigator.geolocation;
-            x.getCurrentPosition(success, failure);
-            //navigator.geolocation.watchPosition(success[, error[, options]])
+
+            //Confim Loc
+            $.confirm({
+                title: 'Allow access location?',
+                content:'',
+                buttons: {
+                  confirm: function () {
+                    x.watchPosition(success, failure);
+                  },
+                  cancel: function () {
+                    //$.alert('Canceled!');
+                  },
+                }
+              });
+            //x.getCurrentPosition(success, failure);
+            // document.querySelector('.permission-granted-button').addEventListener('click', () => {
+            //   x.watchPosition(success, failure);
+            // });
+            //Confim Loc
               
           })
           .catch(err => {
@@ -81,27 +98,7 @@ const ListingResults = () => {
         alert('slider is moving');
       }
 
-
-    // begin set range amount
-    //this is from the rangeAmount () in listingDetails.vue
-    // const setRangeAmount = () =>{
-    //   axiosClient.get('/priceFilter_amount/'+ '/' + '/'+ 'test_id')
-    //   .then(({ data }) => {
-    //     setRangeAmountResults(data.data);
-    //      //console.log(amount_required)
-    //    })
-    //    .catch(err => {
-    //      console.log(err); 
-    //    })
-    // };
-    // setRangeAmount();    
-
-    //end rangeAmount
-
-    //begin setRes
-
-
-  
+ 
  
    //x.getCurrentPosition(success, failure);
    var slider = document.getElementById('slider');
@@ -245,7 +242,7 @@ const ListingResults = () => {
         
         Object.entries(res).map(([key, value]) => {
             //INFO
-                const contentString = '<a class="info_map py-0 font-weight-bold  text-center" target="_blank" href="/listing/'+btoa(btoa(value.id))+'">'
+                const contentString = '<a className="info_map py-0 font-weight-bold  text-center" target="_blank" href="/listing/'+btoa(btoa(value.id))+'">'
                 +value.name+'</a>';
 
             //INFO
@@ -346,7 +343,7 @@ const ListingResults = () => {
       <div className="flex justify-between gap-[10px] items-center my-6">
     <div id="turnover_slider" className="w-[45%]">
         <label className="text-gray-700 font-semibold mb-2">Turnover Range</label>
-        <div id="slider" class=""></div>
+        <div id="slider" className=""></div>
         <div className="row mt-3">
             <div className="col-6 mt-1">
                 <span id="price_low" className="py-0 btn-light" name="min"></span>
@@ -359,7 +356,7 @@ const ListingResults = () => {
 
     <div id="amount_slider" className="w-[45%] mr-[50px] mt-1">
         <label className="text-gray-700 font-semibold mb-2">Amount Range</label>
-        <div id="slider2" class=""></div>
+        <div id="slider2" className=""></div>
         <div className="row mt-3">
             <div className="col-6 mt-1">
                 <span id="price_low2" className="py-0 btn-light" name="min"></span>
@@ -377,7 +374,8 @@ const ListingResults = () => {
 
 
       <h5 className="py-3 text-gray-700 font-semibold mt-6">
-        <b>{count} Results Found</b>
+        <b>{count} Results Found</b> 
+       {/* <button className="permission-granted-button"> Allow location </button>*/}
       </h5>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -444,7 +442,7 @@ const ListingResults = () => {
 
         <div className="h-[500px] border border-gray-300 rounded-lg flex items-center justify-center">
           {/* Placeholder for the map */}
-                <div class="m-auto map_style">
+                <div className="m-auto map_style">
                      <div id="map" style={{ height: '95%' }}></div> 
                 </div>
 
