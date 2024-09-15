@@ -15,7 +15,9 @@ use App\Http\Controllers\checkoutController;
 */
 
 Route::get('/', function () {
-    return phpinfo(); exit; //'Welcome!';
+    echo 'Unauthorized!';
+    echo 'Redirecting...';
+    echo "<script>window.location.href='http://test.jitume.com:81/'</script>";
 
 });
 
