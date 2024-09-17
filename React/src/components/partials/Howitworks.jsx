@@ -44,9 +44,9 @@ const HowItWorks = () => {
     ];
 
     return (
-        <section className="flex flex-col items-center w-[832.55px] mx-auto gap-8 space-y-8 pb-6 mt-6">
+        <section className="flex flex-col items-center w-[832.55px] mx-auto gap-8 space-y-8 pb-6 mt-2">
             <div className="how-it-works-header mt-4">
-                <h3 className="text-[24px] font-bold">How Jitume Works</h3>
+                <h3 className="text-[23px] font-semibold">How Jitume Works</h3>
             </div>
             <div className="flex flex-col gap-6 lg:flex-row lg:justify-between px-[60px]">
                 {steps.map((step, index) => (
@@ -58,7 +58,7 @@ const HowItWorks = () => {
                                 className={`${step.imgWidth} ${step.imgHeight}`}
                             />
                         </div>
-                        <p className="text-center whitespace-nowrap text-[16px] pt-4 text-[#000000] font-500">
+                        <p className="text-center whitespace-nowrap text-[15px] font-medium  pt-4 text-[#000000] font-500">
                             {step.text}
                         </p>
                     </div>

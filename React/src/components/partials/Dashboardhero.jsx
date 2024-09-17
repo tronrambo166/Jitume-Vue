@@ -71,7 +71,7 @@ const Dashboardhero = () => {
             </div>
 
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-full">
-                <div className="bg-gray-100/50 max-w-[90%] mx-auto p-4 rounded-lg shadow-lg">
+                <div className="bg-gray-100/50 max-w-[95%] mx-auto px-6 py-3 rounded-lg shadow-lg">
                     <div className="flex justify-between items-center">
                         <div className="flex gap-2 items-center">
                             <img
@@ -79,35 +79,35 @@ const Dashboardhero = () => {
                                 className="rounded-xl"
                                 alt="Profile"
                             />
-                            <div className="flex flex-col items-center">
+                            <div className="flex flex-col gap-2">
                                 <h2 className="text-black text-lg font-bold">
                                     {user.fname} {user.lname}
                                 </h2>
                                 <h3>{user.email || "test@email.com"}</h3>
                             </div>
                         </div>
-                        <div className="flex text-[13px] gap-3 items-center">
-                            <Link to="" className="flex items-center gap-1">
+                        <div className="flex text-[13px] gap-[33px] items-center">
+                            <Link to="" className="flex items-center hover:text-green gap-1">
                                 <FaWrench />
                                 <span>Overview</span>
                             </Link>
                             <Link
                                 to="/dashboard/addbusiness"
-                                className="flex items-center gap-1"
+                                className="flex items-center hover:text-green gap-1"
                             >
                                 <FaCopy />
                                 <span>Add Business</span>
                             </Link>
                             <Link
                                 to="/dashboard/add-service"
-                                className="flex items-center gap-1"
+                                className="flex items-center hover:text-green gap-1"
                             >
                                 <FaWrench />
                                 <span>Add Service</span>
                             </Link>
                             <Link
                                 to="/dashboard/messages"
-                                className="flex items-center gap-1"
+                                className="flex items-center hover:text-green gap-1"
                             >
                                 <FaEnvelope />
                                 <span>Messages</span>
@@ -115,7 +115,7 @@ const Dashboardhero = () => {
                             {id && (
                                 <Link
                                     to={`./account/${id}`}
-                                    className="flex items-center gap-1"
+                                    className="flex items-center hover:text-green gap-1"
                                 >
                                     <FaDollarSign />
                                     <span>Account</span>

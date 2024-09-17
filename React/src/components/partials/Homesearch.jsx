@@ -156,13 +156,13 @@ const Homesearch = () => {
     //KEVIN
 
     return (
-        <div className="flex flex-col pt-6 justify-center">
+        <div className="flex flex-col pt-[70px] justify-center">
             <h1 className="text-center text-black text-xl font-semibold">
                 Your platform to invest in local businesses
             </h1>
 
             {/* search section starts */}
-            <div className="flex flex-col md:flex-row gap-4 justify-center pt-8 px-2 sm:px-6 md:px-4 items-center w-full max-w-3xl mx-auto">
+            <div className="flex flex-col md:flex-row gap-4 justify-center pt-6 px-2 sm:px-6 md:px-4 items-center w-full max-w-3xl mx-auto">
                 <input
                     ref={nameRef}
                     type="text"
@@ -188,7 +188,7 @@ const Homesearch = () => {
                         className="border border-[#666666]/30 w-full text-md rounded-xl py-2 px-4 focus:outline-none appearance-none"
                         ref={categoryRef}
                     >
-                        <option className="text-slate-400" value="">
+                        <option className="text-gray-400" value="">
                             Select a category
                         </option>
                         <option value="Agriculture">Agriculture</option>
@@ -234,7 +234,7 @@ const Homesearch = () => {
             <input type="text" name="lng" id="lng" hidden value="" />
             {/* search section ends */}
 
-            <div className="flex font-semibold flex-wrap gap-4 py-6 justify-center items-center w-full mx-auto">
+            <div className="flex font-semibold flex-wrap gap-4 py-8 justify-center items-center w-full mx-auto">
                 <button className="btn-primary w-50 rounded-lg py-2 text-sm px-4 text-white">
                     Agriculture
                 </button>

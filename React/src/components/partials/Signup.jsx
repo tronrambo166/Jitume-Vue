@@ -5,7 +5,7 @@ import { useStateContext } from "../../contexts/contextProvider";
 import axiosClient from "../../axiosClient";
 
 const RegisterForm = () => {
-    const {setUser, setToken} = useStateContext();
+    const { setUser, setToken } = useStateContext();
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         firstName: "",
@@ -19,14 +19,38 @@ const RegisterForm = () => {
         password: "",
         confirmPassword: "",
     });
+    const isValidDateOfBirth = () => {
+        const { dobMonth, dobDay, dobYear } = formData;
+        const month = parseInt(dobMonth, 10);
+        const day = parseInt(dobDay, 10);
+        const year = parseInt(dobYear, 10);
 
+        if (isNaN(month) || isNaN(day) || isNaN(year)) {
+            return false;
+        }
+
+        // Check valid year range (e.g., between 1900 and current year)
+        const currentYear = new Date().getFullYear();
+        if (year < 1900 || year > currentYear) {
+            return false;
+        }
+
+        // Check valid month range (1-12)
+        if (month < 1 || month > 12) {
+            return false;
+        }
+
+        // Validate day based on month
+        const daysInMonth = new Date(year, month, 0).getDate();
+        if (day < 1 || day > daysInMonth) {
+            return false;
+        }
+
+        return true;
+    };
     const isStep1Valid = () => {
         return (
-            formData.firstName &&
-            formData.lastName &&
-            formData.dobMonth &&
-            formData.dobDay &&
-            formData.dobYear
+            formData.firstName && formData.lastName && isValidDateOfBirth() // Check if DOB is valid
         );
     };
 
@@ -59,8 +83,7 @@ const RegisterForm = () => {
         });
     };
 
-
-    const handleSubmit =  (e) =>{
+    const handleSubmit = (e) => {
         if (e) e.preventDefault();
 
         const formattedData = {
@@ -74,20 +97,21 @@ const RegisterForm = () => {
         };
         console.log("Submitted Form Data:", formattedData);
 
-        axiosClient.post("/register",formattedData).then(({data})=>{
-            console.log(data);
-            setUser(data.user);
-            setToken(data.token);
-            
-    }).catch(err => { 
-        console.log(err);
-        const response = err.response;
-        if(response && response.status === 422){
-            console.log(response.data.errors);
-        }
-    });
-}
-
+        axiosClient
+            .post("/register", formattedData)
+            .then(({ data }) => {
+                console.log(data);
+                setUser(data.user);
+                setToken(data.token);
+            })
+            .catch((err) => {
+                console.log(err);
+                const response = err.response;
+                if (response && response.status === 422) {
+                    console.log(response.data.errors);
+                }
+            });
+    };
 
     return (
         <form className="flex flex-col px-4 py-4" onSubmit={handleSubmit}>
@@ -213,7 +237,11 @@ const RegisterForm = () => {
                     <button
                         type="button"
                         onClick={handleNextStep}
-                        className={`bg-green hover:bg-green-700 mt-4 text-white px-4 py-2 rounded-full ${!isStep1Valid() && step === 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        className={`bg-green hover:bg-green-700 mt-4 text-white px-4 py-2 rounded-full ${
+                            !isStep1Valid() && step === 1
+                                ? "opacity-50 cursor-not-allowed"
+                                : ""
+                        }`}
                         disabled={!isStep1Valid() && step === 1}
                     >
                         Next
@@ -288,11 +316,15 @@ const RegisterForm = () => {
                             >
                                 Previous
                             </button>
-                            
+
                             <button
                                 type="button"
                                 onClick={handleNextStep}
-                                className={`bg-green hover:bg-green-700 w-full text-white px-4 py-2 rounded-full ${!isStep2Valid() && step === 2 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                className={`bg-green hover:bg-green-700 w-full text-white px-4 py-2 rounded-full ${
+                                    !isStep2Valid() && step === 2
+                                        ? "opacity-50 cursor-not-allowed"
+                                        : ""
+                                }`}
                                 disabled={!isStep2Valid() && step === 2}
                             >
                                 Register

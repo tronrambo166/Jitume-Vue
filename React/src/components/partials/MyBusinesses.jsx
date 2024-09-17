@@ -69,7 +69,7 @@ const MyBusinesses = () => {
     };
 
     return (
-        <div className="bg-white shadow-md mt-20 rounded-xl w-full max-w-4xl mx-auto p-4">
+        <div className="bg-white shadow-md mt-20 rounded-xl w-full  mx-auto px-8 py-4">
             <h1 className="text-[#2D3748] font-semibold text-2xl mb-4">
                 My Businesses
             </h1>

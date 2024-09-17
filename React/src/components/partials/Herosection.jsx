@@ -19,7 +19,7 @@ const Herosection = () => {
     };
 
     return (
-        <div className="bg-white h-[80vh] relative mt-8">
+        <div className="bg-white  relative mt-[40px]">
             <img
                 src={leftArrow}
                 alt="Left Arrow"
@@ -33,9 +33,9 @@ const Herosection = () => {
                 style={{ height: "100px", width: "auto" }}
             />
 
-            <div className="flex justify-center flex-col lg:flex-row gap-[24px] lg:items-center lg:gap-[10px] text-center lg:text-left mx-auto w-full lg:w-[832.55px] h-[406.54px] my-[0px]">
-                <div className="flex flex-col gap-[24px]">
-                    <h2 className="text-sm font-semibold text-[#0A0A0A]/60">
+            <div className="flex justify-center flex-col lg:flex-row gap-[10px] lg:items-center lg:gap-[60px] text-center lg:text-left mx-auto w-full lg:w-[900.55px] h-[406.54px] my-[0px]">
+                <div className="flex flex-col gap-[24px] w-[30%]">
+                    <h2 className="text-md font-semibold text-[#0A0A0A]/60">
                         Welcome to Jitume
                     </h2>
                     <h1 className="text-2xl text-black font-bold">
@@ -57,11 +57,11 @@ const Herosection = () => {
                         Join today
                     </button>
                 </div>
-                <div>
+                <div className="lg:pl-[50px] w-40%">
                     <img
                         src={heroimg}
                         alt="hero-image"
-                        className="w-[380px] h-auto"
+                        className=" h-auto"
                     />
                 </div>
             </div>

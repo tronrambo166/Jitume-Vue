@@ -66,25 +66,10 @@ const ListingResults = () => {
            res = data.data;
            console.log(data);
             var x = navigator.geolocation;
-
-            //Confim Loc
-            $.confirm({
-                title: 'Allow access location?',
-                content:'',
-                buttons: {
-                  confirm: function () {
-                    x.watchPosition(success, failure);
-                  },
-                  cancel: function () {
-                    //$.alert('Canceled!');
-                  },
-                }
-              });
-            //x.getCurrentPosition(success, failure);
+            x.getCurrentPosition(success, failure);
             // document.querySelector('.permission-granted-button').addEventListener('click', () => {
             //   x.watchPosition(success, failure);
             // });
-            //Confim Loc
               
           })
           .catch(err => {
@@ -375,7 +360,7 @@ const ListingResults = () => {
 
       <h5 className="py-3 text-gray-700 font-semibold mt-6">
         <b>{count} Results Found</b> 
-       {/* <button className="permission-granted-button"> Allow location </button>*/}
+        <button className="permission-granted-button"> Allow location </button>
       </h5>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
