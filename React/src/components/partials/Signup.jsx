@@ -1,8 +1,9 @@
 import googlerecaptcha from "../../images/googlerecaptcha.png";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { useStateContext } from "../../contexts/contextProvider";
 import axiosClient from "../../axiosClient";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const RegisterForm = () => {
     const { setUser, setToken } = useStateContext();
@@ -19,6 +20,18 @@ const RegisterForm = () => {
         password: "",
         confirmPassword: "",
     });
+    const [isRecaptchaChecked, setIsRecaptchaChecked] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [errors, setErrors] = useState({
+        firstName: "",
+        lastName: "",
+        dob: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        recaptcha: "",
+    });
+
     const isValidDateOfBirth = () => {
         const { dobMonth, dobDay, dobYear } = formData;
         const month = parseInt(dobMonth, 10);
@@ -29,18 +42,15 @@ const RegisterForm = () => {
             return false;
         }
 
-        // Check valid year range (e.g., between 1900 and current year)
         const currentYear = new Date().getFullYear();
         if (year < 1900 || year > currentYear) {
             return false;
         }
 
-        // Check valid month range (1-12)
         if (month < 1 || month > 12) {
             return false;
         }
 
-        // Validate day based on month
         const daysInMonth = new Date(year, month, 0).getDate();
         if (day < 1 || day > daysInMonth) {
             return false;
@@ -48,25 +58,98 @@ const RegisterForm = () => {
 
         return true;
     };
-    const isStep1Valid = () => {
-        return (
-            formData.firstName && formData.lastName && isValidDateOfBirth() // Check if DOB is valid
-        );
-    };
 
-    const isStep2Valid = () => {
-        return (
-            formData.email &&
-            formData.password &&
-            formData.confirmPassword &&
-            formData.password === formData.confirmPassword
-        );
+    const validateStep1 = () => {
+        let valid = true;
+        let newErrors = { ...errors };
+
+        if (!formData.firstName) {
+            newErrors.firstName = "First name is required.";
+            valid = false;
+        } else {
+            newErrors.firstName = "";
+        }
+
+        if (!formData.lastName) {
+            newErrors.lastName = "Last name is required.";
+            valid = false;
+        } else {
+            newErrors.lastName = "";
+        }
+
+        if (!isValidDateOfBirth()) {
+            newErrors.dob = "Please enter a valid date of birth.";
+            valid = false;
+        } else {
+            newErrors.dob = "";
+        }
+
+        setErrors(newErrors);
+        return valid;
     };
+      const handleTermsChange = (e) => {
+          setFormData((prevData) => ({
+              ...prevData,
+              isAgreedToTerms: e.target.checked,
+          }));
+      };
+const validateStep2 = () => {
+    let valid = true;
+    let newErrors = { ...errors };
+
+    // Email validation
+    if (!formData.email) {
+        newErrors.email = "Email is required.";
+        valid = false;
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+        newErrors.email = "Email is invalid.";
+        valid = false;
+    } else {
+        newErrors.email = "";
+    }
+
+    // Password validation
+    if (!formData.password) {
+        newErrors.password = "Password is required.";
+        valid = false;
+    } else {
+        newErrors.password = "";
+    }
+
+    // Confirm Password validation
+    if (formData.password !== formData.confirmPassword) {
+        newErrors.confirmPassword = "Passwords do not match.";
+        valid = false;
+    } else {
+        newErrors.confirmPassword = "";
+    }
+
+    // Recaptcha validation
+    if (!formData.isRecaptchaChecked) {
+        newErrors.recaptcha = "Please verify you are not a robot.";
+        valid = false;
+    } else {
+        newErrors.recaptcha = "";
+    }
+
+    // Terms agreement validation
+    if (!formData.isAgreedToTerms) {
+        newErrors.terms =
+            "You must agree to the Terms of Use and Privacy Policy.";
+        valid = false;
+    } else {
+        newErrors.terms = "";
+    }
+
+    // Update state with new errors
+    setErrors(newErrors);
+    return valid;
+};
 
     const handleNextStep = () => {
-        if (step === 1 && isStep1Valid()) {
+        if (step === 1 && validateStep1()) {
             setStep(step + 1);
-        } else if (step === 2 && isStep2Valid()) {
+        } else if (step === 2 && validateStep2()) {
             handleSubmit();
         }
     };
@@ -77,14 +160,15 @@ const RegisterForm = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
+        setFormData((prevData) => ({
+            ...prevData,
             [name]: value,
-        });
+        }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         if (e) e.preventDefault();
+        setIsLoading(true);
 
         const formattedData = {
             fname: formData.firstName,
@@ -95,24 +179,26 @@ const RegisterForm = () => {
             dob: `${formData.dobMonth}-${formData.dobDay}-${formData.dobYear}`,
             password: formData.password,
         };
-        console.log("Submitted Form Data:", formattedData);
 
-        axiosClient
-            .post("/register", formattedData)
-            .then(({ data }) => {
-                console.log(data);
-                setUser(data.user);
-                setToken(data.token);
-            })
-            .catch((err) => {
-                console.log(err);
-                const response = err.response;
-                if (response && response.status === 422) {
-                    console.log(response.data.errors);
-                }
-            });
+        try {
+            const { data } = await axiosClient.post("/register", formattedData);
+            setUser(data.user);
+            setToken(data.token);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
+    const handleRecaptchaChange = (e) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            isRecaptchaChecked: e.target.checked,
+        }));
+    };
+
+   
     return (
         <form className="flex flex-col px-4 py-4" onSubmit={handleSubmit}>
             {step === 1 && (
@@ -131,6 +217,11 @@ const RegisterForm = () => {
                                 onChange={handleChange}
                                 className="border p-2 rounded-[12px] w-full"
                             />
+                            {errors.firstName && (
+                                <p className="text-red-500 text-xs">
+                                    {errors.firstName}
+                                </p>
+                            )}
                         </label>
                         <label className="text-sm text-[#666666] w-1/2">
                             Middle Name
@@ -152,6 +243,11 @@ const RegisterForm = () => {
                             onChange={handleChange}
                             className="border p-2 rounded-xl w-full"
                         />
+                        {errors.lastName && (
+                            <p className="text-red-500 text-xs">
+                                {errors.lastName}
+                            </p>
+                        )}
                     </label>
                     <label className="block mt-3 text-gray-500">
                         Gender (optional)
@@ -219,122 +315,169 @@ const RegisterForm = () => {
                                 className="border p-2 rounded-xl w-full"
                             />
                         </div>
+                        {errors.dob && (
+                            <p className="text-red-500 text-xs">{errors.dob}</p>
+                        )}
                     </label>
-                    <div className="flex items-center justify-center my-4">
-                        <div className="border-t border-gray-300 w-1/4"></div>
-                        <h2 className="mx-2">or continue with</h2>
-                        <div className="border-t border-gray-300 w-1/4"></div>
+                    <div className="text-center mt-4">
+                        <p className="text-sm text-gray-500">or sign up with</p>
+                        <div className="flex justify-center mt-2 gap-4">
+                            <button
+                                type="button"
+                                className="flex items-center gap-2 border border-gray-300 px-4 py-2 rounded-xl"
+                            >
+                                <FaFacebook className="text-blue-600" />
+                                Facebook
+                            </button>
+                            <button
+                                type="button"
+                                className="flex items-center gap-2 border border-gray-300 px-4 py-2 rounded-xl"
+                            >
+                                <FaGoogle className="text-red-500" />
+                                Google
+                            </button>
+                        </div>
                     </div>
-                    <div className="flex justify-center gap-4">
-                        <h1 className="text-2xl">
-                            <FaGoogle />
-                        </h1>
-                        <h1 className="text-2xl text-blue-600">
-                            <FaFacebook />
-                        </h1>
-                    </div>
-
-                    <button
-                        type="button"
-                        onClick={handleNextStep}
-                        className={`bg-green hover:bg-green-700 mt-4 text-white px-4 py-2 rounded-full ${
-                            !isStep1Valid() && step === 1
-                                ? "opacity-50 cursor-not-allowed"
-                                : ""
-                        }`}
-                        disabled={!isStep1Valid() && step === 1}
-                    >
-                        Next
-                    </button>
                 </>
             )}
-
             {step === 2 && (
                 <>
-                    <div className="py-2 flex flex-col gap-4">
-                        <div className="text-center mb-4">
-                            <h1 className="text-lg font-semibold">
-                                Registration
-                            </h1>
-                            <h2 className="text-md font-semibold">
-                                Step 2 of 2
-                            </h2>
+                    <div className="text-center mb-4">
+                        <h1 className="text-lg">Registration</h1>
+                        <h2 className="text-md font-semibold">Step 2 of 2</h2>
+                    </div>
+                    <label className="text-sm text-[#666666]">
+                        Email
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="border p-2 rounded-xl w-full"
+                        />
+                        {errors.email && (
+                            <p className="text-red-500 text-xs">
+                                {errors.email}
+                            </p>
+                        )}
+                    </label>
+                    <label className="text-sm text-[#666666] mt-2">
+                        Password
+                        <input
+                            type="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            className="border p-2 rounded-xl w-full"
+                        />
+                        {errors.password && (
+                            <p className="text-red-500 text-xs">
+                                {errors.password}
+                            </p>
+                        )}
+                    </label>
+                    <label className="text-sm text-[#666666] mt-2">
+                        Confirm Password
+                        <input
+                            type="password"
+                            name="confirmPassword"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            className="border p-2 rounded-xl w-full"
+                        />
+                        {errors.confirmPassword && (
+                            <p className="text-red-500 text-xs">
+                                {errors.confirmPassword}
+                            </p>
+                        )}
+                    </label>
+                    <div className="relative flex justify-between w-[260px] items-center border border-black rounded-xl p-2 mt-4">
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                className="form-checkbox"
+                                checked={formData.isRecaptchaChecked}
+                                onChange={handleRecaptchaChange}
+                            />
+                            <p className="text-sm">I'm not a robot</p>
                         </div>
-                        <label className="text-sm">
-                            Email
-                            <input
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                className="border p-2 rounded w-full"
-                            />
-                        </label>
-                        <label className="text-sm">
-                            Password
-                            <input
-                                type="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                className="border p-2 rounded w-full"
-                            />
-                        </label>
-                        <label className="text-sm">
-                            Confirm Password
-                            <input
-                                type="password"
-                                name="confirmPassword"
-                                value={formData.confirmPassword}
-                                onChange={handleChange}
-                                className="border p-2 rounded w-full"
-                            />
-                        </label>
-                        <p className="text-xs">
-                            By creating an account, you agree to the Terms of
-                            use and Privacy Policy.
-                        </p>
-                        <div className="flex justify-between w-[260px] items-center border border-black rounded-xl p-2">
-                            <div className="flex items-center gap-2">
-                                <input
-                                    type="radio"
-                                    className="form-radio text-green-500"
-                                />
-                                <p className="text-sm">I'm not a robot</p>
-                            </div>
-                            <img
-                                src={googlerecaptcha}
-                                alt="Google Recaptcha"
-                                className="w-11 h-10"
-                            />
-                        </div>
-                        <div className="flex gap-2">
-                            <button
-                                type="button"
-                                onClick={handlePreviousStep}
-                                className="bg-gray-300 hover:bg-gray-500 w-full text-white px-4 py-2 rounded-full"
-                            >
-                                Previous
-                            </button>
+                        <img
+                            src={googlerecaptcha}
+                            alt="Google Recaptcha"
+                            className="w-11 h-10"
+                        />
+                        {errors.recaptcha && (
+                            <p className="text-red-500 text-xs absolute right-0 top-full mt-1 ml-2">
+                                {errors.recaptcha}
+                            </p>
+                        )}
+                    </div>
 
-                            <button
-                                type="button"
-                                onClick={handleNextStep}
-                                className={`bg-green hover:bg-green-700 w-full text-white px-4 py-2 rounded-full ${
-                                    !isStep2Valid() && step === 2
-                                        ? "opacity-50 cursor-not-allowed"
-                                        : ""
-                                }`}
-                                disabled={!isStep2Valid() && step === 2}
-                            >
-                                Register
-                            </button>
+                    <div className="mt-4">
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                name="isAgreedToTerms"
+                                className="form-checkbox"
+                                checked={formData.isAgreedToTerms}
+                                onChange={handleTermsChange}
+                            />
+                            <p className="text-sm">
+                                I have read and agree to the
+                                <a
+                                    href="/terms"
+                                    className="text-blue-500 hover:underline"
+                                >
+                                    {" "}
+                                    Terms of Use
+                                </a>{" "}
+                                and
+                                <a
+                                    href="/privacy-policy"
+                                    className="text-blue-500 hover:underline"
+                                >
+                                    {" "}
+                                    Privacy Policy
+                                </a>
+                                .
+                            </p>
                         </div>
+                        {errors.terms && (
+                            <p className="text-red-500 text-xs mt-1">
+                                {errors.terms}
+                            </p>
+                        )}
                     </div>
                 </>
             )}
+            <div className="flex gap-2">
+                {step > 1 && (
+                    <button
+                        type="button"
+                        onClick={handlePreviousStep}
+                        className="bg-gray-300 hover:bg-gray-500 w-full text-white px-4 py-2 rounded-full mt-5"
+                    >
+                        Previous
+                    </button>
+                )}
+                <button
+                    type="button"
+                    onClick={handleNextStep}
+                    className={`bg-green hover:bg-green-700 w-full text-white px-4 py-2 rounded-full flex items-center justify-center mt-5 ${
+                        isLoading ? "cursor-not-allowed" : ""
+                    }`}
+                    disabled={isLoading}
+                >
+                    {isLoading ? (
+                        <AiOutlineLoading3Quarters className="animate-spin" />
+                    ) : step === 2 ? (
+                        "Register"
+                    ) : (
+                        "Next"
+                    )}
+                </button>
+            </div>
         </form>
     );
 };
-
 export default RegisterForm;

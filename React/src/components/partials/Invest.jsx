@@ -2,8 +2,8 @@ import frame from "../../images/frame.png";
 const Invest = () => {
     return (
         <div>
-            <div className="my-[100px] ">
-                <div className="content flex gap-[150px] flex-wrap items-center  ">
+            <div className="w-full flex mx-auto my-[100px]">
+                <div className="content flex gap-[150px] flex-wrap items-center justify-center ">
                     <p className="text-black font-bold text-[18px]">
                         <span>100%</span> of your investment<br></br>
                         goes to
