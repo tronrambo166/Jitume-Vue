@@ -104,6 +104,10 @@ const handleCustomerChange = (e) => {
   }
 };
 
+  const total_stpes = 3
+  const curr_step =2
+  
+
 // Filter milestones based on selected service and customer
 const filteredMilestones = milestones.filter(milestone =>
   (selectedService === 'All' || milestone.service === selectedService) &&

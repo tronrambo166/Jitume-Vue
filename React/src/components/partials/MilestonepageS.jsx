@@ -3,51 +3,65 @@ import { useParams } from 'react-router-dom';
 import axiosClient from "../../axiosClient";
 import React from 'react';
 import { useStateContext } from '../../contexts/contextProvider';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const MilestonePage = () => {
   const { id } = useParams();
   const listing_id = atob(atob(id));
-  const [miles, setMiles] = useState([]); // Initialize as an array
+  const [miles, setMiles] = useState([]); 
   const [no_mile, setNo_mile] = useState(false);
   const [isDone, setIsDone] = useState(false);
   const [booked, setbooked] = useState(false);
   const [allow, setallow] = useState(false);
   const [reviews, setReviews] = useState([]);
+  const [step, setCurrStep] = useState(0);
   const { token } = useStateContext();
-
+  
+  // const [miles, setMiles] = useState([]);
+  const total_steps = miles.length;
+  const curr_step = 2;
+  
   useEffect(() => {
     const getMilestones = () => {
-      axiosClient.get('/getMilestonesS_Auth/' + listing_id)
+      axiosClient.get('/getMilestonesS_Auth/' + listing_id, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
         .then(({ data }) => {
-          if (Array.isArray(data.data)) { //console.log(data.data);
+          if (Array.isArray(data.data)) {
             setMiles(data.data);
-            if (data.data.length != 0) {
-              //setNo_mile(false);
+            if (data.data.length !== 0) {
+              const activeIndex = data.data.findIndex(mile => mile.active === 1);
+              if (activeIndex !== -1) {
+                setCurrStep(activeIndex);
+              }
             }
-
           } else {
-            console.error('API did not return an array:', data);
             setMiles([]);
           }
-          setIsDone(data.done_msg)
-          setbooked(data.booked)
-          setallow(data.allow)
-          //setReviews(data.reviews)
-
+          setIsDone(data.done_msg);
+          setbooked(data.booked);
+          setallow(data.allow);
         })
         .catch(err => {
-          console.log(err);
           setMiles([]);
-          //setHasmile(true);
+          toast.error('An error occurred while fetching the data!');
         });
     };
+  
     getMilestones();
-  }, [listing_id]);
-
+  }, [listing_id, token]);
+  
   const handleStatusChange = (milestoneName, status) => {
     //console.log(Milestone ${milestoneName} status changed to: ${status});
     // Update milestone status logic here
   };
+
+
+
 
   const handlePay = (mile_id,amount) => {
     //alert(mile_id+ amount)
@@ -133,26 +147,26 @@ const MilestonePage = () => {
 
       {/* Steps 1-4 */}
       <div className="flex justify-center items-center mb-8">
-        {['Step 1', 'Step 2', 'Step 3', 'Step 4'].map((step, index) => (
-          <React.Fragment key={index}>
-            <div className="flex flex-col items-center">
-              <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
-                  index === 2
-                    ? 'bg-green text-white' // Highlight Step 3 as active
-                    : 'bg-gray-200 text-gray-700'
-                }`}
-              >
-                {index + 1}
-              </div>
-              <span className="mt-2 text-sm">{step}</span>
-            </div>
-            {index < 3 && (
-              <div className="w-12 border-t-2 border-gray-300"></div>
-            )}
-          </React.Fragment>
-        ))}
+      {Array.from({ length: total_steps }, (_, index) => (
+            <React.Fragment key={index}>
+      <div className="flex flex-col items-center">
+        <div
+          className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
+            index < curr_step
+              ? 'bg-green-500 text-white' // Steps that are greened out (completed)
+              : 'bg-gray-200 text-gray-700' // Inactive steps
+          }`}
+        >
+          {index + 1}
+        </div>
+        <span className="mt-2 text-sm">Step {index + 1}</span>
       </div>
+      {index < total_steps - 1 && (
+        <div className="w-12 border-t-2 border-gray-300"></div> // Line between steps
+      )}
+    </React.Fragment>
+  ))}
+</div>
 
       <table className="table-auto w-full border-collapse border border-gray-300">
         <thead>
@@ -302,6 +316,7 @@ const MilestonePage = () => {
 
         </tbody>
       </table>
+      <ToastContainer />
     </div>
   );
 };
