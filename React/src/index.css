@@ -174,3 +174,12 @@ font-size: 14px
       display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
     }
     
+
+    .help{
+      background-image: url(../images/sidehelp.png);
+    }
+
+ .list{
+      background-image: url(../images/sidehelp.png);
+
+    }
