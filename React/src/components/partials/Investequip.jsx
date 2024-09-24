@@ -2,7 +2,8 @@ import { FaUpload } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import axiosClient from "../../axiosClient";
-
+import { IoArrowBack } from "react-icons/io5"; // Import React icon
+import { useNavigate } from "react-router-dom";
 const Investequip = () => {
     const { amount, id, percent } = useParams();
 
@@ -23,7 +24,10 @@ const Investequip = () => {
             [field]: e.target.files[0],
         }));
     };
-
+    const handleGoBack = () => {
+        navigate(-1);
+    };
+    const navigate = useNavigate();
     // Handle input changes
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -67,8 +71,13 @@ const Investequip = () => {
     };
 
     return (
-        <div className="mx-auto w-[700px] h-[500px] my-6 border shadow-md p-3">
-            <form onSubmit={handleSubmit}>
+        <div className="mx-auto w-[700px] h-[500px] my-6 border shadow-md p-3 ">
+            <button
+                onClick={handleGoBack}
+className="btn-primary p-4 rounded-full"            >
+<IoArrowBack className="h-[30px]  w-auto" />
+</button>
+            <form className="my-3" onSubmit={handleSubmit}>
                 <div className="flex justify-between my-3 gap-[150px] py-3">
                     <h1 className="text-[13px]">
                         Please upload good quality photos of the assets*

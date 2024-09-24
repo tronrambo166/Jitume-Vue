@@ -11,7 +11,8 @@ import { useStateContext } from "../../contexts/contextProvider";
 import { Link } from 'react-router-dom';
 import Modal from './Authmodal';
 import UnlockPopup from './Unlockpopup';
-
+import bannerframe from "../../images/bannerframe.png"
+import { FaStar, FaPlusCircle } from "react-icons/fa";
 const ListingDetails = ({ onClose }) => {
 
   const{token,setUser,setAuth, auth} = useStateContext();
@@ -75,6 +76,28 @@ const ListingDetails = ({ onClose }) => {
     }
   };
   
+
+
+  //for review
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [review, setReview] = useState("");
+
+  const togglePopup = () => {
+    setShowPopup(!showPopup);
+  };
+
+  const handleRating = (newRating) => {
+    setRating(newRating);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(`Rating: ${rating}, Review: ${review}`);
+    // Submit the review logic here (e.g., API call)
+    setShowPopup(false); // Close the popup after submitting
+  };
 
   //FOR SMALL POP UP
 
@@ -429,7 +452,11 @@ sessionStorage.setItem("purpose", "One time unlock - Small fee");
 
   return (
     <>
+      <div className=' list w-full h-auto'>
+<img src={bannerframe} alt="" />
+        </div>
       <div className="container mx-auto flex flex-col md:flex-row justify-center items-center py-4 lg:py-8 mt-3">
+      
         <div className="px-4 md:px-6 lg:px-8 xl:px-12 my-3 pt-3 w-full flex flex-col md:flex-row justify-center mx-auto gap-4 md:gap-6 lg:gap-8">
           <div className="md:w-1/3 px-6">
             <h2 className="text-[#0A0A0A]/60 text-sm sm:text-xs md:text-sm lg:text-base font-bold">More business information</h2>
@@ -467,16 +494,75 @@ sessionStorage.setItem("purpose", "One time unlock - Small fee");
             <p className="text-slate-700 text-sm flex gap-2 py-2 whitespace-nowrap items-center py-2 px-2">
               <FontAwesomeIcon icon={faExclamationCircle} className="text-sm text-black font-bold mr-1" />
               Unlock this business to learn more about it and invest
+
             </p>
             <div className="my-4 text-left">
-              <h3 className="font-bold my-3">Reviews </h3>
-              <div>
-                <img className="inline rounded-[50%]" src="https://via.placeholder.com/30" alt="User" width="30" />
-                <p className="inline text-sm">
-                  <b className="text-green-700"> Person</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                </p>
+      <h3 className="font-bold my-3">Reviews </h3>
+      <button
+        className="flex items-center space-x-2    py-2 rounded"
+        onClick={togglePopup}
+      >
+        <FaPlusCircle className='text-green' />
+        <span>Add Review</span>
+      </button>
+      <hr></hr>
+
+      <div className="mt-4">
+        <img
+          className="inline rounded-[50%]"
+          src="https://via.placeholder.com/30"
+          alt="User"
+          width="30"
+        />
+        <p className="inline text-sm">
+          <b className="text-green-700"> Person</b> Lorem ipsum dolor sit amet,
+          consectetur adipiscing elit
+        </p>
+      </div>
+
+      {showPopup && (
+        <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-md w-1/3">
+            <h4 className="text-lg font-bold mb-4">Add Your Review</h4>
+            <form onSubmit={handleSubmit}>
+              <div className="flex items-center mb-4">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <FaStar
+                    key={star}
+                    className={`cursor-pointer ${
+                      star <= rating ? "text-yellow-500" : "text-gray-300"
+                    }`}
+                    onClick={() => handleRating(star)}
+                  />
+                ))}
               </div>
-            </div>
+              <textarea
+                className="w-full border border-gray-300 rounded p-2 mb-4"
+                placeholder="Write your review here..."
+                value={review}
+                onChange={(e) => setReview(e.target.value)}
+                required
+              />
+              <div className="flex justify-end space-x-4">
+                <button
+                  type="button"
+                  className="bg-gray-300 px-4 py-2 rounded"
+                  onClick={togglePopup}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn-primary text-white px-4 py-2 rounded"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
           </div>
           <div className="md:w-1/3 flex flex-col mr-0">
             <div className="relative">
@@ -502,9 +588,9 @@ sessionStorage.setItem("purpose", "One time unlock - Small fee");
               <div className="text-gray-500 text-sm">
                 {details.rating_count} Ratings
               </div>
-              <div className={`${conv && token ? "hidden" : "card mx-auto my-4 max-w-md p-6 rounded-lg shadow-lg bg-white"}`}>
+              {/* <div className={`${conv && token ? "hidden" : "card mx-auto my-4 max-w-md p-6 rounded-lg shadow-lg bg-white"}`}>
               <h4 className="text-2xl font-semibold border-b-2 border-gray-200 pb-4 mb-4">
-                Business Home Window
+                Business Home Windows
               </h4>
 
               {!token ? (
@@ -544,7 +630,7 @@ sessionStorage.setItem("purpose", "One time unlock - Small fee");
                   </p>
                 </div>
               )}
-            </div>
+            </div> */}
 
             </div>
 

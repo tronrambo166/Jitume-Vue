@@ -316,24 +316,24 @@ const handleContactModal = (event) => {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quasi delectus dolores, quos aperiam ut illum deleniti quaerat quod, ex, expedita atque officiis molestias ipsam natus saepe ipsum dolorum quisquam reprehenderit? Quae magni architecto dignissimos nesciunt numquam libero vero autem magnam distinctio quod iste, fuga voluptatibus voluptas corporis sit eos temporibus et nemo! Aspernatur nam, accusamus cumque quidem ducimus iusto!
           </p>
           <div className='flex items-center mt-2 gap-6 text-sm'>
-          {token ? (
+          {token && details.id ? (
+    <Link to={`/service-milestones/${btoa(btoa(details.id))}`} key={details.id}>
+        <button className='border rounded-md py-2 whitespace-nowrap hover:bg-slate-200 px-2'>
+            Service Milestone Breakdown
+        </button>
+    </Link>
+) : null}
 
-            <Link to={`/service-milestones/${btoa(btoa(details.id))}`} key={details.id}>
-            <button  className='border rounded-md py-2 whitespace-nowrap hover:bg-slate-200 px-2'>Service Milestone Breakdown</button>
-            </Link>): (
-  <button onClick={handleAuthModalOpen} className='border hover:bg-slate-200 py-2 whitespace-nowrap rounded-md px-6'>
-  Service Milestone Breakdown
-</button>
-)}      
-            {token ? (
-  <button onClick={setContactmodal} className='border hover:bg-slate-200 py-2 whitespace-nowrap rounded-md px-6'>
-    Contact me
-  </button>
+{token ? (
+    <button onClick={setContactmodal} className='border hover:bg-slate-200 py-2 whitespace-nowrap rounded-md px-6'>
+        Contact me
+    </button>
 ) : (
-  <button onClick={handleAuthModalOpen} className='border hover:bg-slate-200 py-2 whitespace-nowrap rounded-md px-6'>
-    Contact me
-  </button>
-)}          </div>
+    <button onClick={handleAuthModalOpen} className='border hover:bg-slate-200 py-2 whitespace-nowrap rounded-md px-6'>
+        Contact me
+    </button>
+)}
+    </div>
           {/* Conditional rendering of contact section */}
 {Contactmodal && token && (
   <div className='contact py-4'>
