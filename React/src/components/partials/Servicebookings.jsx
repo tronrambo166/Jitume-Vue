@@ -1,15 +1,11 @@
 import { useState, useEffect } from "react";
 import axiosClient from "../../axiosClient";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import the styles for Toastify
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 function InvestmentBids() {
     const [bids, setBids] = useState([]);
     const [selectedBids, setSelectedBids] = useState([]);
     const [modalContent, setModalContent] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [loading, setLoading] = useState(false); // Loader state
 
     const handleCheckboxChange = (id) => {
         setSelectedBids((prevSelected) => {
@@ -20,29 +16,23 @@ function InvestmentBids() {
     };
 
     const AcceptBids = () => {
-        if (selectedBids.length === 0) return; // Prevent action if no bids are selected
-
-        setLoading(true); // Start loading
         const payload = {
             bid_ids: selectedBids,
             reject: 0,
         };
+        console.log(payload)
         axiosClient
             .post("bookingAccepted", payload)
             .then(({ data }) => {
-                toast.success(data.message); // Show success toast message
-                setSelectedBids([]); // Reset selected bids after action
+                alert(data.message);
             })
             .catch((err) => {
                 if (err.response && err.response.status === 422) {
-                    toast.error(
-                        "Validation Error: " + err.response.data.errors
-                    ); // Show validation error
+                    console.log(err.response.data.errors);
                 } else {
-                    toast.error("An error occurred. Please try again."); // Show general error toast
+                    console.log(err);
                 }
-            })
-            .finally(() => setLoading(false)); // Stop loading when done
+            });
     };
 
     useEffect(() => {
@@ -157,22 +147,11 @@ function InvestmentBids() {
             <div className="flex gap-2 pt-3 items-center justify-end">
                 <button
                     onClick={AcceptBids}
-                    className={`bg-green text-white py-2 px-4 rounded-lg mt-2 flex items-center justify-center ${
-                        loading || selectedBids.length === 0
-                            ? "bg-green/50 cursor-not-allowed"
-                            : "bg-green hover:bg-green-600"
-                    }`}
-                    disabled={loading || selectedBids.length === 0}
+                    className="bg-green text-white py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300 transition-colors"
                 >
-                    {loading ? (
-                        <AiOutlineLoading3Quarters className="animate-spin mr-2" />
-                    ) : null}
-                    {loading ? "Processing..." : "Accept Bids"}
+                    Accept Bids
                 </button>
-                <button
-                    className="bg-red-500 text-white py-2 mt-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition-colors"
-                    disabled={loading} // Disable reject button while loading
-                >
+                <button className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition-colors">
                     Reject Bids
                 </button>
             </div>
@@ -198,8 +177,6 @@ function InvestmentBids() {
                     </div>
                 </div>
             )}
-
-            <ToastContainer />
         </div>
     );
 }

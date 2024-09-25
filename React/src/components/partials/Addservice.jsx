@@ -182,7 +182,7 @@ const AddService = ({ connected, userId }) => {
         <div className="container mx-auto px-4 py-6">
             {/* Success Message */}
             {messages.success && (
-                <div className="bg-blue-100 text-blue-700 border border-blue-300 rounded-lg px-8 py-3 mb-4 flex justify-between items-center">
+                <div className="bg-blue-100 text-blue-700 border border-blue-300 rounded-lg px-4 py-3 mb-4 flex justify-between items-center">
                     <p className="font-semibold">{messages.success}</p>
                     <button
                         type="button"
@@ -210,18 +210,22 @@ const AddService = ({ connected, userId }) => {
                 </div>
             )}
 
-
             {Con ? (
-              <div >
-              <p className="text-center bg-light p-2 "> You must onboard to Jitume Stripe platform to receive business milestone payments.</p>
-              <button onClick={connectToStripe}
-              className="btn-primary py-2 px-6 rounded-lg text-white focus:outline-none"
-              >
-              Connect to Stripe
-              </button>
-              </div>
-                ):(
-                              <form
+                <div>
+                    <p className="text-center bg-light p-2 ">
+                        {" "}
+                        You must onboard to Jitume Stripe platform to receive
+                        business milestone payments.
+                    </p>
+                    <button
+                        onClick={connectToStripe}
+                        className="btn-primary py-2 px-6 rounded-lg text-white focus:outline-none"
+                    >
+                        Connect to Stripe
+                    </button>
+                </div>
+            ) : (
+                <form
                     onSubmit={handleSubmit}
                     className="w-full max-w-7xl mx-auto space-y-6"
                 >
@@ -372,7 +376,7 @@ const AddService = ({ connected, userId }) => {
 
                         {/* Upload Identification */}
                         <div className="relative">
-                            <label className="block mb-1 text-gray-200 text-sm font-semibold">
+                            <label className="block mb-1 text-gray-700 text-sm font-semibold">
                                 Upload Identification
                             </label>
                             <input
@@ -482,10 +486,11 @@ const AddService = ({ connected, userId }) => {
 
                     <button
                         type="submit"
-                        className="w-full btn-primary text-white py-2 rounded mt-4  transition"
+                        className="w-full bg-green/50 text-white py-2 rounded-full hover:bg-green transition"
                     >
                         Add Service
                     </button>
+                   
                 </form>
             )}
         </div>

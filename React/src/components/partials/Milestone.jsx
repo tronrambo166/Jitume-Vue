@@ -1,94 +1,86 @@
 import { useState, useEffect } from "react";
 import axiosClient from "../../axiosClient";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 function Milestones() {
     const [milestones, setMilestones] = useState([]);
     const [business, setBusiness] = useState([]);
     const [businessName, setBusinessName] = useState([]);
-    const [loadingId, setLoadingId] = useState(null);
 
     useEffect(() => {
-        const getMilestones = (id = "all") => {
-            console.log("Fetching milestones with id:", id);
+        const getMilestones = (id) => {
+            id = "all";
             axiosClient
                 .get("/business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf7E_-" + id)
                 .then(({ data }) => {
-                    console.log("Milestones data received:", data);
                     setMilestones(data.milestones);
                     setBusiness(data.business);
                 })
                 .catch((err) => {
-                    console.error("Error fetching milestones:", err);
-                    toast.error("Failed to fetch milestones");
+                    console.log(err);
                 });
         };
         getMilestones();
     }, []);
 
     const getMilestones2 = (id) => {
-        console.log("Fetching milestones for business id:", id);
         axiosClient
             .get("/business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf7E_-" + id)
             .then(({ data }) => {
-                console.log("Milestones data for selected business:", data);
                 setBusinessName(data.business_name);
                 setMilestones(data.milestones);
             })
             .catch((err) => {
-                console.error(
-                    "Error fetching milestones for selected business:",
-                    err
-                );
-                toast.error("Failed to fetch milestones for selected business");
+                console.log(err);
             });
     };
 
+    const [selectedBusiness, setSelectedBusiness] = useState("All");
+
+    const handleStatusChange = (e, id) => {
+        const updatedMilestones = milestones.map((milestone) =>
+            milestone.id === id
+                ? { ...milestone, status: e.target.value }
+                : milestone
+        );
+        setMilestones(updatedMilestones);
+    };
+
     const handleDelete = (id) => {
-        console.log("Deleting milestone with id:", id);
         axiosClient
             .get("/business/delete_milestone/" + id)
             .then(({ data }) => {
-                console.log("Milestone deleted:", data);
                 setMilestones(
                     milestones.filter((milestone) => milestone.id !== id)
                 );
-                toast.success("Milestone deleted successfully");
             })
             .catch((err) => {
-                console.error("Error deleting milestone:", err);
-                toast.error("Failed to delete milestone");
+                console.log(err);
             });
     };
 
     const handleSet = (id, status) => {
-        console.log("Setting milestone status for id:", id, "to", status);
-        setLoadingId(id); // Set loading state for the current milestone
-        const payload = { id: id, status: status };
+        const payload = { id, status };
         axiosClient
             .post("/business/mile_status", payload)
             .then(({ data }) => {
-                console.log("Milestone status updated:", data);
-                setMilestones((prevMilestones) =>
-                    prevMilestones.map((milestone) =>
-                        milestone.id === id
-                            ? { ...milestone, status: status }
-                            : milestone
-                    )
-                );
-                toast.success("Milestone status updated successfully");
+                console.log(data);
             })
             .catch((err) => {
-                console.error("Error updating milestone status:", err);
-                toast.error("Failed to update milestone status");
-            })
-            .finally(() => {
-                setLoadingId(null); // Reset loading state after request completes
+                console.log(err);
             });
     };
 
-    const filteredMilestones = milestones; // Modify this as needed
+    const handleDropdownChange = (e) => {
+        setSelectedBusiness(e.target.value);
+    };
+
+    // Filter milestones based on selected business
+    const filteredMilestones =
+        selectedBusiness === "All"
+            ? milestones
+            : milestones.filter(
+                  (milestone) => milestone.business === selectedBusiness
+              );
 
     return (
         <div className="container mx-auto p-6">
@@ -96,14 +88,13 @@ function Milestones() {
                 Business Milestones
             </h3>
 
+            {/* Dropdown for selecting business */}
             <div className="mb-4 flex gap-2">
                 <select
-                    onChange={(e) => {
-                        console.log("Business selected:", e.target.value);
-                        getMilestones2(e.target.value);
-                    }}
+                    onChange={(e) => getMilestones2(e.target.value)}
                     className="border rounded-lg p-2 focus:outline-none text-sm focus:ring-2 focus:ring-blue-500"
                 >
+                    <option value="All">All</option>
                     {business.map((business) => (
                         <option key={business.id} value={business.id}>
                             {business.name}
@@ -152,13 +143,9 @@ function Milestones() {
                                     <select
                                         value={milestone.status}
                                         onChange={(e) =>
-                                            handleSet(
-                                                milestone.id,
-                                                e.target.value
-                                            )
+                                            handleStatusChange(e, milestone.id)
                                         }
                                         className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        disabled={loadingId === milestone.id} // Disable select while loading
                                     >
                                         <option value="To Do">To Do</option>
                                         <option value="In Progress">
@@ -175,16 +162,9 @@ function Milestones() {
                                                 milestone.status
                                             )
                                         }
-                                        className={`text-black px-4 py-2 rounded-lg transition-colors ${
-                                            loadingId === milestone.id
-                                                ? "bg-gray-400 cursor-not-allowed"
-                                                : "hover:bg-green"
-                                        }`}
-                                        disabled={loadingId === milestone.id} // Disable button while loading
+                                        className="text-black px-4 py-2 rounded-lg hover:bg-green transition-colors"
                                     >
-                                        {loadingId === milestone.id
-                                            ? "Loading..."
-                                            : "Set"}
+                                        Set
                                     </button>
                                     <button
                                         onClick={() =>
@@ -200,8 +180,6 @@ function Milestones() {
                     </tbody>
                 </table>
             </div>
-
-            <ToastContainer />
         </div>
     );
 }

@@ -12,7 +12,7 @@ import profile from "../../../images/profile.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosClient from "../../axiosClient";
-import { useStateContext } from '../../contexts/contextProvider'
+import { useStateContext } from "../../contexts/contextProvider";
 
 const Dashboardhero = () => {
     const { token, setToken } = useStateContext();
@@ -34,8 +34,8 @@ const Dashboardhero = () => {
     const onLogout = (ev) => {
         ev.preventDefault();
         axiosClient
-            .get('/logout')
-            .then(({}) => {
+            .get("/logout")
+            .then(() => {
                 setUser(null);
                 setToken(null);
                 navigate("/"); // Redirect to the guest layout
@@ -48,10 +48,14 @@ const Dashboardhero = () => {
             id="dashbg"
             className="relative max-w-[95%] mx-auto rounded-xl mb-[20px] h-[200px] mt-4 p-4"
         >
-            <div className="flex justify-between">
-                <div>
-                    <h1 className="text-white">Pages / Dashboard</h1>
-                    <h2 className="text-white font-semibold">Dashboard</h2>
+            <div className="flex justify-between items-center flex-wrap">
+                <div className="mb-4 md:mb-0">
+                    <h1 className="text-white text-sm md:text-base">
+                        Pages / Dashboard
+                    </h1>
+                    <h2 className="text-white font-semibold text-base md:text-lg">
+                        Dashboard
+                    </h2>
                 </div>
                 <div className="flex items-center gap-4">
                     <Link
@@ -61,9 +65,12 @@ const Dashboardhero = () => {
                         <FaHome />
                         <span>Home</span>
                     </Link>
-                    <div onClick={onLogout} className="flex items-center text-sm gap-2 pointer text-white">
+                    <div
+                        onClick={onLogout}
+                        className="flex items-center text-sm gap-2 cursor-pointer text-white"
+                    >
                         <FaUser />
-                        <span >Sign out</span>
+                        <span>Sign out</span>
                     </div>
                     <FaCog className="text-white" />
                     <FaBell className="text-white" />
@@ -71,23 +78,28 @@ const Dashboardhero = () => {
             </div>
 
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-full">
-                <div className="bg-gray-100/50 max-w-[95%] mx-auto px-6 py-3 rounded-lg shadow-lg">
-                    <div className="flex justify-between items-center">
+                <div className="bg-gray-100/50 max-w-[95%] mx-auto px-4 md:px-6 py-3 rounded-lg shadow-lg">
+                    <div className="flex justify-between items-center flex-wrap gap-4">
                         <div className="flex gap-2 items-center">
                             <img
                                 src={profile}
-                                className="rounded-xl"
+                                className="rounded-xl w-16 h-16 md:w-20 md:h-20"
                                 alt="Profile"
                             />
-                            <div className="flex flex-col gap-2">
-                                <h2 className="text-black text-lg font-bold">
+                            <div className="flex flex-col">
+                                <h2 className="text-black text-sm md:text-lg font-bold">
                                     {user.fname} {user.lname}
                                 </h2>
-                                <h3>{user.email || "test@email.com"}</h3>
+                                <h3 className="text-sm md:text-base">
+                                    {user.email || "test@email.com"}
+                                </h3>
                             </div>
                         </div>
-                        <div className="flex text-[13px] gap-[33px] items-center">
-                            <Link to="" className="flex items-center hover:text-green gap-1">
+                        <div className="flex text-sm md:text-[13px] gap-4 flex-wrap items-center">
+                            <Link
+                                to=""
+                                className="flex items-center hover:text-green gap-1"
+                            >
                                 <FaWrench />
                                 <span>Overview</span>
                             </Link>
