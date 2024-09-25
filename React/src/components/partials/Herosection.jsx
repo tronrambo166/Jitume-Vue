@@ -18,7 +18,7 @@ const Herosection = () => {
     };
 
     return (
-        <div className="bg-white  relative mt-7 lg:mt-10">
+        <div className="bg-white relative mt-7 lg:mt-10">
             <img
                 src={leftArrow}
                 alt="Left Arrow"
@@ -30,23 +30,16 @@ const Herosection = () => {
                 className="absolute right-0 top-1/3 transform -translate-y-1/2 z-10 h-[60px] lg:h-[100px] w-auto"
             />
 
-
-<div className="flex w-[82%] mx-auto flex-wrap justify-center items-center px-4 py-2 sm:px-6 sm:py-3">
-     <div className="flex py-2 sm:px-6 sm:py-3 flex-col gap-6 lg:w-1/3 ">
-                    <h2 className="text-lg lg:text-md font-semibold text-[#0A0A0A]/60">
-                        Welcome to Jitume
-                    </h2>
-                    <h1 className="text-2xl lg:text-3xl text-black font-bold">
-                        Real businesses, real <br className="hidden lg:block" />{" "}
-                        solutions,
-                        <span className="text-green whitespace-nowrap font-bold">
-                            {" "}
-                            real change
-                        </span>
+            <div className="flex w-[82%] mx-auto flex-wrap justify-center items-center px-4 gap-[15px] py-2 sm:px-6 sm:py-3">
+                <div className="flex py-2 sm:px-6 ml-8 sm:py-3 flex-col gap-6 lg:w-[345px]">
+                    <h1 className="text-2xl lg:text-[22px] leading-8 text-black font-bold">
+                        Empowering Businesses
+                        <br /> Delivering Solutions
+                        <br /> Driving Change
                     </h1>
-                    <h2 className="text-lg lg:text-md text-[#0A0A0A] font-semibold ">
-                        Invest in a business you believe in<br className="hidden lg:block" /> with{" "}
-                         as little as $100
+                    <h2 className="text-lg lg:text-md text-[#0A0A0A] font-semibold">
+                        Invest in a business you believe in
+                        <br /> with as little as $100
                     </h2>
                     <button
                         onClick={handleOpenAuthModal}
@@ -55,13 +48,11 @@ const Herosection = () => {
                         Join today
                     </button>
                 </div>
-                <div className="">
-                    <img
-                        src={heroimg}
-                        alt="hero-image"
-                        className="w-[400px] h-auto"
-                    />
-                </div>
+                <img
+                    src={heroimg}
+                    alt="hero-image"
+                    className="w-[380px] ml-[40px] h-auto"
+                />
             </div>
 
             {isAuthModalOpen && (
