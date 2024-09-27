@@ -199,7 +199,7 @@ public function agreeToMileS($s_id,$booker_id)
     if($mileLat)
     ServiceMileStatus::where('id',$mileLat->id)->update([ 'active' => 1]);
     Session::put('login_success','Thanks for your review, next milestone can be paid for to begin!!');
-       return redirect()->to('http://127.0.0.1:5173/service-milestones/'.$s_id);
+       return redirect()->to('http://localhost:5173/service-milestones/'.$s_id);
 }
 
 public function agreeToNextmile($bidId)

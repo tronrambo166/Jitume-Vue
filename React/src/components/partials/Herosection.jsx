@@ -8,17 +8,15 @@ const Herosection = () => {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
     const handleOpenAuthModal = () => {
-        console.log("Opening modal..."); // Debugging
         setIsAuthModalOpen(true);
     };
 
     const handleCloseAuthModal = () => {
-        console.log("Closing modal..."); // Debugging
         setIsAuthModalOpen(false);
     };
 
     return (
-        <div className="bg-white  relative mt-7 lg:mt-10">
+        <div className="bg-white relative mt-7 lg:mt-10">
             <img
                 src={leftArrow}
                 alt="Left Arrow"
@@ -30,36 +28,44 @@ const Herosection = () => {
                 className="absolute right-0 top-1/3 transform -translate-y-1/2 z-10 h-[60px] lg:h-[100px] w-auto"
             />
 
-
-<div className="flex w-[82%] mx-auto   flex-wrap justify-center  px-4 gap-[15px] py-2 sm:px-6 sm:py-3">
-     <div className="flex py-2 sm:px-6 ml-8 sm:py-3 flex-col gap-6 lg:w-[345px] ">
-     <h1 className="text-2xl pt-1 lg:text-[22px] leading-4  whitespace-nowrap text-black font-bold">
-     Empowering Businesses
-                                        </h1>
-                    <h1 className="text-2xl pt-3 lg:text-[22px] leading-4  whitespace-nowrap text-black font-bold">
-                  Delivering Solutions
-                        
-                    </h1>
-                    <h1 className="text-2xl text-green pt-4 lg:text-[22px] leading-4  whitespace-nowrap text-black font-bold">
-                    Driving Change 
-
-                    </h1>
-                    <h2 className="text-lg pt-6 lg:text-md text-[#0A0A0A] whitespace-nowrap font-semibold ">
-                        Invest in a business you believe in<br className="hidden lg:block" /> with{" "}
-                         as little as $100
-                    </h2>
-                    <button
-                        onClick={handleOpenAuthModal}
-                        className="btn-primary mt-10 font-semibold w-full max-w-[125px] h-[50px] whitespace-nowrap rounded-2xl mx-auto lg:mx-0"
-                    >
-                        Join today
-                    </button>
+            <div className="flex w-[82%] mx-auto flex-wrap justify-center px-4 gap-[15px] py-2 sm:px-6 sm:py-3">
+                {/* Text Section */}
+                <div className="flex py-2 sm:px-6 ml-8 sm:py-3 flex-col gap-6 lg:w-[345px] justify-between">
+                    <div>
+                        <h1 className="text-2xl pt-1 lg:text-[22px] leading-4 whitespace-nowrap text-black font-bold">
+                            Empowering Businesses
+                        </h1>
+                        <h1 className="text-2xl pt-3 lg:text-[22px] leading-4 whitespace-nowrap text-black font-bold">
+                            Delivering Solutions
+                        </h1>
+                        <h1 className="text-2xl text-green pt-4 lg:text-[22px] leading-4 whitespace-nowrap font-bold mt-2">
+                            Driving Change
+                        </h1>
+                    </div>
+                    <div className="flex flex-col justify-end">
+                        <h2 className="text-lg pt-6 lg:text-md text-[#0A0A0A] whitespace-nowrap font-semibold mb-4">
+                            Invest in a business you believe in
+                            <br className="hidden lg:block" />
+                            with as little as $100
+                        </h2>
+                        <button
+                            onClick={handleOpenAuthModal}
+                            className="btn-primary mt-6 font-semibold w-full max-w-[125px] h-[40px] whitespace-nowrap rounded-2xl mx-auto lg:mx-0"
+                        >
+                            Join today
+                        </button>
+                    </div>
                 </div>
+
+                {/* Image Section */}
+                <div className="flex items-center ">
                     <img
                         src={heroimg}
                         alt="hero-image"
-                        className="w-[380px] ml-[40px] h-auto"
+                        className="w-[380px] ml-[40px] max-h-[400px] object-contain "
+                        style={{ marginTop: "10px" }} // Fine-tuning with custom margin
                     />
+                </div>
             </div>
 
             {isAuthModalOpen && (

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axiosClient from "../../axiosClient";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { ClipLoader } from "react-spinners"; // Spinner from a React library
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 
 function ServiceMilestone() {
     const [milestones, setMilestones] = useState([]);
@@ -13,7 +13,6 @@ function ServiceMilestone() {
     const [S_name, setS_name] = useState("");
     const [bookerName, setbookerName] = useState("");
     const [loading, setLoading] = useState(false); // Spinner state
-    const toastId = "milestone-toast"; // Unique toastId to prevent multiple toasts
 
     useEffect(() => {
         const getMilestones = (id = "all") => {
@@ -25,19 +24,10 @@ function ServiceMilestone() {
                     setMilestones([]); // Reset milestones when changing the service
                     setCustomers([]); // Reset customers when switching services
                     setSelectedCustomer("All"); // Reset customer dropdown
-                    if (!toast.isActive(toastId)) {
-                        toast.success("Data fetched successfully!", {
-                            toastId,
-                        });
-                    }
                 })
                 .catch((err) => {
-                    console.log(err);
-                    if (!toast.isActive(toastId)) {
-                        toast.error("Error fetching data. Please try again.", {
-                            toastId,
-                        });
-                    }
+                    console.log("Error loading data", err);
+                    toast.error("Failed to load business data");
                 })
                 .finally(() => {
                     setLoading(false); // Hide spinner
@@ -56,23 +46,25 @@ function ServiceMilestone() {
         axiosClient
             .post("/business/mile_s_status", payload)
             .then(({ data }) => {
-                if (!toast.isActive(toastId)) {
-                    // Prevent duplicate toasts
-                    toast.success(data.message, { toastId });
+                // Update the local state with the new status
+                setMilestones((prevMilestones) =>
+                    prevMilestones.map((milestone) =>
+                        milestone.id === id
+                            ? { ...milestone, status: status }
+                            : milestone
+                    )
+                );
+
+                // Conditional toast messages based on the updated status
+                if (status === "Done") {
+                    toast.info("Status updated, Email sent"); // Display "Email sent" message
+                } else {
+                    toast.success("Status updated successfully"); // Display success message for other statuses
                 }
             })
             .catch((err) => {
-                console.log(err);
-                const response = err.response;
-                if (response && response.status === 422) {
-                    console.log(response.data.errors);
-                }
-                if (!toast.isActive(toastId)) {
-                    // Prevent duplicate toasts
-                    toast.error("An error occurred. Please try again.", {
-                        toastId,
-                    });
-                }
+                console.log("Error updating status", err);
+                toast.error("Failed to update status");
             })
             .finally(() => {
                 setLoading(false); // Hide spinner
@@ -92,17 +84,10 @@ function ServiceMilestone() {
                 setSelectedCustomer("All"); // Reset customer dropdown when switching services
                 setS_name(""); // Reset service name
                 setbookerName(""); // Reset booker name
-                if (!toast.isActive(toastId)) {
-                    toast.success("Customers fetched successfully!", {
-                        toastId,
-                    });
-                }
             })
             .catch((err) => {
-                console.log(err);
-                if (!toast.isActive(toastId)) {
-                    toast.error("Error fetching customers.", { toastId });
-                }
+                console.log("Error loading customers", err);
+                toast.error("Failed to load bookers");
             })
             .finally(() => {
                 setLoading(false); // Hide spinner
@@ -122,17 +107,10 @@ function ServiceMilestone() {
                     setMilestones(data.milestones || []);
                     setS_name(data.s_name); // Update service name
                     setbookerName(data.booker_name); // Update booker name
-                    if (!toast.isActive(toastId)) {
-                        toast.success("Milestones fetched successfully!", {
-                            toastId,
-                        });
-                    }
                 })
                 .catch((err) => {
-                    console.log(err);
-                    if (!toast.isActive(toastId)) {
-                        toast.error("Error fetching milestones.", { toastId });
-                    }
+                    console.log("Error fetching milestones", err);
+                    toast.error("Failed to load milestones");
                 })
                 .finally(() => {
                     setLoading(false); // Hide spinner
@@ -141,8 +119,9 @@ function ServiceMilestone() {
     };
 
     return (
-        <div className="container mx-auto p-6">
-            <ToastContainer /> {/* Toastify container */}
+        <div className="relative container mx-auto p-6">
+            <ToastContainer position="top-right" />{" "}
+            {/* Toast container for alerts */}
             <h3 className="text-left text-2xl font-semibold mb-6">
                 Service Milestones
             </h3>
@@ -151,12 +130,11 @@ function ServiceMilestone() {
                 <select
                     value={S_id}
                     onChange={getBookers}
-                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green"
                 >
                     <option value="" disabled>
                         Select Service
-                    </option>{" "}
-                    {/* Add a default option */}
+                    </option>
                     {business.map((business) => (
                         <option key={business.id} value={business.id}>
                             {business.name}
@@ -167,7 +145,7 @@ function ServiceMilestone() {
                 <select
                     value={selectedCustomer}
                     onChange={handleCustomerChange}
-                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green"
                     disabled={customers.length === 0} // Disable if no customers to select
                 >
                     <option value="All">Select Customer</option>
@@ -178,33 +156,43 @@ function ServiceMilestone() {
                     ))}
                 </select>
 
+                {/* Find button with a spinner inside */}
                 <button
                     type="submit"
-                    className="btn-primary py-2 text-white rounded-md px-6"
+                    className="btn-primary py-2 text-white rounded-md px-6 flex items-center"
+                    disabled={loading} // Disable button while loading
                 >
-                    Find
+                    {loading ? (
+                        <ClipLoader
+                            color="#ffffff"
+                            loading={loading}
+                            size={20}
+                        />
+                    ) : (
+                        "Find"
+                    )}
                 </button>
             </div>
             <div className="overflow-x-auto shadow-md sm:rounded-lg">
                 <table className="min-w-full bg-white">
                     <thead className="bg-gray-100 border-b">
                         <tr className="text-gray-500">
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px] w-2/5">
                                 Milestone Name
                             </th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px] w-1/5">
                                 Service
                             </th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px] w-1/5">
                                 Customer
                             </th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px] w-1/6">
                                 Amount
                             </th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px] w-1/6">
                                 Status
                             </th>
-                            <th className="text-center py-3 px-4 uppercase font-semibold text-sm">
+                            <th className="text-center py-3 px-4 uppercase font-semibold text-[12px] w-1/6">
                                 Action
                             </th>
                         </tr>
@@ -215,17 +203,19 @@ function ServiceMilestone() {
                                 key={milestone.id}
                                 className="text-gray-600 hover:bg-gray-50 transition-colors"
                             >
-                                <td className="py-3 px-4 border-b">
+                                <td className="py-3 px-4 border-b w-2/5">
                                     {milestone.title}
                                 </td>
-                                <td className="py-3 px-4 border-b">{S_name}</td>
-                                <td className="py-3 px-4 border-b">
+                                <td className="py-3 px-4 border-b w-1/5">
+                                    {S_name}
+                                </td>
+                                <td className="py-3 px-4 border-b w-1/5">
                                     {bookerName}
                                 </td>
-                                <td className="py-3 px-4 border-b">
+                                <td className="py-3 px-4 border-b w-1/6">
                                     ${milestone.amount}
                                 </td>
-                                <td className="py-3 px-4 border-b">
+                                <td className="py-3 px-4 border-b w-1/6">
                                     <select
                                         value={milestone.status}
                                         onChange={(e) =>
@@ -234,7 +224,7 @@ function ServiceMilestone() {
                                                 e.target.value
                                             )
                                         }
-                                        className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green"
                                     >
                                         <option value="To Do">To Do</option>
                                         <option value="In Progress">
@@ -243,7 +233,7 @@ function ServiceMilestone() {
                                         <option value="Done">Done</option>
                                     </select>
                                 </td>
-                                <td className="py-3 px-4 border-b text-center flex gap-2 items-center">
+                                <td className="py-3 px-4 border-b text-center w-1/6">
                                     <button
                                         onClick={() =>
                                             handleSet(
@@ -251,37 +241,15 @@ function ServiceMilestone() {
                                                 milestone.status
                                             )
                                         }
-                                        className="border border-black text-black px-4 py-2 rounded-lg hover:bg-green-500 transition-colors"
+                                        className="border border-black text-black px-4 py-2 rounded-lg"
                                     >
-                                        Set
-                                    </button>
-                                    <button
-                                        onClick={() =>
-                                            setMilestones(
-                                                milestones.filter(
-                                                    (m) => m.id !== milestone.id
-                                                )
-                                            )
-                                        }
-                                        className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
-                                    >
-                                        Delete
+                                        Update
                                     </button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-
-                {loading && (
-                    <div className="flex justify-center items-center mt-6">
-                        <ClipLoader
-                            size={35}
-                            color={"#123abc"}
-                            loading={loading}
-                        />
-                    </div>
-                )}
             </div>
         </div>
     );

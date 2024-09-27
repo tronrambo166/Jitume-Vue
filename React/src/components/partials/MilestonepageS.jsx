@@ -16,12 +16,12 @@ const MilestonePage = () => {
   const [booked, setbooked] = useState(false);
   const [allow, setallow] = useState(false);
   const [reviews, setReviews] = useState([]);
-  const [step, setCurrStep] = useState(0);
+  const [curr_step, setCurrStep] = useState(0);
   const { token } = useStateContext();
   
   // const [miles, setMiles] = useState([]);
   const total_steps = miles.length;
-  const curr_step = 2;
+  //const curr_step = 0;
   
   useEffect(() => {
     const getMilestones = () => {
@@ -31,13 +31,21 @@ const MilestonePage = () => {
         }
       })
         .then(({ data }) => {
+
           if (Array.isArray(data.data)) {
+            console.log(data.data);
             setMiles(data.data);
             if (data.data.length !== 0) {
-              const activeIndex = data.data.findIndex(mile => mile.active === 1);
-              if (activeIndex !== -1) {
-                setCurrStep(activeIndex);
-              }
+              for (let i = 0; i < data.data.length; i++) {
+                  if(data.data[i].active == 1)
+                    setCurrStep(i+1);
+              } 
+              alert(curr_step);
+              // const activeIndex = data.data.findIndex(mile => mile.active === 1);
+              // if (activeIndex !== -1) {
+              //   setCurrStep(activeIndex);
+              // }
+              // 
             }
           } else {
             setMiles([]);
@@ -48,6 +56,7 @@ const MilestonePage = () => {
         })
         .catch(err => {
           setMiles([]);
+          console.log(err);
           toast.error('An error occurred while fetching the data!');
         });
     };
@@ -153,7 +162,7 @@ const MilestonePage = () => {
         <div
           className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
             index < curr_step
-              ? 'bg-green-500 text-white' // Steps that are greened out (completed)
+              ? 'bg-green text-white' // Steps that are greened out (completed)
               : 'bg-gray-200 text-gray-700' // Inactive steps
           }`}
         >

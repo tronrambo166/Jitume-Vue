@@ -452,9 +452,9 @@ sessionStorage.setItem("purpose", "One time unlock - Small fee");
 
   return (
     <>
-      <div className=' list w-full h-auto'>
+{/*      <div className=' list w-full h-auto'>
 <img src={bannerframe} alt="" />
-        </div>
+        </div>*/}
       <div className="container mx-auto flex flex-col md:flex-row justify-center items-center py-4 lg:py-8 mt-3">
       
         <div className="px-4 md:px-6 lg:px-8 xl:px-12 my-3 pt-3 w-full flex flex-col md:flex-row justify-center mx-auto gap-4 md:gap-6 lg:gap-8">
