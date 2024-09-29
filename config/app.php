@@ -18,7 +18,8 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
-    'app_url' => env('APP_URL', 'http://localhost:5173/'),
+    'app_url' => env('APP_URL', 'http://test.jitume.com:81/'),
+    'api_url' => env('API_URL', 'https://test.jitume.com/api/'),
 
     /*
     |--------------------------------------------------------------------------

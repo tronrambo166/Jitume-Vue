@@ -22,6 +22,7 @@ const ServiceDetails = () => {
   const [cartRes, setCartRes] = useState('');
   const [ratingRes, setRatingRes] = useState('');
   const [booked, setBooked] = useState('');
+  const [allowToReview, setallowToReview] = useState(false);
   const [Contactmodal, setContactmodal] = useState('');
 
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -100,8 +101,8 @@ const handleAuthModalOpen = (event) => {
             data.data[0]['rating'] = data.data[0]['rating'].toFixed(2);
             if(data.data[0]['rating_count'] == 0) data.data[0]['rating'] = 0;
             setDetails(data.data[0]);
-            console.log(details)
-            console.log(data)
+            //console.log(details)
+            //console.log(data)
           })
           .catch(err => {
             console.log(err); //setLoading(false)
@@ -112,6 +113,7 @@ const handleAuthModalOpen = (event) => {
       axiosClient.get('/getMilestonesS/'+ form.service_id)
       .then(({ data }) => {
         setMilestonesRes(data.data); 
+        setallowToReview(data.allow)
         //console.log(data);        
        })
        .catch(err => {
@@ -215,6 +217,20 @@ const handleContactModal = (event) => {
 
       });
     };
+
+
+    const rebook = (e) =>{
+      e.preventDefault();
+      var id = form.service_id;
+      axios.get('rebook_service/' + id).then((data) => {
+
+            if(data.data == 'success')
+              location.reload();
+            else alert('something went wrong!');
+
+            });
+    };
+
   
 
     const rating = () =>{
@@ -227,17 +243,6 @@ const handleContactModal = (event) => {
        })
     };
   
-
-     // begin rebook
-    const rebook = () =>{
-      axiosClient.get('/rebook_service/'+ 'test_id')
-      .then(({ data }) => {
-        setReebokRes(data.data);         
-       })
-       .catch(err => {
-         console.log(err); 
-       })
-    };
      
 
     //end rating
@@ -294,12 +299,23 @@ const handleContactModal = (event) => {
                   rows="4"
                 />
               </div>
+
               <div>
                { !token? ( 
                 <button onClick={handleAuthModalOpen} className="btn-primary py-2 px-6 rounded-xl mt-3"> Book Now </button>
                ): 
                ( <button onClick={book} className="btn-primary font-semibold w-[125px] h-[50px] whitespace-nowrap rounded-2xl mx-auto lg:mx-0"> Book Now </button> )} 
               </div>
+
+              
+               { token && allowToReview && ( 
+                <div>
+                <button onClick={rebook} className="btn-primary py-2 px-6 rounded-xl mt-3"> Rebook </button>
+               </div>
+               )} 
+                
+              
+
             </div>
             ): 
             (

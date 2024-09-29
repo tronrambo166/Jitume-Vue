@@ -152,12 +152,12 @@ public function agreeToBid($bidId)
               'investor_agree' => 1       
         ]);
         Session::put('login_success','Thanks for your review, you will get an email when this milestone completes!');
-       return redirect()->to('http://127.0.0.1:5173/');
+       return redirect()->to(config('app.app_url'));
      
        }
         catch(\Exception $e){
             Session::put('failed',$e->getMessage());
-            return redirect()->to('http://127.0.0.1:5173/');
+            return redirect()->to(config('app.app_url'));
        }  
 }
 
@@ -199,7 +199,7 @@ public function agreeToMileS($s_id,$booker_id)
     if($mileLat)
     ServiceMileStatus::where('id',$mileLat->id)->update([ 'active' => 1]);
     Session::put('login_success','Thanks for your review, next milestone can be paid for to begin!!');
-       return redirect()->to('http://localhost:5173/service-milestones/'.$s_id);
+       return redirect()->to(config('app.app_url').'service-milestones/'.$s_id);
 }
 
 public function agreeToNextmile($bidId)
@@ -234,18 +234,18 @@ public function agreeToNextmile($bidId)
         }
         catch(\Exception $e){
             Session::put('failed',$e->getMessage());
-            return redirect()->to('http://127.0.0.1:5173/');
+            return redirect()->to(config('app.app_url'));
        } 
         }
 
         Session::put('login_success','Thanks for your review, you will get an email when this milestone completes!');
-        return redirect()->to('http://127.0.0.1:5173/');
+        return redirect()->to(config('app.app_url'));
         //return redirect('/');
      
        }
         catch(\Exception $e){
             Session::put('failed',$e->getMessage());
-            return redirect()->to('http://127.0.0.1:5173/');
+            return redirect()->to(config('app.app_url'));
        }  
 }  
 

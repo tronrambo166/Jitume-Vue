@@ -916,7 +916,7 @@ public function saveStripe($token) {
         ->update(['completed_onboarding'=>1]);
     }
 
-    redirect()->to('http://127.0.0.1:5173/dashboard/add-business')->send();
+    redirect()->to(config('app.app_url').'/dashboard/addbusiness')->send();
     //return redirect('http://127.0.0.1:5173/dashboard/add-business');
  }
 // CONNECT

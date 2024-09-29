@@ -13,7 +13,7 @@
 			<div class="" style="width:100%; margin:auto;">
 			<h4 style="line-height: 28px;font-weight:500; color: #000000a1;font-family: sans-serif;text-align:left;"> Investor: <b>{{$inv_name}}</b>, Contact: ({{$inv_contact}}) <br> 
             wants to provide equipment for {{$mile_name}}  , please contact them to proceed. 
-			If you require a Transaction Advisor, please click here <a target="_blank" href="https://test.jitume.com/#/services"
+			If you require a Transaction Advisor, please click here <a target="_blank" href="<?php echo config('app.app_url');?>services"
 			style="text-decoration:none;color: aliceblue;background:green;padding:8px;border-radius:5px;">
 			Transaction Advisor </a>		</h4>
 			

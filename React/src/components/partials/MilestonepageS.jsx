@@ -40,7 +40,7 @@ const MilestonePage = () => {
                   if(data.data[i].active == 1)
                     setCurrStep(i+1);
               } 
-              alert(curr_step);
+              //alert(curr_step);
               // const activeIndex = data.data.findIndex(mile => mile.active === 1);
               // if (activeIndex !== -1) {
               //   setCurrStep(activeIndex);

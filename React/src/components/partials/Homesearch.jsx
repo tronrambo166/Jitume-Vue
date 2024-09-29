@@ -115,9 +115,9 @@ const Homesearch = () => {
                                     lng +
                                     '\');" style="" data-id="' +
                                     name +
-                                    '" class="address  py-1 px-1 my-0 border-top bg-white single_comms">  <p class="h6 small text-dark d-inline" ><i class="fa fa-map-marker mr-1 text-dark" aria-hidden="true"></i> ' +
+                                    '" class="address  py-1 px-1 my-0 border-top bg-white single_comms">  <p class="h6 small text-dark d-inline" ><i class="fas fa-map-marker mr-1 text-dark" aria-hidden="true"></i> ' +
                                     name +
-                                    '</p> <p  class="d-inline text-dark"><small>, ' +
+                                    '<small>, ' +
                                     country +
                                     "</small> </p> </div>"
                             );
@@ -137,7 +137,7 @@ const Homesearch = () => {
                                     name +
                                     '" class="address  py-1 px-1 my-0 border-top bg-white single_comms">  <p class="small h6 text-dark d-inline" ><i class="fa fa-map-marker mr-1 text-dark" aria-hidden="true"></i> ' +
                                     name +
-                                    '</p> <p  class="d-inline text-dark"><small>, ' +
+                                    '<small>, ' +
                                     city +
                                     "," +
                                     country +
@@ -186,12 +186,12 @@ const Homesearch = () => {
                 />
                 <div className="relative w-full md:w-auto">
                     <input
+                        onKeyUp={getPlaces}
+                        id="searchbox"
                         type="text"
                         placeholder="Location"
                         className="border border-[#666666]/30 w-full text-md rounded-xl py-2 px-4 focus:outline-none"
                         ref={locationInputRef}
-                        value={locationValue} // controlled value
-                        onChange={handleLocationChange} // handle change
                     />
                     <FontAwesomeIcon
                         icon={faLocationDot}

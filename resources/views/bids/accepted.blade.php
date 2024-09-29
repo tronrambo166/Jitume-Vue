@@ -13,20 +13,20 @@
             	@if($type == 'Monetery')
             Proceed to progress with the milestones work?</p>
             <div class="button-container" style="display: flex; margin-top: 20px;">
-                <a target="_blank" href="http://127.0.0.1:8000/api/agreeToBid/{{$bid_id}}" class="button button-primary" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Ok</a>
+                <a target="_blank" href="<?php echo config('app.api_url');?>agreeToBid/{{$bid_id}}" class="button button-primary" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Ok</a>
                 <a href="#" class="button button-secondary" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #dc3545; border-radius: 6px; transition: background-color 0.3s ease; margin-left: 10px;">Cancel</a>
             </div>
              <!-- If you require a project manager, please click here (Please not that investor with assets must have a project manager) <a target="_blank" href="https://test.jitume.com/#/projectManagers/{{$bid_id}}"
 			style="text-decoration:none;color: aliceblue;background:navy;padding:8px;border-radius:5px;">
 			Request a Project Manager </a> -->
 
-			<p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">If you require a project manager, please <a target="_blank" href="http://127.0.0.1:5173/projectManagers/{{$bid_id}}">click here</a> (Please note that investors with assets must have a project manager).</p>
+			<p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">If you require a project manager, please <a target="_blank" href="<?php echo config('app.app_url');?>projectManagers/{{$bid_id}}">click here</a> (Please note that investors with assets must have a project manager).</p>
 
 			@else
 			Please Request a Project Manager to Proceed with this Investment (Please note that investor with assets must have a project manager) <br>
 			
 			<div style="width:100%;margin: auto; padding-bottom:20px;padding-top:15px;"> 
-			 <a target="_blank" href="http://127.0.0.1:5173/projectManagers/{{$bid_id}}"
+			 <a target="_blank" href="<?php echo config('app.app_url');?>projectManagers/{{$bid_id}}"
 			style="text-decoration:none;color: aliceblue;background:navy;padding:8px;border-radius:5px;display: inline;width: 50%;margin: auto;margin-top: 20px;">
 			Request</a>
 
