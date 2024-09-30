@@ -88,6 +88,7 @@ const handleAuthModalOpen = (event) => {
 
     //CORE METHODS
   let url = '';
+  let url2 = '';
   useEffect(()=> {
     if(token)
     url = '/serviceResultsAuth/';
@@ -109,12 +110,16 @@ const handleAuthModalOpen = (event) => {
           })
     };
 
+    if(token)
+    url2 = '/getMilestonesS_Auth/';
+    else  url2 = '/getMilestonesS/';
+
     const getMilestones = () =>{
-      axiosClient.get('/getMilestonesS/'+ form.service_id)
+      axiosClient.get(url2+ form.service_id)
       .then(({ data }) => {
         setMilestonesRes(data.data); 
         setallowToReview(data.allow)
-        //console.log(data);        
+        console.log(allowToReview);        
        })
        .catch(err => {
          console.log(err); 
@@ -222,7 +227,7 @@ const handleContactModal = (event) => {
     const rebook = (e) =>{
       e.preventDefault();
       var id = form.service_id;
-      axios.get('rebook_service/' + id).then((data) => {
+      axiosClient.get('rebook_service/' + id).then((data) => {
 
             if(data.data == 'success')
               location.reload();
@@ -307,20 +312,18 @@ const handleContactModal = (event) => {
                ( <button onClick={book} className="btn-primary font-semibold w-[125px] h-[50px] whitespace-nowrap rounded-2xl mx-auto lg:mx-0"> Book Now </button> )} 
               </div>
 
-              
-               { token && allowToReview && ( 
-                <div>
-                <button onClick={rebook} className="btn-primary py-2 px-6 rounded-xl mt-3"> Rebook </button>
-               </div>
-               )} 
-                
-              
 
             </div>
             ): 
             (
               <p> You booked this service! </p>
               )}
+
+             { token && allowToReview && ( 
+                <div>
+                <button onClick={rebook} className="btn-primary py-2 px-6 rounded-xl mt-3"> Rebook </button>
+               </div>
+               )} 
 
           </div>
         </div>

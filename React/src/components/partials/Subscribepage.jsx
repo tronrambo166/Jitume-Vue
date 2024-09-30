@@ -102,7 +102,7 @@ const Subscribepage = () => {
           content: 'Are you sure to pay?',
           buttons: {
             confirm: function () {
-              window.location.href = 'http://127.0.0.1:8000/stripeSubscribe/' + amount_e+'/'+plan_e+'/'+days_e+'/'+range_e+'/'+inv;
+              window.location.href = 'https://test.jitume.com/stripeSubscribe/' + amount_e+'/'+plan_e+'/'+days_e+'/'+range_e+'/'+inv;
              //navigate('/stripeSubscribe/' + amount_e+'/'+plan_e+'/'+days_e+'/'+range_e);
             },
             cancel: function () {

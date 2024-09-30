@@ -175,7 +175,7 @@ const AddService = ({ connected, userId }) => {
   }, []);
 
     const connectToStripe = () => { 
-    window.location.href = 'http://127.0.0.1:8000/connect/'+ id;
+    window.location.href = 'https://test.jitume.com/connect/'+ id;
     };
 
     return (
@@ -210,7 +210,7 @@ const AddService = ({ connected, userId }) => {
                 </div>
             )}
 
-            {Con ? (
+            {!Con ? (
                 <div>
                     <p className="text-center bg-light p-2 ">
                         {" "}
