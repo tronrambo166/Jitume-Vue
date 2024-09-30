@@ -3,8 +3,37 @@ import {decode as base64_decode, encode as base64_encode} from 'base-64';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FaCreditCard, FaHome } from 'react-icons/fa';
 import axiosClient from "../../axiosClient";
-
+import { ClipLoader } from 'react-spinners'; 
+import { ToastContainer, toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css';
 const PaymentForm = () => {
+  const [loading, setLoading] = useState(false); // Loader state
+ // Function to show success toast
+ const showSuccessToast = (message) => {
+  toast.success(message, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+};
+
+// Function to show error toast
+const showErrorToast = (message) => {
+  toast.error(message, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+};
+
 const navigate = useNavigate();
   //Stripe Code
     $(function() {
@@ -70,7 +99,7 @@ const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-      
+      setLoading(true)
       setTimeout(() => {
         const payload = {
             listing: atob(listing_id),
@@ -86,35 +115,44 @@ const navigate = useNavigate();
           axiosClient.post("/stripe.post.coversation", payload).then(({data})=>{
           console.log(data);
           if(data.status == 200){
-            alert('Success!');
+            // alert('Success!');
+            showSuccessToast('Payment successful!');
             navigate('/listing/'+ btoa(listing_id));
           }
           if(data.status == 400) 
-            alert(data.message);
+            // alert(data.message);
+          showErrorToast(data.message);
               
           }).catch(err => { console.log(err);
             const response = err.response;
             if(response && response.status === 422){
               console.log(response.data.errors);
+              showErrorToast(response.data.errors);
             }//console.log(response);
             
+          }).finally(() => {
+            setLoading(false); // Stop loading spinner
           });
       }
       else if(purpos == 'bids'){
           axiosClient.post("/bidCommits", payload).then(({data})=>{
           
           if(data.status == 200){
-            alert('Bid placed, you will be notified if bid is accepted!');
+            showSuccessToast('Bid placed, you will be notified if bid is accepted!');
+
+            // alert('Bid placed, you will be notified if bid is accepted!');
             navigate('/');
           }
           if(data.status == 400) 
-            alert(data.message);
+            // alert(data.message);
+          showErrorToast(data.message);
               
           }).catch(err => { 
             console.log(err);
             const response = err.response;
             if(response && response.status === 422){
                 console.log(response.data.errors);
+                showErrorToast(response.data.errors);
             }
             
           });
@@ -136,7 +174,8 @@ const navigate = useNavigate();
           if(data.status == 400) 
             alert(data.message);
               
-          }).catch(err => { 
+          }).catch(err => {
+
             console.log(err);
             const response = err.response;
             if(response && response.status === 422){
@@ -156,6 +195,8 @@ const navigate = useNavigate();
   };
 
   return (
+    <>
+     <ToastContainer />
     <div className="container flex mx-auto my-8 justify-center space-x-8">
       {showModal && (
         <div
@@ -328,13 +369,18 @@ const navigate = useNavigate();
           </div>
 
           <div className="mt-6 text-center">
-            <button
-              id="pay"
-              className="w-full py-2 text-lg font-semibold text-white btn-primary rounded-lg"
-              
-            >
-              Pay <span id="paynow"></span><span id="stripBtn"></span>
-            </button>
+          <button
+        type="submit"
+        className="w-full py-2 my-4 text-white btn-primary rounded  focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50"
+        disabled={loading}
+      >
+        {loading ? (
+          <ClipLoader color="#ffffff" size={20} /> // Spinner appears when loading
+        ) : (
+          'Submit Payment'
+        )}
+      </button>
+
           </div>
 
         {/*</form>*/}
@@ -351,6 +397,7 @@ const navigate = useNavigate();
       {/* Form right */}
       
     </div>
+    </>
   );
 };
 

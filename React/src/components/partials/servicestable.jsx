@@ -27,9 +27,9 @@ const ServiceTable = () => {
     }, []);
 
     return (
-        <div className="p-4">
+        <div className="py-4">
             {/* My Investments Section */}
-            <section className="bg-white shadow-md rounded-lg mb-6 p-4">
+            {/* <section className="bg-white shadow-md rounded-lg mb-6 p-4">
                 <h1 className="text-[#2D3748] font-semibold text-xl mb-3">
                     My Investments
                 </h1>
@@ -115,10 +115,10 @@ const ServiceTable = () => {
                         </table>
                     </div>
                 )}
-            </section>
+            </section> */}
 
             {/* My Services Section */}
-            <section className="bg-white shadow-md rounded-lg mb-6 p-4">
+            <section className="bg-white shadow-md rounded-lg mb-6 px-10 py-6 ">
                 <h1 className="text-[#2D3748] font-semibold text-xl mb-3">
                     My Service
                 </h1>
@@ -187,7 +187,7 @@ const ServiceTable = () => {
             </section>
 
             {/* My Businesses Section */}
-            <section className="bg-white shadow-md rounded-lg mb-6 p-4">
+            {/* <section className="bg-white shadow-md rounded-lg mb-6 p-4">
                 <h1 className="text-[#2D3748] font-semibold text-xl mb-3">
                     My Businesses
                 </h1>
@@ -253,7 +253,7 @@ const ServiceTable = () => {
                         </tbody>
                     </table>
                 </div>
-            </section>
+            </section> */}
         </div>
     );
 };
