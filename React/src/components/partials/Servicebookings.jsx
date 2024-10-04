@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import axiosClient from "../../axiosClient";
-
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { toast, ToastContainer } from "react-toastify";
 function InvestmentBids() {
     const [bids, setBids] = useState([]);
     const [selectedBids, setSelectedBids] = useState([]);
     const [modalContent, setModalContent] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleCheckboxChange = (id) => {
         setSelectedBids((prevSelected) => {
@@ -16,22 +18,28 @@ function InvestmentBids() {
     };
 
     const AcceptBids = () => {
+        setLoading(true); // Show spinner
         const payload = {
             bid_ids: selectedBids,
             reject: 0,
         };
-        console.log(payload)
+        console.log(payload);
         axiosClient
             .post("bookingAccepted", payload)
             .then(({ data }) => {
-                alert(data.message);
+                // alert(data.message);
+                toast.success(data.message);
             })
             .catch((err) => {
                 if (err.response && err.response.status === 422) {
                     console.log(err.response.data.errors);
                 } else {
-                    console.log(err);
+                    // console.log(err);
+                    toast.error(err);
                 }
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
@@ -82,6 +90,7 @@ function InvestmentBids() {
 
     return (
         <div className="container mx-auto p-6">
+            <ToastContainer />
             <h3 className="text-left text-lg font-semibold mb-6">
                 Service Booking
             </h3>
@@ -147,9 +156,18 @@ function InvestmentBids() {
             <div className="flex gap-2 pt-3 items-center justify-end">
                 <button
                     onClick={AcceptBids}
-                    className="bg-green text-white py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300 transition-colors"
+                    disabled={loading} // Disable button when loading
+                    className="bg-green text-white py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300 transition-colors flex items-center justify-center"
                 >
-                    Accept Bids
+                    {loading ? (
+                        <AiOutlineLoading3Quarters
+                            className="animate-spin mr-2"
+                            size={20}
+                        />
+                    ) : (
+                        "Accept Bids"
+                    )}
+                    {loading && "Accepting..."}
                 </button>
                 <button className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition-colors">
                     Reject Bids

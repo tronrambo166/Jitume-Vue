@@ -70,8 +70,7 @@ function AddMilestone() {
         setMilestones(updatedMilestones);
     };
 
-    useEffect(() => {
-        const getMilestones = () => {
+     const getMilestones = () => {
             axiosClient
                 .get("/business/add_milestones")
                 .then(({ data }) => {
@@ -82,6 +81,9 @@ function AddMilestone() {
                     console.log(err);
                 });
         };
+        
+    useEffect(() => {
+       
         getMilestones();
     }, []);
 

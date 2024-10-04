@@ -34,6 +34,7 @@ function Addservicemilestone() {
     e.preventDefault();
     if (!form.file) {
       setFileAlert("No files selected!");
+      alert('You cannot select same file for different milestones!')
       return;
     }
 
@@ -158,7 +159,7 @@ function Addservicemilestone() {
         required
       >
         <option value="" hidden>
-          Select Business
+          Select Service
         </option>
         {business.map((business) => (
           <option key={business.id} value={business.id}>

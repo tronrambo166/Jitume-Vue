@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,uselocation } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../images/logo.png";
 import Modal from "./Authmodal";
@@ -52,32 +52,33 @@ const Navbar = () => {
                 </div>
 
                 <div className="hidden md:flex flex-1 text-sm font-semibold justify-center md:gap-0 lg:gap-[50px] sm:gap-[50px] md:px-3 space-x-6">
-                    <Link
-                        to="/home"
-                        className="hover:text-green dark:hover:text-dark-green"
-                    >
-                        Home
-                    </Link>
-                    <Link
-                        to="/services"
-                        className="hover:text-green dark:hover:text-dark-green"
-                    >
-                        Services
-                    </Link>
-                    <a
-                        href="#"
-                        onClick={handleAuthModalOpen}
-                        className="hover:text-green dark:hover:text-dark-green"
-                    >
-                        Add Your Business
-                    </a>
-                    <a
-                        href="#"
-                        onClick={handleCreateInvModalOpen}
-                        className="hover:text-green dark:hover:text-dark-green"
-                    >
-                        Create Investor Account
-                    </a>
+                <Link
+        to="/home"
+        className={`hover:text-green dark:hover:text-dark-green ${location.pathname === '/home' ? 'underline decoration-2 underline-offset-4' : ''}`}
+      >
+        Home
+      </Link>
+      <Link
+        to="/services"
+        className={`hover:text-green dark:hover:text-dark-green ${location.pathname === '/services' ? 'underline decoration-2 underline-offset-4' : ''}`}
+      >
+        Services
+      </Link>
+      <a
+  href="#"
+  onClick={handleAuthModalOpen}
+  className="hover:text-green dark:hover:text-dark-green"
+>
+  {location.pathname === '/services' ? 'Add Your Service' : 'Add Your Business'}
+</a>
+
+      <a
+        href="#"
+        onClick={handleCreateInvModalOpen}
+        className="hover:text-green dark:hover:text-dark-green"
+      >
+        Create Investor Account
+      </a>
                 </div>
 
                 <div className="hidden md:block">
@@ -118,32 +119,33 @@ const Navbar = () => {
                     </button>
                 </div>
                 <div className="flex flex-col py-6 px-4 justify-center mt-10 space-y-6">
-                    <Link
-                        to="/"
-                        className="hover:text-green dark:hover:text-dark-green"
-                    >
-                        Home
-                    </Link>
-                    <Link
-                        to="/services"
-                        className="hover:text-green dark:hover:text-dark-green"
-                    >
-                        Services
-                    </Link>
-                    <a
-                        href="#"
-                        onClick={handleAuthModalOpen}
-                        className="hover:text-green dark:hover:text-dark-green"
-                    >
-                        Add Your Business
-                    </a>
-                    <a
-                        href="#"
-                        onClick={handleCreateInvModalOpen}
-                        className="hover:text-green dark:hover:text-dark-green"
-                    >
-                        Create Investor Account
-                    </a>
+                <Link
+        to="/home"
+        className={`hover:text-green dark:hover:text-dark-green ${location.pathname === '/home' ? 'underline decoration-2 underline-offset-4' : ''}`}
+      >
+        Home
+      </Link>
+      <Link
+        to="/services"
+        className={`hover:text-green dark:hover:text-dark-green ${location.pathname === '/services' ? 'underline decoration-2 underline-offset-4' : ''}`}
+      >
+        Services
+      </Link>
+      <a
+  href="#"
+  onClick={handleAuthModalOpen}
+  className="hover:text-green dark:hover:text-dark-green"
+>
+  {location.pathname === '/services' ? 'Add Your Service' : 'Add Your Business'}
+</a>
+
+      <a
+        href="#"
+        onClick={handleCreateInvModalOpen}
+        className="hover:text-green dark:hover:text-dark-green"
+      >
+        Create Investor Account
+      </a>
                 </div>
                 <div className="flex px-4 mt-6">
                     <button

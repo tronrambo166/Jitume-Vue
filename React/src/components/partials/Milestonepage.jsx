@@ -24,6 +24,8 @@ const MilestonePage = () => {
                         setMiles([]);
                         setHasmile(true);
                     }
+                    
+                    console.log(data.data)
                 })
                 .catch((err) => {
                     console.log(err);

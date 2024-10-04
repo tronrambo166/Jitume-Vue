@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useLocation } from 'react';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import logo from '../../images/logo.png';
 import Modal from './Authmodal';
@@ -9,7 +9,6 @@ const Navbar = () => {
   const{user,token,setUser, setToken} = useStateContext();
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const onLogout =  (ev) =>{
         ev.preventDefault();
         axiosClient.get('/logout')
@@ -37,11 +36,40 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex flex-1 text-sm font-semibold justify-center md:gap-0 lg:gap-[50px] sm:gap-[50px] md:px-3 space-x-6">
-          <Link to="/home" className="hover:text-green dark:hover:text-dark-green">Home</Link>
-          <Link to="/services" className="hover:text-green dark:hover:text-dark-green">Services</Link>
-          <Link to="/dashboard" className="hover:text-green dark:hover:text-dark-green">Add Your Business</Link>
-          <Link to="/dashboard" className="hover:text-green dark:hover:text-dark-green">Create Investor Account</Link>
-          <Link to="/dashboard" className="hover:text-green dark:hover:text-dark-green">Dashboard</Link>
+        <Link
+        to="/home"
+        className={`hover:text-green dark:hover:text-dark-green ${location.pathname === '/home' ? 'underline decoration-2 underline-offset-4' : ''}`}
+      >
+        Home
+      </Link>
+      <Link
+        to="/services"
+        className={`hover:text-green dark:hover:text-dark-green ${location.pathname === '/services' ? 'underline decoration-2 underline-offset-4' : ''}`}
+      >
+        Services
+      </Link>
+      <Link
+  to="/dashboard"
+  className={`hover:text-green dark:hover:text-dark-green ${location.pathname === '/dashboard' ? 'underline decoration-2 underline-offset-4' : ''}`}
+>
+  {location.pathname === '/services' ? 'Add Your Service' : 'Add Your Business'}
+</Link>
+
+{location.pathname !== '/services' && (
+  <Link
+    to="/dashboard"
+    className={`hover:text-green dark:hover:text-dark-green ${location.pathname === '/dashboard' ? 'underline decoration-2 underline-offset-4' : ''}`}
+  >
+    Create Investor Account
+  </Link>
+)}
+
+      <Link
+        to="/dashboard"
+        className={`hover:text-green dark:hover:text-dark-green ${location.pathname === '/dashboard' ? 'underline decoration-2 underline-offset-4' : ''}`}
+      >
+        Dashboard
+      </Link>
 
         </div>
 
@@ -68,10 +96,40 @@ const Navbar = () => {
           </button>
         </div>
         <div className="flex flex-col py-6 px-4 justify-center mt-10 space-y-6">
-          <Link to="/" className="hover:text-green dark:hover:text-dark-green">Home</Link>
-          <Link to="/services" className="hover:text-green dark:hover:text-dark-green">Services</Link>
-          <Link to="/add-business" className="hover:text-green dark:hover:text-dark-green">Add Your Business</Link>
-          <Link to="/create-investor" className="hover:text-green dark:hover:text-dark-green">Create Investor Account</Link>
+        <Link
+        to="/home"
+        className={`hover:text-green dark:hover:text-dark-green ${location.pathname === '/home' ? 'underline decoration-2 underline-offset-4' : ''}`}
+      >
+        Home
+      </Link>
+      <Link
+        to="/services"
+        className={`hover:text-green dark:hover:text-dark-green ${location.pathname === '/services' ? 'underline decoration-2 underline-offset-4' : ''}`}
+      >
+        Services
+      </Link>
+      <Link
+  to="/dashboard"
+  className={`hover:text-green dark:hover:text-dark-green ${location.pathname === '/dashboard' ? 'underline decoration-2 underline-offset-4' : ''}`}
+>
+  {location.pathname === '/services' ? 'Add Your Business' : 'Add Your Service'}
+</Link>
+
+{location.pathname !== '/services' && (
+  <Link
+    to="/dashboard"
+    className={`hover:text-green dark:hover:text-dark-green ${location.pathname === '/dashboard' ? 'underline decoration-2 underline-offset-4' : ''}`}
+  >
+    Create Investor Account
+  </Link>
+)}
+
+      <Link
+        to="/dashboard"
+        className={`hover:text-green dark:hover:text-dark-green ${location.pathname === '/dashboard' ? 'underline decoration-2 underline-offset-4' : ''}`}
+      >
+        Dashboard
+      </Link>
         </div>
         <div className="flex px-4 mt-6">
           <button

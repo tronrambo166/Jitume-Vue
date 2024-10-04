@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose ,AiOutlineLoading3Quarters } from "react-icons/ai";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const EditModal = ({
     showModal,
     setShowModal,
@@ -8,52 +10,71 @@ const EditModal = ({
     onSave,
 }) => {
     const [formData, setFormData] = useState({
-        title: "",
-        workingTest: "",
-        contact: "",
-        fee: "",
+        name: "",
         category: "",
-        details: "",
-        turnover: "",
-        investmentNeeded: "",
+        contact: "",
+        investment_needed: "",
         share: "",
-        contactMail: "",
-        cover: "",
+        contact_mail: "",
+        details: "",
         location: "",
-        companyPin: "",
-        directorsId: "",
-        financialStatements: "",
-        supportingDocs: "",
-        supportiveVideo: "",
-        videoLink: "",
-        fundingReason: "",
+        lat: "",
+        lng: "",
+        y_turnover: "",
+        reason: "",
+        rating: 0,
+        rating_count: 0,
+        active: 0,
+        video: "",
+        document: "",
+        pin: "",
+        tax_pin: "",
+        investors_fee: "",
+        id: "",
+        user_id: "",
+        created_at: "",
+        updated_at: "",
+        identification: "",
+        yeary_fin_statement: "",
+        id_no: "",
+        image: "",
     });
 
     useEffect(() => {
         if (editItem) {
             setFormData({
-                title: editItem.title || "",
-                workingTest: editItem.workingTest || "",
-                contact: editItem.contact || "",
-                fee: editItem.fee || "",
+                name: editItem.name || "",
                 category: editItem.category || "",
-                details: editItem.details || "",
-                turnover: editItem.turnover || "",
-                investmentNeeded: editItem.investmentNeeded || "",
+                contact: editItem.contact || "",
+                investment_needed: editItem.investment_needed || "",
                 share: editItem.share || "",
-                contactMail: editItem.contactMail || "",
-                cover: editItem.cover || "",
+                contact_mail: editItem.contact_mail || "",
+                details: editItem.details || "",
                 location: editItem.location || "",
-                companyPin: editItem.companyPin || "",
-                directorsId: editItem.directorsId || "",
-                financialStatements: editItem.financialStatements || "",
-                supportingDocs: editItem.supportingDocs || "",
-                supportiveVideo: editItem.supportiveVideo || "",
-                videoLink: editItem.videoLink || "",
-                fundingReason: editItem.fundingReason || "",
+                lat: editItem.lat || "",
+                lng: editItem.lng || "",
+                y_turnover: editItem.y_turnover || "",
+                reason: editItem.reason || "",
+                rating: editItem.rating || 0,
+                rating_count: editItem.rating_count || 0,
+                active: editItem.active || 0,
+                video: editItem.video || "",
+                document: editItem.document || "",
+                pin: editItem.pin || "",
+                tax_pin: editItem.tax_pin || "",
+                investors_fee: editItem.investors_fee || "",
+                id: editItem.id || "",
+                user_id: editItem.user_id || "",
+                created_at: editItem.created_at || "",
+                updated_at: editItem.updated_at || "",
+                identification: editItem.identification || "",
+                yeary_fin_statement: editItem.yeary_fin_statement || "",
+                id_no: editItem.id_no || "",
+                image: editItem.image || "",
             });
         }
     }, [editItem]);
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -71,107 +92,135 @@ const EditModal = ({
         });
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log("Form Data:", formData);
-        const updatedItem = { ...editItem, ...formData };
-        onSave(updatedItem);
-    };
+     const handleSubmit = async (e) => {
+         e.preventDefault();
+         setLoading(true); // Start loading
+         console.log("Form Data:", formData);
+         const updatedItem = { ...editItem, ...formData };
 
-    if (!showModal) return null;
+         try {
+             // Simulate API call
+             await onSave(updatedItem);
+             toast.success("Item updated successfully!"); // Show success toast
+         } catch (error) {
+             toast.error("Error updating item. Please try again."); // Show error toast
+         } finally {
+             setLoading(false); // Stop loading
+         }
+     };
 
-    if (!showModal) return null;
+     if (!showModal) return null;
 
-const handleOverlayClick = (e) => {
-    if (e.target === e.currentTarget) {
-        setShowModal(false);
-    }
-};
+     const handleOverlayClick = (e) => {
+         if (e.target === e.currentTarget) {
+             setShowModal(false);
+         }
+     };
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50" onClick={handleOverlayClick}>
+        <div
+            className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50"
+            onClick={handleOverlayClick}
+        >
+            <ToastContainer />
+            {/* ID */}
+            {/* <div className="mb-4">
+                            <label
+                                className="block text-sm font-medium mb-1"
+                                htmlFor="id"
+                            >
+                                ID
+                            </label>
+                            <input
+                                id="id"
+                                name="id"
+                                type="text"
+                                value={formData.id}
+                                onChange={handleChange}
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                        </div> */}
+
+            {/* User ID */}
+            {/* <div className="mb-4">
+                            <label
+                                className="block text-sm font-medium mb-1"
+                                htmlFor="user_id"
+                            >
+                                User ID
+                            </label>
+                            <input
+                                id="user_id"
+                                name="user_id"
+                                type="text"
+                                value={formData.user_id}
+                                onChange={handleChange}
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                        </div> */}
+
+            {/* Created At */}
+            {/* <div className="mb-4">
+                            <label
+                                className="block text-sm font-medium mb-1"
+                                htmlFor="created_at"
+                            >
+                                Created At
+                            </label>
+                            <input
+                                id="created_at"
+                                name="created_at"
+                                type="text"
+                                value={formData.created_at}
+                                onChange={handleChange}
+                                className="w-full px-3 py-2 border rounded"
+                                disabled
+                            />
+                        </div> */}
+
+            {/* Updated At */}
+            {/* <div className="mb-4">
+                            <label
+                                className="block text-sm font-medium mb-1"
+                                htmlFor="updated_at"
+                            >
+                                Updated At
+                            </label>
+                            <input
+                                id="updated_at"
+                                name="updated_at"
+                                type="text"
+                                value={formData.updated_at}
+                                onChange={handleChange}
+                                className="w-full px-3 py-2 border rounded"
+                                disabled
+                            />
+                        </div> */}
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg no-scrollbar">
-                <div className="flex  py-4 justify-between items-center">
-                <h2 className="text-xl text-green font-semibold ">
-                    Edit Business Details
-                </h2>
-                <button 
-                className=" " 
-                onClick={() => setShowModal(false)}
-            >
-                <AiOutlineClose size={24} />
-            </button>
-            </div>
+                <div className="flex py-4 justify-between items-center">
+                    <h2 className="text-xl text-green font-semibold">
+                        Edit Business Details
+                    </h2>
+                    <button className=" " onClick={() => setShowModal(false)}>
+                        <AiOutlineClose size={24} />
+                    </button>
+                </div>
 
                 <div className="overflow-y-auto max-h-[calc(100vh-10rem)] no-scrollbar">
                     <form onSubmit={handleSubmit}>
-                        {/* Title */}
+                        {/* Name */}
                         <div className="mb-4">
                             <label
                                 className="block text-sm font-medium mb-1"
-                                htmlFor="title"
+                                htmlFor="name"
                             >
-                                Title
+                                Name
                             </label>
                             <input
-                                id="title"
-                                name="title"
+                                id="name"
+                                name="name"
                                 type="text"
-                                value={formData.title}
-                                onChange={handleChange}
-                                className="w-full px-3 py-2 border rounded"
-                            />
-                        </div>
-
-                        {/* Working Test */}
-                        <div className="mb-4">
-                            <label
-                                className="block text-sm font-medium mb-1"
-                                htmlFor="workingTest"
-                            >
-                                Working Test
-                            </label>
-                            <input
-                                id="workingTest"
-                                name="workingTest"
-                                type="text"
-                                value={formData.workingTest}
-                                onChange={handleChange}
-                                className="w-full px-3 py-2 border rounded"
-                            />
-                        </div>
-
-                        {/* Contact */}
-                        <div className="mb-4">
-                            <label
-                                className="block text-sm font-medium mb-1"
-                                htmlFor="contact"
-                            >
-                                Contact
-                            </label>
-                            <input
-                                id="contact"
-                                name="contact"
-                                type="text"
-                                value={formData.contact}
-                                onChange={handleChange}
-                                className="w-full px-3 py-2 border rounded"
-                            />
-                        </div>
-
-                        {/* Fee */}
-                        <div className="mb-4">
-                            <label
-                                className="block text-sm font-medium mb-1"
-                                htmlFor="fee"
-                            >
-                                Fee
-                            </label>
-                            <input
-                                id="fee"
-                                name="fee"
-                                type="number"
-                                value={formData.fee}
+                                value={formData.name}
                                 onChange={handleChange}
                                 className="w-full px-3 py-2 border rounded"
                             />
@@ -195,6 +244,28 @@ const handleOverlayClick = (e) => {
                             />
                         </div>
 
+                        {/* Image */}
+                        <div className="mb-4">
+                            <label
+                                className="block text-sm font-medium mb-1"
+                                htmlFor="image"
+                            >
+                                Image
+                            </label>
+                            <input
+                                id="image"
+                                name="image"
+                                type="file"
+                                accept="image/*" // Only allow image files
+                                onChange={handleFileChange}
+                                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                aria-required="true" // Indicates that this field is required
+                            />
+                            <span className="text-sm text-gray-500">
+                                {formData.image}
+                            </span>
+                        </div>
+
                         {/* Details */}
                         <div className="mb-4">
                             <label
@@ -212,19 +283,91 @@ const handleOverlayClick = (e) => {
                             />
                         </div>
 
-                        {/* Turnover */}
+                        {/* Location */}
                         <div className="mb-4">
                             <label
                                 className="block text-sm font-medium mb-1"
-                                htmlFor="turnover"
+                                htmlFor="location"
                             >
-                                Turnover
+                                Location
                             </label>
                             <input
-                                id="turnover"
-                                name="turnover"
+                                id="location"
+                                name="location"
                                 type="text"
-                                value={formData.turnover}
+                                value={formData.location}
+                                onChange={handleChange}
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                        </div>
+
+                        {/* Latitude */}
+                        <div className="mb-4">
+                            <label
+                                className="block text-sm font-medium mb-1"
+                                htmlFor="lat"
+                            >
+                                Latitude
+                            </label>
+                            <input
+                                id="lat"
+                                name="lat"
+                                type="text"
+                                value={formData.lat}
+                                onChange={handleChange}
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                        </div>
+
+                        {/* Longitude */}
+                        <div className="mb-4">
+                            <label
+                                className="block text-sm font-medium mb-1"
+                                htmlFor="lng"
+                            >
+                                Longitude
+                            </label>
+                            <input
+                                id="lng"
+                                name="lng"
+                                type="text"
+                                value={formData.lng}
+                                onChange={handleChange}
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                        </div>
+
+                        {/* Contact */}
+                        <div className="mb-4">
+                            <label
+                                className="block text-sm font-medium mb-1"
+                                htmlFor="contact"
+                            >
+                                Contact
+                            </label>
+                            <input
+                                id="contact"
+                                name="contact"
+                                type="text"
+                                value={formData.contact}
+                                onChange={handleChange}
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                        </div>
+
+                        {/* Contact Mail */}
+                        <div className="mb-4">
+                            <label
+                                className="block text-sm font-medium mb-1"
+                                htmlFor="contact_mail"
+                            >
+                                Contact Mail
+                            </label>
+                            <input
+                                id="contact_mail"
+                                name="contact_mail"
+                                type="email"
+                                value={formData.contact_mail}
                                 onChange={handleChange}
                                 className="w-full px-3 py-2 border rounded"
                             />
@@ -234,15 +377,15 @@ const handleOverlayClick = (e) => {
                         <div className="mb-4">
                             <label
                                 className="block text-sm font-medium mb-1"
-                                htmlFor="investmentNeeded"
+                                htmlFor="investment_needed"
                             >
                                 Investment Needed
                             </label>
                             <input
-                                id="investmentNeeded"
-                                name="investmentNeeded"
+                                id="investment_needed"
+                                name="investment_needed"
                                 type="number"
-                                value={formData.investmentNeeded}
+                                value={formData.investment_needed}
                                 onChange={handleChange}
                                 className="w-full px-3 py-2 border rounded"
                             />
@@ -266,209 +409,264 @@ const handleOverlayClick = (e) => {
                             />
                         </div>
 
-                        {/* Contact Mail */}
+                        {/* Turnover */}
                         <div className="mb-4">
                             <label
                                 className="block text-sm font-medium mb-1"
-                                htmlFor="contactMail"
+                                htmlFor="y_turnover"
                             >
-                                Contact Mail
+                                Turnover
                             </label>
                             <input
-                                id="contactMail"
-                                name="contactMail"
-                                type="email"
-                                value={formData.contactMail}
+                                id="y_turnover"
+                                name="y_turnover"
+                                type="text"
+                                value={formData.y_turnover}
                                 onChange={handleChange}
                                 className="w-full px-3 py-2 border rounded"
                             />
                         </div>
 
-                        {/* Cover */}
+                        {/* Pin */}
                         <div className="mb-4">
                             <label
                                 className="block text-sm font-medium mb-1"
-                                htmlFor="cover"
+                                htmlFor="pin"
                             >
-                                Cover
+                                Pin
                             </label>
                             <input
-                                id="cover"
-                                name="cover"
+                                id="pin"
+                                name="pin"
                                 type="file"
                                 onChange={handleFileChange}
                                 className="w-full px-3 py-2 border rounded"
                             />
-                            <span>{formData.cover || "No file chosen"}</span>
+                            <span className="text-gray-500">
+                                {formData.pin || "No file chosen"}
+                            </span>
                         </div>
 
-                        {/* Location */}
+                        {/* Identification */}
                         <div className="mb-4">
                             <label
                                 className="block text-sm font-medium mb-1"
-                                htmlFor="location"
+                                htmlFor="identification"
                             >
-                                Location
+                                Identification
                             </label>
                             <input
-                                id="location"
-                                name="location"
-                                type="text"
-                                value={formData.location}
-                                onChange={handleChange}
+                                id="identification"
+                                name="identification"
+                                type="file"
+                                onChange={handleFileChange}
                                 className="w-full px-3 py-2 border rounded"
                             />
+                            <span>
+                                {formData.identification || "No file chosen"}
+                            </span>
                         </div>
 
-                        {/* Mandatory Documents */}
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium mb-1">
-                                Upload mandatory documents below to feature on
-                                the platform
-                            </label>
-                            <div className="mb-2">
-                                <label
-                                    className="block text-sm font-medium mb-1"
-                                    htmlFor="companyPin"
-                                >
-                                    Change Company/Individual Pin
-                                </label>
-                                <input
-                                    id="companyPin"
-                                    name="companyPin"
-                                    type="file"
-                                    onChange={handleFileChange}
-                                    className="w-full px-3 py-2 border rounded"
-                                />
-                                <span>
-                                    {formData.companyPin || "No file chosen"}
-                                </span>
-                            </div>
-                            <div className="mb-2">
-                                <label
-                                    className="block text-sm font-medium mb-1"
-                                    htmlFor="directorsId"
-                                >
-                                    Change Directors Identification
-                                    (Id/Passport)
-                                </label>
-                                <input
-                                    id="directorsId"
-                                    name="directorsId"
-                                    type="file"
-                                    onChange={handleFileChange}
-                                    className="w-full px-3 py-2 border rounded"
-                                />
-                                <span>
-                                    {formData.directorsId || "No file chosen"}
-                                </span>
-                            </div>
-                            <div className="mb-2">
-                                <label
-                                    className="block text-sm font-medium mb-1"
-                                    htmlFor="financialStatements"
-                                >
-                                    Upload 12 Months Financial Statements
-                                    (Bank/Mpesa etc)
-                                </label>
-                                <input
-                                    id="financialStatements"
-                                    name="financialStatements"
-                                    type="file"
-                                    onChange={handleFileChange}
-                                    className="w-full px-3 py-2 border rounded"
-                                />
-                                <span>
-                                    {formData.financialStatements ||
-                                        "No file chosen"}
-                                </span>
-                            </div>
-                            <div className="mb-2">
-                                <label
-                                    className="block text-sm font-medium mb-1"
-                                    htmlFor="supportingDocs"
-                                >
-                                    Change Supporting Business Documentation
-                                </label>
-                                <input
-                                    id="supportingDocs"
-                                    name="supportingDocs"
-                                    type="file"
-                                    onChange={handleFileChange}
-                                    className="w-full px-3 py-2 border rounded"
-                                />
-                                <span>
-                                    {formData.supportingDocs ||
-                                        "No file chosen"}
-                                </span>
-                            </div>
-                            <div className="mb-2">
-                                <label
-                                    className="block text-sm font-medium mb-1"
-                                    htmlFor="supportiveVideo"
-                                >
-                                    Change supportive video
-                                </label>
-                                <input
-                                    id="supportiveVideo"
-                                    name="supportiveVideo"
-                                    type="file"
-                                    onChange={handleFileChange}
-                                    className="w-full px-3 py-2 border rounded"
-                                />
-                                <span>
-                                    {formData.supportiveVideo ||
-                                        "No file chosen"}
-                                </span>
-                            </div>
-                            <div className="mb-2">
-                                <label
-                                    className="block text-sm font-medium mb-1"
-                                    htmlFor="videoLink"
-                                >
-                                    OR Video Link
-                                </label>
-                                <input
-                                    id="videoLink"
-                                    name="videoLink"
-                                    type="url"
-                                    value={formData.videoLink}
-                                    onChange={handleChange}
-                                    className="w-full px-3 py-2 border rounded"
-                                />
-                            </div>
-                        </div>
-
-                        {/* Business Reason for Funding */}
+                        {/* Document */}
                         <div className="mb-4">
                             <label
                                 className="block text-sm font-medium mb-1"
-                                htmlFor="fundingReason"
+                                htmlFor="document"
                             >
-                                Business Reason for Funding
+                                Document
+                            </label>
+                            <input
+                                id="document"
+                                name="document"
+                                type="file"
+                                onChange={handleFileChange}
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                            <span className="text-gray-500">
+                                {formData.document || "No file chosen"}
+                            </span>
+                        </div>
+
+                        {/* Video */}
+                        <div className="mb-4">
+                            <label
+                                className="block text-sm font-medium mb-1"
+                                htmlFor="video"
+                            >
+                                Video
+                            </label>
+                            <input
+                                id="video"
+                                name="video"
+                                type="file"
+                                onChange={handleFileChange}
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                            <span className="text-gray-500">
+                                {formData.video || "No file chosen"}
+                            </span>
+                        </div>
+
+                        {/* Reason */}
+                        <div className="mb-4">
+                            <label
+                                className="block text-sm font-medium mb-1"
+                                htmlFor="reason"
+                            >
+                                Reason
                             </label>
                             <textarea
-                                id="fundingReason"
-                                name="fundingReason"
-                                value={formData.fundingReason}
+                                id="reason"
+                                name="reason"
+                                value={formData.reason}
                                 onChange={handleChange}
                                 className="w-full px-3 py-2 border rounded"
                             />
                         </div>
 
-                        <div className="flex justify-start space-x-4">
-                            <button
-                                type="button"
-                                onClick={() => setShowModal(false)}
-                                className="bg-gray-500  hover:bg-gray-600 text-white px-4 py-2 rounded"
+                        {/* Investors Fee */}
+                        <div className="mb-4">
+                            <label
+                                className="block text-sm font-medium mb-1"
+                                htmlFor="investors_fee"
                             >
-                                Cancel
-                            </button>
+                                Investors Fee
+                            </label>
+                            <input
+                                id="investors_fee"
+                                name="investors_fee"
+                                type="number"
+                                value={formData.investors_fee}
+                                onChange={handleChange}
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                        </div>
+
+                        {/* Yearly Financial Statement */}
+                        <div className="mb-4">
+                            <label
+                                className="block text-sm font-medium mb-1"
+                                htmlFor="yeary_fin_statement"
+                            >
+                                Yearly Financial Statement
+                            </label>
+                            <input
+                                id="yeary_fin_statement"
+                                name="yeary_fin_statement"
+                                type="file"
+                                onChange={handleFileChange}
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                            <span className="text-gray-500">
+                                {formData.yeary_fin_statement ||
+                                    "No file chosen"}
+                            </span>
+                        </div>
+
+                        {/* ID Number */}
+                        <div className="mb-4">
+                            <label
+                                className="block text-sm font-medium mb-1"
+                                htmlFor="id_no"
+                            >
+                                ID Number
+                            </label>
+                            <input
+                                id="id_no"
+                                name="id_no"
+                                type="text"
+                                value={formData.id_no}
+                                onChange={handleChange}
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                        </div>
+
+                        {/* Tax Pin */}
+                        <div className="mb-4">
+                            <label
+                                className="block text-sm font-medium mb-1"
+                                htmlFor="tax_pin"
+                            >
+                                Tax Pin
+                            </label>
+                            <input
+                                id="tax_pin"
+                                name="tax_pin"
+                                type="file"
+                                onChange={handleFileChange}
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                            <span className="text-gray-500">
+                                {formData.tax_pin || "No file chosen"}
+                            </span>
+                        </div>
+
+                        {/* Rating */}
+                        <div className="mb-4">
+                            <label
+                                className="block text-sm font-medium mb-1"
+                                htmlFor="rating"
+                            >
+                                Rating
+                            </label>
+                            <input
+                                id="rating"
+                                name="rating"
+                                type="number"
+                                value={formData.rating}
+                                onChange={handleChange}
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                        </div>
+
+                        {/* Rating Count */}
+                        <div className="mb-4">
+                            <label
+                                className="block text-sm font-medium mb-1"
+                                htmlFor="rating_count"
+                            >
+                                Rating Count
+                            </label>
+                            <input
+                                id="rating_count"
+                                name="rating_count"
+                                type="number"
+                                value={formData.rating_count}
+                                onChange={handleChange}
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                        </div>
+
+                        {/* Active */}
+                        <div className="mb-4 flex items-center">
+                            <label
+                                className="text-sm font-medium mr-3"
+                                htmlFor="active"
+                            >
+                                Active
+                            </label>
+                            <input
+                                id="active"
+                                name="active"
+                                type="checkbox"
+                                checked={formData.active}
+                                onChange={handleChange}
+                                className="h-4 w-4 text-green focus:green border-gray-300 rounded"
+                            />
+                        </div>
+
+                        {/* Submit Button */}
+                        <div className="flex justify-center">
                             <button
+                                className="bg-green hover:bg-dark-green text-white font-semibold py-2 px-4 w-40 p-3  focus:outline-none focus:shadow-outline rounded-full"
                                 type="submit"
-                                className="btn-primary text-white px-6 py-2 rounded"
+                                disabled={loading}
                             >
-                                Save
+                                {loading ? (
+                                    <AiOutlineLoading3Quarters className="animate-spin" />
+                                ) : (
+                                    "Save"
+                                )}
                             </button>
                         </div>
                     </form>
@@ -477,5 +675,4 @@ const handleOverlayClick = (e) => {
         </div>
     );
 };
-
 export default EditModal;

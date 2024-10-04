@@ -1,35 +1,59 @@
 import React, { useState, useEffect } from "react";
 import axiosClient from "../../axiosClient";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Make sure to import CSS for toastify
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 function InvestmentBids() {
     const [bids, setBids] = useState([]);
     const [selectedBids, setSelectedBids] = useState([]);
     const [modalContent, setModalContent] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [loadingAccept, setLoadingAccept] = useState(false); // Added missing state
+    const [loadingReject, setLoadingReject] = useState(false); // Added missing state
 
-    const AcceptBids = reject => e => {
+    const AcceptBids = (reject) => (e) => {
         e.preventDefault();
+
+        // Set loading states based on the action
+        if (reject === 0) {
+            setLoadingAccept(true);
+        } else {
+            setLoadingReject(true);
+        }
 
         const payload = {
             bid_ids: selectedBids,
             reject: reject,
         };
-        //alert(reject);
 
-        axiosClient
-            .post("bidsAccepted", payload)
+        axiosClient.post("bidsAccepted", payload)
             .then(({ data }) => {
-                console.log(data);
-                //alert(data.message);
+                console.log(data); // Log response data
+                toast.success(data.message); // Show success message
             })
             .catch((err) => {
                 const response = err.response;
                 if (response && response.status === 422) {
-                    console.log(response.data.errors);
+                    console.log(response.data.errors); // Log validation errors
+                    toast.error(response.data.errors.join(", ")); // Show validation errors
+                } else {
+                    console.log(err); // Log general errors
+                    toast.error(
+                        "An error occurred while processing your request."
+                    ); // Show generic error message
                 }
-                console.log(err);
+            })
+            .finally(() => {
+                // Reset loading states
+                if (reject === 0) {
+                    setLoadingAccept(false);
+                } else {
+                    setLoadingReject(false);
+                }
             });
     };
+
 
     const handleCheckboxChange = (id) => {
         setSelectedBids((prevSelected) => {
@@ -58,17 +82,21 @@ function InvestmentBids() {
                         <strong>Investment Range:</strong> {bid.inv_range}
                     </p>
                     <p className="my-3">
-                        <strong>Industries Interested:</strong>{bid.interested_cats}
-                        
+                        <strong>Industries Interested:</strong>{" "}
+                        {bid.interested_cats}
                     </p>
                     <p className="my-3">
-                        <strong>Past Investment And Track Record:</strong>{bid.past_investment}
-                        
+                        <strong>Past Investment And Track Record:</strong>{" "}
+                        {bid.past_investment}
                     </p>
                     <p className="my-3">
                         <strong>Website:</strong>{" "}
-                        <a href="{bid.website}" target="_blank">
-                           {bid.website}
+                        <a
+                            href={bid.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            {bid.website}
                         </a>
                     </p>
                     <p>
@@ -86,8 +114,12 @@ function InvestmentBids() {
                 body: (
                     <div>
                         <p>
-                            <strong>Download good quality photos of the assets:</strong> Property
-                        <img scr={bid.photos[0]} /> </p>
+                            <strong>
+                                Download good quality photos of the assets:
+                            </strong>{" "}
+                            Property
+                            <img src={bid.photos[0]} alt="Asset" />
+                        </p>
                         <p>
                             <strong>Location:</strong> New York City
                         </p>
@@ -114,7 +146,7 @@ function InvestmentBids() {
                 .get("/business/business_bids")
                 .then(({ data }) => {
                     setBids(data.bids);
-                    console.log(data.bids)
+                    console.log(data.bids);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -125,6 +157,7 @@ function InvestmentBids() {
 
     return (
         <div className="container mx-auto p-6">
+            <ToastContainer />
             <h3 className="text-left text-lg font-semibold mb-6">
                 Investment Bids
             </h3>
@@ -216,21 +249,30 @@ function InvestmentBids() {
             <div className="flex gap-2 pt-3 items-center justify-end">
                 <button
                     onClick={AcceptBids(0)}
-                    disabled={selectedBids.length === 0}
+                    disabled={selectedBids.length === 0 || loadingAccept}
                     className={`py-2 px-4 rounded-lg text-white focus:outline-none focus:ring-2 transition-colors ${
-                        selectedBids.length === 0
+                        selectedBids.length === 0 || loadingAccept
                             ? "bg-gray-300 cursor-not-allowed"
                             : "btn-primary hover:bg-green-600 focus:ring-green-300"
                     }`}
                 >
-                    Accept Bids
+                    {loadingAccept ? (
+                        <AiOutlineLoading3Quarters className="animate-spin inline-block mr-2" />
+                    ) : null}
+                    {loadingAccept ? "Accepting..." : "Accept Bids"}
                 </button>
 
                 <button
                     onClick={AcceptBids(1)}
-                    className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition-colors"
+                    disabled={loadingReject}
+                    className={`bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition-colors ${
+                        loadingReject ? "cursor-not-allowed" : ""
+                    }`}
                 >
-                    Reject Bids
+                    {loadingReject ? (
+                        <AiOutlineLoading3Quarters className="animate-spin inline-block mr-2" />
+                    ) : null}
+                    {loadingReject ? "Rejecting..." : "Reject Bids"}
                 </button>
             </div>
 

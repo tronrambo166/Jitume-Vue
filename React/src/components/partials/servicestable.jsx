@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosClient from "../../axiosClient";
-
+import ServEditModal from "./ServEditModal";
 const ServiceTable = () => {
     const [business, setBusiness] = useState([]);
     const [service, setService] = useState([]);
     const [myInvest, setMyInvest] = useState([]);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [selectedService, setSelectedService] = useState(null); // To track the selected service for editing
 
     useEffect(() => {
         const getBusinessAndServices = () => {
@@ -25,6 +27,11 @@ const ServiceTable = () => {
         };
         getBusinessAndServices();
     }, []);
+   const openEditModal = (service) => {
+       setSelectedService(service); // Set the service being edited
+       setIsEditModalOpen(true); // Open the modal
+   };
+
 
     return (
         <div className="py-4">
@@ -169,15 +176,35 @@ const ServiceTable = () => {
                                         {item.amount}
                                     </td>
                                     <td className="px-4 py-2 text-center text-sm">
-                                        <Link
-                                            to={`/service-milestones/${btoa(
-                                                btoa(item.id)
-                                            )}`}
-                                        >
-                                            <button className="text-green-500 border border-green-500 rounded-lg py-1 px-3 text-xs">
-                                                View milestones
+                                        <div className="flex items-center justify-center space-x-2">
+                                            <Link
+                                                to={`/service-milestones/${btoa(
+                                                    btoa(item.id)
+                                                )}`}
+                                            >
+                                                <button className="text-green-500 border border-green-500 rounded-lg py-1 px-3 text-xs">
+                                                    View milestones
+                                                </button>
+                                            </Link>
+                                            <button
+                                                onClick={() =>
+                                                    openEditModal(item)
+                                                } // Trigger modal
+                                                className="text-gray-900 border border-gray-500 rounded-lg py-1 px-3 text-xs"
+                                            >
+                                                Edit
                                             </button>
-                                        </Link>
+                                            <button
+                                                onClick={() => {
+                                                    console.log(
+                                                        `Item going to be deleted: ${item.name}`
+                                                    );
+                                                }}
+                                                className="text-red-500 border border-gray-500 rounded-lg py-1 px-3 text-xs"
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
@@ -254,6 +281,20 @@ const ServiceTable = () => {
                     </table>
                 </div>
             </section> */}
+            {isEditModalOpen && (
+                <ServEditModal
+                    isOpen={isEditModalOpen}
+                    onClose={() => {
+                        console.log("Closing modal");
+                        setIsEditModalOpen(false);
+                    }}
+                    serviceId={selectedService?.id} // Adjust this based on how you're identifying the service
+                    onUpdate={(updatedData) => {
+                        // console.log("Updated data:", updatedData);
+                        // Handle updating the service here
+                    }}
+                />
+            )}
         </div>
     );
 };

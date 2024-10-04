@@ -4,6 +4,7 @@ import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { useStateContext } from "../../contexts/contextProvider";
 import axiosClient from "../../axiosClient";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { toast, ToastContainer } from "react-toastify";
 
 const RegisterForm = () => {
     const { setUser, setToken } = useStateContext();
@@ -87,64 +88,64 @@ const RegisterForm = () => {
         setErrors(newErrors);
         return valid;
     };
-      const handleTermsChange = (e) => {
-          setFormData((prevData) => ({
-              ...prevData,
-              isAgreedToTerms: e.target.checked,
-          }));
-      };
-const validateStep2 = () => {
-    let valid = true;
-    let newErrors = { ...errors };
+    const handleTermsChange = (e) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            isAgreedToTerms: e.target.checked,
+        }));
+    };
+    const validateStep2 = () => {
+        let valid = true;
+        let newErrors = { ...errors };
 
-    // Email validation
-    if (!formData.email) {
-        newErrors.email = "Email is required.";
-        valid = false;
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-        newErrors.email = "Email is invalid.";
-        valid = false;
-    } else {
-        newErrors.email = "";
-    }
+        // Email validation
+        if (!formData.email) {
+            newErrors.email = "Email is required.";
+            valid = false;
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            newErrors.email = "Email is invalid.";
+            valid = false;
+        } else {
+            newErrors.email = "";
+        }
 
-    // Password validation
-    if (!formData.password) {
-        newErrors.password = "Password is required.";
-        valid = false;
-    } else {
-        newErrors.password = "";
-    }
+        // Password validation
+        if (!formData.password) {
+            newErrors.password = "Password is required.";
+            valid = false;
+        } else {
+            newErrors.password = "";
+        }
 
-    // Confirm Password validation
-    if (formData.password !== formData.confirmPassword) {
-        newErrors.confirmPassword = "Passwords do not match.";
-        valid = false;
-    } else {
-        newErrors.confirmPassword = "";
-    }
+        // Confirm Password validation
+        if (formData.password !== formData.confirmPassword) {
+            newErrors.confirmPassword = "Passwords do not match.";
+            valid = false;
+        } else {
+            newErrors.confirmPassword = "";
+        }
 
-    // Recaptcha validation
-    if (!formData.isRecaptchaChecked) {
-        newErrors.recaptcha = "Please verify you are not a robot.";
-        valid = false;
-    } else {
-        newErrors.recaptcha = "";
-    }
+        // Recaptcha validation
+        if (!formData.isRecaptchaChecked) {
+            newErrors.recaptcha = "Please verify you are not a robot.";
+            valid = false;
+        } else {
+            newErrors.recaptcha = "";
+        }
 
-    // Terms agreement validation
-    if (!formData.isAgreedToTerms) {
-        newErrors.terms =
-            "You must agree to the Terms of Use and Privacy Policy.";
-        valid = false;
-    } else {
-        newErrors.terms = "";
-    }
+        // Terms agreement validation
+        if (!formData.isAgreedToTerms) {
+            newErrors.terms =
+                "You must agree to the Terms of Use and Privacy Policy.";
+            valid = false;
+        } else {
+            newErrors.terms = "";
+        }
 
-    // Update state with new errors
-    setErrors(newErrors);
-    return valid;
-};
+        // Update state with new errors
+        setErrors(newErrors);
+        return valid;
+    };
 
     const handleNextStep = () => {
         if (step === 1 && validateStep1()) {
@@ -184,10 +185,14 @@ const validateStep2 = () => {
             const { data } = await axiosClient.post("/register", formattedData);
             setUser(data.user);
             setToken(data.token);
+            // toast.success("Registration successful. Please login.");
         } catch (err) {
+            toast.error(err.response.data.message);
             console.error(err);
         } finally {
+            
             setIsLoading(false);
+
         }
     };
 
@@ -198,9 +203,9 @@ const validateStep2 = () => {
         }));
     };
 
-   
     return (
         <form className="flex flex-col px-4 py-4" onSubmit={handleSubmit}>
+            <ToastContainer />
             {step === 1 && (
                 <>
                     <div className="text-center mb-4">
