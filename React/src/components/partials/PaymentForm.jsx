@@ -100,6 +100,13 @@ const PaymentForm = () => {
     let { purpose } = useParams();
     const purpos = base64_decode(purpose);
 
+    var p = '';
+    if(purpos === "bids")
+     p = 'Investment bid';
+    else if(purpos === "s_mile")
+     p = 'Service milestone';
+    else  p = purpos;
+
     let { amount } = useParams();
     const amount_real = base64_decode(amount);
     const { percent } = useParams(); //alert(atob(percent))
@@ -402,7 +409,7 @@ const PaymentForm = () => {
 
                                 <div className="flex flex-col gap-3 mb-4">
                                     <label className="font-bold">Purpose</label>
-                                    <p id="purpose">{purpos}</p>
+                                    <p id="purpose">{p}</p>
                                 </div>
 
                                 <h2 className="py-2 text-2xl font-semibold">

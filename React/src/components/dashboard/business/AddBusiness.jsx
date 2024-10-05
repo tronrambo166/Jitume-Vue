@@ -488,14 +488,14 @@ const AddBusiness = () => {
                                 
                                 name="lat"
                                 id="lat"
-                                value=""
+                                
                                 hidden
                             />
                             <input
                                 
                                 name="lng"
                                 id="lng"
-                                value=""
+                                
                                 hidden
                             />
 

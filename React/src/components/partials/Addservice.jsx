@@ -61,6 +61,10 @@ const AddService = ({ connected, userId }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        formData.location = $('#searchbox').val();
+        formData.lat = $('#lat').val();
+        formData.lng = $('#lng').val();
+
         // Call individual upload handlers
         await Promise.all(
             ["image", "pin", "identification", "video", "document"].map(
@@ -68,9 +72,6 @@ const AddService = ({ connected, userId }) => {
             )
         );
 
-        formData.location = $('#searchbox').val();
-        formData.lat = $('#lat').val();
-        formData.lng = $('#lng').val();
 
         const data = new FormData();
         console.log(formData);
@@ -314,14 +315,13 @@ const AddService = ({ connected, userId }) => {
                                 id="searchbox"
                                 type="text"
                                 name="location"
-                                value={formData.location}
                                 onChange={handleChange}
                                 required
                                 className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="Enter a location..."
                             />
-                            <input hidden name="lat" id="lat" value="" />
-                            <input hidden name="lng" id="lng" value="" />
+                            <input hidden name="lat" id="lat"  />
+                            <input hidden name="lng" id="lng"  />
 
                             <ul
                                 id="suggestion-list"

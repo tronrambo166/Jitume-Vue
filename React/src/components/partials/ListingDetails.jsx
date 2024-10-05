@@ -45,6 +45,7 @@ const ListingDetails = ({ onClose }) => {
   const [details, setDetails] = useState('');
   const [allowToReview, setAllow] = useState('');
   const [amount_r, setAmount_r] = useState('');
+  const [running, setRunning] = useState(false);
   const [subscribeData, setSubscribeData] = useState('');
   const [isOpen, setIsOpen] = useState(true); // Popup is initially open
 
@@ -242,7 +243,8 @@ const closeAuthModal = () => {
           .then(({ data }) => {
            setAllow(data.allowToReview);
            setAmount_r(data.amount_required);
-            //console.log(amount_required)
+           setRunning(data.running);
+            console.log(data.amount_required)
           })
           .catch(err => {
             console.log(err); 
@@ -273,7 +275,7 @@ const closeAuthModal = () => {
 
       
       isSubscribed();
-      getDetails();
+      setTimeout(() => { getDetails();}, 500);
       getMilestones();
 
     }, [])
@@ -498,13 +500,14 @@ sessionStorage.setItem("purpose", "One time unlock - Small fee");
             </p>
             <div className="my-4 text-left">
       <h3 className="font-bold my-3">Reviews </h3>
-      <button
+      {allowToReview && conv && <button
         className="flex items-center space-x-2    py-2 rounded"
         onClick={togglePopup}
       >
         <FaPlusCircle className='text-green' />
         <span>Add Review</span>
-      </button>
+      </button>}
+
       <hr></hr>
 
       <div className="mt-4">
@@ -636,7 +639,7 @@ sessionStorage.setItem("purpose", "One time unlock - Small fee");
 
           </div>
 
-           {token  && conv &&  (
+          {token  && conv &&  (
           <div  className='bg-gray-100 py-4 flex flex-col gap-4 items-center px-6'>
             <button
               className='whitespace-nowrap border border-black px-4 py-2 rounded-lg w-[300px]'
@@ -649,6 +652,8 @@ sessionStorage.setItem("purpose", "One time unlock - Small fee");
             <Link to={`/business-milestones/${btoa(btoa(details.id))}`} key={details.id}>
              View Business Milestones </Link> </button>
 
+            {amount_r && running ? ( 
+            <div>
             <div className='w-full flex flex-col items-center mt-4'>
               <h2 className='text-lg font-semibold mb-4'>Enter A Bid To Invest</h2>
               <label htmlFor='investmentAmount' className='text-sm font-medium'>Amount:</label>
@@ -674,9 +679,8 @@ sessionStorage.setItem("purpose", "One time unlock - Small fee");
               {errorMessage && <p className="error-message  text-red-600">{errorMessage}</p>}
             </div>
 
-            {plan === 'gold' && (
               <div className='w-full flex flex-col items-center mt-4'>
-                <h2 className='text-lg font-semibold mb-4'>Enter Equipment Investment</h2>
+                <h2 className='text-lg font-semibold mb-4'>Enter Equipment Equivalent Bid To Invest</h2>
                 <label htmlFor='equipmentAmount' className='text-sm font-medium'>Amount:</label>
                 <input
                   type="number"
@@ -699,8 +703,17 @@ sessionStorage.setItem("purpose", "One time unlock - Small fee");
                   Invest in Equipment
                 </button>
                 {equipmentErrorMessage && <p className="error-message text-red-600">{equipmentErrorMessage}</p>} 
+              
               </div>
-            )}
+              </div>
+              ):(
+                <div class="w-75 mx-auto row">
+                <p class="bg-light">Milestone payout is currently off due to milestone completion process, please wait until
+                next milestone is open.</p>
+                </div>
+              )}
+
+            
           </div>
            )}
 

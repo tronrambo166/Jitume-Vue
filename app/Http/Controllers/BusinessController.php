@@ -209,7 +209,7 @@ if($image) {
           $ext=strtolower($pin->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
           {
-            return response()->json([ 'status' => 404, 'message' => 'For Cover, Only images are allowed!']);
+            return response()->json([ 'status' => 404, 'message' => 'For pin, Only pdf or docx are allowed!']);
           } }
 
 
@@ -218,7 +218,7 @@ if($image) {
           $ext=strtolower($identification->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
           {
-            return response()->json([ 'status' => 404, 'message' => 'For Cover, Only images are allowed!']);
+            return response()->json([ 'status' => 404, 'message' => 'For identification, Only pdf or docx are allowed!']);
           } }
 
 
@@ -227,7 +227,7 @@ if($image) {
           $ext=strtolower($yeary_fin_statement->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
           {
-            return response()->json([ 'status' => 404, 'message' => 'For Cover, Only images are allowed!']);
+            return response()->json([ 'status' => 404, 'message' => 'For statement, Only pdf or docx are allowed!']);
           } }
 
 
@@ -236,7 +236,7 @@ if($image) {
           $ext=strtolower($document->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
           {
-            return response()->json([ 'status' => 404, 'message' => 'For Cover, Only images are allowed!']);
+            return response()->json([ 'status' => 404, 'message' => 'For document, Only pdf or docx are allowed!']);
           } }
 
 

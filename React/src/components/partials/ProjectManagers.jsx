@@ -101,7 +101,7 @@ const ProjectManagers = () => {
                   <h3 className="text-xl font-semibold mb-1">Manager: {card.manager} </h3>
                   <h3 className="text-xl font-semibold mb-1">service: {card.name} </h3>
                   <p className="text-gray-700">{card.contact || 'Contact not available'}</p>
-                  <p className="text-black font-semibold mt-1">Amount: $5000</p>
+                  <p className="text-black font-semibold mt-1">Amount: ${card.price}</p>
                    <p className="text-black font-semibold mt-1">Location: {card.location}</p>
                   <div className="flex items-center justify-between mt-4 text-blue-600">
                     <span className="font-bold">Learn More</span>

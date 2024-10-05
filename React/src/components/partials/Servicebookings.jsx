@@ -105,7 +105,7 @@ function InvestmentBids() {
                                 Date
                             </th>
                             <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
-                                Details
+                                Customer
                             </th>
                             <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
                                 Service

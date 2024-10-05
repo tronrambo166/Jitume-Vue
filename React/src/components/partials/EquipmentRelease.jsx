@@ -52,8 +52,9 @@ const EquipmentRelease = () => {
           <div className="card-body py-5 mb-5">
             <div className="row w-75 mx-auto" >
 
-                <div className="col-md-6">
-                <button style={{width:'30%', background:'green'}} className="my-3 primary_bg text-center text-light" 
+                <div style={{display:'inlineBlock'}} className="col-md-6">
+                <button style=
+                {{width:'30%', background:'#108946', padding:'10px',display:'block',borderRadius:'10px', color:'white'}} className="my-3 primary_bg text-center text-light" 
                  target="_blank" onClick={releaseEquipment('yes')} >
                    <small><b>OK</b></small>
                 </button>
@@ -61,8 +62,8 @@ const EquipmentRelease = () => {
 
                 
 
-                <div className="col-md-6"> 
-                <button style={{width:'30%', background:'red'}} onClick={releaseEquipment('no')} className=" border bg-success border-dark text-center">
+                <div style={{display:'inlineBlock'}} className="col-md-6"> 
+                <button style={{width:'30%', padding:'10px',display:'block',borderRadius:'10px', color:'white', background:'red'}} onClick={releaseEquipment('no')} className=" border bg-success border-dark text-center">
                 <span className="text-dark" aria-hidden="true"><small>Cancel</small></span>
                 </button>
 

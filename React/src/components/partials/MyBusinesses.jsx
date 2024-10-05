@@ -64,12 +64,16 @@ const MyBusinesses = () => {
 
     return (
         <div className="bg-white shadow-md mt-20 rounded-xl w-full px-4 py-6 sm:px-8">
+           
+
             <h1 className="text-[#2D3748] font-semibold text-xl sm:text-2xl mb-6">
                 My Businesses
             </h1>
+
             <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-300 text-black">
-                    <thead className="bg-gray-100">
+                    {business.length>0 &&
+                        <thead className="bg-gray-100">
                         <tr className="text-gray-500">
                             <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium uppercase tracking-wider">
                                 Name
@@ -91,6 +95,7 @@ const MyBusinesses = () => {
                             </th>
                         </tr>
                     </thead>
+                    }
                     <tbody className="bg-white divide-y divide-gray-200">
                         {business.map((item) => (
                             <tr key={item.id}>
