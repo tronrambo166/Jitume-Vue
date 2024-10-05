@@ -102,7 +102,7 @@ const MyBusinesses = () => {
                                 <td className="px-2 sm:px-4 py-4 flex items-center">
                                     <img
                                         className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-cover"
-                                        src="https://plus.unsplash.com/premium_photo-1680859126164-ac4fd8f56625?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                        src={'../'+item.image}
                                         alt="Business"
                                     />
                                     <div className="ml-3 text-xs sm:text-sm font-medium">

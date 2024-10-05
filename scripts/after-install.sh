@@ -16,4 +16,5 @@ sudo chown -R www-data storage
 sudo chmod -R u+x .
 sudo chmod g+w -R storage
 sudo chown -R www-data public
+sudo chown -R www-data React
 unlink bootstrap/cache/config.php
