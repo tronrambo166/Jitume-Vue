@@ -47,6 +47,7 @@ const ListingDetails = ({ onClose }) => {
   const [amount_r, setAmount_r] = useState('');
   const [running, setRunning] = useState(false);
   const [subscribeData, setSubscribeData] = useState('');
+  const [setRev, reviewData] = useState([]);
   const [isOpen, setIsOpen] = useState(true); // Popup is initially open
 
  
@@ -93,11 +94,24 @@ const ListingDetails = ({ onClose }) => {
     setRating(newRating);
   };
 
-  const handleSubmit = (e) => {
+  const reviewSubmit = (e) => {
     e.preventDefault();
-    console.log(`Rating: ${rating}, Review: ${review}`);
+    //console.log(`Rating: ${rating}, Review: ${review}`);
     // Submit the review logic here (e.g., API call)
     setShowPopup(false); // Close the popup after submitting
+
+      if(rating == 0){
+        $.alert({
+          title: 'Alert!',
+          content: 'A rating cannot be 0!',
+        });
+      }
+      else{
+      axiosClient.get('ratingListing/' + form.listing_id + '/' + rating + '/' + review).then((data) => {
+        alert('Rating submitted successfully!');
+        location.reload();;
+      });
+     }
   };
 
   //FOR SMALL POP UP
@@ -218,7 +232,9 @@ const closeAuthModal = () => {
  
 
 //CORE METHODS
+  let url = "";
   useEffect(()=> {
+
     const getDetails = () => { 
         axiosClient.get('/searchResults/'+form.listing_id)
           .then(({ data }) => {
@@ -238,13 +254,16 @@ const closeAuthModal = () => {
     };
       
 
+      if (token) url = "/getMilestonesAuth/";
+      else url = "/getMilestones/";
+
       const getMilestones = () => { 
-        axiosClient.get('/getMilestones/'+form.listing_id)
+        axiosClient.get(url + form.listing_id)
           .then(({ data }) => {
            setAllow(data.allowToReview);
            setAmount_r(data.amount_required);
            setRunning(data.running);
-            console.log(data.amount_required)
+            //console.log(data)
           })
           .catch(err => {
             console.log(err); 
@@ -266,6 +285,9 @@ const closeAuthModal = () => {
             $('#small_fee_div').removeClass('collapse');
             $('#small_fee').addClass('modal_ok_btn');
           } 
+          
+          if(data.reviews.length > 0)
+            setRev(data.reviews);
 
           })
           .catch(err => {
@@ -510,7 +532,8 @@ sessionStorage.setItem("purpose", "One time unlock - Small fee");
 
       <hr></hr>
 
-      <div className="mt-4">
+      {/*{reviewData.map((item) => (
+        <div className="mt-4">
         <img
           className="inline rounded-[50%]"
           src="https://via.placeholder.com/30"
@@ -518,16 +541,16 @@ sessionStorage.setItem("purpose", "One time unlock - Small fee");
           width="30"
         />
         <p className="inline text-sm">
-          <b className="text-green-700"> Person</b> Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit
+          <b className="text-green-700"> {item.user_name}</b> {item.text} &nbsp; {item.rating}
         </p>
       </div>
+      ))}*/}
 
       {showPopup && (
         <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded shadow-md w-1/3">
             <h4 className="text-lg font-bold mb-4">Add Your Review</h4>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={reviewSubmit}>
               <div className="flex items-center mb-4">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <FaStar

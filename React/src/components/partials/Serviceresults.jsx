@@ -52,7 +52,7 @@ const categories = [
           .then(({ data }) => {
            setResults(data.data);
            res = data.data;
-           //console.log(data);
+           console.log(data);
             var x = navigator.geolocation;
             x.getCurrentPosition(success, failure);
               

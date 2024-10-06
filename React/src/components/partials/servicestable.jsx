@@ -32,6 +32,18 @@ const ServiceTable = () => {
        setIsEditModalOpen(true); // Open the modal
    };
 
+   const handleDelete = (id) => {
+        axiosClient
+            .get("/business/delete_service/" + id)
+            .then(({ data }) => {
+                setService(service.filter((item) => item.id !== id));
+                alert('Deleted!');
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
 
     return (
         <div className="py-4">
@@ -129,7 +141,7 @@ const ServiceTable = () => {
             {/* My Services Section */}
             <section className="bg-white shadow-md rounded-lg mb-6 px-10 py-6 ">
                 <h1 className="text-[#2D3748] font-semibold text-xl mb-3">
-                    My Service
+                    My Services
                 </h1>
                 <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
@@ -197,11 +209,9 @@ const ServiceTable = () => {
                                                 Edit
                                             </button>
                                             <button
-                                                onClick={() => {
-                                                    console.log(
-                                                        `Item going to be deleted: ${item.name}`
-                                                    );
-                                                }}
+                                               onClick={() =>
+                                                handleDelete(item.id)
+                                            }
                                                 className="text-red-500 border border-gray-500 rounded-lg py-1 px-3 text-xs"
                                             >
                                                 Delete

@@ -151,8 +151,10 @@ Route::post('embed_service_videos', [ServiceController::class, 'embed_service_vi
 
 Route::get('serviceResultsAuth/{ids}', [PagesController::class, 'serviceResultsAuth']); 
 Route::get('getMilestonesS_Auth/{id}', [ServiceController::class, 'getMilestones'])->name('getMilestonesS');
+
+Route::get('getMilestonesAuth/{id}', [BusinessController::class ,'getMilestones'])->name('getMilestones');
 });
-//P R O T E C T E D    R O U T E S
+//P R O T E C T E D    R O U T E S   ENDS
 
 //Email Click Routes
 Route::get('agreeToMileS/{s_id}/{booker_id}', [bidsEmailController::class, 'agreeToMileS'])->name('agreeToMileS');

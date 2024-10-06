@@ -89,8 +89,10 @@ const AddService = ({ connected, userId }) => {
                 },
             });
            console.log(response.data);
-           if(response.data.status == 200)
+           if(response.data.status == 200){
             setMessages({ success: response.data.message || "", error: "" });
+            alert('Please Add milestones for your service!')
+            }
            if(response.data.status == 404)
             setMessages({ error: response.data.message });
 

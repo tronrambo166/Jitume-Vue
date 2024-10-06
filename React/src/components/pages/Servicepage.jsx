@@ -31,19 +31,19 @@ const Servicepage = () => {
     e.preventDefault();
         let ids = '';
         const payload = {
-            location: locationInputRef.current.value,
+            search: locationInputRef.current.value,
             category: categoryRef.current.value,
             listing_name: nameRef.current.value,
             lat: $('#lat').val(),
             lng: $('#lng').val(),
         } 
         console.log(payload);
-        axiosClient.post("/search",payload).then(({data})=>{
+        axiosClient.post("/searchService",payload).then(({data})=>{
             console.log(data);
             Object.entries(data.results).forEach(entry => {
             const [index, row] = entry;
             ids = ids + row.id + ',';
-          }); //console.log(ids);
+          }); console.log(ids);
           if (!ids) ids = 0;
 
           sessionStorage.setItem('queryLat', payload.lat);

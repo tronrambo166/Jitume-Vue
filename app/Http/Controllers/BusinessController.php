@@ -612,6 +612,7 @@ public function getMilestones($id){
     $next_mile = Milestones::where('listing_id',$id)->where(function($q){
     $q->where('status','To Do')->orWhere('status','In Progress'); })->first();
     $invest_check = AcceptedBids::where('business_id',$id)->where('investor_id',$investor_id)->first();
+
     if(!$next_mile && $invest_check)
     $allowToReview = true;
     else $allowToReview = false;
@@ -1285,7 +1286,8 @@ $rating_count = 1 + $listing->rating_count;
         'user_id' => $user_id,
         'listing_id' => $id,
         'user_name' => Auth::user()->fname,
-        'text' => base64_decode($text),
+        'text' => mb_convert_encoding($text,
+         'UTF-8', 'UTF-8'),
         'rating' => $rating
        ]);
 

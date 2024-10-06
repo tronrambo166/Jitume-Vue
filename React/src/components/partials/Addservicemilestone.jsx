@@ -70,7 +70,7 @@ function Addservicemilestone() {
   };
 
   const getMilestones = () => {
-    axiosClient.get('/business/add_s_milestones/')
+    axiosClient.get('/business/add_s_milestones')
       .then(({ data }) => {
         setMilestones(data.milestones);
         setBusiness(data.business);
