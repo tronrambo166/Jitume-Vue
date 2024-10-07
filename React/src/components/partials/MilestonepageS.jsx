@@ -5,6 +5,8 @@ import React from 'react';
 import { useStateContext } from '../../contexts/contextProvider';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Navbar from "./Navbar";
+import Modal from "./Authmodal";
 
 
 const MilestonePage = () => {
@@ -18,12 +20,20 @@ const MilestonePage = () => {
   const [reviews, setReviews] = useState([]);
   const [curr_step, setCurrStep] = useState(0);
   const { token } = useStateContext();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
   
   // const [miles, setMiles] = useState([]);
   const total_steps = miles.length;
   //const curr_step = 0;
   
+
   useEffect(() => {
+    if (token) {
+            setIsAuthModalOpen(false);
+            setModalOpen(false);
+    }
+
     const getMilestones = () => {
       axiosClient.get('/getMilestonesS_Auth/' + listing_id, {
         headers: {
@@ -40,12 +50,7 @@ const MilestonePage = () => {
                   if(data.data[i].active == 1)
                     setCurrStep(i+1);
               } 
-              //alert(curr_step);
-              // const activeIndex = data.data.findIndex(mile => mile.active === 1);
-              // if (activeIndex !== -1) {
-              //   setCurrStep(activeIndex);
-              // }
-              // 
+              
             }
           } else {
             setMiles([]);
@@ -97,9 +102,9 @@ const MilestonePage = () => {
       axiosClient({
           url: 'download_milestoneDocS/' + listing_id + '/' + mile_id, //your url
           method: 'GET',
-          //responseType: 'blob',
+          responseType: 'blob',
         }).then((data) => {
-        console.log(data);
+        //console.log(data);
         if((data.data.size == 3)){
           $.alert({
           title: 'Alert!',
@@ -129,7 +134,19 @@ const MilestonePage = () => {
         }
 
       });
-    }
+    };
+
+
+    const handleAuthModalOpen = (event) => {
+        event.preventDefault();
+        if (!token) {
+            setIsAuthModalOpen(true); // Open auth modal if not authenticated
+        }
+    };
+    const handleCloseModal = () => {
+        setIsAuthModalOpen(false); // Manual close
+    };
+
 
 
   return (
@@ -138,9 +155,13 @@ const MilestonePage = () => {
 
         { !token &&
             <div class="w-75 h-100 py-5 my-5 my-auto justify-content-center my-2 text-center mx-auto">
-                <a style={{cursor:'pointer', width:'40%'}} 
-                    class="searchListing mx-auto text-center py-1 text-light font-weight-bold" data-target="#loginModal"
-                    data-toggle="modal">Login to pay</a>
+                <button
+                                            onClick={handleAuthModalOpen}
+                                            className="btn-primary py-2 px-6 rounded-xl mt-3"
+                                        >
+                                            {" "}
+                                            Login To Pay{" "}
+                                        </button>
             </div>
           }
 
@@ -230,9 +251,19 @@ const MilestonePage = () => {
               <td className="border border-gray-300 px-4 py-2">{milestone.title}</td>
               <td className="border border-gray-300 px-4 py-2">{milestone.amount}</td>
               <td className="border border-gray-300 px-4 py-2">
-                <button
-                onClick={ download_doc(milestone.mile_id) } className="text-black hover:underline">Download Milestone Documentation
-               </button>
+                
+                {booked ? (
+                  <button
+                  onClick={ download_doc(milestone.mile_id) } className="text-black hover:underline">Download Milestone Documentation
+                  </button>
+                  ):
+                 (
+                  <button
+                  onClick={ download_doc(milestone.id) } className="text-black hover:underline">Download Milestone Documentation
+                  </button>
+                  )} 
+                
+              
               </td>
               <td className="border border-gray-300 px-4 py-2">
                 <div className="flex space-x-2">

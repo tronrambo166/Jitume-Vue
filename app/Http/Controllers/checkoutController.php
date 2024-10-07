@@ -165,7 +165,7 @@ class checkoutController extends Controller
 //
       $session = $this->Client->checkout->sessions->create([
               //'/', https://test.jitume.com
-              'success_url' => 'http://127.0.0.1:8000/stripeSubscribeSuccess?session_id={CHECKOUT_SESSION_ID}',
+              'success_url' => "<?php echo config('app.api_url');?>stripeSubscribeSuccess?session_id={CHECKOUT_SESSION_ID}",
               'cancel_url' => 'https://example.com/canceled.html',
               'mode' => 'subscription',
               'line_items' => [[
@@ -272,7 +272,7 @@ class checkoutController extends Controller
         else
         $message = 'Your '.ucwords($plan).' plan expires in 30 days';
        Session::put('Stripe_pay','Success! '.$message);
-       return redirect("http://127.0.0.1:5173/");
+       return redirect(config('app.app_url'));
 
         }
       catch(\Exception $e){

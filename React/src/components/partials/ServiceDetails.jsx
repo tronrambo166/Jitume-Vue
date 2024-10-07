@@ -15,6 +15,7 @@ import { useStateContext } from "../../contexts/contextProvider";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
 import Navbar from "./Navbar";
 import Modal from "./Authmodal";
+import { FaStar, FaPlusCircle } from "react-icons/fa";
 
 const ServiceDetails = () => {
     const { token, setUser, setAuth, auth } = useStateContext();
@@ -286,16 +287,40 @@ const ServiceDetails = () => {
         });
     };
 
-    const rating = () => {
-        axiosClient
-            .get("/ratingService/" + "test_id" + "/" + "rating" + "text")
-            .then(({ data }) => {
-                setRatingRes(data.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
+    //for review
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [review, setReview] = useState("");
+
+  const togglePopup = () => {
+    setShowPopup(!showPopup);
+  };
+
+  const handleRating = (newRating) => {
+    setRating(newRating);
+  };
+
+  const reviewSubmit = (e) => {
+    e.preventDefault();
+    //console.log(`Rating: ${rating}, Review: ${review}`);
+    // Submit the review logic here (e.g., API call)
+    setShowPopup(false); // Close the popup after submitting
+
+      if(rating == 0){
+        $.alert({
+          title: 'Alert!',
+          content: 'A rating cannot be 0!',
+        });
+      }
+      else{
+      axiosClient.get('ratingListing/' + form.listing_id + '/' + rating + '/' + review).then((data) => {
+        alert('Rating submitted successfully!');
+        location.reload();;
+      });
+     }
+  };
+
 
     //end rating
 
@@ -481,6 +506,75 @@ const ServiceDetails = () => {
                             </button>
                         </div>
                     )}
+
+
+                {token && allowToReview && 
+                <button
+                    className="flex items-center space-x-2    py-2 rounded"
+                    onClick={togglePopup}
+                  >
+                    <FaPlusCircle className='text-green' />
+                    <span>Add Review</span>
+                  </button>}
+
+                  <hr></hr>
+
+                  {/*{reviewData.map((item) => (
+                    <div className="mt-4">
+                    <img
+                      className="inline rounded-[50%]"
+                      src="https://via.placeholder.com/30"
+                      alt="User"
+                      width="30"
+                    />
+                    <p className="inline text-sm">
+                      <b className="text-green-700"> {item.user_name}</b> {item.text} &nbsp; {item.rating}
+                    </p>
+                  </div>
+                  ))}*/}
+
+        {/*{showPopup && (
+        <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-md w-1/3">
+            <h4 className="text-lg font-bold mb-4">Add Your Review</h4>
+            <form onSubmit={reviewSubmit}>
+              <div className="flex items-center mb-4">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <FaStar
+                    key={star}
+                    className={`cursor-pointer ${
+                      star <= rating ? "text-yellow-500" : "text-gray-300"
+                    }`}
+                    onClick={() => handleRating(star)}
+                  />
+                ))}
+              </div>
+              <textarea
+                className="w-full border border-gray-300 rounded p-2 mb-4"
+                placeholder="Write your review here..."
+                value={review}
+                onChange={(e) => setReview(e.target.value)}
+                required
+              />
+              <div className="flex justify-end space-x-4">
+                <button
+                  type="button"
+                  className="bg-gray-300 px-4 py-2 rounded"
+                  onClick={togglePopup}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn-primary text-white px-4 py-2 rounded"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}*/}
 
                     <div className="my-4 text-left">
                         <h3 className="font-bold my-3">Reviews</h3>

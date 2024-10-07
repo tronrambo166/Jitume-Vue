@@ -736,6 +736,11 @@ sessionStorage.setItem("purpose", "One time unlock - Small fee");
                 </div>
               )}
 
+              {allowToReview && conv && <div class="w-75 mx-auto row">
+                <h4 class="bg-green text-white p-3 rounded">Business is comepleted!</h4>
+                </div>
+              }
+
             
           </div>
            )}
@@ -798,11 +803,13 @@ sessionStorage.setItem("purpose", "One time unlock - Small fee");
                 <span className="text-dark small d-block">Are you sure you want to use one of your {subscribeData.tokenLeft} business information tokens?</span>
               </p>
             )}
-            {subscribeData.token_left === 0 && (
+
+            {subscribeData.token_left === 0 ?  (
               <p className="text-dark mb-3 text-center">
                 Please use <b>'Small fee'</b> option to unlock
+                <br></br>( {subscribeData.token_left} token left)
               </p>
-            )}
+            ):(
             <div className="flex flex-wrap gap-4 justify-center">
               {['silver', 'silver-trial', 'gold', 'gold-trial', 'platinum', 'platinum-trial'].includes(subscribeData.plan) && (
                 <button
@@ -820,6 +827,9 @@ sessionStorage.setItem("purpose", "One time unlock - Small fee");
                 No
               </button>
             </div>
+            )}
+
+
             {/*<p className="text-danger text-center">The business is not in your range!</p>*/}
           </div>
         )}

@@ -616,6 +616,8 @@ return response()->json([ 'data' => $milestones, 'done_msg' => $done_msg,
     $doc = Smilestones::where('id',$mile_id)->first();
     if($doc)
     $file=$doc->document;
+
+    if($file)
     if( $file == null || !file_exists(public_path($file)) ){
 
         return response('404');
@@ -826,7 +828,9 @@ $milestones = ServiceMileStatus::where('id',$request->id)
         $owner = User::where('id', $booking->service_owner_id)->first();
         $customer = User::where('id',$mile->booker_id)->first();
 
-        $info=[  'name'=>$mile->title,  'amount'=>$mile->amount, 'business'=>$business->name, 's_id' => $business->id,'booker_id' => $mile->booker_id, 'owner' => $owner->fname. ' '.$owner->lname ]; 
+        $info=[  'name'=>$mile->title,  'amount'=>$mile->amount, 'business'=>$business->name, 
+        's_id' => base64_encode(base64_encode($business->id))
+        ,'booker_id' => $mile->booker_id, 'owner' => $owner->fname. ' '.$owner->lname ]; 
 
         $user['to'] = $customer->email;//'sohaankane@gmail.com';
 
