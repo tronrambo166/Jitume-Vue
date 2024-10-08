@@ -164,8 +164,8 @@ class checkoutController extends Controller
       if($plan == 'platinum' && $days == 365) $price_id = 'price_1O7bhfJkjwNxIm6zMLsZZTGP';
 //
       $session = $this->Client->checkout->sessions->create([
-              //'/', https://test.jitume.com
-              'success_url' => "<?php echo config('app.api_url');?>stripeSubscribeSuccess?session_id={CHECKOUT_SESSION_ID}",
+              // https://test.jitume.com, http://127.0.0.1:8000
+              'success_url' => 'https://test.jitume.com/stripeSubscribeSuccess?session_id={CHECKOUT_SESSION_ID}',
               'cancel_url' => 'https://example.com/canceled.html',
               'mode' => 'subscription',
               'line_items' => [[

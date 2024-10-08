@@ -828,9 +828,7 @@ $milestones = ServiceMileStatus::where('id',$request->id)
         $owner = User::where('id', $booking->service_owner_id)->first();
         $customer = User::where('id',$mile->booker_id)->first();
 
-        $info=[  'name'=>$mile->title,  'amount'=>$mile->amount, 'business'=>$business->name, 
-        's_id' => base64_encode(base64_encode($business->id))
-        ,'booker_id' => $mile->booker_id, 'owner' => $owner->fname. ' '.$owner->lname ]; 
+        $info=[  'name'=>$mile->title,  'amount'=>$mile->amount, 'business'=>$business->name, 's_id' => $business->id,'booker_id' => $mile->booker_id, 'owner' => $owner->fname. ' '.$owner->lname ]; 
 
         $user['to'] = $customer->email;//'sohaankane@gmail.com';
 
@@ -1078,7 +1076,8 @@ $rating_count = 1 + $listing->rating_count;
         'user_id' => $user_id,
         'listing_id' => $id,
         'user_name' => Auth::user()->fname,
-        'text' => base64_decode($text),
+        'text' => mb_convert_encoding($text,
+         'UTF-8', 'UTF-8'),
         'rating' => $rating
        ]);
 

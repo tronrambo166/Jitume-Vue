@@ -193,9 +193,9 @@ const PaymentForm = () => {
                     .then(({ data }) => {
                         if (data.status == 200) {
                             alert(
-                                "Success, you will be notified if bid is accepted!"
+                                "Success!"
                             );
-                            navigate("/");
+                            navigate("/service-milestones/" + btoa(listing_id));
                         }
                         if (data.status == 400) alert(data.message);
                     })

@@ -13,6 +13,8 @@
 			<div class="" style="width:50%; margin:auto;">
 			<h4 style="color: #000000a1;font-family:  sans-serif;text-align:left;">  All Milestones are completed and {{$owner}} thanks you for your business! Please review</h4>
 
+			@php $s_id = base64_encode(base64_encode($s_id)); @endphp
+
 			<a target="_blank" href="<?php echo config('app.app_url');?>service-details/{{$s_id}}?review_popup=true" class="button continue" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Review</a>
 			
 			</div>

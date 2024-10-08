@@ -31,6 +31,7 @@ const ServiceDetails = () => {
     const [booked, setBooked] = useState("");
     const [allowToReview, setallowToReview] = useState(false);
     const [Contactmodal, setContactmodal] = useState("");
+    const [reviewData, setReviewData] = useState([]);
 
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false); // Authentication modal
 
@@ -119,9 +120,8 @@ const ServiceDetails = () => {
         return stars;
     };
 
-    //end rebook
 
-    //CORE METHODS
+//CORE METHODS
     let url = "";
     let url2 = "";
     useEffect(() => {
@@ -156,7 +156,9 @@ const ServiceDetails = () => {
                 .then(({ data }) => {
                     setMilestonesRes(data.data);
                     setallowToReview(data.allow);
-                    console.log(allowToReview);
+                    setReviewData(data.reviews);
+                    //console.log(allowToReview);
+                    console.log(data);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -308,13 +310,10 @@ const ServiceDetails = () => {
     setShowPopup(false); // Close the popup after submitting
 
       if(rating == 0){
-        $.alert({
-          title: 'Alert!',
-          content: 'A rating cannot be 0!',
-        });
+        alert('A rating cannot be 0!');
       }
       else{
-      axiosClient.get('ratingListing/' + form.listing_id + '/' + rating + '/' + review).then((data) => {
+      axiosClient.get('ratingService/' + form.service_id + '/' + rating + '/' + review).then((data) => {
         alert('Rating submitted successfully!');
         location.reload();;
       });
@@ -519,21 +518,8 @@ const ServiceDetails = () => {
 
                   <hr></hr>
 
-                  {/*{reviewData.map((item) => (
-                    <div className="mt-4">
-                    <img
-                      className="inline rounded-[50%]"
-                      src="https://via.placeholder.com/30"
-                      alt="User"
-                      width="30"
-                    />
-                    <p className="inline text-sm">
-                      <b className="text-green-700"> {item.user_name}</b> {item.text} &nbsp; {item.rating}
-                    </p>
-                  </div>
-                  ))}*/}
 
-        {/*{showPopup && (
+        {showPopup && (
         <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded shadow-md w-1/3">
             <h4 className="text-lg font-bold mb-4">Add Your Review</h4>
@@ -574,22 +560,23 @@ const ServiceDetails = () => {
             </form>
           </div>
         </div>
-      )}*/}
+      )}
 
                     <div className="my-4 text-left">
                         <h3 className="font-bold my-3">Reviews</h3>
-                        <div>
-                            <img
-                                className="inline rounded-[50%]"
-                                src="https://via.placeholder.com/30"
-                                alt="User"
-                                width="30"
-                            />
-                            <p className="inline text-sm">
-                                <b className="text-green-700"> Person </b>{" "}
-                                Lorem60
-                            </p>
-                        </div>
+                    {reviewData.map((item) => (
+                    <div className="mt-4">
+                    <img
+                      className="inline rounded-[50%]"
+                      src="https://via.placeholder.com/30"
+                      alt="User"
+                      width="30"
+                    />
+                    <p className="inline text-sm">
+                      <b className="text-green-700"> {item.user_name}</b> {item.text} &nbsp; {item.rating}
+                    </p>
+                  </div>
+                  ))}
                     </div>
                 </div>
             </div>

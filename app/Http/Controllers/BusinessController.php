@@ -1135,7 +1135,7 @@ public function assetEquip_download($id, $type){
       $results['subscribed'] = 0;
       return response()->json([ 'data' => $results, 'conv'=>$conv, 'count' => $count, 'reviews' => $reviews] );
     }
-      if($subs->plan == 'platinum' || $subs->plan == 'platinum-trial' || $subs->plan == 'silver-trial')
+      if($subs->plan == 'platinum' || $subs->plan == 'platinum-trial')
       $conv = true;
 
       $expire_date = date('Y-m-d',$stripe_sub->current_period_end);

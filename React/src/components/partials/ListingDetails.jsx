@@ -47,7 +47,7 @@ const ListingDetails = ({ onClose }) => {
   const [amount_r, setAmount_r] = useState('');
   const [running, setRunning] = useState(false);
   const [subscribeData, setSubscribeData] = useState('');
-  const [setRev, reviewData] = useState([]);
+  const [reviewData,setRev] = useState([]);
   const [isOpen, setIsOpen] = useState(true); // Popup is initially open
 
  
@@ -532,7 +532,7 @@ sessionStorage.setItem("purpose", "One time unlock - Small fee");
 
       <hr></hr>
 
-      {/*{reviewData.map((item) => (
+      {reviewData.map((item) => (
         <div className="mt-4">
         <img
           className="inline rounded-[50%]"
@@ -544,7 +544,7 @@ sessionStorage.setItem("purpose", "One time unlock - Small fee");
           <b className="text-green-700"> {item.user_name}</b> {item.text} &nbsp; {item.rating}
         </p>
       </div>
-      ))}*/}
+      ))}
 
       {showPopup && (
         <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -797,14 +797,19 @@ sessionStorage.setItem("purpose", "One time unlock - Small fee");
 
         {showSubs && (
           <div>
-            {subscribeData.token_left > 0 && subscribeData.plan == 'silver' && (
+            {subscribeData.token_left > 0 && subscribeData.plan != 'platinum' && (
               <p className="text-warning mb-3 text-center">
-                Your <span>{subscribeData.plan}</span> expires in <b>{subscribeData.expire}</b> days.
-                <span className="text-dark small d-block">Are you sure you want to use one of your {subscribeData.tokenLeft} business information tokens?</span>
+                Your <span>{subscribeData.plan} </span>
+
+                {subscribeData.plan =='silver-trial' && <b> ($9.99/mo after trial ends) </b>}
+                {subscribeData.plan =='gold-trial' && <b> ($29.99/mo after trial ends) </b>}
+                {subscribeData.plan =='platinum-trial' && <b> ($69.99/mo after trial ends) </b>}
+                 expires in <b>{subscribeData.expire}</b> days.
+                <span className="text-dark small d-block"> Are you sure you want to <br></br> use one of your {subscribeData.tokenLeft} business information tokens?</span>
               </p>
             )}
 
-            {subscribeData.token_left === 0 ?  (
+            {subscribeData.token_left <= 0 ?  (
               <p className="text-dark mb-3 text-center">
                 Please use <b>'Small fee'</b> option to unlock
                 <br></br>( {subscribeData.token_left} token left)
