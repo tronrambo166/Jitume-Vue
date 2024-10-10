@@ -203,6 +203,14 @@ const RegisterForm = () => {
         }));
     };
 
+    //SOCIAL
+    const facebook = (e) => {
+        window.location.href = 'http://127.0.0.1:8000/api/facebook/';
+    };
+    const google = (e) => {
+        window.location.href = 'http://127.0.0.1:8000/api/google/';
+    };
+
     return (
         <form className="flex flex-col px-4 py-4" onSubmit={handleSubmit}>
             <ToastContainer />
@@ -327,14 +335,14 @@ const RegisterForm = () => {
                     <div className="text-center mt-4">
                         <p className="text-sm text-gray-500">or sign up with</p>
                         <div className="flex justify-center mt-2 gap-4">
-                            <button
+                            <button onClick = {facebook}
                                 type="button"
                                 className="flex items-center gap-2 border border-gray-300 px-4 py-2 rounded-xl"
                             >
                                 <FaFacebook className="text-blue-600" />
                                 Facebook
                             </button>
-                            <button
+                            <button onClick = {google}
                                 type="button"
                                 className="flex items-center gap-2 border border-gray-300 px-4 py-2 rounded-xl"
                             >

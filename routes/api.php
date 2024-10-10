@@ -9,6 +9,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\checkoutController;
 use App\Http\Controllers\bidsEmailController;
+use App\Http\Controllers\socialController;
 //P R O T E C T E D    R O U T E S
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('logout',[AuthController::class,'logout']);
@@ -181,11 +182,11 @@ Route::get('priceFilter_amount/{min}/{max}/{ids}', [PagesController::class, 'pri
 //SOCIAL
 Route::get('social_login',function (){ return view('social_types'); })->name('social_login');
 Route::get('/google', function (){
-return Socialite::driver('google')->redirect(); })->name('login.google');
+return Socialite::driver('google')->stateless()->redirect(); })->name('login.google');
 Route::get('google/callback',[socialController::class, 'google']);
  
 Route::get('/facebook', function () {
-return Socialite::driver('facebook')->redirect(); })->name('login.facebook');
+return Socialite::driver('facebook')->stateless()->redirect(); })->name('login.facebook');
 Route::get('facebook/callback', [socialController::class, 'facebook']);
 Route::get('skip', [PagesController::class, 'skip'])->name('skip');
 

@@ -164,14 +164,15 @@ const [dropdowns, setDropdowns] = useState({
         try {
             // Prepare form data for submission
             const submitData = new FormData();
-            submitData.append("first_name", registrationData.fname); // First Name
-            submitData.append("middle_name", registrationData.mname || ""); // Optional Middle Name
-            submitData.append("last_name", registrationData.lname); // Last Name
+            submitData.append("fname", registrationData.fname); // First Name
+            submitData.append("mname", registrationData.mname || ""); // Optional Middle Name
+            submitData.append("lname", registrationData.lname); // Last Name
             submitData.append("email", registrationData.email); // Email
             submitData.append("password", registrationData.password); // Password
             submitData.append("id_no", registrationData.id_no); // ID/Passport Number
             submitData.append("tax_pin", registrationData.tax_pin); // Tax PIN
             submitData.append("id_passport", registrationData.id_passport); // Attached ID/Passport
+            submitData.append("confirmPassword", registrationData.confirmPassword);
             submitData.append("pin", registrationData.pin); // Attached PIN
             submitData.append(
                 "past_investment",
@@ -183,12 +184,14 @@ const [dropdowns, setDropdowns] = useState({
                 "interested_cats",
                 registrationData.interested_cats
             ); // Interested Categories
-
+console.log(registrationData);
             // Submit the registration data
             const { data } = await axiosClient.post("/register", submitData);
+            
             onClose();
         } catch (error) {
             setErrors({ general: "Registration failed. Please try again." });
+            console.log(error);
         } finally {
             setLoading(false); // Stop loading spinner
         }

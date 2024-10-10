@@ -20,14 +20,9 @@ class socialController extends Controller
 
      //Social Login
     public  function google(){
-       $user = Socialite::driver('google')->user(); 
+       $user = Socialite::driver('google')->stateless()->user(); 
         try { 
         $register = $this->patient_reg($user);
-
-        Session::put('investor_auth',true);
-        Session::put('social_reg',true);
-       // if($register == 'services' || $register == 'business' || $register == '/')
-        return redirect('business/index');
         }
          catch (Exception $e) {
             return $e->message();
@@ -36,16 +31,9 @@ class socialController extends Controller
     }
 
     public  function facebook(){ 
-        $user = Socialite::driver('facebook')->user();
-        try { 
-        
+        $user = Socialite::driver('facebook')->stateless()->user();
+        try { //return $user->name;
         $register = $this->patient_reg($user);
-        Session::put('investor_auth',true);
-        Session::put('social_reg',true);
-
-        //if($register == 'services' || $register == 'business' || $register == '/')
-        return redirect('business/index');
-
         }
          catch (Exception $e) {
             return $e->message();
@@ -57,8 +45,8 @@ class socialController extends Controller
 
     //PATIENTS
     public function patient_reg($hos)
-    {     
-      $name=explode(' ',$hos->name);
+    { 
+      $name=explode(' ',$hos->name); 
       $fname = $name[0];
       if (isset($name[2]))
       $lname = $name[1].' '.$name[2];
@@ -67,57 +55,36 @@ class socialController extends Controller
 
     if($email == null) {
         $email='test@gmail.com';
-        Session::put('email_err','You must have an email associated with the facebook id!'); return redirect('home');
+        echo "<script> alert('You must have an email associated with the facebook id!') </script>"; 
+        //redirect()->to(config('app.app_url'))->send();
     }
 
      $user= User::where('email', $email)->get(); 
-     if($user->count() >0 ) {
-     
-      if($user[0]['service'] ==1){ 
-          Session::put('service_email', $email);    
-          Session::put('service_auth',true);
-          return 'services';
-      }
-      else if($user[0]['business'] == 1){
-        Session::put('business_email', $email);    
-        Session::put('business_auth',true);
-        return 'business';
-      }
+     if($user->count() > 0 ) {
+          $token = $user->createToken('main')->plainTextToken;
+          redirect()->to(config('app.app_url').'?user='.json_encode($user).'&token='.$token)->send();
+     }
 
-      else if($user[0]['investor'] == 1){
-        Session::put('investor_email', $email);    
-        Session::put('investor_auth',true);
-        return '/';
-
-      } else {
-        Session::put('investor_email', $email);    
-        Session::put('investor_auth',true);
-
-        $user1 = User::where('email',$email)->first();
-        Auth::login($user1);
-
-
-      }
-
-      }
-      else{ 
+     else
+     { 
 
         try{
-          $user = User::create([
-          'fname' =>  $fname,
-          'lname' =>  $lname,
-          'email' =>  $email
-          ]);
+            $user = User::create([
 
-          Session::put('investor_email', $email);    
-          Session::put('investor_auth',true);
+                'fname'=> $fname,
+                'lname' => $lname,
+                'email' => $email,
+                'password'=> bcrypt('a123456789')
+             ]);
+             $token = 'a123456789';//$user->createToken('main')->plainTextToken;
 
-          $user1 = User::where('email',$email)->first();
-          Auth::login($user1);
-      }
-      catch (Exception $e) {
-            return $e->message();
-        }
+            redirect()->to(config('app.app_url').'?user='.json_encode($user).'&token='.$token)->send();
+            
+            // Auth::login($user1);
+         }
+         catch (Exception $e) {
+              return $e->message();
+          }
 
      }
 

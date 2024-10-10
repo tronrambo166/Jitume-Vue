@@ -49,7 +49,7 @@ const Navbar = () => {
         Services
       </Link>
       <Link
-  to="/dashboard"
+  to={location.pathname === '/services' ? 'dashboard/add-service' : 'dashboard/addbusiness'}
   className={`hover:text-green dark:hover:text-dark-green ${location.pathname === '/dashboard' ? 'underline decoration-2 underline-offset-4' : ''}`}
 >
   {location.pathname === '/services' ? 'Add Your Service' : 'Add Your Business'}

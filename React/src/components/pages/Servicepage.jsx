@@ -143,8 +143,7 @@ const Servicepage = () => {
                     <div className="relative">
                       <input ref={locationInputRef} 
                         id="searchbox"
-                         onKeyUp={getPlaces}
-                         id="searchbox"
+                        onKeyUp={getPlaces}
                         className="py-2 px-4 w-[220px] border border-gray-300 rounded-full focus:outline-none focus:ring-0 focus:border-transparent"
                         type="text"
                         name="search"
