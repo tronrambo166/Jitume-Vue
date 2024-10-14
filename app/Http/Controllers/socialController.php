@@ -61,7 +61,7 @@ class socialController extends Controller
 
      $user= User::where('email', $email)->get(); 
      if($user->count() > 0 ) {
-          $token = $user->createToken('main')->plainTextToken;
+          $token = 'a123456789';//$user->createToken('main')->plainTextToken;
           redirect()->to(config('app.app_url').'?user='.json_encode($user).'&token='.$token)->send();
      }
 

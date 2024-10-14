@@ -14,8 +14,7 @@ const Subscribepage = () => {
     const [frequency, setFrequency] = useState('monthly');
     const navigate = useNavigate();
     const { id } = useParams();
-
-      const [u_id, setid] = useState('');
+    const [u_id, setid] = useState('');
 
     const [amount, setAmount] = useState('0');
     const [range, setRange] = useState('all');

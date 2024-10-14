@@ -205,10 +205,12 @@ const RegisterForm = () => {
 
     //SOCIAL
     const facebook = (e) => {
-        window.location.href = 'http://127.0.0.1:8000/api/facebook/';
+        //window.location.href = 'http://127.0.0.1:8000/api/facebook/';
+        window.location.href = 'https://test.jitume.com/api/facebook/';
     };
     const google = (e) => {
-        window.location.href = 'http://127.0.0.1:8000/api/google/';
+        //window.location.href = 'http://127.0.0.1:8000/api/google/';
+        window.location.href = 'https://test.jitume.com/api/google/';
     };
 
     return (

@@ -9,6 +9,7 @@ import Invest from "../partials/Invest"
 import { useStateContext } from "../../contexts/contextProvider";
 import { useLocation, useSearchParams, useNavigate, useParams } from 'react-router-dom';
 import { useState, useRef, useEffect } from "react";
+import axiosClient from "../../axiosClient";
 
 
 const Homepage = () => {
@@ -17,43 +18,60 @@ const Homepage = () => {
   const [serverError, setServerError] = useState("");
 
   const token = searchParams.get('token');
-  const user = JSON.parse(searchParams.get('user'));
+  var user1 = searchParams.get('user');
+  const user = JSON.parse(user1);
   
   //Authenticate
-  const Authenticate = () => {
-        //e.preventDefault();
-  const payload = {
-            email: user.email,
+  const Authenticate = async (e) => {
+        if (e) e.preventDefault();
+
+        let email = user.email;
+        if(!email) 
+        email = user[0].email;
+
+        const payload = {
+            email: email,
             password: token,
         };
 
         try {
-            const { data } = axiosClient.post("/login", payload);
+            const { data } = await axiosClient.post("/login", payload);
             console.log("Login response data:", data);
+            
 
             if (data.auth) {
                 setUser(data.user);
                 setToken(data.token);
-                return;
+
             } else {
+                
                 setServerError(
                     data.message ||
                         "Login failed. Please check your credentials."
                 );
             }
         } catch (err) {
+            console.log(err);
             setServerError("An unexpected error occurred. Please try again.");
         }
       }
 
       useEffect(()=> {
-        if(user)
-          Authenticate();
+        if(token){
+            var link=document.createElement("a");
+            link.id = 'login'; //give it an ID!
+            document.getElementById('login').click();
+            
+        }
+        
+          
+
         }, [] );
   //console.log(token);
 
   return (
     <div>
+        <a id="login" onClick={Authenticate}> </a>
         <Herosection/>
         <Homesearch/>
         <CategoryLinks/>

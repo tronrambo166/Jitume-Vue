@@ -46,6 +46,7 @@ return [
     'google' => [
     'client_id' => env('GOOGLE_CLIENT_ID'),
     'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+    //'redirect' => config('app.api_url').'google/callback',
     'redirect' => env('GOOGLE_RDR'),
     ],
 
