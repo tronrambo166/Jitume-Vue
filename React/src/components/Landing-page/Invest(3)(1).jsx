@@ -3,18 +3,45 @@ import Image1 from "../../assets/image1.png";
 import Image2 from "../../assets/image2.png";
 import Image3 from "../../assets/image3.png";
 
+import axios from "axios";
+import { Link } from 'react-router-dom';
+import axiosClient from "../../axiosClient";
+import { FaChevronLeft, FaChevronRight ,FaMapPin} from 'react-icons/fa';
+  
 const Invest = () => {
-  const cards = Array(15)
-    .fill()
-    .map((_, i) => ({
-      img: [Image1, Image2, Image3][i % 3], // Cycle through the images
-      title: `Card Title ${i + 1}`,
-      tags: ["#Motorcycle Transport #Bike", "#Grocery Store", "#Farming #Crop"][
-        i % 3
-      ],
-      description:
-        "Lorem ipsum dolor sit amet consectetur. Eu quis vel pellentesque ullamcorper donec lorem auctor egestas adipiscing.",
-    }));
+
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const getCards = () => {
+      setLoading(true);
+      axiosClient.get('/latBusiness')
+        .then(({ data }) => {
+          setLoading(false);
+          setCards(data.data);
+          console.log(data)
+          
+        })
+        .catch(err => {
+          console.log(err);
+          setLoading(false);
+        });
+    };
+    getCards();
+  }, []);
+
+  // const cards = Array(15)
+  //   .fill()
+  //   .map((_, i) => ({
+  //     img: [Image1, Image2, Image3][i % 3], // Cycle through the images
+  //     title: `Card Title ${i + 1}`,
+  //     tags: ["#Motorcycle Transport #Bike", "#Grocery Store", "#Farming #Crop"][
+  //       i % 3
+  //     ],
+  //     description:
+  //       "Lorem ipsum dolor sit amet consectetur. Eu quis vel pellentesque ullamcorper donec lorem auctor egestas adipiscing.",
+  //   }));
 
   const scrollRef = useRef(null);
   const [canScrollBack, setCanScrollBack] = useState(false);
@@ -110,8 +137,8 @@ const Invest = () => {
               className="flex-shrink-0 w-[260px] sm:w-[320px] md:w-[350px] lg:w-[390px] bg-white border border-gray-200 rounded-2xl p-3 sm:p-4 flex flex-col justify-between"
             >
               <img
-                src={card.img}
-                alt={card.title}
+                src={card.image}
+                alt={card.name}
                 className="w-full h-40 sm:h-48 object-cover rounded-lg"
               />
               <div className="mt-3 flex-grow">
@@ -119,10 +146,10 @@ const Invest = () => {
                   {card.tags}
                 </p>
                 <h3 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold">
-                  {card.title}
+                  {card.name}
                 </h3>
                 <p className="text-sm sm:text-base text-gray-600 mt-2">
-                  {card.description}
+                  {card.details}
                 </p>
               </div>
               <div className="mt-4 bg-sky-50 p-3 rounded-lg">
