@@ -40,13 +40,13 @@ const Modal = ({ isOpen, onClose, token }) => {
         <div className="flex justify-center mb-4 text-sm">
           <button 
             onClick={() => setIsLogin(true)}
-            className={`px-4 py-2 ${isLogin ? 'underline text-green-500' : 'text-gray-700'} rounded-l-lg`}
+            className={`px-4 py-2 ${isLogin ? 'underline text-green' : 'text-gray-700'} rounded-l-lg`}
           >
             Sign in
           </button>
           <button 
             onClick={() => setIsLogin(false)}
-            className={`px-4 py-2 ${!isLogin ? 'underline text-green-500' : 'text-gray-700'} rounded-r-lg`}
+            className={`px-4 py-2 ${!isLogin ? 'underline text-green' : 'text-gray-700'} rounded-r-lg`}
           >
             Register
           </button>

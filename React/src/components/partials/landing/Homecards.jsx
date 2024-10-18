@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Link } from 'react-router-dom';
-import axiosClient from "../../axiosClient";
+import axiosClient from "../../../axiosClient";
 import { useState, useRef, useEffect } from 'react';
 import { FaChevronLeft, FaChevronRight ,FaMapPin} from 'react-icons/fa';
 

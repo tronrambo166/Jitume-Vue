@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import axiosClient from "../../axiosClient";
 
-import Footer from "../partials/footer";
-import Navbar from "../partials/Navbar";
+import Topsection from "../Landing-page/Topsection"
+import Footer from "../Landing-page/Footer"
 import Servicecards from "../partials/Service-cards";
 import banner from "../../images/banner.png";
 import Localservicesection from "./Localservicesection";

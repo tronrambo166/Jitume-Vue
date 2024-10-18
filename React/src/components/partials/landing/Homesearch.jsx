@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import axiosClient from "../../axiosClient";
+import axiosClient from "../../../axiosClient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faLocationDot,

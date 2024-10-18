@@ -1,4 +1,4 @@
-import frame from "../../images/frame.png";
+import frame from "../../../images/frame.png";
 const Invest = () => {
     return (
         <div>

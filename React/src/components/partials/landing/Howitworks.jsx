@@ -1,8 +1,8 @@
-import locationIcon from "../../images/location.png";
-import categoryIcon from "../../images/category.png";
-import locResultsIcon from "../../images/locresults.png";
-import chooseIcon from "../../images/choose.png";
-import growIcon from "../../images/grow.png";
+import locationIcon from "../../../images/location.png";
+import categoryIcon from "../../../images/category.png";
+import locResultsIcon from "../../../images/locresults.png";
+import chooseIcon from "../../../images/choose.png";
+import growIcon from "../../../images/grow.png";
 
 const HowItWorks = () => {
     const steps = [

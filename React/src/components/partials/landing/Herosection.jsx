@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import heroimg from "../../images/heroimg.png";
-import leftArrow from "../../images/left vector.png";
-import rightArrow from "../../images/right vector.png";
-import Modal from "./Authmodal"; // Ensure correct import
+import heroimg from "../../../images/heroimg.png";
+import leftArrow from "../../../images/left vector.png";
+import rightArrow from "../../../images/right vector.png";
+import Modal from "../Authmodal"; // Ensure correct import
 
 const Herosection = () => {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
