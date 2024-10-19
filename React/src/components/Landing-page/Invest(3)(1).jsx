@@ -132,6 +132,7 @@ const Invest = () => {
       >
         <div className="flex flex-nowrap space-x-4 pb-10">
           {cards.map((card, index) => (
+            <Link to={`/listing/${btoa(btoa(card.id))}`} key={card.id} >
             <div
               key={index}
               className="flex-shrink-0 w-[260px] sm:w-[320px] md:w-[350px] lg:w-[390px] bg-white border border-gray-200 rounded-2xl p-3 sm:p-4 flex flex-col justify-between"
@@ -155,7 +156,7 @@ const Invest = () => {
               <div className="mt-4 bg-sky-50 p-3 rounded-lg">
                 <div className="text-sm text-gray-800 flex justify-between mb-2">
                   <span>
-                    <span className="font-semibold">550K</span> <br />
+                    <span className="font-semibold">${card.investment_needed}</span> <br />
                     Goal
                   </span>
                   <span>
@@ -176,6 +177,7 @@ const Invest = () => {
                 </div>
               </div>
             </div>
+            </Link>
           ))}
         </div>
       </div>

@@ -34,17 +34,17 @@ const Search = () => {
   const [lat, setLat] = useState("");
   const [lng, setLng] = useState("");
 
-  const Search = (e) => {
+  const onSearch = (e) => {
         e.preventDefault();
         let ids = "";
         const payload = {
-            location: locationValue, // use state
-            category: categoryValue, // use state
-            listing_name: nameValue, // use state
+            location: locationInputRef.current.value,
+            category: categoryRef.current.value,
+            listing_name: nameRef.current.value, // use state
             lat: $("#lat").val(),
             lng: $("#lng").val(),
         };
-        //console.log(payload);
+        console.log(payload);
         axiosClient
             .post("/search", payload)
             .then(({ data }) => {
@@ -70,15 +70,16 @@ const Search = () => {
                 console.log(err);
             });
     };
+
     const handleNameChange = (event) => {
         setNameValue(event.target.value);
     };
     const handleCategoryChange = (event) => {
         setCategoryValue(event.target.value);
     };
-    // const handleLocationChange = (event) => {
-    //     setLocationValue(event.target.value);
-    // };
+    const handleLocationChange = (event) => {
+        setLocationValue(event.target.value);
+    };
 
     const getPlaces = (e) => {
         e.preventDefault();
@@ -116,10 +117,10 @@ const Search = () => {
                                     lat +
                                     "', '" +
                                     lng +
-                                    "');\" style=\"cursor: pointer; padding: 10px 15px; margin: 5px 0; border-bottom: 1px solid #ddd; background-color: #f9f9f9; transition: background-color 0.3s ease;\" data-id=\"" +
+                                    "');\" style=\"cursor: pointer; padding: 10px 15px; margin: 1px 0; border-bottom: 1px solid #ddd; background-color: #f9f9f9; transition: background-color 0.3s ease;\" data-id=\"" +
                                     name +
-                                    "\" class=\"address single_comms\"> " +
-                                    "<p class=\"h6 small text-dark d-inline\" style=\"font-size: 16px; margin: 0; display: flex; align-items: center;\"><span style=\"margin-right: 8px; display: inline-flex; align-items: center;\">" +
+                                    "\" class=\"address rounded single_comms\"> " +
+                                    "<p class=\"h6 rounded small text-dark d-inline\" style=\"font-size: 16px; margin: 0; display: flex; align-items: center;\"><span style=\"margin-right: 8px; display: inline-flex; align-items: center;\">" +
                                     "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\" width=\"16\" height=\"16\" fill=\"black\"><path d=\"M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z\"/></svg>" +
                                     "</span>" +
                                     name +
@@ -142,10 +143,10 @@ const Search = () => {
                                     lat +
                                     "', '" +
                                     lng +
-                                    "');\" style=\"cursor: pointer; padding: 10px 15px; margin: 5px 0; border-bottom: 1px solid #ddd; background-color: #ffffff; transition: background-color 0.3s ease;\" data-id=\"" +
+                                    "');\" style=\"cursor: pointer; padding: 10px 15px; margin: 1px 0; border-bottom: 1px solid #ddd; background-color: #ffffff; transition: background-color 0.3s ease;\" data-id=\"" +
                                     name +
-                                    "\" class=\"address single_comms\"> " +
-                                    "<p class=\"small h6 text-dark d-inline\" style=\"font-size: 16px; margin: 0; display: flex; align-items: center;\"><span style=\"margin-right: 8px; display: inline-flex; align-items: center;\">" +
+                                    "\" class=\"rounded address single_comms\"> " +
+                                    "<p class=\"small h6 rounded text-dark d-inline\" style=\"font-size: 16px; margin: 0; display: flex; align-items: center;\"><span style=\"margin-right: 8px; display: inline-flex; align-items: center;\">" +
                                     "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\" width=\"16\" height=\"16\" fill=\"black\"><path d=\"M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z\"/></svg>" +
                                     "</span>" +
                                     name +
@@ -174,20 +175,20 @@ const Search = () => {
 
 
   // NEW Mock function to simulate fetching suggestions
-  const handleLocationChange = (e) => {
-    const value = e.target.value;
-    setLocation(value);
-    if (value.length > 2) {
-      setSuggestions(["New York", "Los Angeles", "San Francisco", "Seattle"]); // Example data
-    } else {
-      setSuggestions([]);
-    }
-  };
+  // const handleLocationChange = (e) => {
+  //   const value = e.target.value;
+  //   setLocation(value);
+  //   if (value.length > 2) {
+  //     setSuggestions(["New York", "Los Angeles", "San Francisco", "Seattle"]); // Example data
+  //   } else {
+  //     setSuggestions([]);
+  //   }
+  // };
 
-  const handleSuggestionClick = (suggestion) => {
-    setLocation(suggestion);
-    setSuggestions([]);
-  };
+  // const handleSuggestionClick = (suggestion) => {
+  //   setLocation(suggestion);
+  //   setSuggestions([]);
+  // };
 
   return (
     <div className="flex justify-center px-4 sm:px-0">
@@ -196,13 +197,42 @@ const Search = () => {
         <div className="flex flex-col sm:flex-row items-center h-auto sm:h-16 p-2 sm:p-0">
           {/* Categories Dropdown */}
           <div className="relative bg-white rounded-xl flex items-center h-12 sm:h-full w-full sm:w-1/4 mb-2 sm:mb-0">
-            <select className="border rounded-l-xl h-full focus:outline-none text-gray-500 w-full pl-3 pr-8">
-              <option value="">All Categories</option>
-              <option value="category1">Category 1</option>
-              <option value="category2">Category 2</option>
-              {/* Add more options as needed */}
+            <select ref={categoryRef}
+                        value={categoryValue} // controlled value
+                        onChange={handleCategoryChange} // handle change
+                        className="border rounded-l-xl h-full focus:outline-none text-gray-500 w-full pl-3 pr-8">
+                        <option className="text-gray-400" value="">
+                            Select a category
+                        </option>
+                        <option value="Agriculture">Agriculture</option>
+                        <option value="Arts/Culture">Arts/Culture</option>
+                        <option value="Auto">Auto</option>
+                        <option value="Domestic (Home Help etc)">
+                            Domestic (Home Help etc)
+                        </option>
+                        <option value="Fashion">Fashion</option>
+                        <option value="Finance/Accounting">
+                            Finance/Accounting
+                        </option>
+                        <option value="Food">Food</option>
+                        <option value="Legal">Legal</option>
+                        <option value="Media/Internet">Media/Internet</option>
+                        <option value="Other">Other</option>
+                        <option value="Pets">Pets</option>
+                        <option value="Real State">Real State</option>
+                        <option value="Retail">Retail</option>
+                        <option value="Security">Security</option>
+                        <option value="Sports/Gaming">Sports/Gaming</option>
+                        <option value="Technology/Communications">
+                            Technology/Communications
+                        </option>
             </select>
           </div>
+
+          {/* Hidden inputs for latitude and longitude */}
+            <input type="text" name="lat" id="lat" hidden value={lat} onChange={(e) => setLat(e.target.value)} />
+            <input type="text" name="lng" id="lng" hidden value={lng} onChange={(e) => setLng(e.target.value)} />
+
 
           {/* Separator Line (hidden on small screens) */}
           <div className="hidden sm:block h-10 border-l border-gray-300 mx-0"></div>
@@ -211,13 +241,19 @@ const Search = () => {
           <div className="relative w-full sm:w-1/4 h-12 sm:h-full mb-2 sm:mb-0">
             <FaMapMarkerAlt className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" />
             <input
+              onKeyUp={getPlaces}
+              id="searchbox"
               type="text"
               placeholder="Location"
+              ref={locationInputRef}
               className="border rounded-xl h-full focus:outline-none w-full pl-8"
-              value={location}
-              onChange={handleLocationChange}
+              // value={location}
+              // onChange={handleLocationChange}
             />
+
             {/* Suggestions Dropdown */}
+            <div
+                id="result_list" className="">
             {suggestions.length > 0 && (
               <ul className="absolute z-10 bg-white border border-gray-200 rounded-lg w-full mt-1 max-h-40 overflow-y-auto">
                 {suggestions.map((suggestion, index) => (
@@ -232,6 +268,8 @@ const Search = () => {
                 ))}
               </ul>
             )}
+            </div>
+
           </div>
 
           {/* Separator Line (hidden on small screens) */}
@@ -244,11 +282,15 @@ const Search = () => {
               type="text"
               placeholder="What are you looking for?"
               className="border rounded-xl h-full focus:outline-none w-full pl-8"
-            />
+              ref={nameRef}
+                    value={nameValue} // controlled value
+                    onChange={handleNameChange}
+                    />
           </div>
 
           {/* Search Button */}
-          <button className="bg-[#FDE047] text-black rounded-lg h-12 sm:h-full py-2 px-4 w-full sm:w-auto">
+          <button
+          onClick={onSearch} className="bg-[#FDE047] text-black rounded-lg h-12 sm:h-full py-2 px-4 w-full sm:w-auto">
             Search in
           </button>
         </div>

@@ -81,7 +81,9 @@
 }
 #result_list{
   left: 556px;
-  top: 722px
+  top: 722px;
+  position: sticky;
+  z-index: 1000;
 }
 .small{
 font-size: 14px
