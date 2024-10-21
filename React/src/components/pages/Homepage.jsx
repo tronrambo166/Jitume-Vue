@@ -8,12 +8,12 @@ import WhyChoose from "../Landing-page/WhyChoose(1)(1)"
 const Homepage = () => {
   return (
     <div>
-<Topsection/>
+{/*<Topsection/>*/}
 <Invest/>
 <WhyChoose/>
 <Explore/>
-    <HowItWorks/>
-    <Footer/> 
+<HowItWorks/>
+{/*<Footer/> */}
 
     </div>
   )

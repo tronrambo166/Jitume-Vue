@@ -15,10 +15,14 @@ export default function DefaultLayout() {
 
   return (
     <div id="defaultLayout" className="relative z-20">
+      
       {/*{!token ? <Navbar /> : <Navbar />}*/}
+      <Topsection/>
       <main>
         <Outlet />
       </main>
+      <Footer/> 
+
       {/* Conditionally render Footer */}
       {/*{!isDashboardRoute && <Footer />}*/}
     </div>

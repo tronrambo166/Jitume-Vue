@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Chevron icon import
+import { Link } from 'react-router-dom';
 
 const categories = [
   "Agriculture",
@@ -100,7 +101,7 @@ const HorizontalInfiniteScroll = () => {
               key={index}
               className="category-item mx-2 text-xs sm:text-sm md:text-base lg:text-base border border-white rounded-full py-1 px-3 sm:py-1.5 sm:px-4 md:py-2 md:px-5 lg:py-2 lg:px-6 text-white cursor-pointer whitespace-nowrap transition-all ease-in-out duration-700"
             >
-              {category}
+              <Link to={"/category/"+category} > {category} </Link>
             </div>
           ))}
           {visibleCategories.map((category, index) => (
