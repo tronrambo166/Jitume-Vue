@@ -6,7 +6,7 @@ import Listings from './Listings'
 const businessreults = () => {
   return (
     <div className='w-full h-screen'>
-        <Nav2/>
+        {/*<Nav2/>*/}
         <Listings/>
         <BsCard/>
         <Footer2/>

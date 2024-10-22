@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import logo from "../../images/logo.png";
-import fb from "../../images/fb2.png";
+import logo from "../../../images/logo.png";
+import fb from "../../../images/fb2.png";
 import { FaInstagram } from 'react-icons/fa';
-import x from "../../images/x2.png";
-import linkedin from "../../images/linkedin.png";
-import down from '../../images/down.png'; // Include your dropdown arrow image
+import x from "../../../images/x2.png";
+import linkedin from "../../../images/linkedin.png";
+import down from '../../../images/down.png'; // Include your dropdown arrow image
 
 const Footer2 = () => {
   const [openDropdown, setOpenDropdown] = useState(null);

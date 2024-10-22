@@ -5,13 +5,21 @@ import {
   AiOutlineMenu,
   AiOutlineClose,
 } from "react-icons/ai";
-import logo from "../../images/logo2.png";
-import down from "../../images/down.png";
+import logo from "../../../images/logo2.png";
+import down from "../../../images/down.png";
 import { FaChevronDown } from "react-icons/fa";
+import Modal from '../../partials/Authmodal';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import CreateInvAccountModal from "../../partials/CreateInvAccount";
+import { useStateContext } from '../../../contexts/contextProvider'
+import axiosClient from "../../../axiosClient";
+
 
 const Nav2 = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isCreateInvModalOpen, setIsCreateInvModalOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -62,10 +70,11 @@ const Nav2 = () => {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center font-medium xl:text-[15px] lg:text-[13px] text-[#475569] flex-grow justify-center">
           <div className="ml-[120px] flex items-center gap-[55px]">
-            <a href="#" className="group relative hover:text-green-500">
+            <Link
+            to="/home" className="group relative hover:text-green-500">
               Home
               <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-green-500 transition-all duration-300 group-hover:w-full"></span>
-            </a>
+            </Link>
 
             <div
               className="relative inline-block group"
@@ -87,24 +96,24 @@ const Nav2 = () => {
                   id="dropdown" // Added ID for the dropdown
                   className="absolute z-50 bg-gray-100 space-y-2 text-black w-[250px] h-[130px] mb-2 mt-2 rounded shadow-lg"
                 >
-                  <a
-                    href="#"
+                 <Link
+                  to="/services"
                     className="block px-4 py-2 font-medium hover:bg-gray-300"
                   >
                     Service 1
-                  </a>
-                  <a
-                    href="#"
+                  </Link>
+                  <Link
+                  to="/services"
                     className="block px-4 py-2 font-medium hover:bg-gray-300"
                   >
                     Service 2
-                  </a>
-                  <a
-                    href="#"
+                  </Link>
+                  <Link
+                  to="/services"
                     className="block px-4 py-2 font-medium hover:rounded-b hover:bg-gray-200"
                   >
                     Service 3
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>
@@ -125,7 +134,7 @@ const Nav2 = () => {
             Create investor account
             <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-green-500 transition-all duration-300 group-hover:w-full"></span>
           </a>
-          <button className="bg-black py-2 hover:bg-green-700 hover:text-green-100 rounded-[8px] xl:text-[15px] text-[13px] px-5 font-semibold text-white ">
+          <button onClick={() => setIsAuthModalOpen(true)} className="bg-black py-2 hover:bg-green-700 hover:text-green-100 rounded-[8px] xl:text-[15px] text-[13px] px-5 font-semibold text-white ">
             Sign in
           </button>
         </div>
@@ -208,6 +217,16 @@ const Nav2 = () => {
           </div>
         </div>
       </div>
+
+      <Modal
+                isOpen={isAuthModalOpen}
+                onClose={() => setIsAuthModalOpen(false)}
+            />
+            <CreateInvAccountModal
+                isOpen={isCreateInvModalOpen}
+                onClose={() => setIsCreateInvModalOpen(false)}
+            />
+
     </div>
   );
 };

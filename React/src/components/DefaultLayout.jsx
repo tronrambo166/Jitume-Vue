@@ -4,6 +4,7 @@ import axiosClient from "../axiosClient";
 import Topsection from "./Landing-page/Topsection"
 import Footer from "./Landing-page/Footer"
 import Navbar from "./Landing-page/Navbar"
+import Nav2 from './Landing-page/global/Nav2'
 
 import NavbarGuest from './partials/NavbarGuest';
 import Navbar_old from './partials/Navbar';
@@ -12,12 +13,15 @@ export default function DefaultLayout() {
   const { token } = useStateContext();
   const location = useLocation();
   const isDashboardRoute = location.pathname.startsWith('/dashboard');
+  const isHome = location.pathname.startsWith('/home');
 
   return (
     <div id="defaultLayout" className="relative z-20">
       
-      {/*{!token ? <Navbar /> : <Navbar />}*/}
-      <Topsection/>
+      {/*{!token ? <Nav2 /> : <Navbar />}*/}
+
+      {/*{!isHome ? <Nav2 /> : <Topsection />}*/}
+      {(window.location.pathname === '/' || window.location.pathname === '/home') ? <Topsection /> : <Nav2 /> }
       <main>
         <Outlet />
       </main>
