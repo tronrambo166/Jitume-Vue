@@ -133,7 +133,7 @@ public function artists()
 
 public function users()
     {       
-    $users= visitors::get();
+    $users= User::get();
     return view('admin.users', compact('users'));       
     }
 
@@ -267,13 +267,13 @@ if(password_verify($password, $db_password)) {
     Session::put('admin','Logged!'); 
     return redirect('admin/index_admin'); }
 else{
-    Session::put('log_err','Password wrong!'); return redirect()->back();
+    Session::put('auth_failed','Password wrong!'); return redirect()->back();
    
 
 }
     }
 
-      Session::put('log_err','User dont exist!'); return redirect()->back();
+      Session::put('auth_failed','User dont exist!'); return redirect()->back();
   }
   catch(\Exception $e){
       Session::put('exception',$e->getMessage());

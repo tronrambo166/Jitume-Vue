@@ -12,6 +12,10 @@
 							<div class="login-right-wrap">
 								<h1>Admin Login</h1>
 								<p class="account-subtitle">Access to our dashboard</p>
+
+								@if(Session::has('auth_failed'))
+								<p class="bg-light account-subtitle text-warning">{{Session::get('auth_failed')}} !</p>
+								@endif
 								
 								<!-- Form -->
 								<form action="{{route('adminLogin')}}"  method="post"> @csrf
@@ -22,7 +26,7 @@
 										<input name="password"class="form-control" type="password" placeholder="Password">
 									</div>
 									<div class="form-group">
-										<button class="btn btn-primary btn-block" type="submit">Login</button>
+										<button style="background: darkseagreen;" class="btn btn-block font-weight-bold" type="submit">Login</button>
 									</div>
 								</form>
 								<!-- /Form -->

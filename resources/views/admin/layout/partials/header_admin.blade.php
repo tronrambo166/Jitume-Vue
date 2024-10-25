@@ -7,10 +7,10 @@
 			<!-- Logo -->
 			<div class="header-left">
 				<a href="index_admin" class="logo">
-					<img src="../assets_admin/img/logo.png" alt="Logo">
+					<img src="../../images/logo2.png" alt="Logo">
 				</a>
 				<a href="index_admin" class="logo logo-small">
-					<img src="../assets_admin/img/logo-small.png" alt="Logo" width="30" height="30">
+					<img src="../../images/logo2.png" alt="Logo" width="30" height="30">
 				</a>
 			</div>
 			<!-- /Logo -->

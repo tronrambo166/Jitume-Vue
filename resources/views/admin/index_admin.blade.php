@@ -34,7 +34,7 @@
 										</div>
 									</div>
 									<div class="dash-widget-info">
-										<h6 class="text-muted">Doctors</h6>
+										<h6 class="text-muted">Users</h6>
 										
 									</div>
 								</div>
@@ -53,13 +53,13 @@
 									</div>
 									<div class="dash-widget-info">
 										
-										<h6 class="text-muted">Patients</h6>
+										<h6 class="text-muted">Listings</h6>
 										
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-3 col-sm-6 col-12">
+						<!-- <div class="col-xl-3 col-sm-6 col-12">
 							<div class="card">
 								<div class="card-body">
 									<div class="dash-widget-header">
@@ -78,7 +78,7 @@
 								</div>
 							</div>
 						</div>
-
+ -->
 
 
 						

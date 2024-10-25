@@ -47,7 +47,7 @@ Route::group([ 'prefix' => 'admin'], function(){
         Route::get('/artists', [adminController::class,'artists'])->name('artistsList');
         Route::get('/approve/{id}', [adminController::class,'approve'])->name('approve');
         Route::get('/restrict/{id}', [adminController::class,'restrict'])->name('restrict');
-        Route::get('/del_artist/{id}', [adminController::class,'del_artist'])->name('del_artist');
+        Route::get('/del_users/{id}', [adminController::class,'del_artist'])->name('del_users');
         Route::get('/remove_song/{id}', [adminController::class,'remove_song'])->name('remove_song');
       
         Route::get('/users', [adminController::class,'users'])->name('users');   

@@ -26,7 +26,6 @@ import ReviewList from "./moduleParts/ReviewList";
 import PaginationComponent from "./moduleParts/PaginationControls";
 import Footer from "../Landing-page/global/Footer2";
 import Nav2 from "../Landing-page/global/Nav2";
-
 const ListingDetails = ({ onClose }) => {
     const { token, setUser, setAuth, auth } = useStateContext();
     const [loading, setLoading] = useState(false);
@@ -603,8 +602,8 @@ const ListingDetails = ({ onClose }) => {
     const Popup = ({ isOpen, onClose }) => {
         if (!isOpen) return null;
         return (
-            <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-                <div className="bg-white p-4 rounded-lg shadow-lg w-[450px]">
+            <div className="relative flex flex-col md:flex-row justify-start items-start py-4 lg:py-8 mt-3 pl-0 pr-0 w-full">
+                <div className="gap-16 w-full flex flex-col md:flex-row">
                     <h2 className="text-xl font-bold mb-4">
                         Financial Statements
                     </h2>
@@ -628,18 +627,19 @@ const ListingDetails = ({ onClose }) => {
             {/*      <div className=' list w-full h-auto'>
 <img src={bannerframe} alt="" />
         </div>*/}
+           {/* <Nav2 />*/}
 
-            <div className="container mx-auto flex flex-col md:flex-row justify-start items-start py-4 lg:py-8 mt-3 pl-0 pr-0 w-full">
-                <div className="px-4 md:px-6 lg:px-8 xl:px-12  gap-16  w-full flex flex-col md:flex-row items-start">
-                    {/* <div className="md:w-1/3 px-4 md:px-6 lg:px-8"> */}{" "}
-                    {/* Reduced gap */}
-                    <div className="md:w-2/5 px-6">
-                        <h2 className="bg-yellow-300 text-sm px-4 py-2 inline-block rounded-full font-semibold">
+            <div className="flex flex-col md:flex-row  justify-start items-start py-4 lg:py-8 mt-3 w-full px-4 md:px-6 lg:px-8">
+                <div className="w-full flex ml-1 md:space-x-6  flex-col md:flex-row gap-4 md:gap-6 lg:gap-8">
+                    {/* Left Section */}
+                    <div className="md:w-1/2 ">
+                        <h2 className="bg-yellow-300 text-sm px-4 py-2 inline-block mb-4 rounded-full font-semibold">
                             • More business information
                         </h2>
-                        <p className="text-2xl md:text-4xl font-bold text-[#334155]">
+                        <p className="text-xl md:text-2xl lg:text-4xl font-bold text-[#334155]">
                             {details.name}
                         </p>
+
                         <div className="flex items-center font-semibold gap-2 text-[#1E293B]">
                             <p className="mb-2 pt-4">#Shop</p>
                             <p className="mb-2 pt-4">#Grocery Store</p>
@@ -652,6 +652,7 @@ const ListingDetails = ({ onClose }) => {
                             dolore magna aliqua. Ut enim ad minim veniam, quis
                             nostrud exercitation ullamco laboris nisi ut aliquip
                         </p>
+
                         <div className="mb-4 py-2 flex flex-col gap-2">
                             <p className="flex items-center text-gray-700">
                                 <FaMapMarkerAlt className="mr-2 text-lg text-gray-500" />
@@ -662,32 +663,31 @@ const ListingDetails = ({ onClose }) => {
                                 Contact: (123) 456-7890
                             </p>
                         </div>
+
                         <div className="flex items-center pb-3 gap-1">
-                            <p className="text-green-800 text-2xl md:text-3xl font-semibold">
+                            <p className="text-green-800 text-2xl md:text-lg font-semibold">
                                 $5000
                             </p>
-                            <p className="text-gray-800 text-sm ">
-                                /Amount Requested:
+                            <p className="text-gray-800 text-sm">
+                                 Amount Requested:
                             </p>
                         </div>
+
                         <div className="flex gap-2">
-                            <div className="flex w-full items-center gap-10">
+                            <div className="flex  items-center gap-10">
                                 {token && !conv ? (
                                     <a
                                         onClick={handleOpen}
-                                        className="bg-green-800 hover:bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap"
+                                        className="bg-green hover:bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap"
                                     >
-                                        <FaLock
-                                            // icon={faLock}
-                                            className="mr-2"
-                                        />
+                                        <FaLock className="mr-2" />
                                         Unlock To Invest
                                     </a>
                                 ) : token && conv ? (
                                     "Unlocked!"
                                 ) : (
                                     <a
-                                        onClick={() => setIsModalOpen(true)} // Opens the modal
+                                        onClick={() => setIsModalOpen(true)}
                                         className="bg-black hover:bg-gray-700 w-1/2 text-sm text-center rounded-full text-white py-[6px] cursor-pointer"
                                     >
                                         <FontAwesomeIcon
@@ -698,23 +698,19 @@ const ListingDetails = ({ onClose }) => {
                                     </a>
                                 )}
                             </div>
-                        </div>
-                        <div>
-                            <p className="  flex gap-2  whitespace-nowrap items-center py-2 px-1 mr-8 text-[#1E293B] text-[18px]">
-                                {/* <FontAwesomeIcon
-                                    icon={faExclamationCircle}
-                                    className="text-sm text-black font-bold mr-1"
-                                /> */}
-                                Unlock this business to learn <br></br> more
-                                about it and invest
-                            </p>
+
+                            <div>
+                                <p className="flex gap-2 whitespace-nowrap items-center py-2 px-1 mr-8 text-[#1E293B] text-[14px] md:text-[16px]">
+                                    Unlock this business to learn <br /> more
+                                    about it and invest
+                                </p>
+                            </div>
                         </div>
 
                         <div className="my-4 text-left">
-                            {/* <h3 className="font-bold my-3">Reviews </h3> */}
                             {allowToReview && conv && (
                                 <button
-                                    className="flex items-center space-x-2    py-2 rounded"
+                                    className="flex items-center space-x-2 py-2 rounded"
                                     onClick={togglePopup}
                                 >
                                     <FaPlusCircle className="text-green" />
@@ -722,10 +718,10 @@ const ListingDetails = ({ onClose }) => {
                                 </button>
                             )}
 
-                            <hr></hr>
+                            <hr />
 
                             {reviewData.map((item) => (
-                                <div className="mt-4">
+                                <div className="mt-4" key={item.user_name}>
                                     <img
                                         className="inline rounded-[50%]"
                                         src="https://via.placeholder.com/30"
@@ -734,7 +730,6 @@ const ListingDetails = ({ onClose }) => {
                                     />
                                     <p className="inline text-sm">
                                         <b className="text-green-700">
-                                            {" "}
                                             {item.user_name}
                                         </b>{" "}
                                         {item.text} &nbsp; {item.rating}
@@ -743,7 +738,7 @@ const ListingDetails = ({ onClose }) => {
                             ))}
 
                             {showPopup && (
-                                <div className="fixed z-50 inset-0 flex items-center justify-center bg-black  bg-opacity-50">
+                                <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50">
                                     <div className="bg-white p-6 rounded shadow-md w-1/3">
                                         <h4 className="text-lg font-bold mb-4">
                                             Add Your Review
@@ -794,13 +789,42 @@ const ListingDetails = ({ onClose }) => {
                             )}
                         </div>
                     </div>
-                    <div>
-                        <div className="relative">
+
+                    {/* Right Section (Image) */}
+                    <div className="md:w-1/2  flex justify-end">
+                        <div className="sticky top-0 mr-4 lg:mr-6 ">
+                            {/* Image */}
                             <img
-                                className="w-full h-[300px] mt-2 md:h-[450px] object-cover rounded-[24px]"
+                                className="object-cover rounded-[24px]"
+                                style={{
+                                    height: "480px",
+                                    width: "690px",
+                                }}
                                 src={"../" + details.image}
                                 alt="Business"
                             />
+
+                            {/* Details below the image */}
+                            <div className="w-full md:w-auto py-3 flex flex-col text-right mt-4">
+                                <div className="text-black font-bold mb-2">
+                                    Amount Requested:{" "}
+                                    <span className="font-semibold text-green-700">
+                                        ${amount_r}
+                                    </span>
+                                </div>
+
+                                <div className="flex items-center justify-end gap-2 text-right mb-2">
+                                    <span className="text-yellow-400">
+                                        {renderStars(details.rating)}
+                                    </span>
+                                    <span>({details.rating})</span>
+                                </div>
+
+                                <div className="text-gray-500 text-sm">
+                                    {details.rating_count} Ratings
+                                </div>
+                            </div>
+
                             {/* <div className="absolute bottom-0 left-0 w-full bg-gray-800 rounded- bg-opacity-60 rounded-b-lg text-white text-center py-2">
                                 <p className="flex items-center justify-center">
                                     <FontAwesomeIcon
@@ -810,24 +834,7 @@ const ListingDetails = ({ onClose }) => {
                                     {details.location}
                                 </p>
                             </div> */}
-                        </div>
-                        <div className="w-full py-3 flex flex-col text-right">
-                            <div className="text-black font-bold mb-2">
-                                Amount Requested:{" "}
-                                <span className="font-semibold text-green-700">
-                                    ${amount_r}
-                                </span>
-                            </div>
-                            <div className="flex items-center justify-end gap-4 text-right mb-2">
-                                <span className="text-yellow-400">
-                                    {renderStars(details.rating)}
-                                </span>
-                                <span>({details.rating})</span>
-                            </div>
 
-                            <div className="text-gray-500 text-sm">
-                                {details.rating_count} Ratings
-                            </div>
                             {/* <div className={`${conv && token ? "hidden" : "card mx-auto my-4 max-w-md p-6 rounded-lg shadow-lg bg-white"}`}>
               <h4 className="text-2xl font-semibold border-b-2 border-gray-200 pb-4 mb-4">
                 Business Home Windows
@@ -1030,9 +1037,9 @@ const ListingDetails = ({ onClose }) => {
                 onClose={closeUnlockPopup}
             />
 
-            <div className="px-[34px]">
+            <div className="px-[12px]">
                 <div className="p-4 sm:p-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-3  sm:gap-8">
                         {/* On mobile, ReviewSummary takes up full width, on larger screens it takes 1/3 */}
                         <div className="sm:col-span-1">
                             <ReviewSummary />
@@ -1072,7 +1079,7 @@ const ListingDetails = ({ onClose }) => {
                             )}
                         </div>
 
-                        {/* On mobile, ReviewList takes up full width, on larger screens it takes 2/3 */}
+                        {/* ReviewList */}
                         <div className="sm:col-span-2">
                             <ReviewList reviews={currentReviews} />
                             <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
@@ -1212,7 +1219,7 @@ const ListingDetails = ({ onClose }) => {
                         )}
                         {allowToReview && conv && (
                             <div className="w-75 mx-auto row">
-                                <h4 className="bg-green-600 text-white p-3 rounded">
+                                <h4 className="bg-green text-white p-3 rounded">
                                     Business is completed!
                                 </h4>
                             </div>
