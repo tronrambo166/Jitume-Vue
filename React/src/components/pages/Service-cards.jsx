@@ -1,51 +1,30 @@
 import React, { useRef, useState, useEffect } from "react";
-import Image1 from "../../assets/image1.png";
-import Image2 from "../../assets/image2.png";
-import Image3 from "../../assets/image3.png";
-
-import axios from "axios";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi"; // Import icons
 import { Link } from "react-router-dom";
 import axiosClient from "../../axiosClient";
-import { FaChevronLeft, FaChevronRight, FaMapPin } from "react-icons/fa";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
-const Invest = () => {
+const Servicecards = () => {
     const [cards, setCards] = useState([]);
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        const getCards = () => {
-            setLoading(true);
-            axiosClient
-                .get("/latBusiness")
-                .then(({ data }) => {
-                    setLoading(false);
-                    setCards(data.data);
-                    console.log(data);
-                })
-                .catch((err) => {
-                    console.log(err);
-                    setLoading(false);
-                });
-        };
-        getCards();
-    }, []);
-
-    // const cards = Array(15)
-    //   .fill()
-    //   .map((_, i) => ({
-    //     img: [Image1, Image2, Image3][i % 3], // Cycle through the images
-    //     title: `Card Title ${i + 1}`,
-    //     tags: ["#Motorcycle Transport #Bike", "#Grocery Store", "#Farming #Crop"][
-    //       i % 3
-    //     ],
-    //     description:
-    //       "Lorem ipsum dolor sit amet consectetur. Eu quis vel pellentesque ullamcorper donec lorem auctor egestas adipiscing.",
-    //   }));
-
     const scrollRef = useRef(null);
     const [canScrollBack, setCanScrollBack] = useState(false);
     const [canScrollForward, setCanScrollForward] = useState(false);
+
+    useEffect(() => {
+        const getCards = async () => {
+            setLoading(true);
+            try {
+                const { data } = await axiosClient.get("/latServices");
+                setCards(data.data);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        getCards();
+    }, []);
 
     const checkScrollConditions = () => {
         if (scrollRef.current) {
@@ -57,15 +36,19 @@ const Invest = () => {
 
     const handleNext = () => {
         if (scrollRef.current) {
-            const { scrollLeft, clientWidth } = scrollRef.current;
-            scrollRef.current.scrollLeft = scrollLeft + clientWidth;
+            scrollRef.current.scrollBy({
+                left: scrollRef.current.clientWidth,
+                behavior: "smooth",
+            });
         }
     };
 
     const handlePrev = () => {
         if (scrollRef.current) {
-            const { scrollLeft, clientWidth } = scrollRef.current;
-            scrollRef.current.scrollLeft = scrollLeft - clientWidth;
+            scrollRef.current.scrollBy({
+                left: -scrollRef.current.clientWidth,
+                behavior: "smooth",
+            });
         }
     };
 
@@ -73,31 +56,26 @@ const Invest = () => {
         if (scrollRef.current) {
             checkScrollConditions();
             scrollRef.current.addEventListener("scroll", checkScrollConditions);
-            return () => {
-                if (scrollRef.current) {
-                    scrollRef.current.removeEventListener(
-                        "scroll",
-                        checkScrollConditions
-                    );
-                }
-            };
+            return () =>
+                scrollRef.current?.removeEventListener(
+                    "scroll",
+                    checkScrollConditions
+                );
         }
     }, []);
 
     return (
         <>
             <div className="w-full px-4 sm:px-6 lg:px-8 py-8 mt-10 flex flex-col">
-                {" "}
-                {/* Increased py-4 to py-8 */}
                 <div className="flex justify-start">
-                    <span className="text-black bg-yellow-400 px-2 py-1 rounded-full text-sm max-w-xs text-center">
-                        ∙ More than 50+
+                    <span className="text-black font-semibold bg-yellow-400 px-2 py-1 rounded-full text-sm max-w-xs text-center">
+                        ∙ Featured Listing
                     </span>
                 </div>
                 <div className="flex justify-between items-center mb-4 mt-2">
                     <h2 className="text-[28px] sm:text-[44px] font-bold text-slate-700 leading-snug sm:leading-tight">
-                        Invest in a promising
-                        <br /> new ventures
+                        Back the next wave of
+                        <br /> promising startups
                     </h2>
                 </div>
                 <div className="flex justify-end space-x-1 mb-2">
@@ -110,7 +88,7 @@ const Invest = () => {
                                 : "bg-gray-300 cursor-not-allowed"
                         } transition duration-200 ease-in-out`}
                     >
-                        <FaArrowLeft className="text-white text-xl" />
+                        <FaArrowLeft className="text-white text-2xl" />
                     </button>
                     <button
                         onClick={handleNext}
@@ -121,7 +99,7 @@ const Invest = () => {
                                 : "bg-gray-300 cursor-not-allowed"
                         } transition duration-200 ease-in-out`}
                     >
-                        <FaArrowRight className="text-white text-xl" />
+                        <FaArrowRight className="text-white text-2xl" />
                     </button>
                 </div>
             </div>
@@ -131,13 +109,13 @@ const Invest = () => {
                 ref={scrollRef}
             >
                 <div className="flex flex-nowrap space-x-4 pb-10">
-                    {cards.map((card, index) => (
-                        <Link
-                            to={`/listing/${btoa(btoa(card.id))}`}
-                            key={card.id}
-                        >
-                            <div
-                                key={index}
+                    {loading ? (
+                        <p>Loading...</p>
+                    ) : (
+                        cards.map((card) => (
+                            <Link
+                                to={`/service-details/${btoa(btoa(card.id))}`}
+                                key={card.id}
                                 className="flex-shrink-0 w-[260px] sm:w-[320px] md:w-[350px] lg:w-[390px] bg-white border border-gray-200 rounded-2xl p-3 sm:p-4 flex flex-col justify-between"
                             >
                                 <img
@@ -147,20 +125,21 @@ const Invest = () => {
                                 />
                                 <div className="mt-3 flex-grow">
                                     <p className="text-sm sm:text-base text-gray-500">
-                                        {card.tags}
+                                        #{card.category}
                                     </p>
                                     <h3 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold">
                                         {card.name}
                                     </h3>
                                     <p className="text-sm sm:text-base text-gray-600 mt-2">
-                                        {card.details}
+                                        {card.description ||
+                                            "Lorem ipsum dolor sit amet consectetur. Eu quis vel pellentesque ullamcorper donec lorem auctor egestas adipiscing."}
                                     </p>
                                 </div>
                                 <div className="mt-4 bg-sky-50 p-3 rounded-lg">
                                     <div className="text-sm text-gray-800 flex justify-between mb-2">
                                         <span>
                                             <span className="font-semibold">
-                                                ${card.investment_needed}
+                                                550K
                                             </span>{" "}
                                             <br />
                                             Goal
@@ -185,13 +164,13 @@ const Invest = () => {
                                         </span>
                                     </div>
                                 </div>
-                            </div>
-                        </Link>
-                    ))}
+                            </Link>
+                        ))
+                    )}
                 </div>
             </div>
         </>
     );
 };
 
-export default Invest;
+export default Servicecards;

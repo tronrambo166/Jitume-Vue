@@ -4,19 +4,19 @@ import Footer from "../Landing-page/Footer"
 import Invest from "../Landing-page/Invest(3)(1)"
 import Topsection from "../Landing-page/Topsection"
 import WhyChoose from "../Landing-page/WhyChoose(1)(1)"
-
+import ScrollToTop from "./ScrollToTop"; 
 const Homepage = () => {
   return (
-    <div>
-{/*<Topsection/>*/}
-<Invest/>
-<WhyChoose/>
-<Explore/>
-<HowItWorks/>
-{/*<Footer/> */}
-
-    </div>
-  )
+      <div>
+          {/*<Topsection/>*/}
+          <Invest />
+          <WhyChoose />
+          <Explore />
+          <HowItWorks />
+          <ScrollToTop />
+          {/*<Footer/> */}
+      </div>
+  );
 }
 
 export default Homepage

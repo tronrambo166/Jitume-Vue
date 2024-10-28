@@ -16,19 +16,21 @@ export default function DefaultLayout() {
   const isHome = location.pathname.startsWith('/home');
 
   return (
-    <div id="defaultLayout" className="relative z-20">
-      
-      {/*{!token ? <Nav2 /> : <Navbar />}*/}
-
-      {/*{!isHome ? <Nav2 /> : <Topsection />}*/}
-      {(window.location.pathname === '/' || window.location.pathname === '/home') ? <Topsection /> : <Nav2 /> }
-      <main>
-        <Outlet />
-      </main>
-      <Footer/> 
-
-      {/* Conditionally render Footer */}
-      {/*{!isDashboardRoute && <Footer />}*/}
-    </div>
+      <div id="defaultLayout" className="relative z-20">
+          {/*{!token ? <Nav2 /> : <Navbar />}*/}
+          {/*{!isHome ? <Nav2 /> : <Topsection />}*/}
+          {location.pathname === "/services" ? null : window.location
+                .pathname === "/" || window.location.pathname === "/home" ? (
+              <Topsection />
+          ) : (
+              <Nav2 />
+          )}{" "}
+          <main>
+              <Outlet />
+          </main>
+          <Footer />
+          {/* Conditionally render Footer */}
+          {/*{!isDashboardRoute && <Footer />}*/}
+      </div>
   );
 }

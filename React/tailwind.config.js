@@ -13,7 +13,7 @@ export default {
         slate: {
           100: '#F1F5F9',
         },
-        green: '#198754',
+        // green: '#198754',
         black: '#000000',
 
         // Dark theme colors
