@@ -152,7 +152,7 @@ const Servicepage = () => {
                     <img
                         src={Deadlybg}
                         alt="Background"
-                        className="object-cover w-[70%] h-full ml-auto"
+                        className="object-cover w-[60%] h-full ml-auto"
                         style={{ transform: "translateX(8%)" }}
                     />
                     <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#0e2b18f5] via-[#00290Fcc] to-transparent"></div>
