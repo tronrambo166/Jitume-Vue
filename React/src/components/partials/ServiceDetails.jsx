@@ -398,13 +398,12 @@ const ServiceDetails = () => {
     //end rating
     return (
         <>
-
             <div className="w-full flex flex-col md:flex-row justify-center items-center py-2 lg:py-4 mt-3">
-                <div className="flex flex-col md:flex-row mx-auto w-full gap-2 md:gap-4 lg:gap-6 px-4 md:px-8">
+                <div className="flex flex-col space-x-6 md:flex-row mx-auto w-full gap-4 md:gap-8 lg:gap-10 px-4 md:px-8">
                     {" "}
                     {/* Added horizontal padding */}
                     {/* IMAGE SECTION ON THE LEFT */}
-                    <div className="flex-grow max-w-full md:max-w-[800px] rounded-lg overflow-hidden opacity-100">
+                    <div className="flex-grow max-w-full md:max-w-[70%] rounded-lg overflow-hidden opacity-100">
                         {" "}
                         {/* Allow the image section to grow */}
                         {/* Image Section */}
@@ -436,14 +435,6 @@ const ServiceDetails = () => {
                         </div>
                         {/* BUSINESS INFORMATION SECTION BELOW THE IMAGE */}
                         <div className="w-full py-3 flex  flex-col">
-                            <div className="text-black flex items-center justify-end font-bold mb-2">
-                                <span className="font-semibold text-[20px] text-green-700">
-                                    ${details.price}
-                                </span>
-                                <p className="text-gray-800 text-sm px-2 ">
-                                    /Amount Requested:
-                                </p>
-                            </div>
                             <div className="flex items-center  justify-start mb-2">
                                 {/* <span className="text-yellow-400">
                                 {renderStars(details.rating)}{" "}
@@ -457,8 +448,18 @@ const ServiceDetails = () => {
                             {/* <h2 className="text-black text-sm sm:text-xs md:text-sm lg:text-base font-bold">
                             More business information
                         </h2> */}
-                            <p className=" text-5xl font-semibold  text-[#334155]">
-                                {details.name}
+                            <p>
+                                <p className="text-5xl font-semibold text-[#334155] flex justify-between items-center">
+                                    <span>{details.name}</span>
+                                    <div className="text-black flex items-center font-bold">
+                                        <p className="text-gray-800 text-sm pr-2">
+                                            /Amount Requested:
+                                        </p>
+                                        <span className="font-semibold text-[20px] text-green-700">
+                                            ${details.price}
+                                        </span>
+                                    </div>
+                                </p>
                             </p>
                             <p className="py-3 text-[13px]">
                                 Lorem ipsum dolor sit amet consectetur
@@ -619,10 +620,9 @@ const ServiceDetails = () => {
                     {/* Ratings */}
                     {/* Ratings */}
                     {/* DESIRED START DATE AND NOTES SECTION ON THE RIGHT */}
-                    <div className="md:w-full ">
-                        <div>
-                            {/* Container for both Calendar and Notes */}
-                            <div className="p-4 border rounded-lg">
+                    <div>
+                        <div className="flex justify-end">
+                            <div className="md:w-[100%] max-w-lg p-4 border rounded-lg ml-auto">
                                 {/* Desired Start Date Section */}
                                 <div className="mb-4">
                                     <label className="block text-sm font-semibold mb-3">
