@@ -28,7 +28,7 @@ export default function GuestLayout() {
 	          <Outlet />
 			  <UserRegistrationForm/>
 	          </main>
-
+			
               <Footer />
             </div>
  

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axiosClient from "../../axiosClient";
+import axiosClient from "../../../axiosClient";
 import { ClipLoader } from "react-spinners"; // Spinner from a React library
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS

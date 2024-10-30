@@ -408,16 +408,23 @@ const ServiceDetails = () => {
                         {/* Allow the image section to grow */}
                         {/* Image Section */}
                         <div className="relative">
-                            {!bid_id ? (
-                                <img
-                                    className="w-full h-auto rounded-lg object-cover"
-                                    src={"../" + details.image}
-                                    alt="Service"
-                                />
+                            {!details?.image ? (
+                                <div className="flex items-center justify-center w-full h-[300px] md:h-[400px] bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700 overflow-hidden relative">
+                                    {/* SVG Placeholder */}
+                                    <svg
+                                        className="w-16 h-16 text-gray-200 dark:text-gray-600"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 18"
+                                    >
+                                        <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z" />
+                                    </svg>
+                                </div>
                             ) : (
                                 <img
                                     className="w-full h-auto rounded-lg object-cover"
-                                    src={"../../" + details.image}
+                                    src={"../" + details.image}
                                     alt="Service"
                                 />
                             )}
@@ -622,7 +629,7 @@ const ServiceDetails = () => {
                     {/* DESIRED START DATE AND NOTES SECTION ON THE RIGHT */}
                     <div>
                         <div className="flex justify-end">
-                            <div className="md:w-[100%] max-w-lg p-4 border rounded-lg ml-auto">
+                            <div className="md:w-[330px] max-w-lg p-4 border rounded-lg ">
                                 {/* Desired Start Date Section */}
                                 <div className="mb-4">
                                     <label className="block text-sm font-semibold mb-3">
@@ -662,14 +669,14 @@ const ServiceDetails = () => {
                                     {!token ? (
                                         <button
                                             onClick={handleAuthModalOpen}
-                                            className="btn-primary py-2 px-6 rounded-xl mt-3"
+                                            className="btn-primary w-full py-2 mt-3 rounded-xl" // Made button full width
                                         >
                                             Book Now
                                         </button>
                                     ) : (
                                         <button
                                             onClick={book}
-                                            className="btn-primary font-semibold w-full h-12 px-6 mt-3 whitespace-nowrap rounded-md mx-auto lg:mx-0" // Updated width
+                                            className="btn-primary font-semibold w-full h-12 mt-3 whitespace-nowrap rounded-md"
                                         >
                                             Book Now
                                         </button>

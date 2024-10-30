@@ -145,69 +145,67 @@ const Servicepage = () => {
     };
 
     return (
-        <div>
-            <div className="relative bg-gradient-to-r from-[#00290f72] to-[#00270e]">
-                {/* Background Image */}
-                <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
-                    <img
-                        src={Deadlybg}
-                        alt="Background"
-                        className="object-cover w-[60%] h-full ml-auto"
-                        style={{ transform: "translateX(8%)" }}
-                    />
-                    <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#0e2b18f5] via-[#00290Fcc] to-transparent"></div>
-                </div>
+       <div>
+    <div className="relative bg-gradient-to-r from-[#00290f72] to-[#00270e]">
+        {/* Background Image */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
+            <img
+                src={Deadlybg}
+                alt="Background"
+                className="object-cover w-full h-full"
+                style={{ transform: "translateX(8%)" }}
+            />
+            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#0e2b18] via-[#00290fe9] to-transparent"></div>
+        </div>
 
-                {/* Darker overlay focused on the top-right corner */}
-                <div className="absolute top-0 right-0 w-[900px] h-[60px] bg-gradient-to-br from-transparent to-[#00270e] opacity-100"></div>
+        {/* Noisy Image with blur effect */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden z-10">
+            <img
+                src={NoisyImg}
+                alt="Noisy Image"
+                className="object-cover w-full h-full opacity-100"
+            />
+            {/* Blur overlay gradient */}
+            <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#001A0Fcc] via-[#01362015] to-[#001A0F00]">
+                <div className="w-full h-full filter blur-lg"></div>
+            </div>
+        </div>
 
-                {/* Noisy Image with blur effect */}
-                <div className="absolute inset-0 w-full h-full overflow-hidden z-10">
-                    <img
-                        src={NoisyImg}
-                        alt="Noisy Image"
-                        className="object-cover w-full h-full opacity-100"
-                    />
-                    {/* Blur overlay gradient */}
-                    <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#001A0Fcc] via-[#01362015] to-[#001A0F00]">
-                        <div className="w-full h-full filter blur-lg"></div>
-                    </div>
-                </div>
+        {/* Navbar - adjusted to raise it higher */}
+        <div className="relative z-30 mb-10"> {/* You can adjust the margin here */}
+            <ServNav />
+        </div>
 
-                {/* Navbar */}
-                <div className="relative z-20">
-                    <ServNav />
-                </div>
+        {/* Content Section */}
+        <div className="relative z-20 px-4 sm:px-6 lg:px-8 py-32">
+            <div className="text-white text-left max-w-md">
+                <h1 className="text-4xl sm:text-5xl lg:text-5xl font-bold mb-6">
+                    Find The Right Services, For You
+                </h1>
+                <p className="text-base sm:text-base mb-8">
+                    Jitume is a simple and transparent investment
+                    platform designed for experienced and aspiring
+                    socially responsible investors.
+                </p>
+            </div>
 
-                {/* Content Section */}
-                <div className="relative z-20 px-4 sm:px-6 lg:px-8 py-32">
-                    <div className="text-white text-left max-w-md">
-                        <h1 className="text-4xl sm:text-5xl lg:text-5xl font-bold mb-6">
-                            Find The Right Services, For You
-                        </h1>
-                        <p className="text-base sm:text-base mb-8">
-                            Jitume is a simple and transparent investment
-                            platform designed for experienced and aspiring
-                            socially responsible investors.
-                        </p>
-                    </div>
-
-                    {/* Search Component */}
-                    <div className="w-full flex items-start">
-                        <div className="w-full lg:w-1/2">
-                            <SearcH />
-                        </div>
-                    </div>
-
-                    {/* Categories Component */}
-                    <div className="w-full mb-10 flex lg:w-1/2">
-                        <InfiniteScrollCategories />
-                    </div>
+            {/* Search Component */}
+            <div className="w-full flex items-start mb-10 lg:mb-0">
+                <div className="w-full lg:w-1/2">
+                    <SearcH />
                 </div>
             </div>
-            <Localservicesection />
-            <Servicecards />
+
+            {/* Categories Component */}
+            <div className="w-full mb-10 flex lg:w-1/2">
+                <InfiniteScrollCategories />
+            </div>
         </div>
+    </div>
+    <Localservicesection />
+    <Servicecards />
+</div>
+
     );
 };
 

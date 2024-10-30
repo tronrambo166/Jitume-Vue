@@ -5,8 +5,8 @@ import React from 'react';
 import { useStateContext } from '../../contexts/contextProvider';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Navbar from "./Navbar";
-import Modal from "./Authmodal";
+// import Navbar from "./Navbar";
+// import Modal from "./Authmodal";
 
 
 const MilestonePage = () => {

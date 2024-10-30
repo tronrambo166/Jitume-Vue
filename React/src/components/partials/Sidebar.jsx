@@ -151,7 +151,7 @@ const Sidebar = () => {
               </NavLink>
             </li>
 
-            <li className="nav-item my-6 bg-green/50 rounded-xl py-2">
+            <li className="nav-item my-6 bg-green-700  rounded-xl py-2 ">
               <NavLink
                 className={`navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] ${!isOpen && 'justify-center'}`}
                 to="/dashboard/mybookings"

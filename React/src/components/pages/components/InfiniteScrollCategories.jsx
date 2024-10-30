@@ -73,11 +73,10 @@ const HorizontalInfiniteScroll = () => {
 
     return (
         <div className="relative w-full lg:w-[98%] ml-1 mt-3 mb-3 mx-auto">
-            {" "}
-            {/* Adjusted width here */}
-            {/* Glass effect on the left with translucent middle and fading edges */}
-            <div className="absolute left-0 rounded-sm top-0 bottom-0 w-32 bg-gradient-to-r from-[#0f381e] to-transparent z-10 pointer-events-none" />
-            {/* Chevron left (desktop only) */}
+            {/* Left Gradient (hidden on mobile) */}
+            <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#0f381e] to-[#0f381e00] z-10 pointer-events-none hidden md:block" />
+
+            {/* Chevron left */}
             {showLeftChevron && (
                 <button
                     onClick={scrollLeft}
@@ -89,6 +88,7 @@ const HorizontalInfiniteScroll = () => {
                     </span>
                 </button>
             )}
+
             {/* Scrollable container */}
             <div
                 ref={containerRef}
@@ -103,23 +103,17 @@ const HorizontalInfiniteScroll = () => {
                             {category}
                         </div>
                     ))}
-                    {visibleCategories.map((category, index) => (
-                        <div
-                            key={`duplicate-${index}`}
-                            className="category-item mx-2 text-xs sm:text-sm md:text-base lg:text-base border border-white rounded-full py-1 px-3 sm:py-1.5 sm:px-4 md:py-2 md:px-5 lg:py-2 lg:px-6 text-white cursor-pointer whitespace-nowrap transition-all ease-in-out duration-700"
-                        >
-                            {category}
-                        </div>
-                    ))}
                 </div>
             </div>
-            {/* Glass effect on the right with translucent middle and fading edges */}
-            <div className="absolute right-0 top-0 rounded-sm bottom-0 w-32 bg-gradient-to-l from-[#0f381e] to-transparent z-10 pointer-events-none" />
-            {/* Chevron right (desktop only) */}
+
+            {/* Right Gradient (hidden on mobile) */}
+            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#0f381e] via-[#0f381e93] to-[#0f381e00] z-10 pointer-events-none hidden md:block" />
+
+            {/* Chevron right */}
             {showRightChevron && (
                 <button
                     onClick={scrollRight}
-                    className="hidden lg:flex absolute right-[-31px] top-1/2 transform -translate-y-1/2 z-20 bg-[#0f381e] p-2 rounded-full text-white hover:bg-opacity-90 group" // Adjusted right from -45px to -25px
+                    className="hidden lg:flex absolute right-[-31px] top-1/2 transform -translate-y-1/2 z-20 bg-[#0f381e] p-2 rounded-full text-white hover:bg-opacity-90 group"
                 >
                     <FaChevronRight size={16} />
                     <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 text-sm text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">

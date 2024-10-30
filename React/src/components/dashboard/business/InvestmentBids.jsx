@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axiosClient from "../../axiosClient";
+import axiosClient from "../../../axiosClient";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Make sure to import CSS for toastify
 import { AiOutlineLoading3Quarters } from "react-icons/ai";

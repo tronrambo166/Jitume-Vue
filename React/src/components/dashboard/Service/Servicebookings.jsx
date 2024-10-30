@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axiosClient from "../../axiosClient";
+import axiosClient from "../../../axiosClient";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
 function InvestmentBids() {

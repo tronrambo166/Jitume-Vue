@@ -19,8 +19,11 @@ export default function DefaultLayout() {
       <div id="defaultLayout" className="relative z-20">
           {/*{!token ? <Nav2 /> : <Navbar />}*/}
           {/*{!isHome ? <Nav2 /> : <Topsection />}*/}
-          {location.pathname === "/services" ? null : window.location
-                .pathname === "/" || window.location.pathname === "/home" ? (
+          {location.pathname === "/services" ||
+          /^\/subscribe\/[^/]+$/.test(
+              location.pathname
+          ) ? null : location.pathname === "/" ||
+            location.pathname === "/home" ? (
               <Topsection />
           ) : (
               <Nav2 />

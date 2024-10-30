@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axiosClient from "../../axiosClient";
+import axiosClient from "../../../axiosClient";
 
 function Milestones() {
     const [milestones, setMilestones] = useState([]);

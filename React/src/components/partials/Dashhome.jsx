@@ -1,5 +1,5 @@
-import MyBusinesses from "./MyBusinesses"
-import ServiceTable from "./servicestable"
+import MyBusinesses from "../dashboard/business/MyBusinesses"
+import ServiceTable from "../dashboard/Service/servicestable"
 import Table from "./Table"
 
 const Dashhome = () => {

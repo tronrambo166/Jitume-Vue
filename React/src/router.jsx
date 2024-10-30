@@ -7,14 +7,14 @@ import ListingDetails from './components/partials/ListingDetails';
 
 // Dashboard Components
 import Dashboard from './components/pages/Dashboard';
-import MyBusinesses from './components/partials/MyBusinesses';
+import MyBusinesses from './components/dashboard/business/MyBusinesses';
 import Dashhome from './components/partials/Dashhome';
-import AddMilestone from './components/partials/Addmilestone';
-import Milestones from './components/partials/Milestone';
-import InvestmentBids from './components/partials/InvestmentBids';
-import AddService from './components/partials/Addservice';
-import ServiceMilestone from './components/partials/ServiceMilestone';
-import ServiceBookings from './components/partials/Servicebookings';
+import AddMilestone from './components/dashboard/business/Addmilestone';
+import Milestones from './components/dashboard/business/Milestone';
+import InvestmentBids from './components/dashboard/business/InvestmentBids';
+import AddService from './components/dashboard/Service/Addservice';
+import ServiceMilestone from './components/dashboard/Service/ServiceMilestone';
+import ServiceBookings from './components/dashboard/Service/Servicebookings';
 import Messages from './components/partials/Messages';
 import AccountPage from './components/dashboard/business/AccountPage';
 import AddBusiness from './components/partials/Addbusiness';
@@ -30,13 +30,13 @@ import Users from './views/users'; // Ensure this path is correct
 import UserForm from './views/userForm';
 import Register from './views/register';
 import Login from './views/login';
-import ServiceTable from './components/partials/servicestable';
+import ServiceTable from './components/dashboard/Service/servicestable';
 import CategoryPage from './components/partials/Categorypage';
 import ProjectManagers from './components/partials/ProjectManagers';
 import EquipmentRelease from './components/partials/EquipmentRelease';
 import InvestorRegistration from './components/partials/Investreg';
-import Addservicemilestone from './components/partials/Addservicemilestone';
-import MyBookings from './components/partials/Mybookings';
+import Addservicemilestone from './components/dashboard/Service/Addservicemilestone';
+import MyBookings from './components/dashboard/Service/Mybookings';
 import AddBusinesS from './components/dashboard/business/AddBusiness';
 
 const router = createBrowserRouter([
@@ -49,7 +49,7 @@ const router = createBrowserRouter([
             { path: "/services", element: <Servicepage /> },
             { path: "/users", element: <Users /> },
             {
-                path: "/listingResults/:resIds/:loc",
+                path: "/Resullistingts/:resIds/:loc",
                 name: "listingResults",
                 element: <ListingResults />,
             },

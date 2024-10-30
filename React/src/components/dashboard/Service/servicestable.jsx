@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axiosClient from "../../axiosClient";
+import axiosClient from "../../../axiosClient";
 import ServEditModal from "./ServEditModal";
 const ServiceTable = () => {
     const [business, setBusiness] = useState([]);

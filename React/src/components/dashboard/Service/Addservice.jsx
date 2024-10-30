@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import axios from "axios";
-import axiosClient from "../../axiosClient";
+import axiosClient from "../../../axiosClient";
 
 const AddService = ({ connected, userId }) => {
     const [formData, setFormData] = useState({

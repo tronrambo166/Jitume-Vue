@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axiosClient from "../../axiosClient";
+import axiosClient from "../../../axiosClient";
 import EditModal from "./EditModal";
 
 const MyBusinesses = () => {

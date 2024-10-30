@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const Calendar = ({ onDateSelect }) => {
-    const [selectedDate, setSelectedDate] = useState(null);
-    const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
-    const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-
     const today = new Date();
     const todayYear = today.getFullYear();
-    const todayMonth = today.getMonth() + 1;
+    const todayMonth = today.getMonth() + 1; // Months are zero-indexed
     const todayDay = today.getDate();
+
+    const [selectedDate, setSelectedDate] = useState(todayDay); // Set default selected date to today
+    const [currentMonth, setCurrentMonth] = useState(todayMonth);
+    const [currentYear, setCurrentYear] = useState(todayYear);
 
     const daysInMonth = (month, year) => new Date(year, month, 0).getDate();
 
@@ -86,6 +86,13 @@ const Calendar = ({ onDateSelect }) => {
         const date = new Date(currentYear, month - 1, 1);
         return date.toLocaleString("default", { month: "long" });
     };
+
+    useEffect(() => {
+        // Update selected date when the month changes
+        if (currentMonth === todayMonth && currentYear === todayYear) {
+            setSelectedDate(todayDay); // Reset selected date to today if in the current month
+        }
+    }, [currentMonth, currentYear, todayDay]);
 
     return (
         <div className="border rounded-lg p-3 w-full max-w-sm mx-auto">

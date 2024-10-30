@@ -627,7 +627,7 @@ const ListingDetails = ({ onClose }) => {
             {/*      <div className=' list w-full h-auto'>
 <img src={bannerframe} alt="" />
         </div>*/}
-           {/* <Nav2 />*/}
+            {/* <Nav2 />*/}
 
             <div className="flex flex-col md:flex-row  justify-start items-start py-4 lg:py-8 mt-3 w-full px-4 md:px-6 lg:px-8">
                 <div className="w-full flex ml-1 md:space-x-6  flex-col md:flex-row gap-4 md:gap-6 lg:gap-8">
@@ -666,15 +666,15 @@ const ListingDetails = ({ onClose }) => {
 
                         <div className="flex items-center pb-3 gap-1">
                             <p className="text-green-800 text-2xl md:text-lg font-semibold">
-                                $5000
+                                ${amount_r || 5000}
                             </p>
                             <p className="text-gray-800 text-sm">
-                                 Amount Requested:
+                                Amount Requested:
                             </p>
                         </div>
 
                         <div className="flex gap-2">
-                            <div className="flex  items-center gap-10">
+                            <div className="flex items-center gap-10">
                                 {token && !conv ? (
                                     <a
                                         onClick={handleOpen}
@@ -688,7 +688,7 @@ const ListingDetails = ({ onClose }) => {
                                 ) : (
                                     <a
                                         onClick={() => setIsModalOpen(true)}
-                                        className="bg-black hover:bg-gray-700 w-1/2 text-sm text-center rounded-full text-white py-[6px] cursor-pointer"
+                                        className="bg-black hover:bg-gray-700 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap"
                                     >
                                         <FontAwesomeIcon
                                             icon={faLock}
@@ -794,34 +794,71 @@ const ListingDetails = ({ onClose }) => {
                     <div className="md:w-1/2  flex justify-end">
                         <div className="sticky top-0 mr-4 lg:mr-6 ">
                             {/* Image */}
-                            <img
-                                className="object-cover rounded-[24px]"
-                                style={{
-                                    height: "480px",
-                                    width: "690px",
-                                }}
-                                src={"../" + details.image}
-                                alt="Business"
-                            />
+                            <div>
+                                {!details?.image ? (
+                                    <div className="flex items-center justify-center w-full h-[360px] bg-gray-300 rounded-[24px] md:w-[540px] dark:bg-gray-700 animate-pulse">
+                                        <svg
+                                            className="w-16 h-16 text-gray-200 dark:text-gray-600"
+                                            aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 18"
+                                        >
+                                            <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z" />
+                                        </svg>
+                                    </div>
+                                ) : (
+                                    <img
+                                        className="object-cover rounded-[24px]"
+                                        style={{
+                                            height: "480px",
+                                            width: "690px",
+                                        }}
+                                        src={"../" + details.image}
+                                        alt="Business"
+                                    />
+                                )}
+                            </div>
 
                             {/* Details below the image */}
                             <div className="w-full md:w-auto py-3 flex flex-col text-right mt-4">
-                                <div className="text-black font-bold mb-2">
+                                {/* <div className="text-black font-bold mb-2">
                                     Amount Requested:{" "}
                                     <span className="font-semibold text-green-700">
                                         ${amount_r}
                                     </span>
-                                </div>
+                                </div> */}
 
-                                <div className="flex items-center justify-end gap-2 text-right mb-2">
-                                    <span className="text-yellow-400">
-                                        {renderStars(details.rating)}
-                                    </span>
-                                    <span>({details.rating})</span>
-                                </div>
+                                <div className="flex flex-col mb-2">
+                                    {/* Skeleton for Rating Stars and Rating Count */}
+                                    {!details ? (
+                                        <div className="flex items-center justify-end gap-2 text-right">
+                                            <div className="flex items-center">
+                                                <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse"></div>
+                                                <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse ml-1"></div>
+                                                <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse ml-1"></div>
+                                                <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse ml-1"></div>
+                                                <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse ml-1"></div>
+                                            </div>
+                                            <div className="h-6 w-16 bg-gray-300 rounded animate-pulse"></div>
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center justify-end gap-2 text-right mb-2">
+                                            <span className="text-yellow-400">
+                                                {renderStars(details.rating)}
+                                            </span>
+                                            <span>({details.rating})</span>
+                                        </div>
+                                    )}
 
-                                <div className="text-gray-500 text-sm">
-                                    {details.rating_count} Ratings
+                                    {/* Skeleton for Rating Count */}
+                                    {!details ? (
+                                        <div className="h-4 w-24 bg-gray-300 rounded animate-pulse text-gray-500 text-sm"></div>
+                                    ) : (
+                                        <div className="text-gray-500 text-sm">
+                                            {details.rating_count} Ratings
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -900,7 +937,7 @@ const ListingDetails = ({ onClose }) => {
                             </button>
                             <button
                                 onClick={handleSubscribe}
-                                className="text-lg border rounded-md border-black py-2 px-6 font-semibold mb-4"
+                                className="text-lg border hover:border-green hover:text-green rounded-md border-black  py-2 px-6 font-semibold mb-4"
                             >
                                 {subscribeData.subscribed
                                     ? "Subscription"
@@ -928,13 +965,13 @@ const ListingDetails = ({ onClose }) => {
                                         );
                                         handleClose();
                                     }}
-                                    className="btn-primary text-white py-2 px-6 rounded hover:bg-blue-600 transition"
+                                    className="btn-primary text-white py-2 px-6 rounded  transition"
                                 >
                                     Ok
                                 </button>
                                 <button
                                     onClick={handleClose}
-                                    className="bg-green text-gray-700 py-2 px-4 rounded hover:bg-gray-400 transition"
+                                    className="bg-green text-white py-2 px-4 rounded btn-primary transition"
                                 >
                                     Cancel
                                 </button>
@@ -1227,8 +1264,6 @@ const ListingDetails = ({ onClose }) => {
                     </div>
                 </div>
             </div>
-
-            <Footer />
         </>
     );
 };
