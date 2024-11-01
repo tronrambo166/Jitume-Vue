@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axiosClient from "../../axiosClient";
 import React from "react";
-
+import BusinessStepHero from "../Heros/BusinessStepHero";
 const MilestonePage = () => {
     const { id } = useParams();
     const listing_id = atob(atob(id));
@@ -75,86 +75,108 @@ const MilestonePage = () => {
     const totalSteps = miles.length;
 
     return (
-        <div className="container mx-auto p-5">
-            <h3 className="text-left my-5 text-2xl font-bold">Milestones</h3>
+        <>
+            <BusinessStepHero />
+            <div className="container mx-auto p-5">
+                <div className="text-center mb-10 mt-10">
+                    <h1 className="text-3xl sm:text-4xl font-bold text-[#334155]">
+                        Milestones
+                    </h1>
+                    <p className="text-gray-500 mt-4">
+                        Here keep track of your milestones
+                    </p>
+                </div>
 
-            {/* Dynamically Render Steps */}
-            <div className="flex justify-center items-center mb-8">
-                {miles.map((milestone, index) => (
-                    <React.Fragment key={index}>
-                        <div className="flex flex-col items-center">
-                            <div
-                                className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
-                                    index === miles.length - 1
-                                        ? "bg-gray-200 text-gray-700" // Highlight the last step as active
-                                        : "bg-green text-white" // Highlight the other steps as inactive
-                                }`}
-                            >
-                                {index + 1}
-                            </div>
-                            <span className="mt-2 text-sm">
-                                Step {index + 1}
-                            </span>
-                        </div>
-                        {index < miles.length - 1 && (
-                            <div className="w-12 border-t-2 border-gray-300"></div>
-                        )}
-                    </React.Fragment>
-                ))}
-            </div>
-
-            <table className="table-auto w-full border-collapse border border-gray-300">
-                <thead>
-                    <tr className="bg-gray-200">
-                        <th className="border border-gray-300 px-4 py-2 text-left">
-                            Milestone Name
-                        </th>
-                        <th className="border border-gray-300 px-4 py-2 text-left">
-                            Amount
-                        </th>
-                        <th className="border border-gray-300 px-4 py-2 text-left">
-                            Documentation
-                        </th>
-                        <th className="border border-gray-300 px-4 py-2 text-left">
-                            Status
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {miles.map((milestone, index) => (
-                        <tr key={index} className="hover:bg-gray-100">
-                            <td className="border border-gray-300 px-4 py-2">
-                                {milestone.title}
-                            </td>
-                            <td className="border border-gray-300 px-4 py-2">
-                                {milestone.amount}
-                            </td>
-                            <td className="border border-gray-300 px-4 py-2">
-                                <button
-                                    onClick={download_doc(milestone.id)}
-                                    className="text-black hover:underline"
-                                >
-                                    Download Milestone Documentation
-                                </button>
-                            </td>
-                            <td className="border border-gray-300 px-4 py-2">
-                                <div className="flex space-x-2">
-                                    <button
-                                        className={`px-3 py-1 rounded ${
-                                            milestone.status === "In Progress"
-                                                ? "bg-green text-white"
-                                                : "bg-gray-200 text-gray-700"
+                {/* Dynamically Render Steps */}
+                <div className="flex justify-center px-8 lg:px-96 lg:mb-6 sm:px-8">
+                    <div className="flex justify-center items-center mb-8 space-x-2 sm:space-x-4 container max-w-screen-md">
+                        {miles.map((milestone, index) => (
+                            <React.Fragment key={index}>
+                                {/* Step and Number */}
+                                <div className="flex items-center space-x-2">
+                                    <div
+                                        className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center font-bold text-sm sm:text-base ${
+                                            index === miles.length - 1
+                                                ? "bg-white border border-gray-400 text-gray-700" // Inactive step: white with gray border
+                                                : "bg-[#198754] text-white" // Completed steps
                                         }`}
                                     >
-                                        {milestone.status}
-                                    </button>
+                                        {index + 1}
+                                    </div>
+                                    <span className="text-xs sm:text-sm text-gray-600">
+                                        Step {index + 1}
+                                    </span>
                                 </div>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+
+                                {/* Centered Dots */}
+                                {index < miles.length - 1 && (
+                                    <div className="flex-grow h-1 mx-2 sm:mx-4 flex items-center">
+                                        <div className="w-full border-t-2 border-dashed border-gray-400"></div>
+                                    </div>
+                                )}
+                            </React.Fragment>
+                        ))}
+                    </div>
+                </div>
+                <div className="overflow-x-auto  sm:rounded-lg max-w-5xl mx-auto border border-gray-300">
+                    <table className="min-w-full bg-white border-collapse">
+                        <thead className="bg-[#E5E7EB]">
+                            <tr>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-[#334155] uppercase tracking-wider">
+                                    Milestone Name
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-[#334155] uppercase tracking-wider">
+                                    Amount
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-[#334155] uppercase tracking-wider hidden sm:table-cell">
+                                    Documentation
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-[#334155] uppercase tracking-wider">
+                                    Status
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                            {miles.map((milestone, index) => (
+                                <tr
+                                    key={index}
+                                    className="hover:bg-gray-100 transition-colors duration-200"
+                                >
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#334155]">
+                                        {milestone.title}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-[#334155]">
+                                        {milestone.amount}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm hidden sm:table-cell">
+                                        <button
+                                            onClick={() =>
+                                                download_doc(milestone.id)
+                                            }
+                                            className="text-[#334155] hover:underline transition duration-200"
+                                        >
+                                            Download Milestone Documentation
+                                        </button>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-md ${
+                                                milestone.status ===
+                                                "In Progress"
+                                                    ? "bg-[#198754] text-white"
+                                                    : "bg-[#475569] text-white"
+                                            }`}
+                                        >
+                                            {milestone.status}
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </>
     );
 };
 

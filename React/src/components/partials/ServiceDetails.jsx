@@ -762,7 +762,7 @@ const ServiceDetails = () => {
                     </div>
                 </div>
             </div>
-            <Footer />
+            {/* <Footer /> */}
         </>
     );
 };

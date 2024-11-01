@@ -7,6 +7,7 @@ import { ClipLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const PaymentForm = () => {
+    const [selectedPayment, setSelectedPayment] = useState("");
     const [loading, setLoading] = useState(false); // Loader state
     // Function to show success toast
     const showSuccessToast = (message) => {
@@ -100,12 +101,10 @@ const PaymentForm = () => {
     let { purpose } = useParams();
     const purpos = base64_decode(purpose);
 
-    var p = '';
-    if(purpos === "bids")
-     p = 'Investment bid';
-    else if(purpos === "s_mile")
-     p = 'Service milestone';
-    else  p = purpos;
+    var p = "";
+    if (purpos === "bids") p = "Investment bid";
+    else if (purpos === "s_mile") p = "Service milestone";
+    else p = purpos;
 
     let { amount } = useParams();
     const amount_real = base64_decode(amount);
@@ -127,7 +126,7 @@ const PaymentForm = () => {
                 stripeToken: $("#stripeToken").val(),
                 //stripeToken: event.target.stripeToken.value
             };
-            
+
             console.log(payload);
             if (purpos === "small_fee") {
                 axiosClient
@@ -138,7 +137,7 @@ const PaymentForm = () => {
                             // Show success toast
                             showSuccessToast("Payment successful!");
 
-                            // Wait for the toast to show before navigating 
+                            // Wait for the toast to show before navigating
                             setTimeout(() => {
                                 navigate("/listing/" + btoa(listing_id));
                             }, 2000); // 2-second delay before navigating
@@ -192,9 +191,7 @@ const PaymentForm = () => {
                     .post("/milestoneService", payloadS)
                     .then(({ data }) => {
                         if (data.status == 200) {
-                            alert(
-                                "Success!"
-                            );
+                            alert("Success!");
                             navigate("/service-milestones/" + btoa(listing_id));
                         }
                         if (data.status == 400) alert(data.message);
@@ -219,8 +216,15 @@ const PaymentForm = () => {
 
     return (
         <>
+            <div className="flex pt-[40px] px-2  text-[#334155] flex-col items-center justify-center">
+                <h1 className="text-5xl font-bold">Checkout</h1>
+                <p className="jakarta text-center text-[14px]">
+                    A secure and easy checkout experience. Pay with your
+                    Credit/Debit <br></br> cards or via stripe
+                </p>
+            </div>
             <ToastContainer />
-            <div className="container flex mx-auto my-8 justify-center space-x-8">
+            <div className=" py-8  mx-6 my-8  space-x-8">
                 {showModal && (
                     <div
                         className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-75"
@@ -251,14 +255,14 @@ const PaymentForm = () => {
                 )}
 
                 {/* Card Section left */}
-                <div className="card bg-white w-[500px] shadow-md text-[#343a40] p-6">
-                    <a
+                <div className="">
+                    {/* <a
                         href="/"
                         className="text-black hover:text-green flex items-center"
                     >
                         <FaHome className="ml-1" /> Home
-                    </a>
-
+                    </a> */}
+                    {/* 
                     <div className="card-body mt-4">
                         <div className="pb-3 pt-2 text-center">
                             <h6 className="text-xl font-bold text-green-800">
@@ -267,19 +271,268 @@ const PaymentForm = () => {
                             <h5 className="text-lg font-bold">
                                 Pay with your Credit/Debit Card via Stripe
                             </h5>
+                        </div> */}
+
+                    {/*  action="{{ route('stripe.post.coversation') }}"*/}
+                    <form
+                        role="form"
+                        onSubmit={handleSubmit}
+                        method="post"
+                        class="class2  require-validation m-auto"
+                        data-cc-on-file="false"
+                        data-stripe-publishable-key="pk_test_51JFWrpJkjwNxIm6zf1BN9frgMmLdlGWlSjkcdVpgVueYK5fosCf1fAKlMpGrkfGoiXGMb0PpcMEOdINTEVcJoCNa00tJop21w6"
+                        id="payment-form"
+                    >
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+                            <div className="pb-[40px] sm:mx-[50px] bg-white flex flex-col">
+                                <h2 className="text-2xl text-[#0F172A] font-bold">
+                                    Payment
+                                </h2>
+                                <hr className="my-4"></hr>
+                                <div className="  bg-white rounded ">
+                                    <label
+                                        className="text-[#0F172A] text-sm font-bold pt-3"
+                                        htmlFor=""
+                                    >
+                                        Pay With
+                                    </label>
+
+                                    <div className="flex jakarta space-x-4">
+                                        {["card", "bank", "paypal"].map(
+                                            (method) => (
+                                                <label
+                                                    key={method}
+                                                    className="flex items-center cursor-pointer"
+                                                >
+                                                    <div
+                                                        className={`relative flex items-center justify-center h-5 w-5 border rounded-full ${
+                                                            selectedPayment ===
+                                                            method
+                                                                ? "border-green-500 bg-white border-2"
+                                                                : "border-gray-300"
+                                                        }`}
+                                                        onClick={() =>
+                                                            setSelectedPayment(
+                                                                method
+                                                            )
+                                                        }
+                                                    >
+                                                        {selectedPayment ===
+                                                            method && (
+                                                            <div className="h-2 w-2 bg-green-500 rounded-full" />
+                                                        )}
+                                                    </div>
+                                                    <span
+                                                        className={`ml-2 text-[13px] ${
+                                                            selectedPayment ===
+                                                            method
+                                                                ? "text-black"
+                                                                : "text-[#ACACAC]"
+                                                        }`}
+                                                    >
+                                                        {method
+                                                            .charAt(0)
+                                                            .toUpperCase() +
+                                                            method.slice(1)}
+                                                    </span>
+                                                </label>
+                                            )
+                                        )}
+                                    </div>
+
+                                    <div className="mb-4 py-4">
+                                        <label className="block text-sm font-semibold mb-2">
+                                            Card Number
+                                        </label>
+                                        <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
+                                            <input
+                                                autocomplete="on"
+                                                size="20"
+                                                className="card-number flex-1 py-2 px-6 border-0 outline-none"
+                                                type="text"
+                                                placeholder="1234 5678 9012 3456"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-[10px] w-full max-w-[480px]">
+                                        <div className="w-full">
+                                            <label className="block text-sm font-semibold">
+                                                Exp. Month
+                                            </label>
+                                            <input
+                                                className="card-expiry-month w-full p-2 border border-gray-300 rounded"
+                                                type="text"
+                                                placeholder="MM"
+                                                size="2"
+                                            />
+                                        </div>
+
+                                        <div className="w-full">
+                                            <label className="block text-sm font-semibold">
+                                                CVC
+                                            </label>
+                                            <input
+                                                autoComplete="off"
+                                                placeholder="ex. 311"
+                                                size="4"
+                                                className="card-cvc w-full p-2 border border-gray-300 rounded"
+                                                type="text"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center jakarta py-6 text-[#ACACAC]">
+                                        <input
+                                            type="checkbox"
+                                            required
+                                            id="AND"
+                                            className="mr-2"
+                                        />
+                                        <label
+                                            htmlFor="AND"
+                                            className="text-xs  flex items-center"
+                                        >
+                                            I HAVE READ AND AGREE TO THE
+                                            <a
+                                                href="#"
+                                                className="ml-1 text-[#ACACAC] "
+                                                style={{
+                                                    textDecoration: "none",
+                                                }}
+                                            >
+                                                TERMS AND CONDITIONS
+                                            </a>
+                                        </label>
+                                    </div>
+                                    <div className="mt-6 w-full sm:w-[480px] text-center">
+                                        <button
+                                            type="submit"
+                                            className="w-full py-2 my-4 text-white btn-primary rounded focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50"
+                                            disabled={loading}
+                                        >
+                                            {loading ? (
+                                                <ClipLoader
+                                                    color="#ffffff"
+                                                    size={20}
+                                                /> // Spinner appears when loading
+                                            ) : (
+                                                "Submit Payment"
+                                            )}
+                                        </button>
+                                    </div>
+
+                                    <div>
+                                        <p className="text-[#ACACAC] jakarta text-sm">
+                                            Your personal data will be used to
+                                            process your order, support your
+                                            experience throughout this website,
+                                            and for other purposes described{" "}
+                                            <br></br> in our privacy policy.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className=" px-[100px] border  px-8 py-[70px] flex gap-4 flex-col">
+                                <h2 className="text-xl text-[#0A0D13] font-bold">
+                                    Silver-trial Plan
+                                </h2>
+                                <div className="bg-[#FFC107] jakarta rounded-lg p-3">
+                                    <h2 className="font-bold">
+                                        RISK-FREE TRIAL
+                                    </h2>
+                                    <p className="text-sm">
+                                        Your first 7 days are free
+                                    </p>
+                                </div>
+
+                                <div className="border border-[#ACACAC]/50"></div>
+
+                                <div className="jakarta flex flex-col gap-3 ">
+                                    <div className="flex justify-between">
+                                        <h2 className="text-gray-500">
+                                            Subtotal
+                                        </h2>
+                                        <h3>price</h3>
+                                    </div>
+
+                                    <div className="flex justify-between">
+                                        <h3 className="text-gray-600 ">
+                                            {" "}
+                                            Tax (5%){" "}
+                                        </h3>
+                                        <h3>price </h3>
+                                    </div>
+                                    {/* <label className="block text-sm font-semibold">
+                                        Amount (USD){" "}
+                                        <small className="text-xs">
+                                            5% + tax added
+                                        </small>
+                                    </label>
+                                    <p className="w-full p-2  rounded  text-gray-700">
+                                        ${price}
+                                    </p> */}
+                                </div>
+                                <div className="border border-[#ACACAC]/50"></div>
+
+                                <div className="flex items-center justify-between ">
+                                    <div className="jakarta">
+                                        <h2 className=" text-2xl text-[#0A0D13] font-semibold">
+                                            Total:
+                                        </h2>
+                                        <h3 className="text-gray-400 text-sm">
+                                            After trial ends on 06 Nov, 2024
+                                        </h3>
+                                    </div>
+
+                                    <h2> ${price}</h2>
+                                </div>
+
+                                <div>
+                                    <h1 className="font-semibold text-xl">
+                                        Silver plan terms
+                                    </h1>
+                                </div>
+                                <div className="border border-[#ACACAC]"></div>
+                                <div class="flex flex-col bg-white jakarta  rounded-lg ">
+                                    <div class="flex items-center mb-2 ">
+                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center mr-2">
+                                            <span class="text-white text-xs">
+                                                ✔
+                                            </span>
+                                        </div>
+                                        <span className="text-[#334155]">
+                                            Billing automatically starts after
+                                            free trial ends
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center mr-2">
+                                            <span class="text-white text-xs">
+                                                ✔
+                                            </span>
+                                        </div>
+                                        <span className="text-[#334155]">
+                                            Cancel before 06 Nov to avoid
+                                            getting billed
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center mr-2">
+                                            <span class="text-white text-xs">
+                                                ✔
+                                            </span>
+                                        </div>
+                                        <span className="text-[#334155]">
+                                            We will remind you 7 days before
+                                            trial ends
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        {/*  action="{{ route('stripe.post.coversation') }}"*/}
-                        <form
-                            role="form"
-                            onSubmit={handleSubmit}
-                            method="post"
-                            class="class2 require-validation m-auto"
-                            data-cc-on-file="false"
-                            data-stripe-publishable-key="pk_test_51JFWrpJkjwNxIm6zf1BN9frgMmLdlGWlSjkcdVpgVueYK5fosCf1fAKlMpGrkfGoiXGMb0PpcMEOdINTEVcJoCNa00tJop21w6"
-                            id="payment-form"
-                        >
-                            <div class="row error mx-1 text-center collapse">
+                        {/* <div class="row error mx-1 text-center collapse">
                                 <p
                                     style={{
                                         color: "#e31313",
@@ -370,14 +623,14 @@ const PaymentForm = () => {
                                 </div>
                             </div>
                             {/* other form */}
-                            <div className="mt-12 w-50 mb-12">
-                                {/*<form
+                        {/* <div className="mt-12 w-50 mb-12"> */}
+                        {/*<form
           onSubmit={handleSubmit}
           className="max-w-lg  p-6 "
         >*/}
-                                {/* Hidden input for listing */}
+                        {/* Hidden input for listing */}
 
-                                <div className="mb-4">
+                        {/* <div className="mb-4">
                                     <label className="block text-sm font-semibold">
                                         Amount (USD){" "}
                                         <small className="text-xs">
@@ -436,9 +689,9 @@ const PaymentForm = () => {
                                             TERMS AND CONDITIONS
                                         </a>
                                     </label>
-                                </div>
+                                </div> */}
 
-                                <div className="mt-6 text-center">
+                        {/* <div className="mt-6 text-center">
                                     <button
                                         type="submit"
                                         className="w-full py-2 my-4 text-white btn-primary rounded  focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50"
@@ -453,18 +706,18 @@ const PaymentForm = () => {
                                             "Submit Payment"
                                         )}
                                     </button>
-                                </div>
+                                </div>  */}
 
-                                {/*</form>*/}
-                            </div>
+                        {/*</form>*/}
+                        {/* </div> */}
 
-                            {/* other form */}
-                        </form>
-                    </div>
+                        {/* other form */}
+                    </form>
                 </div>
-
-                {/* Form right */}
             </div>
+
+            {/* Form right */}
+            {/* </div> */}
         </>
     );
 };

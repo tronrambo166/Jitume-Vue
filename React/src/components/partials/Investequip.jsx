@@ -1,9 +1,12 @@
-import { FaUpload } from "react-icons/fa";
+import { FaImage } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import axiosClient from "../../axiosClient";
 import { IoArrowBack } from "react-icons/io5"; // Import React icon
 import { useNavigate } from "react-router-dom";
+import InvestHero from "../Heros/InvestHero";
+import { MdPhoto } from "react-icons/md";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 const Investequip = () => {
     const { amount, id, percent } = useParams();
 
@@ -71,111 +74,100 @@ const Investequip = () => {
     };
 
     return (
-        <div className="mx-auto w-[700px] h-[500px] my-6 border shadow-md p-3 ">
-            <button
-                onClick={handleGoBack}
-className="btn-primary p-4 rounded-full"            >
-<IoArrowBack className="h-[30px]  w-auto" />
-</button>
-            <form className="my-3" onSubmit={handleSubmit}>
-                <div className="flex justify-between my-3 gap-[150px] py-3">
-                    <h1 className="text-[13px]">
-                        Please upload good quality photos of the assets*
+        <>
+            {" "}
+            <InvestHero />
+            <div className="px-4 sm:px-10 mb-60">
+                <div className="text-center mb-10 mt-16">
+                    <h1 className="text-3xl sm:text-5xl  font-bold text-[#334155]">
+                        Invest with Equipment
                     </h1>
-                    <button
-                        type="button"
-                        className="border p-3 flex items-center"
-                        onClick={() =>
-                            document.getElementById("photos-input").click()
-                        }
-                    >
-                        <FaUpload />
-                    </button>
-                    <input
-                        id="photos-input"
-                        type="file"
-                        onChange={(e) => handleFileChange(e, "photos")}
-                        className="hidden"
-                    />
+                    <p className="text-gray-500 mt-4">
+                        Here provide all the information about the equipment you
+                        are investing <br></br>with
+                    </p>
                 </div>
 
-                <div className="flex justify-between my-3 gap-[150px] py-3">
-                    <h1 className="whitespace-nowrap text-[13px]">
-                        Please provide legal documents that act as evidence of
-                        the ownership of the Assets <br />
-                        (Original purchase receipt/titles/certificates etc)*
-                    </h1>
-                    <button
-                        type="button"
-                        className="border p-3 flex items-center"
-                        onClick={() =>
-                            document.getElementById("legal-doc-input").click()
-                        }
-                    >
-                        <FaUpload />
-                    </button>
-                    <input
-                        id="legal-doc-input"
-                        type="file"
-                        onChange={(e) => handleFileChange(e, "legal_doc")}
-                        className="hidden"
-                    />
-                </div>
+                {/* Adjusted wrapper div */}
+                <div className="mt-8 mx-4 sm:mx-10 max-w-full border border-gray-300 rounded-lg mb-16">
+                    <h3 className="bg-gray-100 flex p-4 font-semibold text-gray-700 border-b border-gray-200">
+                        Equipment Information
+                    </h3>
+                    <form className="p-6" onSubmit={handleSubmit}>
+                        {/* File Upload Section */}
+                        {["photos", "legal_doc", "optional_doc"].map(
+                            (docType, index) => (
+                                <div
+                                    className="flex flex-col sm:flex-row justify-between items-center mb-4"
+                                    key={docType}
+                                >
+                                    <label className="text-gray-600 font-medium text-sm">
+                                        {docType === "photos"
+                                            ? "Upload good quality photos of the assets*"
+                                            : docType === "legal_doc"
+                                            ? "Provide legal documents that act as evidence of the ownership of the assets (original purchase receipt/title/certificate etc)*"
+                                            : "Any other assets records (optional)"}
+                                    </label>
+                                    <button
+                                        type="button"
+                                        className="flex items-center gap-2 mt-2 sm:mt-0 px-4 py-2 border border-gray-300 rounded-md text-gray-600 hover:bg-gray-50"
+                                        onClick={() =>
+                                            document
+                                                .getElementById(
+                                                    `${docType}-input`
+                                                )
+                                                .click()
+                                        }
+                                    >
+                                        <FaImage className="text-gray-500" />
+                                        Upload Photos
+                                    </button>
+                                    <input
+                                        id={`${docType}-input`}
+                                        type="file"
+                                        onChange={(e) =>
+                                            handleFileChange(e, docType)
+                                        }
+                                        className="hidden"
+                                    />
+                                </div>
+                            )
+                        )}
 
-                <div className="flex flex-col gap-2 justify-between py-3">
-                    <h1 className="whitespace-nowrap text-[13px]">
-                        Please provide the Asset’s make, model, and serial
-                        number*
-                    </h1>
-                    <input
-                        type="text"
-                        name="serial"
-                        value={formData.serial}
-                        onChange={handleInputChange}
-                        className="border p-3 rounded-md w-[350px] border-slate-500"
-                        required
-                    />
-                </div>
+                        <div className="mb-6">
+                            <label className="block text-gray-600 font-medium text-sm mb-2">
+                                Provide the asset's make, model, and serial
+                                number*
+                            </label>
+                            <input
+                                type="text"
+                                name="serial"
+                                value={formData.serial}
+                                onChange={handleInputChange}
+                                className="w-full border border-gray-300 rounded-md px-4 py-2 text-gray-600 focus:outline-none focus:ring-2 focus:ring-green-600"
+                                placeholder="Enter information here"
+                                required
+                            />
+                        </div>
 
-                <div className="flex justify-between my-4 gap-[150px] py-3">
-                    <h1 className="whitespace-nowrap text-[13px]">
-                        Any other Asset records (Optional)
-                    </h1>
-                    <button
-                        type="button"
-                        className="border p-3 flex items-center"
-                        onClick={() =>
-                            document
-                                .getElementById("optional-doc-input")
-                                .click()
-                        }
-                    >
-                        <FaUpload />
-                    </button>
-                    <input
-                        id="optional-doc-input"
-                        type="file"
-                        onChange={(e) => handleFileChange(e, "optional_doc")}
-                        className="hidden"
-                    />
+                        <div className="flex justify-end gap-4 mt-6">
+                            <button
+                                type="button"
+                                className="px-6 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition duration-300"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-300"
+                            >
+                                Save Info
+                            </button>
+                        </div>
+                    </form>
                 </div>
-
-                <div className="flex justify-center gap-6 items-center my-4">
-                    <button
-                        type="submit"
-                        className="btn-primary rounded-xl py-2 px-6"
-                    >
-                        OK
-                    </button>
-                    <button
-                        type="button"
-                        className="bg-black text-white hover:bg-gray-700 rounded-xl py-2 px-6"
-                    >
-                        Back
-                    </button>
-                </div>
-            </form>
-        </div>
+            </div>
+        </>
     );
 };
 

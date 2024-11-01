@@ -51,6 +51,7 @@ const Nav2 = () => {
       clearTimeout(closeTimeout); // Clear any existing timeout to prevent closing
       setIsDropdownOpen(true); // Open the dropdown
   };
+  const { user, token, setUser, setToken } = useStateContext();
 
   const handleMouseLeave = () => {
       const timeoutId = setTimeout(() => setIsDropdownOpen(false), 400); // Delay closing the dropdown
@@ -104,7 +105,6 @@ const Nav2 = () => {
                             <button
                                 className="flex items-center focus:outline-none hover:text-green-500 relative"
                                 aria-haspopup="true"
-                                
                                 onClick={isDropdownOpen} // Toggle dropdown on click
                             >
                                 Services
@@ -153,19 +153,45 @@ const Nav2 = () => {
 
                 {/* Sign In Section */}
                 <div className="flex items-center gap-3 hidden md:flex">
-                    <a
-                        href="#"
-                        className="group relative font-semibold text-[#475569] xl:text-[15px] text-[13px] hover:text-green-500"
-                    >
-                        Create investor account
-                        <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-green-500 transition-all duration-300 group-hover:w-full"></span>
-                    </a>
-                    <button
-                        onClick={() => setIsAuthModalOpen(true)}
-                        className="bg-black py-2 hover:bg-green-700 hover:text-green-100 rounded-[8px] xl:text-[15px] text-[13px] px-5 font-semibold text-white "
-                    >
-                        Sign in
-                    </button>
+                    {token ? (
+                        // User is signed in
+                        <>
+                            <a
+                                href="#"
+                                className="group relative font-semibold text-[#475569] xl:text-[15px] text-[13px] hover:text-green-500"
+                            >
+                                Dashboard
+                                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+                            </a>
+                            <button
+                                onClick={() => {
+                                    setToken(null); // Clear token
+                                    setUser(null); // Clear user information
+                                }}
+                                className="bg-green-700 py-2 hover:bg-green-800 hover:text-red-100 rounded-[8px] xl:text-[15px] text-[13px] px-5 font-semibold text-white"
+                            >
+                                Sign out
+                            </button>
+                        </>
+                    ) : (
+                        // User is not signed in
+                        <>
+                            <a
+                                href="#"
+                                className="group relative font-semibold text-[#475569] xl:text-[15px] text-[13px] hover:text-green-500"
+                            >
+                                Create investor account
+                                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+                            </a>
+
+                            <button
+                                onClick={() => setIsAuthModalOpen(true)} // Open auth modal
+                                className="bg-black py-2 hover:bg-green-700 hover:text-green-100 rounded-[8px] xl:text-[15px] text-[13px] px-5 font-semibold text-white"
+                            >
+                                Sign in
+                            </button>
+                        </>
+                    )}
                 </div>
             </div>
 

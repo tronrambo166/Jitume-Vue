@@ -149,18 +149,30 @@ const Navbar = () => {
                 {/* Sign In Section */}
                 <div className="flex items-center gap-3 hidden md:flex">
                     <a
-                        href="#"
+                        href={token ? "/dashboard" : "#"}
                         className="group relative font-bold text-[#CBD5E1] text-[13px] hover:text-white"
                     >
-                        Create investor account
+                        {token ? "Dashboard" : "Create investor account"}
                         <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
                     </a>
-                    <button
-                        onClick={() => setIsAuthModalOpen(true)}
-                        className="bg-white py-2 hover:bg-green-400 hover:text-green-100 rounded-[8px] text[13px] px-5 text-[#0F172A] font-semibold"
-                    >
-                        Sign in
-                    </button>
+                    {token ? (
+                        <button
+                            onClick={() => {
+                                setToken(null); // Clear token to sign out
+                                setUser(null); // Optional: Clear user information on sign out
+                            }}
+                            className="bg-white py-2 hover:bg-green-800 hover:text-red-100 rounded-[8px] text-[13px] px-5 text-[#0F172A] font-semibold"
+                        >
+                            Sign Out
+                        </button>
+                    ) : (
+                        <button
+                            onClick={() => setIsAuthModalOpen(true)}
+                            className="bg-white py-2 hover:bg-green-400 hover:text-green-100 rounded-[8px] text-[13px] px-5 text-[#0F172A] font-semibold"
+                        >
+                            Sign In
+                        </button>
+                    )}
                 </div>
             </div>
 

@@ -1114,6 +1114,120 @@ const ListingDetails = ({ onClose }) => {
                                     </p>
                                 </div>
                             )}
+                            <div className="container mx-auto mt-2 p-6 bg-white border border-gray-300 rounded-lg">
+                                {token && conv && amount_r && running ? (
+                                    <div>
+                                        <div className="w-full flex flex-col items-center mt-4">
+                                            <h2 className="text-lg font-semibold text-[#334155] mb-4">
+                                                Enter A Bid To Invest
+                                            </h2>
+                                            <label
+                                                htmlFor="investmentAmount"
+                                                className="text-sm text-[#334155] font-medium"
+                                            >
+                                                Amount:
+                                            </label>
+                                            <input
+                                                type="number"
+                                                id="investmentAmount"
+                                                value={amount}
+                                                onChange={handleAmountChange}
+                                                className="border border-gray-300 rounded-lg p-2 mb-2 w-full"
+                                                placeholder="$"
+                                            />
+                                            {amount && (
+                                                <div className="text-sm">
+                                                    <p>
+                                                        Bid Percentage:{" "}
+                                                        <span
+                                                            id="percent"
+                                                            className="font-bold"
+                                                        >
+                                                            {percentage}
+                                                        </span>
+                                                        %
+                                                    </p>
+                                                </div>
+                                            )}
+                                            <button
+                                                onClick={handleInvestClick}
+                                                className="btn-primary text-white border bg-green-700 hover:bg-green-800 transition-all duration-200 px-4 py-2 rounded-lg mt-4 w-full max-w-[300px]"
+                                            >
+                                                Invest Now
+                                            </button>
+                                            {errorMessage && (
+                                                <p className="error-message text-red-600">
+                                                    {errorMessage}
+                                                </p>
+                                            )}
+                                        </div>
+
+                                        <div className="w-full flex flex-col items-center mt-4">
+                                            <h2 className="text-lg font-semibold text-[#334155] mb-4">
+                                                Enter Equipment Equivalent Bid
+                                                To Invest
+                                            </h2>
+                                            <label
+                                                htmlFor="equipmentAmount"
+                                                className="text-sm text-[#334155] font-medium"
+                                            >
+                                                Amount:
+                                            </label>
+                                            <input
+                                                type="number"
+                                                id="equipmentAmount"
+                                                value={equipmentAmount}
+                                                onChange={
+                                                    handleEquipmentAmountChange
+                                                }
+                                                className="border border-gray-300 rounded-lg p-2 mb-2 w-full"
+                                                placeholder="$"
+                                            />
+                                            {equipmentAmount && (
+                                                <div className="text-sm">
+                                                    <p>
+                                                        Equipment Investment
+                                                        Percentage:{" "}
+                                                        <span className="font-bold">
+                                                            {
+                                                                equipmentPercentage
+                                                            }
+                                                            %
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            )}
+
+                                            <button
+                                                onClick={handleEquipmentInvest}
+                                                className="btn-primary text-white border bg-green-700 hover:bg-green-800 transition-all duration-200 px-4 py-2 rounded-lg mt-4 w-full max-w-[300px]"
+                                            >
+                                                Invest in Equipment
+                                            </button>
+                                            {equipmentErrorMessage && (
+                                                <p className="error-message text-red-600">
+                                                    {equipmentErrorMessage}
+                                                </p>
+                                            )}
+                                            {allowToReview && conv && (
+                                                <div className="w-75 mx-auto row">
+                                                    <h4 className="bg-green-600 text-white p-3 rounded">
+                                                        Business is completed!
+                                                    </h4>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="w-75 mx-auto row">
+                                        {/* <p className="bg-light text-gray-700 p-2 rounded">
+                Milestone payout is currently off due to
+                milestone completion process, please wait
+                until next milestone is open.
+            </p> */}
+                                    </div>
+                                )}
+                            </div>
                         </div>
 
                         {/* ReviewList */}
@@ -1153,114 +1267,113 @@ const ListingDetails = ({ onClose }) => {
                                 </div>
                             </div>
                         </div>
+                        {/* <div className="mt-6">
+    {token && conv && amount_r && running ? (
+        <div>
+            <div className="w-full flex flex-col items-center mt-4">
+                <h2 className="text-lg font-semibold mb-4">
+                    Enter A Bid To Invest
+                </h2>
+                <label
+                    htmlFor="investmentAmount"
+                    className="text-sm font-medium"
+                >
+                    Amount:
+                </label>
+                <input
+                    type="number"
+                    id="investmentAmount"
+                    value={amount}
+                    onChange={handleAmountChange}
+                    className="border border-gray-300 rounded-lg p-2 mb-2 w-full"
+                    placeholder="$"
+                />
+                {amount && (
+                    <div className="text-sm">
+                        <p>
+                            Bid Percentage:{" "}
+                            <span
+                                id="percent"
+                                className="font-bold"
+                            >
+                                {percentage}
+                            </span>
+                            %
+                        </p>
                     </div>
+                )}
+                <button
+                    onClick={handleInvestClick}
+                    className="btn-primary text-white border bg-blue-600 hover:bg-blue-700 transition-all duration-200 px-4 py-2 rounded-lg mt-4 w-full max-w-[300px]"
+                >
+                    Invest Now
+                </button>
+                {errorMessage && (
+                    <p className="error-message text-red-600">
+                        {errorMessage}
+                    </p>
+                )}
+            </div>
 
-                    <div className="mt-6">
-                        {token && conv && amount_r && running ? (
-                            <div>
-                                <div className="w-full flex flex-col items-center mt-4">
-                                    <h2 className="text-lg font-semibold mb-4">
-                                        Enter A Bid To Invest
-                                    </h2>
-                                    <label
-                                        htmlFor="investmentAmount"
-                                        className="text-sm font-medium"
-                                    >
-                                        Amount:
-                                    </label>
-                                    <input
-                                        type="number"
-                                        id="investmentAmount"
-                                        value={amount}
-                                        onChange={handleAmountChange}
-                                        className="border border-gray-300 rounded-lg p-2 mb-2 w-full"
-                                        placeholder="$"
-                                    />
-                                    {amount && (
-                                        <div className="text-sm">
-                                            <p>
-                                                Bid Percentage:{" "}
-                                                <span
-                                                    id="percent"
-                                                    className="font-bold"
-                                                >
-                                                    {percentage}
-                                                </span>
-                                                %
-                                            </p>
-                                        </div>
-                                    )}
-                                    <button
-                                        onClick={handleInvestClick}
-                                        className="btn-primary text-white border bg-blue-600 hover:bg-blue-700 transition-all duration-200 px-4 py-2 rounded-lg mt-4 w-full max-w-[300px]"
-                                    >
-                                        Invest Now
-                                    </button>
-                                    {errorMessage && (
-                                        <p className="error-message text-red-600">
-                                            {errorMessage}
-                                        </p>
-                                    )}
-                                </div>
+            <div className="w-full flex flex-col items-center mt-4">
+                <h2 className="text-lg font-semibold mb-4">
+                    Enter Equipment Equivalent Bid To Invest
+                </h2>
+                <label
+                    htmlFor="equipmentAmount"
+                    className="text-sm font-medium"
+                >
+                    Amount:
+                </label>
+                <input
+                    type="number"
+                    id="equipmentAmount"
+                    value={equipmentAmount}
+                    onChange={handleEquipmentAmountChange}
+                    className="border border-gray-300 rounded-lg p-2 mb-2 w-full"
+                    placeholder="$"
+                />
+                {equipmentAmount && (
+                    <div className="text-sm">
+                        <p>
+                            Equipment Investment Percentage:{" "}
+                            <span className="font-bold">
+                                {equipmentPercentage}%
+                            </span>
+                        </p>
+                    </div>
+                )}
 
-                                <div className="w-full flex flex-col items-center mt-4">
-                                    <h2 className="text-lg font-semibold mb-4">
-                                        Enter Equipment Equivalent Bid To Invest
-                                    </h2>
-                                    <label
-                                        htmlFor="equipmentAmount"
-                                        className="text-sm font-medium"
-                                    >
-                                        Amount:
-                                    </label>
-                                    <input
-                                        type="number"
-                                        id="equipmentAmount"
-                                        value={equipmentAmount}
-                                        onChange={handleEquipmentAmountChange}
-                                        className="border border-gray-300 rounded-lg p-2 mb-2 w-full"
-                                        placeholder="$"
-                                    />
-                                    {equipmentAmount && (
-                                        <div className="text-sm">
-                                            <p>
-                                                Equipment Investment Percentage:{" "}
-                                                <span className="font-bold">
-                                                    {equipmentPercentage}%
-                                                </span>
-                                            </p>
-                                        </div>
-                                    )}
-
-                                    <button
-                                        onClick={handleEquipmentInvest}
-                                        className="btn-primary text-white border bg-blue-600 hover:bg-blue-700 transition-all duration-200 px-4 py-2 rounded-lg mt-4 w-full max-w-[300px]"
-                                    >
-                                        Invest in Equipment
-                                    </button>
-                                    {equipmentErrorMessage && (
-                                        <p className="error-message text-red-600">
-                                            {equipmentErrorMessage}
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="w-75 mx-auto row">
-                                {/* <p className="bg-light text-gray-700 p-2 rounded">
-                                    Milestone payout is currently off due to
-                                    milestone completion process, please wait
-                                    until next milestone is open.
-                                </p> */}
-                            </div>
-                        )}
-                        {allowToReview && conv && (
-                            <div className="w-75 mx-auto row">
-                                <h4 className="bg-green text-white p-3 rounded">
-                                    Business is completed!
-                                </h4>
-                            </div>
-                        )}
+                <button
+                    onClick={handleEquipmentInvest}
+                    className="btn-primary text-white border bg-blue-600 hover:bg-blue-700 transition-all duration-200 px-4 py-2 rounded-lg mt-4 w-full max-w-[300px]"
+                >
+                    Invest in Equipment
+                </button>
+                {equipmentErrorMessage && (
+                    <p className="error-message text-red-600">
+                        {equipmentErrorMessage}
+                    </p>
+                )}
+            </div>
+        </div>
+    ) : (
+        <div className="w-75 mx-auto row">
+            <p className="bg-light text-gray-700 p-2 rounded">
+                Milestone payout is currently off due to
+                milestone completion process, please wait
+                until next milestone is open.
+            </p>
+        </div>
+    )}
+    {allowToReview && conv && (
+        <div className="w-75 mx-auto row">
+            <h4 className="bg-green text-white p-3 rounded">
+                Business is completed!
+            </h4>
+        </div>
+    )}
+</div> */}
                     </div>
                 </div>
             </div>

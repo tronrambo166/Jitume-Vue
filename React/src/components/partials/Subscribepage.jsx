@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../../axiosClient";
-import BusinessHero from "../Businesses/BusinessHero";
+import BusinessHero from "../Heros/BusinessHero";
 import { FaBolt, FaRegLightbulb } from "react-icons/fa";
 import lightbulb from "../../../images/light-bulb.png";
 import whitebulb from "../../../images/bulbwhite.png";

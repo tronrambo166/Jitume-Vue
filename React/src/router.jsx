@@ -49,13 +49,16 @@ const router = createBrowserRouter([
             { path: "/services", element: <Servicepage /> },
             { path: "/users", element: <Users /> },
             {
-                path: "/Resullistingts/:resIds/:loc",
+                path: "/listingResults/:resIds/:loc",
                 name: "listingResults",
                 element: <ListingResults />,
             },
             { path: "/listing/:id", element: <ListingDetails /> },
             { path: "/service-details/:id", element: <ServiceDetails /> },
-            { path: "/asset-service-details/:id/:bid_id", element: <ServiceDetails /> },
+            {
+                path: "/asset-service-details/:id/:bid_id",
+                element: <ServiceDetails />,
+            },
             { path: "/business-milestones/:id", element: <MilestonesPage /> },
             { path: "/service-milestones/:id", element: <MilestonesPageS /> },
             {
@@ -72,7 +75,10 @@ const router = createBrowserRouter([
                 element: <ServiceResults />,
             },
             { path: "/projectManagers/:bid_id", element: <ProjectManagers /> },
-            { path: "/equipmentRelease/:b_owner_id/:manager_id", element: <EquipmentRelease /> },
+            {
+                path: "/equipmentRelease/:b_owner_id/:manager_id",
+                element: <EquipmentRelease />,
+            },
             { path: "/subscribe/:id", element: <Subscribepage /> },
             { path: "/checkout", element: <PaymentForm /> },
             { path: "/category/:name", element: <CategoryPage /> },
@@ -104,7 +110,7 @@ const router = createBrowserRouter([
             { path: "services-table", element: <ServiceTable /> },
             { path: "addservicemilestone", element: <Addservicemilestone /> },
             { path: "mybookings", element: <MyBookings /> },
-            { path: "addbusiness", element: <AddBusinesS /> }
+            { path: "addbusiness", element: <AddBusinesS /> },
         ],
     },
 ]);
