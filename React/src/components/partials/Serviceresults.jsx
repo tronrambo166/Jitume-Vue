@@ -353,7 +353,7 @@ const categories = [
                                           {row.name}
                                       </p>
                                       <p className="text-sm text-gray-600">
-                                          {row.description ||
+                                          {row.details ||
                                               "Lorem ipsum dolor sit amet consectetur..."}
                                       </p>
                                       <p className="text-sm text-gray-600 inline-block">
@@ -380,7 +380,7 @@ const categories = [
                                       <p className="text-green-600 font-bold mt-2">
                                           ${row.price}
                                           <span className="text-gray-500 ml-1 text-xs">
-                                              / Amount Requested
+                                              / Price
                                           </span>
                                       </p>
                                   </div>

@@ -461,7 +461,7 @@ const ListingResults = () => {
                                             {row.name}
                                         </p>
                                         <p className="text-sm text-[#1E293B]">
-                                            {row.description ||
+                                            {row.details ||
                                                 "Lorem ipsum dolor sit amet consectetur..."}
                                         </p>
                                         <p className="text-sm text-[#1E293B] inline-block">
@@ -486,7 +486,7 @@ const ListingResults = () => {
                                         </div>
                                         <div>
                                             <p className="text-green-600 ">
-                                                ${row.average_price || ""}
+                                                ${row.investment_needed || ""}
                                                 <span className="text-[#1E293B]">
                                                     / Amount Requested
                                                 </span>

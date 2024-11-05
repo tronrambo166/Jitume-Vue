@@ -118,25 +118,15 @@ const Navbar = () => {
                                 />
                             </button>
                             {isDropdownOpen && (
-                                <div className="absolute bg-gray-100 space-y-2 text-black w-[250px] h-[130px] mb-2 mt-2 rounded shadow-lg">
+                                <div className="absolute bg-gray-100 space-y-2 text-black w-[250px] h-[40px] mb-2 mt-2 rounded shadow-lg">
                                     <Link
                                         to="/services"
                                         className="block px-4 py-2 font-medium rounded-t-lg hover:bg-gray-300"
                                     >
-                                        Service 1
+                                        Add Your Business Service
                                     </Link>
-                                    <Link
-                                        to="/services"
-                                        className="block px-4 py-2 font-medium hover:bg-gray-300"
-                                    >
-                                        Service 2
-                                    </Link>
-                                    <Link
-                                        to="/services"
-                                        className="block px-4 py-2 font-medium rounded-b-lg hover:bg-gray-300"
-                                    >
-                                        Service 3
-                                    </Link>
+                                    
+                                 
                                 </div>
                             )}
                         </div>

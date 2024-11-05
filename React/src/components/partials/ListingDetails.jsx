@@ -378,7 +378,7 @@ const ListingDetails = ({ onClose }) => {
 
                     setDetails(data.data[0]);
                     if (data.data[0].investors_fee == null) setConv(true);
-                    //console.log(data)
+                    console.log(data)
                 })
                 .catch((err) => {
                     console.log(err); //setLoading(false)
@@ -666,7 +666,7 @@ const ListingDetails = ({ onClose }) => {
 
                         <div className="flex items-center pb-3 gap-1">
                             <p className="text-green-800 text-2xl md:text-lg font-semibold">
-                                ${amount_r || 5000}
+                                ${amount_r || 0}
                             </p>
                             <p className="text-gray-800 text-sm">
                                 Amount Requested:
