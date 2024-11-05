@@ -11,6 +11,7 @@ import axiosClient from "../../axiosClient";
 import { Link } from 'react-router-dom';
 import { useStateContext } from "../../contexts/contextProvider";
 import {decode as base64_decode, encode as base64_encode} from 'base-64';
+import ServiceSearch from "../partials/ServiceSearch";
 
 const ServiceResults = () => {
 const categories = [
@@ -211,146 +212,202 @@ const categories = [
         //MAP -- MAP
 
   return (
-    <div className="container mx-auto px-4">
-      <div className="flex mb-6 flex-col md:flex-row gap-4 justify-center pt-8 px-2 sm:px-6 md:px-4 items-center w-full max-w-3xl mx-auto">
-        <input
-          type="text"
-          className="border py-2 text-md px-4 border-[#666666]/30 rounded-xl focus:outline-none w-full md:flex-1"
-          placeholder="What are you looking for?"
-          style={{ textAlign: "center" }}
-        />
-        <div className="relative w-full md:flex-1">
-          <input
-            type="text"
-            placeholder="Location"
-            className="border border-[#666666]/30 w-full text-md rounded-xl py-2 px-10 focus:outline-none"
-            style={{ textAlign: "center" }}
-            ref={locationInputRef}
-          />
-          <FontAwesomeIcon
-            icon={faLocationDot}
-            className="absolute right-3 ml-2 top-1/2 transform -translate-y-1/2 text-black cursor-pointer"
-          />
-        </div>
-        <Select
-          className="w-full md:flex-1"
-          options={categories}
-          value={selectedCategory}
-          onChange={setSelectedCategory}
-          placeholder="Select a category"
-          isClearable
-          styles={{
-            control: (provided) => ({
-              ...provided,
-              borderRadius: "12px",
-              padding: "2px 0", // Adjust this value as needed
-            }),
-          }}
-        />
-        <button
-          className="btn-primary w-full md:w-auto py-3 rounded-full px-4 focus:outline-none mt-4 md:mt-0"
-          onClick={search}
-        >
-          <FontAwesomeIcon icon={faSearch} />
-        </button>
-      </div>
-
-      <div className="">
-      <div id="turnover_slider" className=" w-[50%]" >
-        <label className="text-gray-700 font-semibold mb-2">Price Range</label>
-        <div id="slider" class=""> </div>
-            <div className="row mt-3">
-                <div className="col-6  mt-1">
-                    <span id="price_low" className="py-0 btn-light" name="min"> </span>
-                </div>
-                <div className="col-6 mt-1 pr-0">
-                    <span id="price_high" className="float-right py-0 btn-light" name="min"> </span>
-                </div>
-            </div>
-        </div>
-        {/*<PriceRangeFilter />*/}
-      </div>
-
-      <h5 className="py-3 text-gray-700 font-semibold mt-6">
-        <b>{count} Results Found</b>
-      </h5>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="space-y-4 no-scrollbar   overflow-y-auto">
-          {results.length === 0 ? (
-            <p className="text-center text-gray-500">No results found.</p>
-          ) : (
-            results.map((row, index) => (
-              <Link to={`/service-details/${btoa(btoa(row.id))}`} key={row.id} >
-              <div
-                className="border h-48 my-3 border-gray-300 rounded-lg shadow-md flex"
-                key={index}
-              >
-                {row.video ? (
-                  <img
-                    src={'../../' + row.image}
-                    alt={row.listing_name}
-                    className="w-1/3 h-48 object-cover rounded-l-lg"
+      <div className="w-full mx-auto px-24">
+          <h1 className="text-3xl pt-4 md:text-[64px] mb-8 md:mb-16 font-semibold leading-tight md:leading-[79.36px] tracking-[0.02em] text-center font-sharp-grotesk text-[#00290F]">
+              What Are You Looking For?
+          </h1>
+          <div className="">
+              <ServiceSearch />
+          </div>
+          {/* <div className="flex mb-6 flex-col md:flex-row gap-4 justify-center pt-8 px-2 sm:px-6 md:px-4 items-center w-full max-w-3xl mx-auto">
+              <input
+                  type="text"
+                  className="border py-2 text-md px-4 border-[#666666]/30 rounded-xl focus:outline-none w-full md:flex-1"
+                  placeholder="What are you looking for?"
+                  style={{ textAlign: "center" }}
+              />
+              <div className="relative w-full md:flex-1">
+                  <input
+                      type="text"
+                      placeholder="Location"
+                      className="border border-[#666666]/30 w-full text-md rounded-xl py-2 px-10 focus:outline-none"
+                      style={{ textAlign: "center" }}
+                      ref={locationInputRef}
                   />
-                ) : (
-                  <img
-                    src={'../../' + row.image}
-                    alt={row.listing_name}
-                    className="w-1/3 h-48 object-cover rounded-l-lg"
+                  <FontAwesomeIcon
+                      icon={faLocationDot}
+                      className="absolute right-3 ml-2 top-1/2 transform -translate-y-1/2 text-black cursor-pointer"
                   />
-                )}
-                <div className="p-4 flex flex-col">
-                  <p className="mb-1 text-lg whitespace-nowrap font-semibold">
-                    {row.name}
-                  </p>
-                  <div className="inline-block py-2">
-                    <p className="mb-1 rounded-full bg-black py-1 px-2 text-sm text-white inline-block">
-                      {row.category}
-                    </p>
-                  </div>
-                  <div className="pt-[10px]">
-                    <div className="flex justify-evenly gap-6 items-end">
-                      <div className="flex flex-col text-[13px] text-[#0A0A0A]/70 gap-2">
-                        <p className="">
-                          <FontAwesomeIcon
-                            icon={faLocationDot}
-                            className="mr-2"
-                          />
-                          Location: {row.location}
-                        </p>
-                        <p className="float">
-                          <FontAwesomeIcon
-                            icon={faPhone}
-                            className="mr-2"
-                          />
-                          +1791205437
-                        </p>
-                      </div>
-                      <div>
-                        <p className="pl-[70px] text-[15px] font-bold">
-                          ${row.price}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
-              </Link>
-            ))
-          )}
-        </div>
+              <Select
+                  className="w-full md:flex-1"
+                  options={categories}
+                  value={selectedCategory}
+                  onChange={setSelectedCategory}
+                  placeholder="Select a category"
+                  isClearable
+                  styles={{
+                      control: (provided) => ({
+                          ...provided,
+                          borderRadius: "12px",
+                          padding: "2px 0", // Adjust this value as needed
+                      }),
+                  }}
+              />
+              <button
+                  className="btn-primary w-full md:w-auto py-3 rounded-full px-4 focus:outline-none mt-4 md:mt-0"
+                  onClick={search}
+              >
+                  <FontAwesomeIcon icon={faSearch} />
+              </button>
+          </div> */}
 
-        <div className="h-[500px] border border-gray-300 rounded-lg flex items-center justify-center">
-          {/* Placeholder for the map */}
-          
-          <div class="m-auto map_style">
-                     <div id="map" style={{ height: '95%' }}></div> 
-                </div>
-                
-        </div>
+          <div className=" justify-center flex items-center gap-6    my-8">
+              <div
+                  id="turnover_slider"
+                  className=" w-full jakarta  text-md border border-[#cbd5e1] rounded-lg space-y-2 px-6 py-4 "
+              >
+                  <label className="text-gray-700 font-semibold mb-2">
+                      Price Range
+                  </label>
+                  <div id="slider" class="">
+                      {" "}
+                  </div>
+                  <div className="row mt-3 jakarta">
+                      <div className="col-6  mt-1">
+                          <span id="price_low" className="py-0 " name="min">
+                              {" "}
+                          </span>
+                      </div>
+                      <div className="col-6 mt-1 pr-0">
+                          <span
+                              id="price_high"
+                              className="float-right py-0 "
+                              name="min"
+                          >
+                              {" "}
+                          </span>
+                      </div>
+                  </div>
+              </div>
+              {/*<PriceRangeFilter />*/}
+          </div>
+
+          <h1 className=" text-gray-700 text-2xl mb-2   font-semibold ">
+              <b>{count} Results Found</b>
+          </h1>
+
+          <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] space-x-0">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  {results.length === 0 ? (
+                      <p className="text-center text-gray-400 italic">
+                          No results found.
+                      </p>
+                  ) : (
+                      results.map((row, index) => (
+                          <Link
+                              to={`/service-details/${btoa(btoa(row.id))}`}
+                              key={row.id}
+                              className=""
+                          >
+                              <div
+                                  className="border p-5 border-[#0000001A]/10 shadow-sm bg-white h-[500px] rounded-2xl flex flex-col w-full max-w-[900px] mx-auto  "
+                                  //   key={index}
+                              >
+                                  <div className="">
+                                      {row.video ? (
+                                          <img
+                                              src={"../../" + row.image}
+                                              alt={row.listing_name}
+                                              className="w-full h-[250px] object-cover rounded-lg"
+                                          />
+                                      ) : (
+                                          <img
+                                              src={"../../" + row.image}
+                                              alt={row.listing_name}
+                                              className="w-full h-[250px] object-cover rounded-lg"
+                                          />
+                                      )}
+                                  </div>
+                                  <div className="flex flex-col pt-2 justify-between flex-grow ">
+                                      <div className="flex flex-wrap gap-2 text-xs jakarta font-semibold text-[#1E293B]">
+                                          {(
+                                              row.tags || [
+                                                  "example",
+                                                  "dummy",
+                                                  "placeholder",
+                                                  "sample",
+                                              ]
+                                          ).map((tag) => (
+                                              <span
+                                                  key={tag}
+                                                  className="  text-[#1E293B] jakarta font-semibold"
+                                              >
+                                                  #{tag}
+                                              </span>
+                                          ))}
+                                      </div>
+                                  </div>
+                                  <div className="flex flex-col justify-between flex-grow">
+                                      <p className="text-lg font-semibold text-slate-800">
+                                          {row.name}
+                                      </p>
+                                      <p className="text-sm text-gray-600">
+                                          {row.description ||
+                                              "Lorem ipsum dolor sit amet consectetur..."}
+                                      </p>
+                                      <p className="text-sm text-gray-600 inline-block">
+                                          {row.category}
+                                      </p>
+                                      <div className="">
+                                          <div className="text-sm text-gray-500 flex flex-col gap-1">
+                                              <p className="flex items-center ">
+                                                  <FontAwesomeIcon
+                                                      icon={faLocationDot}
+                                                      className="mr-1 text-slate-500"
+                                                  />
+                                                  {row.location}
+                                              </p>
+                                              <p className="flex items-center truncate">
+                                                  <FontAwesomeIcon
+                                                      icon={faPhone}
+                                                      className="mr-1 text-slate-500"
+                                                  />
+                                                  {row.contact || "+1791205437"}
+                                              </p>
+                                          </div>
+                                      </div>
+                                      <p className="text-green-600 font-bold mt-2">
+                                          ${row.price}
+                                          <span className="text-gray-500 ml-1 text-xs">
+                                              / Amount Requested
+                                          </span>
+                                      </p>
+                                  </div>
+                              </div>
+                          </Link>
+                      ))
+                  )}
+              </div>
+
+              <div className="h-[400px] rounded-m flex items-center justify-center mt-[-30px]">
+                  {/* Placeholder for the map */}
+                  <div
+                      className="m-auto map_style"
+                      style={{
+                          borderRadius: "16px",
+                          overflow: "hidden",
+                          marginLeft: "20px",
+                      }}
+                  >
+                      <div
+                          id="map"
+                          style={{ height: "100%", borderRadius: "16px" }}
+                      ></div>
+                  </div>
+              </div>
+          </div>
       </div>
-
-    </div>
   );
 };
 

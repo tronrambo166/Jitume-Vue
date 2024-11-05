@@ -7,7 +7,10 @@
 .text-13px {
   font-size: 16px;
 }
-
+.jakarta{
+  font-family: "Plus Jakarta Sans", serif;
+  font-weight: 300;
+}
 #side{
   background-image: url(./images/side.png);
   background-repeat: none;
@@ -143,7 +146,7 @@ font-size: 14px
     }
 
     .noUi-connect{
-        background: #16813d !important;
+        background: #15803D !important;
     }
 
     .noUi-horizontal .noUi-handle {
@@ -152,7 +155,7 @@ font-size: 14px
         right: -12px;
         top: -6px;
         border-radius: 50%;
-        background: black;
+        background: #15803D;
         box-shadow: none !important;
     }
 

@@ -67,9 +67,11 @@ const Nav2 = () => {
         <div className="py-3 px-[35px] text-white relative z-50">
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-1">
-                    <span>
-                        <img src={logo} width={108} alt="Logo" />
-                    </span>
+                    <Link>
+                        <span to="/">
+                            <img src={logo} width={108} alt="Logo" />
+                        </span>
+                    </Link>
                 </div>
 
                 {/* Mobile Menu Button */}

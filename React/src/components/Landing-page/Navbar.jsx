@@ -66,9 +66,11 @@ const Navbar = () => {
         <div className="py-3 px-[35px] text-white">
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-1">
-                    <span>
-                        <img src={logo} width={110} alt="Logo" />
-                    </span>
+                    <Link to="/">
+                        <span>
+                            <img src={logo} width={110} alt="Logo" />
+                        </span>
+                    </Link>
                 </div>
 
                 {/* Mobile Menu Button */}
