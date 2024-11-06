@@ -36,6 +36,7 @@ const PaymentForm = () => {
     };
 
     const navigate = useNavigate();
+
     //Stripe Code
     $(function () {
         var $form = $(".require-validation");
@@ -355,6 +356,20 @@ const PaymentForm = () => {
 
                     <div className="w-full">
                         <label className="block text-sm font-semibold mb-2">
+                            Exp. Year
+                        </label>
+                        <input
+                                        className="card-expiry-year w-full p-2 border border-gray-300 rounded"
+                                        type="text"
+                                        placeholder="YYYY"
+                                        size="4"
+                                    />
+                    </div>
+
+                    
+
+                    <div className="w-full">
+                        <label className="block text-sm font-semibold mb-2">
                             CVC
                         </label>
                         <input
@@ -502,7 +517,7 @@ const PaymentForm = () => {
                                         <h2 className="text-gray-500">
                                             Subtotal
                                         </h2>
-                                        <h3>price</h3>
+                                        <h3>${amount_real}</h3>
                                     </div>
 
                                     <div className="flex justify-between">
@@ -510,7 +525,7 @@ const PaymentForm = () => {
                                             {" "}
                                             Tax (5%){" "}
                                         </h3>
-                                        <h3>price </h3>
+                                        <h3>${amount_real*0.05} </h3>
                                     </div>
                                     {/* <label className="block text-sm font-semibold">
                                         Amount (USD){" "}
@@ -532,6 +547,16 @@ const PaymentForm = () => {
                                         <h3 className="text-gray-400 text-sm">
                                             After trial ends on 06 Nov, 2024
                                         </h3>
+                                        <input id="amount" hidden value={price} />
+                                        <input
+                                        hidden
+                                        name="package"
+                                        id="package"
+                                        type="text"
+                                        value="gold"
+                                        readonly
+                                    />
+
                                     </div>
 
                                     <h2> ${price}</h2>
