@@ -48,62 +48,66 @@ const ListingDetails = ({ onClose }) => {
         range: "gold",
         conv: false,
     };
-    const reviews = [
-        {
-            id: 1,
-            name: "Leslie Alexander",
-            date: "July 22, 2023",
-            location: "Reviewed from United States on July 22,2023",
-            stars: 5,
-            review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.",
-            profileImage: [img],
-        },
-        {
-            id: 2,
-            name: "David Jones",
-            date: "July 22, 2023",
-            location: "Reviewed from United States on July 22,2023",
-            stars: 5,
-            review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.",
-            profileImage: [img],
-        },
-        {
-            id: 3,
-            name: "Jenny Wilson",
-            date: "July 22, 2023",
-            location: "Reviewed from United States on July 22,2023",
-            stars: 5,
-            review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.",
-            profileImage: [img],
-        },
-        {
-            id: 4,
-            name: "Bessie Cooper",
-            date: "July 22, 2023",
-            location: "Reviewed from United States on July 22,2023",
-            stars: 5,
-            review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.",
-            profileImage: [img],
-        },
-        {
-            id: 5,
-            name: "John Doe",
-            date: "July 22, 2023",
-            location: "Reviewed from United States on July 22,2023",
-            stars: 4,
-            review: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...",
-            profileImage: [img],
-        },
-        {
-            id: 6,
-            name: "Jane Doe",
-            date: "July 22, 2023",
-            location: "Reviewed from United States on July 22,2023",
-            stars: 4,
-            review: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...",
-            profileImage: [img],
-        },
-    ];
+
+    const [reviewData, setRev] = useState([]);
+     const reviews = reviewData;
+     //const reviewSum = reviewData;
+     //[
+    //     {
+    //         id: 1,
+    //         name: "Leslie Alexander",
+    //         date: "July 22, 2023",
+    //         location: "Reviewed from United States on July 22,2023",
+    //         stars: 5,
+    //         review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.",
+    //         profileImage: [img],
+    //     },
+    //     {
+    //         id: 2,
+    //         name: "David Jones",
+    //         date: "July 22, 2023",
+    //         location: "Reviewed from United States on July 22,2023",
+    //         stars: 5,
+    //         review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.",
+    //         profileImage: [img],
+    //     },
+    //     {
+    //         id: 3,
+    //         name: "Jenny Wilson",
+    //         date: "July 22, 2023",
+    //         location: "Reviewed from United States on July 22,2023",
+    //         stars: 5,
+    //         review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.",
+    //         profileImage: [img],
+    //     },
+    //     {
+    //         id: 4,
+    //         name: "Bessie Cooper",
+    //         date: "July 22, 2023",
+    //         location: "Reviewed from United States on July 22,2023",
+    //         stars: 5,
+    //         review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.",
+    //         profileImage: [img],
+    //     },
+    //     {
+    //         id: 5,
+    //         name: "John Doe",
+    //         date: "July 22, 2023",
+    //         location: "Reviewed from United States on July 22,2023",
+    //         stars: 4,
+    //         review: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...",
+    //         profileImage: [img],
+    //     },
+    //     {
+    //         id: 6,
+    //         name: "Jane Doe",
+    //         date: "July 22, 2023",
+    //         location: "Reviewed from United States on July 22,2023",
+    //         stars: 4,
+    //         review: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...",
+    //         profileImage: [img],
+    //     },
+    // ];
 
     const [itemsPerPage, setItemsPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
@@ -145,7 +149,7 @@ const ListingDetails = ({ onClose }) => {
     const [amount_r, setAmount_r] = useState("");
     const [running, setRunning] = useState(false);
     const [subscribeData, setSubscribeData] = useState("");
-    const [reviewData, setRev] = useState([]);
+    
     const [isOpen, setIsOpen] = useState(true); // Popup is initially open
 
     const [amount, setAmount] = useState("");
@@ -419,6 +423,7 @@ const ListingDetails = ({ onClose }) => {
                     }
 
                     if (data.reviews.length > 0) setRev(data.reviews);
+                    console.log(data.reviews);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -660,7 +665,7 @@ const ListingDetails = ({ onClose }) => {
                             </p>
                             <p className="flex items-center text-gray-700 mt-2">
                                 <FaPhoneAlt className="mr-2 text-lg text-gray-500" />
-                                Contact: (123) 456-7890
+                                Contact: {details.contact}
                             </p>
                         </div>
 
@@ -720,7 +725,7 @@ const ListingDetails = ({ onClose }) => {
 
                             <hr />
 
-                            {reviewData.map((item) => (
+                    {/*        {reviewData.map((item) => (
                                 <div className="mt-4" key={item.user_name}>
                                     <img
                                         className="inline rounded-[50%]"
@@ -735,7 +740,7 @@ const ListingDetails = ({ onClose }) => {
                                         {item.text} &nbsp; {item.rating}
                                     </p>
                                 </div>
-                            ))}
+                            ))}*/}
 
                             {showPopup && (
                                 <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -811,7 +816,7 @@ const ListingDetails = ({ onClose }) => {
                                     <img
                                         className="object-cover rounded-[24px]"
                                         style={{
-                                            height: "480px",
+                                            maxHeight: "480px",
                                             width: "690px",
                                         }}
                                         src={"../" + details.image}
@@ -1114,9 +1119,9 @@ const ListingDetails = ({ onClose }) => {
                                     </p>
                                 </div>
                             )}
-                            <div>
+                            <div className="container mx-auto mt-2 p-6 bg-white border border-gray-300 rounded-lg">
                                 {token && conv && amount_r && running ? (
-                                    <div  className="container mx-auto mt-2 p-6 bg-white border border-gray-300 rounded-lg">
+                                    <div>
                                         <div className="w-full flex flex-col items-center mt-4">
                                             <h2 className="text-lg font-semibold text-[#334155] mb-4">
                                                 Enter A Bid To Invest

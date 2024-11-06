@@ -38,7 +38,7 @@ const ServiceDetails = () => {
     const [booked, setBooked] = useState("");
     const [allowToReview, setallowToReview] = useState(false);
     const [Contactmodal, setContactmodal] = useState("");
-    const [reviewData, setReviewData] = useState([]);
+    
     const [showCalendar, setShowCalendar] = useState(false); // State to show/hide the calendar
     const [selectedDate, setSelectedDate] = useState(""); // State to store the selected date
 
@@ -68,26 +68,28 @@ const ServiceDetails = () => {
         setSelectedDate(formattedDate);
         setShowCalendar(false); // Hide calendar after selecting a date
     };
-    const reviews = [
-        {
-            id: 1,
-            name: "Leslie Alexander",
-            date: "July 22, 2023",
-            location: "Reviewed from United States on July 22,2023",
-            stars: 5,
-            review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.",
-            profileImage: [img],
-        },
-        {
-            id: 2,
-            name: "David Jones",
-            date: "July 22, 2023",
-            location: "Reviewed from United States on July 22,2023",
-            stars: 5,
-            review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.",
-            profileImage: [img],
-        },
-    ];
+
+     const [reviewData, setReviewData] = useState([]);
+     const reviews = reviewData; //[
+    //     {
+    //         id: 1,
+    //         name: "Leslie Alexander",
+    //         date: "July 22, 2023",
+    //         location: "Reviewed from United States on July 22,2023",
+    //         stars: 5,
+    //         review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.",
+    //         profileImage: [img],
+    //     },
+    //     {
+    //         id: 2,
+    //         name: "David Jones",
+    //         date: "July 22, 2023",
+    //         location: "Reviewed from United States on July 22,2023",
+    //         stars: 5,
+    //         review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.",
+    //         profileImage: [img],
+    //     },
+    // ];
 
     const [itemsPerPage, setItemsPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
@@ -208,7 +210,6 @@ const ServiceDetails = () => {
                         data.data[0]["rating"] = 0;
                     setDetails(data.data[0]);
                     //console.log(details)
-                    //console.log(data)
                 })
                 .catch((err) => {
                     console.log(err); //setLoading(false)
@@ -225,7 +226,7 @@ const ServiceDetails = () => {
                     setMilestonesRes(data.data);
                     setallowToReview(data.allow);
                     setReviewData(data.reviews);
-                    //console.log(allowToReview);
+                    //console.log(milestonesRes.length);
                     console.log(data);
                 })
                 .catch((err) => {
@@ -248,7 +249,7 @@ const ServiceDetails = () => {
         axiosClient
             .post("serviceMsg", payload)
             .then(({ data }) => {
-                console.log(data);
+                //console.log(data);
                 if (data.success) {
                     $.alert({
                         title: "Alert!",
@@ -422,8 +423,10 @@ const ServiceDetails = () => {
                                     </svg>
                                 </div>
                             ) : (
-                                <img
-                                    className="w-full h-auto rounded-lg object-cover"
+                                <img style={{
+                                            maxHeight: "555px"
+                                        }}
+                                    className="w-full rounded-lg object-cover"
                                     src={"../" + details.image}
                                     alt="Service"
                                 />
@@ -486,7 +489,7 @@ const ServiceDetails = () => {
                             </p>
 
                             <div className="flex items-center mt-2 gap-6 text-sm">
-                                {token && details.id ? (
+                                {token && milestonesRes.length>0 && details.id ? (
                                     <Link
                                         to={`/service-milestones/${btoa(
                                             btoa(details.id)
@@ -602,7 +605,7 @@ const ServiceDetails = () => {
                                 </div>
                             )}
 
-                            <div className="my-4 text-left">
+                            {/*<div className="my-4 text-left">
                                 <h3 className="font-bold my-3">Reviews</h3>
                                 {reviewData.map((item) => (
                                     <div className="mt-4">
@@ -621,7 +624,8 @@ const ServiceDetails = () => {
                                         </p>
                                     </div>
                                 ))}
-                            </div>
+                            </div>*/}
+                            
                         </div>
                     </div>
                     {/* Ratings */}
