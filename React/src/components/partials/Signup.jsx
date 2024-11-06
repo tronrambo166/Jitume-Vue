@@ -270,7 +270,7 @@ const RegisterForm = () => {
                                 </p>
                             )}
                         </label>
-                        <label className="block mt-3 text-gray-500">
+                        <label className="block py-4 text-gray-500">
                             Gender (optional)
                             <div className="flex items-center gap-3 mt-1">
                                 <label className="inline-flex items-center">
@@ -312,7 +312,7 @@ const RegisterForm = () => {
                                 </label>
                             </div>
                         </label>
-                        <label className="text-sm mt-4 text-gray-500">
+                        <label className="text-sm py-6 text-gray-500">
                             Date of Birth
                             <div className="flex space-x-2">
                                 <input

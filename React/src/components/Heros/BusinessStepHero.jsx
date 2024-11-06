@@ -5,11 +5,11 @@ import { FaArrowRight, FaChevronRight } from "react-icons/fa"; // Import the arr
 
 const MilestoneHero = () => {
     return (
-        <div className="bg-[#00290F] w-full text-white min-h-[60vh] relative">
+        <div className="bg-[#00290F] w-full text-white min-h-[50vh] relative">
             <div className="relative z-20">
                 <Navbar />
             </div>
-            <div className="p-4 my-[60px] flex justify-center gap-4 flex-col items-center relative z-30">
+            <div className="p-4 my-[40px] flex justify-center gap-4 flex-col items-center relative z-30">
                 <h2 className="mt-4 text-5xl font-semibold">
                     Milestones
                 </h2>

@@ -130,14 +130,12 @@ const Navbar = () => {
                                         </Link>
                                     ) : (
                                         // If not authenticated, you can show a modal or prompt to sign in
-                                        <button
-                                            onClick={() =>
-                                                setIsAuthModalOpen(true)
-                                            } // Trigger the authentication modal
+                                        <Link to="/services"
+                                           
                                             className="block px-4 py-2 font-medium rounded-t-lg hover:bg-gray-300 text-black"
                                         >
                                             Add Your Business
-                                        </button>
+                                        </Link>
                                     )}
                                 </div>
                             )}
@@ -214,78 +212,115 @@ const Navbar = () => {
                     isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
                 }`}
             >
-                <div className="flex flex-col mt-4 p-4">
-                    <button
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="mb-4 self-end"
-                    >
-                        <AiOutlineClose className="text-white" />
-                    </button>
-                    <div className="flex justify-start flex-col space-y-8">
-                        <a
-                            href="#"
-                            className="block px-4 py-2 hover:bg-green-700/50 rounded-md"
-                        >
-                            Home
-                        </a>
-                        <div className="relative pl-4 inline-block">
-                            <button
-                                className="flex items-center focus:outline-none"
-                                onClick={() =>
-                                    setIsDropdownOpen(!isDropdownOpen)
-                                }
-                            >
-                                Services
-                                <img
-                                    src={down}
-                                    alt="Dropdown Icon"
-                                    className={`ml-1 mt-1 h-2 w-3 transform transition-transform duration-200 ${
-                                        isDropdownOpen
-                                            ? "rotate-180"
-                                            : "rotate-0"
-                                    }`}
-                                />
-                            </button>
-                            {isDropdownOpen && (
-                                <div className="absolute space-y-2 bg-gray-100 z-50 py-3 text-black w-[250px] h-[150px] mb-2 mt-2 rounded shadow-lg">
-                                    <a
-                                        href="#"
-                                        className="block px-4 py-2 font-medium hover:bg-gray-300"
-                                    >
-                                        Service 1
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="block px-4 py-2 font-medium hover:bg-gray-300"
-                                    >
-                                        Service 2
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="block px-4 py-2 font-medium hover:rounded-b hover:bg-gray-200"
-                                    >
-                                        Service 3
-                                    </a>
+              <div className="flex flex-col mt-4 p-4">
+    <button
+        onClick={() => setIsMobileMenuOpen(false)}
+        className="mb-4 self-end"
+    >
+        <AiOutlineClose className="text-white" />
+    </button>
+    <div className="flex items-start flex-col space-y-8">
+        <a
+            href="#"
+            className="block px-4 py-2 hover:bg-green-700/50 rounded-md"
+        >
+            Home
+        </a>
+        <div className="relative pl-4 inline-block">
+            <button
+                className="flex items-center focus:outline-none"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+                Services
+                <img
+                    src={down}
+                    alt="Dropdown Icon"
+                    className={`ml-1 mt-1 h-2 w-3 transform transition-transform duration-200 ${
+                        isDropdownOpen ? "rotate-180" : "rotate-0"
+                    }`}
+                />
+            </button>
+            {isDropdownOpen && (
+                                <div className="absolute bg-gray-100 space-y-2 text-black w-[250px] mt-2 rounded shadow-lg">
+                                    {token ? (
+                                        // If user is authenticated (has token), show the link
+                                        <Link
+                                            to="/services"
+                                            className="block px-4 py-2 font-medium rounded-t-lg hover:bg-gray-300"
+                                        >
+                                            Add Your Business Service
+                                        </Link>
+                                    ) : (
+                                        // If not authenticated, you can show a modal or prompt to sign in
+                                        <Link to="/services"
+                                           
+                                            className="block px-4 py-2 font-medium rounded-t-lg hover:bg-gray-300 text-black"
+                                        >
+                                            Add Your Business
+                                        </Link>
+                                    )}
                                 </div>
                             )}
-                        </div>
-                        <a
-                            href="#"
-                            className="block px-4 py-2 hover:bg-green-700/50 rounded-md"
-                        >
-                            Add your business
-                        </a>
-                        <a
-                            className="block px-4 py-2 hover:bg-green-700/50 rounded-md"
-                            href="#"
-                        >
-                            Create Investor Account
-                        </a>
-                        <button className="block w-full bg-white hover:bg-slate-100 hover:text-green-800 py-2 rounded-[8px] text[13px] text-[#0F172A] font-semibold">
-                            Sign in
-                        </button>
-                    </div>
-                </div>
+        </div>
+        <div>
+            {token ? (
+                <a
+                    href="/dashboard"
+                    className="block px-4 py-2 hover:text-white relative group"
+                >
+                    Add Your Business
+                    <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+            ) : (
+                <button
+                    onClick={() => setIsAuthModalOpen(true)} // Trigger authentication modal
+                    className="block px-4 py-2 hover:text-white relative group"
+                >
+                    Add Your Business
+                    <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                </button>
+            )}
+        </div>
+        {token ? (
+            <Link
+                to="/dashboard"
+                className="block px-4 py-2 text-[#CBD5E1] text-[13px] hover:text-white relative group"
+            >
+                Dashboard
+                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+        ) : (
+            <button
+                onClick={() => setIsCreateInvModalOpen(true)}
+                className="block ml-4  py-2 hover:text-white  "
+            >
+                Create Investor Account
+                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+            </button>
+        )}
+        <div className="mt-4 ml-4">
+            {token ? (
+                <button
+                    onClick={() => {
+                        setToken(null); // Clear token to sign out
+                        setUser(null); // Optional: Clear user information on sign out
+                    }}
+                    className="bg-white py-2 hover:bg-green-800 hover:text-red-100 rounded-[8px] px-5 text-[#0F172A] font-semibold block w-full text-center"
+                >
+                    Sign Out
+                </button>
+            ) : (
+                <button
+                    onClick={() => setIsAuthModalOpen(true)}
+                    className="bg-white  py-2 hover:bg-green-400 hover:text-green-100 rounded-[8px] px-5 text-[#0F172A] font-semibold block w-full text-center"
+                >
+                    Sign In
+                </button>
+            )}
+        </div>
+    </div>
+</div>
+
             </div>
 
             <Modal

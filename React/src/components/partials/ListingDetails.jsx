@@ -1114,9 +1114,9 @@ const ListingDetails = ({ onClose }) => {
                                     </p>
                                 </div>
                             )}
-                            <div className="container mx-auto mt-2 p-6 bg-white border border-gray-300 rounded-lg">
+                            <div>
                                 {token && conv && amount_r && running ? (
-                                    <div>
+                                    <div  className="container mx-auto mt-2 p-6 bg-white border border-gray-300 rounded-lg">
                                         <div className="w-full flex flex-col items-center mt-4">
                                             <h2 className="text-lg font-semibold text-[#334155] mb-4">
                                                 Enter A Bid To Invest

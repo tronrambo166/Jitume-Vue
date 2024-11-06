@@ -212,7 +212,7 @@ console.log(registrationData);
                 </button>
 
                 <div className="flex justify-center mb-4 mt-2">
-                    <img src={logo2} alt="Logo" className="w-12 h-12" />
+                    <img src={logo2} alt="Logo" className="w-[130px] h-[40px]" />
                 </div>
 
                 <div className="flex justify-center mb-6 border-b border-gray-300 space-x-4">

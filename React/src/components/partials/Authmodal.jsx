@@ -30,7 +30,7 @@ const Modal = ({ isOpen, onClose }) => {
         >
             <div className="bg-white rounded-xl p-6 h-auto  no-scrollbar  overflow-y-auto relative w-[95vw] max-w-[500px] sm:w-[85vw] sm:max-w-[450px] lg:w-[70vw] lg:max-w-[500px] mx-4 mt-4 sm:mt-6">
                 <div className="flex justify-center py-4">
-                    <img src={logo2} alt="Logo" className="h-12 w-auto" />
+                    <img src={logo2} alt="Logo" className="h-[45px] w-[120px]" />
                 </div>
                 <hr className="py-2" />
                 <button

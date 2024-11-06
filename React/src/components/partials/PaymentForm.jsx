@@ -7,7 +7,7 @@ import { ClipLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const PaymentForm = () => {
-    const [selectedPayment, setSelectedPayment] = useState("");
+    const [selectedPayment, setSelectedPayment] = useState("card");
     const [loading, setLoading] = useState(false); // Loader state
     // Function to show success toast
     const showSuccessToast = (message) => {
@@ -284,155 +284,204 @@ const PaymentForm = () => {
                         id="payment-form"
                     >
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-                            <div className="pb-[40px] sm:mx-[50px] bg-white flex flex-col">
-                                <h2 className="text-2xl text-[#0F172A] font-bold">
-                                    Payment
-                                </h2>
-                                <hr className="my-4"></hr>
-                                <div className="  bg-white rounded ">
-                                    <label
-                                        className="text-[#0F172A] text-sm font-bold pt-3"
-                                        htmlFor=""
-                                    >
-                                        Pay With
-                                    </label>
+                        <div className="pb-[40px] sm:mx-[50px] bg-white flex flex-col">
+    <h2 className="text-2xl text-[#0F172A] font-bold">
+        Payment
+    </h2>
+    <hr className="my-4" />
+    <div className="bg-white rounded">
+        <label className="text-[#0F172A] text-sm font-bold pt-3" htmlFor="">
+            Pay With
+        </label>
 
-                                    <div className="flex jakarta space-x-4">
-                                        {["card", "bank", "paypal"].map(
-                                            (method) => (
-                                                <label
-                                                    key={method}
-                                                    className="flex items-center cursor-pointer"
-                                                >
-                                                    <div
-                                                        className={`relative flex items-center justify-center h-5 w-5 border rounded-full ${
-                                                            selectedPayment ===
-                                                            method
-                                                                ? "border-green-500 bg-white border-2"
-                                                                : "border-gray-300"
-                                                        }`}
-                                                        onClick={() =>
-                                                            setSelectedPayment(
-                                                                method
-                                                            )
-                                                        }
-                                                    >
-                                                        {selectedPayment ===
-                                                            method && (
-                                                            <div className="h-2 w-2 bg-green-500 rounded-full" />
-                                                        )}
-                                                    </div>
-                                                    <span
-                                                        className={`ml-2 text-[13px] ${
-                                                            selectedPayment ===
-                                                            method
-                                                                ? "text-black"
-                                                                : "text-[#ACACAC]"
-                                                        }`}
-                                                    >
-                                                        {method
-                                                            .charAt(0)
-                                                            .toUpperCase() +
-                                                            method.slice(1)}
-                                                    </span>
-                                                </label>
-                                            )
-                                        )}
-                                    </div>
+        <div className="flex jakarta space-x-4">
+            {["card", "bank", "paypal"].map((method) => (
+                <label key={method} className="flex items-center cursor-pointer">
+                    <div
+                        className={`relative flex items-center justify-center h-5 w-5 border rounded-full ${
+                            selectedPayment === method
+                                ? "border-green-500 bg-white border-2"
+                                : "border-gray-300"
+                        }`}
+                        onClick={() => setSelectedPayment(method)}
+                    >
+                        {selectedPayment === method && (
+                            <div className="h-2 w-2 bg-green-500 rounded-full" />
+                        )}
+                    </div>
+                    <span
+                        className={`ml-2 text-[13px] ${
+                            selectedPayment === method
+                                ? "text-black"
+                                : "text-[#ACACAC]"
+                        }`}
+                    >
+                        {method.charAt(0).toUpperCase() + method.slice(1)}
+                    </span>
+                </label>
+            ))}
+        </div>
 
-                                    <div className="mb-4 py-4">
-                                        <label className="block text-sm font-semibold mb-2">
-                                            Card Number
-                                        </label>
-                                        <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
-                                            <input
-                                                autocomplete="on"
-                                                size="20"
-                                                className="card-number flex-1 py-2 px-6 border-0 outline-none"
-                                                type="text"
-                                                placeholder="1234 5678 9012 3456"
-                                            />
-                                        </div>
-                                    </div>
+        {/* Conditional Rendering for Card Payment */}
+        {selectedPayment === "card" && (
+            <div className="space-y-4">
+                <div className="py-4">
+                    <label className="block text-sm font-semibold mb-2">
+                        Card Number
+                    </label>
+                    <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
+                        <input
+                            autocomplete="on"
+                            size="20"
+                            className="card-number flex-1 py-2 px-6 border-0 outline-none"
+                            type="text"
+                            placeholder="1234 5678 9012 3456"
+                        />
+                    </div>
+                </div>
 
-                                    <div className="flex gap-[10px] w-full max-w-[480px]">
-                                        <div className="w-full">
-                                            <label className="block text-sm font-semibold">
-                                                Exp. Month
-                                            </label>
-                                            <input
-                                                className="card-expiry-month w-full p-2 border border-gray-300 rounded"
-                                                type="text"
-                                                placeholder="MM"
-                                                size="2"
-                                            />
-                                        </div>
+                <div className="flex gap-[10px] w-full max-w-[480px]">
+                    <div className="w-full">
+                        <label className="block text-sm font-semibold mb-2">
+                            Exp. Month
+                        </label>
+                        <input
+                            className="card-expiry-month w-full p-2 border border-gray-300 rounded"
+                            type="text"
+                            placeholder="MM"
+                            size="2"
+                        />
+                    </div>
 
-                                        <div className="w-full">
-                                            <label className="block text-sm font-semibold">
-                                                CVC
-                                            </label>
-                                            <input
-                                                autoComplete="off"
-                                                placeholder="ex. 311"
-                                                size="4"
-                                                className="card-cvc w-full p-2 border border-gray-300 rounded"
-                                                type="text"
-                                            />
-                                        </div>
-                                    </div>
+                    <div className="w-full">
+                        <label className="block text-sm font-semibold mb-2">
+                            CVC
+                        </label>
+                        <input
+                            autoComplete="off"
+                            placeholder="ex. 311"
+                            size="4"
+                            className="card-cvc w-full p-2 border border-gray-300 rounded"
+                            type="text"
+                        />
+                    </div>
+                </div>
+            </div>
+        )}
 
-                                    <div className="flex items-center jakarta py-6 text-[#ACACAC]">
-                                        <input
-                                            type="checkbox"
-                                            required
-                                            id="AND"
-                                            className="mr-2"
-                                        />
-                                        <label
-                                            htmlFor="AND"
-                                            className="text-xs  flex items-center"
-                                        >
-                                            I HAVE READ AND AGREE TO THE
-                                            <a
-                                                href="#"
-                                                className="ml-1 text-[#ACACAC] "
-                                                style={{
-                                                    textDecoration: "none",
-                                                }}
-                                            >
-                                                TERMS AND CONDITIONS
-                                            </a>
-                                        </label>
-                                    </div>
-                                    <div className="mt-6 w-full sm:w-[480px] text-center">
-                                        <button
-                                            type="submit"
-                                            className="w-full py-2 my-4 text-white btn-primary rounded focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50"
-                                            disabled={loading}
-                                        >
-                                            {loading ? (
-                                                <ClipLoader
-                                                    color="#ffffff"
-                                                    size={20}
-                                                /> // Spinner appears when loading
-                                            ) : (
-                                                "Submit Payment"
-                                            )}
-                                        </button>
-                                    </div>
+        {/* Conditional Rendering for Bank Payment */}
+        {selectedPayment === "bank" && (
+            <div className="space-y-4">
+                <div className="py-4">
+                    <label className="block text-sm font-semibold mb-2">
+                        Bank Name
+                    </label>
+                    <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
+                        <input
+                            autocomplete="on"
+                            size="20"
+                            className="bank-name flex-1 py-2 px-6 border-0 outline-none"
+                            type="text"
+                            placeholder="Enter Your Bank Name"
+                        />
+                    </div>
+                </div>
 
-                                    <div>
-                                        <p className="text-[#ACACAC] jakarta text-sm">
-                                            Your personal data will be used to
-                                            process your order, support your
-                                            experience throughout this website,
-                                            and for other purposes described{" "}
-                                            <br></br> in our privacy policy.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                <div className="py-4">
+                    <label className="block text-sm font-semibold mb-2">
+                        Bank Account Number
+                    </label>
+                    <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
+                        <input
+                            autocomplete="on"
+                            size="20"
+                            className="bank-account-number flex-1 py-2 px-6 border-0 outline-none"
+                            type="text"
+                            placeholder="Enter Your Bank Account Number"
+                        />
+                    </div>
+                </div>
+            </div>
+        )}
+
+        {/* Conditional Rendering for Paypal Payment */}
+        {selectedPayment === "paypal" && (
+            <div className="space-y-4">
+                <div className="py-4">
+                    <label className="block text-sm font-semibold mb-2">
+                        PayPal Account Name
+                    </label>
+                    <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
+                        <input
+                            autocomplete="on"
+                            size="20"
+                            className="paypal-account-name flex-1 py-2 px-6 border-0 outline-none"
+                            type="text"
+                            placeholder="Enter Your PayPal Account Name"
+                        />
+                    </div>
+                </div>
+
+                <div className="py-4">
+                    <label className="block text-sm font-semibold mb-2">
+                        PayPal Email or Phone Number
+                    </label>
+                    <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
+                        <input
+                            autocomplete="on"
+                            size="20"
+                            className="paypal-email-phone flex-1 py-2 px-6 border-0 outline-none"
+                            type="text"
+                            placeholder="Your PayPal Email or Phone Number"
+                        />
+                    </div>
+                </div>
+            </div>
+        )}
+
+        <div className="flex items-center jakarta py-6 text-[#ACACAC]">
+            <input
+                type="checkbox"
+                required
+                id="AND"
+                className="mr-2"
+            />
+            <label htmlFor="AND" className="text-xs flex items-center">
+                I HAVE READ AND AGREE TO THE
+                <a
+                    href="#"
+                    className="ml-1 text-[#ACACAC]"
+                    style={{ textDecoration: "none" }}
+                >
+                    TERMS AND CONDITIONS
+                </a>
+            </label>
+        </div>
+
+        <div className="mt-6 w-full sm:w-[480px] text-center">
+            <button
+                type="submit"
+                className="w-full py-2 my-4 text-white btn-primary rounded focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50"
+                disabled={loading}
+            >
+                {loading ? (
+                    <ClipLoader color="#ffffff" size={20} />
+                ) : (
+                    "Submit Payment"
+                )}
+            </button>
+        </div>
+
+        <div>
+            <p className="text-[#ACACAC] jakarta text-sm">
+                Your personal data will be used to process your order, support your
+                experience throughout this website, and for other purposes described
+                <br /> in our privacy policy.
+            </p>
+        </div>
+    </div>
+</div>
+
                             <div className=" px-[100px] border  px-8 py-[70px] flex gap-4 flex-col">
                                 <h2 className="text-xl text-[#0A0D13] font-bold">
                                     Silver-trial Plan

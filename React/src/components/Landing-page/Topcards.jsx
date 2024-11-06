@@ -7,17 +7,17 @@ const TopCards = () => {
   const cards = [
     {
       id: 1,
-      title: "Explore the World",
+      title: "Explore Agriculture",
       image: Frame1,
     },
     {
       id: 2,
-      title: "Discover New Places",
+      title: "Discover Renewable Energy",
       image: Frame2,
     },
     {
       id: 3,
-      title: "Adventure Awaits",
+      title: "Delve into Arts & Culture",
       image: Frame3,
     },
   ];

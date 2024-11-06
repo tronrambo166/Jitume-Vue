@@ -1,11 +1,12 @@
 import Navbar from "../Landing-page/Navbar";
-import overlayImage from "../../images/overlay.png"; // Adjust the path to your image
+import overlayImage from "../../images/overlay.png"; 
 import { Link } from "react-router-dom";
-import { FaArrowRight, FaChevronRight } from "react-icons/fa"; // Import the arrow icon
+import { FaArrowRight, FaChevronRight } from "react-icons/fa"; 
 
-const BusinessHero = () => {
-    return (
-        <div className="bg-[#00290F] w-full text-white min-h-[50vh] relative">
+const PaymentHero = () => {
+  return (
+    <div>
+         <div className="bg-[#00290F] w-full text-white min-h-[50vh] relative">
             <div className="relative z-20">
                 <Navbar />
             </div>
@@ -40,7 +41,8 @@ const BusinessHero = () => {
                 />
             </div>
         </div>
-    );
-};
+    </div>
+  )
+}
 
-export default BusinessHero;
+export default PaymentHero
