@@ -118,38 +118,50 @@ const Nav2 = () => {
                                 />
                             </button>
                             {isDropdownOpen && (
-                                <div
-                                    id="dropdown" // Added ID for the dropdown
-                                    className="absolute z-50 bg-gray-100 space-y-2 text-black w-[250px] h-[130px] mb-2 mt-2 rounded shadow-lg"
-                                >
-                                    <Link
-                                        to="/services"
-                                        className="block px-4 py-2 font-medium hover:bg-gray-300"
-                                    >
-                                        Service 1
-                                    </Link>
-                                    <Link
-                                        to="/services"
-                                        className="block px-4 py-2 font-medium hover:bg-gray-300"
-                                    >
-                                        Service 2
-                                    </Link>
-                                    <Link
-                                        to="/services"
-                                        className="block px-4 py-2 font-medium hover:rounded-b hover:bg-gray-200"
-                                    >
-                                        Service 3
-                                    </Link>
+                                <div className="absolute bg-gray-100 z-20 space-y-2 text-black w-[250px] mt-2 rounded shadow-lg">
+                                    {token ? (
+                                        // If user is authenticated (has token), show the link
+                                        <Link
+                                            to="/services"
+                                            className="block px-4 py-2 font-medium rounded-t-lg hover:bg-gray-300"
+                                        >
+                                            Add Your Business Service
+                                        </Link>
+                                    ) : (
+                                        // If not authenticated, you can show a modal or prompt to sign in
+                                        <button
+                                            onClick={() =>
+                                                setIsAuthModalOpen(true)
+                                            } // Trigger the authentication modal
+                                            className="block px-4 py-2 font-medium rounded-t-lg hover:bg-gray-300 text-black"
+                                        >
+                                            Add Your Business
+                                        </button>
+                                    )}
                                 </div>
                             )}
                         </div>
-                        <a
-                            href="#"
-                            className="group relative hover:text-green-500"
-                        >
-                            Add your business
-                            <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-green-500 transition-all duration-300 group-hover:w-full"></span>
-                        </a>
+
+                        <div>
+                            {token ? (
+                                // If user is authenticated (has token), show the link
+                                <a
+                                    href="/dashboard"
+                                    className="group relative hover:text-green-500"
+                                >
+                                    Add Your Business
+                                    <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+                                </a>
+                            ) : (
+                                // If not authenticated, show a message or prompt to sign in
+                                <button
+                                    onClick={() => setIsAuthModalOpen(true)} // Trigger authentication modal
+                                    className="group relative text-black hover:text-green-500"
+                                >
+                                    Add Your Business
+                                </button>
+                            )}
+                        </div>
                     </div>
                 </div>
 
@@ -158,13 +170,13 @@ const Nav2 = () => {
                     {token ? (
                         // User is signed in
                         <>
-                            <a
-                                href="#"
+                            <Link
+                                to="/dashboard"
                                 className="group relative font-semibold text-[#475569] xl:text-[15px] text-[13px] hover:text-green-500"
                             >
                                 Dashboard
                                 <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-green-500 transition-all duration-300 group-hover:w-full"></span>
-                            </a>
+                            </Link>
                             <button
                                 onClick={() => {
                                     setToken(null); // Clear token
@@ -178,13 +190,13 @@ const Nav2 = () => {
                     ) : (
                         // User is not signed in
                         <>
-                            <a
-                                href="#"
+                            <button
+                                onClick={() => setIsCreateInvModalOpen(true)} // Open Create Investor Account modal
                                 className="group relative font-semibold text-[#475569] xl:text-[15px] text-[13px] hover:text-green-500"
                             >
-                                Create investor account
+                                Create Investor Account
                                 <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-green-500 transition-all duration-300 group-hover:w-full"></span>
-                            </a>
+                            </button>
 
                             <button
                                 onClick={() => setIsAuthModalOpen(true)} // Open auth modal
@@ -193,6 +205,14 @@ const Nav2 = () => {
                                 Sign in
                             </button>
                         </>
+                    )}
+
+                    {/* Render the Create Investor Account Modal */}
+                    {isCreateInvModalOpen && (
+                        <CreateInvAccountModal
+                            isOpen={isCreateInvModalOpen}
+                            onClose={() => setIsCreateInvModalOpen(false)}
+                        />
                     )}
                 </div>
             </div>
@@ -270,7 +290,7 @@ const Nav2 = () => {
                             className="block px-4 py-2 hover:bg-green-700/50 rounded-md"
                             href="#"
                         >
-                            Create investor account
+                            Create Investor Account
                         </a>
                         <button className="block w-full bg-white hover:bg-slate-100 hover:text-green-800 py-2 rounded-[8px] text[13px] text-[#0F172A] font-semibold">
                             Sign in

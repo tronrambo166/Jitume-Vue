@@ -17,7 +17,7 @@ import { decode as base64_decode, encode as base64_encode } from "base-64";
 import ListingSearch from "../partials/ListingSearch";
 // import noUiSlider from 'nouislider';
 // import 'nouislider/dist/nouislider.css';
-
+import CardsPagination from "./CardsPagination";
 // Dummy data
 const ListingResults = () => {
     const categories = [
@@ -53,6 +53,7 @@ const ListingResults = () => {
     const [priceRange, setPriceRange] = useState([0, 1000]); // Initial range
     const locationInputRef = useRef(null);
     const sliderRef = useRef(null);
+
     const mapRef = useRef(null);
 
     var count = results.length;
@@ -65,6 +66,30 @@ const ListingResults = () => {
     const openInNewTab = (url) => {
         window.open(url, "_blank");
     };
+    // State for current page and total pages
+    const [currentPage, setCurrentPage] = useState(1);
+    const [cardsPerPage] = useState(4); // Number of cards per page
+
+    const totalPages = Math.ceil(results.length / cardsPerPage);
+    // Calculate total pages
+
+    // Get the cards for the current page
+    const indexOfLastCard = currentPage * cardsPerPage;
+    const indexOfFirstCard = indexOfLastCard - cardsPerPage;
+    const currentCards = results.slice(indexOfFirstCard, indexOfLastCard);
+
+    // Function to handle page changes
+    const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+            setCurrentPage(newPage);
+        }
+    };
+
+    useEffect(() => {
+        console.log("Results Length: ", results.length);
+        console.log("Total Pages: ", totalPages);
+        console.log("Current Cards: ", currentCards);
+    }, [results, currentPage]);
 
     //CORE METHODS
     useEffect(() => {
@@ -497,6 +522,13 @@ const ListingResults = () => {
                             </Link>
                         ))
                     )}
+                    <div>
+                        <CardsPagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={handlePageChange}
+                        />
+                    </div>
                 </div>
                 {/* 
         <div className="h-[500px] border border-gray-300 rounded-lg flex items-center justify-center">

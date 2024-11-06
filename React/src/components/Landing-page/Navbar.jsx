@@ -14,6 +14,7 @@ import CreateInvAccountModal from "../partials/CreateInvAccount";
 import { useStateContext } from "../../contexts/contextProvider";
 import axiosClient from "../../axiosClient";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
+import CreateInvestorAccount from "../partials/CreateInvAccount";
 const Navbar = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -118,35 +119,74 @@ const Navbar = () => {
                                 />
                             </button>
                             {isDropdownOpen && (
-                                <div className="absolute bg-gray-100 space-y-2 text-black w-[250px] h-[40px] mb-2 mt-2 rounded shadow-lg">
-                                    <Link
-                                        to="/services"
-                                        className="block px-4 py-2 font-medium rounded-t-lg hover:bg-gray-300"
-                                    >
-                                        Add Your Business Service
-                                    </Link>
-                                    
-                                 
+                                <div className="absolute bg-gray-100 space-y-2 text-black w-[250px] mt-2 rounded shadow-lg">
+                                    {token ? (
+                                        // If user is authenticated (has token), show the link
+                                        <Link
+                                            to="/services"
+                                            className="block px-4 py-2 font-medium rounded-t-lg hover:bg-gray-300"
+                                        >
+                                            Add Your Business Service
+                                        </Link>
+                                    ) : (
+                                        // If not authenticated, you can show a modal or prompt to sign in
+                                        <button
+                                            onClick={() =>
+                                                setIsAuthModalOpen(true)
+                                            } // Trigger the authentication modal
+                                            className="block px-4 py-2 font-medium rounded-t-lg hover:bg-gray-300 text-black"
+                                        >
+                                            Add Your Business
+                                        </button>
+                                    )}
                                 </div>
                             )}
                         </div>
 
-                        <a href="#" className="group relative hover:text-white">
-                            Add your business
-                            <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
-                        </a>
+                        <div>
+                            {token ? (
+                                // If user is authenticated (has token), show the link
+                                <a
+                                    href="/dashboard"
+                                    className="group relative hover:text-white"
+                                >
+                                    Add Your Business
+                                    <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                                </a>
+                            ) : (
+                                // If not authenticated, show a button or trigger authentication modal
+                                <button
+                                    onClick={() => setIsAuthModalOpen(true)} // Trigger authentication modal
+                                    className="group relative hover:text-white"
+                                >
+                                    Add Your Business
+                                    <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                                </button>
+                            )}
+                        </div>
                     </div>
                 </div>
 
                 {/* Sign In Section */}
                 <div className="flex items-center gap-3 hidden md:flex">
-                    <a
-                        href={token ? "/dashboard" : "#"}
-                        className="group relative font-bold text-[#CBD5E1] text-[13px] hover:text-white"
-                    >
-                        {token ? "Dashboard" : "Create investor account"}
-                        <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
-                    </a>
+                    {token ? (
+                        <Link
+                            to="/dashboard"
+                            className="group relative font-bold text-[#CBD5E1] text-[13px] hover:text-white"
+                        >
+                            Dashboard
+                            <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                        </Link>
+                    ) : (
+                        <button
+                            onClick={() => setIsCreateInvModalOpen(true)}
+                            className="group relative font-bold text-[#CBD5E1] text-[13px] hover:text-white"
+                        >
+                            Create Investor Account
+                            <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                        </button>
+                    )}
+
                     {token ? (
                         <button
                             onClick={() => {
@@ -239,7 +279,7 @@ const Navbar = () => {
                             className="block px-4 py-2 hover:bg-green-700/50 rounded-md"
                             href="#"
                         >
-                            Create investor account
+                            Create Investor Account
                         </a>
                         <button className="block w-full bg-white hover:bg-slate-100 hover:text-green-800 py-2 rounded-[8px] text[13px] text-[#0F172A] font-semibold">
                             Sign in

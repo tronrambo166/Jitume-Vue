@@ -87,10 +87,12 @@ const LoginForm = () => {
     return (
         <form className="flex flex-col px-6 space-y-4" onSubmit={handleSubmit}>
             <div className="text-center pt-1">
-                <h1 className="font-semibold text-md">Sign In</h1>
-                <h2 className="pt-2 text-sm">Enter details to log in</h2>
+                <h1 className="font-semibold text-gray-700 text-md">Sign In</h1>
+                <h2 className="pt-2 text-gray-700 text-sm">
+                    Enter details to log in
+                </h2>
             </div>
-            <label className="text-[#666666] text-[13px] pb-4">
+            <label className="text-[#666666] text-[13px] ">
                 Email
                 <input
                     ref={emailRef}
@@ -106,8 +108,8 @@ const LoginForm = () => {
                     <p className="text-red-500 text-xs mt-1">{emailError}</p>
                 )}
             </label>
-            <div className="flex flex-col">
-                <div className="flex items-center justify-between">
+            <div className="flex flex-col ">
+                <div className="flex items-center  justify-between">
                     <label className="text-[#666666] text-[13px] flex-grow pr-2">
                         Password
                     </label>
@@ -128,7 +130,7 @@ const LoginForm = () => {
                     ref={passwordRef}
                     placeholder="Password"
                     type={showPassword ? "text" : "password"}
-                    className={`border rounded-xl p-3 w-full ${
+                    className={`border rounded-xl p-3  w-full ${
                         passwordError ? "border-red-500" : ""
                     }`}
                     onChange={handleInputChange}
@@ -143,9 +145,10 @@ const LoginForm = () => {
                     {serverError}
                 </p>
             )}
+           
             <button
                 type="submit"
-                className={`px-4 text-white py-2 rounded-full mt-2 flex items-center justify-center ${
+                className={`px-4 text-white py-2 rounded-full   flex items-center justify-center ${
                     isFormValid ? "bg-green" : "bg-green/50 cursor-not-allowed"
                 }`}
                 disabled={!isFormValid || loading}
@@ -156,12 +159,14 @@ const LoginForm = () => {
                 Proceed
             </button>
 
-            <a
-                href="http://"
-                className="text-center hover:text-green text-black underline text-[13px]"
-            >
-                Forgot password
-            </a>
+            <div className="text-center py-4">
+                <a
+                    href="http://"
+                    className="text-center hover:text-green text-black underline text-[13px]"
+                >
+                    Forgot password
+                </a>
+            </div>
         </form>
     );
 };

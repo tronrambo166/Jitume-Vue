@@ -72,7 +72,7 @@ const HorizontalInfiniteScroll = () => {
     };
 
     return (
-        <div className="relative w-full lg:w-[85.99%] mt-3 mb-3 mx-auto">
+        <div className="relative w-full lg:w-[78%] mt-3 mb-3 mx-auto">
             {/* Chevron left (desktop only) */}
             {showLeftChevron && (
                 <button
