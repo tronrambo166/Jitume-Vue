@@ -50,9 +50,9 @@ const ListingDetails = ({ onClose }) => {
     };
 
     const [reviewData, setRev] = useState([]);
-     const reviews = reviewData;
-     //const reviewSum = reviewData;
-     //[
+    const reviews = reviewData;
+    //const reviewSum = reviewData;
+    //[
     //     {
     //         id: 1,
     //         name: "Leslie Alexander",
@@ -149,7 +149,7 @@ const ListingDetails = ({ onClose }) => {
     const [amount_r, setAmount_r] = useState("");
     const [running, setRunning] = useState(false);
     const [subscribeData, setSubscribeData] = useState("");
-    
+
     const [isOpen, setIsOpen] = useState(true); // Popup is initially open
 
     const [amount, setAmount] = useState("");
@@ -382,7 +382,7 @@ const ListingDetails = ({ onClose }) => {
 
                     setDetails(data.data[0]);
                     if (data.data[0].investors_fee == null) setConv(true);
-                    console.log(data)
+                    console.log(data);
                 })
                 .catch((err) => {
                     console.log(err); //setLoading(false)
@@ -725,7 +725,7 @@ const ListingDetails = ({ onClose }) => {
 
                             <hr />
 
-                    {/*        {reviewData.map((item) => (
+                            {/*        {reviewData.map((item) => (
                                 <div className="mt-4" key={item.user_name}>
                                     <img
                                         className="inline rounded-[50%]"
@@ -1119,8 +1119,8 @@ const ListingDetails = ({ onClose }) => {
                                     </p>
                                 </div>
                             )}
-                            <div className="container mx-auto mt-2 p-6 bg-white border border-gray-300 rounded-lg">
-                                {token && conv && amount_r && running ? (
+                            {token && conv && amount_r && running ? (
+                                <div className="container mx-auto mt-2 p-6 bg-white border border-gray-300 rounded-lg">
                                     <div>
                                         <div className="w-full flex flex-col items-center mt-4">
                                             <h2 className="text-lg font-semibold text-[#334155] mb-4">
@@ -1223,16 +1223,16 @@ const ListingDetails = ({ onClose }) => {
                                             )}
                                         </div>
                                     </div>
-                                ) : (
-                                    <div className="w-75 mx-auto row">
-                                        {/* <p className="bg-light text-gray-700 p-2 rounded">
+                                </div>
+                            ) : (
+                                <div className="w-75 mx-auto row">
+                                    {/* <p className="bg-light text-gray-700 p-2 rounded">
                 Milestone payout is currently off due to
                 milestone completion process, please wait
                 until next milestone is open.
             </p> */}
-                                    </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
 
                         {/* ReviewList */}
