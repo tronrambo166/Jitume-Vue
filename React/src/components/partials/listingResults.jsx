@@ -73,11 +73,10 @@ const ListingResults = () => {
     const totalPages = Math.ceil(results.length / cardsPerPage);
     // Calculate total pages
 
-    // Get the cards for the current page
+    // Calculate the cards to display on the current page
     const indexOfLastCard = currentPage * cardsPerPage;
     const indexOfFirstCard = indexOfLastCard - cardsPerPage;
     const currentCards = results.slice(indexOfFirstCard, indexOfLastCard);
-
     // Function to handle page changes
     const handlePageChange = (newPage) => {
         if (newPage >= 1 && newPage <= totalPages) {
@@ -431,41 +430,29 @@ const ListingResults = () => {
                   Allow location{" "}
               </button> */}
             </h1>
-
-            <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] space-x-0">
+            <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] lg:gap-8 gap-4 items-start">
+                {/* Cards Section */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    {count === 0 ? (
+                    {currentCards.length === 0 ? (
                         <p className="text-center text-gray-500">
                             No results found.
                         </p>
                     ) : (
-                        results.map((row, index) => (
+                        currentCards.map((row) => (
                             <Link
                                 to={`/listing/${btoa(btoa(row.id))}`}
                                 key={row.id}
                             >
-                                <div className="border p-5 border-[#0000001A]/10 shadow-sm bg-white h-[500px] rounded-2xl flex flex-col w-full max-w-[900px] mx-auto  ">
-                                    {/* key={index} */}
-                                    {/* Increased max width for wider cards */}
-                                    <div className="">
-                                        {row.video ? (
-                                            <img
-                                                src={"../../" + row.image}
-                                                alt={row.name}
-                                                className="w-full h-[250px] object-cover rounded-lg"
-                                            />
-                                        ) : (
-                                            <img
-                                                src={"../../" + row.image}
-                                                alt={row.name}
-                                                className="w-full h-[250px] object-cover rounded-lg "
-                                            />
-                                        )}
+                                <div className="border p-5 border-gray-200 shadow-sm bg-white h-[500px] rounded-2xl flex flex-col w-full max-w-[900px] mx-auto">
+                                    <div>
+                                        <img
+                                            src={"../../" + row.image}
+                                            alt={row.name}
+                                            className="w-full h-[250px] object-cover rounded-lg"
+                                        />
                                     </div>
                                     <div className="flex flex-col pt-2 justify-between flex-grow p-0">
-                                        {" "}
-                                        {/* Removed padding */}
-                                        <div className="flex flex-wrap gap-2 text-m  font-bold text-[#1E293B]">
+                                        <div className="flex flex-wrap gap-2 text-m font-bold text-[#1E293B]">
                                             {(
                                                 row.tags || [
                                                     "example",
@@ -476,7 +463,7 @@ const ListingResults = () => {
                                             ).map((tag) => (
                                                 <span
                                                     key={tag}
-                                                    className=" text-[#1E293B]  font-semibold"
+                                                    className="text-[#1E293B] font-semibold"
                                                 >
                                                     #{tag}
                                                 </span>
@@ -497,7 +484,7 @@ const ListingResults = () => {
                                                 <FontAwesomeIcon
                                                     icon={faLocationDot}
                                                     className="mr-2"
-                                                />{" "}
+                                                />
                                                 {row.location}
                                             </p>
                                             <p className="flex items-center">
@@ -510,9 +497,10 @@ const ListingResults = () => {
                                             </p>
                                         </div>
                                         <div>
-                                            <p className="text-green-600 ">
+                                            <p className="text-green-600">
                                                 ${row.investment_needed || ""}
                                                 <span className="text-[#1E293B]">
+                                                    {" "}
                                                     / Amount Requested
                                                 </span>
                                             </p>
@@ -530,25 +518,23 @@ const ListingResults = () => {
                         />
                     </div>
                 </div>
-                {/* 
-        <div className="h-[500px] border border-gray-300 rounded-lg flex items-center justify-center">
-                <div className="m-auto map_style">
-                     <div id="map" style={{ height: '95%' }}></div> 
-                </div> */}
-                <div className="h-[400px] rounded-m flex items-center justify-center mt-[-30px]">
-                    {/* Placeholder for the map */}
 
+                {/* Map Section */}
+                <div className="h-[500px] lg:h-auto rounded-lg flex items-center justify-center">
                     <div
-                        className="m-auto map_style"
+                        className="map_style w-full h-full"
                         style={{
                             borderRadius: "16px",
                             overflow: "hidden",
-                            marginLeft: "20px",
                         }}
                     >
                         <div
                             id="map"
-                            style={{ height: "100%", borderRadius: "16px" }}
+                            style={{
+                                height: "100%",
+                                width: "100%",
+                                borderRadius: "16px",
+                            }}
                         ></div>
                     </div>
                 </div>

@@ -1,12 +1,13 @@
+import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Chevron icon import
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const categories = [
     "Agriculture",
     "Renewable Energy",
     "Arts/Culture",
     "Auto",
-    "Domestic (HomeHelp etc)",
+    "Domestic (HomeHelp-etc)",
     "Fashion",
     "Finance/Accounting",
     "Food",
@@ -36,17 +37,13 @@ const HorizontalInfiniteScroll = () => {
         const handleScroll = () => {
             if (currentRef) {
                 const { scrollLeft, scrollWidth, clientWidth } = currentRef;
-
-                // Show/hide left chevron
                 setShowLeftChevron(scrollLeft > 0);
-                // Show/hide right chevron
                 setShowRightChevron(scrollLeft < scrollWidth - clientWidth);
             }
         };
 
         currentRef.addEventListener("scroll", handleScroll);
 
-        // Clean up event listener on unmount
         return () => {
             currentRef.removeEventListener("scroll", handleScroll);
         };
@@ -59,35 +56,35 @@ const HorizontalInfiniteScroll = () => {
 
     const scrollLeft = () => {
         containerRef.current.scrollBy({
-            left: -200, // Adjust this value if needed
+            left: -200,
             behavior: "smooth",
         });
     };
 
     const scrollRight = () => {
         containerRef.current.scrollBy({
-            left: 200, // Adjust this value if needed
+            left: 200,
             behavior: "smooth",
         });
     };
 
     return (
-        <div className="relative w-full lg:w-[98%] ml-1 mt-3 mb-3 mx-auto">
-            {/* Left Gradient (hidden on mobile) */}
-            <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#0f381e] to-[#0f381e00] z-10 pointer-events-none hidden md:block" />
-
-            {/* Chevron left */}
-            {showLeftChevron && (
+        <div className="relative w-full lg:w-[88%] mt-3 mb-3 mx-auto">
+            {/* Chevron left (desktop only) */}
+            
                 <button
                     onClick={scrollLeft}
-                    className="hidden lg:flex absolute left-[-30px] top-1/2 transform -translate-y-1/2 z-20 bg-[#0f381e] p-2 rounded-full text-white hover:bg-opacity-90 group"
+                    className="hidden lg:flex absolute left-[-45px] top-1/2 transform -translate-y-1/2 z-20 bg-[#0f381e] p-3 rounded-full text-white hover:bg-opacity-90 group"
                 >
-                    <FaChevronLeft size={16} />
-                    <span className="absolute top-full left-[80%] transform -translate-x-1/2 mt-1 text-sm text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <FaChevronLeft size={20} />
+                    <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 text-lg text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         Previous
                     </span>
                 </button>
-            )}
+            
+
+            {/* Left Gradient */}
+            <div className="absolute left-0 top-[-10px] bottom-[-10px] w-40 bg-gradient-to-r from-[#0f381e] via-[#0f381e66] to-transparent opacity-60 rounded-lg z-10 pointer-events-none transition-opacity duration-700 ease-in-out" />
 
             {/* Scrollable container */}
             <div
@@ -100,27 +97,42 @@ const HorizontalInfiniteScroll = () => {
                             key={index}
                             className="category-item mx-2 text-xs sm:text-sm md:text-base lg:text-base border border-white rounded-full py-1 px-3 sm:py-1.5 sm:px-4 md:py-2 md:px-5 lg:py-2 lg:px-6 text-white cursor-pointer whitespace-nowrap transition-all ease-in-out duration-700"
                         >
+                            <Link
+                                to={`/category/${category
+                                    .replace("/", "-")
+                                    .replace(" ", "-")}`}
+                            >
+                                {category}
+                            </Link>
+                        </div>
+                    ))}
+                    {/* Duplicate categories to create infinite scrolling effect */}
+                    {visibleCategories.map((category, index) => (
+                        <div
+                            key={`duplicate-${index}`}
+                            className="category-item mx-2 text-xs sm:text-sm md:text-base lg:text-base border border-white rounded-full py-1 px-3 sm:py-1.5 sm:px-4 md:py-2 md:px-5 lg:py-2 lg:px-6 text-white cursor-pointer whitespace-nowrap transition-all ease-in-out duration-700"
+                        >
                             {category}
                         </div>
                     ))}
                 </div>
             </div>
 
-            {/* Right Gradient (hidden on mobile) */}
-            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#0f381e] via-[#0f381e93] to-[#0f381e00] z-10 pointer-events-none hidden md:block" />
+            {/* Right Gradient */}
+            <div className="absolute right-0 top-[-10px] bottom-[-10px] w-32 bg-gradient-to-l from-[#0f381e91] to-transparent z-10 pointer-events-none" />
 
-            {/* Chevron right */}
-            {showRightChevron && (
+            {/* Chevron right (desktop only) */}
+            
                 <button
                     onClick={scrollRight}
-                    className="hidden lg:flex absolute right-[-31px] top-1/2 transform -translate-y-1/2 z-20 bg-[#0f381e] p-2 rounded-full text-white hover:bg-opacity-90 group"
+                    className="hidden lg:flex absolute right-[-45px] top-1/2 transform -translate-y-1/2 z-20 bg-[#0f381e] p-3 rounded-full text-white hover:bg-opacity-90 group"
                 >
-                    <FaChevronRight size={16} />
-                    <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 text-sm text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <FaChevronRight size={20} />
+                    <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 text-lg text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         Next
                     </span>
                 </button>
-            )}
+           
         </div>
     );
 };

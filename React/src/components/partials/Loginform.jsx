@@ -35,17 +35,17 @@ const LoginForm = () => {
         // Validate email and password
         let valid = true;
         if (!email) {
-            setEmailError("Please insert your email.");
+            // setEmailError("Please insert your email.");
             valid = false;
         } else if (!validateEmail(email)) {
-            setEmailError("Please enter a valid email.");
+            // setEmailError("Please enter a valid email.");
             valid = false;
         } else {
             setEmailError("");
         }
 
         if (!password) {
-            setPasswordError("Please insert your password.");
+            // setPasswordError("Please insert your password.");
             valid = false;
         } else {
             setPasswordError("");

@@ -20,8 +20,7 @@ const Search = () => {
     const [categoryValue, setCategoryValue] = useState("");
     const [locationValue, setLocationValue] = useState("");
 
-
-        const Search = (e) => {
+    const Search = (e) => {
         e.preventDefault();
         let ids = "";
         const payload = {
@@ -97,25 +96,32 @@ const Search = () => {
                     if (i < 10)
                         if (city == "")
                             $("#result_list2").append(
-                                " <div onclick=\"address('" +
+                                "<div onclick=\"address('" +
                                     name +
+                                    "," +
+                                    city +
                                     "," +
                                     country +
                                     "', '" +
                                     lat +
                                     "', '" +
                                     lng +
-                                    '\');" style="" data-id="' +
+                                    '\');" style="cursor: pointer; padding: 6px 10px; margin: 3px 0; border-bottom: 1px solid #ddd; background-color: #ffffff; transition: background-color 0.3s ease;" data-id="' +
                                     name +
-                                    '" class="address  py-1 px-1 my-0 border-top bg-white single_comms">  <p class="h6 small text-dark d-inline" ><i class="fa fa-map-marker mr-1 text-dark" aria-hidden="true"></i> ' +
+                                    '" class="address single_comms"> ' +
+                                    '<p class="small h6 text-dark d-inline" style="font-size: 12px; margin: 0; display: flex; align-items: center;"><span style="margin-right: 6px; display: inline-flex; align-items: center;">' +
+                                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="14" height="14" fill="black"><path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/></svg>' +
+                                    "</span>" +
                                     name +
-                                    '</p> <p  class="d-inline text-dark"><small>, ' +
+                                    "<small style='font-size: 10px;'>, " +
+                                    city +
+                                    ", " +
                                     country +
-                                    "</small> </p> </div>"
+                                    "</small> </p></div>"
                             );
                         else
                             $("#result_list2").append(
-                                " <div onclick=\"address('" +
+                                "<div onclick=\"address('" +
                                     name +
                                     "," +
                                     city +
@@ -125,15 +131,18 @@ const Search = () => {
                                     lat +
                                     "', '" +
                                     lng +
-                                    '\');" style="" data-id="' +
+                                    '\');" style="cursor: pointer; padding: 6px 10px; margin: 3px 0; border-bottom: 1px solid #ddd; background-color: #ffffff; transition: background-color 0.3s ease;" data-id="' +
                                     name +
-                                    '" class="address  py-1 px-1 my-0 border-top bg-white single_comms">  <p class="small h6 text-dark d-inline" ><i class="fa fa-map-marker mr-1 text-dark" aria-hidden="true"></i> ' +
+                                    '" class="address single_comms"> ' +
+                                    '<p class="small h6 text-dark d-inline" style="font-size: 12px; margin: 0; display: flex; align-items: center;"><span style="margin-right: 6px; display: inline-flex; align-items: center;">' +
+                                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="14" height="14" fill="black"><path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/></svg>' +
+                                    "</span>" +
                                     name +
-                                    '</p> <p  class="d-inline text-dark"><small>, ' +
+                                    "<small style='font-size: 10px;'>, " +
                                     city +
-                                    "," +
+                                    ", " +
                                     country +
-                                    "</small> </p> </div>"
+                                    "</small> </p></div>"
                             );
                 }
                 //document.getElementById('result_list2').style.overflowY="scroll";
@@ -143,7 +152,6 @@ const Search = () => {
             },
         });
     };
-
 
     // Mock function to simulate fetching suggestions
     // const handleLocationChange = (e) => {
@@ -179,10 +187,11 @@ const Search = () => {
                     {/* Categories Dropdown */}
                     <div className="relative flex items-center h-10 w-full sm:w-1/4 mb-1 sm:mb-0 bg-white rounded-l-lg">
                         <select
-                        ref={categoryRef}
-                        value={categoryValue} // controlled value
-                        onChange={handleCategoryChange} // handle change
-                         className="border-none bg-transparent focus:outline-none text-gray-500 text-xs sm:text-sm w-full pl-2 pr-2">
+                            ref={categoryRef}
+                            value={categoryValue} // controlled value
+                            onChange={handleCategoryChange} // handle change
+                            className="border-none bg-transparent focus:outline-none text-gray-500 text-xs sm:text-sm w-full pl-2 pr-2"
+                        >
                             <option value="">All Categories</option>
                             <option value="category1">Category 1</option>
                             <option value="category2">Category 2</option>
@@ -191,42 +200,48 @@ const Search = () => {
                     </div>
 
                     {/* Hidden inputs for latitude and longitude */}
-            <input type="text" name="lat" id="lat" hidden value=""  />
-            <input type="text" name="lng" id="lng" hidden value=""  />
-
+                    <input type="text" name="lat" id="lat" hidden value="" />
+                    <input type="text" name="lng" id="lng" hidden value="" />
 
                     {/* Location Input with Suggestions */}
                     <div className="relative w-full sm:w-1/4 h-10 mb-1 sm:mb-0">
                         <FaMapMarkerAlt className="absolute left-1 top-1/2 transform -translate-y-1/2 text-gray-500 text-lg" />
                         <input
-                          onKeyUp={getPlaces}
-                          id="searchbox"
-                          type="text"
-                          placeholder="Location"
-                          ref={locationInputRef}
+                            onKeyUp={getPlaces}
+                            id="searchbox"
+                            type="text"
+                            placeholder="Location"
+                            ref={locationInputRef}
                             type="text"
                             placeholder="Location"
                             className="border-none h-full focus:outline-none w-full pl-8 text-xs sm:text-sm"
-                            
                         />
                         {/* Suggestions Dropdown */}
-            <div
-                id="result_list2" className="">
-            {suggestions.length > 0 && (
-              <ul className="absolute z-10 bg-white border border-gray-200 rounded-lg w-full mt-1 max-h-40 overflow-y-auto">
-                {suggestions.map((suggestion, index) => (
-                  <li
-                    key={index}
-                    onClick={() => handleSuggestionClick(suggestion)}
-                    className="px-4 py-2 cursor-pointer hover:bg-gray-100 flex items-center"
-                  >
-                    <FaMapMarkerAlt className="mr-2 text-gray-500" />
-                    {suggestion}
-                  </li>
-                ))}
-              </ul>
-            )}
-            </div>
+                        <div
+                            id="result_list2"
+                            className="absolute w-full max-w-md bg-white border-gray-300 border-t-0 rounded-b-md shadow-lg z-10 top-full"
+                        >
+                            {suggestions.length > 0 && (
+                                <ul className="absolute z-10 bg-white border border-gray-200 rounded-lg w-full mt-1 max-h-40 overflow-y-auto text-base leading-relaxed">
+                                    {suggestions.map((suggestion, index) => (
+                                        <li
+                                            key={index}
+                                            onClick={() =>
+                                                handleSuggestionClick(
+                                                    suggestion
+                                                )
+                                            }
+                                            className="px-4 py-3 cursor-pointer hover:bg-gray-100 flex items-center transition-all duration-200 ease-in-out"
+                                        >
+                                            <FaMapMarkerAlt className="mr-3 text-gray-500 text-lg" />
+                                            <span className="font-medium text-gray-800">
+                                                {suggestion}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
                     </div>
 
                     {/* What are you looking for Input */}
@@ -243,7 +258,10 @@ const Search = () => {
                     </div>
 
                     {/* Search Button */}
-                    <button onClick={Search} className="bg-[#FDE047] text-black rounded-r-lg h-10 py-1 px-3 sm:px-4 w-full sm:w-auto text-xs sm:text-sm">
+                    <button
+                        onClick={Search}
+                        className="bg-[#FDE047] text-black rounded-r-lg h-10 py-1 px-3 sm:px-4 w-full sm:w-auto text-xs sm:text-sm"
+                    >
                         Search in
                     </button>
                 </div>

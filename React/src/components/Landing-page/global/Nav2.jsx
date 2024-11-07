@@ -101,25 +101,27 @@ const Nav2 = () => {
 
                         <div
                             className="relative inline-block group"
-                            onMouseEnter={handleMouseEnter}
-                            onMouseLeave={handleMouseLeave}
+                            // onMouseEnter={handleMouseEnter}
+                            // onMouseLeave={handleMouseLeave}
                         >
-                            <button
-                                className="flex items-center focus:outline-none hover:text-green-500 relative"
-                                aria-haspopup="true"
-                                onClick={isDropdownOpen} // Toggle dropdown on click
-                            >
-                                Services
-                                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-green-500 transition-all duration-300 group-hover:w-full"></span>
-                                <FaChevronDown
+                            <Link to="/services">
+                                <button
+                                    className="flex items-center focus:outline-none hover:text-green-500 relative"
+                                    aria-haspopup="true"
+                                    onClick={isDropdownOpen} // Toggle dropdown on click
+                                >
+                                    Services
+                                    <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+                                    {/* <FaChevronDown
                                     className={`ml-3 mt-[6px] transition-transform duration-300 ${
                                         isDropdownOpen ? "rotate-180" : ""
                                     }`} // Rotate icon when dropdown is open
-                                />
-                            </button>
+                                /> */}
+                                </button>
+                            </Link>
                             {isDropdownOpen && (
                                 <div className="absolute bg-gray-100 z-20 space-y-2 text-black w-[250px] mt-2 rounded shadow-lg">
-                                    {token ? (
+                                    {/* {token ? (
                                         // If user is authenticated (has token), show the link
                                         <Link
                                             to="/services"
@@ -137,7 +139,7 @@ const Nav2 = () => {
                                         >
                                             Add Your Business
                                         </button>
-                                    )}
+                                    )} */}
                                 </div>
                             )}
                         </div>
@@ -156,9 +158,10 @@ const Nav2 = () => {
                                 // If not authenticated, show a message or prompt to sign in
                                 <button
                                     onClick={() => setIsAuthModalOpen(true)} // Trigger authentication modal
-                                    className="group relative text-black hover:text-green-500"
+                                    className="group relative text-[#475569] hover:text-green-500"
                                 >
                                     Add Your Business
+                                    <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-green-500 transition-all duration-300 group-hover:w-full"></span>
                                 </button>
                             )}
                         </div>

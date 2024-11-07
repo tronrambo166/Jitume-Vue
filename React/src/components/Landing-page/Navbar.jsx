@@ -6,7 +6,8 @@ import {
     AiOutlineClose,
 } from "react-icons/ai";
 import down from "../../images/down.png";
-import { useLocation } from "react";
+// import { useLocation } from "react";
+import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import logo from "../../images/logo.png";
 import Modal from "../partials/Authmodal";
@@ -15,6 +16,7 @@ import { useStateContext } from "../../contexts/contextProvider";
 import axiosClient from "../../axiosClient";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import CreateInvestorAccount from "../partials/CreateInvAccount";
+
 const Navbar = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -44,6 +46,10 @@ const Navbar = () => {
             setToken(null);
         });
     };
+    const location = useLocation();
+
+    // Check if we're on the service page
+    const isServicePage = location.pathname === "/services"; // Adjust this path to match your service page
 
     // Handle hover in (opens dropdown immediately)
     const handleMouseEnter = () => {
@@ -101,26 +107,29 @@ const Navbar = () => {
 
                         <div
                             className="relative group"
-                            onMouseEnter={handleMouseEnter}
-                            onMouseLeave={handleMouseLeave}
+
+                            // onMouseEnter={handleMouseEnter}
+                            // onMouseLeave={handleMouseLeave}
                         >
-                            <button
-                                className="flex items-center focus:outline-none hover:text-white relative"
-                                onClick={toggleDropdown}
-                            >
-                                Services
-                                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
-                                <FaChevronDown
+                            <Link to="/services">
+                                <button
+                                    className="flex items-center focus:outline-none hover:text-white relative"
+                                    onClick={toggleDropdown}
+                                >
+                                    Services
+                                    <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                                    {/* <FaChevronDown
                                     className={`ml-2 mt-0.5 h-3 w-3 transform transition-transform duration-200 ${
                                         isDropdownOpen
                                             ? "rotate-180"
                                             : "rotate-0"
                                     }`}
-                                />
-                            </button>
+                                /> */}
+                                </button>
+                            </Link>
                             {isDropdownOpen && (
                                 <div className="absolute bg-gray-100 space-y-2 text-black w-[250px] mt-2 rounded shadow-lg">
-                                    {token ? (
+                                    {/* {token ? (
                                         // If user is authenticated (has token), show the link
                                         <Link
                                             to="/services"
@@ -130,20 +139,37 @@ const Navbar = () => {
                                         </Link>
                                     ) : (
                                         // If not authenticated, you can show a modal or prompt to sign in
-                                        <Link to="/services"
-                                           
+                                        <Link
+                                            to="/services"
                                             className="block px-4 py-2 font-medium rounded-t-lg hover:bg-gray-300 text-black"
                                         >
                                             Add Your Business
                                         </Link>
-                                    )}
+                                    )} */}
                                 </div>
                             )}
                         </div>
 
                         <div>
-                            {token ? (
-                                // If user is authenticated (has token), show the link
+                            {isServicePage ? (
+                                token ? (
+                                    <a
+                                        href="/dashboard"
+                                        className="group relative hover:text-white"
+                                    >
+                                        Add Your Services
+                                        <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                                    </a>
+                                ) : (
+                                    <button
+                                        onClick={() => setIsAuthModalOpen(true)} // Trigger authentication modal
+                                        className="group relative hover:text-white"
+                                    >
+                                        Add Your Services
+                                        <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                                    </button>
+                                )
+                            ) : token ? (
                                 <a
                                     href="/dashboard"
                                     className="group relative hover:text-white"
@@ -152,7 +178,6 @@ const Navbar = () => {
                                     <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
                                 </a>
                             ) : (
-                                // If not authenticated, show a button or trigger authentication modal
                                 <button
                                     onClick={() => setIsAuthModalOpen(true)} // Trigger authentication modal
                                     className="group relative hover:text-white"
@@ -166,23 +191,25 @@ const Navbar = () => {
                 </div>
 
                 {/* Sign In Section */}
-                <div className="flex items-center gap-3 hidden md:flex">
+                <div className="flex items-center gap-3  md:flex">
                     {token ? (
                         <Link
                             to="/dashboard"
-                            className="group relative font-bold text-[#CBD5E1] text-[13px] hover:text-white"
+                            className="group relative font-bold text-[#ffffff] text-[13px] hover:text-white ml-16"
                         >
                             Dashboard
                             <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
                         </Link>
                     ) : (
-                        <button
-                            onClick={() => setIsCreateInvModalOpen(true)}
-                            className="group relative font-bold text-[#CBD5E1] text-[13px] hover:text-white"
-                        >
-                            Create Investor Account
-                            <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
-                        </button>
+                        !isServicePage && (
+                            <button
+                                onClick={() => setIsCreateInvModalOpen(true)}
+                                className="group relative font-bold text-[#CBD5E1] text-[13px] hover:text-white "
+                            >
+                                Create Investor Account
+                                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                            </button>
+                        )
                     )}
 
                     {token ? (
@@ -212,35 +239,39 @@ const Navbar = () => {
                     isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
                 }`}
             >
-              <div className="flex flex-col mt-4 p-4">
-    <button
-        onClick={() => setIsMobileMenuOpen(false)}
-        className="mb-4 self-end"
-    >
-        <AiOutlineClose className="text-white" />
-    </button>
-    <div className="flex items-start flex-col space-y-8">
-        <a
-            href="#"
-            className="block px-4 py-2 hover:bg-green-700/50 rounded-md"
-        >
-            Home
-        </a>
-        <div className="relative pl-4 inline-block">
-            <button
-                className="flex items-center focus:outline-none"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-                Services
-                <img
-                    src={down}
-                    alt="Dropdown Icon"
-                    className={`ml-1 mt-1 h-2 w-3 transform transition-transform duration-200 ${
-                        isDropdownOpen ? "rotate-180" : "rotate-0"
-                    }`}
-                />
-            </button>
-            {isDropdownOpen && (
+                <div className="flex flex-col mt-4 p-4">
+                    <button
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="mb-4 self-end"
+                    >
+                        <AiOutlineClose className="text-white" />
+                    </button>
+                    <div className="flex items-start flex-col space-y-8">
+                        <a
+                            href="#"
+                            className="block px-4 py-2 hover:bg-green-700/50 rounded-md"
+                        >
+                            Home
+                        </a>
+                        <div className="relative pl-4 inline-block">
+                            <button
+                                className="flex items-center focus:outline-none"
+                                onClick={() =>
+                                    setIsDropdownOpen(!isDropdownOpen)
+                                }
+                            >
+                                Services
+                                <img
+                                    src={down}
+                                    alt="Dropdown Icon"
+                                    className={`ml-1 mt-1 h-2 w-3 transform transition-transform duration-200 ${
+                                        isDropdownOpen
+                                            ? "rotate-180"
+                                            : "rotate-0"
+                                    }`}
+                                />
+                            </button>
+                            {isDropdownOpen && (
                                 <div className="absolute bg-gray-100 space-y-2 text-black w-[250px] mt-2 rounded shadow-lg">
                                     {token ? (
                                         // If user is authenticated (has token), show the link
@@ -252,8 +283,8 @@ const Navbar = () => {
                                         </Link>
                                     ) : (
                                         // If not authenticated, you can show a modal or prompt to sign in
-                                        <Link to="/services"
-                                           
+                                        <Link
+                                            to="/services"
                                             className="block px-4 py-2 font-medium rounded-t-lg hover:bg-gray-300 text-black"
                                         >
                                             Add Your Business
@@ -261,66 +292,65 @@ const Navbar = () => {
                                     )}
                                 </div>
                             )}
-        </div>
-        <div>
-            {token ? (
-                <a
-                    href="/dashboard"
-                    className="block px-4 py-2 hover:text-white relative group"
-                >
-                    Add Your Business
-                    <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
-                </a>
-            ) : (
-                <button
-                    onClick={() => setIsAuthModalOpen(true)} // Trigger authentication modal
-                    className="block px-4 py-2 hover:text-white relative group"
-                >
-                    Add Your Business
-                    <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
-                </button>
-            )}
-        </div>
-        {token ? (
-            <Link
-                to="/dashboard"
-                className="block px-4 py-2 text-[#CBD5E1] text-[13px] hover:text-white relative group"
-            >
-                Dashboard
-                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
-            </Link>
-        ) : (
-            <button
-                onClick={() => setIsCreateInvModalOpen(true)}
-                className="block ml-4  py-2 hover:text-white  "
-            >
-                Create Investor Account
-                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
-            </button>
-        )}
-        <div className="mt-4 ml-4">
-            {token ? (
-                <button
-                    onClick={() => {
-                        setToken(null); // Clear token to sign out
-                        setUser(null); // Optional: Clear user information on sign out
-                    }}
-                    className="bg-white py-2 hover:bg-green-800 hover:text-red-100 rounded-[8px] px-5 text-[#0F172A] font-semibold block w-full text-center"
-                >
-                    Sign Out
-                </button>
-            ) : (
-                <button
-                    onClick={() => setIsAuthModalOpen(true)}
-                    className="bg-white  py-2 hover:bg-green-400 hover:text-green-100 rounded-[8px] px-5 text-[#0F172A] font-semibold block w-full text-center"
-                >
-                    Sign In
-                </button>
-            )}
-        </div>
-    </div>
-</div>
-
+                        </div>
+                        <div>
+                            {token ? (
+                                <a
+                                    href="/dashboard"
+                                    className="block px-4 py-2 hover:text-white relative group"
+                                >
+                                    Add Your Business
+                                    <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                                </a>
+                            ) : (
+                                <button
+                                    onClick={() => setIsAuthModalOpen(true)} // Trigger authentication modal
+                                    className="block px-4 py-2 hover:text-white relative group"
+                                >
+                                    Add Your Business
+                                    <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                                </button>
+                            )}
+                        </div>
+                        {token ? (
+                            <Link
+                                to="/dashboard"
+                                className="block px-4 py-2 text-[#CBD5E1] text-[13px] hover:text-white relative group"
+                            >
+                                Dashboard
+                                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                            </Link>
+                        ) : (
+                            <button
+                                onClick={() => setIsCreateInvModalOpen(true)}
+                                className="block ml-4  py-2 hover:text-white  "
+                            >
+                                Create Investor Account
+                                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                            </button>
+                        )}
+                        <div className="mt-4 ml-4">
+                            {token ? (
+                                <button
+                                    onClick={() => {
+                                        setToken(null); // Clear token to sign out
+                                        setUser(null); // Optional: Clear user information on sign out
+                                    }}
+                                    className="bg-white py-2 hover:bg-green-800 hover:text-red-100 rounded-[8px] px-5 text-[#0F172A] font-semibold block w-full text-center"
+                                >
+                                    Sign Out
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() => setIsAuthModalOpen(true)}
+                                    className="bg-white  py-2 hover:bg-green-400 hover:text-green-100 rounded-[8px] px-5 text-[#0F172A] font-semibold block w-full text-center"
+                                >
+                                    Sign In
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <Modal
