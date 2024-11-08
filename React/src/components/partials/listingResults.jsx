@@ -434,41 +434,9 @@ const ListingResults = () => {
                 {/* Cards Section */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     {currentCards.length === 0 ? (
-                        <div className="space-y-4">
-                            {/* Skeleton Loader for Card */}
-                            {[...Array(3)].map((_, index) => (
-                                <div
-                                    key={index}
-                                    className="border p-5 border-gray-200 shadow-sm bg-white h-[500px] rounded-2xl flex flex-col w-full max-w-[900px] mx-auto animate-pulse"
-                                >
-                                    {/* Skeleton Image */}
-                                    <div className="bg-gray-200 w-full h-[250px] rounded-lg"></div>
-
-                                    <div className="flex flex-col pt-2 justify-between flex-grow p-0">
-                                        {/* Skeleton Tags */}
-                                        <div className="flex flex-wrap gap-2 text-m font-bold text-[#1E293B]">
-                                            <div className="bg-gray-200 w-24 h-4 rounded-md"></div>
-                                            <div className="bg-gray-200 w-24 h-4 rounded-md"></div>
-                                        </div>
-                                        {/* Skeleton Name */}
-                                        <div className="bg-gray-200 w-3/4 h-6 rounded-md mt-2"></div>
-                                        {/* Skeleton Details */}
-                                        <div className="bg-gray-200 w-1/2 h-4 rounded-md mt-2"></div>
-                                        {/* Skeleton Category */}
-                                        <div className="bg-gray-200 w-1/4 h-4 rounded-md mt-2"></div>
-
-                                        {/* Skeleton Contact and Location */}
-                                        <div className="text-sm text-gray-600 flex flex-col gap-1">
-                                            <div className="bg-gray-200 w-3/4 h-4 rounded-md"></div>
-                                            <div className="bg-gray-200 w-3/4 h-4 rounded-md"></div>
-                                        </div>
-
-                                        {/* Skeleton Investment */}
-                                        <div className="bg-gray-200 w-1/3 h-6 rounded-md mt-2"></div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                        <p className="text-center text-gray-500">
+                            No results found.
+                        </p>
                     ) : (
                         currentCards.map((row) => (
                             <Link
@@ -529,11 +497,10 @@ const ListingResults = () => {
                                             </p>
                                         </div>
                                         <div>
-                                            <p className="text-green-600">
-                                                ${row.investment_needed || ""}
+                                            <p className="text-green-600 ">
+                                                ${row.y_turnover || ""}
                                                 <span className="text-[#1E293B]">
-                                                    {" "}
-                                                    / Amount Requested
+                                                    / Yearly Turnover
                                                 </span>
                                             </p>
                                         </div>
