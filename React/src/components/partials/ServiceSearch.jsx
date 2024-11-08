@@ -92,8 +92,8 @@ const ServiceSearch = () => {
                     </div>
 
                     {/* Search Button */}
-                    <button className="bg-[#FDE047] text-black rounded-r-lg h-12 sm:h-full py-2 px-8 w-full sm:w-auto">
-                        Search in
+                    <button className="bg-[#FDE047] text-black rounded-r-lg h-12 sm:h-full py-2 px-10 w-full sm:w-auto">
+                        Search
                     </button>
                 </div>
             </div>

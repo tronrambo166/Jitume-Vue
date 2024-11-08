@@ -16,6 +16,7 @@ import SearcH from "./components/Search";
 import InfiniteScrollCategories from "./components/InfiniteScrollCategories";
 import Deadlybg from "../../assets/sev/deadly.png";
 import ServNav from "../Landing-page/Navbar";
+import ScrollToTop from "../pages/ScrollToTop";
 const Servicepage = () => {
     const handleInputChange = (event) => {
         // Handle input changes
@@ -146,7 +147,7 @@ const Servicepage = () => {
 
     return (
        <div>
-    <div className="relative bg-gradient-to-r from-[#00290f72] to-[#00270e]">
+    <div className="relative bg-gradient-to-r from-[#00290f74] to-[#00270e]">
         {/* Background Image */}
         <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
             <img
@@ -166,7 +167,7 @@ const Servicepage = () => {
                 className="object-cover w-full h-full opacity-100"
             />
             {/* Blur overlay gradient */}
-            <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#001A0Fcc] via-[#01362015] to-[#001A0F00]">
+            <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#001a0fd1] via-[#01362073] to-[#001A0F00]">
                 <div className="w-full h-full filter blur-lg"></div>
             </div>
         </div>
@@ -204,6 +205,7 @@ const Servicepage = () => {
     </div>
     <Localservicesection />
     <Servicecards />
+    <ScrollToTop/>
 </div>
 
     );

@@ -23,7 +23,7 @@ import ReviewSummary from "./moduleParts/ReviewServdetailSummary";
 import ReviewList from "./moduleParts/ReviewServicedetailList";
 import PaginationComponent from "./moduleParts/PaginationControls";
 import img from "../../assets/profile.png";
-
+import ScrollToTop from "../pages/ScrollToTop";
 const ServiceDetails = () => {
     const { token, setUser, setAuth, auth } = useStateContext();
     const { id } = useParams();
@@ -423,9 +423,10 @@ const ServiceDetails = () => {
                                     </svg>
                                 </div>
                             ) : (
-                                <img style={{
-                                            maxHeight: "555px"
-                                        }}
+                                <img
+                                    style={{
+                                        maxHeight: "555px",
+                                    }}
                                     className="w-full rounded-lg object-cover"
                                     src={"../" + details.image}
                                     alt="Service"
@@ -489,7 +490,9 @@ const ServiceDetails = () => {
                             </p>
 
                             <div className="flex items-center mt-2 gap-6 text-sm">
-                                {token && milestonesRes.length>0 && details.id ? (
+                                {token &&
+                                milestonesRes.length > 0 &&
+                                details.id ? (
                                     <Link
                                         to={`/service-milestones/${btoa(
                                             btoa(details.id)
@@ -625,7 +628,6 @@ const ServiceDetails = () => {
                                     </div>
                                 ))}
                             </div>*/}
-                            
                         </div>
                     </div>
                     {/* Ratings */}
@@ -767,6 +769,7 @@ const ServiceDetails = () => {
                 </div>
             </div>
             {/* <Footer /> */}
+            <ScrollToTop />
         </>
     );
 };

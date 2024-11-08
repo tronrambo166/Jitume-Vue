@@ -262,7 +262,7 @@ const Search = () => {
                         onClick={Search}
                         className="bg-[#FDE047] text-black rounded-r-lg h-10 py-1 px-3 sm:px-4 w-full sm:w-auto text-xs sm:text-sm"
                     >
-                        Search in
+                        Search
                     </button>
                 </div>
             </div>

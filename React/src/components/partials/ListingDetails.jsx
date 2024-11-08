@@ -26,6 +26,7 @@ import ReviewList from "./moduleParts/ReviewList";
 import PaginationComponent from "./moduleParts/PaginationControls";
 import Footer from "../Landing-page/global/Footer2";
 import Nav2 from "../Landing-page/global/Nav2";
+import ScrollToTop from "../pages/ScrollToTop";
 const ListingDetails = ({ onClose }) => {
     const { token, setUser, setAuth, auth } = useStateContext();
     const [loading, setLoading] = useState(false);
@@ -683,7 +684,7 @@ const ListingDetails = ({ onClose }) => {
                                 {token && !conv ? (
                                     <a
                                         onClick={handleOpen}
-                                        className="bg-green hover:bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap"
+                                        className="bg-green hover:bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
                                     >
                                         <FaLock className="mr-2" />
                                         Unlock To Invest
@@ -693,7 +694,7 @@ const ListingDetails = ({ onClose }) => {
                                 ) : (
                                     <a
                                         onClick={() => setIsModalOpen(true)}
-                                        className="bg-black hover:bg-gray-700 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap"
+                                        className="bg-black hover:bg-gray-700 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
                                     >
                                         <FontAwesomeIcon
                                             icon={faLock}
@@ -1382,6 +1383,7 @@ const ListingDetails = ({ onClose }) => {
                     </div>
                 </div>
             </div>
+            <ScrollToTop />
         </>
     );
 };

@@ -79,8 +79,8 @@ const Invest = () => {
                 </div>
                 <div className="flex justify-between items-center mb-4 mt-2">
                     <h2 className="text-[28px] sm:text-[44px] font-bold text-slate-700 leading-snug sm:leading-tight">
-                        Invest in a promising
-                        <br /> new ventures
+                        Invest in promising
+                        <br /> New ventures
                     </h2>
                 </div>
                 <div className="flex justify-end space-x-1 mb-2">

@@ -251,10 +251,10 @@ const ServiceResults = () => {
 
     return (
         <div className="w-full mx-auto px-24">
-            <h1 className="text-3xl pt-4 md:text-[64px] mb-8 md:mb-16 font-semibold leading-tight md:leading-[79.36px] tracking-[0.02em] text-center font-sharp-grotesk text-[#00290F]">
+            {/* <h1 className="text-3xl pt-4 md:text-[64px] mb-8 md:mb-16 font-semibold leading-tight md:leading-[79.36px] tracking-[0.02em] text-center font-sharp-grotesk text-[#00290F]">
                 What Are You Looking For?
-            </h1>
-            <div className="">
+            </h1> */}
+            <div className=" mt-8">
                 <ServiceSearch />
             </div>
             {/* <div className="flex mb-6 flex-col md:flex-row gap-4 justify-center pt-8 px-2 sm:px-6 md:px-4 items-center w-full max-w-3xl mx-auto">
@@ -339,9 +339,48 @@ const ServiceResults = () => {
                 {/* Results Section */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     {results.length === 0 ? (
-                        <p className="text-center text-gray-400 italic">
-                            No results found.
-                        </p>
+                        <div className="space-y-4">
+                            {/* Skeleton Loader for Cards */}
+                            {[...Array(3)].map((_, index) => (
+                                <div
+                                    key={index}
+                                    className="border p-5 border-[#0000001A]/10 shadow-sm bg-white h-[500px] rounded-2xl flex flex-col w-full max-w-[900px] mx-auto animate-pulse"
+                                >
+                                    {/* Skeleton Image */}
+                                    <div className="bg-gray-200 w-full h-[250px] rounded-lg"></div>
+
+                                    <div className="flex flex-col pt-2 justify-between flex-grow p-0">
+                                        {/* Skeleton Tags */}
+                                        <div className="flex flex-wrap gap-2 text-xs font-semibold text-[#1E293B]">
+                                            <div className="bg-gray-200 w-20 h-4 rounded-md"></div>
+                                            <div className="bg-gray-200 w-20 h-4 rounded-md"></div>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex flex-col justify-between flex-grow">
+                                        {/* Skeleton Title */}
+                                        <div className="bg-gray-200 w-3/4 h-6 rounded-md mt-2"></div>
+
+                                        {/* Skeleton Details */}
+                                        <div className="bg-gray-200 w-full h-4 rounded-md mt-2"></div>
+
+                                        {/* Skeleton Category */}
+                                        <div className="bg-gray-200 w-1/4 h-4 rounded-md mt-2"></div>
+
+                                        <div className="text-sm text-gray-500 flex flex-col gap-1">
+                                            {/* Skeleton Location */}
+                                            <div className="bg-gray-200 w-3/4 h-4 rounded-md"></div>
+
+                                            {/* Skeleton Contact */}
+                                            <div className="bg-gray-200 w-3/4 h-4 rounded-md"></div>
+                                        </div>
+
+                                        {/* Skeleton Price */}
+                                        <div className="bg-gray-200 w-1/3 h-6 rounded-md mt-2"></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     ) : (
                         currentCards.map((row) => (
                             <Link
@@ -356,6 +395,7 @@ const ServiceResults = () => {
                                             className="w-full h-[250px] object-cover rounded-lg"
                                         />
                                     </div>
+
                                     <div className="flex flex-col pt-2 justify-between flex-grow">
                                         <div className="flex flex-wrap gap-2 text-xs font-semibold text-[#1E293B]">
                                             {(
@@ -370,6 +410,7 @@ const ServiceResults = () => {
                                             ))}
                                         </div>
                                     </div>
+
                                     <div className="flex flex-col justify-between flex-grow">
                                         <p className="text-lg font-semibold text-slate-800">
                                             {row.name}
@@ -381,6 +422,7 @@ const ServiceResults = () => {
                                         <p className="text-sm text-gray-600 inline-block">
                                             {row.category}
                                         </p>
+
                                         <div className="text-sm text-gray-500 flex flex-col gap-1">
                                             <p className="flex items-center">
                                                 <FontAwesomeIcon
@@ -397,6 +439,7 @@ const ServiceResults = () => {
                                                 {row.contact || "+1791205437"}
                                             </p>
                                         </div>
+
                                         <p className="text-green-600 font-bold mt-2">
                                             ${row.price}
                                             <span className="text-gray-500 ml-1 text-xs">
