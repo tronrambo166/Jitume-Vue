@@ -13,7 +13,7 @@ use App\Http\Controllers\socialController;
 //P R O T E C T E D    R O U T E S
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('logout',[AuthController::class,'logout']);
-    Route::post('searchService', [PagesController::class, 'searchService'])->name('searchService');
+    
     Route::post('serviceBook', [ServiceController::class, 'serviceBook'])->name('serviceBook');
     Route::get('rebook_service/{id}', [ServiceController::class, 'rebook_service'])->name('rebook_service');
     Route::post('serviceMsg', [ServiceController::class, 'serviceMsg'])->name('serviceMsg');
@@ -174,6 +174,8 @@ Route::get('getMilestones/{id}', [BusinessController::class ,'getMilestones'])->
 Route::get('getMilestonesS/{id}', [ServiceController::class, 'getMilestones'])->name('getMilestonesS');
 
 Route::post('search', [PagesController::class, 'search'])->name('search');
+Route::post('searchService', [PagesController::class, 'searchService'])->name('searchService');
+
 Route::get('priceFilter/{min}/{max}/{ids}', [PagesController::class, 'priceFilter'])->name('priceFilter');
 Route::get('priceFilterS/{min}/{max}/{ids}', [PagesController::class, 'priceFilterS'])->name('priceFilterS');
 Route::get('priceFilter_amount/{min}/{max}/{ids}', [PagesController::class, 'priceFilter_amount'])->name('priceFilter_amount');

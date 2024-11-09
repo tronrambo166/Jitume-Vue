@@ -18,6 +18,8 @@ import ListingSearch from "../partials/ListingSearch";
 // import noUiSlider from 'nouislider';
 // import 'nouislider/dist/nouislider.css';
 import CardsPagination from "./CardsPagination";
+import Search from "../Landing-page/Search"
+
 // Dummy data
 const ListingResults = () => {
     const categories = [
@@ -361,7 +363,8 @@ const ListingResults = () => {
                 </button>
             </div> */}
             <div className="pt-4">
-                <ListingSearch />
+                {/*<ListingSearch />*/}
+                <Search />
             </div>
 
             {/* Price Range Slider */}
@@ -496,6 +499,16 @@ const ListingResults = () => {
                                                 {row.contact || "+1791205437"}
                                             </p>
                                         </div>
+
+                                        <div>
+                                            <p className="text-green-600 ">
+                                                ${row.investment_needed || ""}
+                                                <span className="text-[#1E293B]">
+                                                    / Amount Requested
+                                                </span>
+                                            </p>
+                                        </div>
+
                                         <div>
                                             <p className="text-green-600 ">
                                                 ${row.y_turnover || ""}

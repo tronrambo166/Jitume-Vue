@@ -9,12 +9,15 @@ import {
     faChevronDown,
     faSearch,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
 
 import { FaMapMarkerAlt, FaSearch } from "react-icons/fa"; // Import only necessary icons
 
 const Search = () => {
+  const locationUrl = useLocation();
+  //const searchPage = locationUrl.pathname === "/listingResults";
+
   const [location, setLocation] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const locationInputRef = useRef(null);
@@ -47,7 +50,7 @@ const Search = () => {
         console.log(payload);
         axiosClient
             .post("/search", payload)
-            .then(({ data }) => {
+            .then(({ data }) => { 
                 console.log(data);
                 Object.entries(data.results).forEach((entry) => {
                     const [index, row] = entry;
@@ -60,6 +63,9 @@ const Search = () => {
                 navigate(
                     "/listingResults/" + base64_encode(ids) + "/" + data.loc
                 );
+
+                if(locationUrl.pathname.includes('listingResults'))
+                    window.location.reload();
             })
             .catch((err) => {
                 console.log(err);

@@ -37,7 +37,7 @@ const PaymentForm = () => {
 
     const navigate = useNavigate();
 
-    //Stripe Code
+    //Stripe CARD Method Code
     $(function () {
         var $form = $(".require-validation");
         $("form.require-validation").bind("submit", function (e) {
@@ -96,7 +96,7 @@ const PaymentForm = () => {
             }
         }
     });
-    //Stripe Code
+    //Stripe CARD Method Code
 
     const { listing_id } = useParams();
     let { purpose } = useParams();
@@ -211,6 +211,55 @@ const PaymentForm = () => {
         //timeout
     };
 
+
+    //OTHER PAYMENTS
+
+    const bankSubmit = (event) => {
+        event.preventDefault();
+        setLoading(true); alert('bank'); return;
+        setTimeout(() => {
+            const payload = {
+                listing: atob(listing_id),
+                percent: atob(percent),
+                package: $("#package").val(),
+                amount: $("#amount").val(),
+                amountOriginal: amount_real,
+                stripeToken: $("#stripeToken").val(),
+            };
+            //console.log(payload);
+                axiosClient
+                    .post("/stripe.post.coversation", payload)
+                    .then(({ data }) => {
+                        console.log(data);
+                        if (data.status === 200) { }
+                    });
+                }, 1000); 
+    };
+
+
+
+    const paypalSubmit = (event) => {
+        event.preventDefault();
+        setLoading(true); alert('paypal'); return;
+        setTimeout(() => {
+            const payload = {
+                listing: atob(listing_id),
+                percent: atob(percent),
+                package: $("#package").val(),
+                amount: $("#amount").val(),
+                amountOriginal: amount_real,
+                stripeToken: $("#stripeToken").val(),
+            };
+            //console.log(payload);
+                axiosClient
+                    .post("/stripe.post.coversation", payload)
+                    .then(({ data }) => {
+                        console.log(data);
+                        if (data.status === 200) { }
+                    });
+                }, 1000); 
+    }
+
     const popupClose = () => {
         setShowModal(false);
     };
@@ -277,7 +326,14 @@ const PaymentForm = () => {
                     {/*  action="{{ route('stripe.post.coversation') }}"*/}
                     <form
                         role="form"
-                        onSubmit={handleSubmit}
+
+                         
+                        onSubmit={ selectedPayment === "card"?  handleSubmit
+                        :selectedPayment === "bank"? bankSubmit
+                        :paypalSubmit } 
+
+                        
+
                         method="post"
                         class="class2  require-validation m-auto"
                         data-cc-on-file="false"
@@ -289,6 +345,18 @@ const PaymentForm = () => {
                                 <h2 className="text-2xl text-[#0F172A] font-bold">
                                     Payment
                                 </h2>
+
+                                <div class="row error mx-1 text-center collapse">
+                                <p
+                                    style={{
+                                        color: "#e31313",
+                                        background: "#cfcfcf82",
+                                        fontWeight: "600",
+                                    }}
+                                    class="alert my-2 py-1 w-100"
+                                ></p>
+                            </div>
+
                                 <hr className="my-4" />
                                 <div className="bg-white rounded">
                                     <label
@@ -409,6 +477,7 @@ const PaymentForm = () => {
                                                 </label>
                                                 <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
                                                     <input
+                                                        id="bank_name"
                                                         autocomplete="on"
                                                         size="20"
                                                         className="bank-name flex-1 py-2 px-6 border-0 outline-none"
@@ -424,6 +493,7 @@ const PaymentForm = () => {
                                                 </label>
                                                 <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
                                                     <input
+                                                        id="bank_acc"
                                                         autocomplete="on"
                                                         size="20"
                                                         className="bank-account-number flex-1 py-2 px-6 border-0 outline-none"
@@ -444,6 +514,7 @@ const PaymentForm = () => {
                                                 </label>
                                                 <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
                                                     <input
+                                                        id="paypal_name"
                                                         autocomplete="on"
                                                         size="20"
                                                         className="paypal-account-name flex-1 py-2 px-6 border-0 outline-none"
@@ -459,6 +530,7 @@ const PaymentForm = () => {
                                                 </label>
                                                 <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
                                                     <input
+                                                        id="paypal_email"
                                                         autocomplete="on"
                                                         size="20"
                                                         className="paypal-email-phone flex-1 py-2 px-6 border-0 outline-none"

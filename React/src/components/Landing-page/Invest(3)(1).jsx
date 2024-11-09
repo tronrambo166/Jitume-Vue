@@ -167,7 +167,7 @@ const Invest = () => {
                                               <span>
                                                   Collected:{" "}
                                                   <strong>
-                                                      {card.amount_collected /
+                                                      ${card.amount_collected /
                                                           1000}
                                                       K
                                                   </strong>
@@ -175,7 +175,7 @@ const Invest = () => {
                                               <span>
                                                   Need:{" "}
                                                   <strong>
-                                                      {(parseInt(
+                                                      ${(parseInt(
                                                           card.investment_needed
                                                               .toString()
                                                               .replace(",", "")
