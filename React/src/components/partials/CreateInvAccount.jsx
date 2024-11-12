@@ -4,7 +4,7 @@ import logo2 from "../../images/logo2.png";
 import { useStateContext } from "../../contexts/contextProvider";
 import axiosClient from "../../axiosClient";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-
+import { ToastContainer, toast } from "react-toastify";
 function CreateInvestorAccount({ isOpen, onClose }) {
     const [isSignIn, setIsSignIn] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
@@ -141,64 +141,96 @@ const [dropdowns, setDropdowns] = useState({
         };
 
     const isFormValid = loginData.email && loginData.password;
+const handleRegistrationSubmit = async (e) => {
+    e.preventDefault();
 
-    const handleRegistrationSubmit = async (e) => {
-        e.preventDefault();
+    let formErrors = [];
 
-        // Check if passwords match before proceeding
-        if (registrationData.password !== registrationData.confirmPassword) {
-            setErrors({ general: "Passwords do not match!" });
+    // Check if passwords match before proceeding
+    if (registrationData.password !== registrationData.confirmPassword) {
+        formErrors.push("Passwords do not match!");
+        toast.error("Passwords do not match!"); // Show error toast
+    }
+
+    // Check if terms are accepted
+    if (!registrationData.terms) {
+        formErrors.push("You must agree to the Terms and Conditions!");
+        toast.error("You must agree to the Terms and Conditions!"); // Show error toast
+    }
+
+    // If there are any validation errors, stop the registration process
+    if (formErrors.length > 0) {
+        setErrors({ general: formErrors });
+        return;
+    }
+
+    setLoading(true); // Start loading spinner
+
+    try {
+        // Prepare form data for submission
+        const submitData = new FormData();
+        submitData.append("fname", registrationData.fname); // First Name
+        submitData.append("mname", registrationData.mname || ""); // Optional Middle Name
+        submitData.append("lname", registrationData.lname); // Last Name
+        submitData.append("email", registrationData.email); // Email
+        submitData.append("password", registrationData.password); // Password
+        submitData.append("id_no", registrationData.id_no); // ID/Passport Number
+        submitData.append("tax_pin", registrationData.tax_pin); // Tax PIN
+        submitData.append("id_passport", registrationData.id_passport); // Attached ID/Passport
+        submitData.append("confirmPassword", registrationData.confirmPassword);
+        submitData.append("pin", registrationData.pin); // Attached PIN
+        submitData.append("past_investment", registrationData.past_investment); // Past Investment
+        submitData.append("website", registrationData.website); // Website (Optional)
+        submitData.append("inv_range", registrationData.inv_range); // Investment Range
+        submitData.append("interested_cats", registrationData.interested_cats); // Interested Categories
+
+        console.log(registrationData);
+
+        // Submit the registration data
+        const { data } = await axiosClient.post("/register", submitData);
+
+        // Check for backend-specific errors (e.g., if the email already exists)
+        if (data.error) {
+            formErrors.push(data.error);
+            toast.error(data.error); // Show backend-specific error toast
+            setErrors({ general: formErrors });
             return;
         }
 
-        // Check if terms are accepted
-        if (!registrationData.terms) {
-            setErrors({
-                general: "You must agree to the Terms and Conditions!",
-            });
-            return;
+        toast.success("Registration successful!"); // Show success toast
+        onClose();
+    } catch (error) {
+        // Handle backend errors
+        if (error.response) {
+            const errorMessage =
+                error.response.data.message ||
+                "Registration failed. Please try again.";
+            formErrors.push(errorMessage);
+            toast.error(errorMessage); // Show error toast
+            setErrors({ general: formErrors });
+        } else if (error.request) {
+            const errorMessage =
+                "No response from the server. Please try again.";
+            formErrors.push(errorMessage);
+            toast.error(errorMessage); // Show error toast
+            setErrors({ general: formErrors });
+        } else {
+            const errorMessage =
+                "An unexpected error occurred. Please try again.";
+            formErrors.push(errorMessage);
+            toast.error(errorMessage); // Show error toast
+            setErrors({ general: formErrors });
         }
 
-        setLoading(true); // Start loading spinner
-
-        try {
-            // Prepare form data for submission
-            const submitData = new FormData();
-            submitData.append("fname", registrationData.fname); // First Name
-            submitData.append("mname", registrationData.mname || ""); // Optional Middle Name
-            submitData.append("lname", registrationData.lname); // Last Name
-            submitData.append("email", registrationData.email); // Email
-            submitData.append("password", registrationData.password); // Password
-            submitData.append("id_no", registrationData.id_no); // ID/Passport Number
-            submitData.append("tax_pin", registrationData.tax_pin); // Tax PIN
-            submitData.append("id_passport", registrationData.id_passport); // Attached ID/Passport
-            submitData.append("confirmPassword", registrationData.confirmPassword);
-            submitData.append("pin", registrationData.pin); // Attached PIN
-            submitData.append(
-                "past_investment",
-                registrationData.past_investment
-            ); // Past Investment
-            submitData.append("website", registrationData.website); // Website (Optional)
-            submitData.append("inv_range", registrationData.inv_range); // Investment Range
-            submitData.append(
-                "interested_cats",
-                registrationData.interested_cats
-            ); // Interested Categories
-console.log(registrationData);
-            // Submit the registration data
-            const { data } = await axiosClient.post("/register", submitData);
-            
-            onClose();
-        } catch (error) {
-            setErrors({ general: "Registration failed. Please try again." });
-            console.log(error);
-        } finally {
-            setLoading(false); // Stop loading spinner
-        }
-    };
+        console.log(error); // Log the error for debugging
+    } finally {
+        setLoading(false); // Stop loading spinner
+    }
+};
 
     return (
         <div className="fixed inset-0 bg-blue-900 bg-opacity-25 flex justify-center items-center z-50">
+            <ToastContainer />
             <div
                 className={`bg-white p-6 shadow-lg ${
                     isSignIn ? "max-w-md min-h-[500px]" : "max-w-2xl"
@@ -265,7 +297,7 @@ console.log(registrationData);
                                     name="email"
                                     value={loginData.email}
                                     onChange={handleLoginChange}
-                                    className="border rounded-lg px-3 py-2 text-sm"
+                                    className="border rounded-lg px-3 text-black py-2 text-sm"
                                     required
                                 />
                                 {errors.email && (
@@ -283,7 +315,7 @@ console.log(registrationData);
                                     name="password"
                                     value={loginData.password}
                                     onChange={handleLoginChange}
-                                    className="border rounded-lg px-3 py-2 text-sm pr-10"
+                                    className="border rounded-lg px-3 py-2 text-black text-sm pr-10"
                                     required
                                 />
                                 <button
@@ -531,46 +563,54 @@ console.log(registrationData);
                                 />
                             </div>
 
-                           <div className="relative">
-    <label className="block text-gray-700 text-sm mb-1">
-        Potential Investment Range
-    </label>
-    <div
-        className="border rounded-lg px-3 py-2 text-sm cursor-pointer text-black focus:ring-2 focus:ring-blue-500"
-        onClick={() => handleDropdownToggle("invRangeOpen")}
-    >
-        {registrationData.inv_range.length > 0
-            ? registrationData.inv_range.join(", ")
-            : "Select ranges"}
-    </div>
-    {dropdowns.invRangeOpen && (
-        <div className="absolute bg-white border rounded-lg text-black mt-2 w-full shadow-lg z-10 max-h-60 overflow-y-auto">
-            {[
-                "0-10000",
-                "0-100000",
-                "10000-100000",
-                "100000-250000",
-                "250000-500000",
-                "500000-",
-            ].map((range) => (
-                <label
-                    key={range}
-                    className="block p-2 cursor-pointer hover:bg-blue-50"
-                >
-                    <input
-                        type="checkbox"
-                        name={range}
-                        checked={registrationData.inv_range.includes(range)}
-                        onChange={(e) => handleCheckboxChange(e, "inv_range")}
-                        className="mr-2"
-                    />
-                    {range}
-                </label>
-            ))}
-        </div>
-    )}
-</div>
-
+                            <div className="relative">
+                                <label className="block text-gray-700 text-sm mb-1">
+                                    Potential Investment Range
+                                </label>
+                                <div
+                                    className="border rounded-lg px-3 py-2 text-sm cursor-pointer text-black focus:ring-2 focus:ring-blue-500"
+                                    onClick={() =>
+                                        handleDropdownToggle("invRangeOpen")
+                                    }
+                                >
+                                    {registrationData.inv_range.length > 0
+                                        ? registrationData.inv_range.join(", ")
+                                        : "Select ranges"}
+                                </div>
+                                {dropdowns.invRangeOpen && (
+                                    <div className="absolute bg-white border rounded-lg text-black mt-2 w-full shadow-lg z-10 max-h-60 overflow-y-auto">
+                                        {[
+                                            "0-10000",
+                                            "0-100000",
+                                            "10000-100000",
+                                            "100000-250000",
+                                            "250000-500000",
+                                            "500000-",
+                                        ].map((range) => (
+                                            <label
+                                                key={range}
+                                                className="block p-2 cursor-pointer hover:bg-blue-50"
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    name={range}
+                                                    checked={registrationData.inv_range.includes(
+                                                        range
+                                                    )}
+                                                    onChange={(e) =>
+                                                        handleCheckboxChange(
+                                                            e,
+                                                            "inv_range"
+                                                        )
+                                                    }
+                                                    className="mr-2"
+                                                />
+                                                {range}
+                                            </label>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
 
                             <div className="relative">
                                 <label className="block text-gray-700 text-sm mb-1">
@@ -660,9 +700,14 @@ console.log(registrationData);
 
                             <button
                                 type="submit"
-                                className="btn btn-primary rounded-full mt-4"
+                                className="btn btn-primary rounded-full mt-4 flex items-center justify-center"
+                                disabled={loading}
                             >
-                                Create Account
+                                {loading ? (
+                                    <AiOutlineLoading3Quarters className="animate-spin mr-2" />
+                                ) : (
+                                    "Create Account"
+                                )}
                             </button>
                         </div>
                     </form>
