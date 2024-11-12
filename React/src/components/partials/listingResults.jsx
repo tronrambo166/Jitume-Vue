@@ -19,6 +19,7 @@ import ListingSearch from "../partials/ListingSearch";
 // import 'nouislider/dist/nouislider.css';
 import CardsPagination from "./CardsPagination";
 import Search from "../Landing-page/Search"
+import BackBtn from "./BackBtn";
 
 // Dummy data
 const ListingResults = () => {
@@ -322,8 +323,10 @@ const ListingResults = () => {
     //MAP -- MAP
 
     return (
-        <div className="w-full mx-auto px-9">
-            {/* <div className="flex mb-6 flex-col md:flex-row gap-4 justify-center pt-8 px-2 sm:px-6 md:px-4 items-center w-full max-w-3xl mx-auto">
+        <>
+        <BackBtn/>
+            <div className="w-full mx-auto px-9">
+                {/* <div className="flex mb-6 flex-col md:flex-row gap-4 justify-center pt-8 px-2 sm:px-6 md:px-4 items-center w-full max-w-3xl mx-auto">
                 <input
                     type="text"
                     className="border py-2 text-md px-4 border-[#666666]/30 rounded-xl focus:outline-none w-full md:flex-1"
@@ -362,198 +365,202 @@ const ListingResults = () => {
                     <FontAwesomeIcon icon={faSearch} />
                 </button>
             </div> */}
-            <div className="pt-4">
-                {/*<ListingSearch />*/}
-                <Search />
-            </div>
+                <div className="pt-4">
+                    {/*<ListingSearch />*/}
+                    <Search />
+                </div>
 
-            {/* Price Range Slider */}
-            <div className="flex items-center gap-6    my-6">
-                <div
-                    id="turnover_slider"
-                    className="w-full border rounded-lg jakarta border-[#CBD5E1] space-y-2 px-6 py-4"
-                >
-                    <label className="text-gray-700 font-semibold ">
-                        Turnover Range
-                    </label>
-                    <div id="slider" className=" "></div>
-                    <div className="row mt-3 ">
-                        <div className="col-6 mt-1">
-                            <span
-                                id="price_low"
-                                className="py-0 "
-                                name="min"
-                            ></span>
+                {/* Price Range Slider */}
+                <div className="flex items-center gap-6    my-6">
+                    <div
+                        id="turnover_slider"
+                        className="w-full border rounded-lg jakarta border-[#CBD5E1] space-y-2 px-6 py-4"
+                    >
+                        <label className="text-gray-700 font-semibold ">
+                            Turnover Range
+                        </label>
+                        <div id="slider" className=" "></div>
+                        <div className="row mt-3 ">
+                            <div className="col-6 mt-1">
+                                <span
+                                    id="price_low"
+                                    className="py-0 "
+                                    name="min"
+                                ></span>
+                            </div>
+                            <div className="col-6 mt-1 pr-0">
+                                <span
+                                    id="price_high"
+                                    className="float-right py-0 "
+                                    name="min"
+                                ></span>
+                            </div>
                         </div>
-                        <div className="col-6 mt-1 pr-0">
-                            <span
-                                id="price_high"
-                                className="float-right py-0 "
-                                name="min"
-                            ></span>
+                    </div>
+
+                    <div
+                        id="amount_slider"
+                        className="w-full jakarta   text-md border border-[#cbd5e1] rounded-lg space-y-2 px-6 py-4  mt-1"
+                    >
+                        <label className="text-gray-700 font-semibold mb-2">
+                            Amount Range
+                        </label>
+                        <div id="slider2" className=""></div>
+                        <div className="row mt-3 jakarta">
+                            <div className="col-6 mt-1">
+                                <span
+                                    id="price_low2"
+                                    className="py-0 text-sm "
+                                    name="min"
+                                ></span>
+                            </div>
+                            <div className="col-6 mt-1 pr-0">
+                                <span
+                                    id="price_high2"
+                                    className="float-right py-0 text-sm "
+                                    name="min"
+                                ></span>
+                            </div>
                         </div>
                     </div>
                 </div>
+                {/* Price Range Slider */}
 
-                <div
-                    id="amount_slider"
-                    className="w-full jakarta   text-md border border-[#cbd5e1] rounded-lg space-y-2 px-6 py-4  mt-1"
-                >
-                    <label className="text-gray-700 font-semibold mb-2">
-                        Amount Range
-                    </label>
-                    <div id="slider2" className=""></div>
-                    <div className="row mt-3 jakarta">
-                        <div className="col-6 mt-1">
-                            <span
-                                id="price_low2"
-                                className="py-0 text-sm "
-                                name="min"
-                            ></span>
-                        </div>
-                        <div className="col-6 mt-1 pr-0">
-                            <span
-                                id="price_high2"
-                                className="float-right py-0 text-sm "
-                                name="min"
-                            ></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {/* Price Range Slider */}
-
-            {/*<PriceRangeFilter />
+                {/*<PriceRangeFilter />
         <PriceRangeFilter />*/}
 
-            <h1 className=" text-gray-700 text-2xl mb-2   font-semibold ">
-                <b>{count} Results Found</b>
-                {/* <button className="permission-granted-button">
+                <h1 className=" text-gray-700 text-2xl mb-2   font-semibold ">
+                    <b>{count} Results Found</b>
+                    {/* <button className="permission-granted-button">
                   {" "}
                   Allow location{" "}
               </button> */}
-            </h1>
-            <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] lg:gap-8 gap-4 items-start">
-                {/* Cards Section */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    {currentCards.length === 0 ? (
-                        <p className="text-center text-gray-500">
-                            No results found.
-                        </p>
-                    ) : (
-                        currentCards.map((row) => (
-                            <Link
-                                to={`/listing/${btoa(btoa(row.id))}`}
-                                key={row.id}
-                            >
-                                <div className="border p-5 border-gray-200 shadow-sm bg-white h-[500px] rounded-2xl flex flex-col w-full max-w-[900px] mx-auto">
-                                    <div>
-                                        <img
-                                            src={"../../" + row.image}
-                                            alt={row.name}
-                                            className="w-full h-[250px] object-cover rounded-lg"
-                                        />
-                                    </div>
-                                    <div className="flex flex-col pt-2 justify-between flex-grow p-0">
-                                        <div className="flex flex-wrap gap-2 text-m font-bold text-[#1E293B]">
-                                            {(
-                                                row.tags || [
-                                                    "example",
-                                                    "dummy",
-                                                    "placeholder",
-                                                    "sample",
-                                                ]
-                                            ).map((tag) => (
-                                                <span
-                                                    key={tag}
-                                                    className="text-[#1E293B] font-semibold"
-                                                >
-                                                    #{tag}
-                                                </span>
-                                            ))}
-                                        </div>
-                                        <p className="text-lg font-semibold text-[#1E293B]">
-                                            {row.name}
-                                        </p>
-                                        <p className="text-sm text-[#1E293B]">
-                                            {row.details ||
-                                                "Lorem ipsum dolor sit amet consectetur..."}
-                                        </p>
-                                        <p className="text-sm text-[#1E293B] inline-block">
-                                            {row.category}
-                                        </p>
-                                        <div className="text-sm text-gray-600 flex flex-col gap-1">
-                                            <p className="flex items-center">
-                                                <FontAwesomeIcon
-                                                    icon={faLocationDot}
-                                                    className="mr-2"
-                                                />
-                                                {row.location}
-                                            </p>
-                                            <p className="flex items-center">
-                                                <FontAwesomeIcon
-                                                    icon={faPhone}
-                                                    className="mr-2"
-                                                />
-                                                contact:{" "}
-                                                {row.contact || "+1791205437"}
-                                            </p>
-                                        </div>
-
+                </h1>
+                <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] lg:gap-8 gap-4 items-start">
+                    {/* Cards Section */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        {currentCards.length === 0 ? (
+                            <p className="text-center text-gray-500">
+                                No results found.
+                            </p>
+                        ) : (
+                            currentCards.map((row) => (
+                                <Link
+                                    to={`/listing/${btoa(btoa(row.id))}`}
+                                    key={row.id}
+                                >
+                                    <div className="border p-5 border-gray-200 shadow-sm bg-white h-[500px] rounded-2xl flex flex-col w-full max-w-[900px] mx-auto">
                                         <div>
-                                            <p className="text-green-600 ">
-                                                ${row.investment_needed || ""}
-                                                <span className="text-[#1E293B]">
-                                                    / Amount Requested
-                                                </span>
-                                            </p>
+                                            <img
+                                                src={"../../" + row.image}
+                                                alt={row.name}
+                                                className="w-full h-[250px] object-cover rounded-lg"
+                                            />
                                         </div>
-
-                                        <div>
-                                            <p className="text-green-600 ">
-                                                ${row.y_turnover || ""}
-                                                <span className="text-[#1E293B]">
-                                                    / Yearly Turnover
-                                                </span>
+                                        <div className="flex flex-col pt-2 justify-between flex-grow p-0">
+                                            <div className="flex flex-wrap gap-2 text-m font-bold text-[#1E293B]">
+                                                {(
+                                                    row.tags || [
+                                                        "example",
+                                                        "dummy",
+                                                        "placeholder",
+                                                        "sample",
+                                                    ]
+                                                ).map((tag) => (
+                                                    <span
+                                                        key={tag}
+                                                        className="text-[#1E293B] font-semibold"
+                                                    >
+                                                        #{tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                            <p className="text-lg font-semibold text-[#1E293B]">
+                                                {row.name}
                                             </p>
+                                            <p className="text-sm text-[#1E293B]">
+                                                {row.details ||
+                                                    "Lorem ipsum dolor sit amet consectetur..."}
+                                            </p>
+                                            <p className="text-sm text-[#1E293B] inline-block">
+                                                {row.category}
+                                            </p>
+                                            <div className="text-sm text-gray-600 flex flex-col gap-1">
+                                                <p className="flex items-center">
+                                                    <FontAwesomeIcon
+                                                        icon={faLocationDot}
+                                                        className="mr-2"
+                                                    />
+                                                    {row.location}
+                                                </p>
+                                                <p className="flex items-center">
+                                                    <FontAwesomeIcon
+                                                        icon={faPhone}
+                                                        className="mr-2"
+                                                    />
+                                                    contact:{" "}
+                                                    {row.contact ||
+                                                        "+1791205437"}
+                                                </p>
+                                            </div>
+
+                                            <div>
+                                                <p className="text-green-600 ">
+                                                    $
+                                                    {row.investment_needed ||
+                                                        ""}
+                                                    <span className="text-[#1E293B]">
+                                                        / Amount Requested
+                                                    </span>
+                                                </p>
+                                            </div>
+
+                                            <div>
+                                                <p className="text-green-600 ">
+                                                    ${row.y_turnover || ""}
+                                                    <span className="text-[#1E293B]">
+                                                        / Yearly Turnover
+                                                    </span>
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </Link>
-                        ))
-                    )}
+                                </Link>
+                            ))
+                        )}
 
-                    {/* Pagination on the right */}
-                    <div className="flex justify-end mt-4">
-                        <CardsPagination
-                            currentPage={currentPage}
-                            totalPages={totalPages}
-                            onPageChange={handlePageChange}
-                        />
+                        {/* Pagination on the right */}
+                        <div className="flex justify-end mt-4">
+                            <CardsPagination
+                                currentPage={currentPage}
+                                totalPages={totalPages}
+                                onPageChange={handlePageChange}
+                            />
+                        </div>
                     </div>
-                </div>
 
-                {/* Map Section */}
-                <div className="h-[500px] lg:h-auto rounded-lg flex items-center justify-center">
-                    <div
-                        className="map_style w-full h-full"
-                        style={{
-                            borderRadius: "16px",
-                            overflow: "hidden",
-                        }}
-                    >
+                    {/* Map Section */}
+                    <div className="h-[500px] lg:h-auto rounded-lg flex items-center justify-center">
                         <div
-                            id="map"
+                            className="map_style w-full h-full"
                             style={{
-                                height: "100%",
-                                width: "100%",
                                 borderRadius: "16px",
+                                overflow: "hidden",
                             }}
-                        ></div>
+                        >
+                            <div
+                                id="map"
+                                style={{
+                                    height: "100%",
+                                    width: "100%",
+                                    borderRadius: "16px",
+                                }}
+                            ></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

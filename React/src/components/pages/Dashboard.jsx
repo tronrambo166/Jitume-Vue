@@ -11,14 +11,14 @@ const Dashboard = () => {
       <div className='relative'>
         <Sidebar />
         {/* Help Section */}
-        <div className='fixed right-4 bottom-4 p-4 mx-auto w-[250px] h-[220px] rounded-xl bg-white  z-50 md:hidden '>
+        {/* <div className='fixed right-4 bottom-4 p-4 mx-auto w-[250px] h-[220px] rounded-xl bg-white  z-50 md:hidden '>
           <img src={btmicon} alt="Help" />
           <div className='mt-[60px]'>
             <h1 className='text-gray-800 font-semibold'>Need help?</h1>
             <h2 className='py-1 text-gray-600 text-[13px]'>Please check our docs</h2>
             <button className='bg-gray-800 rounded-xl uppercase text-[12px] w-full px-5 py-2 text-white'>Contact Us</button>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Main Content Area */}

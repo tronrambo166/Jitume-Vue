@@ -33,6 +33,7 @@ function AddMilestone() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         if (!form.file) {
             setFileAlert("No files selected!");
             return;
@@ -46,20 +47,44 @@ function AddMilestone() {
         formData.append("business_id", form.business_id);
         formData.append("file", form.file);
 
+        // Log form data details
+        console.log("Form Data to be submitted:");
+        for (let [key, value] of formData.entries()) {
+            console.log(
+                `${key}: ${value instanceof File ? value.name : value}`
+            );
+        }
+
         try {
+            // setLoading(true); // Set loading state to true
             toast.info("Uploading...");
+
             const response = await axiosClient.post(
                 "business/save_milestone",
                 formData
             );
+
+            // Log the response data
+            console.log("Server Response:", response.data);
+
             if (response.data.status === 200) {
                 toast.success(response.data.message);
                 getMilestones();
+            } else {
+                toast.error(
+                    response.data.message || "Failed to save milestone."
+                );
             }
         } catch (error) {
-            toast.error(error.message);
+            console.error("Error submitting the form:", error);
+            toast.error(
+                error.message || "An error occurred while submitting the form."
+            );
+        } finally {
+            // setLoading(false); // Set loading state to false
         }
     };
+
 
     const handleStatusChange = (e, id) => {
         const updatedMilestones = milestones.map((milestone) =>
@@ -100,7 +125,7 @@ function AddMilestone() {
                     name="title"
                     type="text"
                     placeholder="Milestone Name"
-                    className="flex-1 border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                     value={form.title}
                     onChange={handleInputChange}
                     required
@@ -109,7 +134,7 @@ function AddMilestone() {
                     name="amount"
                     type="number"
                     placeholder="Amount"
-                    className="flex-1 border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                     value={form.amount}
                     onChange={handleInputChange}
                     required
@@ -117,7 +142,7 @@ function AddMilestone() {
                 <div className="flex gap-2 flex-1">
                     <select
                         name="time_type"
-                        className="flex-1 border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="flex-1 border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                         value={form.time_type}
                         onChange={handleInputChange}
                         required
@@ -128,7 +153,7 @@ function AddMilestone() {
                     </select>
                     <select
                         name="n_o_days"
-                        className="flex-1 border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="flex-1 border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                         value={form.n_o_days}
                         onChange={handleInputChange}
                         required
@@ -174,7 +199,7 @@ function AddMilestone() {
 
                 <button
                     type="submit"
-                    className="flex-1 bg-green text-white py-2 rounded-lg hover:bg-blue-600 transition-colors disabled:bg-gray-400"
+                    className="flex-1 bg-green text-white py-2 rounded-lg hover:bg-green-600 transition-colors disabled:bg-gray-400"
                     disabled={!form.business_id || !form.title || !form.amount}
                 >
                     Add Milestone
@@ -229,7 +254,7 @@ function AddMilestone() {
                                                     milestone.id
                                                 )
                                             }
-                                            className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                                         >
                                             <option value="In Progress">
                                                 {milestone.status}

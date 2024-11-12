@@ -17,6 +17,7 @@ import { useStateContext } from "../../contexts/contextProvider";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
 import ServiceSearch from "../partials/ServiceSearch";
 import CardsPagination from "./CardsPagination";
+import BackBtn from "./BackBtn";
 const ServiceResults = () => {
     const categories = [
         { value: "Agriculture", label: "Agriculture" },
@@ -250,14 +251,16 @@ const ServiceResults = () => {
     //MAP -- MAP
 
     return (
-        <div className="w-full mx-auto px-24">
-            {/* <h1 className="text-3xl pt-4 md:text-[64px] mb-8 md:mb-16 font-semibold leading-tight md:leading-[79.36px] tracking-[0.02em] text-center font-sharp-grotesk text-[#00290F]">
+        <>
+            <BackBtn />
+            <div className="w-full mx-auto px-24">
+                {/* <h1 className="text-3xl pt-4 md:text-[64px] mb-8 md:mb-16 font-semibold leading-tight md:leading-[79.36px] tracking-[0.02em] text-center font-sharp-grotesk text-[#00290F]">
                 What Are You Looking For?
             </h1> */}
-            <div className=" mt-8">
-                <ServiceSearch />
-            </div>
-            {/* <div className="flex mb-6 flex-col md:flex-row gap-4 justify-center pt-8 px-2 sm:px-6 md:px-4 items-center w-full max-w-3xl mx-auto">
+                <div className=" mt-8">
+                    <ServiceSearch />
+                </div>
+                {/* <div className="flex mb-6 flex-col md:flex-row gap-4 justify-center pt-8 px-2 sm:px-6 md:px-4 items-center w-full max-w-3xl mx-auto">
               <input
                   type="text"
                   className="border py-2 text-md px-4 border-[#666666]/30 rounded-xl focus:outline-none w-full md:flex-1"
@@ -300,189 +303,200 @@ const ServiceResults = () => {
               </button>
           </div> */}
 
-            <div className=" justify-center flex items-center gap-6    my-8">
-                <div
-                    id="turnover_slider"
-                    className=" w-full jakarta  text-md border border-[#cbd5e1] rounded-lg space-y-2 px-6 py-4 "
-                >
-                    <label className="text-gray-700 font-semibold mb-2">
-                        Price Range
-                    </label>
-                    <div id="slider" class="">
-                        {" "}
-                    </div>
-                    <div className="row mt-3 jakarta">
-                        <div className="col-6  mt-1">
-                            <span id="price_low" className="py-0 " name="min">
-                                {" "}
-                            </span>
-                        </div>
-                        <div className="col-6 mt-1 pr-0">
-                            <span
-                                id="price_high"
-                                className="float-right py-0 "
-                                name="min"
-                            >
-                                {" "}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                {/*<PriceRangeFilter />*/}
-            </div>
-
-            <h1 className=" text-gray-700 text-2xl mb-2   font-semibold ">
-                <b>{count} Results Found</b>
-            </h1>
-
-            <div className="min-h-screen grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4 items-start">
-                {/* Results Section */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    {results.length === 0 ? (
-                        <div className="space-y-4">
-                            {/* Skeleton Loader for Cards */}
-                            {[...Array(3)].map((_, index) => (
-                                <div
-                                    key={index}
-                                    className="border p-5 border-[#0000001A]/10 shadow-sm bg-white h-[500px] rounded-2xl flex flex-col w-full max-w-[900px] mx-auto animate-pulse"
-                                >
-                                    {/* Skeleton Image */}
-                                    <div className="bg-gray-200 w-full h-[250px] rounded-lg"></div>
-
-                                    <div className="flex flex-col pt-2 justify-between flex-grow p-0">
-                                        {/* Skeleton Tags */}
-                                        <div className="flex flex-wrap gap-2 text-xs font-semibold text-[#1E293B]">
-                                            <div className="bg-gray-200 w-20 h-4 rounded-md"></div>
-                                            <div className="bg-gray-200 w-20 h-4 rounded-md"></div>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex flex-col justify-between flex-grow">
-                                        {/* Skeleton Title */}
-                                        <div className="bg-gray-200 w-3/4 h-6 rounded-md mt-2"></div>
-
-                                        {/* Skeleton Details */}
-                                        <div className="bg-gray-200 w-full h-4 rounded-md mt-2"></div>
-
-                                        {/* Skeleton Category */}
-                                        <div className="bg-gray-200 w-1/4 h-4 rounded-md mt-2"></div>
-
-                                        <div className="text-sm text-gray-500 flex flex-col gap-1">
-                                            {/* Skeleton Location */}
-                                            <div className="bg-gray-200 w-3/4 h-4 rounded-md"></div>
-
-                                            {/* Skeleton Contact */}
-                                            <div className="bg-gray-200 w-3/4 h-4 rounded-md"></div>
-                                        </div>
-
-                                        {/* Skeleton Price */}
-                                        <div className="bg-gray-200 w-1/3 h-6 rounded-md mt-2"></div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        currentCards.map((row) => (
-                            <Link
-                                to={`/service-details/${btoa(btoa(row.id))}`}
-                                key={row.id}
-                            >
-                                <div className="border p-5 border-[#0000001A]/10 shadow-sm bg-white h-[500px] rounded-2xl flex flex-col w-full max-w-[900px] mx-auto">
-                                    <div>
-                                        <img
-                                            src={"../../" + row.image}
-                                            alt={row.listing_name}
-                                            className="w-full h-[250px] object-cover rounded-lg"
-                                        />
-                                    </div>
-
-                                    <div className="flex flex-col pt-2 justify-between flex-grow">
-                                        <div className="flex flex-wrap gap-2 text-xs font-semibold text-[#1E293B]">
-                                            {(
-                                                row.tags || ["example", "dummy"]
-                                            ).map((tag) => (
-                                                <span
-                                                    key={tag}
-                                                    className="text-[#1E293B] font-semibold"
-                                                >
-                                                    #{tag}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    <div className="flex flex-col justify-between flex-grow">
-                                        <p className="text-lg font-semibold text-slate-800">
-                                            {row.name}
-                                        </p>
-                                        <p className="text-sm text-gray-600">
-                                            {row.details ||
-                                                "Lorem ipsum dolor sit amet consectetur..."}
-                                        </p>
-                                        <p className="text-sm text-gray-600 inline-block">
-                                            {row.category}
-                                        </p>
-
-                                        <div className="text-sm text-gray-500 flex flex-col gap-1">
-                                            <p className="flex items-center">
-                                                <FontAwesomeIcon
-                                                    icon={faLocationDot}
-                                                    className="mr-1 text-slate-500"
-                                                />
-                                                {row.location}
-                                            </p>
-                                            <p className="flex items-center truncate">
-                                                <FontAwesomeIcon
-                                                    icon={faPhone}
-                                                    className="mr-1 text-slate-500"
-                                                />
-                                                {row.contact || "+1791205437"}
-                                            </p>
-                                        </div>
-
-                                        <p className="text-green-600 font-bold mt-2">
-                                            ${row.price}
-                                            <span className="text-gray-500 ml-1 text-xs">
-                                                / Price
-                                            </span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </Link>
-                        ))
-                    )}
-                </div>
-
-                {/* Map Section */}
-                <div className="h-[500px] sticky top-0 rounded-lg flex items-center justify-center">
+                <div className=" justify-center flex items-center gap-6    my-8">
                     <div
-                        className="m-auto map_style w-full h-full"
-                        style={{
-                            borderRadius: "16px",
-                            overflow: "hidden",
-                        }}
+                        id="turnover_slider"
+                        className=" w-full jakarta  text-md border border-[#cbd5e1] rounded-lg space-y-2 px-6 py-4 "
                     >
-                        <div
-                            id="map"
-                            style={{
-                                height: "100%",
-                                width: "100%",
-                                borderRadius: "16px",
-                            }}
-                        ></div>
+                        <label className="text-gray-700 font-semibold mb-2">
+                            Price Range
+                        </label>
+                        <div id="slider" class="">
+                            {" "}
+                        </div>
+                        <div className="row mt-3 jakarta">
+                            <div className="col-6  mt-1">
+                                <span
+                                    id="price_low"
+                                    className="py-0 "
+                                    name="min"
+                                >
+                                    {" "}
+                                </span>
+                            </div>
+                            <div className="col-6 mt-1 pr-0">
+                                <span
+                                    id="price_high"
+                                    className="float-right py-0 "
+                                    name="min"
+                                >
+                                    {" "}
+                                </span>
+                            </div>
+                        </div>
                     </div>
+                    {/*<PriceRangeFilter />*/}
                 </div>
 
-                {/* Pagination Section */}
-                <div className="flex justify-start ml-6 mt-4">
-                    <CardsPagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={handlePageChange}
-                    />
+                <h1 className=" text-gray-700 text-2xl mb-2   font-semibold ">
+                    <b>{count} Results Found</b>
+                </h1>
+
+                <div className="min-h-screen grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4 items-start">
+                    {/* Results Section */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        {results.length === 0 ? (
+                            <div className="space-y-4">
+                                {/* Skeleton Loader for Cards */}
+                                {[...Array(3)].map((_, index) => (
+                                    <div
+                                        key={index}
+                                        className="border p-5 border-[#0000001A]/10 shadow-sm bg-white h-[500px] rounded-2xl flex flex-col w-full max-w-[900px] mx-auto animate-pulse"
+                                    >
+                                        {/* Skeleton Image */}
+                                        <div className="bg-gray-200 w-full h-[250px] rounded-lg"></div>
+
+                                        <div className="flex flex-col pt-2 justify-between flex-grow p-0">
+                                            {/* Skeleton Tags */}
+                                            <div className="flex flex-wrap gap-2 text-xs font-semibold text-[#1E293B]">
+                                                <div className="bg-gray-200 w-20 h-4 rounded-md"></div>
+                                                <div className="bg-gray-200 w-20 h-4 rounded-md"></div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex flex-col justify-between flex-grow">
+                                            {/* Skeleton Title */}
+                                            <div className="bg-gray-200 w-3/4 h-6 rounded-md mt-2"></div>
+
+                                            {/* Skeleton Details */}
+                                            <div className="bg-gray-200 w-full h-4 rounded-md mt-2"></div>
+
+                                            {/* Skeleton Category */}
+                                            <div className="bg-gray-200 w-1/4 h-4 rounded-md mt-2"></div>
+
+                                            <div className="text-sm text-gray-500 flex flex-col gap-1">
+                                                {/* Skeleton Location */}
+                                                <div className="bg-gray-200 w-3/4 h-4 rounded-md"></div>
+
+                                                {/* Skeleton Contact */}
+                                                <div className="bg-gray-200 w-3/4 h-4 rounded-md"></div>
+                                            </div>
+
+                                            {/* Skeleton Price */}
+                                            <div className="bg-gray-200 w-1/3 h-6 rounded-md mt-2"></div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            currentCards.map((row) => (
+                                <Link
+                                    to={`/service-details/${btoa(
+                                        btoa(row.id)
+                                    )}`}
+                                    key={row.id}
+                                >
+                                    <div className="border p-5 border-[#0000001A]/10 shadow-sm bg-white h-[500px] rounded-2xl flex flex-col w-full max-w-[900px] mx-auto">
+                                        <div>
+                                            <img
+                                                src={"../../" + row.image}
+                                                alt={row.listing_name}
+                                                className="w-full h-[250px] object-cover rounded-lg"
+                                            />
+                                        </div>
+
+                                        <div className="flex flex-col pt-2 justify-between flex-grow">
+                                            <div className="flex flex-wrap gap-2 text-xs font-semibold text-[#1E293B]">
+                                                {(
+                                                    row.tags || [
+                                                        "example",
+                                                        "dummy",
+                                                    ]
+                                                ).map((tag) => (
+                                                    <span
+                                                        key={tag}
+                                                        className="text-[#1E293B] font-semibold"
+                                                    >
+                                                        #{tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        <div className="flex flex-col justify-between flex-grow">
+                                            <p className="text-lg font-semibold text-slate-800">
+                                                {row.name}
+                                            </p>
+                                            <p className="text-sm text-gray-600">
+                                                {row.details ||
+                                                    "Lorem ipsum dolor sit amet consectetur..."}
+                                            </p>
+                                            <p className="text-sm text-gray-600 inline-block">
+                                                {row.category}
+                                            </p>
+
+                                            <div className="text-sm text-gray-500 flex flex-col gap-1">
+                                                <p className="flex items-center">
+                                                    <FontAwesomeIcon
+                                                        icon={faLocationDot}
+                                                        className="mr-1 text-slate-500"
+                                                    />
+                                                    {row.location}
+                                                </p>
+                                                <p className="flex items-center truncate">
+                                                    <FontAwesomeIcon
+                                                        icon={faPhone}
+                                                        className="mr-1 text-slate-500"
+                                                    />
+                                                    {row.contact ||
+                                                        "+1791205437"}
+                                                </p>
+                                            </div>
+
+                                            <p className="text-green-600 font-bold mt-2">
+                                                ${row.price}
+                                                <span className="text-gray-500 ml-1 text-xs">
+                                                    / Price
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </Link>
+                            ))
+                        )}
+                    </div>
+
+                    {/* Map Section */}
+                    <div className="h-[500px] sticky top-0 rounded-lg flex items-center justify-center">
+                        <div
+                            className="m-auto map_style w-full h-full"
+                            style={{
+                                borderRadius: "16px",
+                                overflow: "hidden",
+                            }}
+                        >
+                            <div
+                                id="map"
+                                style={{
+                                    height: "100%",
+                                    width: "100%",
+                                    borderRadius: "16px",
+                                }}
+                            ></div>
+                        </div>
+                    </div>
+
+                    {/* Pagination Section */}
+                    <div className="flex justify-start ml-6 mt-4">
+                        <CardsPagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={handlePageChange}
+                        />
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

@@ -212,7 +212,11 @@ console.log(registrationData);
                 </button>
 
                 <div className="flex justify-center mb-4 mt-2">
-                    <img src={logo2} alt="Logo" className="w-[130px] h-[40px]" />
+                    <img
+                        src={logo2}
+                        alt="Logo"
+                        className="w-[130px] h-[40px]"
+                    />
                 </div>
 
                 <div className="flex justify-center mb-6 border-b border-gray-300 space-x-4">
@@ -346,7 +350,7 @@ console.log(registrationData);
                                     name="fname"
                                     value={registrationData.fname}
                                     onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm"
+                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black"
                                     required
                                 />
                             </div>
@@ -360,7 +364,7 @@ console.log(registrationData);
                                     name="mname"
                                     value={registrationData.mname}
                                     onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm"
+                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black"
                                 />
                             </div>
 
@@ -374,7 +378,7 @@ console.log(registrationData);
                                     name="lname"
                                     value={registrationData.lname}
                                     onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm"
+                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black"
                                     required
                                 />
                             </div>
@@ -389,7 +393,7 @@ console.log(registrationData);
                                     name="email"
                                     value={registrationData.email}
                                     onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm"
+                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black"
                                     required
                                 />
                             </div>
@@ -404,7 +408,7 @@ console.log(registrationData);
                                     name="password"
                                     value={registrationData.password}
                                     onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm"
+                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black"
                                     required
                                 />
                                 <button
@@ -430,7 +434,7 @@ console.log(registrationData);
                                     name="confirmPassword"
                                     value={registrationData.confirmPassword}
                                     onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm"
+                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black"
                                     required
                                 />
                                 <button
@@ -456,7 +460,7 @@ console.log(registrationData);
                                     name="id_no"
                                     value={registrationData.id_no}
                                     onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm"
+                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black"
                                     required
                                 />
                             </div>
@@ -470,7 +474,7 @@ console.log(registrationData);
                                     name="tax_pin"
                                     value={registrationData.tax_pin}
                                     onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm focus:ring-2 focus:ring-blue-500"
+                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
 
@@ -483,7 +487,7 @@ console.log(registrationData);
                                     type="file"
                                     name="id_passport"
                                     onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm file:border-none file:bg-blue-100 file:text-blue-700 file:rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black file:border-none file:bg-blue-100 file:text-blue-700 file:rounded-lg focus:ring-2 focus:ring-blue-500"
                                     required
                                 />
                             </div>
@@ -496,7 +500,7 @@ console.log(registrationData);
                                     type="file"
                                     name="pin"
                                     onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm file:border-none file:bg-blue-100 file:text-blue-700 file:rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black file:border-none file:bg-blue-100 file:text-blue-700 file:rounded-lg focus:ring-2 focus:ring-blue-500"
                                     required
                                 />
                             </div>
@@ -510,7 +514,7 @@ console.log(registrationData);
                                     name="past_investment"
                                     value={registrationData.past_investment}
                                     onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm focus:ring-2 focus:ring-blue-500"
+                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
 
@@ -523,58 +527,50 @@ console.log(registrationData);
                                     name="website"
                                     value={registrationData.website}
                                     onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm focus:ring-2 focus:ring-blue-500"
+                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
 
-                            <div className="relative">
-                                <label className="block text-gray-700 text-sm mb-1">
-                                    Potential Investment Range
-                                </label>
-                                <div
-                                    className="border rounded-lg px-3 py-2 text-sm cursor-pointer focus:ring-2 focus:ring-blue-500"
-                                    onClick={() =>
-                                        handleDropdownToggle("invRangeOpen")
-                                    }
-                                >
-                                    {registrationData.inv_range.length > 0
-                                        ? registrationData.inv_range.join(", ")
-                                        : "Select ranges"}
-                                </div>
-                                {dropdowns.invRangeOpen && (
-                                    <div className="absolute bg-white border rounded-lg mt-2 w-full shadow-lg z-10">
-                                        {[
-                                            "0-10000",
-                                            "0-100000",
-                                            "10000-100000",
-                                            "100000-250000",
-                                            "250000-500000",
-                                            "500000-",
-                                        ].map((range) => (
-                                            <label
-                                                key={range}
-                                                className="block p-2 cursor-pointer hover:bg-blue-50"
-                                            >
-                                                <input
-                                                    type="checkbox"
-                                                    name={range}
-                                                    checked={registrationData.inv_range.includes(
-                                                        range
-                                                    )}
-                                                    onChange={(e) =>
-                                                        handleCheckboxChange(
-                                                            e,
-                                                            "inv_range"
-                                                        )
-                                                    }
-                                                    className="mr-2"
-                                                />
-                                                {range}
-                                            </label>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
+                           <div className="relative">
+    <label className="block text-gray-700 text-sm mb-1">
+        Potential Investment Range
+    </label>
+    <div
+        className="border rounded-lg px-3 py-2 text-sm cursor-pointer text-black focus:ring-2 focus:ring-blue-500"
+        onClick={() => handleDropdownToggle("invRangeOpen")}
+    >
+        {registrationData.inv_range.length > 0
+            ? registrationData.inv_range.join(", ")
+            : "Select ranges"}
+    </div>
+    {dropdowns.invRangeOpen && (
+        <div className="absolute bg-white border rounded-lg text-black mt-2 w-full shadow-lg z-10 max-h-60 overflow-y-auto">
+            {[
+                "0-10000",
+                "0-100000",
+                "10000-100000",
+                "100000-250000",
+                "250000-500000",
+                "500000-",
+            ].map((range) => (
+                <label
+                    key={range}
+                    className="block p-2 cursor-pointer hover:bg-blue-50"
+                >
+                    <input
+                        type="checkbox"
+                        name={range}
+                        checked={registrationData.inv_range.includes(range)}
+                        onChange={(e) => handleCheckboxChange(e, "inv_range")}
+                        className="mr-2"
+                    />
+                    {range}
+                </label>
+            ))}
+        </div>
+    )}
+</div>
+
 
                             <div className="relative">
                                 <label className="block text-gray-700 text-sm mb-1">
@@ -582,7 +578,7 @@ console.log(registrationData);
                                     investing?
                                 </label>
                                 <div
-                                    className="border rounded-lg px-3 py-2 text-sm cursor-pointer focus:ring-2 focus:ring-blue-500"
+                                    className="border rounded-lg px-3 py-2 text-sm cursor-pointer focus:ring-2 text-black focus:ring-blue-500"
                                     onClick={() =>
                                         handleDropdownToggle("industriesOpen")
                                     }
@@ -594,7 +590,7 @@ console.log(registrationData);
                                         : "Select industries"}
                                 </div>
                                 {dropdowns.industriesOpen && (
-                                    <div className="absolute bg-white border rounded-lg mt-2 w-full shadow-lg z-10">
+                                    <div className="absolute bg-white border text-black rounded-lg mt-2 w-full shadow-lg z-10 max-h-48 overflow-y-auto">
                                         {[
                                             "Agriculture",
                                             "Arts/Culture",

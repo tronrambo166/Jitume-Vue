@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../../../axiosClient";
 import EditModal from "./EditModal";
-
+import { ToastContainer, toast } from "react-toastify";
 const MyBusinesses = () => {
     const navigate = useNavigate();
     const [business, setBusiness] = useState([]);
@@ -41,17 +41,25 @@ const MyBusinesses = () => {
             });
     };
 
-    const handleActivate = (id) => {
+   const handleActivate = (id) => {
         axiosClient
             .get("/business/activate_milestone/" + id)
             .then(({ data }) => {
-                alert(data.message);
-                if (data.status === 200) getBusinessAndServices();
-
-                if (data.status === 404) navigate(`/dashboard/add-milestone`);
+                // Display toast message before navigating
+                if (data.status === 200) {
+                    toast.success(data.message);
+                    getBusinessAndServices();
+                } else if (data.status === 404) {
+                    toast.error("Milestone not found. Redirecting to add milestone page.");
+                    // Delay navigation to allow the toast message to display
+                    setTimeout(() => {
+                        navigate(`/dashboard/add-milestone`);
+                    }, 6000); // Adjust time as needed
+                }
             })
             .catch((err) => {
                 console.log(err);
+                toast.error("An error occurred. Please try again.");
             });
     };
 
@@ -64,6 +72,7 @@ const MyBusinesses = () => {
 
     return (
         <div className="bg-white shadow-md mt-20 rounded-xl w-full px-4 py-6 sm:px-8">
+            <ToastContainer/>
            
 
             <h1 className="text-[#2D3748] font-semibold text-xl sm:text-2xl mb-6">

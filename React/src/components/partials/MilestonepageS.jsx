@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 // import Navbar from "./Navbar";
 // import Modal from "./Authmodal";
 import ServiceHero from "../Heros/ServiceHero";
+import BackBtn from "./BackBtn";
 
 const MilestonePage = () => {
     const { id } = useParams();
@@ -155,8 +156,9 @@ const MilestonePage = () => {
 
     return (
         <>
-            {" "}
             <ServiceHero />
+            <BackBtn />
+
             <div className="container mx-auto p-5">
                 <div className="text-center mb-10 mt-10">
                     <h1 className="text-3xl sm:text-4xl font-bold text-[#334155]">

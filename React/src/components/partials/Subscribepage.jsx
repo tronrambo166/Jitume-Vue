@@ -9,6 +9,7 @@ import user from "../../../images/greenuser.png";
 import flash from "../../../images/flash.png";
 import flashblack from "../../../images/flashblack.png";
 import userwhite from "../../../images/userwhite.png";
+import BackBtn from "./BackBtn";
 //import { useParams } from 'react-router-dom';
 import ScrollToTop from "../pages/ScrollToTop";
 const Subscribepage = () => {
@@ -161,6 +162,7 @@ const Subscribepage = () => {
     return (
         <div>
             <BusinessHero />
+            <BackBtn />
             
             <div className="flex  py-[70px] justify-center items-center">
                 <div className="flex flex-col  items-center">

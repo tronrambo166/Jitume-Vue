@@ -70,7 +70,11 @@ const Navbar = () => {
     };
 
     return (
-        <div className="py-3 px-[35px] text-white">
+        <div
+            className={`py-3 px-[35px] text-white ${
+                isServicePage ? "service-navbar" : ""
+            }`}
+        >
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-1">
                     <Link to="/">
@@ -95,7 +99,11 @@ const Navbar = () => {
                 </div>
 
                 {/* Desktop Navigation */}
-                <div className="hidden md:flex items-center font-medium text-[13px] text-[#CBD5E1] flex-grow justify-center">
+                <div
+                    className={`hidden md:flex items-center font-medium text-[13px] text-[#CBD5E1] flex-grow justify-center ${
+                        isServicePage && !token ? "service-links" : ""
+                    }`}
+                >
                     <div className="ml-[120px] flex items-center gap-[55px]">
                         <Link
                             to="/home"
@@ -191,11 +199,14 @@ const Navbar = () => {
                 </div>
 
                 {/* Sign In Section */}
-                <div className="flex items-center gap-3  md:flex">
+                {/* Sign In Section */}
+                <div className="hidden md:flex items-center gap-3 ml-auto">
+                    {" "}
+                    {/* Updated to hidden md:flex */}
                     {token ? (
                         <Link
                             to="/dashboard"
-                            className="group relative font-bold text-[#ffffff] text-[13px] hover:text-white ml-16"
+                            className="group relative  font-bold text-[#ffffff] text-[13px] hover:text-white ml-16"
                         >
                             Dashboard
                             <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
@@ -204,14 +215,13 @@ const Navbar = () => {
                         !isServicePage && (
                             <button
                                 onClick={() => setIsCreateInvModalOpen(true)}
-                                className="group relative font-bold text-[#CBD5E1] text-[13px] hover:text-white "
+                                className="group relative font-bold text-[#CBD5E1] text-[13px] hover:text-white"
                             >
                                 Create Investor Account
                                 <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
                             </button>
                         )
                     )}
-
                     {token ? (
                         <button
                             onClick={() => {
@@ -248,20 +258,21 @@ const Navbar = () => {
                     </button>
                     <div className="flex items-start flex-col space-y-8">
                         <a
-                            href="#"
+                            href="/"
                             className="block px-4 py-2 hover:bg-green-700/50 rounded-md"
                         >
                             Home
                         </a>
                         <div className="relative pl-4 inline-block">
-                            <button
-                                className="flex items-center focus:outline-none"
-                                onClick={() =>
-                                    setIsDropdownOpen(!isDropdownOpen)
-                                }
-                            >
-                                Services
-                                <img
+                            <Link to={"/services"}>
+                                <button
+                                    className="flex items-center focus:outline-none"
+                                    onClick={() =>
+                                        setIsDropdownOpen(!isDropdownOpen)
+                                    }
+                                >
+                                    Services
+                                    {/* <img
                                     src={down}
                                     alt="Dropdown Icon"
                                     className={`ml-1 mt-1 h-2 w-3 transform transition-transform duration-200 ${
@@ -269,9 +280,10 @@ const Navbar = () => {
                                             ? "rotate-180"
                                             : "rotate-0"
                                     }`}
-                                />
-                            </button>
-                            {isDropdownOpen && (
+                                /> */}
+                                </button>
+                            </Link>
+                            {/* {isDropdownOpen && (
                                 <div className="absolute bg-gray-100 space-y-2 text-black w-[250px] mt-2 rounded shadow-lg">
                                     {token ? (
                                         // If user is authenticated (has token), show the link
@@ -291,10 +303,28 @@ const Navbar = () => {
                                         </Link>
                                     )}
                                 </div>
-                            )}
+                            )} */}
                         </div>
                         <div>
-                            {token ? (
+                            {isServicePage ? (
+                                token ? (
+                                    <a
+                                        href="/dashboard"
+                                        className="block px-4 py-2 hover:text-white relative group"
+                                    >
+                                        Add Your Services
+                                        <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                                    </a>
+                                ) : (
+                                    <button
+                                        onClick={() => setIsAuthModalOpen(true)} // Trigger authentication modal
+                                        className="block px-4 py-2 hover:text-white relative group"
+                                    >
+                                        Add Your Services
+                                        <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                                    </button>
+                                )
+                            ) : token ? (
                                 <a
                                     href="/dashboard"
                                     className="block px-4 py-2 hover:text-white relative group"
@@ -311,24 +341,29 @@ const Navbar = () => {
                                     <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
                                 </button>
                             )}
+
+                            <div className="mt-6">
+                                {token ? (
+                                    <Link
+                                        to="/dashboard"
+                                        className="block px-4 py-2 hover:bg-green-700/50 rounded-md"
+                                    >
+                                        Dashboard
+                                        <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                                    </Link>
+                                ) : (
+                                    <button
+                                        onClick={() =>
+                                            setIsCreateInvModalOpen(true)
+                                        }
+                                        className="block ml-4 py-2 hover:text-white relative group"
+                                    >
+                                        Create Investor Account
+                                        <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                                    </button>
+                                )}
+                            </div>
                         </div>
-                        {token ? (
-                            <Link
-                                to="/dashboard"
-                                className="block px-4 py-2 text-[#CBD5E1] text-[13px] hover:text-white relative group"
-                            >
-                                Dashboard
-                                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
-                            </Link>
-                        ) : (
-                            <button
-                                onClick={() => setIsCreateInvModalOpen(true)}
-                                className="block ml-4  py-2 hover:text-white  "
-                            >
-                                Create Investor Account
-                                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
-                            </button>
-                        )}
                         <div className="mt-4 ml-4">
                             {token ? (
                                 <button

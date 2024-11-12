@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import axiosClient from "../../axiosClient";
 import React from "react";
 import BusinessStepHero from "../Heros/BusinessStepHero";
+import BackBtn from "./BackBtn";
+
 const MilestonePage = () => {
     const { id } = useParams();
     const listing_id = atob(atob(id));
@@ -77,6 +79,7 @@ const MilestonePage = () => {
     return (
         <>
             <BusinessStepHero />
+            <BackBtn/>
             <div className="container mx-auto p-5">
                 <div className="text-center mb-10 mt-10">
                     <h1 className="text-3xl sm:text-4xl font-bold text-[#334155]">

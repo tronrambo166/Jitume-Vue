@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
 import {
     AiOutlineDown,
     AiOutlineUp,
@@ -20,6 +22,8 @@ const Nav2 = () => {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [isCreateInvModalOpen, setIsCreateInvModalOpen] = useState(false);
     const [closeTimeout, setCloseTimeout] = useState(null); // New state
+    const location = useLocation(); // Hook to access location
+    const isServicePage = /^\/service-details\/.+/.test(location.pathname);
 
     useEffect(() => {
         const handleResize = () => {
@@ -47,21 +51,21 @@ const Nav2 = () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
-  const handleMouseEnter = () => {
-      clearTimeout(closeTimeout); // Clear any existing timeout to prevent closing
-      setIsDropdownOpen(true); // Open the dropdown
-  };
-  const { user, token, setUser, setToken } = useStateContext();
+    const handleMouseEnter = () => {
+        clearTimeout(closeTimeout); // Clear any existing timeout to prevent closing
+        setIsDropdownOpen(true); // Open the dropdown
+    };
+    const { user, token, setUser, setToken } = useStateContext();
 
-  const handleMouseLeave = () => {
-      const timeoutId = setTimeout(() => setIsDropdownOpen(false), 400); // Delay closing the dropdown
-      setCloseTimeout(timeoutId); // Store the timeout ID
-  };
+    const handleMouseLeave = () => {
+        const timeoutId = setTimeout(() => setIsDropdownOpen(false), 400); // Delay closing the dropdown
+        setCloseTimeout(timeoutId); // Store the timeout ID
+    };
 
-  const handleClick = () => {
-      clearTimeout(closeTimeout); // Clear the timeout on click
-      setIsDropdownOpen((prev) => !prev); // Toggle dropdown on click
-  };
+    const handleClick = () => {
+        clearTimeout(closeTimeout); // Clear the timeout on click
+        setIsDropdownOpen((prev) => !prev); // Toggle dropdown on click
+    };
 
     return (
         <div className="py-3 px-[35px] text-white relative z-50">
@@ -145,8 +149,28 @@ const Nav2 = () => {
                         </div>
 
                         <div>
-                            {token ? (
-                                // If user is authenticated (has token), show the link
+                            {isServicePage ? (
+                                token ? (
+                                    // If user is authenticated (has token), show the link for the service page
+                                    <a
+                                        href="/dashboard"
+                                        className="group relative hover:text-green-500"
+                                    >
+                                        Add Your Services
+                                        <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+                                    </a>
+                                ) : (
+                                    // If not authenticated, show a button to trigger authentication modal for the service page
+                                    <button
+                                        onClick={() => setIsAuthModalOpen(true)} // Trigger authentication modal
+                                        className="group relative text-[#475569] hover:text-green-500"
+                                    >
+                                        Add Your Services
+                                        <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+                                    </button>
+                                )
+                            ) : token ? (
+                                // If not on the service page, and the user is authenticated, show the link for the business page
                                 <a
                                     href="/dashboard"
                                     className="group relative hover:text-green-500"
@@ -155,7 +179,7 @@ const Nav2 = () => {
                                     <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-green-500 transition-all duration-300 group-hover:w-full"></span>
                                 </a>
                             ) : (
-                                // If not authenticated, show a message or prompt to sign in
+                                // If not on the service page, and the user is not authenticated, show the button for the business page
                                 <button
                                     onClick={() => setIsAuthModalOpen(true)} // Trigger authentication modal
                                     className="group relative text-[#475569] hover:text-green-500"
@@ -175,7 +199,7 @@ const Nav2 = () => {
                         <>
                             <Link
                                 to="/dashboard"
-                                className="group relative font-semibold text-[#475569] xl:text-[15px] text-[13px] hover:text-green-500"
+                                className="group relative font-semibold text-[#475569] xl:text-[15px] text-[13px] hover:text-green-500 ml-24"
                             >
                                 Dashboard
                                 <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-green-500 transition-all duration-300 group-hover:w-full"></span>
@@ -231,26 +255,27 @@ const Nav2 = () => {
                         onClick={() => setIsMobileMenuOpen(false)}
                         className="mb-4 self-end"
                     >
-                        <AiOutlineClose className="text-black" />
+                        <AiOutlineClose className="text-white" />
                     </button>
                     <div className="flex justify-start flex-col space-y-8">
                         <a
-                            href="#"
+                            href="/"
                             className="block px-4 py-2 hover:bg-green-700/50 rounded-md"
                         >
                             Home
                         </a>
                         <div className="relative pl-4 inline-block">
-                            <button
-                                className="flex items-center focus:outline-none"
-                                onClick={() =>
-                                    setIsDropdownOpen(!isDropdownOpen)
-                                } // Toggle dropdown
-                                aria-haspopup="true"
-                                aria-expanded={isDropdownOpen}
-                            >
-                                Services
-                                <img
+                            <Link to="/services">
+                                <button
+                                    className="flex items-center focus:outline-none"
+                                    onClick={() =>
+                                        setIsDropdownOpen(!isDropdownOpen)
+                                    } // Toggle dropdown
+                                    // aria-haspopup="true"
+                                    // aria-expanded={isDropdownOpen}
+                                >
+                                    Services
+                                    {/* <img
                                     src={down}
                                     alt="Dropdown Icon"
                                     className={`ml-1 mt-1 h-2 w-3 transform transition-transform duration-200 ${
@@ -258,9 +283,10 @@ const Nav2 = () => {
                                             ? "rotate-180"
                                             : "rotate-0"
                                     }`}
-                                />
-                            </button>
-                            {isDropdownOpen && (
+                                /> */}
+                                </button>
+                            </Link>
+                            {/* {isDropdownOpen && (
                                 <div className="absolute space-y-2 bg-gray-100 z-50 py-3 text-black w-[250px] h-[150px] mb-2 mt-2 rounded shadow-lg">
                                     <a
                                         href="#"
@@ -281,23 +307,62 @@ const Nav2 = () => {
                                         Service 3
                                     </a>
                                 </div>
+                            )} */}
+                        </div>
+                        <div>
+                            {token ? (
+                                <a
+                                    href="/home"
+                                    className="block px-4 py-2 mb-6  hover:bg-green-700/50 rounded-md"
+                                >
+                                    Add Your Business
+                                </a>
+                            ) : (
+                                <button
+                                    onClick={() => setIsAuthModalOpen(true)} // Open authentication modal if no token
+                                    className="block px-4 py-2 mb-6 hover:bg-green-700/50 rounded-md"
+                                >
+                                    Add Your Business
+                                </button>
+                            )}
+
+                            {token ? (
+                                <a
+                                    href="/dashboard"
+                                    className="block px-4 py-2 hover:bg-green-700/50 rounded-md"
+                                >
+                                    Dashboard
+                                </a>
+                            ) : (
+                                <button
+                                    onClick={() =>
+                                        setIsCreateInvModalOpen(true)
+                                    } // Open account creation modal if no token
+                                    className="block px-4 py-2 hover:bg-green-700/50 rounded-md"
+                                >
+                                    Create Investor Account
+                                </button>
                             )}
                         </div>
-                        <a
-                            href="#"
-                            className="block px-4 py-2 hover:bg-green-700/50 rounded-md"
-                        >
-                            Add your business
-                        </a>
-                        <a
-                            className="block px-4 py-2 hover:bg-green-700/50 rounded-md"
-                            href="#"
-                        >
-                            Create Investor Account
-                        </a>
-                        <button className="block w-full bg-white hover:bg-slate-100 hover:text-green-800 py-2 rounded-[8px] text[13px] text-[#0F172A] font-semibold">
-                            Sign in
-                        </button>
+
+                        {token ? (
+                            <button
+                                onClick={() => {
+                                    setToken(null); // Clear token to sign out
+                                    setUser(null); // Optional: Clear user information on sign out
+                                }}
+                                className="bg-white py-2 hover:bg-green-800 hover:text-red-100 rounded-[8px] text-[13px] px-5 text-[#0F172A] font-semibold"
+                            >
+                                Sign Out
+                            </button>
+                        ) : (
+                            <button
+                                onClick={() => setIsAuthModalOpen(true)}
+                                className="bg-white py-2 hover:bg-green-400 hover:text-green-100 rounded-[8px] text-[13px] px-5 text-[#0F172A] font-semibold"
+                            >
+                                Sign In
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>

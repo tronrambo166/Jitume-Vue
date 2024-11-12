@@ -7,6 +7,10 @@ import { useNavigate } from "react-router-dom";
 import InvestHero from "../Heros/InvestHero";
 import { MdPhoto } from "react-icons/md";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import BackBtn from "./BackBtn";
 const Investequip = () => {
     const { amount, id, percent } = useParams();
 
@@ -19,13 +23,22 @@ const Investequip = () => {
         serial: "",
         optional_doc: null,
     });
+       const [loading, setLoading] = useState(false);
+
 
     // Handle file changes
     const handleFileChange = (e, field) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            [field]: e.target.files[0],
-        }));
+        const file = e.target.files[0];
+
+        if (file) {
+            setFormData((prevData) => ({
+                ...prevData,
+                [field]: file,
+            }));
+            toast.info(`${file.name} selected successfully!`);
+        } else {
+            toast.error("No file selected. Please choose a file.");
+        }
     };
     const handleGoBack = () => {
         navigate(-1);
@@ -41,42 +54,49 @@ const Investequip = () => {
     };
 
     // Handle form submission
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const handleSubmit = async (e) => {
+      e.preventDefault();
 
-        const form = new FormData();
-        for (const key in formData) {
-            form.append(key, formData[key]);
-        }
+      const form = new FormData();
+      for (const key in formData) {
+          form.append(key, formData[key]);
+      }
 
-        // Convert FormData to a JSON object for logging
-        const formDataObject = {};
-        form.forEach((value, key) => {
-            formDataObject[key] = value instanceof File ? value.name : value;
-        });
+      // Convert FormData to a JSON object for logging
+      const formDataObject = {};
+      form.forEach((value, key) => {
+          formDataObject[key] = value instanceof File ? value.name : value;
+      });
 
-        // Log the formDataObject directly
-        console.log("FormData Object:", formDataObject);
+      // Log the formDataObject directly
+      console.log("FormData Object:", formDataObject);
 
-        try {
-            const response = await axiosClient.post("bidCommitsEQP", form, {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
-            if (response.data.success) {
-                alert(response.data.success);
-            } else {
-                alert(response.data.failed);
-            }
-        } catch (error) {
-            console.error("Error submitting the form:", error);
-            alert("An error occurred while submitting the form.");
-        }
-    };
+      try {
+          setLoading(true); // Set loading to true
+
+          const response = await axiosClient.post("bidCommitsEQP", form, {
+              headers: { "Content-Type": "multipart/form-data" },
+          });
+
+          if (response.data.success) {
+              toast.success(response.data.success); // Success toast
+          } else {
+              toast.error(response.data.failed); // Failure toast
+          }
+      } catch (error) {
+          console.error("Error submitting the form:", error);
+          toast.error("An error occurred while submitting the form."); // Error toast
+      } finally {
+          setLoading(false); // Set loading to false after request completes
+      }
+  };
 
     return (
         <>
             {" "}
+            <ToastContainer />
             <InvestHero />
+            <BackBtn />
             <div className="px-4 sm:px-10 mb-60">
                 <div className="text-center mb-10 mt-16">
                     <h1 className="text-3xl sm:text-5xl  font-bold text-[#334155]">
@@ -159,9 +179,19 @@ const Investequip = () => {
                             </button>
                             <button
                                 type="submit"
-                                className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-300"
+                                onClick={handleSubmit}
+                                className={`px-6 py-2 text-white rounded-md transition duration-300 flex items-center justify-center ${
+                                    loading
+                                        ? "bg-green-800 cursor-not-allowed"
+                                        : "bg-green-600 hover:bg-green-700"
+                                }`}
+                                disabled={loading}
                             >
-                                Save Info
+                                {loading ? (
+                                    <AiOutlineLoading3Quarters className="animate-spin mr-2" />
+                                ) : (
+                                    "Save Info"
+                                )}
                             </button>
                         </div>
                     </form>

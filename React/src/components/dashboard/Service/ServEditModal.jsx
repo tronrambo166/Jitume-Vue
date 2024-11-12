@@ -1,82 +1,184 @@
 import React, { useState, useEffect } from "react";
+import {
+    AiOutlineCloudUpload,
+    AiOutlineLoading3Quarters,
+} from "react-icons/ai";
 
 const ServEditModal = ({ isOpen, onClose, serviceId, onUpdate }) => {
     const [serviceData, setServiceData] = useState({
-        name: "",
+        title: "",
+        price: "",
         category: "",
+        location: "",
+        lat: "",
+        lng: "",
         details: "",
-        amount: "",
+        image: null,
+        pin: null,
+        identification: null,
+        video: null,
+        document: null,
+        link: "",
     });
+    const [updating, setUpdating] = useState(false);
+    const [error, setError] = useState("");
 
     useEffect(() => {
         if (serviceId) {
-            // Simulate fetching service data based on serviceId
+            // Initialize service data if a serviceId is provided
             setServiceData({
-                name: "Example Service",
-                category: "Example Category",
-                details: "Example details about the service",
-                amount: "100",
+                title: "",
+                price: "",
+                category: "",
+                location: "",
+                lat: "",
+                lng: "",
+                details: "",
+                image: null,
+                pin: null,
+                identification: null,
+                video: null,
+                document: null,
+                link: "",
             });
         }
     }, [serviceId]);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type, files } = e.target;
         setServiceData((prevData) => ({
             ...prevData,
-            [name]: value,
+            [name]: type === "file" ? files[0] : value,
         }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Updated Service Data:", serviceData);
+        setUpdating(true);
+        setError(""); // Reset error message
 
-        // Call onUpdate prop to update the service data
-        if (onUpdate) {
-            onUpdate(serviceData);
+        try {
+            // Log form data to console
+            console.log(serviceData);
+
+            // Optionally, call the onUpdate callback (if provided)
+            if (onUpdate) onUpdate(serviceData);
+
+            // Close the modal
+            onClose();
+        } catch (error) {
+            console.error("Error submitting service:", error);
+            setError("Failed to update service.");
+        } finally {
+            setUpdating(false);
         }
-
-        // Close the modal after saving
-        onClose();
     };
 
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-                <h2 className="text-xl font-semibold mb-4">Edit Service</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+            <div className="bg-white no-scrollbar p-6 rounded-lg shadow-lg max-w-3xl w-full overflow-y-auto h-[90vh]">
+                <h2 className="text-xl font-semibold mb-6 text-center">
+                    Edit Service
+                </h2>
+                <form
+                    onSubmit={handleSubmit}
+                    className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+                >
+                    <div>
                         <label className="block text-sm font-medium text-gray-700">
-                            Service Name
+                            Service Title*
                         </label>
                         <input
                             type="text"
-                            name="name"
-                            value={serviceData.name}
+                            name="title"
+                            value={serviceData.title}
                             onChange={handleChange}
                             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                             required
+                            placeholder="Service Title"
                         />
                     </div>
-                    <div className="mb-4">
+
+                    <div>
                         <label className="block text-sm font-medium text-gray-700">
-                            Category
+                            Price*
                         </label>
                         <input
-                            type="text"
+                            type="number"
+                            name="price"
+                            value={serviceData.price}
+                            onChange={handleChange}
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                            required
+                            placeholder="Price"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Service Category*
+                        </label>
+                        <select
                             name="category"
                             value={serviceData.category}
                             onChange={handleChange}
                             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                             required
+                        >
+                            <option value="">Select a category</option>
+                            <option value="Category1">Category 1</option>
+                            <option value="Category2">Category 2</option>
+                            <option value="Category3">Category 3</option>
+                            {/* Add more categories here */}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Location*
+                        </label>
+                        <input
+                            type="text"
+                            name="location"
+                            value={serviceData.location}
+                            onChange={handleChange}
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                            required
+                            placeholder="Enter a location..."
                         />
                     </div>
-                    <div className="mb-4">
+
+                    <div>
                         <label className="block text-sm font-medium text-gray-700">
-                            Details
+                            Latitude (Optional)
+                        </label>
+                        <input
+                            type="text"
+                            name="lat"
+                            value={serviceData.lat}
+                            onChange={handleChange}
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Longitude (Optional)
+                        </label>
+                        <input
+                            type="text"
+                            name="lng"
+                            value={serviceData.lng}
+                            onChange={handleChange}
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                        />
+                    </div>
+
+                    <div className="sm:col-span-2">
+                        <label className="block text-sm font-medium text-gray-700">
+                            Details*
                         </label>
                         <textarea
                             name="details"
@@ -84,22 +186,59 @@ const ServEditModal = ({ isOpen, onClose, serviceId, onUpdate }) => {
                             onChange={handleChange}
                             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                             required
+                            placeholder="Provide details about your service"
                         ></textarea>
                     </div>
-                    <div className="mb-4">
+
+                    <div>
                         <label className="block text-sm font-medium text-gray-700">
-                            Amount
+                            Link
                         </label>
                         <input
-                            type="number"
-                            name="amount"
-                            value={serviceData.amount}
+                            type="text"
+                            name="link"
+                            value={serviceData.link}
                             onChange={handleChange}
                             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                            required
+                            placeholder="Upload Link"
                         />
                     </div>
-                    <div className="flex justify-end">
+
+                    {[
+                        { label: "Image", name: "image" },
+                        { label: "Pin", name: "pin" },
+                        { label: "Identification", name: "identification" },
+                        { label: "Video", name: "video" },
+                        { label: "Document", name: "document" },
+                    ].map((fileInput) => (
+                        <div key={fileInput.name}>
+                            <label className="block text-sm font-medium text-gray-700">
+                                {`Upload ${fileInput.label}`}
+                            </label>
+                            <div className="flex items-center space-x-2">
+                                <input
+                                    type="file"
+                                    name={fileInput.name}
+                                    onChange={handleChange}
+                                    id={`${fileInput.name}-upload`}
+                                    className="hidden"
+                                />
+                                <label
+                                    htmlFor={`${fileInput.name}-upload`}
+                                    className="flex items-center justify-between cursor-pointer w-full p-2 border border-gray-300 rounded-md bg-white"
+                                >
+                                    <span className="text-gray-700">
+                                        {serviceData[fileInput.name]
+                                            ? serviceData[fileInput.name].name
+                                            : `Click to upload ${fileInput.label}`}
+                                    </span>
+                                    <AiOutlineCloudUpload className="text-gray-700" />
+                                </label>
+                            </div>
+                        </div>
+                    ))}
+
+                    <div className="sm:col-span-2 flex justify-end mt-4">
                         <button
                             type="button"
                             onClick={onClose}
@@ -109,9 +248,13 @@ const ServEditModal = ({ isOpen, onClose, serviceId, onUpdate }) => {
                         </button>
                         <button
                             type="submit"
-                            className="px-4 py-2 bg-green text-white rounded-md"
+                            className="px-4 py-2 bg-green-600 text-white rounded-md"
                         >
-                            Save Changes
+                            {updating ? (
+                                <AiOutlineLoading3Quarters className="animate-spin" />
+                            ) : (
+                                "Save Changes"
+                            )}
                         </button>
                     </div>
                 </form>

@@ -24,6 +24,7 @@ import ReviewList from "./moduleParts/ReviewServicedetailList";
 import PaginationComponent from "./moduleParts/PaginationControls";
 import img from "../../assets/profile.png";
 import ScrollToTop from "../pages/ScrollToTop";
+import BackBtn from "./BackBtn";
 const ServiceDetails = () => {
     const { token, setUser, setAuth, auth } = useStateContext();
     const { id } = useParams();
@@ -399,6 +400,8 @@ const ServiceDetails = () => {
     //end rating
     return (
         <>
+            <BackBtn />
+
             <div className="w-full flex flex-col md:flex-row justify-center items-center py-2 lg:py-4 mt-3">
                 <div className="flex flex-col space-x-6 md:flex-row mx-auto w-full gap-4 md:gap-8 lg:gap-10 px-4 md:px-8">
                     {" "}

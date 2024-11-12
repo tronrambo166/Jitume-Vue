@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import axios from "axios";
 import axiosClient from "../../../axiosClient";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 const AddService = ({ connected, userId }) => {
     const [formData, setFormData] = useState({
         title: "",
@@ -22,15 +24,16 @@ const AddService = ({ connected, userId }) => {
     });
     const [messages, setMessages] = useState({ success: "", error: "" });
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const handleFileChange = (e) => {
         const { name, files } = e.target;
         if (files && files[0]) {
-
             setFormData((prevData) => ({
                 ...prevData,
                 [name]: files[0],
             }));
+            toast.info("File selected: " + files[0].name); // Inform about the file selection
         }
     };
 
@@ -61,9 +64,9 @@ const AddService = ({ connected, userId }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        formData.location = $('#searchbox').val();
-        formData.lat = $('#lat').val();
-        formData.lng = $('#lng').val();
+        formData.location = $("#searchbox").val();
+        formData.lat = $("#lat").val();
+        formData.lng = $("#lng").val();
 
         // Call individual upload handlers
         await Promise.all(
@@ -72,117 +75,163 @@ const AddService = ({ connected, userId }) => {
             )
         );
 
-
         const data = new FormData();
         console.log(formData);
         //return;
 
         Object.keys(formData).forEach((key) => {
-                data.append(key, formData[key]);     
+            data.append(key, formData[key]);
         });
+        setLoading(true);
 
         try {
             //const response = await axiosClient.post('business/create-service', data);
-            const response = await axiosClient.post(`/business/create-service`, data, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
-           console.log(response.data);
-           if(response.data.status == 200){
-            setMessages({ success: response.data.message || "", error: "" });
-            alert('Please Add milestones for your service!')
+            const response = await axiosClient.post(
+                `/business/create-service`,
+                data,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+            console.log(response.data);
+            if (response.data.status == 200) {
+                // setMessages({
+                //     success: response.data.message || "",
+                //     error: "",
+                // });
+                toast.success("Service added successfully!");
+                alert("Please Add milestones for your service!");
             }
-           if(response.data.status == 404)
-            setMessages({ error: response.data.message });
-
-        
+            if (response.data.status == 404)
+                // setMessages({ error: response.data.message });
+            toast.error(response.data.message);
         } catch (error) {
             console.log(error);
-            setMessages({
-                success: "",
-                error: error.response?.data?.error || "An error occurred",
-            });
+            // setMessages({
+            //     success: "",
+            //     error: error.response?.data?.error || "An error occurred",
+            // });
+            toast.error("Failed to add service. Please try again."); // Show error toast
         }
+        setLoading(false);
     };
 
-    const getPlaces = (e) => { 
-    e.preventDefault();
-    $("#result_list").html('');
-    const searchText = formData.location;
+    const getPlaces = (e) => {
+        e.preventDefault();
+        $("#result_list").html("");
+        const searchText = formData.location;
 
         $.ajax({
-                url: 'https://photon.komoot.io/api/?q=' + encodeURIComponent(searchText),
-                method: 'get',
-                dataType: 'json',
-                success: function(response) {
-                  var i;  console.log(response.features);
-                
-                    for (i = 0; i < 10; i++) { //console.log(response.features[i].name);
-                        var name = response.features[i].properties.name;
-                        var city = response.features[i].properties.city;
-                        if(city == null || city == 'undefined')
-                        city = '';
-                        var country = response.features[i].properties.country;
-                        var lng = response.features[i].geometry.coordinates[0];
-                        var lat = response.features[i].geometry.coordinates[1];
+            url:
+                "https://photon.komoot.io/api/?q=" +
+                encodeURIComponent(searchText),
+            method: "get",
+            dataType: "json",
+            success: function (response) {
+                var i;
+                console.log(response.features);
 
-                        $("#result_list").show();
-                            if(i<10)
+                for (i = 0; i < 10; i++) {
+                    //console.log(response.features[i].name);
+                    var name = response.features[i].properties.name;
+                    var city = response.features[i].properties.city;
+                    if (city == null || city == "undefined") city = "";
+                    var country = response.features[i].properties.country;
+                    var lng = response.features[i].geometry.coordinates[0];
+                    var lat = response.features[i].geometry.coordinates[1];
 
-                            if(city == '')
-                            $("#result_list").append(' <div onclick="address(\'' + name + ','  + country + '\', \'' + lat + '\', \'' + lng + '\');" style="" data-id="' + name + '" class="address  py-1 px-1 my-0 border-top bg-white single_comms">  <p class="h6 small text-dark d-inline" ><i class="fa fa-map-marker mr-1 text-dark" aria-hidden="true"></i> ' + name + '</p> <p  class="d-inline text-dark"><small>, ' + country + '</small> </p> </div>');
-                            else
-                            $("#result_list").append(' <div onclick="address(\'' + name + ','+ city + ','  + country + '\', \'' + lat + '\', \'' + lng + '\');" style="" data-id="' + name + '" class="address  py-1 px-1 my-0 border-top bg-white single_comms">  <p class="small h6 text-dark d-inline" ><i class="fa fa-map-marker mr-1 text-dark" aria-hidden="true"></i> ' + name + '</p> <p  class="d-inline text-dark"><small>, ' + city + ',' + country + '</small> </p> </div>');
-
-
-                        }
-                        //document.getElementById('result_list').style.overflowY="scroll";                      
-                },
-                error: function(error) {
-                    console.log(error);
+                    $("#result_list").show();
+                    if (i < 10)
+                        if (city == "")
+                            $("#result_list").append(
+                                " <div onclick=\"address('" +
+                                    name +
+                                    "," +
+                                    country +
+                                    "', '" +
+                                    lat +
+                                    "', '" +
+                                    lng +
+                                    '\');" style="" data-id="' +
+                                    name +
+                                    '" class="address  py-1 px-1 my-0 border-top bg-white single_comms">  <p class="h6 small text-dark d-inline" ><i class="fa fa-map-marker mr-1 text-dark" aria-hidden="true"></i> ' +
+                                    name +
+                                    '</p> <p  class="d-inline text-dark"><small>, ' +
+                                    country +
+                                    "</small> </p> </div>"
+                            );
+                        else
+                            $("#result_list").append(
+                                " <div onclick=\"address('" +
+                                    name +
+                                    "," +
+                                    city +
+                                    "," +
+                                    country +
+                                    "', '" +
+                                    lat +
+                                    "', '" +
+                                    lng +
+                                    '\');" style="" data-id="' +
+                                    name +
+                                    '" class="address  py-1 px-1 my-0 border-top bg-white single_comms">  <p class="small h6 text-dark d-inline" ><i class="fa fa-map-marker mr-1 text-dark" aria-hidden="true"></i> ' +
+                                    name +
+                                    '</p> <p  class="d-inline text-dark"><small>, ' +
+                                    city +
+                                    "," +
+                                    country +
+                                    "</small> </p> </div>"
+                            );
                 }
-
-            });
-      }
-
-//CONNCET
-
-    const [Con, setCon] = useState('');
-    const [id, setid] = useState('');
-    useEffect(() => {
-      const getAccount = (id) => {
-        axiosClient.get('/business/account')
-          .then(({ data }) => {
-            console.log(data);
-            setCon(data.connected);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-    };
-    getAccount();
-
-    const getUser = () => { 
-      axiosClient.get('/checkAuth')
-        .then(({ data }) => {           
-          setid(data.user.id);
-        // Debugging id
-        })
-        .catch(err => {
-          console.log(err); 
+                //document.getElementById('result_list').style.overflowY="scroll";
+            },
+            error: function (error) {
+                console.log(error);
+            },
         });
     };
-    getUser();
 
-  }, []);
+    //CONNCET
 
-    const connectToStripe = () => { 
-    window.location.href = 'https://test.jitume.com/connect/'+ id;
+    const [Con, setCon] = useState("");
+    const [id, setid] = useState("");
+    useEffect(() => {
+        const getAccount = (id) => {
+            axiosClient
+                .get("/business/account")
+                .then(({ data }) => {
+                    console.log(data);
+                    setCon(data.connected);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+        getAccount();
+
+        const getUser = () => {
+            axiosClient
+                .get("/checkAuth")
+                .then(({ data }) => {
+                    setid(data.user.id);
+                    // Debugging id
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+        getUser();
+    }, []);
+
+    const connectToStripe = () => {
+        window.location.href = "https://test.jitume.com/connect/" + id;
     };
 
     return (
         <div className="container mx-auto px-4 py-6">
+            <ToastContainer />
             {/* Success Message */}
             {messages.success && (
                 <div className="bg-blue-100 text-blue-700 border border-blue-300 rounded-lg px-4 py-3 mb-4 flex justify-between items-center">
@@ -322,8 +371,8 @@ const AddService = ({ connected, userId }) => {
                                 className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="Enter a location..."
                             />
-                            <input hidden name="lat" id="lat"  />
-                            <input hidden name="lng" id="lng"  />
+                            <input hidden name="lat" id="lat" />
+                            <input hidden name="lng" id="lng" />
 
                             <ul
                                 id="suggestion-list"
@@ -488,11 +537,19 @@ const AddService = ({ connected, userId }) => {
 
                     <button
                         type="submit"
-                        className="w-full bg-green/50 text-white py-2 rounded-full hover:bg-green transition"
+                        className={`px-4 py-2 rounded-lg text-white flex  transition ${
+                            loading
+                                ? "bg-green/50 cursor-not-allowed"
+                                : "bg-green hover:bg-green-600"
+                        }`}
+                        disabled={loading}
                     >
-                        Add Service
+                        {loading ? (
+                            <AiOutlineLoading3Quarters className="animate-spin" />
+                        ) : (
+                            "Add Service"
+                        )}
                     </button>
-                   
                 </form>
             )}
         </div>

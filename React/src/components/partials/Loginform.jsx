@@ -36,16 +36,16 @@ const LoginForm = () => {
         let valid = true;
         if (!email) {
             // setEmailError("Please insert your email.");
-            valid = false;
+            // valid = false;
         } else if (!validateEmail(email)) {
             // setEmailError("Please enter a valid email.");
-            valid = false;
+            // valid = false;
         } else {
             setEmailError("");
         }
 
         if (!password) {
-            // setPasswordError("Please insert your password.");
+            setPasswordError("Please insert your password.");
             valid = false;
         } else {
             setPasswordError("");
@@ -53,7 +53,6 @@ const LoginForm = () => {
 
         setIsFormValid(valid && email && password);
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -67,10 +66,14 @@ const LoginForm = () => {
         try {
             const { data } = await axiosClient.post("/login", payload);
             console.log("Login response data:", data);
-            toast.success(`Login successful! ${data.user.name}`);
-
 
             if (data.auth) {
+                // Access the full name by combining fname and lname
+                const userName = `${data.user.fname} ${data.user.lname}`;
+                toast.success(`Login successful! Welcome, ${userName}`);
+                alert(`Login successful! Welcome, ${userName}`);
+
+                // Update user and token states
                 setUser(data.user);
                 setToken(data.token);
             } else {
@@ -78,13 +81,19 @@ const LoginForm = () => {
                     data.message ||
                         "Login failed. Please check your credentials."
                 );
+                toast.error(
+                    data.message ||
+                        "Login failed. Please check your credentials."
+                );
             }
-        } catch (err) {
-            setServerError("An unexpected error occurred. Please try again.");
+        } catch (error) {
+            console.error("Login error:", error);
+            toast.error("Login failed. Please check your credentials.");
         } finally {
             setLoading(false);
         }
     };
+
 
     return (
         <>
@@ -141,12 +150,13 @@ const LoginForm = () => {
                         ref={passwordRef}
                         placeholder="Password"
                         type={showPassword ? "text" : "password"}
-                        className={`border rounded-xl p-3  w-full ${
+                        className={`border rounded-xl p-3 w-full text-gray-500 ${
                             passwordError ? "border-red-500" : ""
                         }`}
                         onChange={handleInputChange}
                         required
                     />
+
                     {passwordError && (
                         <p className="text-red-500 text-xs mt-1">
                             {passwordError}
@@ -158,20 +168,20 @@ const LoginForm = () => {
                         {serverError}
                     </p>
                 )}
-
                 <button
                     type="submit"
-                    className={`px-4 text-white py-2 rounded-full   flex items-center justify-center ${
-                        isFormValid
-                            ? "bg-green"
-                            : "bg-green/50 cursor-not-allowed"
+                    className={`px-4 py-2 rounded-full text-white flex items-center justify-center transition ${
+                        loading
+                            ? "bg-green/50 cursor-not-allowed"
+                            : "bg-green hover:bg-green-600"
                     }`}
-                    disabled={!isFormValid || loading}
+                    disabled={loading}
                 >
-                    {loading && (
-                        <AiOutlineLoading3Quarters className="animate-spin mr-2" />
+                    {loading ? (
+                        <AiOutlineLoading3Quarters className="animate-spin" />
+                    ) : (
+                        "Proceed"
                     )}
-                    Proceed
                 </button>
 
                 <div className="text-center py-4">

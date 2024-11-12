@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import logo from '../../images/logo.png';
+import logo from '../../images/logo2.png';
 import calendarIcon from '../../images/calendar.svg';
 import addIcon from '../../images/add.png';
 import chartIcon from '../../images/chart.png';
@@ -46,7 +46,7 @@ const Sidebar = () => {
           {isOpen ? <FaChevronLeft /> : <FaChevronRight />}
         </button>
       </div>
-      <div className="flex-1 no-scrollbar overflow-y-auto px-4">
+      <div >
         <ul className="space-y-2">
           <li className="nav-item py-2">
             <NavLink

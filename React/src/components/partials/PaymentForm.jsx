@@ -6,6 +6,7 @@ import axiosClient from "../../axiosClient";
 import { ClipLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import BackBtn from "./BackBtn";
 const PaymentForm = () => {
     const [selectedPayment, setSelectedPayment] = useState("card");
     const [loading, setLoading] = useState(false); // Loader state
@@ -266,6 +267,8 @@ const PaymentForm = () => {
 
     return (
         <>
+            <BackBtn />
+
             <div className="flex pt-[40px] px-2  text-[#334155] flex-col items-center justify-center">
                 <h1 className="text-5xl font-bold">Checkout</h1>
                 <p className="jakarta text-center text-[14px]">
@@ -326,14 +329,13 @@ const PaymentForm = () => {
                     {/*  action="{{ route('stripe.post.coversation') }}"*/}
                     <form
                         role="form"
-
-                         
-                        onSubmit={ selectedPayment === "card"?  handleSubmit
-                        :selectedPayment === "bank"? bankSubmit
-                        :paypalSubmit } 
-
-                        
-
+                        onSubmit={
+                            selectedPayment === "card"
+                                ? handleSubmit
+                                : selectedPayment === "bank"
+                                ? bankSubmit
+                                : paypalSubmit
+                        }
                         method="post"
                         class="class2  require-validation m-auto"
                         data-cc-on-file="false"
@@ -347,15 +349,15 @@ const PaymentForm = () => {
                                 </h2>
 
                                 <div class="row error mx-1 text-center collapse">
-                                <p
-                                    style={{
-                                        color: "#e31313",
-                                        background: "#cfcfcf82",
-                                        fontWeight: "600",
-                                    }}
-                                    class="alert my-2 py-1 w-100"
-                                ></p>
-                            </div>
+                                    <p
+                                        style={{
+                                            color: "#e31313",
+                                            background: "#cfcfcf82",
+                                            fontWeight: "600",
+                                        }}
+                                        class="alert my-2 py-1 w-100"
+                                    ></p>
+                                </div>
 
                                 <hr className="my-4" />
                                 <div className="bg-white rounded">

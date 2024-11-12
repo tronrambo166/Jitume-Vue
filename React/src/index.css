@@ -17,6 +17,15 @@
   background-position: center;
   background-size: cover;
 }
+
+/* Adjust links position on the service page for desktop view */
+.service-links {
+    @media (min-width: 768px) {
+        margin-left: -160px; /* Adjust this value for the desired shift */
+    }
+}
+
+
 #dashbg{
   background-image: url(./images/dashbg.png);
 }

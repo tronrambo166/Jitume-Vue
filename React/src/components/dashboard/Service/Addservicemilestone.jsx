@@ -99,7 +99,7 @@ function Addservicemilestone() {
         name="title"
         type="text"
         placeholder="Milestone Name"
-        className="w-full md:w-1/5 border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full md:w-1/5 border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
         value={form.title}
         onChange={handleInputChange}
         required
@@ -108,7 +108,7 @@ function Addservicemilestone() {
         name="amount"
         type="number"
         placeholder="Amount"
-        className="w-full md:w-1/5 border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full md:w-1/5 border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
         value={form.amount}
         onChange={handleInputChange}
         required
@@ -116,7 +116,7 @@ function Addservicemilestone() {
       <div className="flex gap-2 w-full md:w-1/4">
         <select
           name="time_type"
-          className="flex-1 border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
           value={form.time_type}
           onChange={handleInputChange}
           required
@@ -127,7 +127,7 @@ function Addservicemilestone() {
         </select>
         <select
           name="n_o_days"
-          className="flex-1 border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
           value={form.n_o_days}
           onChange={handleInputChange}
           required
@@ -170,7 +170,7 @@ function Addservicemilestone() {
   
       <button
         type="submit"
-        className="w-full md:w-1/5 bg-green text-white py-2 rounded-lg hover:bg-blue-600 transition-colors disabled:bg-gray-400"
+        className="w-full md:w-1/5 bg-green text-white py-2 rounded-lg hover:bg-green-600 transition-colors disabled:bg-gray-400"
         disabled={!form.business_id || !form.title || !form.amount}
       >
         Add Milestone
@@ -200,7 +200,7 @@ function Addservicemilestone() {
                   <select
                     value={milestone.status}
                     onChange={(e) => handleStatusChange(e, milestone.id)}
-                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                   >
                     <option value="In Progress">{milestone.status}</option>
                   </select>

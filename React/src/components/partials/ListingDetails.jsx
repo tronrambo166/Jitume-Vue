@@ -27,6 +27,7 @@ import PaginationComponent from "./moduleParts/PaginationControls";
 import Footer from "../Landing-page/global/Footer2";
 import Nav2 from "../Landing-page/global/Nav2";
 import ScrollToTop from "../pages/ScrollToTop";
+import BackBtn from "./BackBtn";
 const ListingDetails = ({ onClose }) => {
     const { token, setUser, setAuth, auth } = useStateContext();
     const [loading, setLoading] = useState(false);
@@ -634,6 +635,7 @@ const ListingDetails = ({ onClose }) => {
 <img src={bannerframe} alt="" />
         </div>*/}
             {/* <Nav2 />*/}
+            <BackBtn />
 
             <div className="flex flex-col md:flex-row  justify-start items-start py-4 lg:py-8 mt-3 w-full px-4 md:px-6 lg:px-8">
                 <div className="w-full flex ml-1 md:space-x-6  flex-col md:flex-row gap-4 md:gap-6 lg:gap-8">

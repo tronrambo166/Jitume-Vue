@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axiosClient from "../../../axiosClient";
-
+import { ToastContainer, toast } from "react-toastify";
 function Milestones() {
     const [milestones, setMilestones] = useState([]);
     const [business, setBusiness] = useState([]);
@@ -14,6 +14,7 @@ function Milestones() {
                 .then(({ data }) => {
                     setMilestones(data.milestones);
                     setBusiness(data.business);
+                    console.log(data);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -28,6 +29,7 @@ function Milestones() {
             .then(({ data }) => {
                 setBusinessName(data.business_name);
                 setMilestones(data.milestones);
+                console.log(data);
             })
             .catch((err) => {
                 console.log(err);
@@ -43,6 +45,12 @@ function Milestones() {
                 : milestone
         );
         setMilestones(updatedMilestones);
+        // console.log(updatedMilestones);
+        toast.info(
+            `Status updated to "${updatedMilestones.find((milestone) => milestone.id === id).status}" for milestone ID ${id}`
+        );
+    
+
     };
 
     const handleDelete = (id) => {
@@ -84,6 +92,7 @@ function Milestones() {
 
     return (
         <div className="container mx-auto p-6">
+            <ToastContainer/>
             <h3 className="text-left text-2xl font-semibold mb-6">
                 Business Milestones
             </h3>
