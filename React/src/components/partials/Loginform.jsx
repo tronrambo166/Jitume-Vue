@@ -71,7 +71,7 @@ const LoginForm = () => {
                 // Access the full name by combining fname and lname
                 const userName = `${data.user.fname} ${data.user.lname}`;
                 toast.success(`Login successful! Welcome, ${userName}`);
-                alert(`Login successful! Welcome, ${userName}`);
+                // alert(`Login successful! Welcome, ${userName}`);
 
                 // Update user and token states
                 setUser(data.user);
