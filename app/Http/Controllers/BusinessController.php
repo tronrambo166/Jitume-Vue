@@ -385,7 +385,9 @@ public function up_listing(Request $request){
 $user_id = Auth::id();
 $id = $request->id;
 $listing = $request->id;
-$data = $request->except(['_token','link']);
+
+//return $request->all();
+$data = $request->except(['_token','link', 'created_at', 'updated_at']);
 $current = Listing::where('id',$id)->first();
 
 $old_cover = $current->image;
@@ -512,9 +514,12 @@ $old_document = $current->document;
 
 //FILES
 if(isset($request->link)) $data['video'] = $request->link;
-Listing::where('id',$id)->update($data);       
-Session::put('success_update','Business Updated!');
-return redirect()->back();
+Listing::where('id',$id)->update($data); 
+
+if($data)
+return response()->json([ 'status' => 200, 'message' => 'Business Updated!']);
+else 
+return response()->json([ 'status' => 400, 'message' => 'Something went wrong!']);
 
 }
 

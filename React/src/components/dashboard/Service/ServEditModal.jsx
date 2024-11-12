@@ -62,7 +62,13 @@ const ServEditModal = ({ isOpen, onClose, serviceId, onUpdate }) => {
             console.log(serviceData);
 
             // Optionally, call the onUpdate callback (if provided)
-            if (onUpdate) onUpdate(serviceData);
+             const response = await axiosClient.post('business/up_service', serviceData);
+             if(response.data.status == 200)
+             toast.success(response.data.message); // Show success toast
+             else
+             toast.success(response.data.message);
+
+             console.log(response.data);
 
             // Close the modal
             onClose();

@@ -265,7 +265,7 @@ $user_id = Auth::id();
 $id = $request->id;
 
 $listing = $request->id;
-$data = $request->except(['_token','link']);
+$data = $request->except(['_token','link', 'created_at', 'updated_at']);
 $current = Services::where('id',$id)->first();
 
 $old_cover = $current->image;
@@ -394,8 +394,10 @@ $old_document = $current->document;
 if(isset($request->link)) $data['video'] = $request->link;
 Services::where('id',$id)->update($data);   
 
-        Session::put('success','Service Updated!');
-        return redirect()->back();
+if($data)
+return response()->json([ 'status' => 200, 'message' => 'Business Updated!']);
+else 
+return response()->json([ 'status' => 400, 'message' => 'Something went wrong!']);
 
 }
 

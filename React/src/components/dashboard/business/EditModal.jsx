@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { AiOutlineClose ,AiOutlineLoading3Quarters } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axiosClient from "../../../axiosClient";
 const EditModal = ({
     showModal,
     setShowModal,
@@ -32,8 +33,8 @@ const EditModal = ({
         investors_fee: "",
         id: "",
         user_id: "",
-        created_at: "",
-        updated_at: "",
+        //created_at: "",
+        //updated_at: "",
         identification: "",
         yeary_fin_statement: "",
         id_no: "",
@@ -65,8 +66,8 @@ const EditModal = ({
                 investors_fee: editItem.investors_fee || "",
                 id: editItem.id || "",
                 user_id: editItem.user_id || "",
-                created_at: editItem.created_at || "",
-                updated_at: editItem.updated_at || "",
+                //created_at: editItem.created_at || "",
+                //updated_at: editItem.updated_at || "",
                 identification: editItem.identification || "",
                 yeary_fin_statement: editItem.yeary_fin_statement || "",
                 id_no: editItem.id_no || "",
@@ -100,10 +101,19 @@ const EditModal = ({
 
          try {
              // Simulate API call
-             await onSave(updatedItem);
-             toast.success("Item updated successfully!"); // Show success toast
+             //await onSave(updatedItem);
+             const response = await axiosClient.post('business/up_listing', updatedItem);
+             if(response.data.status == 200)
+             toast.success(response.data.message); // Show success toast
+             else
+             toast.success(response.data.message);
+
+             console.log(response.data);
+
+
          } catch (error) {
-             toast.error("Error updating item. Please try again."); // Show error toast
+             console.log(error);
+             toast.error(error); // Show error toast
          } finally {
              setLoading(false); // Stop loading
          }
