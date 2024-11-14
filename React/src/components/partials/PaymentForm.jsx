@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { FaCreditCard, FaHome } from "react-icons/fa";
 import axiosClient from "../../axiosClient";
 import { ClipLoader } from "react-spinners";
@@ -510,7 +510,7 @@ const PaymentForm = () => {
                                     {/* Conditional Rendering for Paypal Payment */}
                                     {selectedPayment === "paypal" && (
                                         <div className="space-y-4">
-                                            <div className="py-4">
+                                            {/* <div className="py-4">
                                                 <label className="block text-sm font-semibold mb-2">
                                                     PayPal Account Name
                                                 </label>
@@ -540,7 +540,9 @@ const PaymentForm = () => {
                                                         placeholder="Your PayPal Email or Phone Number"
                                                     />
                                                 </div>
-                                            </div>
+                                            </div> */}
+
+
                                         </div>
                                     )}
 
@@ -569,6 +571,13 @@ const PaymentForm = () => {
                                     </div>
 
                                     <div className="mt-6 w-full sm:w-[480px] text-center">
+                                    {selectedPayment === "paypal"? (
+                                        <button type=""
+                                        className="w-full py-2 my-4 text-white btn-primary rounded focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50" >
+                                        <a href="http://127.0.0.1:8000/paypal-payment">Continue to PayPal</a>
+                                        </button>
+
+                                        ):(
                                         <button
                                             type="submit"
                                             className="w-full py-2 my-4 text-white btn-primary rounded focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50"
@@ -583,6 +592,8 @@ const PaymentForm = () => {
                                                 "Submit Payment"
                                             )}
                                         </button>
+                                    )}
+                                        
                                     </div>
 
                                     <div>

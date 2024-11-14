@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\checkoutController;
 use App\Http\Controllers\adminController;
+use App\Http\Controllers\PayPalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,10 @@ Route::get('milestoneService/{milestone_id}/{amount}', [checkoutController::clas
 // Route::middleware('auth:sanctum')->group(function() {
 //  Route::post('milestoneService', [checkoutController::class, 'milestoneStripePostS'])->name('milestoneService.post');
 // });
+
+Route::get('paypal-payment',[PayPalController::class,"payment"])->name('paypal.payment');
+Route::get('paypal-success',[PayPalController::class,"success"])->name('paypal.success');
+Route::get('paypal-cancel',[PayPalController::class,'cancel'])->name('paypal.cancel');
 
 
 //** __________________________________________ADMIN_____________________________________________ **//
