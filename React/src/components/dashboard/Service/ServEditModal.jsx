@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
     AiOutlineCloudUpload,
     AiOutlineLoading3Quarters,
+    AiOutlineDown,
 } from "react-icons/ai";
 
-const ServEditModal = ({ isOpen, onClose, serviceId, onUpdate }) => {
-    const [serviceData, setServiceData] = useState({
-        title: "",
+const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
+    const [formData, setFormData] = useState({
+        name: "",
         price: "",
         category: "",
         location: "",
@@ -20,250 +21,260 @@ const ServEditModal = ({ isOpen, onClose, serviceId, onUpdate }) => {
         document: null,
         link: "",
     });
-    const [updating, setUpdating] = useState(false);
-    const [error, setError] = useState("");
-
+    const [categoryOpen, setCategoryOpen] = useState(false);
     useEffect(() => {
-        if (serviceId) {
-            // Initialize service data if a serviceId is provided
-            setServiceData({
-                title: "",
-                price: "",
-                category: "",
-                location: "",
-                lat: "",
-                lng: "",
-                details: "",
+        if (service) {
+            setFormData({
+                name: service.name || "",
+                price: service.price || "",
+                category: service.category || "",
+                location: service.location || "",
+                lat: service.lat || "",
+                lng: service.lng || "",
+                details: service.details || "",
                 image: null,
                 pin: null,
                 identification: null,
                 video: null,
                 document: null,
-                link: "",
+                link: service.link || "",
             });
         }
-    }, [serviceId]);
+    }, [service]);
 
     const handleChange = (e) => {
-        const { name, value, type, files } = e.target;
-        setServiceData((prevData) => ({
-            ...prevData,
-            [name]: type === "file" ? files[0] : value,
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
         }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setUpdating(true);
-        setError(""); // Reset error message
+    const handleFileUpload = (e) => {
+        const { name, files } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: files[0],
+        }));
+    };
 
-        try {
-            // Log form data to console
-            console.log(serviceData);
-
-            // Optionally, call the onUpdate callback (if provided)
-             const response = axiosClient.post('business/up_service', serviceData);
-             if(response.data.status == 200)
-             toast.success(response.data.message); // Show success toast
-             else
-             toast.success(response.data.message);
-
-             console.log(response.data);
-
-            // Close the modal
-            onClose();
-        } catch (error) {
-            console.error("Error submitting service:", error);
-            setError("Failed to update service.");
-        } finally {
-            setUpdating(false);
-        }
+    const handleSave = () => {
+        onUpdate(formData);
+        onClose();
     };
 
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-            <div className="bg-white no-scrollbar p-6 rounded-lg shadow-lg max-w-3xl w-full overflow-y-auto h-[90vh]">
-                <h2 className="text-xl font-semibold mb-6 text-center">
-                    Edit Service
-                </h2>
-                <form
-                    onSubmit={handleSubmit}
-                    className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+        <div className="fixed inset-0  bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white no-scrollbar w-full max-w-2xl mx-4 p-6 rounded-lg shadow-lg relative max-h-[90vh] overflow-y-auto">
+                <button
+                    onClick={onClose}
+                    className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-xl"
                 >
+                    &times;
+                </button>
+                <h2 className="text-2xl font-semibold mb-6">Edit Service</h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Service Title*
+                        <label className="block text-gray-700">
+                            Service Title
                         </label>
                         <input
                             type="text"
-                            name="title"
-                            value={serviceData.title}
+                            name="name"
+                            value={formData.name}
                             onChange={handleChange}
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                            required
-                            placeholder="Service Title"
+                            placeholder="Enter new title"
+                            className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
-
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Price*
-                        </label>
+                        <label className="block text-gray-700">Price</label>
                         <input
-                            type="number"
+                            type="text"
                             name="price"
-                            value={serviceData.price}
+                            value={formData.price}
                             onChange={handleChange}
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                            required
-                            placeholder="Price"
+                            placeholder="Enter new price"
+                            className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
+                </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Service Category*
-                        </label>
-                        <select
-                            name="category"
-                            value={serviceData.category}
-                            onChange={handleChange}
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                            required
-                        >
-                            <option value="">Select a category</option>
-                            <option value="Category1">Category 1</option>
-                            <option value="Category2">Category 2</option>
-                            <option value="Category3">Category 3</option>
-                            {/* Add more categories here */}
-                        </select>
+                        <label className="block text-gray-700">Category</label>
+                        <div className="relative">
+                            <button
+                                className="w-full px-3 py-2 border border-gray-300 rounded text-gray-700 text-left bg-white flex items-center justify-between"
+                                onClick={() => setCategoryOpen(!categoryOpen)} // Toggle dropdown
+                            >
+                                <span>
+                                    {formData.category || "Select a category"}
+                                </span>
+                                <AiOutlineDown
+                                    className={`text-gray-500 transform transition-transform duration-200 ${
+                                        categoryOpen ? "rotate-180" : ""
+                                    }`}
+                                />
+                            </button>
+                            {categoryOpen && (
+                                <div className="absolute left-0 right-0 mt-1 bg-white border border-gray-300 rounded shadow-lg z-10">
+                                    <ul className="py-2">
+                                        {/* Map through your category options here */}
+                                        <li
+                                            onClick={() =>
+                                                handleCategoryChange(
+                                                    "Category 1"
+                                                )
+                                            }
+                                            className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                                        >
+                                            Category 1
+                                        </li>
+                                        <li
+                                            onClick={() =>
+                                                handleCategoryChange(
+                                                    "Category 2"
+                                                )
+                                            }
+                                            className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                                        >
+                                            Category 2
+                                        </li>
+                                        <li
+                                            onClick={() =>
+                                                handleCategoryChange(
+                                                    "Category 3"
+                                                )
+                                            }
+                                            className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                                        >
+                                            Category 3
+                                        </li>
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
                     </div>
-
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Location*
-                        </label>
+                        <label className="block text-gray-700">Location</label>
                         <input
                             type="text"
                             name="location"
-                            value={serviceData.location}
+                            value={formData.location}
                             onChange={handleChange}
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                            required
-                            placeholder="Enter a location..."
+                            placeholder="Enter new location"
+                            className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
+                </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Latitude (Optional)
-                        </label>
+                        <label className="block text-gray-700">Latitude</label>
                         <input
                             type="text"
                             name="lat"
-                            value={serviceData.lat}
+                            value={formData.lat}
                             onChange={handleChange}
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                            placeholder="Enter latitude"
+                            className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
-
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Longitude (Optional)
-                        </label>
+                        <label className="block text-gray-700">Longitude</label>
                         <input
                             type="text"
                             name="lng"
-                            value={serviceData.lng}
+                            value={formData.lng}
                             onChange={handleChange}
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                            placeholder="Enter longitude"
+                            className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
                     </div>
+                </div>
 
-                    <div className="sm:col-span-2">
-                        <label className="block text-sm font-medium text-gray-700">
-                            Details*
-                        </label>
-                        <textarea
-                            name="details"
-                            value={serviceData.details}
-                            onChange={handleChange}
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                            required
-                            placeholder="Provide details about your service"
-                        ></textarea>
-                    </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700">Details</label>
+                    <textarea
+                        name="details"
+                        value={formData.details}
+                        onChange={handleChange}
+                        placeholder="Enter new details"
+                        className="w-full px-3 py-2 border border-gray-300 rounded"
+                        rows="4"
+                    ></textarea>
+                </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Link
-                        </label>
-                        <input
-                            type="text"
-                            name="link"
-                            value={serviceData.link}
-                            onChange={handleChange}
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                            placeholder="Upload Link"
-                        />
-                    </div>
-
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     {[
-                        { label: "Image", name: "image" },
-                        { label: "Pin", name: "pin" },
-                        { label: "Identification", name: "identification" },
-                        { label: "Video", name: "video" },
-                        { label: "Document", name: "document" },
-                    ].map((fileInput) => (
-                        <div key={fileInput.name}>
-                            <label className="block text-sm font-medium text-gray-700">
-                                {`Upload ${fileInput.label}`}
+                        "image",
+                        "pin",
+                        "identification",
+                        "video",
+                        "document",
+                    ].map((field, index) => (
+                        <div key={index}>
+                            <label className="block text-gray-700 capitalize">
+                                {field}
                             </label>
-                            <div className="flex items-center space-x-2">
+                            <div className="relative">
                                 <input
                                     type="file"
-                                    name={fileInput.name}
-                                    onChange={handleChange}
-                                    id={`${fileInput.name}-upload`}
+                                    name={field}
+                                    onChange={handleFileUpload}
+                                    id={`file-upload-${field}`}
                                     className="hidden"
                                 />
                                 <label
-                                    htmlFor={`${fileInput.name}-upload`}
+                                    htmlFor={`file-upload-${field}`}
                                     className="flex items-center justify-between cursor-pointer w-full p-2 border border-gray-300 rounded-md bg-white"
                                 >
                                     <span className="text-gray-700">
-                                        {serviceData[fileInput.name]
-                                            ? serviceData[fileInput.name].name
-                                            : `Click to upload ${fileInput.label}`}
+                                        {formData[field] && formData[field].name
+                                            ? formData[field].name
+                                            : `Click to upload ${
+                                                  field
+                                                      .charAt(0)
+                                                      .toUpperCase() +
+                                                  field.slice(1)
+                                              }`}
                                     </span>
                                     <AiOutlineCloudUpload className="text-gray-700" />
                                 </label>
                             </div>
                         </div>
                     ))}
-
-                    <div className="sm:col-span-2 flex justify-end mt-4">
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="mr-3 px-4 py-2 bg-gray-200 text-gray-800 rounded-md"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            type="submit"
-                            className="px-4 py-2 bg-green-600 text-white rounded-md"
-                        >
-                            {updating ? (
-                                <AiOutlineLoading3Quarters className="animate-spin" />
-                            ) : (
-                                "Save Changes"
-                            )}
-                        </button>
+                    <div>
+                        <label className="block text-gray-700">Link</label>
+                        <input
+                            type="text"
+                            name="link"
+                            value={formData.link}
+                            onChange={handleChange}
+                            placeholder="Enter link"
+                            className="w-full px-3 py-2 border border-gray-300 rounded"
+                        />
                     </div>
-                </form>
+                </div>
+
+                <div className="flex justify-end space-x-4">
+                    <button
+                        onClick={onClose}
+                        className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        onClick={handleSave}
+                        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                    >
+                        Save
+                    </button>
+                </div>
             </div>
         </div>
     );

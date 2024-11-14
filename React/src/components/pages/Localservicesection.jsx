@@ -1,19 +1,70 @@
-import React from "react";
-import Theimg from "../../assets/sev/Frame.png"; // Import the single image
+import React, { useRef } from "react";
+import axiosClient from "../../axiosClient"; // Ensure axios is set up correctly
+import { useNavigate } from "react-router-dom";
+import Theimg from "../../assets/sev/Frame.png";
 
 const DiscoverLocal = () => {
+    const navigate = useNavigate();
+
+    const handleGetStarted = (e) => {
+        e.preventDefault();
+        const payload = {
+            search: "", // Empty search parameters
+            category: "",
+            listing_name: "",
+            lat: "",
+            lng: "",
+        };
+
+        console.log("Get Started clicked with payload:", payload);
+
+        axiosClient
+            .post("/searchService", payload)
+            .then(({ data }) => {
+                let ids = "";
+                Object.entries(data.results).forEach((entry) => {
+                    const [index, row] = entry;
+                    ids += row.id + ",";
+                });
+                if (!ids) ids = 0;
+
+                sessionStorage.setItem("queryLat", "");
+                sessionStorage.setItem("queryLng", "");
+
+                navigate(
+                    "/serviceResults/" + base64_encode(ids) + "/" + data.loc
+                );
+
+                if (window.location.pathname.includes("serviceResults"))
+                    window.location.reload();
+            })
+            .catch((err) => {
+                console.error("Error during search:", err);
+                if (err.response && err.response.status === 422) {
+                    console.error(
+                        "Validation errors:",
+                        err.response.data.errors
+                    );
+                }
+            });
+    };
+
+    const base64_encode = (str) => {
+        return btoa(str); // Encoding helper function
+    };
+
     return (
         <div className="flex flex-col lg:py-20 lg:flex-row justify-between items-center lg:items-stretch px-6 lg:px-12 bg-blue-50 w-full">
-            {/* Image section */}
+            {/* Image Section */}
             <div className="lg:w-1/2 flex justify-center mt-10 lg:mt-10 lg:justify-start mb-6 lg:mb-0">
                 <img
                     src={Theimg}
                     alt="service"
-                    className="object-cover w-full h-auto lg:max-h-[400px] rounded-md" // Adjust height as needed
+                    className="object-cover w-full h-auto lg:max-h-[400px] rounded-md"
                 />
             </div>
 
-            {/* Text content */}
+            {/* Text Content */}
             <div className="flex flex-col justify-center items-center lg:items-start lg:w-1/2 mt-2 mb-2 lg:mt-0 py-20 px-8 text-center lg:text-left">
                 <button className="bg-yellow-400 text-xs sm:text-sm font-semibold px-4 py-2 rounded-full mb-6">
                     • Discover local services
@@ -25,7 +76,10 @@ const DiscoverLocal = () => {
                     Explore categories to suit your needs. Connect with
                     businesses offering top-notch services.
                 </p>
-                <button className="mt-6 w-[192px] h-[44px] px-[24px] py-[8px] gap-[8px] bg-green-800 text-white rounded-lg shadow-lg hover:opacity-80 transition-opacity duration-300">
+                <button
+                    onClick={handleGetStarted}
+                    className="mt-6 w-[192px] h-[44px] px-[24px] py-[8px] gap-[8px] bg-green-800 text-white rounded-lg shadow-lg hover:opacity-80 transition-opacity duration-300"
+                >
                     Get Started
                 </button>
             </div>

@@ -121,7 +121,7 @@ const HorizontalInfiniteScroll = () => {
             </div>
 
             {/* Glass effect on the right */}
-            <div className="absolute right-0 top-[-10px] rounded-lg bottom-[-10px] w-32 bg-gradient-to-l from-[#0f381e] to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-[-10px] rounded-lg bottom-[-10px] w-32 bg-gradient-to-l from-[#0f381e] via-[#0f381e66] to-transparent opacity-85 z-10 pointer-events-none" />
 
             {/* Chevron right with smooth transition */}
             <div

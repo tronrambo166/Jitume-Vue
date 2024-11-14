@@ -212,8 +212,8 @@ const Search = () => {
                             type="text"
                             placeholder="Location"
                             ref={locationInputRef}
-                            type="text"
-                            placeholder="Location"
+                            // type="text"
+                            // placeholder="Location"
                             className="border-none h-full focus:outline-none w-full pl-8 text-xs sm:text-sm"
                         />
                         {/* Suggestions Dropdown */}

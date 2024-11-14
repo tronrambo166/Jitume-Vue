@@ -27,33 +27,32 @@ const ServiceTable = () => {
         };
         getBusinessAndServices();
     }, []);
-   const openEditModal = (service) => {
-       setSelectedService(service); // Set the service being edited
-       setIsEditModalOpen(true); // Open the modal
-   };
+    const openEditModal = (service) => {
+        setSelectedService(service); // Set the service being edited
+        setIsEditModalOpen(true); // Open the modal
+    };
 
-   const handleDelete = (id) => {
+    const handleDelete = (id) => {
         axiosClient
             .get("/business/delete_service/" + id)
             .then(({ data }) => {
                 setService(service.filter((item) => item.id !== id));
-                alert('Deleted!');
+                alert("Deleted!");
             })
             .catch((err) => {
                 console.log(err);
             });
     };
 
-
     return (
         <div className="py-4">
             {/* My Investments Section */}
-             <section className="bg-white shadow-md rounded-lg mb-6 p-4">
-                {myInvest.length > 0 &&
+            <section className="bg-white shadow-md rounded-lg mb-6 p-4">
+                {myInvest.length > 0 && (
                     <h1 className="text-[#2D3748] font-semibold text-xl mb-3">
-                    My Investments
-                </h1>
-            }
+                        My Investments
+                    </h1>
+                )}
                 {myInvest.length > 0 && (
                     <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-200">
@@ -136,7 +135,7 @@ const ServiceTable = () => {
                         </table>
                     </div>
                 )}
-            </section> 
+            </section>
 
             {/* My Services Section */}
             <section className="bg-white shadow-md rounded-lg mb-6 px-10 py-6 ">
@@ -209,9 +208,9 @@ const ServiceTable = () => {
                                                 Edit
                                             </button>
                                             <button
-                                               onClick={() =>
-                                                handleDelete(item.id)
-                                            }
+                                                onClick={() =>
+                                                    handleDelete(item.id)
+                                                }
                                                 className="text-red-500 border border-gray-500 rounded-lg py-1 px-3 text-xs"
                                             >
                                                 Delete
@@ -300,10 +299,9 @@ const ServiceTable = () => {
                         console.log("Closing modal");
                         setIsEditModalOpen(false);
                     }}
-                    serviceId={selectedService?.id} // Adjust this based on how you're identifying the service
+                    service={selectedService} // Pass selectedService data
                     onUpdate={(updatedData) => {
-                        // console.log("Updated data:", updatedData);
-                        // Handle updating the service here
+                        // Handle updating the service here if needed
                     }}
                 />
             )}

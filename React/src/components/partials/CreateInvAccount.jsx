@@ -37,11 +37,10 @@ function CreateInvestorAccount({ isOpen, onClose }) {
         inv_range: [],
         interested_cats: [],
     });
-const [dropdowns, setDropdowns] = useState({
-    invRangeOpen: false,
-    industriesOpen: false,
-});
-
+    const [dropdowns, setDropdowns] = useState({
+        invRangeOpen: false,
+        industriesOpen: false,
+    });
 
     if (!isOpen) return null;
 
@@ -55,7 +54,6 @@ const [dropdowns, setDropdowns] = useState({
         }));
     };
 
-
     const toggleConfirmPasswordVisibility = () => {
         setShowConfirmPassword(!showConfirmPassword);
     };
@@ -67,20 +65,19 @@ const [dropdowns, setDropdowns] = useState({
             [name]: value,
         }));
     };
-     const handleCheckboxChange = (e, category) => {
-         const { name, checked } = e.target;
-         setRegistrationData((prev) => {
-             const updatedList = checked
-                 ? [...prev[category], name]
-                 : prev[category].filter((item) => item !== name);
+    const handleCheckboxChange = (e, category) => {
+        const { name, checked } = e.target;
+        setRegistrationData((prev) => {
+            const updatedList = checked
+                ? [...prev[category], name]
+                : prev[category].filter((item) => item !== name);
 
-             return {
-                 ...prev,
-                 [category]: updatedList,
-             };
-         });
-     };
-
+            return {
+                ...prev,
+                [category]: updatedList,
+            };
+        });
+    };
 
     const handleRegistrationChange = (e) => {
         const { name, value, type, files, checked } = e.target;
@@ -88,7 +85,7 @@ const [dropdowns, setDropdowns] = useState({
             ...prev,
             [name]:
                 type === "file"
-                    ? files[0]
+                    ? files[0] // This ensures you're correctly handling file inputs for `id_passport` and `pin`
                     : type === "checkbox"
                     ? checked
                     : value,
@@ -133,100 +130,141 @@ const [dropdowns, setDropdowns] = useState({
             setLoading(false); // Stop loading spinner
         }
     };
-        const handleDropdownToggle = (type) => {
-            setDropdowns((prev) => ({
-                ...prev,
-                [type]: !prev[type],
-            }));
-        };
+    const handleDropdownToggle = (type) => {
+        setDropdowns((prev) => ({
+            ...prev,
+            [type]: !prev[type],
+        }));
+    };
 
     const isFormValid = loginData.email && loginData.password;
-const handleRegistrationSubmit = async (e) => {
-    e.preventDefault();
+    const handleRegistrationSubmit = async (e) => {
+        e.preventDefault();
 
-    let formErrors = [];
+        let formErrors = [];
+        if (!registrationData.fname) {
+            formErrors.push("First name is required!");
+            toast.error("First name is required!");
+        }
 
-    // Check if passwords match before proceeding
-    if (registrationData.password !== registrationData.confirmPassword) {
-        formErrors.push("Passwords do not match!");
-        toast.error("Passwords do not match!"); // Show error toast
-    }
+        if (!registrationData.lname) {
+            formErrors.push("Last name is required!");
+            toast.error("Last name is required!");
+        }
 
-    // Check if terms are accepted
-    if (!registrationData.terms) {
-        formErrors.push("You must agree to the Terms and Conditions!");
-        toast.error("You must agree to the Terms and Conditions!"); // Show error toast
-    }
+        if (!registrationData.email) {
+            formErrors.push("Email is required!");
+            toast.error("Email is required!");
+        }
 
-    // If there are any validation errors, stop the registration process
-    if (formErrors.length > 0) {
-        setErrors({ general: formErrors });
-        return;
-    }
+        if (!registrationData.password) {
+            formErrors.push("Password is required!");
+            toast.error("Password is required!");
+        }
 
-    setLoading(true); // Start loading spinner
+        if (!registrationData.confirmPassword) {
+            formErrors.push("Confirm password is required!");
+            toast.error("Confirm password is required!");
+        }
 
-    try {
-        // Prepare form data for submission
-        const submitData = new FormData();
-        submitData.append("fname", registrationData.fname); // First Name
-        submitData.append("mname", registrationData.mname || ""); // Optional Middle Name
-        submitData.append("lname", registrationData.lname); // Last Name
-        submitData.append("email", registrationData.email); // Email
-        submitData.append("password", registrationData.password); // Password
-        submitData.append("id_no", registrationData.id_no); // ID/Passport Number
-        submitData.append("tax_pin", registrationData.tax_pin); // Tax PIN
-        submitData.append("id_passport", registrationData.id_passport); // Attached ID/Passport
-        submitData.append("confirmPassword", registrationData.confirmPassword);
-        submitData.append("pin", registrationData.pin); // Attached PIN
-        submitData.append("past_investment", registrationData.past_investment); // Past Investment
-        submitData.append("website", registrationData.website); // Website (Optional)
-        submitData.append("inv_range", registrationData.inv_range); // Investment Range
-        submitData.append("interested_cats", registrationData.interested_cats); // Interested Categories
+        if (!registrationData.id_no) {
+            formErrors.push("ID number is required!");
+            toast.error("ID number is required!");
+        }
 
-        console.log(registrationData);
+        if (!registrationData.tax_pin) {
+            formErrors.push("Tax PIN is required!");
+            toast.error("Tax PIN is required!");
+        }
 
-        // Submit the registration data
-        const { data } = await axiosClient.post("/register", submitData);
+        if (!registrationData.id_passport) {
+            formErrors.push("Attach your ID/Passport!");
+            toast.error("Attach your ID/Passport!");
+        }
 
-        // Check for backend-specific errors (e.g., if the email already exists)
-        if (data.error) {
-            formErrors.push(data.error);
-            toast.error(data.error); // Show backend-specific error toast
+        if (!registrationData.pin) {
+            formErrors.push("Attach your PIN file!");
+            toast.error("Attach your PIN file!");
+        }
+
+        // If there are any validation errors, stop the registration process
+        if (formErrors.length > 0) {
             setErrors({ general: formErrors });
             return;
         }
 
-        toast.success("Registration successful!"); // Show success toast
-        onClose();
-    } catch (error) {
-        // Handle backend errors
-        if (error.response) {
-            const errorMessage =
-                error.response.data.message ||
-                "Registration failed. Please try again.";
-            formErrors.push(errorMessage);
-            toast.error(errorMessage); // Show error toast
-            setErrors({ general: formErrors });
-        } else if (error.request) {
-            const errorMessage =
-                "No response from the server. Please try again.";
-            formErrors.push(errorMessage);
-            toast.error(errorMessage); // Show error toast
-            setErrors({ general: formErrors });
-        } else {
-            const errorMessage =
-                "An unexpected error occurred. Please try again.";
-            formErrors.push(errorMessage);
-            toast.error(errorMessage); // Show error toast
-            setErrors({ general: formErrors });
-        }
+        setLoading(true); // Start loading spinner
 
-        console.log(error); // Log the error for debugging
-    } finally {
-        setLoading(false); // Stop loading spinner
-    }
-};
+        try {
+            // Prepare form data for submission
+            const submitData = new FormData();
+            submitData.append("fname", registrationData.fname); // First Name
+            submitData.append("mname", registrationData.mname || ""); // Optional Middle Name
+            submitData.append("lname", registrationData.lname); // Last Name
+            submitData.append("email", registrationData.email); // Email
+            submitData.append("password", registrationData.password); // Password
+            submitData.append("id_no", registrationData.id_no); // ID/Passport Number
+            submitData.append("tax_pin", registrationData.tax_pin); // Tax PIN
+            submitData.append("id_passport", registrationData.id_passport); // Attached ID/Passport
+            submitData.append(
+                "confirmPassword",
+                registrationData.confirmPassword
+            );
+            submitData.append("pin", registrationData.pin); // Attached PIN
+            submitData.append(
+                "past_investment",
+                registrationData.past_investment
+            ); // Past Investment
+            submitData.append("website", registrationData.website); // Website (Optional)
+            submitData.append("inv_range", registrationData.inv_range); // Investment Range
+            submitData.append(
+                "interested_cats",
+                registrationData.interested_cats
+            ); // Interested Categories
+
+            console.log(registrationData);
+
+            // Submit the registration data
+            const { data } = await axiosClient.post("/register", submitData);
+
+            // Check for backend-specific errors (e.g., if the email already exists)
+            if (data.error) {
+                formErrors.push(data.error);
+                toast.error(data.error); // Show backend-specific error toast
+                setErrors({ general: formErrors });
+                return;
+            }
+
+            toast.success("Registration successful!"); // Show success toast
+            onClose();
+        } catch (error) {
+            // Handle backend errors
+            if (error.response) {
+                const errorMessage =
+                    error.response.data.message ||
+                    "Registration failed. Please try again.";
+                formErrors.push(errorMessage);
+                toast.error(errorMessage); // Show error toast
+                setErrors({ general: formErrors });
+            } else if (error.request) {
+                const errorMessage =
+                    "No response from the server. Please try again.";
+                formErrors.push(errorMessage);
+                toast.error(errorMessage); // Show error toast
+                setErrors({ general: formErrors });
+            } else {
+                const errorMessage =
+                    "An unexpected error occurred. Please try again.";
+                formErrors.push(errorMessage);
+                toast.error(errorMessage); // Show error toast
+                setErrors({ general: formErrors });
+            }
+
+            console.log(error); // Log the error for debugging
+        } finally {
+            setLoading(false); // Stop loading spinner
+        }
+    };
 
     return (
         <div className="fixed inset-0 bg-blue-900 bg-opacity-25 flex justify-center items-center z-50">
@@ -498,9 +536,11 @@ const handleRegistrationSubmit = async (e) => {
                             </div>
 
                             <div>
-                                <label className="block text-gray-700 text-sm mb-1">
+                                <label className="block text-gray-700 text-sm  mb-1">
                                     Tax PIN
+                                    <span className="text-red-500 px-1">*</span>
                                 </label>
+
                                 <input
                                     type="text"
                                     name="tax_pin"

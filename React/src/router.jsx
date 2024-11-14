@@ -1,43 +1,44 @@
-import { createBrowserRouter } from 'react-router-dom';
-import DefaultLayout from './components/DefaultLayout';
-import Homepage from './components/pages/Homepage';
-import Servicepage from './components/pages/Servicepage';
-import ListingResults from './components/partials/listingResults';
-import ListingDetails from './components/partials/ListingDetails';
+import { createBrowserRouter } from "react-router-dom";
+import DefaultLayout from "./components/DefaultLayout";
+import Homepage from "./components/pages/Homepage";
+import Servicepage from "./components/pages/Servicepage";
+import ListingResults from "./components/partials/listingResults";
+import ListingDetails from "./components/partials/ListingDetails";
 
 // Dashboard Components
-import Dashboard from './components/pages/Dashboard';
-import MyBusinesses from './components/dashboard/business/MyBusinesses';
-import Dashhome from './components/partials/Dashhome';
-import AddMilestone from './components/dashboard/business/Addmilestone';
-import Milestones from './components/dashboard/business/Milestone';
-import InvestmentBids from './components/dashboard/business/InvestmentBids';
-import AddService from './components/dashboard/Service/Addservice';
-import ServiceMilestone from './components/dashboard/Service/ServiceMilestone';
-import ServiceBookings from './components/dashboard/Service/Servicebookings';
-import Messages from './components/partials/Messages';
-import AccountPage from './components/dashboard/business/AccountPage';
-import AddBusiness from './components/partials/Addbusiness';
-import PaymentForm from './components/partials/PaymentForm';
-import ServiceDetails from './components/partials/ServiceDetails';
-import MilestonesPage from './components/partials/Milestonepage';
-import MilestonesPageS from './components/partials/MilestonepageS';
-import ServiceResults from './components/partials/Serviceresults';
-import Subscribepage from './components/partials/Subscribepage';
-import Mile from './components/partials/mile';
-import Invest from './components/partials/Investequip';
-import Users from './views/users'; // Ensure this path is correct
-import UserForm from './views/userForm';
-import Register from './views/register';
-import Login from './views/login';
-import ServiceTable from './components/dashboard/Service/servicestable';
-import CategoryPage from './components/partials/Categorypage';
-import ProjectManagers from './components/partials/ProjectManagers';
-import EquipmentRelease from './components/partials/EquipmentRelease';
-import InvestorRegistration from './components/partials/Investreg';
-import Addservicemilestone from './components/dashboard/Service/Addservicemilestone';
-import MyBookings from './components/dashboard/Service/Mybookings';
-import AddBusinesS from './components/dashboard/business/AddBusiness';
+import Dashboard from "./components/pages/Dashboard";
+import MyBusinesses from "./components/dashboard/business/MyBusinesses";
+import Dashhome from "./components/partials/Dashhome";
+import AddMilestone from "./components/dashboard/business/Addmilestone";
+import Milestones from "./components/dashboard/business/Milestone";
+import InvestmentBids from "./components/dashboard/business/InvestmentBids";
+import AddService from "./components/dashboard/Service/Addservice";
+import ServiceMilestone from "./components/dashboard/Service/ServiceMilestone";
+import ServiceBookings from "./components/dashboard/Service/Servicebookings";
+import Messages from "./components/partials/Messages";
+import AccountPage from "./components/dashboard/business/AccountPage";
+import AddBusiness from "./components/partials/Addbusiness";
+import PaymentForm from "./components/partials/PaymentForm";
+import ServiceDetails from "./components/partials/ServiceDetails";
+import MilestonesPage from "./components/partials/Milestonepage";
+import MilestonesPageS from "./components/partials/MilestonepageS";
+import ServiceResults from "./components/partials/Serviceresults";
+import Subscribepage from "./components/partials/Subscribepage";
+import Mile from "./components/partials/mile";
+import Invest from "./components/partials/Investequip";
+import Users from "./views/users"; // Ensure this path is correct
+import UserForm from "./views/userForm";
+import Register from "./views/register";
+import Login from "./views/login";
+import ServiceTable from "./components/dashboard/Service/servicestable";
+import CategoryPage from "./components/partials/Categorypage";
+import ProjectManagers from "./components/partials/ProjectManagers";
+import EquipmentRelease from "./components/partials/EquipmentRelease";
+import InvestorRegistration from "./components/partials/Investreg";
+import Addservicemilestone from "./components/dashboard/Service/Addservicemilestone";
+import MyBookings from "./components/dashboard/Service/Mybookings";
+import AddBusinesS from "./components/dashboard/business/AddBusiness";
+import ServiceCategory from "./components/partials/ServiceCategory";
 
 const router = createBrowserRouter([
     {
@@ -82,6 +83,8 @@ const router = createBrowserRouter([
             { path: "/subscribe/:id", element: <Subscribepage /> },
             { path: "/checkout", element: <PaymentForm /> },
             { path: "/category/:name", element: <CategoryPage /> },
+            { path: "/servicecategory/:name", element: <ServiceCategory /> },
+
             { path: "/createinvestor", element: <InvestorRegistration /> },
 
             { path: "/mile", element: <Mile /> },

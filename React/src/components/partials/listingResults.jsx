@@ -18,7 +18,7 @@ import ListingSearch from "../partials/ListingSearch";
 // import noUiSlider from 'nouislider';
 // import 'nouislider/dist/nouislider.css';
 import CardsPagination from "./CardsPagination";
-import Search from "../Landing-page/Search"
+import Search from "../partials/ListingSearch";
 import BackBtn from "./BackBtn";
 
 // Dummy data
@@ -324,7 +324,7 @@ const ListingResults = () => {
 
     return (
         <>
-        <BackBtn/>
+            <BackBtn />
             <div className="w-full mx-auto px-9">
                 {/* <div className="flex mb-6 flex-col md:flex-row gap-4 justify-center pt-8 px-2 sm:px-6 md:px-4 items-center w-full max-w-3xl mx-auto">
                 <input
