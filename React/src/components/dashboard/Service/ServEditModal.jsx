@@ -7,6 +7,7 @@ import {
 import axiosClient from "../../../axiosClient";
 const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
     const [formData, setFormData] = useState({
+        id: null,
         name: "",
         price: "",
         category: "",
@@ -25,6 +26,7 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
     useEffect(() => {
         if (service) {
             setFormData({
+                id: service.id || "",
                 name: service.name || "",
                 price: service.price || "",
                 category: service.category || "",
@@ -32,11 +34,11 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
                 lat: service.lat || "",
                 lng: service.lng || "",
                 details: service.details || "",
-                image: null,
-                pin: null,
-                identification: null,
-                video: null,
-                document: null,
+                image: service.image || "",
+                pin: service.pin || "",
+                identification: service.imidentificationage || "",
+                video: service.video || "",
+                document: service.document || "",
                 link: service.link || "",
             });
         }
@@ -66,9 +68,9 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
            );
 
            if (response.data.status === 200) {
-               toast.success(response.data.message); // Show success toast
+               //toast.success(response.data.message); // Show success toast
            } else {
-               toast.error(response.data.message); // Show error toast for non-200 status
+               //toast.error(response.data.message); // Show error toast for non-200 status
            }
 
            console.log(response.data);
@@ -76,7 +78,7 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
            onClose(); // Close the modal or form
        } catch (error) {
            console.error("Error saving data:", error);
-           toast.error("An error occurred while saving the data."); // Show error toast on request failure
+           //toast.error("An error occurred while saving the data."); // Show error toast on request failure
        }
    };
 

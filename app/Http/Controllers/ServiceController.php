@@ -263,6 +263,7 @@ $S = Services::where('id',$listing)->update([
 public function up_listing(Request $request){
 $user_id = Auth::id();
 $id = $request->id;
+//return $request->all();
 
 $listing = $request->id;
 $data = $request->except(['_token','link', 'created_at', 'updated_at']);

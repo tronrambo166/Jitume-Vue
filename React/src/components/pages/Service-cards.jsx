@@ -138,31 +138,16 @@ return (
                                   </p>
                               </div>
                               <div className="mt-4 bg-sky-50 p-3 rounded-lg">
-                                  <div className="text-sm text-gray-800 flex justify-between mb-2">
-                                      <span>
-                                          <span className="font-semibold">
-                                              550K
-                                          </span>{" "}
-                                          <br />
-                                          Goal
-                                      </span>
-                                      <span>
-                                          <span className="font-semibold">
-                                              12
-                                          </span>{" "}
-                                          <br />
-                                          Invested
-                                      </span>
-                                  </div>
-                                  <div className="h-2 bg-gray-200 rounded-full">
-                                      <div className="bg-green-600 h-full w-1/2 rounded-full"></div>
-                                  </div>
+                                  
+                                  
                                   <div className="text-sm text-gray-800 flex justify-between mt-2">
                                       <span>
-                                          Collected: <strong>270K</strong>
+                                         <strong>Price: </strong>
                                       </span>
                                       <span>
-                                          Need: <strong>130K</strong>
+                                           
+                                      
+                                         <strong> ${card.price}</strong>
                                       </span>
                                   </div>
                               </div>
