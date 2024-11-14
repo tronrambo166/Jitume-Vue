@@ -4,7 +4,7 @@ import {
     AiOutlineLoading3Quarters,
     AiOutlineDown,
 } from "react-icons/ai";
-
+import axiosClient from "../../../axiosClient";
 const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
     const [formData, setFormData] = useState({
         name: "",
@@ -58,10 +58,27 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
         }));
     };
 
-    const handleSave = () => {
-        onUpdate(formData);
-        onClose();
-    };
+   const handleSave = async () => {
+       try {
+           const response = await axiosClient.post(
+               "business/up_service",
+               formData
+           );
+
+           if (response.data.status === 200) {
+               toast.success(response.data.message); // Show success toast
+           } else {
+               toast.error(response.data.message); // Show error toast for non-200 status
+           }
+
+           console.log(response.data);
+           onUpdate(formData); // Call onUpdate function with formData
+           onClose(); // Close the modal or form
+       } catch (error) {
+           console.error("Error saving data:", error);
+           toast.error("An error occurred while saving the data."); // Show error toast on request failure
+       }
+   };
 
     if (!isOpen) return null;
 
