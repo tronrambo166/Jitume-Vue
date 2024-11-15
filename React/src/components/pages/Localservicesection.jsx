@@ -66,9 +66,9 @@ const DiscoverLocal = () => {
 
             {/* Text Content */}
             <div className="flex flex-col justify-center items-center lg:items-start lg:w-1/2 mt-2 mb-2 lg:mt-0 py-20 px-8 text-center lg:text-left">
-                <button className="bg-yellow-400 text-xs sm:text-sm font-semibold px-4 py-2 rounded-full mb-6">
+                <p className="bg-yellow-400 text-xs sm:text-sm font-semibold px-4 py-2 rounded-full mb-6">
                     • Discover local services
-                </button>
+                </p>
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-1">
                     Find the best local service in your area
                 </h1>
