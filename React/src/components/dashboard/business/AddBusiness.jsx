@@ -53,8 +53,18 @@ const AddBusiness = () => {
     }, [formData]);
 
     const handleFileChange = (e, field) => {
-        setFormData({ ...formData, [field]: e.target.files[0] });
+        const file = e.target.files[0];
+
+        if (file) {
+            setFormData({ ...formData, [field]: file });
+
+            // Show an info toast with the selected file name
+            toast.info(`File selected: ${file.name}`);
+        } else {
+            toast.error("No file selected. Please choose a file.");
+        }
     };
+
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -65,65 +75,95 @@ const AddBusiness = () => {
     };
     const [loading, setLoading] = useState(false);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+   const handleSubmit = async (e) => {
+       e.preventDefault();
 
-        // Setting loc, lat, lng
-        formData.location = $("#searchbox").val();
-        formData.lat = $("#lat").val();
-        formData.lng = $("#lng").val();
+       // Setting loc, lat, lng
+       formData.location = $("#searchbox").val();
+       formData.lat = $("#lat").val();
+       formData.lng = $("#lng").val();
 
-        const data = new FormData();
+       const data = new FormData();
 
-        // Append form data
-        Object.entries(formData).forEach(([key, value]) => {
-            if (value instanceof File) {
-                data.append(key, value);
-            } else {
-                data.append(key, value);
-            }
-        });
+       // Append form data
+       Object.entries(formData).forEach(([key, value]) => {
+           if (value instanceof File) {
+               data.append(key, value);
+           } else {
+               data.append(key, value);
+           }
+       });
 
-        // Log FormData content as an object
-        const formDataObject = Object.fromEntries(data.entries());
-        console.log("Submitted Form Data:", formDataObject);
+       // Log FormData content as an object
+       const formDataObject = Object.fromEntries(data.entries());
+       console.log("Submitted Form Data:", formDataObject);
 
-        try {
-            setLoading(true); // Start loading
-            const response = await axiosClient.post(
-                "business/create-listing",
-                data
-            );
+       try {
+           setLoading(true); // Start loading
 
-            console.log(response.data);
-            if (response.data.status === 200) {
-                // Commented out original message setting
-                // setMessages({
-                //     success: response.data.message || "",
-                //     error: "",
-                // });
-                toast.success(
-                    response.data.message || "Listing created successfully!"
-                );
-            } else if (response.data.status === 404) {
-                // Commented out original error message setting
-                // setMessages({ error: response.data.message });
-                toast.error(response.data.message || "Listing not found.");
-            }
-        } catch (error) {
-            console.log(error);
-            const errorMessage =
-                error.response?.data?.error || "An error occurred";
-            // Commented out original error message setting
-            // setMessages({
-            //     success: "",
-            //     error: errorMessage,
-            // });
-            toast.error(errorMessage);
-        } finally {
-            setLoading(false); // Stop loading after request completes
-        }
-    };
+           const response = await axiosClient.post(
+               "business/create-listing",
+               data,
+               {
+                   headers: {
+                       "Content-Type": "multipart/form-data", // Ensure the correct content type for file uploads
+                   },
+               }
+           );
+
+           // Handle the response status and show appropriate toast messages
+           if (response.status === 200) {
+               if (response.data.status === 200) {
+                   toast.success(
+                       response.data.message || "Listing created successfully!"
+                   );
+               } else if (response.data.status === 404) {
+                   toast.error(response.data.message || "Listing not found.");
+               } else {
+                   toast.warning(
+                       response.data.message || "Unexpected status received."
+                   );
+               }
+           } else {
+               toast.error(`Unexpected response status: ${response.status}`);
+           }
+       } catch (error) {
+           console.error(error);
+
+           let errorMessage = "An error occurred. Please try again.";
+
+           if (error.response) {
+               // Handle known error responses from the backend
+               if (error.response.status === 400) {
+                   errorMessage =
+                       error.response.data.message || "Invalid data provided.";
+               } else if (error.response.status === 401) {
+                   errorMessage = "Unauthorized. Please log in again.";
+               } else if (error.response.status === 422) {
+                   errorMessage =
+                       error.response.data.message || "Validation error.";
+               } else if (error.response.status === 500) {
+                   errorMessage =
+                       "Internal server error. Please try again later.";
+               } else {
+                   errorMessage =
+                       error.response.data.message || "An error occurred.";
+               }
+           } else if (error.request) {
+               // If no response is received from the server (network issues)
+               errorMessage =
+                   "Network error. Please check your internet connection.";
+           } else {
+               // Error setting up the request
+               errorMessage = `Error: ${error.message}`;
+           }
+
+           toast.error(errorMessage); // Show error toast with appropriate message
+       } finally {
+           setLoading(false); // Stop loading after request completes
+       }
+   };
+
 
     const getPlaces = (e) => {
         e.preventDefault();
@@ -235,7 +275,7 @@ const AddBusiness = () => {
     };
 
     return (
-        <div className="p-4 bg-gray-100 min-h-screen">
+        <div className="p-4  min-h-screen">
             <ToastContainer />
             <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg mb-8">
                 <h2 className="text-xl font-bold mb-4 dark:text-white">

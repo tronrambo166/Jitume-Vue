@@ -77,12 +77,13 @@ const Invest = () => {
                         ∙ More than 50+
                     </span>
                 </div>
-                <div className="flex justify-between items-center mb-4 mt-2">
+                <div className="flex justify-between items-center my-4">
                     <h2 className="text-[28px] sm:text-[44px] font-bold text-slate-700 leading-snug sm:leading-tight">
-                        Invest in promising
-                        <br /> New ventures
+                        Investing In Promising
+                        <br /> New Ventures
                     </h2>
                 </div>
+
                 <div className="flex justify-end space-x-1 mb-2">
                     <button
                         onClick={handlePrev}
@@ -167,7 +168,8 @@ const Invest = () => {
                                               <span>
                                                   Collected:{" "}
                                                   <strong>
-                                                      ${card.amount_collected /
+                                                      $
+                                                      {card.amount_collected /
                                                           1000}
                                                       K
                                                   </strong>
@@ -175,7 +177,8 @@ const Invest = () => {
                                               <span>
                                                   Need:{" "}
                                                   <strong>
-                                                      ${(parseInt(
+                                                      $
+                                                      {(parseInt(
                                                           card.investment_needed
                                                               .toString()
                                                               .replace(",", "")

@@ -466,8 +466,8 @@ const ServiceDetails = () => {
                                 <p className="text-5xl font-semibold text-[#334155] flex justify-between items-center">
                                     <span>{details.name}</span>
                                     <div className="text-black flex items-center font-bold">
-                                        <p className="text-gray-800 text-sm pr-2">
-                                            /Amount Requested:
+                                        <p className="text-gray-800 text-lg pr-2">
+                                            Service Fee:
                                         </p>
                                         <span className="font-semibold text-[20px] text-green-700">
                                             ${details.price}

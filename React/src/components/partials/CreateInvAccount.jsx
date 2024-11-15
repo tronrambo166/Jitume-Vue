@@ -276,16 +276,16 @@ function CreateInvestorAccount({ isOpen, onClose }) {
             >
                 <button
                     onClick={onClose}
-                    className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 text-2xl bg-white border-none p-1 rounded-full"
+                    className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 text-3xl bg-white border-none p-1 px-4 rounded-full"
                 >
                     &times;
                 </button>
 
-                <div className="flex justify-center mb-4 mt-2">
+                <div className="flex justify-center my-4">
                     <img
                         src={logo2}
                         alt="Logo"
-                        className="w-[130px] h-[40px]"
+                        className="w-[130px] h-[40px] object-contain"
                     />
                 </div>
 
@@ -344,8 +344,8 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                     </p>
                                 )}
                             </div>
-                            <div className="flex flex-col relative">
-                                <label className="text-gray-700 text-sm">
+                            <div className="flex flex-col relative space-y-1">
+                                <label className="text-gray-700 text-sm font-medium">
                                     Password
                                 </label>
                                 <input
@@ -353,18 +353,18 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                     name="password"
                                     value={loginData.password}
                                     onChange={handleLoginChange}
-                                    className="border rounded-lg px-3 py-2 text-black text-sm pr-10"
+                                    className="border border-gray-300 rounded-lg px-3 py-2 text-black text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-10"
                                     required
                                 />
                                 <button
                                     type="button"
                                     onClick={togglePasswordVisibility}
-                                    className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
+                                    className="absolute right-3 top-8 text-gray-500 hover:text-primary text-sm transition-colors duration-200 ease-in-out"
                                 >
                                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                                 </button>
                                 {errors.password && (
-                                    <p className="text-red-500 text-xs">
+                                    <p className="text-red-500 text-xs mt-1">
                                         {errors.password}
                                     </p>
                                 )}
@@ -468,8 +468,8 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                 />
                             </div>
 
-                            <div className="relative">
-                                <label className="block text-gray-700 text-sm">
+                            <div className="relative flex flex-col space-y-1">
+                                <label className="block text-gray-700 text-sm font-medium">
                                     Password{" "}
                                     <span className="text-red-500">*</span>
                                 </label>
@@ -478,20 +478,20 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                     name="password"
                                     value={registrationData.password}
                                     onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black"
+                                    className="border border-gray-300 rounded-lg px-3 py-2 w-full text-sm text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-10"
                                     required
                                 />
                                 <button
                                     type="button"
                                     onClick={togglePasswordVisibility}
-                                    className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
+                                    className="absolute right-3 top-8 text-gray-500 text-sm hover:text-primary transition-colors duration-200 ease-in-out"
                                 >
                                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                                 </button>
                             </div>
 
-                            <div className="relative">
-                                <label className="block text-gray-700 text-sm">
+                            <div className="relative flex flex-col space-y-1">
+                                <label className="block text-gray-700 text-sm font-medium">
                                     Confirm Password{" "}
                                     <span className="text-red-500">*</span>
                                 </label>
@@ -504,13 +504,13 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                     name="confirmPassword"
                                     value={registrationData.confirmPassword}
                                     onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black"
+                                    className="border border-gray-300 rounded-lg px-3 py-2 w-full text-sm text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-10"
                                     required
                                 />
                                 <button
                                     type="button"
                                     onClick={toggleConfirmPasswordVisibility}
-                                    className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
+                                    className="absolute right-3 top-8 text-gray-500 text-sm hover:text-primary transition-colors duration-200 ease-in-out"
                                 >
                                     {showConfirmPassword ? (
                                         <FaEyeSlash />

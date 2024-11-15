@@ -253,13 +253,14 @@ const ServiceResults = () => {
     return (
         <>
             <BackBtn />
-            <div className="w-full mx-auto px-24">
+            <div className="w-full mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
                 {/* <h1 className="text-3xl pt-4 md:text-[64px] mb-8 md:mb-16 font-semibold leading-tight md:leading-[79.36px] tracking-[0.02em] text-center font-sharp-grotesk text-[#00290F]">
                 What Are You Looking For?
             </h1> */}
-                <div className=" mt-8">
+                <div className="mt-6 sm:mt-8 md:mt-10 lg:mt-12 xl:mt-16">
                     <ServiceSearch />
                 </div>
+
                 {/* <div className="flex mb-6 flex-col md:flex-row gap-4 justify-center pt-8 px-2 sm:px-6 md:px-4 items-center w-full max-w-3xl mx-auto">
               <input
                   type="text"
@@ -303,7 +304,7 @@ const ServiceResults = () => {
               </button>
           </div> */}
 
-                <div className=" justify-center flex items-center gap-6    my-8">
+                <div className="flex flex-col lg:flex-row items-center gap-6 my-6">
                     <div
                         id="turnover_slider"
                         className=" w-full jakarta  text-md border border-[#cbd5e1] rounded-lg space-y-2 px-6 py-4 "

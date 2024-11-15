@@ -325,7 +325,7 @@ const ListingResults = () => {
     return (
         <>
             <BackBtn />
-            <div className="w-full mx-auto px-9">
+            <div className="w-full mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
                 {/* <div className="flex mb-6 flex-col md:flex-row gap-4 justify-center pt-8 px-2 sm:px-6 md:px-4 items-center w-full max-w-3xl mx-auto">
                 <input
                     type="text"
@@ -371,7 +371,7 @@ const ListingResults = () => {
                 </div>
 
                 {/* Price Range Slider */}
-                <div className="flex items-center gap-6    my-6">
+                <div className="flex flex-col lg:flex-row items-center gap-6 my-6">
                     <div
                         id="turnover_slider"
                         className="w-full border rounded-lg jakarta border-[#CBD5E1] space-y-2 px-6 py-4"
@@ -438,27 +438,39 @@ const ListingResults = () => {
                 </h1>
                 <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] lg:gap-8 gap-4 items-start">
                     {/* Cards Section */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-1 sm:px-4 lg:px-0">
                         {currentCards.length === 0 ? (
-                            <p className="text-center text-gray-500">
-                                No results found.
-                            </p>
+                            <div className="space-y-4">
+                                {/* Skeleton Loader for Cards */}
+                                {[...Array(3)].map((_, index) => (
+                                    <div
+                                        key={index}
+                                        className="border p-5 border-gray-200 shadow-sm bg-white rounded-2xl flex flex-col w-full max-w-[500px] sm:max-w-[600px] lg:max-w-[700px] mx-auto h-full animate-pulse"
+                                    >
+                                        {/* Skeleton Content */}
+                                        <div className="bg-gray-200 w-full h-[200px] sm:h-[220px] lg:h-[250px] rounded-lg"></div>
+                                        <div className="flex flex-col pt-4 justify-between flex-grow pb-4">
+                                            {/* Additional Skeleton Elements */}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         ) : (
                             currentCards.map((row) => (
                                 <Link
                                     to={`/listing/${btoa(btoa(row.id))}`}
                                     key={row.id}
                                 >
-                                    <div className="border p-5 border-gray-200 shadow-sm bg-white h-[500px] rounded-2xl flex flex-col w-full max-w-[900px] mx-auto">
-                                        <div>
+                                    <div className="border p-5 border-gray-200 shadow-sm bg-white rounded-2xl flex flex-col w-full max-w-[500px] sm:max-w-[600px] lg:max-w-[700px] mx-auto h-full">
+                                        <div className="w-full h-[180px] sm:h-[200px] lg:h-[250px]">
                                             <img
                                                 src={"../../" + row.image}
                                                 alt={row.name}
-                                                className="w-full h-[250px] object-cover rounded-lg"
+                                                className="w-full h-full object-cover rounded-lg"
                                             />
                                         </div>
-                                        <div className="flex flex-col pt-2 justify-between flex-grow p-0">
-                                            <div className="flex flex-wrap gap-2 text-m font-bold text-[#1E293B]">
+                                        <div className="flex flex-col pt-4 justify-between flex-grow pb-4">
+                                            <div className="flex flex-wrap gap-2 text-sm font-bold text-[#1E293B] mb-2">
                                                 {(
                                                     row.tags || [
                                                         "example",
@@ -475,17 +487,17 @@ const ListingResults = () => {
                                                     </span>
                                                 ))}
                                             </div>
-                                            <p className="text-lg font-semibold text-[#1E293B]">
+                                            <p className="text-lg font-semibold text-[#1E293B] mb-2">
                                                 {row.name}
                                             </p>
-                                            <p className="text-sm text-[#1E293B]">
+                                            <p className="text-sm text-[#1E293B] mb-2">
                                                 {row.details ||
                                                     "Lorem ipsum dolor sit amet consectetur..."}
                                             </p>
-                                            <p className="text-sm text-[#1E293B] inline-block">
+                                            <p className="text-sm text-[#1E293B] mb-2">
                                                 {row.category}
                                             </p>
-                                            <div className="text-sm text-gray-600 flex flex-col gap-1">
+                                            <div className="text-sm text-gray-600 flex flex-col gap-1 mb-2">
                                                 <p className="flex items-center">
                                                     <FontAwesomeIcon
                                                         icon={faLocationDot}
@@ -503,22 +515,22 @@ const ListingResults = () => {
                                                         "+1791205437"}
                                                 </p>
                                             </div>
-
-                                            <div>
-                                                <p className="text-green-600 ">
+                                            <div className="text-sm text-green-600 mb-1">
+                                                <p>
                                                     $
                                                     {row.investment_needed ||
                                                         ""}
                                                     <span className="text-[#1E293B]">
+                                                        {" "}
                                                         / Amount Requested
                                                     </span>
                                                 </p>
                                             </div>
-
-                                            <div>
-                                                <p className="text-green-600 ">
+                                            <div className="text-sm text-green-600">
+                                                <p>
                                                     ${row.y_turnover || ""}
                                                     <span className="text-[#1E293B]">
+                                                        {" "}
                                                         / Yearly Turnover
                                                     </span>
                                                 </p>
@@ -528,15 +540,6 @@ const ListingResults = () => {
                                 </Link>
                             ))
                         )}
-
-                        {/* Pagination on the right */}
-                        <div className="flex justify-end mt-4">
-                            <CardsPagination
-                                currentPage={currentPage}
-                                totalPages={totalPages}
-                                onPageChange={handlePageChange}
-                            />
-                        </div>
                     </div>
 
                     {/* Map Section */}
@@ -557,6 +560,14 @@ const ListingResults = () => {
                                 }}
                             ></div>
                         </div>
+                    </div>
+                    {/* Pagination - Positioned outside of the cards div */}
+                    <div className="flex justify-start ml-6 mt-4">
+                        <CardsPagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={handlePageChange}
+                        />
                     </div>
                 </div>
             </div>

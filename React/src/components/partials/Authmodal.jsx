@@ -34,7 +34,7 @@ const Modal = ({ isOpen, onClose }) => {
                 </div>
                 <hr className="py-2" />
                 <button
-                    className="absolute top-2 right-2 text-gray-700 text-xl"
+                    className="absolute top-3 right-5 text-gray-700 text-3xl   hover:text-gray-900"
                     onClick={onClose}
                 >
                     &times;

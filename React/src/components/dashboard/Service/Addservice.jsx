@@ -25,7 +25,8 @@ const AddService = ({ connected, userId }) => {
     const [messages, setMessages] = useState({ success: "", error: "" });
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-
+   
+    const [isButtonActive, setIsButtonActive] = useState(false);
     const handleFileChange = (e) => {
         const { name, files } = e.target;
         if (files && files[0]) {
@@ -36,6 +37,20 @@ const AddService = ({ connected, userId }) => {
             toast.info("File selected: " + files[0].name); // Inform about the file selection
         }
     };
+    // Check if all required fields are filled
+    const checkFormValidity = () => {
+        const isValid =
+            formData.title &&
+            formData.price &&
+            formData.category &&
+            formData.location &&
+            formData.details;
+        setIsButtonActive(isValid);
+    };
+
+    useEffect(() => {
+        checkFormValidity();
+    }, [formData]); // Re-run the validity check when formData changes
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -61,62 +76,99 @@ const AddService = ({ connected, userId }) => {
         // }
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+   const handleSubmit = async (e) => {
+       e.preventDefault();
 
-        formData.location = $("#searchbox").val();
-        formData.lat = $("#lat").val();
-        formData.lng = $("#lng").val();
+       formData.location = $("#searchbox").val();
+       formData.lat = $("#lat").val();
+       formData.lng = $("#lng").val();
 
-        // Call individual upload handlers
-        await Promise.all(
-            ["image", "pin", "identification", "video", "document"].map(
-                handleUpload
-            )
-        );
+       // Call individual upload handlers
+       await Promise.all(
+           ["image", "pin", "identification", "video", "document"].map(
+               handleUpload
+           )
+       );
 
-        const data = new FormData();
-        console.log(formData);
-        //return;
+       const data = new FormData();
+       console.log(formData);
+       //return;
 
-        Object.keys(formData).forEach((key) => {
-            data.append(key, formData[key]);
-        });
-        setLoading(true);
+       Object.keys(formData).forEach((key) => {
+           data.append(key, formData[key]);
+       });
+       setLoading(true);
 
-        try {
-            //const response = await axiosClient.post('business/create-service', data);
-            const response = await axiosClient.post(
-                `/business/create-service`,
-                data,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
-            console.log(response.data);
-            if (response.data.status == 200) {
-                // setMessages({
-                //     success: response.data.message || "",
-                //     error: "",
-                // });
-                toast.success("Service added successfully!");
-                alert("Please Add milestones for your service!");
-            }
-            if (response.data.status == 404)
-                // setMessages({ error: response.data.message });
-            toast.error(response.data.message);
-        } catch (error) {
-            console.log(error);
-            // setMessages({
-            //     success: "",
-            //     error: error.response?.data?.error || "An error occurred",
-            // });
-            toast.error("Failed to add service. Please try again."); // Show error toast
-        }
-        setLoading(false);
-    };
+       try {
+           const response = await axiosClient.post(
+               `/business/create-service`,
+               data,
+               {
+                   headers: {
+                       "Content-Type": "multipart/form-data",
+                   },
+               }
+           );
+
+           // Check for status code and handle accordingly
+           if (response.status === 200) {
+               if (response.data.status === 200) {
+                   toast.success("Service added successfully!");
+                   alert("Please Add milestones for your service!");
+               } else {
+                   // Handle other status codes returned by the backend
+                   toast.error(
+                       response.data.message || "Something went wrong."
+                   );
+               }
+           } else if (response.status === 404) {
+               toast.error("Service not found. Please check your data.");
+           } else if (response.status === 500) {
+               toast.error("Server error. Please try again later.");
+           } else {
+               toast.error(`Unexpected error: ${response.status}`);
+           }
+       } catch (error) {
+           // Network or request error handling
+           console.error(error);
+
+           if (error.response) {
+               // Server responded with an error status
+               if (error.response.status === 400) {
+                   // Bad request error
+                   toast.error(
+                       error.response.data.message || "Invalid data provided."
+                   );
+               } else if (error.response.status === 401) {
+                   // Unauthorized error
+                   toast.error("Unauthorized. Please log in again.");
+               } else if (error.response.status === 422) {
+                   // Validation error
+                   toast.error(
+                       error.response.data.message || "Validation error."
+                   );
+               } else if (error.response.status === 500) {
+                   // Internal server error
+                   toast.error("Server error. Please try again later.");
+               } else {
+                   toast.error(
+                       error.response.data.message || "An error occurred."
+                   );
+               }
+           } else if (error.request) {
+               // No response was received from the server
+               toast.error(
+                   "Network error. Please check your internet connection."
+               );
+           } else {
+               // Other errors like incorrect setup
+               toast.error("An error occurred while setting up the request.");
+           }
+       } finally {
+           setLoading(false);
+       }
+   };
+
 
     const getPlaces = (e) => {
         e.preventDefault();
@@ -423,9 +475,13 @@ const AddService = ({ connected, userId }) => {
                                     Click to upload image
                                 </span>
                             </label>
+                            {formData.image && (
+                                <p className="mt-2 text-gray-600">
+                                    {formData.image.name}
+                                </p>
+                            )}
                         </div>
 
-                        {/* Upload Identification */}
                         <div className="relative">
                             <label className="block mb-1 text-gray-700 text-sm font-semibold">
                                 Upload Identification
@@ -447,9 +503,13 @@ const AddService = ({ connected, userId }) => {
                                     Click to upload identification
                                 </span>
                             </label>
+                            {formData.identification && (
+                                <p className="mt-2 text-gray-600">
+                                    {formData.identification.name}
+                                </p>
+                            )}
                         </div>
 
-                        {/* Upload Document */}
                         <div className="relative">
                             <label className="block mb-1 text-gray-700 text-sm font-semibold">
                                 Upload Document
@@ -471,9 +531,13 @@ const AddService = ({ connected, userId }) => {
                                     Click to upload document
                                 </span>
                             </label>
+                            {formData.document && (
+                                <p className="mt-2 text-gray-600">
+                                    {formData.document.name}
+                                </p>
+                            )}
                         </div>
 
-                        {/* Upload Video */}
                         <div className="relative">
                             <label className="block mb-1 text-gray-700 text-sm font-semibold">
                                 Upload Video
@@ -495,9 +559,13 @@ const AddService = ({ connected, userId }) => {
                                     Click to upload video
                                 </span>
                             </label>
+                            {formData.video && (
+                                <p className="mt-2 text-gray-600">
+                                    {formData.video.name}
+                                </p>
+                            )}
                         </div>
 
-                        {/* Upload Pin */}
                         <div className="relative">
                             <label className="block mb-1 text-gray-700 text-sm font-semibold">
                                 Upload Pin
@@ -519,7 +587,13 @@ const AddService = ({ connected, userId }) => {
                                     Click to upload pin
                                 </span>
                             </label>
+                            {formData.pin && (
+                                <p className="mt-2 text-gray-600">
+                                    {formData.pin.name}
+                                </p>
+                            )}
                         </div>
+
                         <div>
                             <label className="block mb-1 text-gray-700 text-sm font-semibold">
                                 Upload Link
@@ -537,12 +611,14 @@ const AddService = ({ connected, userId }) => {
 
                     <button
                         type="submit"
-                        className={`px-4 py-2 rounded-lg text-white flex  transition ${
+                        className={`px-4 py-2 rounded-lg text-white flex transition ${
                             loading
                                 ? "bg-green/50 cursor-not-allowed"
-                                : "bg-green hover:bg-green-600"
+                                : isButtonActive
+                                ? "bg-green hover:bg-green-600"
+                                : "bg-gray-300 cursor-not-allowed"
                         }`}
-                        disabled={loading}
+                        disabled={loading || !isButtonActive}
                     >
                         {loading ? (
                             <AiOutlineLoading3Quarters className="animate-spin" />

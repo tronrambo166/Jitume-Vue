@@ -73,8 +73,8 @@ return (
             </div>
             <div className="flex justify-between items-center mb-4 mt-2">
                 <h2 className="text-[28px] sm:text-[44px] font-bold text-slate-700 leading-snug sm:leading-tight">
-                    Back the next wave of
-                    <br /> promising startups
+                    Work With The Best
+                    <br /> Business Services Around You
                 </h2>
             </div>
             <div className="flex justify-end space-x-1 mb-2">
@@ -138,16 +138,12 @@ return (
                                   </p>
                               </div>
                               <div className="mt-4 bg-sky-50 p-3 rounded-lg">
-                                  
-                                  
                                   <div className="text-sm text-gray-800 flex justify-between mt-2">
                                       <span>
-                                         <strong>Price: </strong>
+                                          <strong>Price: </strong>
                                       </span>
                                       <span>
-                                           
-                                      
-                                         <strong> ${card.price}</strong>
+                                          <strong> ${card.price}</strong>
                                       </span>
                                   </div>
                               </div>

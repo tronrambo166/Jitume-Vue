@@ -178,10 +178,10 @@ const Search = () => {
 
     return (
         <div className="px-4 sm:px-0 w-full">
-            <div className="flex flex-col bg-white w-full border rounded-xl">
-                <div className="flex flex-row items-center h-12 sm:h-16 w-full">
+            <div className="flex flex-col bg-white w-full  ">
+                <div className="flex flex-col sm:flex-row items-center h-auto sm:h-16 w-full">
                     {/* Select Category */}
-                    <div className="relative flex items-center h-full w-1/4 bg-gray-100 rounded-l-xl border-r">
+                    <div className="relative flex items-center h-12 sm:h-full w-full sm:w-1/4 bg-gray-100  sm:rounded-l-xl border mb-1 sm:mb-0">
                         <select
                             ref={categoryRef}
                             value={categoryValue}
@@ -195,7 +195,7 @@ const Search = () => {
                     </div>
 
                     {/* Location Input */}
-                    <div className="relative w-1/4 h-full border-r">
+                    <div className="relative w-full sm:w-1/4 h-12 sm:h-full border  mb-1 sm:mb-0">
                         <FaMapMarkerAlt className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-lg" />
                         <input
                             onKeyUp={getPlaces}
@@ -207,10 +207,10 @@ const Search = () => {
                         />
                         <div
                             id="result_list2"
-                            className="absolute w-full max-w-md bg-white border-gray-300 border-t-0 rounded-b-md shadow-lg z-10 top-full"
+                            className="absolute w-full bg-white border-gray-300 border-t-0 rounded-b-md shadow-lg z-10 top-full"
                         >
                             {suggestions.length > 0 && (
-                                <ul className="bg-white border border-gray-200 rounded-lg w-full mt-1 max-h-40 overflow-y-auto">
+                                <ul className="bg-white border border-gray-200  w-full mt-1 max-h-40 overflow-y-auto">
                                     {suggestions.map((suggestion, index) => (
                                         <li
                                             key={index}
@@ -233,7 +233,7 @@ const Search = () => {
                     </div>
 
                     {/* What are you looking for Input */}
-                    <div className="relative w-1/2 h-full border-r">
+                    <div className="relative w-full sm:w-1/2 h-12 sm:h-full border  mb-1 sm:mb-0">
                         <FaSearch className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-lg" />
                         <input
                             ref={nameRef}
@@ -248,7 +248,7 @@ const Search = () => {
                     {/* Search Button */}
                     <button
                         onClick={Search}
-                        className="bg-[#FDE047] text-black h-full px-12 rounded-r-xl"
+                        className="bg-[#FDE047] text-black h-12 sm:h-full px-14 rounded-lg sm:rounded-r-xl sm:rounded-l-none w-full sm:w-auto"
                     >
                         Search
                     </button>
