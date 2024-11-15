@@ -20,6 +20,11 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {   
         //if(Auth::check()) return 'yes'; else return 'no';
+        if(!$request->browserLoginCheck)
+        return response([
+                'error' => '401! Unauthorized.',
+            ]);
+
         $data = $request->validated();
         if(!Auth::attempt($data)){
             return response([
@@ -27,6 +32,7 @@ class AuthController extends Controller
                 'auth' => Auth::check()
             ]);
         }
+
         $user = Auth::user(); 
         $token = $user->createToken('main')->plainTextToken; 
 

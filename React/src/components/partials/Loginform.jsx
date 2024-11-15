@@ -61,6 +61,7 @@ const LoginForm = () => {
         const payload = {
             email: emailRef.current.value,
             password: passwordRef.current.value,
+            browserLoginCheck: 1,
         };
 
         try {
@@ -72,6 +73,10 @@ const LoginForm = () => {
                 const userName = `${data.user.fname} ${data.user.lname}`;
                 toast.success(`Login successful! Welcome, ${userName}`);
                 // alert(`Login successful! Welcome, ${userName}`);
+                $.alert({
+                title: "Welcome",
+                content: "You're Logged in!",
+                });
 
                 // Update user and token states
                 setUser(data.user);
@@ -168,6 +173,8 @@ const LoginForm = () => {
                         {serverError}
                     </p>
                 )}
+
+                
                 <button
                     type="submit"
                     className={`px-4 py-2 rounded-full text-white flex items-center justify-center transition ${

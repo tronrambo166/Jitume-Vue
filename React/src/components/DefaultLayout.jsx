@@ -10,9 +10,10 @@ import Nav2 from "./Landing-page/global/Nav2";
 import NavbarGuest from "./partials/NavbarGuest";
 import Navbar_old from "./partials/Navbar";
 import PaymentHero from "./Heros/PaymentHero";
+import { useIdleTimer } from "react-idle-timer";
 
 export default function DefaultLayout() {
-    const { token } = useStateContext();
+    const { token, setToken } = useStateContext();
     const location = useLocation();
     const isDashboardRoute = location.pathname.startsWith("/dashboard");
     const isHome = location.pathname === "/home";
@@ -30,6 +31,27 @@ export default function DefaultLayout() {
             location.pathname === path ||
             location.pathname.startsWith(`${path}/`)
     );
+
+
+    //setToken(null);
+  const FIVE_MINS = 1 * 60 * 1000;
+  const GENERAL_DEBOUNCE_TIME = 500;
+   // SET USER IDEAL TIME WITH DEBOUNCE
+   const handleOnUserIdle = () =>{
+    sessionStorage.clear();
+    setToken(null);
+    $.alert({
+                title: "Please log in!",
+                content: "You're Logged out.",
+                });
+  }
+  if(token)
+  useIdleTimer({
+    timeout: FIVE_MINS, // time in millisecond
+    onIdle: handleOnUserIdle,
+    debounce: GENERAL_DEBOUNCE_TIME, // time in millisecond
+  });
+
 
     return (
         <div id="defaultLayout" className="relative z-20">

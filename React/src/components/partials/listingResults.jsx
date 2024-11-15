@@ -475,8 +475,6 @@ const ListingResults = () => {
                                                     row.tags || [
                                                         "example",
                                                         "dummy",
-                                                        "placeholder",
-                                                        "sample",
                                                     ]
                                                 ).map((tag) => (
                                                     <span

@@ -43,9 +43,9 @@ const CategoryPage = ({ categoryName }) => {
     useEffect(() => {
         const categoryResults = () => {
             axiosClient
-                .get("/ServiceResults/" + name)
+                .get("/categoryResults/" + name)
                 .then(({ data }) => {
-                    setCards(data.data);
+                    setCards(data.services);
                     //res = data.data;
                     console.log(data);
                 })
@@ -131,32 +131,29 @@ const CategoryPage = ({ categoryName }) => {
                                     className="w-full h-40 sm:h-48 object-cover rounded-lg"
                                 />
                                 <p className="text-sm sm:text-base mt-2 mb-2 font-semibold text-[#1E293B]">
-                                    #Motorcycle Transport #Bikes
+                                    #{card.category}
                                 </p>
                                 <div className="mt-3 flex-grow">
                                     <h2 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold">
                                         {card.name}
                                     </h2>
                                     <p className="text-sm sm:text-base text-gray-500">
-                                        {card.contact ||
-                                            "Contact not available"}
+                                        {card.contact_mail ||
+                                            "N/A"}
                                     </p>
                                     <p className="text-sm sm:text-base text-gray-500">
                                         {card.location ||
                                             "Location not available"}
                                     </p>
                                     <p className="text-sm sm:text-base text-gray-600 mt-2">
-                                        Lorem ipsum dolor sit amet consectetur.
-                                        Eu quis vel pellentesque ullamcorper
-                                        donec lorem auctor egestas adipiscing.
+                                        {card.details}
                                     </p>
                                     <p className="text-black space-x-2 font-semibold mt-2">
                                         <span className="text-[#15803D]">
-                                            {" "}
-                                            $5000
+                                            ${card.price}
                                         </span>
                                         <span className="text-[#1E293B] jakarta">
-                                            Amount Requested:
+                                            /Price
                                         </span>
                                     </p>
                                 </div>
