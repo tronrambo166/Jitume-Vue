@@ -1,7 +1,6 @@
 import {
     FaUser,
     FaCog,
-    FaBell,
     FaWrench,
     FaEnvelope,
     FaCopy,
@@ -14,6 +13,9 @@ import { useEffect, useState } from "react";
 import axiosClient from "../../axiosClient";
 import { useStateContext } from "../../contexts/contextProvider";
 import NotificationBell from "./NotificationBell";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Dashboardhero = () => {
     const { token, setToken } = useStateContext();
@@ -21,7 +23,26 @@ const Dashboardhero = () => {
 
     const [user, setUser] = useState({});
     const [id, setId] = useState("");
+    const [loading, setLoading] = useState(true); // Full-page loader state
 
+    // Custom notification function
+    const customNotify = (message, type = "info") => {
+        switch (type) {
+            case "success":
+                toast.success(message, { position: "top-right" });
+                break;
+            case "error":
+                toast.error(message, { position: "top-right" });
+                break;
+            case "warning":
+                toast.warning(message, { position: "top-right" });
+                break;
+            default:
+                toast.info(message, { position: "top-right" });
+        }
+    };
+
+    // Fetch user data
     useEffect(() => {
         axiosClient
             .get("/checkAuth")
@@ -29,20 +50,38 @@ const Dashboardhero = () => {
                 setUser(data.user);
                 setId(data.user.id);
             })
-            .catch(console.error);
+            .catch(() => {
+                customNotify("Failed to load user data. Redirecting...", "error");
+                navigate("/");
+            })
+            .finally(() => setLoading(false));
     }, []);
 
+    // Handle logout
     const onLogout = (ev) => {
         ev.preventDefault();
+        setLoading(true);
         axiosClient
             .get("/logout")
             .then(() => {
                 setUser(null);
                 setToken(null);
+                customNotify("Logged out successfully!", "success");
                 navigate("/"); // Redirect to the guest layout
             })
-            .catch(console.error);
+            .catch(() => {
+                customNotify("Failed to log out. Please try again.", "error");
+            })
+            .finally(() => setLoading(false));
     };
+
+    if (loading) {
+        return (
+            <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
+                <ClipLoader color="#1e3a8a" size={70} />
+            </div>
+        );
+    }
 
     return (
         <div
