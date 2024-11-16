@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosClient from "../../axiosClient";
 import { useStateContext } from "../../contexts/contextProvider";
+import NotificationBell from "./NotificationBell";
 
 const Dashboardhero = () => {
     const { token, setToken } = useStateContext();
@@ -73,7 +74,7 @@ const Dashboardhero = () => {
                         <span>Sign out</span>
                     </div>
                     <FaCog className="text-white" />
-                    <FaBell className="text-white" />
+                    <NotificationBell />
                 </div>
             </div>
 
@@ -95,7 +96,7 @@ const Dashboardhero = () => {
                                 </h3>
                             </div>
                         </div>
-                        <div className="flex text-sm md:text-[13px] gap-4 flex-wrap items-center">
+                        <div className="flex mt-5 text-sm md:text-[13px] gap-4 flex-wrap items-center">
                             <Link
                                 to=""
                                 className="flex items-center hover:text-green gap-1"

@@ -162,7 +162,7 @@ const Navbar = () => {
                             {isServicePage ? (
                                 token ? (
                                     <a
-                                        href="/dashboard"
+                                        href="/dashboard/add-service"
                                         className="group relative hover:text-white"
                                     >
                                         Add Your Services
@@ -179,7 +179,7 @@ const Navbar = () => {
                                 )
                             ) : token ? (
                                 <a
-                                    href="/dashboard"
+                                    href="/dashboard/addbusiness"
                                     className="group relative hover:text-white"
                                 >
                                     Add Your Business
@@ -235,7 +235,7 @@ const Navbar = () => {
                     ) : (
                         <button
                             onClick={() => setIsAuthModalOpen(true)}
-                            className="bg-white py-2 hover:bg-green-400 hover:text-green-100 rounded-[8px] text-[13px] px-5 text-[#0F172A] font-semibold"
+                            className="bg-white py-2 hover:bg-yellow-400 hover:text-black rounded-[8px] text-[13px] px-5 text-[#0F172A] font-semibold"
                         >
                             Sign In
                         </button>

@@ -1,6 +1,7 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import axiosClient from "../../axiosClient"; // Assuming you have axios setup
 import { useNavigate } from "react-router-dom";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Imge4 from "../../assets/image4.png";
 import Image6 from "../../assets/image6.png";
 import accountman from "../../assets/accountman.png";
@@ -11,9 +12,12 @@ import consistentence from "../../assets/consistence.png";
 
 const WhyChoose = () => {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
-    const handleBrowseBusinesses = (e) => {
+    const handleBrowseBusinesses = async (e) => {
         e.preventDefault();
+        setLoading(true); // Show spinner
+
         const payload = {
             location: "",
             category: "",
@@ -24,36 +28,34 @@ const WhyChoose = () => {
 
         console.log("Browse Businesses clicked with payload:", payload);
 
-        // Call the search endpoint with no specific parameters
-        axiosClient
-            .post("/search", payload)
-            .then(({ data }) => {
-                let ids = "";
-                console.log(data);
-                Object.entries(data.results).forEach((entry) => {
-                    const [index, row] = entry;
-                    ids = ids + row.id + ",";
-                });
-                if (!ids) ids = 0;
+        try {
+            const { data } = await axiosClient.post("/search", payload);
 
-                sessionStorage.setItem("queryLat", "");
-                sessionStorage.setItem("queryLng", "");
-
-                navigate(
-                    "/listingResults/" + base64_encode(ids) + "/" + data.loc
-                );
-
-                if (window.location.pathname.includes("listingResults"))
-                    window.location.reload();
-            })
-            .catch((err) => {
-                console.log(err);
-                const response = err.response;
-                if (response && response.status === 422) {
-                    console.log(response.data.errors);
-                }
-                console.log(err);
+            let ids = "";
+            console.log(data);
+            Object.entries(data.results).forEach(([index, row]) => {
+                ids += `${row.id},`;
             });
+
+            if (!ids) ids = 0;
+
+            sessionStorage.setItem("queryLat", "");
+            sessionStorage.setItem("queryLng", "");
+
+            navigate(`/listingResults/${base64_encode(ids)}/${data.loc}`);
+
+            if (window.location.pathname.includes("listingResults")) {
+                window.location.reload();
+            }
+        } catch (err) {
+            console.error(err);
+            const response = err.response;
+            if (response && response.status === 422) {
+                console.log(response.data.errors);
+            }
+        } finally {
+            setLoading(false); // Hide spinner
+        }
     };
 
     const base64_encode = (str) => {
@@ -70,8 +72,7 @@ const WhyChoose = () => {
                     </span>
                     <h2 className="text-slate-700 text-2xl md:text-3xl font-bold font-sharp-grotesk mb-5">
                         Why Jitume is the right <br /> choice for your
-                        investment
-                        <br /> goals
+                        investment <br /> goals
                     </h2>
                     <p className="text-base md:text-lg text-gray-600 mb-2">
                         Some important facilities to consider including are:
@@ -142,9 +143,15 @@ const WhyChoose = () => {
                 {/* Button */}
                 <button
                     onClick={handleBrowseBusinesses}
-                    className="mt-6 w-[192px] h-[44px] px-[24px] py-[8px] gap-[8px] bg-green-800 text-white rounded-lg shadow-lg hover:bg-green-700 transition-opacity duration-300"
+                    disabled={loading}
+                    className={`mt-6 w-[192px] h-[44px] px-[24px] py-[8px] gap-[8px] bg-green-800 text-white rounded-lg shadow-lg hover:bg-green-700 transition-opacity duration-300 flex items-center justify-center ${
+                        loading ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                 >
-                    Browse Businesses
+                    {loading && (
+                        <AiOutlineLoading3Quarters className="animate-spin mr-2" />
+                    )}
+                    {loading ? "Loading..." : "Browse Businesses"}
                 </button>
             </div>
 

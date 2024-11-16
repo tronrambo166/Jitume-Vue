@@ -38,7 +38,7 @@ const TopCards = () => {
                 {cards.map((card) => (
                     <div
                         key={card.id}
-                        className="rounded-lg shadow-lg w-[90%] sm:w-[380px] mx-auto sm:mx-0 relative hover:shadow-xl transition duration-300"
+                        className="rounded-lg shadow-lg w-[90%] sm:w-[380px] mx-auto sm:mx-0 relative hover:shadow-xl transition duration-300 cursor-pointer" // Added cursor-pointer
                         onClick={() => handleCardClick(card.category)} // Add onClick handler
                     >
                         <img
@@ -60,5 +60,4 @@ const TopCards = () => {
         </div>
     );
 };
-
 export default TopCards;

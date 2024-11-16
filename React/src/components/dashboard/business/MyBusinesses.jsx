@@ -71,7 +71,7 @@ const MyBusinesses = () => {
     };
 
     return (
-        <div className="bg-white shadow-md mt-20 rounded-xl w-full px-4 py-6 sm:px-8">
+        <div className="bg-white border mt-20 rounded-xl w-full px-4 py-6 sm:px-8">
             <ToastContainer/>
            
 
@@ -84,22 +84,22 @@ const MyBusinesses = () => {
                     {business.length>0 &&
                         <thead className="bg-gray-100">
                         <tr className="text-gray-500">
-                            <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium uppercase tracking-wider">
+                            <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
                                 Name
                             </th>
-                            <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium uppercase tracking-wider">
+                            <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
                                 Category
                             </th>
-                            <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium uppercase tracking-wider">
+                            <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
                                 Amount Required
                             </th>
-                            <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium uppercase tracking-wider">
+                            <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
                                 Details
                             </th>
-                            <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium uppercase tracking-wider">
+                            <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
                                 Contact
                             </th>
-                            <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-medium uppercase tracking-wider">
+                            <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
                                 Action
                             </th>
                         </tr>

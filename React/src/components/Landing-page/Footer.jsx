@@ -9,6 +9,7 @@ import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 import x from "../../images/x2.png";
 import linkedin from "../../images/linkedin.png";
 import down from '../../images/down.png'; // Include your dropdown arrow image
+import FindBusinessBtn from './FindBusinessBtn';
 
 const Footer = () => {
   const [openDropdown, setOpenDropdown] = useState(null); // State to track which dropdown is open
@@ -40,9 +41,10 @@ const Footer = () => {
                   <p className="text-center md:text-left text-[20px] md:text-[40px] text-white w-full md:w-[670px] leading-[28px] md:leading-[45px]">
                       Explore endless investment opportunities.
                   </p>
-                  <button className="px-6 md:px-8 py-3 md:py-4 font-semibold rounded-lg text-[#FFFFFF] text-[10px] md:text-[12px] hover:bg-green-600 bg-[#22C55E]">
+                  {/* <button className="px-6 md:px-8 py-3 md:py-4 font-semibold rounded-lg text-[#FFFFFF] text-[10px] md:text-[12px] hover:bg-green-600 bg-[#22C55E]">
                       Find a business
-                  </button>
+                  </button> */}
+                  <FindBusinessBtn/>
               </div>
 
               {/* Right Image */}

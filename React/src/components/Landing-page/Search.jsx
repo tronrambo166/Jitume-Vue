@@ -264,7 +264,7 @@ const Search = () => {
                             type="text"
                             placeholder="Location"
                             ref={locationInputRef}
-                            className="border rounded-xl h-full focus:outline-none w-full pl-8"
+                            className="border  h-full focus:outline-none w-full pl-8"
                             // value={location}
                             // onChange={handleLocationChange}
                         />
@@ -301,7 +301,7 @@ const Search = () => {
                         <input
                             type="text"
                             placeholder="What are you looking for?"
-                            className="border rounded-xl h-full focus:outline-none w-full pl-8"
+                            className="border  h-full focus:outline-none w-full pl-8"
                             ref={nameRef}
                             value={nameValue} // controlled value
                             onChange={handleNameChange}
@@ -311,7 +311,7 @@ const Search = () => {
                     {/* Search Button */}
                     <button
                         onClick={onSearch}
-                        className="bg-[#FDE047] text-black rounded-lg h-12 sm:h-full py-3 px-10 w-full sm:w-auto md:h-full md:px-12 md:rounded-r-xl"
+                        className="bg-[#FDE047] text-black h-12 sm:h-full px-14 rounded-lg sm:rounded-r-xl sm:rounded-l-none w-full sm:w-auto"
                     >
                         Search
                     </button>

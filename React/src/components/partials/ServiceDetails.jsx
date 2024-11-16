@@ -39,7 +39,7 @@ const ServiceDetails = () => {
     const [booked, setBooked] = useState("");
     const [allowToReview, setallowToReview] = useState(false);
     const [Contactmodal, setContactmodal] = useState("");
-    
+
     const [showCalendar, setShowCalendar] = useState(false); // State to show/hide the calendar
     const [selectedDate, setSelectedDate] = useState(""); // State to store the selected date
 
@@ -70,8 +70,8 @@ const ServiceDetails = () => {
         setShowCalendar(false); // Hide calendar after selecting a date
     };
 
-     const [reviewData, setReviewData] = useState([]);
-     const reviews = reviewData; //[
+    const [reviewData, setReviewData] = useState([]);
+    const reviews = reviewData; //[
     //     {
     //         id: 1,
     //         name: "Leslie Alexander",
@@ -513,14 +513,14 @@ const ServiceDetails = () => {
                                         onClick={setContactmodal}
                                         className="border hover:bg-green-900 py-2 bg-green text-white whitespace-nowrap rounded-md px-6"
                                     >
-                                        Contact me
+                                        Contact Me
                                     </button>
                                 ) : (
                                     <button
                                         onClick={handleAuthModalOpen}
-                                        className="border hover:bg-green-900 py-2 bg-green whitespace-nowrap rounded-md px-6"
+                                        className="border hover:bg-green-900 py-3 bg-green text-white  whitespace-nowrap rounded-md px-6"
                                     >
-                                        Contact me
+                                        Contact Me
                                     </button>
                                 )}
                             </div>
@@ -641,8 +641,8 @@ const ServiceDetails = () => {
                             <div className="md:w-[330px] max-w-lg p-4 border rounded-lg ">
                                 {/* Desired Start Date Section */}
                                 <div className="mb-4">
-                                    <label className="block text-sm font-semibold mb-3">
-                                        Desired start date:
+                                    <label className="block text-sm font-semibold mb-3 ">
+                                        Desired Start Date:
                                     </label>
 
                                     {/* Calendar stays visible */}
@@ -678,14 +678,14 @@ const ServiceDetails = () => {
                                     {!token ? (
                                         <button
                                             onClick={handleAuthModalOpen}
-                                            className="btn-primary w-full py-2 mt-3 rounded-xl" // Made button full width
+                                            className="btn-primary w-full py-3 mt-3 rounded-xl" // Made button full width
                                         >
                                             Book Now
                                         </button>
                                     ) : (
                                         <button
                                             onClick={book}
-                                            className="btn-primary font-semibold w-full h-12 mt-3 whitespace-nowrap rounded-md"
+                                            className="btn-primary font-semibold w-full py-3  h-12 mt-3 whitespace-nowrap rounded-md"
                                         >
                                             Book Now
                                         </button>

@@ -47,98 +47,9 @@ const ServiceTable = () => {
     return (
         <div className="py-4">
             {/* My Investments Section */}
-            <section className="bg-white shadow-md rounded-lg mb-6 p-4">
-                {myInvest.length > 0 && (
-                    <h1 className="text-[#2D3748] font-semibold text-xl mb-3">
-                        My Investments
-                    </h1>
-                )}
-                {myInvest.length > 0 && (
-                    <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-100">
-                                <tr className="text-gray-500">
-                                    <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                        Name
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                        Category
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                        Value Needed
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                        Details
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                        Contact
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                        Business Share
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                        My Share
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                        Image
-                                    </th>
-                                    <th className="px-4 py-2 text-center text-xs font-medium uppercase tracking-wider">
-                                        Action
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
-                                {myInvest.map((item, index) => (
-                                    <tr key={index}>
-                                        <td className="px-4 py-2 text-sm">
-                                            {item.name}
-                                        </td>
-                                        <td className="px-4 py-2 text-sm">
-                                            {item.category}
-                                        </td>
-                                        <td className="px-4 py-2 text-sm">
-                                            {item.investment_needed}
-                                        </td>
-                                        <td className="px-4 py-2 text-sm">
-                                            {item.details}
-                                        </td>
-                                        <td className="px-4 py-2 text-sm">
-                                            {item.contact}
-                                        </td>
-                                        <td className="px-4 py-2 text-sm">
-                                            {item.share}%
-                                        </td>
-                                        <td className="px-4 py-2 text-sm">
-                                            {item.myShare.toFixed()}%
-                                        </td>
-                                        <td className="px-4 py-2 text-sm">
-                                            <img
-                                                className="w-10 h-10 rounded-lg"
-                                                src={"../" + item.image}
-                                                alt="Service"
-                                            />
-                                        </td>
-                                        <td className="px-4 py-2 text-center text-sm">
-                                            <Link
-                                                to={`/business-milestones/${btoa(
-                                                    btoa(item.id)
-                                                )}`}
-                                            >
-                                                <button className="text-green-500 border border-green-500 rounded-lg py-1 px-3 text-xs">
-                                                    View milestones
-                                                </button>
-                                            </Link>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
-            </section>
 
             {/* My Services Section */}
-            <section className="bg-white shadow-md rounded-lg mb-6 px-10 py-6 ">
+            <section className="bg-white border rounded-lg mb-6 px-10 py-6 ">
                 <h1 className="text-[#2D3748] font-semibold text-xl mb-3">
                     My Services
                 </h1>
@@ -222,6 +133,99 @@ const ServiceTable = () => {
                         </tbody>
                     </table>
                 </div>
+            </section>
+            <section className="bg-white border rounded-lg mb-6 p-4">
+                {myInvest.length > 0 ? (
+                    <>
+                        <h1 className="text-[#2D3748] font-semibold text-xl mb-3">
+                            My Investments
+                        </h1>
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full divide-y divide-gray-200">
+                                <thead className="bg-gray-100">
+                                    <tr className="text-gray-500">
+                                        <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
+                                            Name
+                                        </th>
+                                        <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
+                                            Category
+                                        </th>
+                                        <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
+                                            Value Needed
+                                        </th>
+                                        <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
+                                            Details
+                                        </th>
+                                        <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
+                                            Contact
+                                        </th>
+                                        <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
+                                            Business Share
+                                        </th>
+                                        <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
+                                            My Share
+                                        </th>
+                                        <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
+                                            Image
+                                        </th>
+                                        <th className="px-4 py-2 text-center text-xs font-medium uppercase tracking-wider">
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                    {myInvest.map((item, index) => (
+                                        <tr key={index}>
+                                            <td className="px-4 py-2 text-sm">
+                                                {item.name}
+                                            </td>
+                                            <td className="px-4 py-2 text-sm">
+                                                {item.category}
+                                            </td>
+                                            <td className="px-4 py-2 text-sm">
+                                                {item.investment_needed}
+                                            </td>
+                                            <td className="px-4 py-2 text-sm">
+                                                {item.details}
+                                            </td>
+                                            <td className="px-4 py-2 text-sm">
+                                                {item.contact}
+                                            </td>
+                                            <td className="px-4 py-2 text-sm">
+                                                {item.share}%
+                                            </td>
+                                            <td className="px-4 py-2 text-sm">
+                                                {item.myShare.toFixed()}%
+                                            </td>
+                                            <td className="px-4 py-2 text-sm">
+                                                <img
+                                                    className="w-10 h-10 rounded-lg"
+                                                    src={"../" + item.image}
+                                                    alt="Service"
+                                                />
+                                            </td>
+                                            <td className="px-4 py-2 text-center text-sm">
+                                                <Link
+                                                    to={`/business-milestones/${btoa(
+                                                        btoa(item.id)
+                                                    )}`}
+                                                >
+                                                    <button className="text-green-500 border border-green-500 rounded-lg py-1 px-3 text-xs">
+                                                        View milestones
+                                                    </button>
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </>
+                ) : (
+                    <div className="text-gray-500 text-center">
+                        You have no investments.
+                    </div>
+                )}
             </section>
 
             {/* My Businesses Section */}
