@@ -16,7 +16,7 @@ import NotificationBell from "./NotificationBell";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
-
+import Breadcrumb from "./Breadcrumb";
 const Dashboardhero = () => {
     const { token, setToken } = useStateContext();
     const navigate = useNavigate();
@@ -90,9 +90,7 @@ const Dashboardhero = () => {
         >
             <div className="flex justify-between items-center flex-wrap">
                 <div className="mb-4 md:mb-0">
-                    <h1 className="text-white text-sm md:text-base">
-                        Pages / Dashboard
-                    </h1>
+                    <Breadcrumb />
                     <h2 className="text-white font-semibold text-base md:text-lg">
                         Dashboard
                     </h2>
