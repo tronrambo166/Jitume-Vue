@@ -9,7 +9,7 @@ function AccountPage() {
   const navigate = useNavigate();
   
   const connectToStripe = () => {
-    window.location.href = `http://127.0.0.1:8000/connect/${user_id}`;
+    window.location.href = `https://test.jitume.com/connect/${user_id}`;
   };
 
   const [details, setDetails] = useState([]);
