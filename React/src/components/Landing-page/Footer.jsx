@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from "react-router-dom";
 import bannerImage from '../../images/bannerbg.png'; 
 import rightImage from '../../images/bannerbg2.png'; 
 import logo2 from '../../images/Mask group.png';
@@ -103,9 +104,9 @@ const Footer = () => {
                                           <>
                                               {/* <li>Investment projects</li> */}
                                               {/* <li>Investor returns</li> */}
-                                              <li>Due diligence charter</li>
-                                              <li>Help center</li>
-                                              <li>What is Jitume</li>
+                                              <li><Link to={'/due-diligence'} > Due diligence charter </Link></li>
+                                              <li><Link to={'/help-center'} > Help center </Link></li>
+                                              <li><Link to={'/what-is-jitume'} > What is Jitume </Link></li>
                                               {/* <li>Funded community</li> */}
                                           </>
                                       )}
@@ -115,14 +116,17 @@ const Footer = () => {
                                               {/* <li>Early funding</li> */}
                                               {/* <li>Growth funding</li> */}
                                               {/* <li>Funded community</li> */}
-                                              <li>Knowledge hub</li>
-                                              <li>Refer a business</li>
+                                              <li><Link to={'/knowledge-hub'} > Knowledge hub </Link></li>
+                                              <li><Link to={'/refer-a-business'} > Refer a business </Link></li>
                                           </>
                                       )}
                                       {title === "About Us" && (
                                           <>
-                                              <li>Careers</li>
-                                              <li>Partner with us</li>
+                                        <li>
+                                        <Link to={'/careers'} > Careers </Link>
+                                        </li>
+                                              
+                                              <li><Link to={'/partner-with-jitume'} > Partner with us </Link></li>
                                               {/* <li>News</li> */}
                                               {/* <li>Press</li> */}
                                           </>

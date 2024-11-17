@@ -541,6 +541,16 @@ return response()->json([ 'data' => $results, 'services' => $services] );
 }
 
 
+public function categoryCount(){
+//$name = str_replace('-','/',$name);
+//$name = str_replace('_',' ',$name);
+$listing = Listing::groupBy('category')->select('category', DB::raw('count(*) as total'))->get();
+return response()->json([ 'data' => $listing ] );
+}
+
+
+
+
 public function equipments($id){
 
     $Equipment = Equipments::where('listing_id',$id)->get();

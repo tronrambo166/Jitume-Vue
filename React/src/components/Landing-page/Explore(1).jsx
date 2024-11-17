@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { decode as base64_decode, encode as base64_encode } from "base-64";
+import axiosClient from "../../axiosClient";
 import e1 from "../../assets/E1.png";
 import e2 from "../../assets/E2.png";
 import e3 from "../../assets/E3.png";
@@ -11,21 +14,94 @@ import e9 from "../../assets/E9.png";
 import e10 from "../../assets/E10.png";
 
 const categories = [
-  { name: "Real Estate", count: 41, color: "bg-blue-50", icon: e1 },
-  { name: "Education", count: 7, color: "bg-[#F3F8FE]", icon: e2 },
-  { name: "Real Estate", count: 41, color: "bg-red-50", icon: e3 },
-  { name: "Real Estate", count: 41, color: "bg-gray-100", icon: e4 },
-  { name: "Real Estate", count: 41, color: "bg-yellow-50", icon: e5 },
-  { name: "Lore Ipsum", count: 41, color: "bg-gray-100", icon: e6 },
-  { name: "Real Estate", count: 41, color: "bg-red-50", icon: e7 },
-  { name: "Real Estate", count: 41, color: "bg-yellow-50", icon: e8 },
-  { name: "Real Estate", count: 41, color: "bg-blue-50", icon: e9 },
-  { name: "Real Estate", count: 41, color: "bg-purple-50", icon: e10 },
-  { name: "Real Estate", count: 41, color: "bg-gray-100", icon: e1 },
-  { name: "Real Estate", count: 41, color: "bg-red-50", icon: e2 },
+  { name: "Agriculture", count: 0, color: "bg-blue-50", icon: e1 },
+  { name: "Renewable Energy", count: 0, color: "bg-[#F3F8FE]", icon: e2 },
+  { name: "Arts/Culture", count: 0, color: "bg-red-50", icon: e3 },
+  { name: "Auto", count: 0, color: "bg-gray-100", icon: e4 },
+  { name: "Domestic (HomeHelp-etc)", count: 0, color: "bg-yellow-50", icon: e5 },
+  { name: "Fashion", count: 0, color: "bg-gray-100", icon: e6 },
+  { name: "Finance/Accounting", count: 0, color: "bg-red-50", icon: e7 },
+  { name: "Food", count: 0, color: "bg-yellow-50", icon: e8 },
+  { name: "Legal", count: 0, color: "bg-blue-50", icon: e9 },
+  { name: "Media/Internet", count: 0, color: "bg-purple-50", icon: e10 },
+  { name: "Pets", count: 0, color: "bg-gray-100", icon: e1 },
+  { name: "Real Estate", count: 0, color: "bg-red-50", icon: e2 },
+  { name: "Security", count: 0, color: "bg-red-50", icon: e2 },
+  { name: "Sports/Gaming", count: 0, color: "bg-red-50", icon: e2 },
+  { name: "Technology/Communications", count: 0, color: "bg-red-50", icon: e2 },
+  { name: "Other", count: 0, color: "bg-red-50", icon: e2 },
 ];
 
+
 const Explore = () => {
+
+const [checkCat, setcheckCat] = useState(false);
+const navigate = useNavigate();
+
+  useEffect(() => {
+        const getCards = async () => {
+                  axiosClient
+                .get("/categoryCount")
+                .then(({ data }) => {
+                    //setCat(data.data);
+                    for (const [key, value] of Object.entries(data.data)) {
+                      for (const [key, value2] of Object.entries(categories)) {
+                        if(value.category == value2.name)
+                          value2.count = value.total;
+                      }
+                      setcheckCat(true);
+                    }
+                    console.log(categories);
+
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+        getCards();
+    }, []);
+
+
+      const onSearch = (e) => {
+        e.preventDefault();
+        let ids = "";
+        const payload = {
+            location: '',
+            category: '',
+            listing_name: '', // use state
+            lat: '',
+            lng: '',
+        };
+        console.log(payload);
+        axiosClient
+            .post("/search", payload)
+            .then(({ data }) => {
+                console.log(data);
+                Object.entries(data.results).forEach((entry) => {
+                    const [index, row] = entry;
+                    ids = ids + row.id + ",";
+                }); //console.log(ids);
+                if (!ids) ids = 0;
+
+                sessionStorage.setItem("queryLat", payload.lat);
+                sessionStorage.setItem("queryLng", payload.lng);
+                navigate(
+                    "/listingResults/" + base64_encode(ids) + "/" + data.loc
+                );
+
+                if (locationUrl.pathname.includes("listingResults"))
+                    window.location.reload();
+            })
+            .catch((err) => {
+                console.log(err);
+                const response = err.response;
+                if (response && response.status === 422) {
+                    console.log(response.data.errors);
+                }
+                console.log(err);
+            });
+    };
+
   return (
     <div className="flex flex-col items-center py-8 sm:py-12 mb-20 ">
       <div className="mb-2 sm:mb-0">
@@ -37,7 +113,7 @@ const Explore = () => {
         Exploring the latest categories<br></br> of business trends
       </h1>
       <div className="grid mx-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4 sm:gap-5 mb-6 px-2 sm:px-4 md:px-0">
-        {categories.map((category, index) => (
+        {checkCat && categories.map((category, index) => (
           <div
             key={index}
             className={`flex items-center p-4 rounded-md  ${category.color}`}
@@ -58,7 +134,7 @@ const Explore = () => {
           </div>
         ))}
       </div>
-      <button className="px-4 sm:px-6 py-2 bg-green-800 hover:bg-green-700  text-white rounded-xl text-sm sm:mt-9 sm:text-lg shadow-lg hover:opacity-80 transition-opacity duration-300">
+      <button onClick={onSearch} className="px-4 sm:px-6 py-2 bg-green-800 hover:bg-green-700  text-white rounded-xl text-sm sm:mt-9 sm:text-lg shadow-lg hover:opacity-80 transition-opacity duration-300">
         Explore 30+ Businesses
       </button>
     </div>

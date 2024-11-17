@@ -40,6 +40,15 @@ import MyBookings from "./components/dashboard/Service/Mybookings";
 import AddBusinesS from "./components/dashboard/business/AddBusiness";
 import ServiceCategory from "./components/partials/ServiceCategory";
 
+// Footer Components
+import Careers from "./components/footer-pages/Careers";
+import ReferAbusiness from "./components/footer-pages/ReferAbusiness";
+import HelpCenter from "./components/footer-pages/HelpCenter";
+import KnowledgeHub from "./components/footer-pages/KnowledgeHub";
+import Partner from "./components/footer-pages/Partner";
+import WhatIsJitume from "./components/footer-pages/WhatIsJitume";
+import DueDiligence from "./components/footer-pages/DueDiligence";
+
 const router = createBrowserRouter([
     {
         path: "/",
@@ -92,6 +101,16 @@ const router = createBrowserRouter([
             { path: "/register", element: <Register /> },
             { path: "/login", element: <Login /> },
             { path: "/user-form", element: <UserForm /> },
+
+            //FOOTER
+            { path: "/careers", element: <Careers /> },
+            { path: "/refer-a-business", element: <ReferAbusiness /> },
+            { path: "/help-center", element: <HelpCenter /> },
+            { path: "/knowledge-hub", element: <KnowledgeHub /> },
+            { path: "/partner-with-jitume", element: <Partner /> },
+            { path: "/what-is-jitume", element: <WhatIsJitume /> },
+            { path: "/due-diligence", element: <DueDiligence /> },
+            
         ],
     },
     {

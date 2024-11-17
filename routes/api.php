@@ -170,6 +170,9 @@ Route::get('latServices', [PagesController::class, 'latServices'])->name('latSer
 Route::get('searchResults/{ids}', [PagesController::class,'searchResults'])->name('searchResults');
 Route::get('ServiceResults/{ids}', [PagesController::class, 'ServiceResults'])->name('ServiceResults'); 
 Route::get('categoryResults/{catName}', [PagesController::class, 'categoryResults'])->name('categoryResults');
+
+Route::get('categoryCount', [PagesController::class, 'categoryCount'])->name('categoryCount');
+
 Route::get('getMilestones/{id}', [BusinessController::class ,'getMilestones'])->name('getMilestones');
 Route::get('getMilestonesS/{id}', [ServiceController::class, 'getMilestones'])->name('getMilestonesS');
 
