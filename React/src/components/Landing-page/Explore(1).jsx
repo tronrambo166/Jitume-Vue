@@ -135,10 +135,10 @@ const Explore = () => {
                 (animation, idx) => (
                     <div
                         key={idx}
-                        className="relative w-full overflow-hidden mb-1"
+                        className="relative w-full overflow-hidden"
                     >
                         <div
-                            className={`flex items-center gap-2 ${animation} marquee-fade`}
+                            className={`flex items-center gap-1 ${animation} marquee-fade`}
                         >
                             {/* Render Categories */}
                             {checkCat
@@ -168,7 +168,7 @@ const Explore = () => {
                                       .map((_, index) => (
                                           <div
                                               key={`skeleton-${index}`}
-                                              className="flex items-center p-4 rounded-md shadow-md bg-gray-200 min-w-[200px] sm:min-w-[220px] transition-transform animate-pulse"
+                                              className="flex items-center p-2 rounded-md shadow-md bg-gray-200 min-w-[200px] sm:min-w-[220px] transition-transform animate-pulse"
                                           >
                                               <div className="w-5 h-5 sm:w-7 sm:h-7 bg-gray-300 rounded-full mr-2 sm:mr-3"></div>
                                               <div className="flex flex-col space-y-1">
