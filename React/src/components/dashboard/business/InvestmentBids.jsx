@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axiosClient from "../../../axiosClient";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Make sure to import CSS for toastify
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useAlert } from "../../partials/AlertContext";
 
 function InvestmentBids() {
     const [bids, setBids] = useState([]);
@@ -11,6 +10,7 @@ function InvestmentBids() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loadingAccept, setLoadingAccept] = useState(false); // Added missing state
     const [loadingReject, setLoadingReject] = useState(false); // Added missing state
+    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
 
     const AcceptBids = (reject) => (e) => {
         e.preventDefault();
@@ -27,19 +27,21 @@ function InvestmentBids() {
             reject: reject,
         };
 
-        axiosClient.post("bidsAccepted", payload)
+        axiosClient
+            .post("bidsAccepted", payload)
             .then(({ data }) => {
                 console.log(data); // Log response data
-                toast.success(data.message); // Show success message
+                showAlert("success", data.message); // Show success alert
             })
             .catch((err) => {
                 const response = err.response;
                 if (response && response.status === 422) {
                     console.log(response.data.errors); // Log validation errors
-                    toast.error(response.data.errors.join(", ")); // Show validation errors
+                    showAlert("error", response.data.errors.join(", ")); // Show validation errors
                 } else {
                     console.log(err); // Log general errors
-                    toast.error(
+                    showAlert(
+                        "error",
                         "An error occurred while processing your request."
                     ); // Show generic error message
                 }
@@ -53,7 +55,6 @@ function InvestmentBids() {
                 }
             });
     };
-
 
     const handleCheckboxChange = (id) => {
         setSelectedBids((prevSelected) => {
@@ -157,7 +158,6 @@ function InvestmentBids() {
 
     return (
         <div className="container mx-auto p-6">
-            <ToastContainer />
             <h3 className="text-left text-lg font-semibold mb-6">
                 Investment Bids
             </h3>

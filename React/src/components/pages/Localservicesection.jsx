@@ -91,10 +91,10 @@ const DiscoverLocal = () => {
                     {isLoading ? (
                         <span className="flex items-center gap-2">
                             <AiOutlineLoading3Quarters className="animate-spin text-white text-lg" />
-                            Loading...
+                            Redirecting...
                         </span>
                     ) : (
-                        "Get Started"
+                        "Browse Services"
                     )}
                 </button>
             </div>

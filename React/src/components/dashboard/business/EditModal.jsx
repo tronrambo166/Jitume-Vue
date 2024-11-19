@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { AiOutlineClose ,AiOutlineLoading3Quarters } from "react-icons/ai";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { AiOutlineClose, AiOutlineLoading3Quarters } from "react-icons/ai";
 import axiosClient from "../../../axiosClient";
+import { useAlert } from "../../partials/AlertContext";
 const EditModal = ({
     showModal,
     setShowModal,
@@ -76,6 +75,7 @@ const EditModal = ({
         }
     }, [editItem]);
     const [loading, setLoading] = useState(false);
+    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -93,46 +93,48 @@ const EditModal = ({
         });
     };
 
-     const handleSubmit = async (e) => {
-         e.preventDefault();
-         setLoading(true); // Start loading
-         console.log("Form Data:", formData);
-         const updatedItem = { ...editItem, ...formData };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true); // Start loading
+        console.log("Form Data:", formData);
+        const updatedItem = { ...editItem, ...formData };
 
-         try {
-             // Simulate API call
-             //await onSave(updatedItem);
-             const response = await axiosClient.post('business/up_listing', updatedItem);
-             if(response.data.status == 200)
-             toast.success(response.data.message); // Show success toast
-             else
-             toast.success(response.data.message);
+        try {
+            // Simulate API call
+            //await onSave(updatedItem);
+            const response = await axiosClient.post(
+                "business/up_listing",
+                updatedItem
+            );
 
-             console.log(response.data);
+            if (response.data.status === 200) {
+                showAlert("success", response.data.message); // Show success alert
+            } else {
+                showAlert("warning", response.data.message); // Show warning alert for non-200 status
+            }
 
+            console.log(response.data);
+        } catch (error) {
+            console.log(error);
+            showAlert("error", error.message || "An error occurred."); // Show error alert
+        } finally {
+            setLoading(false); // Stop loading
+        }
+    };
 
-         } catch (error) {
-             console.log(error);
-             toast.error(error); // Show error toast
-         } finally {
-             setLoading(false); // Stop loading
-         }
-     };
+    if (!showModal) return null;
 
-     if (!showModal) return null;
-
-     const handleOverlayClick = (e) => {
-         if (e.target === e.currentTarget) {
-             setShowModal(false);
-         }
-     };
+    const handleOverlayClick = (e) => {
+        if (e.target === e.currentTarget) {
+            setShowModal(false);
+        }
+    };
 
     return (
         <div
             className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50"
             onClick={handleOverlayClick}
         >
-            <ToastContainer />
             {/* ID */}
             {/* <div className="mb-4">
                             <label

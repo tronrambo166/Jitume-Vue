@@ -5,6 +5,8 @@ import {
     AiOutlineDown,
 } from "react-icons/ai";
 import axiosClient from "../../../axiosClient";
+import { useAlert } from "../../partials/AlertContext";
+
 const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
     const [formData, setFormData] = useState({
         id: null,
@@ -23,6 +25,8 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
         link: "",
     });
     const [categoryOpen, setCategoryOpen] = useState(false);
+    const { showAlert } = useAlert();
+
     useEffect(() => {
         if (service) {
             setFormData({
@@ -54,33 +58,45 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
 
     const handleFileUpload = (e) => {
         const { name, files } = e.target;
+
+        if (files.length === 0) {
+            showAlert("error", "No file selected.");
+            return;
+        }
+
         setFormData((prev) => ({
             ...prev,
             [name]: files[0],
         }));
+
+        // Optional: Show success alert when a file is successfully selected
+        showAlert("success", `${name} file selected successfully.`);
     };
 
-   const handleSave = async () => {
-       try {
-           const response = await axiosClient.post(
-               "business/up_service",
-               formData
-           );
+    const handleSave = async () => {
+        try {
+            const response = await axiosClient.post(
+                "business/up_service",
+                formData
+            );
 
-           if (response.data.status === 200) {
-               //toast.success(response.data.message); // Show success toast
-           } else {
-               //toast.error(response.data.message); // Show error toast for non-200 status
-           }
+            if (response.data.status === 200) {
+                // Use showAlert to display success message
+                showAlert("success", response.data.message);
+            } else {
+                // Use showAlert to display error message for non-200 status
+                showAlert("error", response.data.message);
+            }
 
-           console.log(response.data);
-           onUpdate(formData); // Call onUpdate function with formData
-           onClose(); // Close the modal or form
-       } catch (error) {
-           console.error("Error saving data:", error);
-           //toast.error("An error occurred while saving the data."); // Show error toast on request failure
-       }
-   };
+            console.log(response.data);
+            onUpdate(formData); // Call onUpdate function with formData
+            onClose(); // Close the modal or form
+        } catch (error) {
+            console.error("Error saving data:", error);
+            // Use showAlert to display error message on request failure
+            showAlert("error", "An error occurred while saving the data.");
+        }
+    };
 
     if (!isOpen) return null;
 

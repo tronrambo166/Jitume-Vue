@@ -1,327 +1,403 @@
-import { useState, useEffect } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import logo from '../../images/logo3.png';
-import calendarIcon from '../../images/calendar.svg';
-import addIcon from '../../images/add.png';
-import chartIcon from '../../images/chart.png';
-import btmIcon from '../../images/btmicon.png';
-import { FaHome, FaWrench, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { useState, useEffect, useRef } from "react";
+import { Link, NavLink } from "react-router-dom";
+import logo from "../../images/logo3.png";
+import calendarIcon from "../../images/calendar.svg";
+import addIcon from "../../images/add.png";
+import chartIcon from "../../images/chart.png";
+import btmIcon from "../../images/btmicon.png";
+import { FaHome, FaWrench, FaRocket, FaRegCheckCircle } from "react-icons/fa";
+import { BiFolder } from "react-icons/bi";
+import { BsQuestionCircle } from "react-icons/bs";
 import doc from "../../images/doc.png";
 import sharp from "../../images/sharp.png";
-
+import BarIcon from "./BarIcon";
+import { AiOutlineBarChart, AiOutlineCalendar } from "react-icons/ai";
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
+    const sidebarRef = useRef(null);
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleResize = () => {
-    if (window.innerWidth >= 768) {
-      setIsOpen(true);
-    } else {
-      setIsOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
+    const toggleSidebar = () => {
+        setIsOpen(!isOpen);
     };
-  }, []);
 
- return (
-     <div
-         className={`scroll-container fixed top-0 left-0 h-screen bg-white shadow-lg flex flex-col transition-transform duration-300 ${
-             isOpen ? "open" : ""
-         } md:w-64 z-40 overflow-y-auto`}
-     >
-         {/* Logo and Sidebar Toggle */}
-         <div className="flex items-center justify-between p-4 border-b border-gray-200">
-             <Link className="flex items-center" to="/">
-                 <img
-                     src={logo}
-                     alt="Logo"
-                     className={`w-[120px] ${
-                         isOpen ? "ml-4" : "ml-0"
-                     } transition-transform duration-300`}
-                 />
-             </Link>
-             <button
-                 onClick={toggleSidebar}
-                 className="text-gray-500 md:hidden"
-             >
-                 {isOpen ? <FaChevronLeft /> : <FaChevronRight />}
-             </button>
-         </div>
+    const handleResize = () => {
+        if (window.innerWidth >= 768) {
+            setIsOpen(true);
+        } else {
+            setIsOpen(false);
+        }
+    };
 
-         {/* Sidebar Links */}
-         <div>
-             <ul className="space-y-2">
-                 <li className="nav-item py-2">
-                     <NavLink
-                         className={({ isActive }) =>
-                             `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] transition-colors duration-300 ${
-                                 isOpen ? "" : "justify-center"
-                             } ${
-                                 isActive
-                                     ? "bg-green-800 text-white"
-                                     : "hover:bg-gray-200 text-gray-400"
-                             }`
-                         }
-                         to="/dashboard"
-                         end // Ensures exact match
-                     >
-                         <FaHome
-                             className={`text-[18px] text-green ${
-                                 !isOpen && "mx-auto"
-                             }`}
-                         />
-                         {isOpen && <span>Dashboard</span>}
-                     </NavLink>
-                 </li>
+    const handleClickOutside = (event) => {
+        if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+            setIsOpen(false);
+        }
+    };
 
-                 <li className="nav-item py-2">
-                     <NavLink
-                         className={({ isActive }) =>
-                             `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] transition-colors duration-300 ${
-                                 isOpen ? "" : "justify-center"
-                             } ${
-                                 isActive
-                                     ? "bg-green-800 text-white"
-                                     : "hover:bg-gray-200 text-gray-400"
-                             }`
-                         }
-                         to="/dashboard/my-businesses"
-                     >
-                         <img
-                             src={doc}
-                             alt="My Businesses"
-                             className={`w-4 h-4 ${!isOpen && "mx-auto"}`}
-                         />
-                         {isOpen && <span>My Businesses</span>}
-                     </NavLink>
-                 </li>
+    useEffect(() => {
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        document.addEventListener("mousedown", handleClickOutside);
 
-                 <li className="nav-item py-2">
-                     <NavLink
-                         className={({ isActive }) =>
-                             `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] transition-colors duration-300 ${
-                                 isOpen ? "" : "justify-center"
-                             } ${
-                                 isActive
-                                     ? "bg-green-800 text-white"
-                                     : "hover:bg-gray-200 text-gray-400"
-                             }`
-                         }
-                         to="/dashboard/milestones"
-                     >
-                         <img
-                             src={sharp}
-                             alt="Service Milestones"
-                             className={`w-4 h-4 ${!isOpen && "mx-auto"}`}
-                         />
-                         {isOpen && <span>Milestones</span>}
-                     </NavLink>
-                 </li>
+        return () => {
+            window.removeEventListener("resize", handleResize);
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
-                 <li className="nav-item py-2">
-                     <NavLink
-                         className={({ isActive }) =>
-                             `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] transition-colors duration-300 ${
-                                 isOpen ? "" : "justify-center"
-                             } ${
-                                 isActive
-                                     ? "bg-green-800 text-white"
-                                     : "hover:bg-gray-200 text-gray-400"
-                             }`
-                         }
-                         to="/dashboard/add-milestone"
-                     >
-                         <img
-                             src={addIcon}
-                             alt="Add Service Milestone"
-                             className={`w-[17px] h-4 ${!isOpen && "mx-auto"}`}
-                         />
-                         {isOpen && <span>Add Business Milestone</span>}
-                     </NavLink>
-                 </li>
+    return (
+        <>
+            {/* FaBars Icon */}
+            {!isOpen && <BarIcon toggleSidebar={toggleSidebar} />}
 
-                 <li className="nav-item py-2">
-                     <NavLink
-                         className={({ isActive }) =>
-                             `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] transition-colors duration-300 ${
-                                 isOpen ? "" : "justify-center"
-                             } ${
-                                 isActive
-                                     ? "bg-green-800 text-white"
-                                     : "hover:bg-gray-200 text-gray-400"
-                             }`
-                         }
-                         to="/dashboard/investment-bids"
-                     >
-                         <img
-                             src={chartIcon}
-                             alt="Business Bids"
-                             className={`w-4 h-4 ${!isOpen && "mx-auto"}`}
-                         />
-                         {isOpen && <span>Business Bids</span>}
-                     </NavLink>
-                 </li>
+            {/* Sidebar */}
+            <div
+                ref={sidebarRef}
+                className={`scroll-container fixed top-0 left-0 h-screen w-64 bg-white border flex flex-col transition-transform duration-300 z-40 overflow-y-auto
+                    ${
+                        isOpen ? "translate-x-0" : "-translate-x-full"
+                    } md:translate-x-0`}
+            >
+                {/* Logo */}
+                <div className="flex items-center justify-between p-4 border-b border-gray-200">
+                    <Link className="flex items-center" to="/">
+                        <img
+                            src={logo}
+                            alt="Logo"
+                            className="w-[120px] transition-transform duration-300"
+                        />
+                    </Link>
+                </div>
 
-                 <hr />
+                {/* Sidebar Links */}
+                <div>
+                    <ul className="space-y-2">
+                        <li className="nav-item py-2">
+                            <NavLink
+                                className={({ isActive }) =>
+                                    `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
+                                        isActive
+                                            ? "bg-green-800 text-white"
+                                            : "hover:bg-gray-200 text-gray-400"
+                                    }`
+                                }
+                                to="/dashboard"
+                                end
+                                onClick={() => setIsOpen(false)}
+                            >
+                                {({ isActive }) => (
+                                    <>
+                                        <FaHome
+                                            className={`text-[18px] ${
+                                                isActive
+                                                    ? "text-white"
+                                                    : "text-green"
+                                            }`}
+                                        />
+                                        <span>Dashboard</span>
+                                    </>
+                                )}
+                            </NavLink>
+                        </li>
 
-                 {/* Additional Links */}
-                 <ul className="space-y-2 mt-6">
-                     <li className="nav-item py-2">
-                         <NavLink
-                             className={({ isActive }) =>
-                                 `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] transition-colors duration-300 ${
-                                     isOpen ? "" : "justify-center"
-                                 } ${
-                                     isActive
-                                         ? "bg-green-800 text-white"
-                                         : "hover:bg-gray-200 text-gray-400"
-                                 }`
-                             }
-                             to="/dashboard/services-table"
-                         >
-                             <FaWrench
-                                 className={`text-green w-4 h-4 ${
-                                     !isOpen && "mx-auto"
-                                 }`}
-                             />
-                             {isOpen && <span>My Services</span>}
-                         </NavLink>
-                     </li>
+                        <li className="nav-item py-2">
+                            <NavLink
+                                className={({ isActive }) =>
+                                    `navLink flex items-center gap-3 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
+                                        isActive
+                                            ? "bg-green-800 text-white"
+                                            : "hover:bg-gray-200 text-gray-400"
+                                    }`
+                                }
+                                to="/dashboard/my-businesses"
+                                end
+                                onClick={() => setIsOpen(false)}
+                            >
+                                {({ isActive }) => (
+                                    <>
+                                        <BiFolder
+                                            className={`text-[18px] ${
+                                                isActive
+                                                    ? "text-white"
+                                                    : "text-green"
+                                            }`}
+                                        />
+                                        <span>My Businesses</span>
+                                    </>
+                                )}
+                            </NavLink>
+                        </li>
 
-                     <li className="nav-item py-2">
-                         <NavLink
-                             className={({ isActive }) =>
-                                 `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] transition-colors duration-300 ${
-                                     isOpen ? "" : "justify-center"
-                                 } ${
-                                     isActive
-                                         ? "bg-green-800 text-white"
-                                         : "hover:bg-gray-200 text-gray-400"
-                                 }`
-                             }
-                             to="/dashboard/add-service"
-                         >
-                             <img
-                                 src={sharp}
-                                 alt="Add Service"
-                                 className={`w-4 h-4 ${!isOpen && "mx-auto"}`}
-                             />
-                             {isOpen && <span>Add Service</span>}
-                         </NavLink>
-                     </li>
+                        <li className="nav-item py-2">
+                            <NavLink
+                                className={({ isActive }) =>
+                                    `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
+                                        isActive
+                                            ? "bg-green-800 text-white"
+                                            : "hover:bg-gray-200 text-gray-400"
+                                    }`
+                                }
+                                to="/dashboard/milestones"
+                                end // Ensures exact match
+                                onClick={() => setIsOpen(false)}
+                            >
+                                {({ isActive }) => (
+                                    <>
+                                        <FaRocket
+                                            className={`text-[18px] ${
+                                                isActive
+                                                    ? "text-white"
+                                                    : "text-green"
+                                            }`}
+                                        />
+                                        <span>Milestones</span>
+                                    </>
+                                )}
+                            </NavLink>
+                        </li>
 
-                     <li className="nav-item py-2">
-                         <NavLink
-                             className={({ isActive }) =>
-                                 `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] transition-colors duration-300 ${
-                                     isOpen ? "" : "justify-center"
-                                 } ${
-                                     isActive
-                                         ? "bg-green-800 text-white"
-                                         : "hover:bg-gray-200 text-gray-400"
-                                 }`
-                             }
-                             to="/dashboard/service-milestone"
-                         >
-                             <img
-                                 src={addIcon}
-                                 alt="Milestone"
-                                 className={`w-[17px] h-4 ${
-                                     !isOpen && "mx-auto"
-                                 }`}
-                             />
-                             {isOpen && <span>Milestone</span>}
-                         </NavLink>
-                     </li>
+                        <li className="nav-item py-2">
+                            <NavLink
+                                className={({ isActive }) =>
+                                    `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
+                                        isActive
+                                            ? "bg-green-800 text-white"
+                                            : "hover:bg-gray-200 text-gray-400"
+                                    }`
+                                }
+                                to="/dashboard/add-milestone"
+                                end // Ensures exact match
+                                onClick={() => setIsOpen(false)}
+                            >
+                                {({ isActive }) => (
+                                    <>
+                                        <FaRegCheckCircle
+                                            className={`text-[18px] ${
+                                                isActive
+                                                    ? "text-white"
+                                                    : "text-green"
+                                            }`}
+                                        />
+                                        <span>Add Business Milestone</span>
+                                    </>
+                                )}
+                            </NavLink>
+                        </li>
 
-                     <li className="nav-item py-2">
-                         <NavLink
-                             className={({ isActive }) =>
-                                 `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] transition-colors duration-300 ${
-                                     isOpen ? "" : "justify-center"
-                                 } ${
-                                     isActive
-                                         ? "bg-green-800 text-white"
-                                         : "hover:bg-gray-200 text-gray-400"
-                                 }`
-                             }
-                             to="/dashboard/addservicemilestone"
-                         >
-                             <img
-                                 src={calendarIcon}
-                                 alt="Add Service Milestone"
-                                 className={`w-4 h-4 ${!isOpen && "mx-auto"}`}
-                             />
-                             {isOpen && <span>Add Service Milestone</span>}
-                         </NavLink>
-                     </li>
+                        <li className="nav-item py-2">
+                            <NavLink
+                                className={({ isActive }) =>
+                                    `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
+                                        isActive
+                                            ? "bg-green-800 text-white"
+                                            : "hover:bg-gray-200 text-gray-400"
+                                    }`
+                                }
+                                to="/dashboard/investment-bids"
+                                end // Ensures exact match
+                                onClick={() => setIsOpen(false)}
+                            >
+                                {({ isActive }) => (
+                                    <>
+                                        <AiOutlineBarChart
+                                            className={`text-[18px] ${
+                                                isActive
+                                                    ? "text-white"
+                                                    : "text-green"
+                                            }`}
+                                        />
+                                        <span>Business Bids</span>
+                                    </>
+                                )}
+                            </NavLink>
+                        </li>
 
-                     <li className="nav-item py-2">
-                         <NavLink
-                             className={({ isActive }) =>
-                                 `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] transition-colors duration-300 ${
-                                     isOpen ? "" : "justify-center"
-                                 } ${
-                                     isActive
-                                         ? "bg-green-800 text-white"
-                                         : "hover:bg-gray-200 text-gray-400"
-                                 }`
-                             }
-                             to="/dashboard/service-bookings"
-                         >
-                             <img
-                                 src={chartIcon}
-                                 alt="Service Booking"
-                                 className={`w-4 h-4 ${!isOpen && "mx-auto"}`}
-                             />
-                             {isOpen && <span>Service Booking</span>}
-                         </NavLink>
-                     </li>
+                        <hr />
 
-                     <li className="nav-item mb-6 rounded-xl py-2">
-                         {" "}
-                         {/* Added margin-bottom (mb-6) to move it up from the bottom */}
-                         <NavLink
-                             className={({ isActive }) =>
-                                 `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] ${
-                                     isOpen ? "" : "justify-center"
-                                 } ${
-                                     isActive
-                                         ? "bg-green-800 text-white shadow-md "
-                                         : "hover:bg-gray-200 text-gray-400"
-                                 }`
-                             }
-                             to="/dashboard/mybookings"
-                         >
-                             <img
-                                 src={btmIcon}
-                                 alt="My Bookings"
-                                 className={`w-4 h-4 ${!isOpen && "mx-auto"}`}
-                             />
-                             {isOpen && <span>My Bookings</span>}
-                         </NavLink>
-                     </li>
-                     <li className="nav-item mb-6 rounded-xl py-2">
-                         {" "}
-                         {/* Added margin-bottom (mb-6) to move it up from the bottom */}
-                        
-                     </li>
-                 </ul>
-             </ul>
-         </div>
-     </div>
- );
+                        {/* Additional Links */}
+                        <ul className="space-y-2 mt-6">
+                            <li className="nav-item py-2">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        `navLink flex items-center gap-3 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
+                                            isActive
+                                                ? "bg-green-800 text-white"
+                                                : "hover:bg-gray-200 text-gray-400"
+                                        }`
+                                    }
+                                    to="/dashboard/services-table"
+                                    end // Ensures exact match
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    {({ isActive }) => (
+                                        <>
+                                            <FaWrench
+                                                className={`w-4 h-4 sm:w-5 sm:h-5 ${
+                                                    isActive
+                                                        ? "text-white"
+                                                        : "text-green"
+                                                }`}
+                                            />
+                                            <span>My Services</span>
+                                        </>
+                                    )}
+                                </NavLink>
+                            </li>
 
+                            <li className="nav-item py-2">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
+                                            isActive
+                                                ? "bg-green-800 text-white"
+                                                : "hover:bg-gray-200 text-gray-400"
+                                        }`
+                                    }
+                                    to="/dashboard/add-service"
+                                    end // Ensures exact match
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    {({ isActive }) => (
+                                        <>
+                                            <AiOutlineCalendar
+                                                className={`w-4 h-4 sm:w-5 sm:h-5 ${
+                                                    isActive
+                                                        ? "text-white"
+                                                        : "text-green"
+                                                }`}
+                                            />
+                                            <span>Add Service</span>
+                                        </>
+                                    )}
+                                </NavLink>
+                            </li>
+
+                            <li className="nav-item py-2">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        `navLink flex items-center gap-3 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
+                                            isActive
+                                                ? "bg-green-800 text-white"
+                                                : "hover:bg-gray-200 text-gray-400"
+                                        }`
+                                    }
+                                    to="/dashboard/service-milestone"
+                                    end // Ensures exact match
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    {({ isActive }) => (
+                                        <>
+                                            <FaRegCheckCircle
+                                                className={`text-[18px] ${
+                                                    isActive
+                                                        ? "text-white"
+                                                        : "text-green"
+                                                }`}
+                                            />
+                                            <span>Milestone</span>
+                                        </>
+                                    )}
+                                </NavLink>
+                            </li>
+
+                            <li className="nav-item py-2">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
+                                            isActive
+                                                ? "bg-green-800 text-white"
+                                                : "hover:bg-gray-200 text-gray-400"
+                                        }`
+                                    }
+                                    to="/dashboard/addservicemilestone"
+                                    end // Ensures exact match
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    {({ isActive }) => (
+                                        <>
+                                            <AiOutlineCalendar
+                                                className={`w-4 h-4 sm:w-5 sm:h-5 ${
+                                                    isActive
+                                                        ? "text-white"
+                                                        : "text-green"
+                                                }`}
+                                            />
+                                            <span>Add Service Milestone</span>
+                                        </>
+                                    )}
+                                </NavLink>
+                            </li>
+
+                            <li className="nav-item py-2">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
+                                            isActive
+                                                ? "bg-green-800 text-white"
+                                                : "hover:bg-gray-200 text-gray-400"
+                                        }`
+                                    }
+                                    to="/dashboard/service-bookings"
+                                    end // Ensures exact match
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    {({ isActive }) => (
+                                        <>
+                                            <AiOutlineBarChart
+                                                className={`text-[18px] ${
+                                                    isActive
+                                                        ? "text-white"
+                                                        : "text-green"
+                                                }`}
+                                            />
+                                            <span>Service Booking</span>
+                                        </>
+                                    )}
+                                </NavLink>
+                            </li>
+
+                            <li className="nav-item mb-6 rounded-xl py-2">
+                                {/* Added margin-bottom (mb-6) to move it up from the bottom */}
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
+                                            isActive
+                                                ? "bg-green-800 text-white"
+                                                : "hover:bg-gray-200 text-gray-400"
+                                        }`
+                                    }
+                                    to="/dashboard/mybookings"
+                                    end // Ensures exact match
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    {({ isActive }) => (
+                                        <>
+                                            <BsQuestionCircle
+                                                className={`text-[18px] ${
+                                                    isActive
+                                                        ? "text-white"
+                                                        : "text-green"
+                                                }`}
+                                            />
+                                            <span>My Bookings</span>
+                                        </>
+                                    )}
+                                </NavLink>
+                            </li>
+                            {/* Plz dont remove the part below  */}
+                            <li className="nav-item mb-6 rounded-xl py-2">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        `navLink flex items-center gap-4  px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 `
+                                    }
+                                ></NavLink>
+                            </li>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+        </>
+    );
 };
 
 export default Sidebar;

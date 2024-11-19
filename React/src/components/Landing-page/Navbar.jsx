@@ -16,12 +16,15 @@ import { useStateContext } from "../../contexts/contextProvider";
 import axiosClient from "../../axiosClient";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import CreateInvestorAccount from "../partials/CreateInvAccount";
+import { useAlert } from "../partials/AlertContext";
 
 const Navbar = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [isCreateInvModalOpen, setIsCreateInvModalOpen] = useState(false);
+    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
+
     const dropdownTimeoutRef = useRef(null);
 
     useEffect(() => {
@@ -227,6 +230,10 @@ const Navbar = () => {
                             onClick={() => {
                                 setToken(null); // Clear token to sign out
                                 setUser(null); // Optional: Clear user information on sign out
+                                showAlert(
+                                    "success",
+                                    "You have been signed out successfully!"
+                                ); // Show success alert
                             }}
                             className="bg-white py-2 hover:bg-green-800 hover:text-red-100 rounded-[8px] text-[13px] px-5 text-[#0F172A] font-semibold"
                         >
@@ -370,6 +377,10 @@ const Navbar = () => {
                                     onClick={() => {
                                         setToken(null); // Clear token to sign out
                                         setUser(null); // Optional: Clear user information on sign out
+                                        showAlert(
+                                            "success",
+                                            "You have been signed out successfully!"
+                                        ); // Show success alert when signing out
                                     }}
                                     className="bg-white py-2 hover:bg-green-800 hover:text-red-100 rounded-[8px] px-5 text-[#0F172A] font-semibold block w-full text-center"
                                 >
@@ -377,8 +388,10 @@ const Navbar = () => {
                                 </button>
                             ) : (
                                 <button
-                                    onClick={() => setIsAuthModalOpen(true)}
-                                    className="bg-white  py-2 hover:bg-green-400 hover:text-green-100 rounded-[8px] px-5 text-[#0F172A] font-semibold block w-full text-center"
+                                    onClick={() => {
+                                        setIsAuthModalOpen(true); // Show info alert when clicking Sign In
+                                    }}
+                                    className="bg-white py-2 hover:bg-green-400 hover:text-green-100 rounded-[8px] px-5 text-[#0F172A] font-semibold block w-full text-center"
                                 >
                                     Sign In
                                 </button>

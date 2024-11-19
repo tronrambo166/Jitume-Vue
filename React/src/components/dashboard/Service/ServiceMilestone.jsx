@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import axiosClient from "../../../axiosClient";
 import { ClipLoader } from "react-spinners"; // Spinner from a React library
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
+import { useAlert } from "../../partials/AlertContext";
 
 function ServiceMilestone() {
     const [milestones, setMilestones] = useState([]);
@@ -13,6 +12,7 @@ function ServiceMilestone() {
     const [S_name, setS_name] = useState("");
     const [bookerName, setbookerName] = useState("");
     const [loading, setLoading] = useState(false); // Spinner state
+    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
 
     useEffect(() => {
         const getMilestones = (id = "all") => {
@@ -27,12 +27,14 @@ function ServiceMilestone() {
                 })
                 .catch((err) => {
                     console.log("Error loading data", err);
-                    toast.error("Failed to load business data");
+                    showAlert("error", "Failed to load business data"); // Use showAlert for error message
                 })
                 .finally(() => {
                     setLoading(false); // Hide spinner
                 });
         };
+
+        // Call getMilestones
         getMilestones();
     }, []);
 
@@ -55,16 +57,16 @@ function ServiceMilestone() {
                     )
                 );
 
-                // Conditional toast messages based on the updated status
+                // Conditional alert messages based on the updated status
                 if (status === "Done") {
-                    toast.info("Status updated, Email sent"); // Display "Email sent" message
+                    showAlert("info", "Status updated, Email sent"); // Display "Email sent" message
                 } else {
-                    toast.success("Status updated successfully"); // Display success message for other statuses
+                    showAlert("success", "Status updated successfully"); // Display success message for other statuses
                 }
             })
             .catch((err) => {
                 console.log("Error updating status", err);
-                toast.error("Failed to update status");
+                showAlert("error", "Failed to update status"); // Use showAlert for error message
             })
             .finally(() => {
                 setLoading(false); // Hide spinner
@@ -87,7 +89,7 @@ function ServiceMilestone() {
             })
             .catch((err) => {
                 console.log("Error loading customers", err);
-                toast.error("Failed to load bookers");
+                showAlert("error", "Failed to load bookers"); // Use showAlert for error message
             })
             .finally(() => {
                 setLoading(false); // Hide spinner
@@ -110,7 +112,7 @@ function ServiceMilestone() {
                 })
                 .catch((err) => {
                     console.log("Error fetching milestones", err);
-                    toast.error("Failed to load milestones");
+                    showAlert("error", "Failed to load milestones"); // Use showAlert for error
                 })
                 .finally(() => {
                     setLoading(false); // Hide spinner
@@ -120,8 +122,6 @@ function ServiceMilestone() {
 
     return (
         <div className="relative container mx-auto p-6">
-            <ToastContainer position="top-right" />{" "}
-            {/* Toast container for alerts */}
             <h3 className="text-left text-2xl font-semibold mb-6">
                 Service Milestones
             </h3>

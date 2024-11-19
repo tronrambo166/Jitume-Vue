@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import axios from "axios";
 import axiosClient from "../../../axiosClient";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useAlert } from "../../partials/AlertContext";
+
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 const AddService = ({ connected, userId }) => {
     const [formData, setFormData] = useState({
@@ -25,7 +25,8 @@ const AddService = ({ connected, userId }) => {
     const [messages, setMessages] = useState({ success: "", error: "" });
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-   
+    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
+
     const [isButtonActive, setIsButtonActive] = useState(false);
     const handleFileChange = (e) => {
         const { name, files } = e.target;
@@ -34,9 +35,12 @@ const AddService = ({ connected, userId }) => {
                 ...prevData,
                 [name]: files[0],
             }));
-            toast.info("File selected: " + files[0].name); // Inform about the file selection
+
+            // Use showAlert for file selection feedback
+            showAlert("info", `File selected: ${files[0].name}`);
         }
     };
+
     // Check if all required fields are filled
     const checkFormValidity = () => {
         const isValid =
@@ -76,99 +80,107 @@ const AddService = ({ connected, userId }) => {
         // }
     };
 
-   const handleSubmit = async (e) => {
-       e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-       formData.location = $("#searchbox").val();
-       formData.lat = $("#lat").val();
-       formData.lng = $("#lng").val();
+        // Set location details from DOM elements
+        formData.location = $("#searchbox").val();
+        formData.lat = $("#lat").val();
+        formData.lng = $("#lng").val();
 
-       // Call individual upload handlers
-       await Promise.all(
-           ["image", "pin", "identification", "video", "document"].map(
-               handleUpload
-           )
-       );
+        try {
+            // Call individual upload handlers
+            await Promise.all(
+                ["image", "pin", "identification", "video", "document"].map(
+                    handleUpload
+                )
+            );
 
-       const data = new FormData();
-       console.log(formData);
-       //return;
+            const data = new FormData();
+            console.log(formData);
 
-       Object.keys(formData).forEach((key) => {
-           data.append(key, formData[key]);
-       });
-       setLoading(true);
+            // Append formData to FormData object
+            Object.keys(formData).forEach((key) => {
+                data.append(key, formData[key]);
+            });
 
-       try {
-           const response = await axiosClient.post(
-               `/business/create-service`,
-               data,
-               {
-                   headers: {
-                       "Content-Type": "multipart/form-data",
-                   },
-               }
-           );
+            setLoading(true); // Show loading state
 
-           // Check for status code and handle accordingly
-           if (response.status === 200) {
-               if (response.data.status === 200) {
-                   toast.success("Service added successfully!");
-                   alert("Please Add milestones for your service!");
-               } else {
-                   // Handle other status codes returned by the backend
-                   toast.error(
-                       response.data.message || "Something went wrong."
-                   );
-               }
-           } else if (response.status === 404) {
-               toast.error("Service not found. Please check your data.");
-           } else if (response.status === 500) {
-               toast.error("Server error. Please try again later.");
-           } else {
-               toast.error(`Unexpected error: ${response.status}`);
-           }
-       } catch (error) {
-           // Network or request error handling
-           console.error(error);
+            const response = await axiosClient.post(
+                `/business/create-service`,
+                data,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
 
-           if (error.response) {
-               // Server responded with an error status
-               if (error.response.status === 400) {
-                   // Bad request error
-                   toast.error(
-                       error.response.data.message || "Invalid data provided."
-                   );
-               } else if (error.response.status === 401) {
-                   // Unauthorized error
-                   toast.error("Unauthorized. Please log in again.");
-               } else if (error.response.status === 422) {
-                   // Validation error
-                   toast.error(
-                       error.response.data.message || "Validation error."
-                   );
-               } else if (error.response.status === 500) {
-                   // Internal server error
-                   toast.error("Server error. Please try again later.");
-               } else {
-                   toast.error(
-                       error.response.data.message || "An error occurred."
-                   );
-               }
-           } else if (error.request) {
-               // No response was received from the server
-               toast.error(
-                   "Network error. Please check your internet connection."
-               );
-           } else {
-               // Other errors like incorrect setup
-               toast.error("An error occurred while setting up the request.");
-           }
-       } finally {
-           setLoading(false);
-       }
-   };
+            // Handle response statuses
+            if (response.status === 200) {
+                if (response.data.status === 200) {
+                    showAlert("success", "Service added successfully!");
+                    showAlert(
+                        "info",
+                        "Please Add milestones for your service!"
+                    );
+                    navigate("/dashboard/addservicemilestone"); // Redirect to the milestone page
+                } else {
+                    showAlert(
+                        "error",
+                        response.data.message || "Something went wrong."
+                    );
+                }
+            } else if (response.status === 404) {
+                showAlert(
+                    "error",
+                    "Service not found. Please check your data."
+                );
+            } else if (response.status === 500) {
+                showAlert("error", "Server error. Please try again later.");
+            } else {
+                showAlert("error", `Unexpected error: ${response.status}`);
+            }
+        } catch (error) {
+            console.error(error);
 
+            // Handle error responses
+            if (error.response) {
+                if (error.response.status === 400) {
+                    showAlert(
+                        "error",
+                        error.response.data.message || "Invalid data provided."
+                    );
+                } else if (error.response.status === 401) {
+                    showAlert("error", "Unauthorized. Please log in again.");
+                } else if (error.response.status === 422) {
+                    showAlert(
+                        "error",
+                        error.response.data.message || "Validation error."
+                    );
+                } else if (error.response.status === 500) {
+                    showAlert("error", "Server error. Please try again later.");
+                } else {
+                    showAlert(
+                        "error",
+                        error.response.data.message || "An error occurred."
+                    );
+                }
+            } else if (error.request) {
+                showAlert(
+                    "error",
+                    "Network error. Please check your internet connection."
+                );
+            } else {
+                showAlert(
+                    "error",
+                    "An error occurred while setting up the request."
+                );
+            }
+        } finally {
+            setLoading(false); // Hide loading state
+        }
+    };
 
     const getPlaces = (e) => {
         e.preventDefault();
@@ -283,7 +295,6 @@ const AddService = ({ connected, userId }) => {
 
     return (
         <div className="container mx-auto px-4 py-6">
-            <ToastContainer />
             {/* Success Message */}
             {messages.success && (
                 <div className="bg-blue-100 text-blue-700 border border-blue-300 rounded-lg px-4 py-3 mb-4 flex justify-between items-center">

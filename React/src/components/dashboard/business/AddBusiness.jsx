@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { FiUpload } from "react-icons/fi";
 import axiosClient from "../../../axiosClient";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { AiOutlineLoading3Quarters } from "react-icons/ai"; // Import spinner icon
 
+import { useAlert } from "../../partials/AlertContext";
 const AddBusiness = () => {
     const [formData, setFormData] = useState({
         title: "",
@@ -33,6 +32,7 @@ const AddBusiness = () => {
     const [messages, setMessages] = useState({ success: "", error: "" });
     const [isFormValid, setIsFormValid] = useState(false);
     const [showAmountInput, setShowAmountInput] = useState(false);
+    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
 
     useEffect(() => {
         const allRequiredFilled = [
@@ -58,13 +58,12 @@ const AddBusiness = () => {
         if (file) {
             setFormData({ ...formData, [field]: file });
 
-            // Show an info toast with the selected file name
-            toast.info(`File selected: ${file.name}`);
+            // Show an info alert with the selected file name
+            showAlert("info", `File selected: ${file.name}`);
         } else {
-            toast.error("No file selected. Please choose a file.");
+            showAlert("error", "No file selected. Please choose a file.");
         }
     };
-
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -75,95 +74,102 @@ const AddBusiness = () => {
     };
     const [loading, setLoading] = useState(false);
 
-   const handleSubmit = async (e) => {
-       e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-       // Setting loc, lat, lng
-       formData.location = $("#searchbox").val();
-       formData.lat = $("#lat").val();
-       formData.lng = $("#lng").val();
+        // Setting loc, lat, lng
+        formData.location = $("#searchbox").val();
+        formData.lat = $("#lat").val();
+        formData.lng = $("#lng").val();
 
-       const data = new FormData();
+        const data = new FormData();
 
-       // Append form data
-       Object.entries(formData).forEach(([key, value]) => {
-           if (value instanceof File) {
-               data.append(key, value);
-           } else {
-               data.append(key, value);
-           }
-       });
+        // Append form data
+        Object.entries(formData).forEach(([key, value]) => {
+            if (value instanceof File) {
+                data.append(key, value);
+            } else {
+                data.append(key, value);
+            }
+        });
 
-       // Log FormData content as an object
-       const formDataObject = Object.fromEntries(data.entries());
-       console.log("Submitted Form Data:", formDataObject);
+        // Log FormData content as an object
+        const formDataObject = Object.fromEntries(data.entries());
+        console.log("Submitted Form Data:", formDataObject);
 
-       try {
-           setLoading(true); // Start loading
+        try {
+            setLoading(true); // Start loading
 
-           const response = await axiosClient.post(
-               "business/create-listing",
-               data,
-               {
-                   headers: {
-                       "Content-Type": "multipart/form-data", // Ensure the correct content type for file uploads
-                   },
-               }
-           );
+            const response = await axiosClient.post(
+                "business/create-listing",
+                data,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data", // Ensure the correct content type for file uploads
+                    },
+                }
+            );
 
-           // Handle the response status and show appropriate toast messages
-           if (response.status === 200) {
-               if (response.data.status === 200) {
-                   toast.success(
-                       response.data.message || "Listing created successfully!"
-                   );
-               } else if (response.data.status === 404) {
-                   toast.error(response.data.message || "Listing not found.");
-               } else {
-                   toast.warning(
-                       response.data.message || "Unexpected status received."
-                   );
-               }
-           } else {
-               toast.error(`Unexpected response status: ${response.status}`);
-           }
-       } catch (error) {
-           console.error(error);
+            // Handle the response status and show appropriate alerts
+            if (response.status === 200) {
+                if (response.data.status === 200) {
+                    showAlert(
+                        "success",
+                        response.data.message || "Listing created successfully!"
+                    );
+                } else if (response.data.status === 404) {
+                    showAlert(
+                        "error",
+                        response.data.message || "Listing not found."
+                    );
+                } else {
+                    showAlert(
+                        "warning",
+                        response.data.message || "Unexpected status received."
+                    );
+                }
+            } else {
+                showAlert(
+                    "error",
+                    `Unexpected response status: ${response.status}`
+                );
+            }
+        } catch (error) {
+            console.error(error);
 
-           let errorMessage = "An error occurred. Please try again.";
+            let errorMessage = "An error occurred. Please try again.";
 
-           if (error.response) {
-               // Handle known error responses from the backend
-               if (error.response.status === 400) {
-                   errorMessage =
-                       error.response.data.message || "Invalid data provided.";
-               } else if (error.response.status === 401) {
-                   errorMessage = "Unauthorized. Please log in again.";
-               } else if (error.response.status === 422) {
-                   errorMessage =
-                       error.response.data.message || "Validation error.";
-               } else if (error.response.status === 500) {
-                   errorMessage =
-                       "Internal server error. Please try again later.";
-               } else {
-                   errorMessage =
-                       error.response.data.message || "An error occurred.";
-               }
-           } else if (error.request) {
-               // If no response is received from the server (network issues)
-               errorMessage =
-                   "Network error. Please check your internet connection.";
-           } else {
-               // Error setting up the request
-               errorMessage = `Error: ${error.message}`;
-           }
+            if (error.response) {
+                // Handle known error responses from the backend
+                if (error.response.status === 400) {
+                    errorMessage =
+                        error.response.data.message || "Invalid data provided.";
+                } else if (error.response.status === 401) {
+                    errorMessage = "Unauthorized. Please log in again.";
+                } else if (error.response.status === 422) {
+                    errorMessage =
+                        error.response.data.message || "Validation error.";
+                } else if (error.response.status === 500) {
+                    errorMessage =
+                        "Internal server error. Please try again later.";
+                } else {
+                    errorMessage =
+                        error.response.data.message || "An error occurred.";
+                }
+            } else if (error.request) {
+                // If no response is received from the server (network issues)
+                errorMessage =
+                    "Network error. Please check your internet connection.";
+            } else {
+                // Error setting up the request
+                errorMessage = `Error: ${error.message}`;
+            }
 
-           toast.error(errorMessage); // Show error toast with appropriate message
-       } finally {
-           setLoading(false); // Stop loading after request completes
-       }
-   };
-
+            showAlert("error", errorMessage); // Show error alert with appropriate message
+        } finally {
+            setLoading(false); // Stop loading after request completes
+        }
+    };
 
     const getPlaces = (e) => {
         e.preventDefault();
@@ -276,7 +282,6 @@ const AddBusiness = () => {
 
     return (
         <div className="p-4  min-h-screen">
-            <ToastContainer />
             <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg mb-8">
                 <h2 className="text-xl font-bold mb-4 dark:text-white">
                     Add Business

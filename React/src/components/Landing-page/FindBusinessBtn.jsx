@@ -67,7 +67,7 @@ const FindBusinessBtn = () => {
                 {loading ? (
                     <AiOutlineLoading3Quarters className="animate-spin mr-2" />
                 ) : null}
-                {loading ? "Loading..." : "Find a business"}
+                {loading ? "Redirecting..." : "Find a business"}
             </button>
         </div>
     );

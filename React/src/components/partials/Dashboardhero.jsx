@@ -6,6 +6,7 @@ import {
     FaCopy,
     FaDollarSign,
     FaHome,
+    FaBars,
 } from "react-icons/fa";
 import profile from "../../../images/profile.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,10 +14,12 @@ import { useEffect, useState } from "react";
 import axiosClient from "../../axiosClient";
 import { useStateContext } from "../../contexts/contextProvider";
 import NotificationBell from "./NotificationBell";
-import { toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
 import Breadcrumb from "./Breadcrumb";
+import { useAlert } from "../partials/AlertContext";
+
 const Dashboardhero = () => {
     const { token, setToken } = useStateContext();
     const navigate = useNavigate();
@@ -24,23 +27,9 @@ const Dashboardhero = () => {
     const [user, setUser] = useState({});
     const [id, setId] = useState("");
     const [loading, setLoading] = useState(true); // Full-page loader state
+    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
 
     // Custom notification function
-    const customNotify = (message, type = "info") => {
-        switch (type) {
-            case "success":
-                toast.success(message, { position: "top-right" });
-                break;
-            case "error":
-                toast.error(message, { position: "top-right" });
-                break;
-            case "warning":
-                toast.warning(message, { position: "top-right" });
-                break;
-            default:
-                toast.info(message, { position: "top-right" });
-        }
-    };
 
     // Fetch user data
     useEffect(() => {
@@ -51,12 +40,17 @@ const Dashboardhero = () => {
                 setId(data.user.id);
             })
             .catch(() => {
-                customNotify("Failed to load user data. Redirecting...", "error");
+                showAlert("error", "Failed to load user data. Redirecting...");
                 navigate("/");
             })
             .finally(() => setLoading(false));
     }, []);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false); // State to control sidebar open/close
 
+    const toggleSidebar = () => {
+        setIsOpen(!isOpen); // Toggle the sidebar state
+    };
     // Handle logout
     const onLogout = (ev) => {
         ev.preventDefault();
@@ -66,11 +60,12 @@ const Dashboardhero = () => {
             .then(() => {
                 setUser(null);
                 setToken(null);
-                customNotify("Logged out successfully!", "success");
+                showAlert("success", "Logged out successfully"); // Show error alert
+
                 navigate("/"); // Redirect to the guest layout
             })
             .catch(() => {
-                customNotify("Failed to log out. Please try again.", "error");
+                showAlert("error", "Failed to log out. Please try again."); // Show error alert
             })
             .finally(() => setLoading(false));
     };
@@ -171,6 +166,16 @@ const Dashboardhero = () => {
                                     <span>Account</span>
                                 </Link>
                             )}
+
+                            {/* FaBars Icon next to Account link on mobile */}
+                            {/* {id && (
+                                <div className="flex items-center md:hidden ml-auto">
+                                    <FaBars
+                                        onClick={toggleSidebar}
+                                        className="text-black text-2xl cursor-pointer"
+                                    />
+                                </div>
+                            )} */}
                         </div>
                     </div>
                 </div>

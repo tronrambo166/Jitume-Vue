@@ -4,7 +4,8 @@ import logo2 from "../../images/logo2.png";
 import { useStateContext } from "../../contexts/contextProvider";
 import axiosClient from "../../axiosClient";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { ToastContainer, toast } from "react-toastify";
+import { useAlert } from "../partials/AlertContext";
+
 function CreateInvestorAccount({ isOpen, onClose }) {
     const [isSignIn, setIsSignIn] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
@@ -12,6 +13,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
     const { setUser, setToken } = useStateContext();
     const [loading, setLoading] = useState(false); // Loading state
     const [errors, setErrors] = useState({}); // Error state
+    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
 
     const [loginData, setLoginData] = useState({
         email: "",
@@ -118,18 +120,21 @@ function CreateInvestorAccount({ isOpen, onClose }) {
             if (data.token) {
                 setUser(data.user);
                 setToken(data.token);
+                showAlert(
+                    "success",
+                    `Login successful! Welcome, ${data.user.name}`
+                ); // Show success alert
                 onClose(); // Close the modal
             } else {
-                setErrors({ general: "Wrong credentials. Please try again." });
+                showAlert("error", "Wrong credentials. Please try again."); // Show error alert
             }
         } catch (error) {
-            setErrors({
-                general: "An error occurred. Please try again later.",
-            });
+            showAlert("error", "An error occurred. Please try again later."); // Show error alert
         } finally {
             setLoading(false); // Stop loading spinner
         }
     };
+
     const handleDropdownToggle = (type) => {
         setDropdowns((prev) => ({
             ...prev,
@@ -144,47 +149,47 @@ function CreateInvestorAccount({ isOpen, onClose }) {
         let formErrors = [];
         if (!registrationData.fname) {
             formErrors.push("First name is required!");
-            toast.error("First name is required!");
+            showAlert("error", "First name is required!");
         }
 
         if (!registrationData.lname) {
             formErrors.push("Last name is required!");
-            toast.error("Last name is required!");
+            showAlert("error", "Last name is required!");
         }
 
         if (!registrationData.email) {
             formErrors.push("Email is required!");
-            toast.error("Email is required!");
+            showAlert("error", "Email is required!");
         }
 
         if (!registrationData.password) {
             formErrors.push("Password is required!");
-            toast.error("Password is required!");
+            showAlert("error", "Password is required!");
         }
 
         if (!registrationData.confirmPassword) {
             formErrors.push("Confirm password is required!");
-            toast.error("Confirm password is required!");
+            showAlert("error", "Confirm password is required!");
         }
 
         if (!registrationData.id_no) {
             formErrors.push("ID number is required!");
-            toast.error("ID number is required!");
+            showAlert("error", "ID number is required!");
         }
 
         if (!registrationData.tax_pin) {
             formErrors.push("Tax PIN is required!");
-            toast.error("Tax PIN is required!");
+            showAlert("error", "Tax PIN is required!");
         }
 
         if (!registrationData.id_passport) {
             formErrors.push("Attach your ID/Passport!");
-            toast.error("Attach your ID/Passport!");
+            showAlert("error", "Attach your ID/Passport!");
         }
 
         if (!registrationData.pin) {
             formErrors.push("Attach your PIN file!");
-            toast.error("Attach your PIN file!");
+            showAlert("error", "Attach your PIN file!");
         }
 
         // If there are any validation errors, stop the registration process
@@ -230,12 +235,12 @@ function CreateInvestorAccount({ isOpen, onClose }) {
             // Check for backend-specific errors (e.g., if the email already exists)
             if (data.error) {
                 formErrors.push(data.error);
-                toast.error(data.error); // Show backend-specific error toast
+                showAlert("error", data.error); // Show backend-specific error alert
                 setErrors({ general: formErrors });
                 return;
             }
 
-            toast.success("Registration successful!"); // Show success toast
+            showAlert("success", "Registration successful!"); // Show success alert
             onClose();
         } catch (error) {
             // Handle backend errors
@@ -244,19 +249,19 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                     error.response.data.message ||
                     "Registration failed. Please try again.";
                 formErrors.push(errorMessage);
-                toast.error(errorMessage); // Show error toast
+                showAlert("error", errorMessage); // Show error alert
                 setErrors({ general: formErrors });
             } else if (error.request) {
                 const errorMessage =
                     "No response from the server. Please try again.";
                 formErrors.push(errorMessage);
-                toast.error(errorMessage); // Show error toast
+                showAlert("error", errorMessage); // Show error alert
                 setErrors({ general: formErrors });
             } else {
                 const errorMessage =
                     "An unexpected error occurred. Please try again.";
                 formErrors.push(errorMessage);
-                toast.error(errorMessage); // Show error toast
+                showAlert("error", errorMessage); // Show error alert
                 setErrors({ general: formErrors });
             }
 
@@ -268,7 +273,6 @@ function CreateInvestorAccount({ isOpen, onClose }) {
 
     return (
         <div className="fixed inset-0 bg-blue-900 bg-opacity-25 flex justify-center items-center z-50">
-            <ToastContainer />
             <div
                 className={`bg-white p-6 shadow-lg ${
                     isSignIn ? "max-w-md min-h-[500px]" : "max-w-2xl"

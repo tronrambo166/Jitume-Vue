@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axiosClient from "../../../axiosClient";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useAlert } from "../../partials/AlertContext";
 
 function AddMilestone() {
     const [form, setForm] = useState({
@@ -17,6 +16,7 @@ function AddMilestone() {
     const [milestones, setMilestones] = useState([]);
     const [business, setBusiness] = useState([]);
     const [fileDetails, setFileDetails] = useState(null);
+    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -57,7 +57,7 @@ function AddMilestone() {
 
         try {
             // setLoading(true); // Set loading state to true
-            toast.info("Uploading...");
+            showAlert("info", "Uploading..."); // Show info alert for uploading
 
             const response = await axiosClient.post(
                 "business/save_milestone",
@@ -68,23 +68,24 @@ function AddMilestone() {
             console.log("Server Response:", response.data);
 
             if (response.data.status === 200) {
-                toast.success(response.data.message);
+                showAlert("success", response.data.message); // Show success alert
                 getMilestones();
             } else {
-                toast.error(
+                showAlert(
+                    "error",
                     response.data.message || "Failed to save milestone."
-                );
+                ); // Show error alert
             }
         } catch (error) {
             console.error("Error submitting the form:", error);
-            toast.error(
+            showAlert(
+                "error",
                 error.message || "An error occurred while submitting the form."
-            );
+            ); // Show error alert
         } finally {
             // setLoading(false); // Set loading state to false
         }
     };
-
 
     const handleStatusChange = (e, id) => {
         const updatedMilestones = milestones.map((milestone) =>
@@ -95,20 +96,19 @@ function AddMilestone() {
         setMilestones(updatedMilestones);
     };
 
-     const getMilestones = () => {
-            axiosClient
-                .get("/business/add_milestones")
-                .then(({ data }) => {
-                    setMilestones(data.milestones);
-                    setBusiness(data.business);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        };
-        
+    const getMilestones = () => {
+        axiosClient
+            .get("/business/add_milestones")
+            .then(({ data }) => {
+                setMilestones(data.milestones);
+                setBusiness(data.business);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     useEffect(() => {
-       
         getMilestones();
     }, []);
 
@@ -267,8 +267,6 @@ function AddMilestone() {
                     </table>
                 </div>
             </div>
-            <ToastContainer />{" "}
-            {/* Add ToastContainer to display notifications */}
         </div>
     );
 }

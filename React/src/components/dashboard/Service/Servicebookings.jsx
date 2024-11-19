@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import axiosClient from "../../../axiosClient";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { toast, ToastContainer } from "react-toastify";
+import { useAlert } from "../../partials/AlertContext";
+
 function InvestmentBids() {
     const [bids, setBids] = useState([]);
     const [selectedBids, setSelectedBids] = useState([]);
     const [modalContent, setModalContent] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    const { showAlert } = useAlert();
 
     const handleCheckboxChange = (id) => {
         setSelectedBids((prevSelected) => {
@@ -24,22 +26,23 @@ function InvestmentBids() {
             reject: 0,
         };
         console.log(payload);
+
         axiosClient
             .post("bookingAccepted", payload)
             .then(({ data }) => {
-                // alert(data.message);
-                toast.success(data.message);
+                // Use showAlert to display success message
+                showAlert("success", data.message);
             })
             .catch((err) => {
                 if (err.response && err.response.status === 422) {
                     console.log(err.response.data.errors);
                 } else {
-                    // console.log(err);
-                    toast.error(err);
+                    // Use showAlert to display error message
+                    showAlert("error", err.message || "An error occurred");
                 }
             })
             .finally(() => {
-                setLoading(false);
+                setLoading(false); // Hide spinner
             });
     };
 
@@ -90,7 +93,6 @@ function InvestmentBids() {
 
     return (
         <div className="container mx-auto p-6">
-            <ToastContainer />
             <h3 className="text-left text-lg font-semibold mb-6">
                 Service Booking
             </h3>

@@ -6,7 +6,7 @@ import {
 } from "react-icons/ai";
 import axiosClient from "../../axiosClient";
 import { useStateContext } from "../../contexts/contextProvider";
-import { ToastContainer, toast } from "react-toastify";
+import { useAlert } from "../partials/AlertContext";
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
@@ -18,6 +18,7 @@ const LoginForm = () => {
     const emailRef = useRef();
     const passwordRef = useRef();
     const { setUser, setToken } = useStateContext();
+    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -45,14 +46,20 @@ const LoginForm = () => {
         }
 
         if (!password) {
-            setPasswordError("Please insert your password.");
+            setPasswordError("");
             valid = false;
         } else {
             setPasswordError("");
         }
 
         setIsFormValid(valid && email && password);
+
+        // If form is valid, show success alert
+        if (valid && email && password) {
+            showAlert("success", `Login successful! Welcome, ${userName}`);
+        }
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -71,12 +78,7 @@ const LoginForm = () => {
             if (data.auth) {
                 // Access the full name by combining fname and lname
                 const userName = `${data.user.fname} ${data.user.lname}`;
-                toast.success(`Login successful! Welcome, ${userName}`);
-                // alert(`Login successful! Welcome, ${userName}`);
-                $.alert({
-                title: "Welcome",
-                content: "You're Logged in!",
-                });
+                showAlert("success", `Login successful! Welcome, ${userName}`); // Using showAlert for success
 
                 // Update user and token states
                 setUser(data.user);
@@ -86,23 +88,22 @@ const LoginForm = () => {
                     data.message ||
                         "Login failed. Please check your credentials."
                 );
-                toast.error(
+                showAlert(
+                    "error",
                     data.message ||
-                        "Login failed. Please check your credentials."
-                );
+                        "Login failed. Please check your credentials"
+                ); // Using showAlert for error
             }
         } catch (error) {
             console.error("Login error:", error);
-            toast.error("Login failed. Please check your credentials.");
+            showAlert("error", "Login failed. Please check your credentials."); // Using showAlert for error
         } finally {
             setLoading(false);
         }
     };
 
-
     return (
         <>
-            <ToastContainer />
             <form
                 className="flex flex-col px-6 space-y-4"
                 onSubmit={handleSubmit}
@@ -174,7 +175,6 @@ const LoginForm = () => {
                     </p>
                 )}
 
-                
                 <button
                     type="submit"
                     className={`px-4 py-2 rounded-full text-white flex items-center justify-center transition ${

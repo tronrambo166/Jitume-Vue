@@ -2,12 +2,15 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosClient from "../../../axiosClient";
 import ServEditModal from "./ServEditModal";
+import { useAlert } from "../../partials/AlertContext";
+
 const ServiceTable = () => {
     const [business, setBusiness] = useState([]);
     const [service, setService] = useState([]);
     const [myInvest, setMyInvest] = useState([]);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedService, setSelectedService] = useState(null); // To track the selected service for editing
+    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
 
     useEffect(() => {
         const getBusinessAndServices = () => {
@@ -37,7 +40,7 @@ const ServiceTable = () => {
             .get("/business/delete_service/" + id)
             .then(({ data }) => {
                 setService(service.filter((item) => item.id !== id));
-                alert("Deleted!");
+                showAlert("success", "Service deleted successfully.");
             })
             .catch((err) => {
                 console.log(err);

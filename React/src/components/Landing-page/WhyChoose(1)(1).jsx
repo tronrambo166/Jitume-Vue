@@ -151,7 +151,7 @@ const WhyChoose = () => {
                     {loading && (
                         <AiOutlineLoading3Quarters className="animate-spin mr-2" />
                     )}
-                    {loading ? "Loading..." : "Browse Businesses"}
+                    {loading ? "Redirecting..." : "Browse Businesses"}
                 </button>
             </div>
 

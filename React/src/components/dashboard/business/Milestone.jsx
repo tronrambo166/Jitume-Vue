@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import axiosClient from "../../../axiosClient";
-import { ToastContainer, toast } from "react-toastify";
+import { useAlert } from "../../partials/AlertContext";
+
 function Milestones() {
     const [milestones, setMilestones] = useState([]);
     const [business, setBusiness] = useState([]);
     const [businessName, setBusinessName] = useState([]);
+    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
 
     useEffect(() => {
         const getMilestones = (id) => {
@@ -45,24 +47,50 @@ function Milestones() {
                 : milestone
         );
         setMilestones(updatedMilestones);
-        // console.log(updatedMilestones);
-        toast.info(
-            `Status updated to "${updatedMilestones.find((milestone) => milestone.id === id).status}" for milestone ID ${id}`
-        );
-    
 
+        // Find the updated milestone's status for display
+        const updatedMilestone = updatedMilestones.find(
+            (milestone) => milestone.id === id
+        );
+
+        showAlert(
+            "info",
+            `Status updated to "${updatedMilestone.status}" for milestone ID ${id}`
+        );
     };
 
     const handleDelete = (id) => {
+        // Confirmation dialog
+        const confirmDelete = window.confirm(
+            "Are you sure you want to delete this milestone? This action cannot be undone."
+        );
+        if (!confirmDelete) return;
+
         axiosClient
-            .get("/business/delete_milestone/" + id)
+            .get(`/business/delete_milestone/${id}`)
             .then(({ data }) => {
-                setMilestones(
-                    milestones.filter((milestone) => milestone.id !== id)
-                );
+                if (data.status === 200) {
+                    setMilestones(
+                        milestones.filter((milestone) => milestone.id !== id)
+                    );
+                    showAlert(
+                        "success",
+                        data.message || "Milestone deleted successfully."
+                    );
+                } else {
+                    showAlert(
+                        "warning",
+                        data.message ||
+                            "Failed to delete milestone. Please try again."
+                    );
+                }
             })
             .catch((err) => {
-                console.log(err);
+                console.error(err);
+                showAlert(
+                    "error",
+                    "An error occurred while deleting the milestone."
+                );
             });
     };
 
@@ -92,7 +120,6 @@ function Milestones() {
 
     return (
         <div className="container mx-auto p-6">
-            <ToastContainer/>
             <h3 className="text-left text-2xl font-semibold mb-6">
                 Business Milestones
             </h3>
