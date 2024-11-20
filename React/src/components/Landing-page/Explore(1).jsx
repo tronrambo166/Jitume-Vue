@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import { decode as base64_decode, encode as base64_encode } from "base-64";
@@ -143,6 +143,11 @@ const Explore = () => {
                             {/* Render Categories */}
                             {checkCat
                                 ? categories.map((category, index) => (
+                                     <Link
+                                     to={`/category/${category.name
+                                    .replace("/", "-")
+                                    .replace(" ", "-")}`}
+                                      >
                                       <div
                                           key={index}
                                           className={`flex items-center p-4 rounded-md  ${category.color} min-w-[200px] sm:min-w-[220px] transition-transform`}
@@ -161,6 +166,7 @@ const Explore = () => {
                                               </p>
                                           </div>
                                       </div>
+                                      </Link>
                                   ))
                                 : // Skeleton Loader
                                   Array(10)

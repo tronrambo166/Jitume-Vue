@@ -140,7 +140,7 @@ return (
                               <div className="mt-4 bg-sky-50 p-3 rounded-lg">
                                   <div className="text-sm text-gray-800 flex justify-between mt-2">
                                       <span>
-                                          <strong>Service fee: </strong>
+                                          <strong>Service Fee: </strong>
                                       </span>
                                       <span>
                                           <strong> ${card.price}</strong>

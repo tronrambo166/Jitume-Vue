@@ -78,8 +78,10 @@ export default function DefaultLayout() {
                 <Outlet />
             </main>
 
+            <Footer />
+
             {/* Conditionally render Footer or Footer2 */}
-            {useFooter ? <Footer /> : <Footer2 />}
+            {/*{useFooter ? <Footer /> : <Footer2 />}*/}
         </div>
     );
 }
