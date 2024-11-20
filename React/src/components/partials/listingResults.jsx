@@ -322,6 +322,38 @@ const ListingResults = () => {
     const failure = () => {};
     //MAP -- MAP
 
+
+    //Range Function
+        const collapse = () => {
+            var slider = document.getElementById('slider');
+
+            if(slider && slider.noUiSlider){
+            slider.noUiSlider.destroy();
+            }
+            $('#collapseExample').removeClass('collapse');
+            $('#colBut').addClass('collapse');
+            $('#colBut2').removeClass('collapse');
+        };
+        const hide = () => {
+            $('#collapseExample').addClass('collapse');
+
+        };
+        const collapse2 = () => {
+            var slider = document.getElementById('slider2');
+
+            if(slider && slider.noUiSlider){
+            slider.noUiSlider.destroy();
+            }
+            $('#collapseExample2').removeClass('collapse');
+            $('#colBut3').addClass('collapse');
+            $('#colBut4').removeClass('collapse');
+        };
+        const hide2 = () => {
+            $('#collapseExample2').addClass('collapse');
+
+        };
+        //Range Function
+
     return (
         <>
             <BackBtn />
@@ -370,16 +402,21 @@ const ListingResults = () => {
                     <Search />
                 </div>
 
-                {/* Price Range Slider */}
+
+                {/* Turnover Range Slider */}
                 <div className="flex flex-col lg:flex-row items-center gap-6 my-6">
                     <div
                         id="turnover_slider"
-                        className="w-full border rounded-lg jakarta border-[#CBD5E1] space-y-2 px-6 py-4"
+                        className="w-full border rounded-lg jakarta border-[#CBD5E1] space-y-2 px-6 pb-4"
                     >
+
+                        <button onClick={collapse} id="colBut4" className="mr-4 my-2 py-0 border rounded-full px-3 py-1 " name="min">Set Range </button>
+
                         <label className="text-gray-700 font-semibold ">
                             Turnover Range
                         </label>
                         <div id="slider" className=" "></div>
+
                         <div className="row mt-3 ">
                             <div className="col-6 mt-1">
                                 <span
@@ -396,12 +433,33 @@ const ListingResults = () => {
                                 ></span>
                             </div>
                         </div>
+
+                      {/*COLLAPSE RANGE*/} 
+                        <div class="row mt-3 collapse" id="collapseExample">
+                            <div class="col-6  mt-1">
+                                <span class="d-inline">Min:</span><input  type="number" min="0" id="low" class="d-inline w-75 py-0 border" name="min"  />
+                            </div>
+                            <div class="col-6 mt-1 pr-0">
+                                <span class="d-inline">Max:</span><input type="number" id="high" class="d-inline w-75 float-right py-0 border" name="min"  />
+                            </div>
+
+                            <button className="border rounded-full px-3 py-1 w-25 mt-3 mx-auto" 
+                            onClick={() => { amountSlider(); hide();}} >Set</button>
+                        </div>
+                        {/*COLLAPSE RANGE*/}
+
                     </div>
+                    {/* Turnover Range Slider */}
+
+
+                    
 
                     <div
                         id="amount_slider"
                         className="w-full jakarta   text-md border border-[#cbd5e1] rounded-lg space-y-2 px-6 py-4  mt-1"
                     >
+                        <button onClick={collapse2} id="colBut4" className="mr-4 my-2 py-0 border rounded-full px-3 py-1 " name="min">Set Range </button>
+                        
                         <label className="text-gray-700 font-semibold mb-2">
                             Amount Range
                         </label>
@@ -422,6 +480,21 @@ const ListingResults = () => {
                                 ></span>
                             </div>
                         </div>
+
+                        {/*COLLAPSE Amount*/}
+                        <div class="row mt-3 collapse" id="collapseExample2">
+                            <div class="col-6  mt-1">
+                                <span class="d-inline">Min:</span><input  type="number" min="0"   id="low2" class="d-inline w-75 py-0 border" name="min" value="" />
+                            </div>
+                            <div class="col-6 mt-1 pr-0">
+                                <span class="d-inline">Max:</span><input type="number" id="high2" class="d-inline w-75 float-right py-0 border" name="min" value="" />
+                            </div>
+
+                            <button class="border rounded-full px-3 py-1 rounded-full px-3 py-1 w-25 mt-3 mx-auto"
+                            onClick={() => { rangeSlider(); hide2();}} >Set</button>
+                        </div>
+                        {/*COLLAPSE Amount*/}
+
                     </div>
                 </div>
                 {/* Price Range Slider */}

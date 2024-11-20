@@ -14,6 +14,7 @@ use App\Models\ServiceMileStatus;
 use App\Models\ServiceMessages; 
 use App\Models\ServiceReviews;
 use App\Models\User;
+use App\Models\Notifications;
 use DateTime;
 use Session; 
 use Hash;
@@ -986,8 +987,23 @@ public function serviceBook(Request $request){
       'note' => $request->note,
       'business_bid_id' => $request->business_bid_id
     ]); 
-    if($booking)
+    if($booking){
+
+        //Notification
+         $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+         $addNoti = Notifications::create([
+            'date' => $date,
+            'receiver_id' => $owner->shop_id,
+            'customer_id' => $booker_id,
+            'text' => 'You have a new booking from _name!',
+            'link' => 'service-bookings',
+            'type' => 'customer',
+
+          ]);
+         //Notification
     return response()->json(['success' => 'Booking Success! Go to dashboard to see status']);
+      } 
+
     }
 
     catch(\Exception $e){
@@ -1022,6 +1038,19 @@ public function serviceMsg(Request $request){
       'from_id' => $booker_id
     ]); 
     if($message)
+    //Notification
+         $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+         $addNoti = Notifications::create([
+            'date' => $date,
+            'receiver_id' => $owner->shop_id,
+            'customer_id' => $booker_id,
+            'text' => 'You have a new message from _name!',
+            'link' => 'investment-bids',
+            'type' => 'dashboard/messages',
+
+          ]);
+         //Notification
+
     return response()->json(['success' => 'Message Sent!']);
     }
 

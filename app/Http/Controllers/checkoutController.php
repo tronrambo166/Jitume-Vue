@@ -25,6 +25,7 @@ use App\Models\taxes;
 use App\Models\BusinessBids;
 use App\Models\BusinessSubscriptions;
 use App\Models\AcceptedBids;
+use App\Models\Notifications;
 
 
 class checkoutController extends Controller
@@ -833,6 +834,19 @@ public function bidCommits(Request $request){
              });
      }
 // Milestone Fulfill check
+
+     //Notification
+         $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+         $addNoti = Notifications::create([
+            'date' => $date,
+            'receiver_id' => $Business->user_id,
+            'customer_id' => $investor_id,
+            'text' => 'You have a new bid from _name!',
+            'link' => 'dashboard/investment-bids',
+            'type' => 'investor',
+
+          ]);
+         //Notification
 
 }
 

@@ -24,6 +24,7 @@ use Stripe\StripeClient;
 use App\Models\taxes;
 use App\Models\BusinessBids;
 use App\Models\ServiceMileStatus;
+use App\Models\Notificationss;
 
 class bidsEmailController extends Controller
 {
@@ -60,6 +61,19 @@ public function bidsAccepted(Request $request)
          
          $bid_remove = BusinessBids::where('id',$id)->delete();
          //remove
+
+         //Notifications
+         $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+         $addNoti = Notifications::create([
+            'date' => $date,
+            'receiver_id' => $bid->investor_id,
+            'customer_id' => $bid->business_id,
+            'text' => 'Sorry your bid to _name has been rejected, please try again properly!',
+            'link' => 'dashboard',
+            'type' => 'business',
+          ]);
+         //Notifications
+
            }
           }
         Session::put('success','Rejected!');
@@ -132,6 +146,19 @@ public function bidsAccepted(Request $request)
 
          $bid_remove = BusinessBids::where('id',$id)->delete();
          //remove
+
+         //Notifications
+         $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+         $addNoti = Notifications::create([
+            'date' => $date,
+            'receiver_id' => $bid->investor_id,
+            'customer_id' => $bid->business_id,
+            'text' => 'Your bid to _name has been accepted!',
+            'link' => 'dashboard',
+            'type' => 'business',
+          ]);
+         //Notifications
+
          }
        }
       Session::put('success','Accepted!');
@@ -395,7 +422,20 @@ public function bidCommitsEQP(Request $request){
      }
      // Milestone Fulfill check
 
-      return response()->json(['success' => 'Success! You will get a notification if your bid is accepted!']);
+     //Notifications
+         $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+         $addNoti = Notifications::create([
+            'date' => $date,
+            'receiver_id' => $owner->id,
+            'customer_id' => $investor_id,
+            'text' => 'You have a new bid from _name!',
+            'link' => 'dashboard/investment-bids',
+            'type' => 'investor',
+
+          ]);
+         //Notifications
+
+      return response()->json(['success' => 'Success! You will get a notifications if your bid is accepted!']);
     }
 }
 
@@ -453,6 +493,20 @@ public function bookingAccepted(Request $request)
         //Replicate Miles
 
          }
+
+         //Notifications
+         $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+         $addNoti = Notifications::create([
+            'date' => $date,
+            'receiver_id' => $booker_id,
+            'customer_id' => $service_id,
+            'text' => 'Your booking to _name has been accepted!',
+            'link' => 'dashboard/mybookings',
+            'type' => 'service',
+
+          ]);
+         //Notifications
+
        }
        }
         Session::put('success','Confirmed!');

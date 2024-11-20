@@ -200,8 +200,8 @@ const Search = () => {
                     </div>
 
                     {/* Hidden inputs for latitude and longitude */}
-                    <input type="text" name="lat" id="lat" hidden value="" />
-                    <input type="text" name="lng" id="lng" hidden value="" />
+                    <input readOnly type="text" name="lat" id="lat" hidden value="" />
+                    <input readOnly type="text" name="lng" id="lng" hidden value="" />
 
                     {/* Location Input with Suggestions */}
                     <div className="relative w-full sm:w-1/4 h-10 mb-1 sm:mb-0">

@@ -15,6 +15,7 @@ use App\Models\BusinessBids;
 use App\Models\AcceptedBids;
 use App\Models\Review;
 use App\Models\BusinessSubscriptions;
+use App\Models\Notifications;
 
 use Stripe\StripeClient;
 use Response;
@@ -1396,6 +1397,35 @@ if($mail1 && $mail2)
 return response()->json(['status' => 200]);
 else
 return response()->json(['status' => 400]);
+}
+
+
+public function notifications(){ 
+$results = [];
+$notifications = Notifications::where('receiver_id',Auth::id())->latest()->get();
+foreach($notifications as $notice)
+{
+  if($notice->type == 'investor' || $notice->type == 'customer')
+  {
+  $notifier =User::where('id',$notice->customer_id)->first();
+  $name = $notifier->fname. ' '.$notifier->lname;
+  }
+  
+  else if($notice->type == 'business'){
+  $notifier =Listing::where('id',$notice->customer_id)->first();
+  $name = $notifier->fname;
+  }
+  
+  else {
+    $notifier =Service::where('id',$notice->customer_id)->first();
+    $name = $notifier->fname;
+  }
+
+  $notice->text = str_replace('_name', $name, $notice->text);
+
+}
+
+return response()->json(['data' => $notifications]);
 }
 
 

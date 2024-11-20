@@ -114,6 +114,7 @@ Route::post('add_doc', [BusinessController::class, 'add_docs'])->name('add_doc')
 Route::post('add_video', [BusinessController::class, 'add_video'])->name('add_video');
 Route::post('embed_business_video', [BusinessController::class, 'embed_business_video'])->name('embed_business_video');
 
+Route::get('/notifications', [BusinessController::class, 'notifications']);
 
 //Dashboard -- Service ROUTES
 Route::get('bBQhdsfE_WWe4Q-_f7ieh7Hdhf8F_', [ServiceController::class, 'services'])->name('services');
