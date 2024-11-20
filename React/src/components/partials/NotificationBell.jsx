@@ -1,52 +1,44 @@
 import { useState, useEffect, useRef } from "react";
 import { FaBell, FaTimes } from "react-icons/fa";
+import axiosClient from "../../axiosClient";
+import { Link } from "react-router-dom";
 
 const NotificationBell = () => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
-    const [notifications, setNotifications] = useState([
-        {
-            name: "John Doe",
-            type: "Investment",
-            message: "Invested in the project: Build a new mobile app.",
-            time: "2 hours ago",
-            icon: "💼",
-            isRead: false,
-        },
-        {
-            name: "Jane Doe",
-            type: "Investment",
-            message:
-                "Invested in the project: Renovation of the office building.",
-            time: "1 day ago",
-            icon: "🏢",
-            isRead: false,
-        },
-        {
-            name: "Mike Doe",
-            type: "Investment",
-            message: "Invested in the project: Market expansion in Europe.",
-            time: "3 days ago",
-            icon: "🌍",
-            isRead: false,
-        },
-        {
-            name: "Sarah Doe",
-            type: "Investment",
-            message: "Invested in the project: Green energy solutions.",
-            time: "5 days ago",
-            icon: "💡",
-            isRead: false,
-        },
-        {
-            name: "Anna Doe",
-            type: "Investment",
-            message:
-                "Invested in the project: Artificial intelligence for healthcare.",
-            time: "1 week ago",
-            icon: "🤖",
-            isRead: false,
-        },
-    ]);
+    useEffect(() => {
+        const notifications = () => {
+            axiosClient
+                .get("business/notifications")
+                .then(({ data }) => {
+                    //setCards(data.data);
+                    //res = data.data;
+                    console.log("Notifications = ");
+                    console.log(data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+        notifications();
+    }, []);
+
+    const [notifications, setNotifications] = useState([]);
+    useEffect(() => {
+        const notifications = () => {
+            axiosClient
+                .get("business/notifications")
+                .then(({ data }) => {
+                    setNotifications(data.data);
+
+                    console.log("Notifications = ");
+                    console.log(data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+        notifications();
+    }, []);
     const [unreadCount, setUnreadCount] = useState(notifications.length); // Set initial unread count
     const dropdownRef = useRef(null);
 
@@ -102,9 +94,9 @@ const NotificationBell = () => {
                     className="cursor-pointer text-2xl text-white" // Set bell color to white
                     onClick={toggleDropdown}
                 />
-                {unreadCount > 0 && (
+                {notifications.length > 0 && (
                     <div className="absolute flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-3">
-                        {unreadCount}
+                        {notifications.length}
                     </div>
                 )}
             </div>
@@ -154,20 +146,17 @@ const NotificationBell = () => {
                                                         : "text-gray-800" // Regular text color for unread notifications
                                                 }`}
                                             >
-                                                {notif.message}
+                                                {notif.text}
                                             </div>
                                             <div className="text-xs text-gray-500">
-                                                {notif.time}
+                                                {notif.date}
                                             </div>
                                             <div className="mt-2 flex space-x-2">
-                                                <button
-                                                    className="text-blue-600 text-xs hover:text-blue-800"
-                                                    onClick={() =>
-                                                        markAsRead(index)
-                                                    }
-                                                >
-                                                    Mark as Read
-                                                </button>
+                                                <Link to={"./" + notif.link}>
+                                                    <button className="text-blue-600 text-xs hover:text-blue-800">
+                                                        View More
+                                                    </button>
+                                                </Link>
                                                 <button
                                                     className="text-red-600 text-xs hover:text-red-800"
                                                     onClick={() =>

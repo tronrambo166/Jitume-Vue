@@ -46,22 +46,22 @@ const Dashboardhero = () => {
             .finally(() => setLoading(false));
     }, []);
 
-    useEffect(() => {
-        const notifications = () => {
-            axiosClient
-                .get("business/notifications")
-                .then(({ data }) => {
-                    //setCards(data.data);
-                    //res = data.data;
-                    console.log('Notifications = ')
-                    console.log(data);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        };
-        notifications();
-    }, []);
+    // useEffect(() => {
+    //     const notifications = () => {
+    //         axiosClient
+    //             .get("business/notifications")
+    //             .then(({ data }) => {
+    //                 //setCards(data.data);
+    //                 //res = data.data;
+    //                 console.log('Notifications = ')
+    //                 console.log(data);
+    //             })
+    //             .catch((err) => {
+    //                 console.log(err);
+    //             });
+    //     };
+    //     notifications();
+    // }, []);
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [isOpen, setIsOpen] = useState(false); // State to control sidebar open/close
