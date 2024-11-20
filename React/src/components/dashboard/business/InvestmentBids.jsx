@@ -155,6 +155,14 @@ function InvestmentBids() {
         };
         getMilestones();
     }, []);
+    const handleSelectAll = () => {
+        if (selectAll) {
+            setSelectedRows([]);
+        } else {
+            setSelectedRows(data.map((row) => row.id)); // Assuming 'id' is unique for each row
+        }
+        setSelectAll(!selectAll);
+    };
 
     return (
         <div className="container mx-auto p-6">
@@ -263,10 +271,12 @@ function InvestmentBids() {
                 </button>
 
                 <button
-                    onClick={AcceptBids(1)}
-                    disabled={loadingReject}
-                    className={`bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition-colors ${
-                        loadingReject ? "cursor-not-allowed" : ""
+                    onClick={AcceptBids(1)} // Ensure this calls the correct reject handler
+                    disabled={selectedBids.length === 0 || loadingReject} // Disable if no bids are selected
+                    className={`py-2 px-4 rounded-lg text-white focus:outline-none focus:ring-2 transition-colors ${
+                        selectedBids.length === 0
+                            ? "bg-gray-300 cursor-not-allowed" // Gray when no bids selected
+                            : "bg-red-500 hover:bg-red-600 focus:ring-red-300" // Red when bids selected
                     }`}
                 >
                     {loadingReject ? (

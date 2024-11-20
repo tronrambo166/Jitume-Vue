@@ -5,8 +5,16 @@ const Breadcrumb = () => {
     const location = useLocation();
     const paths = location.pathname.split("/").filter(Boolean);
 
+    // Helper function to capitalize the first letter of each word, including words separated by hyphens
+    const formatPath = (string) => {
+        return string
+            .split("-")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join("-");
+    };
+
     return (
-        <nav className="text-white  text-sm md:text-lg" aria-label="breadcrumb">
+        <nav className="text-white text-sm md:text-lg" aria-label="breadcrumb">
             <ol className="flex">
                 {/* Render Home Link */}
                 <li>
@@ -24,14 +32,14 @@ const Breadcrumb = () => {
                             <span className="mx-1 text-white">/</span>
                             {isLast ? (
                                 <span className="text-white">
-                                    {decodeURIComponent(path)}
+                                    {formatPath(decodeURIComponent(path))}
                                 </span>
                             ) : (
                                 <Link
                                     to={routeTo}
                                     className="text-white hover:underline"
                                 >
-                                    {decodeURIComponent(path)}
+                                    {formatPath(decodeURIComponent(path))}
                                 </Link>
                             )}
                         </li>

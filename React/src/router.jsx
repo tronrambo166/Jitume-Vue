@@ -39,6 +39,7 @@ import Addservicemilestone from "./components/dashboard/Service/Addservicemilest
 import MyBookings from "./components/dashboard/Service/Mybookings";
 import AddBusinesS from "./components/dashboard/business/AddBusiness";
 import ServiceCategory from "./components/partials/ServiceCategory";
+import Settings from "./components/partials/Settings/Settings";
 
 // Footer Components
 import Careers from "./components/footer-pages/Careers";
@@ -110,7 +111,6 @@ const router = createBrowserRouter([
             { path: "/partner-with-jitume", element: <Partner /> },
             { path: "/what-is-jitume", element: <WhatIsJitume /> },
             { path: "/due-diligence", element: <DueDiligence /> },
-            
         ],
     },
     {
@@ -133,6 +133,7 @@ const router = createBrowserRouter([
             { path: "addservicemilestone", element: <Addservicemilestone /> },
             { path: "mybookings", element: <MyBookings /> },
             { path: "addbusiness", element: <AddBusinesS /> },
+            { path: "settings/", element: <Settings /> },
         ],
     },
 ]);

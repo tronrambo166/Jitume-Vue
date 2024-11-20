@@ -235,7 +235,7 @@ const Navbar = () => {
                                     "You have been signed out successfully!"
                                 ); // Show success alert
                             }}
-                            className="bg-white py-2 hover:bg-green-800 hover:text-red-100 rounded-[8px] text-[13px] px-5 text-[#0F172A] font-semibold"
+                            className="bg-white py-2 hover:bg-yellow-400 hover:text-red-900 rounded-[8px] text-[13px] px-5 text-[#0F172A] font-semibold"
                         >
                             Sign Out
                         </button>

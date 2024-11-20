@@ -123,7 +123,13 @@ const Dashboardhero = () => {
                         <FaUser />
                         <span>Sign out</span>
                     </div>
-                    <FaCog className="text-white" />
+                    <Link
+                        to="/dashboard/settings"
+                        className="flex items-center space-x-2 hover:text-gray"
+                    >
+                        <FaCog className="text-white text-xl" />
+                        <span className="text-white text-sm">Settings</span>
+                    </Link>
                     <NotificationBell />
                 </div>
             </div>

@@ -158,8 +158,13 @@ function InvestmentBids() {
             <div className="flex gap-2 pt-3 items-center justify-end">
                 <button
                     onClick={AcceptBids}
-                    disabled={loading} // Disable button when loading
-                    className="bg-green text-white py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300 transition-colors flex items-center justify-center"
+                    disabled={loading || selectedBids.length === 0} // Disable button when loading or no bids selected
+                    className={`py-2 px-4 rounded-lg flex items-center justify-center transition-colors focus:outline-none focus:ring-2 
+        ${
+            loading || selectedBids.length === 0
+                ? "bg-gray-300 text-white cursor-not-allowed" // Gray when inactive
+                : "bg-green-600 text-white hover:bg-green-700 focus:ring-green-300"
+        }`} // Green when active
                 >
                     {loading ? (
                         <AiOutlineLoading3Quarters
@@ -169,10 +174,39 @@ function InvestmentBids() {
                     ) : (
                         "Accept Bids"
                     )}
-                    {loading && "Accepting..."}
+                    {loading && " Accepting..."}
                 </button>
-                <button className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition-colors">
-                    Reject Bids
+
+                <button
+                    onClick={() => {
+                        if (selectedBids.length > 0) {
+                            setLoading(true); // Start loading
+                            showAlert(
+                                "info",
+                                "Reject functionality coming soon!"
+                            );
+                            setLoading(false); // End loading immediately after showing the alert
+                        } else {
+                            showAlert("info", "No bids selected to reject.");
+                        }
+                    }}
+                    disabled={loading || selectedBids.length === 0} // Disable button during loading or if no bids are selected
+                    className={`py-2 px-4 rounded-lg flex items-center justify-center transition-colors focus:outline-none focus:ring-2 
+        ${
+            loading || selectedBids.length === 0
+                ? "bg-gray-300 text-white cursor-not-allowed" // Gray when loading or no bids selected
+                : "bg-red-500 text-white hover:bg-red-600 focus:ring-red-300"
+        }`} // Red when active
+                >
+                    {loading ? (
+                        <AiOutlineLoading3Quarters
+                            className="animate-spin mr-2"
+                            size={20}
+                        />
+                    ) : (
+                        "Reject Bids"
+                    )}
+                    {loading && " Rejecting..."}
                 </button>
             </div>
 
