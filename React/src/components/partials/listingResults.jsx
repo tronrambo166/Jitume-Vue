@@ -89,8 +89,8 @@ const ListingResults = () => {
 
     useEffect(() => {
         console.log("Results Length: ", results.length);
-        console.log("Total Pages: ", totalPages);
-        console.log("Current Cards: ", currentCards);
+        //console.log("Total Pages: ", totalPages);
+        //console.log("Current Cards: ", currentCards);
     }, [results, currentPage]);
 
     //CORE METHODS
@@ -101,7 +101,9 @@ const ListingResults = () => {
                 .then(({ data }) => {
                     setResults(data.data);
                     res = data.data;
-                    console.log(data);
+                    //console.log(results);
+                    localStorage.setItem("results", JSON.stringify(data.data));
+
                     var x = navigator.geolocation;
                     x.getCurrentPosition(success, failure);
                     // document.querySelector('.permission-granted-button').addEventListener('click', () => {
@@ -125,11 +127,53 @@ const ListingResults = () => {
 
         if ((slider && slider.noUiSlider) || (slider2 && slider2.noUiSlider)) {
             slider.noUiSlider.destroy();
-            slider2.noUiSlider.destroy();
+            //slider2.noUiSlider.destroy();
         }
 
-        const rangeSlider = () => {
+
+        //SLIDERS FILTER
+
+        const amountSliderInitilize = () => {
+            noUiSlider.create(slider2, {
+                start: [0, 1000000],
+                connect: true,
+                range: {
+                    min: parseFloat(min2),
+                    max: parseFloat(max2),
+                },
+
+                step: 10000,
+                margin: 600,
+                pips: {
+                    //mode: 'steps',
+                    stepped: true,
+                    density: 6,
+                },
+            });
+            var skipValues = [
+                document.getElementById("price_low2"),
+                document.getElementById("price_high2"),
+            ];
+            // slider2.noUiSlider.on("update", function (values, handle) {
+            //     skipValues[handle].innerHTML = "$" + values[handle];
+            //     //console.log(values[1] - values[0]);
+
+            // });
+        };
+        //SLIDERS FILTER
+
+ 
+
+        rangeSliderInitilize();
+        //amountSliderInitilize();
+    }, []);
+
+
+    //Turnover
+    const rangeSliderInitilize = () => {
+            var y_range ='';var db_max ='';var db_min ='';
             //var slider = document.getElementById('slider');
+            console.log("Stored Results");console.log(results);
             noUiSlider.create(slider, {
                 start: [0, 1000000],
                 connect: true,
@@ -152,93 +196,39 @@ const ListingResults = () => {
             ];
             slider.noUiSlider.on("update", function (values, handle) {
                 skipValues[handle].innerHTML = "$" + values[handle];
-                //console.log(values[1] - values[0]);
+                //console.log(values[1]+ ' ' + values[0]);
+                 const preResults = localStorage.getItem("results");
+                 const savedResults = JSON.parse(preResults);
+                 const turnoverRes = [];
 
-                // setTimeout(() => {
-                axiosClient
-                    .get(
-                        "priceFilter/" +
-                            values[0] +
-                            "/" +
-                            values[1] +
-                            "/" +
-                            base64_decode(resIds)
-                    )
-                    .then((data) => {
-                        //count = data.data.length;
-                        setResults("");
-                        setResults(data.data.data);
+                Object.entries(savedResults).map(([key, value]) => {
+                // Ensure y_turnover exists and is a valid string
+                if (value.y_turnover && typeof value.y_turnover === 'string') {
+                    const range = value.y_turnover.split("-");
 
-                        console.log(data.data.data);
+                    // Check if the range array has two elements
+                    if (range.length === 2) {
+                        const db_min = parseInt(range[0], 10); // Parse as integer
+                        const db_max = parseInt(range[1], 10); // Parse as integer
 
-                        for (const [key, value] of Object.entries(data.data)) {
-                            value.id = btoa(value.id);
-                            value.id = btoa(value.id);
+                        //console.log(db_min)
+                        if (parseInt(values[0]) <= db_max && parseInt(values[1]) >= db_max) {
+                            turnoverRes.push(value);
                         }
-                        // t.queryLat = data.data.data[0].lat;
-                        // t.queryLng = data.data.data[0].lng;
-                    })
-                    .catch((error) => {});
-                // }, 1000)
+                    } 
+                    console.log(turnoverRes);
+
+            }
+            });
+                setResults(turnoverRes);
+
             });
         };
 
-        const amountSlider = () => {
-            noUiSlider.create(slider2, {
-                start: [0, 1000000],
-                connect: true,
-                range: {
-                    min: parseFloat(min2),
-                    max: parseFloat(max2),
-                },
 
-                step: 10000,
-                margin: 600,
-                pips: {
-                    //mode: 'steps',
-                    stepped: true,
-                    density: 6,
-                },
-            });
-            var skipValues = [
-                document.getElementById("price_low2"),
-                document.getElementById("price_high2"),
-            ];
-            slider2.noUiSlider.on("update", function (values, handle) {
-                skipValues[handle].innerHTML = "$" + values[handle];
-                //console.log(values[1] - values[0]);
+    
 
-                // setTimeout(() => {
-                axiosClient
-                    .get(
-                        "priceFilter_amount/" +
-                            values[0] +
-                            "/" +
-                            values[1] +
-                            "/" +
-                            base64_decode(resIds)
-                    )
-                    .then((data) => {
-                        //count = data.data.length;
-                        setResults("");
-                        setResults(data.data.data);
-                        console.log(data.data.data);
 
-                        for (const [key, value] of Object.entries(data.data)) {
-                            value.id = btoa(value.id);
-                            value.id = btoa(value.id);
-                        }
-                        // t.queryLat = data.data.data[0].lat;
-                        // t.queryLng = data.data.data[0].lng;
-                    })
-                    .catch((error) => {});
-                // }, 1000)
-            });
-        };
-
-        rangeSlider();
-        amountSlider();
-    }, []);
 
     //MAP -- MAP
 
@@ -435,16 +425,16 @@ const ListingResults = () => {
                         </div>
 
                       {/*COLLAPSE RANGE*/} 
-                        <div class="row mt-3 collapse" id="collapseExample">
-                            <div class="col-6  mt-1">
-                                <span class="d-inline">Min:</span><input  type="number" min="0" id="low" class="d-inline w-75 py-0 border" name="min"  />
+                        <div className="row mt-3 collapse" id="collapseExample">
+                            <div className="col-6  mt-1">
+                                <span className="d-inline">Min:</span><input  type="number" min="0" id="low" className="d-inline w-75 py-0 border" name="min"  />
                             </div>
-                            <div class="col-6 mt-1 pr-0">
-                                <span class="d-inline">Max:</span><input type="number" id="high" class="d-inline w-75 float-right py-0 border" name="min"  />
+                            <div className="col-6 mt-1 pr-0">
+                                <span className="d-inline">Max:</span><input type="number" id="high" className="d-inline w-75 float-right py-0 border" name="min"  />
                             </div>
 
-                            <button className="border rounded-full px-3 py-1 w-25 mt-3 mx-auto" 
-                            onClick={() => { amountSlider(); hide();}} >Set</button>
+                            {/*<button className="border rounded-full px-3 py-1 w-25 mt-3 mx-auto" 
+                            onClick={() => { amountSlider(); hide();}} >Set</button>*/}
                         </div>
                         {/*COLLAPSE RANGE*/}
 
@@ -482,16 +472,16 @@ const ListingResults = () => {
                         </div>
 
                         {/*COLLAPSE Amount*/}
-                        <div class="row mt-3 collapse" id="collapseExample2">
-                            <div class="col-6  mt-1">
-                                <span class="d-inline">Min:</span><input  type="number" min="0"   id="low2" class="d-inline w-75 py-0 border" name="min" value="" />
+                        <div className="row mt-3 collapse" id="collapseExample2">
+                            <div className="col-6  mt-1">
+                                <span className="d-inline">Min:</span><input  type="number" min="0"   id="low2" className="d-inline w-75 py-0 border" name="min"  />
                             </div>
-                            <div class="col-6 mt-1 pr-0">
-                                <span class="d-inline">Max:</span><input type="number" id="high2" class="d-inline w-75 float-right py-0 border" name="min" value="" />
+                            <div className="col-6 mt-1 pr-0">
+                                <span className="d-inline">Max:</span><input type="number" id="high2" className="d-inline w-75 float-right py-0 border" name="min"  />
                             </div>
 
-                            <button class="border rounded-full px-3 py-1 rounded-full px-3 py-1 w-25 mt-3 mx-auto"
-                            onClick={() => { rangeSlider(); hide2();}} >Set</button>
+                            {/*<button className="border rounded-full px-3 py-1 rounded-full px-3 py-1 w-25 mt-3 mx-auto"
+                            onClick={() => { rangeSlider(); hide2();}} >Set</button>*/}
                         </div>
                         {/*COLLAPSE Amount*/}
 

@@ -69,7 +69,7 @@ public function bidsAccepted(Request $request)
             'receiver_id' => $bid->investor_id,
             'customer_id' => $bid->business_id,
             'text' => 'Sorry your bid to _name has been rejected, please try again properly!',
-            'link' => 'dashboard',
+            'link' => '/',
             'type' => 'business',
           ]);
          //Notifications
@@ -154,7 +154,7 @@ public function bidsAccepted(Request $request)
             'receiver_id' => $bid->investor_id,
             'customer_id' => $bid->business_id,
             'text' => 'Your bid to _name has been accepted!',
-            'link' => 'dashboard',
+            'link' => '/',
             'type' => 'business',
           ]);
          //Notifications
@@ -429,7 +429,7 @@ public function bidCommitsEQP(Request $request){
             'receiver_id' => $owner->id,
             'customer_id' => $investor_id,
             'text' => 'You have a new bid from _name!',
-            'link' => 'dashboard/investment-bids',
+            'link' => 'investment-bids',
             'type' => 'investor',
 
           ]);
@@ -501,7 +501,7 @@ public function bookingAccepted(Request $request)
             'receiver_id' => $booker_id,
             'customer_id' => $service_id,
             'text' => 'Your booking to _name has been accepted!',
-            'link' => 'dashboard/mybookings',
+            'link' => 'mybookings',
             'type' => 'service',
 
           ]);

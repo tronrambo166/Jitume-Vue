@@ -1046,7 +1046,7 @@ public function serviceMsg(Request $request){
             'customer_id' => $booker_id,
             'text' => 'You have a new message from _name!',
             'link' => 'investment-bids',
-            'type' => 'dashboard/messages',
+            'type' => 'messages',
 
           ]);
          //Notification

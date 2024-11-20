@@ -842,7 +842,7 @@ public function bidCommits(Request $request){
             'receiver_id' => $Business->user_id,
             'customer_id' => $investor_id,
             'text' => 'You have a new bid from _name!',
-            'link' => 'dashboard/investment-bids',
+            'link' => 'investment-bids',
             'type' => 'investor',
 
           ]);

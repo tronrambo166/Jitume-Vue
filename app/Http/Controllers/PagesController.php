@@ -364,7 +364,7 @@ foreach($ids as $id){
     $range = explode('-', $listing->y_turnover);
     $range[0] = number_format($range[0]);
     $range[1] = number_format($range[1]);
-    $listing->y_turnover = implode('-', $range);
+    //$listing->y_turnover = implode('-', $range);
 
     $listing->lat = (float)$listing->lat;
     $listing->lng = (float)$listing->lng;

@@ -22,7 +22,7 @@ const categories = [
     "Other",
 ];
 
-const ITEMS_PER_LOAD = 5;
+const ITEMS_PER_LOAD = 17;
 
 const HorizontalInfiniteScroll = () => {
     const [visibleCategories, setVisibleCategories] = useState([]);
