@@ -5,31 +5,16 @@ import { Link } from "react-router-dom";
 
 const NotificationBell = () => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
-    useEffect(() => {
-        const notifications = () => {
-            axiosClient
-                .get("business/notifications")
-                .then(({ data }) => {
-                    //setCards(data.data);
-                    //res = data.data;
-                    console.log("Notifications = ");
-                    console.log(data);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        };
-        notifications();
-    }, []);
-
     const [notifications, setNotifications] = useState([]);
+    const dropdownRef = useRef(null);
+
+    // Fetch notifications on component mount
     useEffect(() => {
-        const notifications = () => {
+        const fetchNotifications = () => {
             axiosClient
                 .get("business/notifications")
                 .then(({ data }) => {
                     setNotifications(data.data);
-
                     console.log("Notifications = ");
                     console.log(data);
                 })
@@ -37,23 +22,28 @@ const NotificationBell = () => {
                     console.log(err);
                 });
         };
-        notifications();
+        fetchNotifications();
     }, []);
-    const [unreadCount, setUnreadCount] = useState(notifications.length); // Set initial unread count
-    const dropdownRef = useRef(null);
+
+    // Unread count is calculated based on "new" field in the notification
+    const unreadCount = notifications.filter((notif) => notif.new === 1).length;
 
     // Toggle dropdown
     const toggleDropdown = () => {
         setDropdownOpen((prev) => !prev);
         if (unreadCount > 0) {
-            setUnreadCount(0); // Reset unread count when dropdown is opened
+            setNotifications((prevNotifications) =>
+                prevNotifications.map((notif) => ({
+                    ...notif,
+                    new: 0, // Mark all as read when dropdown is opened
+                }))
+            );
         }
     };
 
     // Clear all notifications
     const clearNotifications = () => {
         setNotifications([]);
-        setUnreadCount(0);
     };
 
     // Remove a single notification
@@ -61,17 +51,9 @@ const NotificationBell = () => {
         setNotifications((prevNotifications) =>
             prevNotifications.filter((_, i) => i !== index)
         );
-        setUnreadCount((prevUnreadCount) => prevUnreadCount - 1);
     };
 
-    // Mark notification as read
-    const markAsRead = (index) => {
-        const newNotifications = [...notifications];
-        newNotifications[index].isRead = true;
-        setNotifications(newNotifications);
-    };
-
-    // Close dropdown if clicking outside
+    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (
@@ -87,16 +69,21 @@ const NotificationBell = () => {
             document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    // Close the dropdown when a notification link is clicked
+    const closeDropdown = () => {
+        setDropdownOpen(false);
+    };
+
     return (
         <div className="relative">
             <div className="flex items-center">
                 <FaBell
-                    className="cursor-pointer text-2xl text-white" // Set bell color to white
+                    className="cursor-pointer text-2xl text-white"
                     onClick={toggleDropdown}
                 />
-                {notifications.length > 0 && (
+                {unreadCount > 0 && (
                     <div className="absolute flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-3">
-                        {notifications.length}
+                        {unreadCount}
                     </div>
                 )}
             </div>
@@ -141,7 +128,7 @@ const NotificationBell = () => {
                                             </div>
                                             <div
                                                 className={`${
-                                                    notif.isRead
+                                                    notif.new === 0
                                                         ? "text-gray-500" // Gray text for read notifications
                                                         : "text-gray-800" // Regular text color for unread notifications
                                                 }`}
@@ -152,7 +139,10 @@ const NotificationBell = () => {
                                                 {notif.date}
                                             </div>
                                             <div className="mt-2 flex space-x-2">
-                                                <Link to={"./" + notif.link}>
+                                                <Link
+                                                    to={"./" + notif.link}
+                                                    onClick={closeDropdown}
+                                                >
                                                     <button className="text-blue-600 text-xs hover:text-blue-800">
                                                         View More
                                                     </button>

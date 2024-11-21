@@ -132,40 +132,42 @@ const Explore = () => {
 
             {/* Marquee Containers */}
             {["animate-marquee-right", "animate-marquee-left"].map(
-                (animation, idx) => (
+                (animation, index) => (
                     <div
-                        key={idx}
+                        key={index}
                         className="relative w-full overflow-hidden"
                     >
                         <div
+                            key={index}
                             className={`flex items-center gap-1 ${animation} marquee-fade`}
                         >
                             {/* Render Categories */}
                             {checkCat
                                 ? categories.map((category, index) => (
-                                     <Link
-                                     to={`/category/${category.name
-                                    .replace("/", "-")
-                                    .replace(" ", "-")}`}
-                                      >
-                                      <div
+                                      <Link
                                           key={index}
-                                          className={`flex items-center p-4 rounded-md  ${category.color} min-w-[200px] sm:min-w-[220px] transition-transform`}
+                                          to={`/category/${category.name
+                                              .replace("/", "-")
+                                              .replace(" ", "-")}`}
                                       >
-                                          <img
-                                              src={category.icon}
-                                              alt={category.name}
-                                              className="w-5 h-5 sm:w-7 sm:h-7 mr-2 sm:mr-3"
-                                          />
-                                          <div className="flex flex-col items-start">
-                                              <h2 className="text-xs sm:text-xs md:text-md font-medium text-slate-800">
-                                                  {category.name}
-                                              </h2>
-                                              <p className="text-xs sm:text-sm text-gray-600">
-                                                  ({category.count})
-                                              </p>
+                                          <div
+                                              key={index}
+                                              className={`flex items-center p-4 rounded-md  ${category.color} min-w-[200px] sm:min-w-[220px] transition-transform`}
+                                          >
+                                              <img
+                                                  src={category.icon}
+                                                  alt={category.name}
+                                                  className="w-5 h-5 sm:w-7 sm:h-7 mr-2 sm:mr-3"
+                                              />
+                                              <div className="flex flex-col items-start">
+                                                  <h2 className="text-xs sm:text-xs md:text-md font-medium text-slate-800">
+                                                      {category.name}
+                                                  </h2>
+                                                  <p className="text-xs sm:text-sm text-gray-600">
+                                                      ({category.count})
+                                                  </p>
+                                              </div>
                                           </div>
-                                      </div>
                                       </Link>
                                   ))
                                 : // Skeleton Loader

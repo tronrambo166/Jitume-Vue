@@ -3,7 +3,7 @@ import { IoClose } from 'react-icons/io5';
 
 const Footer = () => {
   return (
-    <footer className="bg-white w-full mt-8 my-8 mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="bg-white w-full mt-8 my-8 mx-auto px-4 sm:px-6 lg:px-8 ">
       <div className="flex flex-col md:flex-row justify-center text-sm py-5 gap-8 md:gap-[150px]">
         {/* First column */}
         <div className="">

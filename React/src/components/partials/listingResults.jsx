@@ -60,7 +60,7 @@ const ListingResults = () => {
     const locationInputRef = useRef(null);
     const sliderRef = useRef(null);
 
-    const mapRef = useRef(null);
+    // const mapRef = useRef(null);
 
     var count = results.length;
     let res = [];
@@ -223,6 +223,8 @@ const ListingResults = () => {
                 }
             });
             setResults(turnoverRes);
+            setCurrentPage(1);
+            
         });
     };
 
@@ -308,8 +310,12 @@ const ListingResults = () => {
 
             // Update the state with the filtered results
             setResults(filteredResults);
+
+            // Reset to page 1 when filter is applied
+            setCurrentPage(1); 
         });
     };
+
 
     const updateDisplay = (elements, handle, values) => {
         if (elements[handle]) {
@@ -511,7 +517,7 @@ const ListingResults = () => {
                         <button
                             onClick={collapse}
                             id="colBut4"
-                            className="mr-4 my-2 py-0 border rounded-full px-3 py-1 "
+                            className="mr-4 my-2 border rounded-full px-3 py-1 "
                             name="min"
                         >
                             Set Range{" "}
@@ -540,36 +546,57 @@ const ListingResults = () => {
                         </div>
 
                         {/*COLLAPSE RANGE*/}
-                        <div className="row mt-3 hidden" id="collapseExample">
-                            <div className="col-6  mt-1">
-                                <span className="d-inline">Min:</span>
-                                <input
-                                    type="number"
-                                    min="0"
-                                    id="low"
-                                    className="d-inline w-75 py-0 border"
-                                    name="min"
-                                    onChange={(e) =>
-                                        UpdateValuesMin(e.target.value)
-                                    }
-                                />
-                            </div>
-                            <div className="col-6 mt-1 pr-0">
-                                <span className="d-inline">Max:</span>
-                                <input
-                                    type="number"
-                                    id="high"
-                                    className="d-inline w-75 float-right py-0 border"
-                                    name="min"
-                                    onChange={(e) =>
-                                        UpdateValuesMax(e.target.value)
-                                    }
-                                />
+                        <div className="mt-4 hidden" id="collapseExample">
+                            <div className="flex justify-between items-center">
+                                <div className="flex flex-col w-1/2 pr-2 space-y-2">
+                                    <label
+                                        htmlFor="low"
+                                        className="text-sm font-medium text-gray-700"
+                                    >
+                                        Min:
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        id="low"
+                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+                                        name="min"
+                                        onChange={(e) =>
+                                            UpdateValuesMin(e.target.value)
+                                        }
+                                    />
+                                </div>
+
+                                <div className="flex flex-col w-1/2 pl-2 space-y-2">
+                                    <label
+                                        htmlFor="high"
+                                        className="text-sm font-medium text-gray-700"
+                                    >
+                                        Max:
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="high"
+                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+                                        name="max"
+                                        onChange={(e) =>
+                                            UpdateValuesMax(e.target.value)
+                                        }
+                                    />
+                                </div>
                             </div>
 
-                            <button className="border rounded-full px-3 py-1 w-25 mt-3 mx-auto" 
-                            onClick={(event) => { rangeSliderInitilize();hide(); }} >Set</button>
+                            <button
+                                className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-32 mx-auto hover:bg-green-700 transition-colors"
+                                onClick={(event) => {
+                                    rangeSliderInitilize();
+                                    hide();
+                                }}
+                            >
+                                Set
+                            </button>
                         </div>
+
                         {/*COLLAPSE RANGE*/}
                     </div>
                     {/* Turnover Range Slider */}
@@ -581,7 +608,7 @@ const ListingResults = () => {
                         <button
                             onClick={collapse2}
                             id="colBut4"
-                            className="mr-4 my-2 py-0 border rounded-full px-3 py-1 "
+                            className="mr-4 my-2  border rounded-full px-3 py-1 "
                             name="min"
                         >
                             Set Range{" "}
@@ -609,46 +636,56 @@ const ListingResults = () => {
                         </div>
 
                         {/*COLLAPSE Amount*/}
-                        <div
-                            className="row mt-3 hidden"
-                            id="collapseExample2"
-                        >
-                            <div className="col-6  mt-1">
-                                <span className="d-inline">Min:</span>
-                                <input
-                                    type="number"
-                                    min="0"
-                                    id="low2"
-                                    className="d-inline w-75 py-0 border"
-                                    name="min"
-                                    onChange={(e) =>
-                                        UpdateValuesMin2(e.target.value)
-                                    }
-                                />
-                            </div>
-                            <div className="col-6 mt-1 pr-0">
-                                <span className="d-inline">Max:</span>
-                                <input
-                                    type="number"
-                                    id="high2"
-                                    className="d-inline w-75 float-right py-0 border"
-                                    name="min"
-                                    onChange={(e) =>
-                                        UpdateValuesMax2(e.target.value)
-                                    }
-                                />
+                        <div className="mt-3 hidden" id="collapseExample2">
+                            <div className="flex gap-4">
+                                <div className="flex-1 space-y-2">
+                                    <label
+                                        htmlFor="low2"
+                                        className="text-sm font-medium text-gray-700"
+                                    >
+                                        Min:
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        id="low2"
+                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+                                        name="min"
+                                        onChange={(e) =>
+                                            UpdateValuesMin2(e.target.value)
+                                        }
+                                    />
+                                </div>
+                                <div className="flex-1 space-y-2">
+                                    <label
+                                        htmlFor="high2"
+                                        className="text-sm font-medium text-gray-700"
+                                    >
+                                        Max:
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="high2"
+                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+                                        name="min"
+                                        onChange={(e) =>
+                                            UpdateValuesMax2(e.target.value)
+                                        }
+                                    />
+                                </div>
                             </div>
 
                             <button
-                                className="border rounded-full px-3 py-1  w-25 mt-3 mx-auto"
+                                className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-full sm:w-32 mx-auto hover:bg-green-700 transition-colors"
                                 onClick={(event) => {
-                                    amountSliderInitilize();hide2();
+                                    amountSliderInitilize();
+                                    hide2();
                                 }}
                             >
                                 Set
                             </button>
-                            
                         </div>
+
                         {/*COLLAPSE Amount*/}
                     </div>
                 </div>
@@ -788,7 +825,7 @@ const ListingResults = () => {
                         </div>
                     </div>
                     {/* Pagination - Positioned outside of the cards div */}
-                    <div className="flex justify-start ml-6 mt-4">
+                    <div className="flex justify-start ml-6 mt-4 mb-20">
                         <CardsPagination
                             currentPage={currentPage}
                             totalPages={totalPages}

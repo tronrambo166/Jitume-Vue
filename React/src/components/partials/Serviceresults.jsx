@@ -66,7 +66,10 @@ const ServiceResults = () => {
                     setResults(data.data);
                     res = data.data;
                     //console.log(data);
-                    localStorage.setItem('s_results',JSON.stringify(data.data))
+                    localStorage.setItem(
+                        "s_results",
+                        JSON.stringify(data.data)
+                    );
 
                     var x = navigator.geolocation;
                     x.getCurrentPosition(success, failure);
@@ -83,57 +86,60 @@ const ServiceResults = () => {
         amountSlider();
     }, []);
 
+    // Nurul/Owen
     const amountSlider = () => {
-    noUiSlider.create(slider, {
-        start: [0, 1000000],
-        connect: true,
-        range: {
-            min: parseFloat(min),
-            max: parseFloat(max),
-        },
-        step: 10000,
-        margin: 600,
-        pips: {
-            stepped: true,
-            density: 6,
-        },
-    });
-
-    var skipValues = [
-        document.getElementById("price_low"),
-        document.getElementById("price_high"),
-    ];
-
-    slider.noUiSlider.on("update", function (values, handle) {
-        skipValues[handle].innerHTML = "$" + values[handle];
-
-        // Here you can use local data or preloaded data instead of making an API request.
-        const preResults = localStorage.getItem("s_results");
-        const savedResults = JSON.parse(preResults || '[]');
-
-        
-        // Filter the saved results based on the slider values
-        const filteredResults = savedResults.filter((value) => {
-            
-            console.log( value);
-            if (value && value.price) {
-                var trim_price = value.price.replace(',','');
-                const price = parseFloat(trim_price);
-                return price >= parseFloat(values[0]) && price <= parseFloat(values[1]);
-            }
-            return false;
+        noUiSlider.create(slider, {
+            start: [0, 1000000],
+            connect: true,
+            range: {
+                min: parseFloat(min),
+                max: parseFloat(max),
+            },
+            step: 10000,
+            margin: 600,
+            pips: {
+                stepped: true,
+                density: 6,
+            },
         });
 
-        // Update the results after filtering
-        setResults(filteredResults);
+        var skipValues = [
+            document.getElementById("price_low"),
+            document.getElementById("price_high"),
+        ];
 
-        // Optional: Process the filtered data, e.g., encode IDs
-        filteredResults.forEach((item) => {
-            item.id = btoa(item.id); // Encode the item ID
+        slider.noUiSlider.on("update", function (values, handle) {
+            skipValues[handle].innerHTML = "$" + values[handle];
+
+            // Here you can use local data or preloaded data instead of making an API request.
+            const preResults = localStorage.getItem("s_results");
+            const savedResults = JSON.parse(preResults || "[]");
+
+            // Filter the saved results based on the slider values
+            const filteredResults = savedResults.filter((value) => {
+                // console.log(value);
+                if (value && value.price) {
+                    var trim_price = value.price.replace(",", "");
+                    const price = parseFloat(trim_price);
+                    return (
+                        price >= parseFloat(values[0]) &&
+                        price <= parseFloat(values[1])
+                    );
+                }
+                return false;
+            });
+
+            // Update the results after filtering
+            setResults(filteredResults);
+            setCurrentPage(1);
+
+
+            // Optional: Process the filtered data, e.g., encode IDs
+            filteredResults.forEach((item) => {
+                item.id = btoa(item.id); // Encode the item ID
+            });
         });
-    });
-};
-
+    };
 
     const search = () => {
         // let filteredResults = dummyResults;
@@ -199,7 +205,7 @@ const ServiceResults = () => {
         Object.entries(res).map(([key, value]) => {
             //INFO
             const contentString =
-                '<a class="info_map py-0 font-weight-bold  text-center" target="_blank" href="/service-details/' +
+                '<a className ="info_map py-0 font-weight-bold  text-center" target="_blank" href="/service-details/' +
                 btoa(btoa(value.id)) +
                 '">' +
                 value.name +
@@ -253,7 +259,6 @@ const ServiceResults = () => {
     const failure = () => {};
     //MAP -- MAP
 
-
     //Range Function
     const collapse = () => {
         var slider = document.getElementById("slider");
@@ -268,23 +273,14 @@ const ServiceResults = () => {
     const hide = () => {
         $("#collapseExample").addClass("hidden");
     };
-    const collapse2 = () => {
-        var slider = document.getElementById("slider2");
-
-        if (slider && slider.noUiSlider) {
-            slider.noUiSlider.destroy();
-        }
-        $("#collapseExample2").removeClass("hidden");
-        $("#colBut3").addClass("hidden");
-        $("#colBut4").removeClass("hidden");
-    };
-    const hide2 = () => {
-        $("#collapseExample2").addClass("hidden");
-    };
 
     //UPDATE NEW VALUES
-    const UpdateValuesMin = (value) => { min = value; }
-    const UpdateValuesMax = (value) => { max = value; }
+    const UpdateValuesMin = (value) => {
+        min = value;
+    };
+    const UpdateValuesMax = (value) => {
+        max = value;
+    };
 
     //Range Function
 
@@ -347,10 +343,18 @@ const ServiceResults = () => {
                         id="turnover_slider"
                         className=" w-full jakarta  text-md border border-[#cbd5e1] rounded-lg space-y-2 px-6 py-4 "
                     >
+                        <button
+                            onClick={collapse}
+                            id="colBut4"
+                            className="mr-4 my-2 py-0 border rounded-full px-3 py-1 "
+                            name="min"
+                        >
+                            Set Range{" "}
+                        </button>
                         <label className="text-gray-700 font-semibold mb-2">
                             Price Range
                         </label>
-                        <div id="slider" class="">
+                        <div id="slider" className="">
                             {" "}
                         </div>
                         <div className="row mt-3 jakarta">
@@ -372,6 +376,58 @@ const ServiceResults = () => {
                                     {" "}
                                 </span>
                             </div>
+                            {/*COLLAPSE Amount*/}
+                            <div className="mt-3 hidden" id="collapseExample">
+                                <div className="flex gap-4">
+                                    <div className="flex-1 space-y-2">
+                                        <label
+                                            htmlFor="low"
+                                            className="text-sm font-medium text-gray-700"
+                                        >
+                                            Min:
+                                        </label>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            id="low"
+                                            className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+                                            name="min"
+                                            onChange={(e) =>
+                                                UpdateValuesMin(e.target.value)
+                                            }
+                                        />
+                                    </div>
+                                    <div className="flex-1 space-y-2">
+                                        <label
+                                            htmlFor="high"
+                                            className="text-sm font-medium text-gray-700"
+                                        >
+                                            Max:
+                                        </label>
+                                        <input
+                                            type="number"
+                                            id="high"
+                                            className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+                                            name="min"
+                                            onChange={(e) =>
+                                                UpdateValuesMax(e.target.value)
+                                            }
+                                        />
+                                    </div>
+                                </div>
+
+                                <button
+                                    className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-full sm:w-32 mx-auto hover:bg-green-700 transition-colors"
+                                    onClick={(event) => {
+                                        amountSlider();
+                                        hide();
+                                    }}
+                                >
+                                    Set
+                                </button>
+                            </div>
+
+                            {/*COLLAPSE Amount*/}
                         </div>
                     </div>
                     {/*<PriceRangeFilter />*/}
@@ -526,7 +582,7 @@ const ServiceResults = () => {
                     </div>
 
                     {/* Pagination Section */}
-                    <div className="flex justify-start ml-6 mt-4">
+                    <div className="flex justify-start ml-6 mt-4 mb-20">
                         <CardsPagination
                             currentPage={currentPage}
                             totalPages={totalPages}

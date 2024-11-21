@@ -29,7 +29,7 @@ const AccountSettings = () => {
                             </div>
 
                             {/* Log Out Sessions Tab */}
-                            <div
+                            {/* <div
                                 className={`cursor-pointer py-2 px-4 rounded-t-lg transition-all duration-300 ease-in-out w-full sm:w-auto ${
                                     activeTab === "logOutSessions"
                                         ? "text-green-600 font-semibold border-b-2 border-green-600"
@@ -38,10 +38,10 @@ const AccountSettings = () => {
                                 onClick={() => setActiveTab("logOutSessions")}
                             >
                                 Log Out Sessions
-                            </div>
+                            </div> */}
 
                             {/* Delete Account Tab */}
-                            <div
+                            {/* <div
                                 className={`cursor-pointer py-2 px-4 rounded-t-lg transition-all duration-300 ease-in-out w-full sm:w-auto ${
                                     activeTab === "deleteAccount"
                                         ? "text-green-600 font-semibold border-b-2 border-green-600"
@@ -50,7 +50,7 @@ const AccountSettings = () => {
                                 onClick={() => setActiveTab("deleteAccount")}
                             >
                                 Delete Account
-                            </div>
+                            </div> */}
                         </div>
 
                         {/* Tab Content */}
@@ -60,7 +60,7 @@ const AccountSettings = () => {
                                     <ChangePassword />
                                 </div>
                             )}
-                            {activeTab === "logOutSessions" && (
+                            {/* {activeTab === "logOutSessions" && (
                                 <div className="bg-white p-6 rounded border">
                                     <LogOutSessions />
                                 </div>
@@ -69,7 +69,7 @@ const AccountSettings = () => {
                                 <div className="bg-white p-6 rounded border">
                                     <DeleteAccount />
                                 </div>
-                            )}
+                            )} */}
                         </div>
                     </div>
                 </div>
