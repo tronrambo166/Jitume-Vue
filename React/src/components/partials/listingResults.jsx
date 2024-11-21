@@ -172,8 +172,8 @@ const ListingResults = () => {
     const rangeSliderInitilize = () => {
        
         //var slider = document.getElementById('slider');
-        console.log("Stored Results");
-        console.log(results);
+        //console.log("Stored Results");
+        //console.log(results);
         noUiSlider.create(slider, {
             start: [0, 1000000],
             connect: true,
@@ -425,12 +425,12 @@ const ListingResults = () => {
         if (slider && slider.noUiSlider) {
             slider.noUiSlider.destroy();
         }
-        $("#collapseExample").removeClass("collapse");
-        $("#colBut").addClass("collapse");
-        $("#colBut2").removeClass("collapse");
+        $("#collapseExample").removeClass("hidden");
+        $("#colBut").addClass("hidden");
+        $("#colBut2").removeClass("hidden");
     };
     const hide = () => {
-        $("#collapseExample").addClass("collapse");
+        $("#collapseExample").addClass("hidden");
     };
     const collapse2 = () => {
         var slider = document.getElementById("slider2");
@@ -438,18 +438,20 @@ const ListingResults = () => {
         if (slider && slider.noUiSlider) {
             slider.noUiSlider.destroy();
         }
-        $("#collapseExample2").removeClass("collapse");
-        $("#colBut3").addClass("collapse");
-        $("#colBut4").removeClass("collapse");
+        $("#collapseExample2").removeClass("hidden");
+        $("#colBut3").addClass("hidden");
+        $("#colBut4").removeClass("hidden");
     };
     const hide2 = () => {
-        $("#collapseExample2").addClass("collapse");
+        $("#collapseExample2").addClass("hidden");
     };
-    const UpdateValues = () => {
-        var max2 = 1000000;
-        var min2 = 0;
-        
-    }
+
+    //UPDATE NEW VALUES
+    const UpdateValuesMin = (value) => { min = value; }
+    const UpdateValuesMax = (value) => { max = value; }
+
+    const UpdateValuesMin2 = (value) => { min2 = value; }
+    const UpdateValuesMax2 = (value) => { max2 = value; }
     //Range Function
 
     return (
@@ -538,7 +540,7 @@ const ListingResults = () => {
                         </div>
 
                         {/*COLLAPSE RANGE*/}
-                        <div className="row mt-3 collapse" id="collapseExample">
+                        <div className="row mt-3 hidden" id="collapseExample">
                             <div className="col-6  mt-1">
                                 <span className="d-inline">Min:</span>
                                 <input
@@ -547,6 +549,9 @@ const ListingResults = () => {
                                     id="low"
                                     className="d-inline w-75 py-0 border"
                                     name="min"
+                                    onChange={(e) =>
+                                        UpdateValuesMin(e.target.value)
+                                    }
                                 />
                             </div>
                             <div className="col-6 mt-1 pr-0">
@@ -556,11 +561,14 @@ const ListingResults = () => {
                                     id="high"
                                     className="d-inline w-75 float-right py-0 border"
                                     name="min"
+                                    onChange={(e) =>
+                                        UpdateValuesMax(e.target.value)
+                                    }
                                 />
                             </div>
 
-                            {/*<button className="border rounded-full px-3 py-1 w-25 mt-3 mx-auto" 
-                            onClick={() => { amountSlider(); hide();}} >Set</button>*/}
+                            <button className="border rounded-full px-3 py-1 w-25 mt-3 mx-auto" 
+                            onClick={(event) => { rangeSliderInitilize();hide(); }} >Set</button>
                         </div>
                         {/*COLLAPSE RANGE*/}
                     </div>
@@ -602,7 +610,7 @@ const ListingResults = () => {
 
                         {/*COLLAPSE Amount*/}
                         <div
-                            className="row mt-3 collapse"
+                            className="row mt-3 hidden"
                             id="collapseExample2"
                         >
                             <div className="col-6  mt-1">
@@ -614,7 +622,7 @@ const ListingResults = () => {
                                     className="d-inline w-75 py-0 border"
                                     name="min"
                                     onChange={(e) =>
-                                        UpdateValues(e.target.value)
+                                        UpdateValuesMin2(e.target.value)
                                     }
                                 />
                             </div>
@@ -626,25 +634,20 @@ const ListingResults = () => {
                                     className="d-inline w-75 float-right py-0 border"
                                     name="min"
                                     onChange={(e) =>
-                                        UpdateValues(e.target.value)
+                                        UpdateValuesMax2(e.target.value)
                                     }
                                 />
                             </div>
 
                             <button
                                 className="border rounded-full px-3 py-1  w-25 mt-3 mx-auto"
-                                onClick={() => {
-                                    amountSliderInitilize();
+                                onClick={(event) => {
+                                    amountSliderInitilize();hide2();
                                 }}
                             >
                                 Set
                             </button>
-                            <button
-                                onClick={hide2()}
-                                className="border rounded-full px-3 py-1  w-25 mt-3 mx-auto"
-                            >
-                                close
-                            </button>
+                            
                         </div>
                         {/*COLLAPSE Amount*/}
                     </div>

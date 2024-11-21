@@ -65,7 +65,9 @@ const ServiceResults = () => {
                 .then(({ data }) => {
                     setResults(data.data);
                     res = data.data;
-                    console.log(data);
+                    //console.log(data);
+                    localStorage.setItem('s_results',JSON.stringify(data.data))
+
                     var x = navigator.geolocation;
                     x.getCurrentPosition(success, failure);
                 })
@@ -106,14 +108,17 @@ const ServiceResults = () => {
         skipValues[handle].innerHTML = "$" + values[handle];
 
         // Here you can use local data or preloaded data instead of making an API request.
-        const preResults = localStorage.getItem("results");
-        const savedResults = JSON.parse(preResults || '[]'); // Handle null case
+        const preResults = localStorage.getItem("s_results");
+        const savedResults = JSON.parse(preResults || '[]');
 
+        
         // Filter the saved results based on the slider values
         const filteredResults = savedResults.filter((value) => {
-            if (value.data && value.data.price) {
-                const price = parseFloat(value.data.price);
-                console.log("data.price:", price); // Log the price of each item
+            
+            console.log( value);
+            if (value && value.price) {
+                var trim_price = value.price.replace(',','');
+                const price = parseFloat(trim_price);
                 return price >= parseFloat(values[0]) && price <= parseFloat(values[1]);
             }
             return false;
@@ -161,9 +166,9 @@ const ServiceResults = () => {
         }
     };
     useEffect(() => {
-        console.log("Results Length: ", results.length);
-        console.log("Total Pages: ", totalPages);
-        console.log("Current Cards: ", currentCards);
+        // console.log("Results Length: ", results.length);
+        // console.log("Total Pages: ", totalPages);
+        // console.log("Current Cards: ", currentCards);
     }, [results, currentPage]);
 
     //MAP -- MAP
@@ -247,6 +252,41 @@ const ServiceResults = () => {
 
     const failure = () => {};
     //MAP -- MAP
+
+
+    //Range Function
+    const collapse = () => {
+        var slider = document.getElementById("slider");
+
+        if (slider && slider.noUiSlider) {
+            slider.noUiSlider.destroy();
+        }
+        $("#collapseExample").removeClass("hidden");
+        $("#colBut").addClass("hidden");
+        $("#colBut2").removeClass("hidden");
+    };
+    const hide = () => {
+        $("#collapseExample").addClass("hidden");
+    };
+    const collapse2 = () => {
+        var slider = document.getElementById("slider2");
+
+        if (slider && slider.noUiSlider) {
+            slider.noUiSlider.destroy();
+        }
+        $("#collapseExample2").removeClass("hidden");
+        $("#colBut3").addClass("hidden");
+        $("#colBut4").removeClass("hidden");
+    };
+    const hide2 = () => {
+        $("#collapseExample2").addClass("hidden");
+    };
+
+    //UPDATE NEW VALUES
+    const UpdateValuesMin = (value) => { min = value; }
+    const UpdateValuesMax = (value) => { max = value; }
+
+    //Range Function
 
     return (
         <>
