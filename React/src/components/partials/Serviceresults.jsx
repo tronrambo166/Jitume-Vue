@@ -78,59 +78,57 @@ const ServiceResults = () => {
         var slider = document.getElementById("slider");
         if (slider && slider.noUiSlider) slider.noUiSlider.destroy();
 
-        const amountSlider = () => {
-            noUiSlider.create(slider, {
-                start: [0, 1000000],
-                connect: true,
-                range: {
-                    min: parseFloat(min),
-                    max: parseFloat(max),
-                },
-
-                step: 10000,
-                margin: 600,
-                pips: {
-                    //mode: 'steps',
-                    stepped: true,
-                    density: 6,
-                },
-            });
-            var skipValues = [
-                document.getElementById("price_low"),
-                document.getElementById("price_high"),
-            ];
-            slider.noUiSlider.on("update", function (values, handle) {
-                skipValues[handle].innerHTML = "$" + values[handle];
-                //console.log(values[1] - values[0]);
-
-                // setTimeout(() => {
-                axiosClient
-                    .get(
-                        "priceFilterS/" +
-                            values[0] +
-                            "/" +
-                            values[1] +
-                            "/" +
-                            base64_decode(resIds)
-                    )
-                    .then((data) => {
-                        //console.log(data)
-                        setResults("");
-                        setResults(data.data.data);
-
-                        for (const [key, value] of Object.entries(data.data)) {
-                            value.id = btoa(value.id);
-                            value.id = btoa(value.id);
-                        }
-                        // t.queryLat = data.data.data[0].lat;
-                        // t.queryLng = data.data.data[0].lng;
-                    })
-                    .catch((error) => {});
-                // }, 1000)
-            });
-        };
         amountSlider();
     }, []);
+
+    const amountSlider = () => {
+    noUiSlider.create(slider, {
+        start: [0, 1000000],
+        connect: true,
+        range: {
+            min: parseFloat(min),
+            max: parseFloat(max),
+        },
+        step: 10000,
+        margin: 600,
+        pips: {
+            stepped: true,
+            density: 6,
+        },
+    });
+
+    var skipValues = [
+        document.getElementById("price_low"),
+        document.getElementById("price_high"),
+    ];
+
+    slider.noUiSlider.on("update", function (values, handle) {
+        skipValues[handle].innerHTML = "$" + values[handle];
+
+        // Here you can use local data or preloaded data instead of making an API request.
+        const preResults = localStorage.getItem("results");
+        const savedResults = JSON.parse(preResults || '[]'); // Handle null case
+
+        // Filter the saved results based on the slider values
+        const filteredResults = savedResults.filter((value) => {
+            if (value.data && value.data.price) {
+                const price = parseFloat(value.data.price);
+                console.log("data.price:", price); // Log the price of each item
+                return price >= parseFloat(values[0]) && price <= parseFloat(values[1]);
+            }
+            return false;
+        });
+
+        // Update the results after filtering
+        setResults(filteredResults);
+
+        // Optional: Process the filtered data, e.g., encode IDs
+        filteredResults.forEach((item) => {
+            item.id = btoa(item.id); // Encode the item ID
+        });
+    });
+};
+
 
     const search = () => {
         // let filteredResults = dummyResults;

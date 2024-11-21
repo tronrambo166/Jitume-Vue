@@ -53,7 +53,10 @@ const ListingResults = () => {
 
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [results, setResults] = useState("");
-    const [priceRange, setPriceRange] = useState([0, 1000]); // Initial range
+    // Amount side
+    const [priceRange, setPriceRange] = useState([0, 1000000]); // Initial range
+    const [result, setResult] = useState("");
+
     const locationInputRef = useRef(null);
     const sliderRef = useRef(null);
 
@@ -127,83 +130,80 @@ const ListingResults = () => {
 
         if ((slider && slider.noUiSlider) || (slider2 && slider2.noUiSlider)) {
             slider.noUiSlider.destroy();
-            //slider2.noUiSlider.destroy();
+            slider2.noUiSlider.destroy();
         }
 
-
         //SLIDERS FILTER
 
-        const amountSliderInitilize = () => {
-            noUiSlider.create(slider2, {
-                start: [0, 1000000],
-                connect: true,
-                range: {
-                    min: parseFloat(min2),
-                    max: parseFloat(max2),
-                },
+        // const amountSliderInitilize = () => {
+        //     noUiSlider.create(slider2, {
+        //         start: [0, 1000000],
+        //         connect: true,
+        //         range: {
+        //             min: parseFloat(min2),
+        //             max: parseFloat(max2),
+        //         },
 
-                step: 10000,
-                margin: 600,
-                pips: {
-                    //mode: 'steps',
-                    stepped: true,
-                    density: 6,
-                },
-            });
-            var skipValues = [
-                document.getElementById("price_low2"),
-                document.getElementById("price_high2"),
-            ];
-            // slider2.noUiSlider.on("update", function (values, handle) {
-            //     skipValues[handle].innerHTML = "$" + values[handle];
-            //     //console.log(values[1] - values[0]);
+        //         step: 10000,
+        //         margin: 600,
+        //         pips: {
+        //             //mode: 'steps',
+        //             stepped: true,
+        //             density: 6,
+        //         },
+        //     });
+        //     var skipValues = [
+        //         document.getElementById("price_low2"),
+        //         document.getElementById("price_high2"),
+        //     ];
+        //     // slider2.noUiSlider.on("update", function (values, handle) {
+        //     //     skipValues[handle].innerHTML = "$" + values[handle];
+        //     //     //console.log(values[1] - values[0]);
 
-            // });
-        };
+        //     // });
+        // };
         //SLIDERS FILTER
-
- 
 
         rangeSliderInitilize();
-        //amountSliderInitilize();
+        amountSliderInitilize();
     }, []);
 
-
-    //Turnover
+    //Turnover(Nurul)
     const rangeSliderInitilize = () => {
-            var y_range ='';var db_max ='';var db_min ='';
-            //var slider = document.getElementById('slider');
-            console.log("Stored Results");console.log(results);
-            noUiSlider.create(slider, {
-                start: [0, 1000000],
-                connect: true,
-                range: {
-                    min: parseFloat(min),
-                    max: parseFloat(max),
-                },
+       
+        //var slider = document.getElementById('slider');
+        console.log("Stored Results");
+        console.log(results);
+        noUiSlider.create(slider, {
+            start: [0, 1000000],
+            connect: true,
+            range: {
+                min: parseFloat(min),
+                max: parseFloat(max),
+            },
 
-                step: 10000,
-                margin: 600,
-                pips: {
-                    //mode: 'steps',
-                    stepped: true,
-                    density: 6,
-                },
-            });
-            var skipValues = [
-                document.getElementById("price_low"),
-                document.getElementById("price_high"),
-            ];
-            slider.noUiSlider.on("update", function (values, handle) {
-                skipValues[handle].innerHTML = "$" + values[handle];
-                //console.log(values[1]+ ' ' + values[0]);
-                 const preResults = localStorage.getItem("results");
-                 const savedResults = JSON.parse(preResults);
-                 const turnoverRes = [];
+            step: 10000,
+            margin: 600,
+            pips: {
+                //mode: 'steps',
+                stepped: true,
+                density: 6,
+            },
+        });
+        var skipValues = [
+            document.getElementById("price_low"),
+            document.getElementById("price_high"),
+        ];
+        slider.noUiSlider.on("update", function (values, handle) {
+            skipValues[handle].innerHTML = "$" + values[handle];
+            //console.log(values[1]+ ' ' + values[0]);
+            const preResults = localStorage.getItem("results");
+            const savedResults = JSON.parse(preResults);
+            const turnoverRes = [];
 
-                Object.entries(savedResults).map(([key, value]) => {
+            Object.entries(savedResults).map(([key, value]) => {
                 // Ensure y_turnover exists and is a valid string
-                if (value.y_turnover && typeof value.y_turnover === 'string') {
+                if (value.y_turnover && typeof value.y_turnover === "string") {
                     const range = value.y_turnover.split("-");
 
                     // Check if the range array has two elements
@@ -212,23 +212,129 @@ const ListingResults = () => {
                         const db_max = parseInt(range[1], 10); // Parse as integer
 
                         //console.log(db_min)
-                        if (parseInt(values[0]) <= db_max && parseInt(values[1]) >= db_max) {
+                        if (
+                            parseInt(values[0]) <= db_max &&
+                            parseInt(values[1]) >= db_max
+                        ) {
                             turnoverRes.push(value);
                         }
-                    } 
+                    }
                     console.log(turnoverRes);
+                }
+            });
+            setResults(turnoverRes);
+        });
+    };
 
+    // Amount(OWEN)
+    const amountSliderInitilize = () => {
+        noUiSlider.create(slider2, {
+            start: [0, 1000000],
+            connect: true,
+            range: {
+                min: parseFloat(min2),
+                max: parseFloat(max2),
+            },
+            step: 10000,
+            margin: 600,
+            pips: {
+                stepped: true,
+                density: 6,
+            },
+        });
+
+        var skipValues = [
+            document.getElementById("price_low2"),
+            document.getElementById("price_high2"),
+        ];
+
+        slider2.noUiSlider.on("update", function (values, handle) {
+            skipValues[handle].innerHTML = "$" + values[handle];
+
+            // Log the current values of the slider for debugging
+            const minValue = parseFloat(values[0]);
+            const maxValue = parseFloat(values[1]);
+            console.log(
+                "Slider Updated - minValue:",
+                minValue,
+                "maxValue:",
+                maxValue
+            );
+
+            // Fetch saved results from localStorage
+            const preResults = localStorage.getItem("results");
+            const savedResults = JSON.parse(preResults);
+            console.log("Saved Results from LocalStorage:", savedResults);
+
+            let filteredResults = [];
+
+            // If the slider is at full range (0-1000000), show all results
+            if (minValue === 0 && maxValue === 1000000) {
+                console.log("Full range selected. Showing all results.");
+                filteredResults = savedResults;
+            } else {
+                // Filter results based on the slider range
+                filteredResults = Object.entries(savedResults)
+                    .map(([key, value]) => {
+                        if (
+                            value.investment_needed &&
+                            typeof value.investment_needed === "number"
+                        ) {
+                            const investmentAmount = value.investment_needed;
+
+                            // Log each result being checked
+                            console.log(
+                                "Checking result:",
+                                key,
+                                "Investment amount:",
+                                investmentAmount
+                            );
+
+                            if (
+                                investmentAmount >= minValue &&
+                                investmentAmount <= maxValue
+                            ) {
+                                console.log("Included:", key);
+                                return value; // Include the result if within the range
+                            }
+                        }
+                        return null; // Ignore results that don't meet the criteria
+                    })
+                    .filter(Boolean); // Remove null values from the array
             }
-            });
-                setResults(turnoverRes);
 
-            });
-        };
+            // Log the filtered results before updating state
+            console.log("Filtered Results:", filteredResults);
 
+            // Update the state with the filtered results
+            setResults(filteredResults);
+        });
+    };
 
-    
+    const updateDisplay = (elements, handle, values) => {
+        if (elements[handle]) {
+            elements[handle].innerHTML = `$${values[handle]}`;
+        }
+    };
 
+    const updateStateAndStorage = (roundedValues) => {
+        setPriceRange(roundedValues);
+        localStorage.setItem("amountResults", JSON.stringify(roundedValues));
+        const filteredResults = filterResults(roundedValues);
+        setResult(filteredResults);
+    };
 
+    const filterResults = (range) => {
+        const storedData = localStorage.getItem("amountResults");
+        const parsedData = storedData ? JSON.parse(storedData) : [];
+        return parsedData.filter((item) => {
+            if (item.y_turnover && typeof item.y_turnover === "string") {
+                const [db_min, db_max] = item.y_turnover.split("-").map(Number);
+                return range[0] <= db_max && range[1] >= db_min;
+            }
+            return false;
+        });
+    };
 
     //MAP -- MAP
 
@@ -312,37 +418,39 @@ const ListingResults = () => {
     const failure = () => {};
     //MAP -- MAP
 
-
     //Range Function
-        const collapse = () => {
-            var slider = document.getElementById('slider');
+    const collapse = () => {
+        var slider = document.getElementById("slider");
 
-            if(slider && slider.noUiSlider){
+        if (slider && slider.noUiSlider) {
             slider.noUiSlider.destroy();
-            }
-            $('#collapseExample').removeClass('collapse');
-            $('#colBut').addClass('collapse');
-            $('#colBut2').removeClass('collapse');
-        };
-        const hide = () => {
-            $('#collapseExample').addClass('collapse');
+        }
+        $("#collapseExample").removeClass("collapse");
+        $("#colBut").addClass("collapse");
+        $("#colBut2").removeClass("collapse");
+    };
+    const hide = () => {
+        $("#collapseExample").addClass("collapse");
+    };
+    const collapse2 = () => {
+        var slider = document.getElementById("slider2");
 
-        };
-        const collapse2 = () => {
-            var slider = document.getElementById('slider2');
-
-            if(slider && slider.noUiSlider){
+        if (slider && slider.noUiSlider) {
             slider.noUiSlider.destroy();
-            }
-            $('#collapseExample2').removeClass('collapse');
-            $('#colBut3').addClass('collapse');
-            $('#colBut4').removeClass('collapse');
-        };
-        const hide2 = () => {
-            $('#collapseExample2').addClass('collapse');
-
-        };
-        //Range Function
+        }
+        $("#collapseExample2").removeClass("collapse");
+        $("#colBut3").addClass("collapse");
+        $("#colBut4").removeClass("collapse");
+    };
+    const hide2 = () => {
+        $("#collapseExample2").addClass("collapse");
+    };
+    const UpdateValues = () => {
+        var max2 = 1000000;
+        var min2 = 0;
+        
+    }
+    //Range Function
 
     return (
         <>
@@ -392,15 +500,20 @@ const ListingResults = () => {
                     <Search />
                 </div>
 
-
                 {/* Turnover Range Slider */}
                 <div className="flex flex-col lg:flex-row items-center gap-6 my-6">
                     <div
                         id="turnover_slider"
                         className="w-full border rounded-lg jakarta border-[#CBD5E1] space-y-2 px-6 pb-4"
                     >
-
-                        <button onClick={collapse} id="colBut4" className="mr-4 my-2 py-0 border rounded-full px-3 py-1 " name="min">Set Range </button>
+                        <button
+                            onClick={collapse}
+                            id="colBut4"
+                            className="mr-4 my-2 py-0 border rounded-full px-3 py-1 "
+                            name="min"
+                        >
+                            Set Range{" "}
+                        </button>
 
                         <label className="text-gray-700 font-semibold ">
                             Turnover Range
@@ -424,32 +537,48 @@ const ListingResults = () => {
                             </div>
                         </div>
 
-                      {/*COLLAPSE RANGE*/} 
+                        {/*COLLAPSE RANGE*/}
                         <div className="row mt-3 collapse" id="collapseExample">
                             <div className="col-6  mt-1">
-                                <span className="d-inline">Min:</span><input  type="number" min="0" id="low" className="d-inline w-75 py-0 border" name="min"  />
+                                <span className="d-inline">Min:</span>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    id="low"
+                                    className="d-inline w-75 py-0 border"
+                                    name="min"
+                                />
                             </div>
                             <div className="col-6 mt-1 pr-0">
-                                <span className="d-inline">Max:</span><input type="number" id="high" className="d-inline w-75 float-right py-0 border" name="min"  />
+                                <span className="d-inline">Max:</span>
+                                <input
+                                    type="number"
+                                    id="high"
+                                    className="d-inline w-75 float-right py-0 border"
+                                    name="min"
+                                />
                             </div>
 
                             {/*<button className="border rounded-full px-3 py-1 w-25 mt-3 mx-auto" 
                             onClick={() => { amountSlider(); hide();}} >Set</button>*/}
                         </div>
                         {/*COLLAPSE RANGE*/}
-
                     </div>
                     {/* Turnover Range Slider */}
-
-
-                    
 
                     <div
                         id="amount_slider"
                         className="w-full jakarta   text-md border border-[#cbd5e1] rounded-lg space-y-2 px-6 py-4  mt-1"
                     >
-                        <button onClick={collapse2} id="colBut4" className="mr-4 my-2 py-0 border rounded-full px-3 py-1 " name="min">Set Range </button>
-                        
+                        <button
+                            onClick={collapse2}
+                            id="colBut4"
+                            className="mr-4 my-2 py-0 border rounded-full px-3 py-1 "
+                            name="min"
+                        >
+                            Set Range{" "}
+                        </button>
+
                         <label className="text-gray-700 font-semibold mb-2">
                             Amount Range
                         </label>
@@ -472,19 +601,52 @@ const ListingResults = () => {
                         </div>
 
                         {/*COLLAPSE Amount*/}
-                        <div className="row mt-3 collapse" id="collapseExample2">
+                        <div
+                            className="row mt-3 collapse"
+                            id="collapseExample2"
+                        >
                             <div className="col-6  mt-1">
-                                <span className="d-inline">Min:</span><input  type="number" min="0"   id="low2" className="d-inline w-75 py-0 border" name="min"  />
+                                <span className="d-inline">Min:</span>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    id="low2"
+                                    className="d-inline w-75 py-0 border"
+                                    name="min"
+                                    onChange={(e) =>
+                                        UpdateValues(e.target.value)
+                                    }
+                                />
                             </div>
                             <div className="col-6 mt-1 pr-0">
-                                <span className="d-inline">Max:</span><input type="number" id="high2" className="d-inline w-75 float-right py-0 border" name="min"  />
+                                <span className="d-inline">Max:</span>
+                                <input
+                                    type="number"
+                                    id="high2"
+                                    className="d-inline w-75 float-right py-0 border"
+                                    name="min"
+                                    onChange={(e) =>
+                                        UpdateValues(e.target.value)
+                                    }
+                                />
                             </div>
 
-                            {/*<button className="border rounded-full px-3 py-1 rounded-full px-3 py-1 w-25 mt-3 mx-auto"
-                            onClick={() => { rangeSlider(); hide2();}} >Set</button>*/}
+                            <button
+                                className="border rounded-full px-3 py-1  w-25 mt-3 mx-auto"
+                                onClick={() => {
+                                    amountSliderInitilize();
+                                }}
+                            >
+                                Set
+                            </button>
+                            <button
+                                onClick={hide2()}
+                                className="border rounded-full px-3 py-1  w-25 mt-3 mx-auto"
+                            >
+                                close
+                            </button>
                         </div>
                         {/*COLLAPSE Amount*/}
-
                     </div>
                 </div>
                 {/* Price Range Slider */}
