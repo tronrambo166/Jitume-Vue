@@ -13,6 +13,8 @@ use App\Http\Controllers\socialController;
 //P R O T E C T E D    R O U T E S
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('logout',[AuthController::class,'logout']);
+    Route::get('emailVerify/{email}',[AuthController::class,'emailVerify']);
+
     
     Route::post('serviceBook', [ServiceController::class, 'serviceBook'])->name('serviceBook');
     Route::get('rebook_service/{id}', [ServiceController::class, 'rebook_service'])->name('rebook_service');

@@ -1,12 +1,48 @@
+import { useStateContext } from "../../contexts/contextProvider";
+import axiosClient from "../../axiosClient";
 const Hero = () => {
+  const { user } = useStateContext();
+  const { token, setToken } = useStateContext();
+  //alert(user.email)
+
+  const emailVerify = (e) => {
+        e.preventDefault();
+        //setLoading(true); // Show spinner
+
+        axiosClient
+            .get(`emailVerify/${user.email}`)
+            .then(({ data }) => {
+
+              // Handle response statuses
+                console.log(data)
+                if (data.status === 200) {
+                    $.alert({
+                    title: "Alert!",
+                    content: "A verification link has been sent to your email, please check your email!",
+                    });
+                } else {
+                    alert(
+                        data.message
+                    );
+                }
+            
+            })
+            .catch((err) => {
+                console.log(err); 
+            });
+    };
+
     return (
       <div className="flex flex-col mt-[50px] text-center py-4">
 
+      {token && 
       <div className="ml-[3px] flex justify-center mt-[-50px] mb-[10px]">
         <h1 style={{width:'100%', background:'rgb(225 200 85 / 50%)' }} className=" CustomFont mx-0 text-[black-500] w-[290px] h-[51] text-center text-[15px] whitespace-nowrap font-semibold px-5 py-3">
-            Your email is not verified! &nbsp; <button className="bg-yellow-400 px-3 py-2 rounded" > Verify Now </button>
+            Your &nbsp;email &nbsp;is &nbsp;not &nbsp;verified! &nbsp; 
+            <button onClick={emailVerify} className="bg-yellow-400 px-3 py-2 rounded" > Verify Now </button>
           </h1>
       </div>
+    }
 
         <div className="ml-[3px] flex justify-center">
           <h1 className="bg-[#FFFFFF]/30 CustomFont mx-8 text-[#FDE047] w-[290px] h-[51] rounded-full text-center text-[15px] whitespace-nowrap font-semibold px-5 py-3">

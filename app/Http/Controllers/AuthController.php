@@ -7,6 +7,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mail;
 
 class AuthController extends Controller
 {
@@ -16,6 +17,29 @@ class AuthController extends Controller
             //'auth' => Auth::check()
         ]);
     }
+
+    public function emailVerify($email) {
+        try{  
+    
+                $info=['email'=>$email]; 
+                $user['to'] = $email;
+                $subject = "Email Verification";
+                $headers = "From: webmaster@Jitume.com";
+
+                Mail::send('verify_mail', $info, function($msg) use ($user){
+                        $msg->to($user['to']);
+                        $msg->subject('Email Verification');
+                    });
+                          
+
+         
+         return response()->json([ 'status' => 200, 'message' => 'Success!']);
+            }
+        catch(\Exception $e){
+            return response()->json([ 'status' => 404, 'message' => $e->getMessage() ]);
+            }
+    }
+
     
     public function login(LoginRequest $request)
     {   

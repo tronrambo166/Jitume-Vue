@@ -114,7 +114,7 @@ const PersonalInfo = () => {
             );
 
             // Handle response statuses
-            console.log(response)
+                console.log(response)
                 if (response.data.status === 200) {
                     showAlert("success", "Profile updated successfully!");
                 } else {
