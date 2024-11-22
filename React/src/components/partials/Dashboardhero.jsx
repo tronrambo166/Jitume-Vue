@@ -139,7 +139,7 @@ const Dashboardhero = () => {
                     <div className="flex justify-between items-center flex-wrap gap-4">
                         <div className="flex gap-2 items-center">
                             <img
-                                src={profile}
+                                src={'../'+user.image || profile}
                                 className="rounded-xl w-16 h-16 md:w-20 md:h-20"
                                 alt="Profile"
                             />

@@ -19,7 +19,7 @@ const PersonalInfo = () => {
         mname: "Entreprenuer",
         lname: "Doe",
         gender: "Male",
-        dob: { month: "January", day: "1", year: "2000" },
+        dob: { month: 11, day: 10, year: 2000 },
         email: "john.doe@example.com",
         image: Img, // Default avatar image
     };
@@ -64,19 +64,19 @@ const PersonalInfo = () => {
     };
 
     const validateForm = () => {
-        const { firstName, middleName, lastName, email } = tempData;
+        const { fname, mname, lname, email } = tempData;
 
         // Name Validation
         const nameRegex = /^[a-zA-Z]+$/;
-        if (!nameRegex.test(firstName)) {
+        if (!nameRegex.test(fname)) {
             showAlert("error", "First name must only contain letters.");
             return false;
         }
-        if (!nameRegex.test(middleName)) {
+        if (!nameRegex.test(mname)) {
             showAlert("error", "Middle name must only contain letters.");
             return false;
         }
-        if (!nameRegex.test(lastName)) {
+        if (!nameRegex.test(lname)) {
             showAlert("error", "Last name must only contain letters.");
             return false;
         }
@@ -98,7 +98,7 @@ const PersonalInfo = () => {
             // Add the image file to the formData when saving
             setFormData({
                 ...tempData,
-                avatar: imageFile ? imageFile : formData.avatar, // Use the new image file if provided, otherwise keep the old one
+                image: imageFile ? imageFile : formData.image, // Use the new image file if provided, otherwise keep the old one
             });
             setIsEditing(false);
 
@@ -127,7 +127,7 @@ const PersonalInfo = () => {
             
             console.log("Updated Form Data:", {
                 ...formData,
-                avatar: imageFile,
+                image: imageFile,
             }); // Log the updated form data with the new image
         }
     };
@@ -135,7 +135,7 @@ const PersonalInfo = () => {
     const discardChanges = () => {
         setTempData(formData);
         setIsEditing(false);
-        setImagePreview(formData.avatar); // Revert image preview to the original
+        setImagePreview(formData.image); // Revert image preview to the original
         setImageFile(null); // Clear the image file
         showAlert("info", "Changes were not saved.");
     };
@@ -206,17 +206,17 @@ const PersonalInfo = () => {
                     {
                         label: "First Name",
                         name: "firstName",
-                        value: tempData.firstName,
+                        value: tempData.fname,
                     },
                     {
                         label: "Middle Name",
                         name: "middleName",
-                        value: tempData.middleName,
+                        value: tempData.mname,
                     },
                     {
                         label: "Last Name",
                         name: "lastName",
-                        value: tempData.lastName,
+                        value: tempData.lname,
                     },
                     { label: "Email", name: "email", value: tempData.email },
                 ].map((field, index) => (

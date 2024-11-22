@@ -868,18 +868,17 @@ public function update_profile(Request $req){
          // $data['password'] = password_hash($req->password,PASSWORD_DEFAULT);
 
          //FILE
-          $image=$request->file('image');
+          $image=$req->file('image');
           if($image) {
           $uniqid=hexdec(uniqid());
           $ext=strtolower($image->getClientOriginalExtension());
           $create_name=$uniqid.'.'.$ext;
-          $loc='../React/images/listing/';
+          $loc='../React/images/users/';
           //Move uploaded file
           $image->move($loc, $create_name);
-          $final_img='images/listing/'.$create_name;
-             }
-          else $final_img='';
+          $final_img='images/users/'.$create_name;
           $data['image'] = $final_img;
+          }
         
          $Update = User::where('id',$user_id)->update($data);
 
@@ -888,7 +887,7 @@ public function update_profile(Request $req){
         }
         catch(\Exception $e){
             return response()->json([ 'status' => 404, 'message' => $e->getMessage() ]);
-            }
+        }
        
     }
     
