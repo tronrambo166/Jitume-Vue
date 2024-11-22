@@ -2,26 +2,29 @@ import React, { useState, useEffect } from "react";
 import { FaCamera, FaPen } from "react-icons/fa";
 import { useAlert } from "../../../partials/AlertContext"; // Import useAlert context
 import Img from "../../../../assets/profile.png"; // Default Image
+import axiosClient from "../../../../axiosClient";
 
 const PersonalInfo = () => {
     const { showAlert } = useAlert();
 
-    const initialState = {
-        firstName: "Harry ",
-        middleName: "Entreprenuer",
-        lastName: "Doe",
-        gender: "Male",
-        dob: { month: "January", day: "1", year: "2000" },
-        email: "john.doe@example.com",
-        avatar: Img, // Default avatar image
-    };
-
     const [isEditing, setIsEditing] = useState(false);
-    const [formData, setFormData] = useState(initialState);
-    const [tempData, setTempData] = useState(initialState);
+
     const [imageFile, setImageFile] = useState(null); // Store the image file
     const [imagePreview, setImagePreview] = useState(Img); // Store the image preview URL
     const [isFormChanged, setIsFormChanged] = useState(false); // Track form changes
+    const [user, setUser] = useState({});
+
+    const initialState = {
+        fname: 'John',
+        mname: "Entreprenuer",
+        lname: "Doe",
+        gender: "Male",
+        dob: { month: "January", day: "1", year: "2000" },
+        email: "john.doe@example.com",
+        image: Img, // Default avatar image
+    };
+    const [formData, setFormData] = useState(initialState);
+    const [tempData, setTempData] = useState(initialState);
 
     useEffect(() => {
         // Compare the current form data with the original form data and set the isFormChanged state
@@ -29,6 +32,19 @@ const PersonalInfo = () => {
             JSON.stringify(formData) !== JSON.stringify(tempData) ||
             imageFile !== null;
         setIsFormChanged(isDataChanged); // Set true if changes exist
+
+        //Get Details
+        axiosClient
+            .get("/checkAuth")
+            .then(({ data }) => {
+                setUser(data.user);
+                console.log(user.fname)
+            }).catch(() => {
+                showAlert("error", "Failed to load user data. Redirecting...");
+                navigate("/");
+            });
+        
+
     }, [tempData, imageFile, formData]);
 
     const handleInputChange = (e) => {
@@ -75,7 +91,9 @@ const PersonalInfo = () => {
         return true;
     };
 
-    const saveChanges = () => {
+    const saveChanges = async (e) => {
+        e.preventDefault();
+
         if (validateForm()) {
             // Add the image file to the formData when saving
             setFormData({
@@ -83,7 +101,30 @@ const PersonalInfo = () => {
                 avatar: imageFile ? imageFile : formData.avatar, // Use the new image file if provided, otherwise keep the old one
             });
             setIsEditing(false);
-            showAlert("success", "Profile updated successfully!");
+
+
+            const response = await axiosClient.post(
+                `/business/update-profile`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
+            // Handle response statuses
+            console.log(response)
+                if (response.data.status === 200) {
+                    showAlert("success", "Profile updated successfully!");
+                } else {
+                    showAlert(
+                        "error",
+                        response.data.message || "Something went wrong."
+                    );
+                }
+
+            
             console.log("Updated Form Data:", {
                 ...formData,
                 avatar: imageFile,

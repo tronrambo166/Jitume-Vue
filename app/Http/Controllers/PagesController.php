@@ -853,21 +853,42 @@ Services::create([
 }
 
 
-public function up_profile(Request $req){
+public function update_profile(Request $req){
        
-// if (Auth::attempt(['email' => $request['email'], 'password' => $request['password']])) {
-     // return redirect()->route('dashboard');} else return redirect()->back();
-// use above or below both are okay
+    try{
          $user_id=Auth::id();      
          $data['fname'] = $req->fname;
          $data['lname'] = $req->lname;
-         $data['name'] =  $req->name;
-         $data['email'] = $req->email;
-         if($req->password!=null)
-         $data['password'] = password_hash($req->password,PASSWORD_DEFAULT);
+         $data['mname'] =  $req->mname;
+         //$data['email'] = $req->email;
+         $data['dob'] = $req->dob;
+         $data['gender'] = $req->gender;
+         
+         // if($req->password!=null)
+         // $data['password'] = password_hash($req->password,PASSWORD_DEFAULT);
+
+         //FILE
+          $image=$request->file('image');
+          if($image) {
+          $uniqid=hexdec(uniqid());
+          $ext=strtolower($image->getClientOriginalExtension());
+          $create_name=$uniqid.'.'.$ext;
+          $loc='../React/images/listing/';
+          //Move uploaded file
+          $image->move($loc, $create_name);
+          $final_img='images/listing/'.$create_name;
+             }
+          else $final_img='';
+          $data['image'] = $final_img;
         
-         User::where('id',$user_id)->update($data);
-         return back()->with('success', 'Updated!');
+         $Update = User::where('id',$user_id)->update($data);
+
+         if($Update)
+         return response()->json([ 'status' => 200, 'message' => 'Success!']);
+        }
+        catch(\Exception $e){
+            return response()->json([ 'status' => 404, 'message' => $e->getMessage() ]);
+            }
        
     }
     

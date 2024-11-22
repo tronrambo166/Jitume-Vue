@@ -85,6 +85,9 @@ Route::middleware('auth:sanctum')->group(function() {
 
     // B U S I N E S S    P R O T E C T E D
 Route::prefix('/business')->group(function(){
+   
+   Route::post('update-profile', [PagesController::class, 'update_profile'])->name('update-profile');
+
 Route::get('bBQhdsfE_WWe4Q-_f7ieh7Hdhf2E_', [BusinessController::class, 'add_listing'])->name('add-listing');
 Route::post('create-listing', [BusinessController::class, 'save_listing'])->name('create-listing');
 Route::get('/bBQhdsfE_WWe4Q-_f7ieh7Hdhf1E_', [BusinessController::class, 'home'])->name('business');
