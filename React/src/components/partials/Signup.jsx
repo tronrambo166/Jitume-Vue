@@ -249,7 +249,7 @@ const RegisterForm = () => {
                 setStep(3); // Move to step 3 after successful submission
                 showAlert(
                     "info",
-                    "You are now in Step 3. Registration successful."
+                    "You are now in Step 3. Please verify your email."
                 );
 
                 //Send verify mail
@@ -733,7 +733,7 @@ const RegisterForm = () => {
                             {isLoading ? (
                                 <AiOutlineLoading3Quarters className="animate-spin" />
                             ) : step === 2 ? (
-                                "Register"
+                                "Next"
                             ) : (
                                 "Next"
                             )}
