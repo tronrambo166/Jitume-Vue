@@ -1,21 +1,19 @@
 import googlerecaptcha from "../../images/googlerecaptcha.png";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { useStateContext } from "../../contexts/contextProvider";
 import axiosClient from "../../axiosClient";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import StepThree from "./StepThree";
-import otp from "./StepThree";
+
 import { useAlert } from "../partials/AlertContext";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash , FaCheck } from "react-icons/fa";
 
 
 const RegisterForm = () => {
     const { setUser, setToken } = useStateContext();
     const [step, setStep] = useState(1);
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
-    var o = otp();
-   console.log(o);
+  
 
     const [formData, setFormData] = useState({
         firstName: "",
@@ -72,6 +70,65 @@ const RegisterForm = () => {
 
         return dob <= todayMinus18Years;
     };
+ const [otp, setOtp] = useState(Array(4).fill("")); // Array with 4 empty strings
+
+ const inputRefs = useRef([]); // Array of refs for each input field
+
+ // Handle each digit input
+ const handleInput = (e) => {
+     const { target } = e;
+     const index = inputRefs.current.indexOf(target);
+
+     if (target.value) {
+         setOtp((prevOtp) => {
+             const updatedOtp = [
+                 ...prevOtp.slice(0, index),
+                 target.value,
+                 ...prevOtp.slice(index + 1),
+             ];
+             return updatedOtp;
+         });
+
+         // Move focus to the next input field
+         if (index < otp.length - 1) {
+             inputRefs.current[index + 1].focus();
+         }
+     }
+ };
+
+ // Handle Backspace/Delete functionality for OTP inputs
+ const handleKeyDown = (e) => {
+     const index = inputRefs.current.indexOf(e.target);
+
+     if (e.key === "Backspace" && otp[index] === "") {
+         // If backspace is pressed and current input is empty, focus on previous field
+         if (index > 0) {
+             inputRefs.current[index - 1].focus();
+         }
+     } else if (e.key === "Backspace" || e.key === "Delete") {
+         setOtp((prevOtp) => [
+             ...prevOtp.slice(0, index),
+             "",
+             ...prevOtp.slice(index + 1),
+         ]);
+     }
+ };
+
+ // Handle input focus
+ const handleFocus = (e) => {
+     e.target.select(); // Select the content when the input is focused
+ };
+
+  
+     const handlePaste = (e) => {
+         e.preventDefault();
+         const text = e.clipboardData.getData("text").slice(0, otp.length);
+         if (/^\d+$/.test(text)) {
+             const digits = text.split("");
+             setOtp((prevOtp) => [...digits, ...prevOtp.slice(digits.length)]);
+             inputRefs.current[Math.min(digits.length, otp.length - 1)].focus();
+         }
+     };
    const [showPassword, setShowPassword] = useState(false);
    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -204,37 +261,53 @@ const RegisterForm = () => {
         }
     };
 
-    const handleSubmit = async (e) => {
-        if (e) e.preventDefault();
-        setIsLoading(true);
+  const handleSubmit = async (e) => {
+      if (e) e.preventDefault();
+      setIsLoading(true);
 
-        const formattedData = {
-            fname: formData.firstName,
-            mname: formData.middleName,
-            lname: formData.lastName,
-            email: formData.email,
-            gender: formData.gender,
-            dob: `${formData.dobMonth}-${formData.dobDay}-${formData.dobYear}`,
-            password: formData.password,
-        };
+      // Combine OTP input values into a single string
+      const otpCode = otp.join(""); // Assuming `otp` is an array of 4 characters
 
-        try {
-            const { data } = await axiosClient.post("/register", formattedData);
-            setUser(data.user);
-            setToken(data.token); // Sets the token to close the modal if required in another flow
-            showAlert("success", "Registration successful! Welcome aboard.");
-            return true; // Indicate that the submission was successful
-        } catch (err) {
-            const errorMessage =
-                err.response?.data?.message ||
-                "An error occurred. Please try again.";
-            showAlert("error", errorMessage); // Show error details if available
-            console.error("Submission error:", err);
-            return false; // Indicate that the submission failed
-        } finally {
-            setIsLoading(false);
-        }
-    };
+      // Verify the OTP code entered by the user
+      const verificationSuccess = await emailVerify(otpCode);
+
+      if (!verificationSuccess) {
+          showAlert("error", "Invalid OTP. Please try again.");
+          setIsLoading(false);
+          return; // Stop further execution if OTP verification fails
+      }
+
+      // If OTP verification is successful, proceed with registration
+      const formattedData = {
+          fname: formData.firstName,
+          mname: formData.middleName,
+          lname: formData.lastName,
+          email: formData.email,
+          gender: formData.gender,
+          dob: `${formData.dobMonth}-${formData.dobDay}-${formData.dobYear}`,
+          password: formData.password,
+      };
+
+      try {
+          const { data } = await axiosClient.post("/register", formattedData);
+          setUser(data.user);
+          setToken(data.token); // Set token if required
+
+          showAlert("success", "Registration successful! Welcome aboard.");
+          return true; // Indicate that registration was successful
+      } catch (err) {
+          const errorMessage =
+              err.response?.data?.message ||
+              "An error occurred during registration. Please try again.";
+          showAlert("error", errorMessage); // Show error details if available
+          console.error("Submission error:", err);
+          return false; // Indicate that registration failed
+      } finally {
+          setIsLoading(false); // Reset loading state
+      }
+  };
+
+
 
     const handleRecaptchaChange = (e) => {
         setFormData((prevData) => ({
@@ -255,32 +328,34 @@ const RegisterForm = () => {
     //   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
     //             <div className="bg-white max-w-full w-full h-full sm:max-w-lg sm:h-auto overflow-y-auto px-4 py-2 sm:px-6 sm:py-4 md:px-8 md:py-6 lg:px-10 lg:py-8 rounded-xl">
 
+    
 //MAIL VERIFY
-      const emailVerify = async (code) => {
-        //if (e) e.preventDefault();
-        alert(code)
-        //setLoading(true); // Show spinner
+    const emailVerify = async (code) => {
+        try {
+            console.log(`Verifying email with code: ${code}`);
 
-        axiosClient
-            .get(`emailVerify/${formData.email}/${code}`)
-            .then(({ data }) => {
+            // Make the API request to verify OTP
+            const { data } = await axiosClient.get(
+                `emailVerify/${formData.email}/${code}`
+            );
 
-              // Handle response statuses
-                console.log(data)
-                if (data.status === 200) {
-                    alert('true')
-                } else {
-                    alert(
-                        data.message
-                    );
-                    return false;
-                }
-            
-            })
-            .catch((err) => {
-                console.log(err); 
-            });
+            if (data.status === 200) {
+                showAlert("success", "Email verified successfully!");
+                return true; // OTP verification successful
+            } else {
+                showAlert("error", data.message || "Verification failed.");
+                return false; // OTP verification failed
+            }
+        } catch (error) {
+            console.error("Error during email verification:", error);
+            showAlert(
+                "error",
+                error.response?.data?.message || "An error occurred."
+            );
+            return false; // OTP verification failed
+        }
     };
+
 
     return (
         <div className="h-[400px]">
@@ -584,9 +659,55 @@ const RegisterForm = () => {
                             <h1 className="text-lg">Registration</h1>
                             <h2 className="text-md font-semibold">
                                 Step 3 of 3
-                                <p className="text-center py-1 text-black"> A verification code has been sent to your email! </p>
+                                <p className="text-center py-1 text-black">
+                                    {" "}
+                                    A verification code has been sent to your
+                                    email!{" "}
+                                </p>
                             </h2>
-                            <StepThree />
+                            <section className="bg-white text-gray-600  dark:bg-dark">
+                                <h1 className="text-lg justify-center flex text-gray-700">
+                                    Registration
+                                </h1>
+                                <h2 className="text-md justify-center flex mt-2 mb-4 text-gray-700 mr-1">
+                                    Step 3 of 3
+                                </h2>
+                                <div className="container">
+                                    <form
+                                        id="otp-form"
+                                        className="flex gap-2 justify-center"
+                                    >
+                                        {otp.map((digit, index) => (
+                                            <input
+                                                id="otp"
+                                                key={index}
+                                                type="text"
+                                                maxLength={1}
+                                                value={digit}
+                                                onChange={handleInput}
+                                                onKeyDown={handleKeyDown}
+                                                onFocus={handleFocus}
+                                                onPaste={handlePaste}
+                                                ref={(el) =>
+                                                    (inputRefs.current[index] =
+                                                        el)
+                                                }
+                                                className="shadow-xs flex w-[64px] items-center justify-center rounded-lg border border-stroke bg-white p-2 text-center text-2xl font-medium text-gray-5 outline-none sm:text-4xl dark:border-dark-3 dark:bg-white/5"
+                                            />
+                                        ))}
+                                    </form>
+                                    {step === 3 && (
+                                        <button
+                                            type="button"
+                                            onClick={handleSubmit}
+                                            className="bg-green mb-8 hover:bg-green-700 w-full text-white px-4 py-2 rounded-full flex items-center justify-center mt-5"
+                                        >
+                                            Verify
+                                            <FaCheck className="ml-2" />
+                                        </button>
+                                    )}
+                                </div>
+                            </section>
                         </div>
                     </>
                 )}
@@ -618,17 +739,6 @@ const RegisterForm = () => {
                             )}
                         </button>
                     )}
-
-                    {/*{step == 3 && (<button
-                        type="button"
-                        onClick={handleNextStep}
-                        className="bg-green mb-8 hover:bg-green-700 w-full text-white px-4 py-2 rounded-full flex items-center justify-center mt-5"
-                    >
-                        Verify
-                        <FaCheck className="ml-2" />
-                    </button>
-                    )}*/}
-
                 </div>
             </form>
         </div>
