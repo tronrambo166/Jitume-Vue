@@ -6,14 +6,12 @@ import axiosClient from "../../axiosClient";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import { useAlert } from "../partials/AlertContext";
-import { FaEye, FaEyeSlash , FaCheck } from "react-icons/fa";
-
+import { FaEye, FaEyeSlash, FaCheck } from "react-icons/fa";
 
 const RegisterForm = () => {
     const { setUser, setToken } = useStateContext();
     const [step, setStep] = useState(1);
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
-  
 
     const [formData, setFormData] = useState({
         firstName: "",
@@ -70,103 +68,102 @@ const RegisterForm = () => {
 
         return dob <= todayMinus18Years;
     };
- const [otp, setOtp] = useState(Array(4).fill("")); // Array with 4 empty strings
+    const [otp, setOtp] = useState(Array(4).fill("")); // Array with 4 empty strings
 
- const inputRefs = useRef([]); // Array of refs for each input field
+    const inputRefs = useRef([]); // Array of refs for each input field
 
- // Handle each digit input
- const handleInput = (e) => {
-     const { target } = e;
-     const index = inputRefs.current.indexOf(target);
+    // Handle each digit input
+    const handleInput = (e) => {
+        const { target } = e;
+        const index = inputRefs.current.indexOf(target);
 
-     if (target.value) {
-         setOtp((prevOtp) => {
-             const updatedOtp = [
-                 ...prevOtp.slice(0, index),
-                 target.value,
-                 ...prevOtp.slice(index + 1),
-             ];
-             return updatedOtp;
-         });
+        if (target.value) {
+            setOtp((prevOtp) => {
+                const updatedOtp = [
+                    ...prevOtp.slice(0, index),
+                    target.value,
+                    ...prevOtp.slice(index + 1),
+                ];
+                return updatedOtp;
+            });
 
-         // Move focus to the next input field
-         if (index < otp.length - 1) {
-             inputRefs.current[index + 1].focus();
-         }
-     }
- };
+            // Move focus to the next input field
+            if (index < otp.length - 1) {
+                inputRefs.current[index + 1].focus();
+            }
+        }
+    };
 
- // Handle Backspace/Delete functionality for OTP inputs
- const handleKeyDown = (e) => {
-     const index = inputRefs.current.indexOf(e.target);
+    // Handle Backspace/Delete functionality for OTP inputs
+    const handleKeyDown = (e) => {
+        const index = inputRefs.current.indexOf(e.target);
 
-     if (e.key === "Backspace" && otp[index] === "") {
-         // If backspace is pressed and current input is empty, focus on previous field
-         if (index > 0) {
-             inputRefs.current[index - 1].focus();
-         }
-     } else if (e.key === "Backspace" || e.key === "Delete") {
-         setOtp((prevOtp) => [
-             ...prevOtp.slice(0, index),
-             "",
-             ...prevOtp.slice(index + 1),
-         ]);
-     }
- };
+        if (e.key === "Backspace" && otp[index] === "") {
+            // If backspace is pressed and current input is empty, focus on previous field
+            if (index > 0) {
+                inputRefs.current[index - 1].focus();
+            }
+        } else if (e.key === "Backspace" || e.key === "Delete") {
+            setOtp((prevOtp) => [
+                ...prevOtp.slice(0, index),
+                "",
+                ...prevOtp.slice(index + 1),
+            ]);
+        }
+    };
 
- // Handle input focus
- const handleFocus = (e) => {
-     e.target.select(); // Select the content when the input is focused
- };
+    // Handle input focus
+    const handleFocus = (e) => {
+        e.target.select(); // Select the content when the input is focused
+    };
 
-  
-     const handlePaste = (e) => {
-         e.preventDefault();
-         const text = e.clipboardData.getData("text").slice(0, otp.length);
-         if (/^\d+$/.test(text)) {
-             const digits = text.split("");
-             setOtp((prevOtp) => [...digits, ...prevOtp.slice(digits.length)]);
-             inputRefs.current[Math.min(digits.length, otp.length - 1)].focus();
-         }
-     };
-   const [showPassword, setShowPassword] = useState(false);
-   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const handlePaste = (e) => {
+        e.preventDefault();
+        const text = e.clipboardData.getData("text").slice(0, otp.length);
+        if (/^\d+$/.test(text)) {
+            const digits = text.split("");
+            setOtp((prevOtp) => [...digits, ...prevOtp.slice(digits.length)]);
+            inputRefs.current[Math.min(digits.length, otp.length - 1)].focus();
+        }
+    };
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-   const handleTogglePassword = () => setShowPassword((prev) => !prev);
-   const handleToggleConfirmPassword = () =>
-       setShowConfirmPassword((prev) => !prev);
+    const handleTogglePassword = () => setShowPassword((prev) => !prev);
+    const handleToggleConfirmPassword = () =>
+        setShowConfirmPassword((prev) => !prev);
 
-  const validateStep1 = () => {
-      let valid = true;
-      let newErrors = { ...errors };
+    const validateStep1 = () => {
+        let valid = true;
+        let newErrors = { ...errors };
 
-      // First Name validation
-      if (!formData.firstName) {
-          newErrors.firstName = "First name is required.";
-          valid = false;
-      } else {
-          newErrors.firstName = "";
-      }
+        // First Name validation
+        if (!formData.firstName) {
+            newErrors.firstName = "First name is required.";
+            valid = false;
+        } else {
+            newErrors.firstName = "";
+        }
 
-      // Last Name validation
-      if (!formData.lastName) {
-          newErrors.lastName = "Last name is required.";
-          valid = false;
-      } else {
-          newErrors.lastName = "";
-      }
+        // Last Name validation
+        if (!formData.lastName) {
+            newErrors.lastName = "Last name is required.";
+            valid = false;
+        } else {
+            newErrors.lastName = "";
+        }
 
-      // Date of Birth validation
-      if (!isValidDateOfBirth()) {
-          newErrors.dob = "You must be at least 18 years old to register.";
-          valid = false;
-      } else {
-          newErrors.dob = "";
-      }
+        // Date of Birth validation
+        if (!isValidDateOfBirth()) {
+            newErrors.dob = "You must be at least 18 years old to register.";
+            valid = false;
+        } else {
+            newErrors.dob = "";
+        }
 
-      setErrors(newErrors);
-      return valid;
-  };
+        setErrors(newErrors);
+        return valid;
+    };
 
     const handleTermsChange = (e) => {
         setFormData((prevData) => ({
@@ -246,68 +243,69 @@ const RegisterForm = () => {
         } else if (step === 2 && validateStep2()) {
             // Call handleSubmit and only proceed if the submission is successful
             // const isSuccess = await handleSubmit();
-                setStep(3); // Move to step 3 after successful submission
-                showAlert(
-                    "info",
-                    "You are now in Step 3. Please verify your email."
-                );
+            setStep(3); // Move to step 3 after successful submission
+            showAlert(
+                "info",
+                "You are now in Step 3. Please verify your email."
+            );
 
-                //Send verify mail
-                const code = Math.floor(Math.random() * 10000);
-                //const verify = await emailVerify(code);
-                // if(verify) console.log(verify);
-                // else console.log(verify);
-                //var isSuccess = await handleSubmit();
+            //Send verify mail
+            const code = Math.floor(Math.random() * 10000);
+            //const verify = await emailVerify(code);
+            // if(verify) console.log(verify);
+            // else console.log(verify);
+            //var isSuccess = await handleSubmit();
         }
     };
 
-  const handleSubmit = async (e) => {
-      if (e) e.preventDefault();
-      setIsLoading(true);
+    const handleSubmit = async (e) => {
+        if (e) e.preventDefault();
+        setIsLoading(true);
 
-      // Combine OTP input values into a single string
-      const otpCode = otp.join(""); // Assuming `otp` is an array of 4 characters
+        // Combine OTP input values into a single string
+        const otpCode = otp.join(""); // Assuming `otp` is an array of 4 characters
 
-      // Verify the OTP code entered by the user
-      const verificationSuccess = await emailVerify(otpCode);
+        //!Nurul you can make a random number generator for code
+        // e.g const code = Math.floor(Math.random() * 10000);
 
-      if (!verificationSuccess) {
-          showAlert("error", "Invalid OTP. Please try again.");
-          setIsLoading(false);
-          return; // Stop further execution if OTP verification fails
-      }
+        // Verify the OTP code entered by the user
+        const verificationSuccess = await emailVerify(otpCode);
 
-      // If OTP verification is successful, proceed with registration
-      const formattedData = {
-          fname: formData.firstName,
-          mname: formData.middleName,
-          lname: formData.lastName,
-          email: formData.email,
-          gender: formData.gender,
-          dob: `${formData.dobMonth}-${formData.dobDay}-${formData.dobYear}`,
-          password: formData.password,
-      };
+        if (!verificationSuccess) {
+            showAlert("error", "Invalid OTP. Please try again.");
+            setIsLoading(false);
+            return; // Stop further execution if OTP verification fails
+        }
 
-      try {
-          const { data } = await axiosClient.post("/register", formattedData);
-          setUser(data.user);
-          setToken(data.token); // Set token if required
+        // If OTP verification is successful, proceed with registration
+        const formattedData = {
+            fname: formData.firstName,
+            mname: formData.middleName,
+            lname: formData.lastName,
+            email: formData.email,
+            gender: formData.gender,
+            dob: `${formData.dobMonth}-${formData.dobDay}-${formData.dobYear}`,
+            password: formData.password,
+        };
 
-          showAlert("success", "Registration successful! Welcome aboard.");
-          return true; // Indicate that registration was successful
-      } catch (err) {
-          const errorMessage =
-              err.response?.data?.message ||
-              "An error occurred during registration. Please try again.";
-          showAlert("error", errorMessage); // Show error details if available
-          console.error("Submission error:", err);
-          return false; // Indicate that registration failed
-      } finally {
-          setIsLoading(false); // Reset loading state
-      }
-  };
+        try {
+            const { data } = await axiosClient.post("/register", formattedData);
+            setUser(data.user);
+            setToken(data.token); // Set token if required
 
-
+            showAlert("success", "Registration successful! Welcome aboard.");
+            return true; // Indicate that registration was successful
+        } catch (err) {
+            const errorMessage =
+                err.response?.data?.message ||
+                "An error occurred during registration. Please try again.";
+            showAlert("error", errorMessage); // Show error details if available
+            console.error("Submission error:", err);
+            return false; // Indicate that registration failed
+        } finally {
+            setIsLoading(false); // Reset loading state
+        }
+    };
 
     const handleRecaptchaChange = (e) => {
         setFormData((prevData) => ({
@@ -328,8 +326,7 @@ const RegisterForm = () => {
     //   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
     //             <div className="bg-white max-w-full w-full h-full sm:max-w-lg sm:h-auto overflow-y-auto px-4 py-2 sm:px-6 sm:py-4 md:px-8 md:py-6 lg:px-10 lg:py-8 rounded-xl">
 
-    
-//MAIL VERIFY
+    //MAIL VERIFY
     const emailVerify = async (code) => {
         try {
             console.log(`Verifying email with code: ${code}`);
@@ -355,7 +352,6 @@ const RegisterForm = () => {
             return false; // OTP verification failed
         }
     };
-
 
     return (
         <div className="h-[400px]">

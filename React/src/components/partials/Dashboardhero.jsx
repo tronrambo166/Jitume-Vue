@@ -19,11 +19,12 @@ import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
 import Breadcrumb from "./Breadcrumb";
 import { useAlert } from "../partials/AlertContext";
+import DefaultImg from "./Settings/components/DefaultImg";
 
 const Dashboardhero = () => {
     const { token, setToken } = useStateContext();
     const navigate = useNavigate();
-
+    const userImage = DefaultImg();
     const [user, setUser] = useState({});
     const [id, setId] = useState("");
     const [loading, setLoading] = useState(true); // Full-page loader state
@@ -32,19 +33,27 @@ const Dashboardhero = () => {
     // Custom notification function
 
     // Fetch user data
-    useEffect(() => {
-        axiosClient
-            .get("/checkAuth")
-            .then(({ data }) => {
-                setUser(data.user);
-                setId(data.user.id);
-            })
-            .catch(() => {
-                showAlert("error", "Failed to load user data. Redirecting...");
-                navigate("/");
-            })
-            .finally(() => setLoading(false));
-    }, []);
+ useEffect(() => {
+     axiosClient
+         .get("/checkAuth")
+         .then(({ data }) => {
+             setUser(data.user);
+             setId(data.user.id);
+
+             // Log the user image to the console
+             // Nurul Check the structure of the API response to ensure that image exists within data.user. 
+             // If image is missing or null in the response, it will  be set as null in your state.
+
+             console.log("User Image: ", data.user.image);
+             console.log("User Data: ", data.user);
+         })
+         .catch(() => {
+             showAlert("error", "Failed to load user data. Redirecting...");
+             navigate("/");
+         })
+         .finally(() => setLoading(false));
+ }, []);
+
 
     // useEffect(() => {
     //     const notifications = () => {
@@ -139,10 +148,13 @@ const Dashboardhero = () => {
                     <div className="flex justify-between items-center flex-wrap gap-4">
                         <div className="flex gap-2 items-center">
                             <img
-                                src={'../'+user.image || profile}
+                                src={
+                                    user?.image ? `../${user.image}` : userImage
+                                }
                                 className="rounded-xl w-16 h-16 md:w-20 md:h-20"
                                 alt="Profile"
                             />
+
                             <div className="flex flex-col">
                                 <h2 className="text-black text-sm md:text-lg font-bold">
                                     {user.fname} {user.lname}
