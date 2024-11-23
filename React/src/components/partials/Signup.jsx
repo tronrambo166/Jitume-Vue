@@ -5,6 +5,7 @@ import { useStateContext } from "../../contexts/contextProvider";
 import axiosClient from "../../axiosClient";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import StepThree from "./StepThree";
+import otp from "./StepThree";
 import { useAlert } from "../partials/AlertContext";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -13,6 +14,8 @@ const RegisterForm = () => {
     const { setUser, setToken } = useStateContext();
     const [step, setStep] = useState(1);
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
+    var o = otp();
+   console.log(o);
 
     const [formData, setFormData] = useState({
         firstName: "",
@@ -185,14 +188,19 @@ const RegisterForm = () => {
             showAlert("info", "You are now in Step 2.");
         } else if (step === 2 && validateStep2()) {
             // Call handleSubmit and only proceed if the submission is successful
-            const isSuccess = await handleSubmit();
-            if (isSuccess) {
+            // const isSuccess = await handleSubmit();
                 setStep(3); // Move to step 3 after successful submission
                 showAlert(
                     "info",
                     "You are now in Step 3. Registration successful."
                 );
-            }
+
+                //Send verify mail
+                const code = Math.floor(Math.random() * 10000);
+                //const verify = await emailVerify(code);
+                // if(verify) console.log(verify);
+                // else console.log(verify);
+                //var isSuccess = await handleSubmit();
         }
     };
 
@@ -246,6 +254,33 @@ const RegisterForm = () => {
     };
     //   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
     //             <div className="bg-white max-w-full w-full h-full sm:max-w-lg sm:h-auto overflow-y-auto px-4 py-2 sm:px-6 sm:py-4 md:px-8 md:py-6 lg:px-10 lg:py-8 rounded-xl">
+
+//MAIL VERIFY
+      const emailVerify = async (code) => {
+        //if (e) e.preventDefault();
+        alert(code)
+        //setLoading(true); // Show spinner
+
+        axiosClient
+            .get(`emailVerify/${formData.email}/${code}`)
+            .then(({ data }) => {
+
+              // Handle response statuses
+                console.log(data)
+                if (data.status === 200) {
+                    alert('true')
+                } else {
+                    alert(
+                        data.message
+                    );
+                    return false;
+                }
+            
+            })
+            .catch((err) => {
+                console.log(err); 
+            });
+    };
 
     return (
         <div className="h-[400px]">
@@ -549,6 +584,7 @@ const RegisterForm = () => {
                             <h1 className="text-lg">Registration</h1>
                             <h2 className="text-md font-semibold">
                                 Step 3 of 3
+                                <p className="text-center py-1 text-black"> A verification code has been sent to your email! </p>
                             </h2>
                             <StepThree />
                         </div>
@@ -582,6 +618,17 @@ const RegisterForm = () => {
                             )}
                         </button>
                     )}
+
+                    {/*{step == 3 && (<button
+                        type="button"
+                        onClick={handleNextStep}
+                        className="bg-green mb-8 hover:bg-green-700 w-full text-white px-4 py-2 rounded-full flex items-center justify-center mt-5"
+                    >
+                        Verify
+                        <FaCheck className="ml-2" />
+                    </button>
+                    )}*/}
+
                 </div>
             </form>
         </div>

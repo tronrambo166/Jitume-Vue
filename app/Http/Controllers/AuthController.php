@@ -18,10 +18,10 @@ class AuthController extends Controller
         ]);
     }
 
-    public function emailVerify($email) {
+    public function emailVerify($email,$code) {
         try{  
     
-                $info=['email'=>$email]; 
+                $info=['email'=>$email, 'code'=>$code]; 
                 $user['to'] = $email;
                 $subject = "Email Verification";
                 $headers = "From: webmaster@Jitume.com";

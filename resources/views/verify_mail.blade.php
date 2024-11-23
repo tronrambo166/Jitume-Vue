@@ -10,8 +10,8 @@
 		 	<h2 style="color: white;font-family: sans-serif;">  
 		 	<br> Email Verification </h2>
 			
-			<p>Please click the link to verify your email
-            		<a style='background:green; padding:15px 10px;color:white;' href="<?php echo config('app.api_url');?>emailVerify?email={{$email}}" > Verify </a> </p>
+			<p style="text-align: center;">Your Verification code is: {{$code}}
+            		<!-- <a style='background:green; padding:15px 10px;color:white;' href="<?php echo config('app.api_url');?>emailVerify?email={{$email}}" > Verify </a> --> </p>
 
 			</div>
 		

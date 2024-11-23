@@ -59,7 +59,9 @@ const PersonalInfo = () => {
         const file = e.target.files[0];
         if (file) {
             setImageFile(file); // Store the image file
-            setImagePreview(URL.createObjectURL(file)); // Generate the image preview URL
+            setImagePreview(URL.createObjectURL(file));
+            console.log(imageFile)
+             // Generate the image preview URL
         }
     };
 
@@ -173,7 +175,7 @@ const PersonalInfo = () => {
              <div className="relative w-36 h-36 mb-8">
                 <div className="w-36 h-36 rounded-lg overflow-hidden group">
                     <img
-                        src={imagePreview} // Display the preview image
+                        src={user.image} // Display the preview image
                         alt="Avatar"
                         className="w-full h-full object-cover"
                     />

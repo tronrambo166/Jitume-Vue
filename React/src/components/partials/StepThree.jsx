@@ -47,7 +47,9 @@ const Otp1 = ({ step }) => {
                     target.value,
                     ...prevOtp.slice(index + 1),
                 ];
-                console.log("Current OTP:", updatedOtp); // Log the OTP
+                //console.log("Current OTP:", updatedOtp); // Log the OTP
+                //var otp = $('#otp').val();
+                console.log(updatedOtp);
                 return updatedOtp;
             });
             if (index < otp.length - 1) {
@@ -61,9 +63,9 @@ const Otp1 = ({ step }) => {
     };
 
     const VerifyEmail = () => {
-       console.log(`OTP: ${otp.join("")}`);
-       console.log(step);
-       console.log(otp);
+       //console.log(`OTP: ${otp.join("")}`);
+       //console.log(step);
+       //console.log(JSON.stringify(otp));
 
 
 
@@ -91,6 +93,7 @@ const Otp1 = ({ step }) => {
                 <form id="otp-form" className="flex gap-2 justify-center">
                     {otp.map((digit, index) => (
                         <input
+                            id="otp"
                             key={index}
                             type="text"
                             maxLength={1}
@@ -127,4 +130,10 @@ const StepThree = () => {
     );
 };
 
+export function otp() {
+   return updatedOtp;
+}
+
 export default StepThree;
+
+ 
