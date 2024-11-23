@@ -4,11 +4,16 @@ import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { useStateContext } from "../../contexts/contextProvider";
 import axiosClient from "../../axiosClient";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { toast, ToastContainer } from "react-toastify";
+import StepThree from "./StepThree";
+import { useAlert } from "../partials/AlertContext";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 
 const RegisterForm = () => {
     const { setUser, setToken } = useStateContext();
     const [step, setStep] = useState(1);
+    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
+
     const [formData, setFormData] = useState({
         firstName: "",
         middleName: "",
@@ -39,12 +44,12 @@ const RegisterForm = () => {
         const day = parseInt(dobDay, 10);
         const year = parseInt(dobYear, 10);
 
+        // Validate month, day, and year inputs
         if (isNaN(month) || isNaN(day) || isNaN(year)) {
             return false;
         }
 
-        const currentYear = new Date().getFullYear();
-        if (year < 1900 || year > currentYear) {
+        if (year < 1900 || year > new Date().getFullYear()) {
             return false;
         }
 
@@ -57,37 +62,52 @@ const RegisterForm = () => {
             return false;
         }
 
-        return true;
+        // Check if the user is at least 18 years old
+        const dob = new Date(year, month - 1, day); // JavaScript months are 0-based
+        const todayMinus18Years = new Date();
+        todayMinus18Years.setFullYear(todayMinus18Years.getFullYear() - 18);
+
+        return dob <= todayMinus18Years;
     };
+   const [showPassword, setShowPassword] = useState(false);
+   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const validateStep1 = () => {
-        let valid = true;
-        let newErrors = { ...errors };
+   const handleTogglePassword = () => setShowPassword((prev) => !prev);
+   const handleToggleConfirmPassword = () =>
+       setShowConfirmPassword((prev) => !prev);
 
-        if (!formData.firstName) {
-            newErrors.firstName = "First name is required.";
-            valid = false;
-        } else {
-            newErrors.firstName = "";
-        }
+  const validateStep1 = () => {
+      let valid = true;
+      let newErrors = { ...errors };
 
-        if (!formData.lastName) {
-            newErrors.lastName = "Last name is required.";
-            valid = false;
-        } else {
-            newErrors.lastName = "";
-        }
+      // First Name validation
+      if (!formData.firstName) {
+          newErrors.firstName = "First name is required.";
+          valid = false;
+      } else {
+          newErrors.firstName = "";
+      }
 
-        if (!isValidDateOfBirth()) {
-            newErrors.dob = "Please enter a valid date of birth.";
-            valid = false;
-        } else {
-            newErrors.dob = "";
-        }
+      // Last Name validation
+      if (!formData.lastName) {
+          newErrors.lastName = "Last name is required.";
+          valid = false;
+      } else {
+          newErrors.lastName = "";
+      }
 
-        setErrors(newErrors);
-        return valid;
-    };
+      // Date of Birth validation
+      if (!isValidDateOfBirth()) {
+          newErrors.dob = "You must be at least 18 years old to register.";
+          valid = false;
+      } else {
+          newErrors.dob = "";
+      }
+
+      setErrors(newErrors);
+      return valid;
+  };
+
     const handleTermsChange = (e) => {
         setFormData((prevData) => ({
             ...prevData,
@@ -147,14 +167,6 @@ const RegisterForm = () => {
         return valid;
     };
 
-    const handleNextStep = () => {
-        if (step === 1 && validateStep1()) {
-            setStep(step + 1);
-        } else if (step === 2 && validateStep2()) {
-            handleSubmit();
-        }
-    };
-
     const handlePreviousStep = () => {
         setStep(step - 1);
     };
@@ -165,6 +177,23 @@ const RegisterForm = () => {
             ...prevData,
             [name]: value,
         }));
+    };
+
+    const handleNextStep = async () => {
+        if (step === 1 && validateStep1()) {
+            setStep(2); // Move to step 2
+            showAlert("info", "You are now in Step 2.");
+        } else if (step === 2 && validateStep2()) {
+            // Call handleSubmit and only proceed if the submission is successful
+            const isSuccess = await handleSubmit();
+            if (isSuccess) {
+                setStep(3); // Move to step 3 after successful submission
+                showAlert(
+                    "info",
+                    "You are now in Step 3. Registration successful."
+                );
+            }
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -184,11 +213,16 @@ const RegisterForm = () => {
         try {
             const { data } = await axiosClient.post("/register", formattedData);
             setUser(data.user);
-            setToken(data.token);
-            // toast.success("Registration successful. Please login.");
+            setToken(data.token); // Sets the token to close the modal if required in another flow
+            showAlert("success", "Registration successful! Welcome aboard.");
+            return true; // Indicate that the submission was successful
         } catch (err) {
-            toast.error(err.response.data.message);
-            console.error(err);
+            const errorMessage =
+                err.response?.data?.message ||
+                "An error occurred. Please try again.";
+            showAlert("error", errorMessage); // Show error details if available
+            console.error("Submission error:", err);
+            return false; // Indicate that the submission failed
         } finally {
             setIsLoading(false);
         }
@@ -210,13 +244,12 @@ const RegisterForm = () => {
         //window.location.href = 'http://127.0.0.1:8000/api/google/';
         window.location.href = "https://test.jitume.com/api/google/";
     };
-//   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-//             <div className="bg-white max-w-full w-full h-full sm:max-w-lg sm:h-auto overflow-y-auto px-4 py-2 sm:px-6 sm:py-4 md:px-8 md:py-6 lg:px-10 lg:py-8 rounded-xl">
-             
+    //   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    //             <div className="bg-white max-w-full w-full h-full sm:max-w-lg sm:h-auto overflow-y-auto px-4 py-2 sm:px-6 sm:py-4 md:px-8 md:py-6 lg:px-10 lg:py-8 rounded-xl">
+
     return (
         <div className="h-[400px]">
             <form className="flex flex-col px-4 py-2 " onSubmit={handleSubmit}>
-                <ToastContainer />
                 {step === 1 && (
                     <div>
                         <div className="  text-center mb-4">
@@ -224,7 +257,7 @@ const RegisterForm = () => {
                                 Registration
                             </h1>
                             <h2 className="text-md text-gray-700 mr-2">
-                                Step 1 of 2
+                                Step 1 of 3
                             </h2>
                         </div>
 
@@ -376,7 +409,7 @@ const RegisterForm = () => {
                         <div className="text-center mb-4">
                             <h1 className="text-lg">Registration</h1>
                             <h2 className="text-md font-semibold">
-                                Step 2 of 2
+                                Step 2 of 3
                             </h2>
                         </div>
                         <label className="text-sm text-[#666666]">
@@ -396,28 +429,53 @@ const RegisterForm = () => {
                         </label>
                         <label className="text-sm text-[#666666] mt-2">
                             Password
-                            <input
-                                type="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                className="border p-2 rounded-xl w-full"
-                            />
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    className="border p-2 rounded-xl w-full"
+                                />
+                                <span
+                                    onClick={handleTogglePassword}
+                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                                >
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </span>
+                            </div>
                             {errors.password && (
                                 <p className="text-red-500 text-xs">
                                     {errors.password}
                                 </p>
                             )}
                         </label>
+
                         <label className="text-sm text-[#666666] mt-2">
                             Confirm Password
-                            <input
-                                type="password"
-                                name="confirmPassword"
-                                value={formData.confirmPassword}
-                                onChange={handleChange}
-                                className="border p-2 rounded-xl w-full"
-                            />
+                            <div className="relative">
+                                <input
+                                    type={
+                                        showConfirmPassword
+                                            ? "text"
+                                            : "password"
+                                    }
+                                    name="confirmPassword"
+                                    value={formData.confirmPassword}
+                                    onChange={handleChange}
+                                    className="border p-2 rounded-xl w-full"
+                                />
+                                <span
+                                    onClick={handleToggleConfirmPassword}
+                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                                >
+                                    {showConfirmPassword ? (
+                                        <FaEyeSlash />
+                                    ) : (
+                                        <FaEye />
+                                    )}
+                                </span>
+                            </div>
                             {errors.confirmPassword && (
                                 <p className="text-red-500 text-xs">
                                     {errors.confirmPassword}
@@ -432,7 +490,9 @@ const RegisterForm = () => {
                                     checked={formData.isRecaptchaChecked}
                                     onChange={handleRecaptchaChange}
                                 />
-                                <p className="text-sm">I'm not a robot</p>
+                                <p className="text-sm text-gray-600">
+                                    I'm not a robot
+                                </p>
                             </div>
                             <img
                                 src={googlerecaptcha}
@@ -455,7 +515,7 @@ const RegisterForm = () => {
                                     checked={formData.isAgreedToTerms}
                                     onChange={handleTermsChange}
                                 />
-                                <p className="text-sm">
+                                <p className="text-sm text-gray-600">
                                     I have read and agree to the
                                     <a
                                         href="/terms"
@@ -483,32 +543,45 @@ const RegisterForm = () => {
                         </div>
                     </>
                 )}
+                {step === 3 && (
+                    <>
+                        <div className="text-center mb-4">
+                            <h1 className="text-lg">Registration</h1>
+                            <h2 className="text-md font-semibold">
+                                Step 3 of 3
+                            </h2>
+                            <StepThree />
+                        </div>
+                    </>
+                )}
                 <div className="flex gap-2">
                     {step > 1 && (
                         <button
                             type="button"
                             onClick={handlePreviousStep}
-                            className="bg-gray-300 hover:bg-gray-500 w-full text-white px-4 py-2 rounded-full mt-5"
+                            className="bg-gray-500 mb-8 hover:bg-gray-700 w-full text-white px-4 py-2 rounded-full flex items-center justify-center mt-5"
                         >
                             Previous
                         </button>
                     )}
-                    <button
-                        type="button"
-                        onClick={handleNextStep}
-                        className={`bg-green mb-8 hover:bg-green-700 w-full text-white px-4 py-2 rounded-full flex items-center justify-center mt-5 ${
-                            isLoading ? "cursor-not-allowed" : ""
-                        }`}
-                        disabled={isLoading}
-                    >
-                        {isLoading ? (
-                            <AiOutlineLoading3Quarters className="animate-spin" />
-                        ) : step === 2 ? (
-                            "Register"
-                        ) : (
-                            "Next"
-                        )}
-                    </button>
+                    {step < 3 && ( // Hide buttons if step is 3
+                        <button
+                            type="button"
+                            onClick={handleNextStep}
+                            className={`bg-green mb-8 hover:bg-green-700 w-full text-white px-4 py-2 rounded-full flex items-center justify-center mt-5 ${
+                                isLoading ? "cursor-not-allowed" : ""
+                            }`}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? (
+                                <AiOutlineLoading3Quarters className="animate-spin" />
+                            ) : step === 2 ? (
+                                "Register"
+                            ) : (
+                                "Next"
+                            )}
+                        </button>
+                    )}
                 </div>
             </form>
         </div>

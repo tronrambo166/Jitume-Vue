@@ -1,21 +1,23 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import LoginForm from './Loginform';
-import RegisterForm from './Signup';
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import LoginForm from "./Loginform";
+import RegisterForm from "./Signup";
 import logo2 from "../../images/logo2.png";
-import { useStateContext } from '../../contexts/contextProvider'; // Ensure this import is correct
+import { useStateContext } from "../../contexts/contextProvider"; // Ensure this import is correct
 
 const Modal = ({ isOpen, onClose }) => {
     const [isLogin, setIsLogin] = useState(true);
     const { user, token, setUser, setToken } = useStateContext(); // Use context for token
+    const [isRegistrationComplete, setRegistrationComplete] = useState(false);
 
     useEffect(() => {
-        if (token) {
-            onClose(); // Close the modal if the token is present
+        if (token && isRegistrationComplete) {
+            onClose(); // Close only after registration is complete
         }
-    }, [token, onClose]);
+    }, [token, isRegistrationComplete, onClose]);
 
-    if (!isOpen || token) return null; // Prevent rendering if modal is closed or token exists
+    if (!isOpen) return null; // Prevent rendering if modal is closed or token exists
+    // if (!isOpen || token) return null; // Prevent rendering if modal is closed or token exists
 
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) {
@@ -30,7 +32,11 @@ const Modal = ({ isOpen, onClose }) => {
         >
             <div className="bg-white rounded-xl p-6 h-auto  no-scrollbar  overflow-y-auto relative w-[95vw] max-w-[500px] sm:w-[85vw] sm:max-w-[450px] lg:w-[70vw] lg:max-w-[500px] mx-4 mt-4 sm:mt-6">
                 <div className="flex justify-center py-4">
-                    <img src={logo2} alt="Logo" className="h-[45px] w-[120px]" />
+                    <img
+                        src={logo2}
+                        alt="Logo"
+                        className="h-[45px] w-[120px]"
+                    />
                 </div>
                 <hr className="py-2" />
                 <button
@@ -65,9 +71,9 @@ const Modal = ({ isOpen, onClose }) => {
 };
 
 Modal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  token: PropTypes.string,  // Adding token as a prop
+    isOpen: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    token: PropTypes.string, // Adding token as a prop
 };
 
 export default Modal;
