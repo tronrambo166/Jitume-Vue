@@ -211,9 +211,9 @@ const ListingResults = () => {
                         const db_min = parseInt(range[0], 10); // Parse as integer
                         const db_max = parseInt(range[1], 10); // Parse as integer
 
-                        //console.log(db_min)
+                        //console.log(db_max)
                         if (
-                            parseInt(values[0]) <= db_max &&
+                            
                             parseInt(values[1]) <= db_max
                         ) {
                             turnoverRes.push(value);
