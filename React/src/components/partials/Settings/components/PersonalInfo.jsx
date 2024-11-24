@@ -149,7 +149,7 @@ const PersonalInfo = () => {
             <div className="relative w-36 h-36 mb-8">
                 <div className="w-36 h-36 rounded-lg overflow-hidden group">
                     <img
-                        src={imagePreview ? imagePreview : userImage}
+                        src={imagePreview ? '../'+imagePreview : userImage}
                         alt="Avatar"
                         className="w-full h-full object-cover"
                     />

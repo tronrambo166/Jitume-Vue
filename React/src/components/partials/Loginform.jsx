@@ -55,7 +55,7 @@ const LoginForm = () => {
         setIsFormValid(valid && email && password);
 
         // If form is valid, show success alert
-        if (valid && email && password) {
+        if (valid && email && password && userName) {
             showAlert("success", `Login successful! Welcome, ${userName}`);
         }
     };

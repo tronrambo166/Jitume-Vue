@@ -214,7 +214,7 @@ const ListingResults = () => {
                         //console.log(db_min)
                         if (
                             parseInt(values[0]) <= db_max &&
-                            parseInt(values[1]) >= db_max
+                            parseInt(values[1]) <= db_max
                         ) {
                             turnoverRes.push(value);
                         }

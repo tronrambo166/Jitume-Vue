@@ -45,7 +45,7 @@ export default function DefaultLayout() {
                 content: "You're Logged out.",
                 });
   }
-  if(token)
+  if(token && token !=null)
   useIdleTimer({
     timeout: FIVE_MINS, // time in millisecond
     onIdle: handleOnUserIdle,

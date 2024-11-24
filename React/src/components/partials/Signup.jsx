@@ -12,6 +12,7 @@ const RegisterForm = () => {
     const { setUser, setToken } = useStateContext();
     const [step, setStep] = useState(1);
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
+    const [vcode, setVCode] = useState(null);
 
     const [formData, setFormData] = useState({
         firstName: "",
@@ -243,18 +244,10 @@ const RegisterForm = () => {
         } else if (step === 2 && validateStep2()) {
             // Call handleSubmit and only proceed if the submission is successful
             // const isSuccess = await handleSubmit();
-            setStep(3); // Move to step 3 after successful submission
-            showAlert(
-                "info",
-                "You are now in Step 3. Please verify your email."
-            );
-
             //Send verify mail
             const code = Math.floor(Math.random() * 10000);
-            //const verify = await emailVerify(code);
+            const verify = await emailVerify(code);
             // if(verify) console.log(verify);
-            // else console.log(verify);
-            //var isSuccess = await handleSubmit();
         }
     };
 
@@ -263,15 +256,12 @@ const RegisterForm = () => {
         setIsLoading(true);
 
         // Combine OTP input values into a single string
-        const otpCode = otp.join(""); // Assuming `otp` is an array of 4 characters
-
-        //!Nurul you can make a random number generator for code
-        // e.g const code = Math.floor(Math.random() * 10000);
+        const otpCode = otp.join("");
+        console.log(otpCode);
 
         // Verify the OTP code entered by the user
-        const verificationSuccess = await emailVerify(otpCode);
 
-        if (!verificationSuccess) {
+        if(vcode != otpCode) {
             showAlert("error", "Invalid OTP. Please try again.");
             setIsLoading(false);
             return; // Stop further execution if OTP verification fails
@@ -329,18 +319,22 @@ const RegisterForm = () => {
     //MAIL VERIFY
     const emailVerify = async (code) => {
         try {
-            console.log(`Verifying email with code: ${code}`);
 
             // Make the API request to verify OTP
             const { data } = await axiosClient.get(
                 `emailVerify/${formData.email}/${code}`
             );
-
+            setIsLoading(true);
             if (data.status === 200) {
-                showAlert("success", "Email verified successfully!");
-                return true; // OTP verification successful
+                setStep(3); // Move to step 3 after successful submission
+                showAlert(
+                    "info",
+                    "You are now in Step 3. Please verify your email."
+                );
+                setVCode(code);
+                return true;
             } else {
-                showAlert("error", data.message || "Verification failed.");
+                showAlert("error", data.message || "Email not sent.");
                 return false; // OTP verification failed
             }
         } catch (error) {
