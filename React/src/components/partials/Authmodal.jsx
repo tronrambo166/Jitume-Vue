@@ -16,8 +16,8 @@ const Modal = ({ isOpen, onClose }) => {
         }
     }, [token, isRegistrationComplete, onClose]);
 
-    if (!isOpen) return null; // Prevent rendering if modal is closed or token exists
-    // if (!isOpen || token) return null; // Prevent rendering if modal is closed or token exists
+    // if (!isOpen) return null; // Prevent rendering if modal is closed or token exists
+    if (!isOpen || token) return null; // Prevent rendering if modal is closed or token exists
 
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) {
@@ -28,9 +28,9 @@ const Modal = ({ isOpen, onClose }) => {
     return (
         <div
             className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-50"
-            onClick={handleOverlayClick}
+            // onClick={handleOverlayClick}
         >
-            <div className="bg-white rounded-xl p-6 h-auto  no-scrollbar  overflow-y-auto relative w-[95vw] max-w-[500px] sm:w-[85vw] sm:max-w-[450px] lg:w-[70vw] lg:max-w-[500px] mx-4 mt-4 sm:mt-6">
+            <div className="bg-white rounded-xl p-4 sm:p-6 h-auto no-scrollbar overflow-y-auto relative w-[95vw] max-w-[500px] sm:w-[85vw] sm:max-w-[450px] lg:w-[70vw] lg:max-w-[500px] mx-auto mt-4 sm:mt-6">
                 <div className="flex justify-center py-4">
                     <img
                         src={logo2}

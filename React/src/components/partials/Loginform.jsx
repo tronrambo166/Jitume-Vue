@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
     AiOutlineEye,
     AiOutlineEyeInvisible,
@@ -7,59 +7,72 @@ import {
 import axiosClient from "../../axiosClient";
 import { useStateContext } from "../../contexts/contextProvider";
 import { useAlert } from "../partials/AlertContext";
-const LoginForm = () => {
+
+const LoginForm = () => { 
     const [showPassword, setShowPassword] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
     const [loading, setLoading] = useState(false);
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [serverError, setServerError] = useState(""); // Server-side error message
+    const [rememberMe, setRememberMe] = useState(false); // State for "Remember Me" checkbox
 
     const emailRef = useRef();
     const passwordRef = useRef();
     const { setUser, setToken } = useStateContext();
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
 
+    // Set rememberMe state from localStorage when the component mounts
+    useEffect(() => {
+        const savedRememberMe = JSON.parse(localStorage.getItem("rememberMe"));
+        if (savedRememberMe) {
+            setRememberMe(true);
+            const savedEmail = localStorage.getItem("savedEmail");
+            if (savedEmail) {
+                emailRef.current.value = savedEmail; // Autofill email if stored
+            }
+        }
+    }, []);
+
+    // Toggle password visibility
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
+    // Validate email
     const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     };
 
+    // Handle input changes for form validation
     const handleInputChange = () => {
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
 
         // Validate email and password
         let valid = true;
-        if (!email) {
-            // setEmailError("Please insert your email.");
-            // valid = false;
-        } else if (!validateEmail(email)) {
-            // setEmailError("Please enter a valid email.");
-            // valid = false;
-        } else {
-            setEmailError("");
-        }
+        // if (!email) {
+        //     setEmailError("Please insert your email.");
+        //     valid = false;
+        // } else if (!validateEmail(email)) {
+        //     setEmailError("Please enter a valid email.");
+        //     valid = false;
+        // } else {
+        //     setEmailError("");
+        // }
 
-        if (!password) {
-            setPasswordError("");
-            valid = false;
-        } else {
-            setPasswordError("");
-        }
+        // if (!password) {
+        //     setPasswordError("Please insert your password.");
+        //     valid = false;
+        // } else {
+        //     setPasswordError("");
+        // }
 
         setIsFormValid(valid && email && password);
-
-        // If form is valid, show success alert
-        if (valid && email && password && userName) {
-            showAlert("success", `Login successful! Welcome, ${userName}`);
-        }
     };
 
+    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -73,30 +86,27 @@ const LoginForm = () => {
 
         try {
             const { data } = await axiosClient.post("/login", payload);
-            console.log("Login response data:", data);
-
             if (data.auth) {
-                // Access the full name by combining fname and lname
-                const userName = `${data.user.fname} ${data.user.lname}`;
-                showAlert("success", `Login successful! Welcome, ${userName}`); // Using showAlert for success
+                // Save the email and rememberMe status if login is successful
+                if (rememberMe) {
+                    localStorage.setItem("savedEmail", emailRef.current.value);
+                    localStorage.setItem("rememberMe", true);
+                } else {
+                    localStorage.removeItem("savedEmail");
+                    localStorage.removeItem("rememberMe");
+                }
 
-                // Update user and token states
+                const userName = `${data.user.fname} ${data.user.lname}`;
+                showAlert("success", `Login successful! Welcome, ${userName}`);
                 setUser(data.user);
                 setToken(data.token);
             } else {
-                setServerError(
-                    data.message ||
-                        "Login failed. Please check your credentials."
-                );
-                showAlert(
-                    "error",
-                    data.message ||
-                        "Login failed. Please check your credentials"
-                ); // Using showAlert for error
+                setServerError(data.message || "Login failed.");
+                showAlert("error", data.message || "Login failed.");
             }
         } catch (error) {
-            console.error("Login error:", error);
-            showAlert("error", "Login failed. Please check your credentials."); // Using showAlert for error
+            setServerError("Login failed. Please check your credentials.");
+            showAlert("error", "Login failed.");
         } finally {
             setLoading(false);
         }
@@ -116,7 +126,7 @@ const LoginForm = () => {
                         Enter details to log in
                     </h2>
                 </div>
-                <label className="text-[#666666] text-[13px] ">
+                <label className="text-[#666666] text-[13px]">
                     Email
                     <input
                         ref={emailRef}
@@ -134,8 +144,8 @@ const LoginForm = () => {
                         </p>
                     )}
                 </label>
-                <div className="flex flex-col ">
-                    <div className="flex items-center  justify-between">
+                <div className="flex flex-col">
+                    <div className="flex items-center justify-between">
                         <label className="text-[#666666] text-[13px] flex-grow pr-2">
                             Password
                         </label>
@@ -162,18 +172,30 @@ const LoginForm = () => {
                         onChange={handleInputChange}
                         required
                     />
-
                     {passwordError && (
                         <p className="text-red-500 text-xs mt-1">
                             {passwordError}
                         </p>
                     )}
                 </div>
+
                 {serverError && (
                     <p className="text-red-500 text-xs mt-1 text-center">
                         {serverError}
                     </p>
                 )}
+
+                <div class="flex items-center space-x-2">
+                    <input
+                        type="checkbox"
+                        id="rememberMe"
+                        checked={rememberMe}
+                        onChange={() => setRememberMe(!rememberMe)}
+                    />
+                    <label htmlFor="rememberMe" class="text-sm text-gray-700">
+                        Remember me
+                    </label>
+                </div>
 
                 <button
                     type="submit"

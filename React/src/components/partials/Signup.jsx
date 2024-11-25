@@ -4,6 +4,7 @@ import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { useStateContext } from "../../contexts/contextProvider";
 import axiosClient from "../../axiosClient";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import Calendar from "./Calendar"; // Import the Calendar component
 
 import { useAlert } from "../partials/AlertContext";
 import { FaEye, FaEyeSlash, FaCheck } from "react-icons/fa";
@@ -38,37 +39,67 @@ const RegisterForm = () => {
         recaptcha: "",
     });
 
-    const isValidDateOfBirth = () => {
-        const { dobMonth, dobDay, dobYear } = formData;
-        const month = parseInt(dobMonth, 10);
-        const day = parseInt(dobDay, 10);
-        const year = parseInt(dobYear, 10);
+   const isValidDateOfBirth = () => {
+       const { dobMonth, dobDay, dobYear } = formData;
 
-        // Validate month, day, and year inputs
-        if (isNaN(month) || isNaN(day) || isNaN(year)) {
-            return false;
-        }
+       // Check if any field is empty
+       if (!dobMonth || !dobDay || !dobYear) {
+           console.error("Date of Birth fields cannot be empty.");
+           return false;
+       }
 
-        if (year < 1900 || year > new Date().getFullYear()) {
-            return false;
-        }
+       const month = parseInt(dobMonth, 10);
+       const day = parseInt(dobDay, 10);
+       const year = parseInt(dobYear, 10);
 
-        if (month < 1 || month > 12) {
-            return false;
-        }
+       // Validate if inputs are numbers
+       if (isNaN(month) || isNaN(day) || isNaN(year)) {
+           console.error(
+               "Invalid Date of Birth: Month, Day, or Year is not a number."
+           );
+           return false;
+       }
 
-        const daysInMonth = new Date(year, month, 0).getDate();
-        if (day < 1 || day > daysInMonth) {
-            return false;
-        }
+       // Validate year range
+       if (year < 1900 || year > new Date().getFullYear()) {
+           console.error(
+               "Invalid Date of Birth: Year must be between 1900 and the current year."
+           );
+           return false;
+       }
 
-        // Check if the user is at least 18 years old
-        const dob = new Date(year, month - 1, day); // JavaScript months are 0-based
-        const todayMinus18Years = new Date();
-        todayMinus18Years.setFullYear(todayMinus18Years.getFullYear() - 18);
+       // Validate month range
+       if (month < 1 || month > 12) {
+           console.error(
+               "Invalid Date of Birth: Month must be between 1 and 12."
+           );
+           return false;
+       }
 
-        return dob <= todayMinus18Years;
-    };
+       // Validate day range
+       const daysInMonth = new Date(year, month, 0).getDate();
+       if (day < 1 || day > daysInMonth) {
+           console.error(
+               `Invalid Date of Birth: Day must be between 1 and ${daysInMonth} for the given month.`
+           );
+           return false;
+       }
+
+       // Check if the user is at least 18 years old
+       const dob = new Date(year, month - 1, day); // JavaScript months are 0-based
+       const todayMinus18Years = new Date();
+       todayMinus18Years.setFullYear(todayMinus18Years.getFullYear() - 18);
+
+       if (dob > todayMinus18Years) {
+           console.error(
+               "Invalid Date of Birth: User must be at least 18 years old."
+           );
+           return false;
+       }
+
+       return true; // Date of birth is valid
+   };
+
     const [otp, setOtp] = useState(Array(4).fill("")); // Array with 4 empty strings
 
     const inputRefs = useRef([]); // Array of refs for each input field
@@ -134,37 +165,41 @@ const RegisterForm = () => {
     const handleToggleConfirmPassword = () =>
         setShowConfirmPassword((prev) => !prev);
 
-    const validateStep1 = () => {
-        let valid = true;
-        let newErrors = { ...errors };
+  const validateStep1 = () => {
+      let valid = true;
+      let newErrors = { ...errors };
 
-        // First Name validation
-        if (!formData.firstName) {
-            newErrors.firstName = "First name is required.";
-            valid = false;
-        } else {
-            newErrors.firstName = "";
-        }
+      // First Name validation
+      if (!formData.firstName || formData.firstName.trim() === "") {
+          newErrors.firstName = "First name is required.";
+          valid = false;
+      } else {
+          newErrors.firstName = "";
+      }
 
-        // Last Name validation
-        if (!formData.lastName) {
-            newErrors.lastName = "Last name is required.";
-            valid = false;
-        } else {
-            newErrors.lastName = "";
-        }
+      // Last Name validation
+      if (!formData.lastName || formData.lastName.trim() === "") {
+          newErrors.lastName = "Last name is required.";
+          valid = false;
+      } else {
+          newErrors.lastName = "";
+      }
 
-        // Date of Birth validation
-        if (!isValidDateOfBirth()) {
-            newErrors.dob = "You must be at least 18 years old to register.";
-            valid = false;
-        } else {
-            newErrors.dob = "";
-        }
+      // Date of Birth validation
+      if (!formData.dobMonth || !formData.dobDay || !formData.dobYear) {
+          newErrors.dob = "Date of birth is required.";
+          valid = false;
+      } else if (!isValidDateOfBirth()) {
+          newErrors.dob = "You must be at least 18 years old to register.";
+          valid = false;
+      } else {
+          newErrors.dob = "";
+      }
 
-        setErrors(newErrors);
-        return valid;
-    };
+      setErrors(newErrors);
+      return valid;
+  };
+
 
     const handleTermsChange = (e) => {
         setFormData((prevData) => ({
@@ -261,7 +296,7 @@ const RegisterForm = () => {
 
         // Verify the OTP code entered by the user
 
-        if(vcode != otpCode) {
+        if (vcode != otpCode) {
             showAlert("error", "Invalid OTP. Please try again.");
             setIsLoading(false);
             return; // Stop further execution if OTP verification fails
@@ -274,7 +309,7 @@ const RegisterForm = () => {
             lname: formData.lastName,
             email: formData.email,
             gender: formData.gender,
-            dob: `${formData.dobMonth}-${formData.dobDay}-${formData.dobYear}`,
+            dob: `${formData.dobYear}-${formData.dobMonth}-${formData.dobDay}`, // Format: "YYYY-MM-DD"
             password: formData.password,
         };
 
@@ -304,6 +339,21 @@ const RegisterForm = () => {
         }));
     };
 
+    const handleDateSelect = ({ year, month, day }) => {
+        if (year == null || month == null || day == null) {
+            console.error("Invalid date object:", { year, month, day });
+            return;
+        }
+
+        setFormData((prevData) => ({
+            ...prevData,
+            dobYear: year.toString(),
+            dobMonth: String(month).padStart(2, "0"),
+            dobDay: String(day).padStart(2, "0"),
+        }));
+        console.log("Date selected:", { year, month, day });
+    };
+
     //SOCIAL
     const facebook = (e) => {
         //window.location.href = 'http://127.0.0.1:8000/api/facebook/';
@@ -319,7 +369,6 @@ const RegisterForm = () => {
     //MAIL VERIFY
     const emailVerify = async (code) => {
         try {
-
             // Make the API request to verify OTP
             const { data } = await axiosClient.get(
                 `emailVerify/${formData.email}/${code}`
@@ -413,7 +462,7 @@ const RegisterForm = () => {
                                         value="female"
                                         checked={formData.gender === "female"}
                                         onChange={handleChange}
-                                        className="form-radio"
+                                        className="form-radio h-5 w-5 text-green-500 focus:ring-green-500 border-gray-300"
                                     />
                                     <span className="ml-2 text-sm">Female</span>
                                 </label>
@@ -424,7 +473,7 @@ const RegisterForm = () => {
                                         value="male"
                                         checked={formData.gender === "male"}
                                         onChange={handleChange}
-                                        className="form-radio"
+                                        className="form-radio h-5 w-5 text-green-500 focus:ring-green-500 border-gray-300"
                                     />
                                     <span className="ml-2 text-sm">Male</span>
                                 </label>
@@ -437,7 +486,7 @@ const RegisterForm = () => {
                                             formData.gender === "non-binary"
                                         }
                                         onChange={handleChange}
-                                        className="form-radio"
+                                        className="form-radio h-5 w-5 text-green-500 focus:ring-green-500 border-gray-300"
                                     />
                                     <span className="ml-2 text-sm">
                                         Non-Binary
@@ -445,40 +494,13 @@ const RegisterForm = () => {
                                 </label>
                             </div>
                         </label>
-                        <label className="text-sm py-6 text-gray-500">
-                            Date of Birth
-                            <div className="flex space-x-2">
-                                <input
-                                    type="number"
-                                    name="dobMonth"
-                                    placeholder="Month"
-                                    value={formData.dobMonth}
-                                    onChange={handleChange}
-                                    className="border p-2 rounded-xl w-full"
-                                />
-                                <input
-                                    type="number"
-                                    name="dobDay"
-                                    placeholder="Day"
-                                    value={formData.dobDay}
-                                    onChange={handleChange}
-                                    className="border p-2 rounded-xl w-full"
-                                />
-                                <input
-                                    type="number"
-                                    name="dobYear"
-                                    placeholder="Year"
-                                    value={formData.dobYear}
-                                    onChange={handleChange}
-                                    className="border p-2 rounded-xl w-full"
-                                />
-                            </div>
+
+                        <div className="pb-10">
+                            <Calendar onDateSelect={handleDateSelect} />
                             {errors.dob && (
-                                <p className="text-red-500 text-xs">
-                                    {errors.dob}
-                                </p>
+                                <p className="text-red-500">{errors.dob}</p>
                             )}
-                        </label>
+                        </div>
                         <div className="text-center mt-4">
                             <p className="text-sm text-gray-500">
                                 or sign up with
@@ -507,8 +529,10 @@ const RegisterForm = () => {
                 {step === 2 && (
                     <>
                         <div className="text-center mb-4">
-                            <h1 className="text-lg">Registration</h1>
-                            <h2 className="text-md font-semibold">
+                            <h1 className="text-lg text-[#666666]">
+                                Registration
+                            </h1>
+                            <h2 className="text-md font-semibold text-[#666666]">
                                 Step 2 of 3
                             </h2>
                         </div>
@@ -646,19 +670,19 @@ const RegisterForm = () => {
                 {step === 3 && (
                     <>
                         <div className="text-center mb-4">
-                            <h1 className="text-lg">Registration</h1>
-                            <h2 className="text-md font-semibold">
+                            <h1 className="text-lg text-[#666666]">
+                                Verification
+                            </h1>
+                            <h2 className="text-md font-semibold text-[#666666]">
                                 Step 3 of 3
-                                <p className="text-center py-1 text-black">
-                                    {" "}
+                                <p className="text-center py-2 text-gray-700 dark:text-gray-200 font-medium">
                                     A verification code has been sent to your
-                                    email!{" "}
+                                    <strong className="text-green-600 dark:text-green-400">
+                                        {formData.email}
+                                    </strong>
                                 </p>
                             </h2>
                             <section className="bg-white text-gray-600  dark:bg-dark">
-                                <h1 className="text-lg justify-center flex text-gray-700">
-                                    Registration
-                                </h1>
                                 <h2 className="text-md justify-center flex mt-2 mb-4 text-gray-700 mr-1">
                                     Step 3 of 3
                                 </h2>

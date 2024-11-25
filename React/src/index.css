@@ -377,3 +377,49 @@ html, body {
 .animate-marquee-right-slow {
     animation: marquee-right-slow 40s linear infinite; /* Even slower scroll speed */
 }
+
+/* Style for the checkbox */
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    appearance: none; /* Remove default checkbox styling */
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Style for the checked state */
+input[type="checkbox"]:checked {
+    background-color: #23634c; /* Tailwind's green-400 */
+    border-color: #219269; /* Green border when checked */
+    box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.5); /* Optional: subtle green glow */
+    position: relative;
+}
+
+/* Adding the tick mark inside the checkbox when checked */
+input[type="checkbox"]:checked::before {
+    content: "✔"; /* Unicode tick character */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    line-height: 16px; /* Center the tick inside the checkbox */
+}
+
+/* Style for the label */
+label {
+    font-size: 12px; /* Make the text smaller */
+    color: #000000; /* Black text color */
+}
+
+/* Style for the checkbox when focused */
+input[type="checkbox"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.3); /* Green outline when focused */
+}

@@ -87,59 +87,70 @@ const ServiceResults = () => {
     }, []);
 
     // Nurul/Owen
-    const amountSlider = () => {
-        noUiSlider.create(slider, {
-            start: [0, 1000000],
-            connect: true,
-            range: {
-                min: parseFloat(min),
-                max: parseFloat(max),
-            },
-            step: 10000,
-            margin: 600,
-            pips: {
-                stepped: true,
-                density: 6,
-            },
-        });
+   const amountSlider = () => {
+       noUiSlider.create(slider, {
+           start: [0, 1000000],
+           connect: true,
+           range: {
+               min: parseFloat(min),
+               max: parseFloat(max),
+           },
+           step: 10000,
+           margin: 600,
+           pips: {
+               stepped: true,
+               density: 6,
+           },
+       });
 
-        var skipValues = [
-            document.getElementById("price_low"),
-            document.getElementById("price_high"),
-        ];
+       var skipValues = [
+           document.getElementById("price_low"),
+           document.getElementById("price_high"),
+       ];
 
-        slider.noUiSlider.on("update", function (values, handle) {
-            skipValues[handle].innerHTML = "$" + values[handle];
+       // Define a currency format function
+       const formatCurrency = (value) => {
+           return new Intl.NumberFormat("en-US", {
+               style: "currency",
+               currency: "USD",
+           }).format(value);
+       };
 
-            // Here you can use local data or preloaded data instead of making an API request.
-            const preResults = localStorage.getItem("s_results");
-            const savedResults = JSON.parse(preResults || "[]");
+       slider.noUiSlider.on("update", function (values, handle) {
+           // Apply currency formatting
+           skipValues[handle].innerHTML = formatCurrency(
+               parseFloat(values[handle])
+           );
 
-            // Filter the saved results based on the slider values
-            const filteredResults = savedResults.filter((value) => {
-                // console.log(value);
-                if (value && value.price) {
-                    var trim_price = value.price.replace(",", "");
-                    const price = parseFloat(trim_price);
-                    return (
-                        price >= parseFloat(values[0]) &&
-                        price <= parseFloat(values[1])
-                    );
-                }
-                return false;
-            });
+           // Here you can use local data or preloaded data instead of making an API request.
+           const preResults = localStorage.getItem("s_results");
+           const savedResults = JSON.parse(preResults || "[]");
 
-            // Update the results after filtering
-            setResults(filteredResults);
-            setCurrentPage(1);
+           // Filter the saved results based on the slider values
+           const filteredResults = savedResults.filter((value) => {
+               // console.log(value);
+               if (value && value.price) {
+                   var trim_price = value.price.replace(",", "");
+                   const price = parseFloat(trim_price);
+                   return (
+                       price >= parseFloat(values[0]) &&
+                       price <= parseFloat(values[1])
+                   );
+               }
+               return false;
+           });
 
+           // Update the results after filtering
+           setResults(filteredResults);
+           setCurrentPage(1);
 
-            // Optional: Process the filtered data, e.g., encode IDs
-            filteredResults.forEach((item) => {
-                item.id = btoa(item.id); // Encode the item ID
-            });
-        });
-    };
+           // Optional: Process the filtered data, e.g., encode IDs
+           filteredResults.forEach((item) => {
+               item.id = btoa(item.id); // Encode the item ID
+           });
+       });
+   };
+
 
     const search = () => {
         // let filteredResults = dummyResults;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import logo2 from "../../images/logo2.png";
 import { useStateContext } from "../../contexts/contextProvider";
@@ -14,12 +14,13 @@ function CreateInvestorAccount({ isOpen, onClose }) {
     const [loading, setLoading] = useState(false); // Loading state
     const [errors, setErrors] = useState({}); // Error state
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
+    const [rememberMe, setRememberMe] = useState(false); // State for "Remember Me" checkbox
 
     const [loginData, setLoginData] = useState({
         email: "",
         password: "",
     });
-
+   
     const [registrationData, setRegistrationData] = useState({
         fname: "",
         mname: "",
@@ -43,6 +44,10 @@ function CreateInvestorAccount({ isOpen, onClose }) {
         invRangeOpen: false,
         industriesOpen: false,
     });
+    const [step, setStep] = useState(1);
+
+    const handleNext = () => setStep(step + 1);
+    const handleBack = () => setStep(step - 1);
 
     if (!isOpen) return null;
 
@@ -276,7 +281,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
             <div
                 className={`bg-white p-6 shadow-lg ${
                     isSignIn ? "max-w-md min-h-[500px]" : "max-w-2xl"
-                } w-full h-[550px] no-scrollbar overflow-y-auto relative rounded-xl`}
+                } w-full h-auto no-scrollbar overflow-y-auto relative rounded-xl`}
             >
                 <button
                     onClick={onClose}
@@ -373,6 +378,24 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                     </p>
                                 )}
                             </div>
+                            <>
+                                <div class="flex items-center space-x-2">
+                                    <input
+                                        type="checkbox"
+                                        id="rememberMe"
+                                        checked={rememberMe}
+                                        onChange={() =>
+                                            setRememberMe(!rememberMe)
+                                        }
+                                    />
+                                    <label
+                                        htmlFor="rememberMe"
+                                        class="text-sm text-gray-700"
+                                    >
+                                        Remember me
+                                    </label>
+                                </div>
+                            </>
 
                             <a
                                 href="#"
@@ -414,346 +437,402 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                         </h2>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="relative">
-                                <label className="block text-gray-700 text-sm">
-                                    First Name{" "}
-                                    <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    type="text"
-                                    name="fname"
-                                    value={registrationData.fname}
-                                    onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black"
-                                    required
-                                />
-                            </div>
-
-                            <div className="relative">
-                                <label className="block text-gray-700 text-sm">
-                                    Middle Name
-                                </label>
-                                <input
-                                    type="text"
-                                    name="mname"
-                                    value={registrationData.mname}
-                                    onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black"
-                                />
-                            </div>
-
-                            <div className="relative">
-                                <label className="block text-gray-700 text-sm">
-                                    Last Name{" "}
-                                    <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    type="text"
-                                    name="lname"
-                                    value={registrationData.lname}
-                                    onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black"
-                                    required
-                                />
-                            </div>
-
-                            <div className="relative">
-                                <label className="block text-gray-700 text-sm">
-                                    Email{" "}
-                                    <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={registrationData.email}
-                                    onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black"
-                                    required
-                                />
-                            </div>
-
-                            <div className="relative flex flex-col space-y-1">
-                                <label className="block text-gray-700 text-sm font-medium">
-                                    Password{" "}
-                                    <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    type={showPassword ? "text" : "password"}
-                                    name="password"
-                                    value={registrationData.password}
-                                    onChange={handleRegistrationChange}
-                                    className="border border-gray-300 rounded-lg px-3 py-2 w-full text-sm text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-10"
-                                    required
-                                />
-                                <button
-                                    type="button"
-                                    onClick={togglePasswordVisibility}
-                                    className="absolute right-3 top-8 text-gray-500 text-sm hover:text-primary transition-colors duration-200 ease-in-out"
-                                >
-                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                                </button>
-                            </div>
-
-                            <div className="relative flex flex-col space-y-1">
-                                <label className="block text-gray-700 text-sm font-medium">
-                                    Confirm Password{" "}
-                                    <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    type={
-                                        showConfirmPassword
-                                            ? "text"
-                                            : "password"
-                                    }
-                                    name="confirmPassword"
-                                    value={registrationData.confirmPassword}
-                                    onChange={handleRegistrationChange}
-                                    className="border border-gray-300 rounded-lg px-3 py-2 w-full text-sm text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-10"
-                                    required
-                                />
-                                <button
-                                    type="button"
-                                    onClick={toggleConfirmPasswordVisibility}
-                                    className="absolute right-3 top-8 text-gray-500 text-sm hover:text-primary transition-colors duration-200 ease-in-out"
-                                >
-                                    {showConfirmPassword ? (
-                                        <FaEyeSlash />
-                                    ) : (
-                                        <FaEye />
-                                    )}
-                                </button>
-                            </div>
-
-                            <div className="relative">
-                                <label className="block text-gray-700 text-sm">
-                                    ID/Passport Number{" "}
-                                    <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    type="text"
-                                    name="id_no"
-                                    value={registrationData.id_no}
-                                    onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black"
-                                    required
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-gray-700 text-sm  mb-1">
-                                    Tax PIN
-                                    <span className="text-red-500 px-1">*</span>
-                                </label>
-
-                                <input
-                                    type="text"
-                                    name="tax_pin"
-                                    value={registrationData.tax_pin}
-                                    onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-gray-700 text-sm mb-1">
-                                    Attach ID/Passport{" "}
-                                    <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    type="file"
-                                    name="id_passport"
-                                    onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black file:border-none file:bg-blue-100 file:text-blue-700 file:rounded-lg focus:ring-2 focus:ring-blue-500"
-                                    required
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-gray-700 text-sm mb-1">
-                                    PIN <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    type="file"
-                                    name="pin"
-                                    onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black file:border-none file:bg-blue-100 file:text-blue-700 file:rounded-lg focus:ring-2 focus:ring-blue-500"
-                                    required
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-gray-700 text-sm mb-1">
-                                    Past Investment
-                                </label>
-                                <input
-                                    type="text"
-                                    name="past_investment"
-                                    value={registrationData.past_investment}
-                                    onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-gray-700 text-sm mb-1">
-                                    Website
-                                </label>
-                                <input
-                                    type="url"
-                                    name="website"
-                                    value={registrationData.website}
-                                    onChange={handleRegistrationChange}
-                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
-
-                            <div className="relative">
-                                <label className="block text-gray-700 text-sm mb-1">
-                                    Potential Investment Range
-                                </label>
-                                <div
-                                    className="border rounded-lg px-3 py-2 text-sm cursor-pointer text-black focus:ring-2 focus:ring-blue-500"
-                                    onClick={() =>
-                                        handleDropdownToggle("invRangeOpen")
-                                    }
-                                >
-                                    {registrationData.inv_range.length > 0
-                                        ? registrationData.inv_range.join(", ")
-                                        : "Select ranges"}
-                                </div>
-                                {dropdowns.invRangeOpen && (
-                                    <div className="absolute bg-white border rounded-lg text-black mt-2 w-full shadow-lg z-10 max-h-60 overflow-y-auto">
-                                        {[
-                                            "0-10000",
-                                            "0-100000",
-                                            "10000-100000",
-                                            "100000-250000",
-                                            "250000-500000",
-                                            "500000-",
-                                        ].map((range) => (
-                                            <label
-                                                key={range}
-                                                className="block p-2 cursor-pointer hover:bg-blue-50"
-                                            >
-                                                <input
-                                                    type="checkbox"
-                                                    name={range}
-                                                    checked={registrationData.inv_range.includes(
-                                                        range
-                                                    )}
-                                                    onChange={(e) =>
-                                                        handleCheckboxChange(
-                                                            e,
-                                                            "inv_range"
-                                                        )
-                                                    }
-                                                    className="mr-2"
-                                                />
-                                                {range}
-                                            </label>
-                                        ))}
+                            {step === 1 && (
+                                <>
+                                    {" "}
+                                    <div className="relative">
+                                        <label className="block text-gray-700 text-sm">
+                                            First Name{" "}
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="fname"
+                                            value={registrationData.fname}
+                                            onChange={handleRegistrationChange}
+                                            className="border rounded-lg px-3 py-2 w-full text-sm text-black"
+                                            required
+                                        />
                                     </div>
-                                )}
-                            </div>
-
-                            <div className="relative">
-                                <label className="block text-gray-700 text-sm mb-1">
-                                    Which industries are you interested in
-                                    investing?
-                                </label>
-                                <div
-                                    className="border rounded-lg px-3 py-2 text-sm cursor-pointer focus:ring-2 text-black focus:ring-blue-500"
-                                    onClick={() =>
-                                        handleDropdownToggle("industriesOpen")
-                                    }
-                                >
-                                    {registrationData.interested_cats.length > 0
-                                        ? registrationData.interested_cats.join(
-                                              ", "
-                                          )
-                                        : "Select industries"}
-                                </div>
-                                {dropdowns.industriesOpen && (
-                                    <div className="absolute bg-white border text-black rounded-lg mt-2 w-full shadow-lg z-10 max-h-48 overflow-y-auto">
-                                        {[
-                                            "Agriculture",
-                                            "Arts/Culture",
-                                            "Sports/Gaming",
-                                            "Auto",
-                                            "Real State",
-                                            "Food",
-                                            "Legal",
-                                            "Security",
-                                            "Media/Internet",
-                                            "Technology/Communications",
-                                            "Retail",
-                                            "Finance/Accounting",
-                                            "Pets",
-                                            "Domestic (Home Help etc)",
-                                        ].map((industry) => (
-                                            <label
-                                                key={industry}
-                                                className="block p-2 cursor-pointer hover:bg-blue-50"
-                                            >
-                                                <input
-                                                    type="checkbox"
-                                                    name={industry}
-                                                    checked={registrationData.interested_cats.includes(
-                                                        industry
-                                                    )}
-                                                    onChange={(e) =>
-                                                        handleCheckboxChange(
-                                                            e,
-                                                            "interested_cats"
-                                                        )
-                                                    }
-                                                    className="mr-2"
-                                                />
-                                                {industry}
-                                            </label>
-                                        ))}
+                                    <div className="relative">
+                                        <label className="block text-gray-700 text-sm">
+                                            Middle Name
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="mname"
+                                            value={registrationData.mname}
+                                            onChange={handleRegistrationChange}
+                                            className="border rounded-lg px-3 py-2 w-full text-sm text-black"
+                                        />
                                     </div>
-                                )}
-                            </div>
+                                    <div className="relative">
+                                        <label className="block text-gray-700 text-sm">
+                                            Last Name{" "}
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="lname"
+                                            value={registrationData.lname}
+                                            onChange={handleRegistrationChange}
+                                            className="border rounded-lg px-3 py-2 w-full text-sm text-black"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="relative">
+                                        <label className="block text-gray-700 text-sm">
+                                            Email{" "}
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
+                                        </label>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            value={registrationData.email}
+                                            onChange={handleRegistrationChange}
+                                            className="border rounded-lg px-3 py-2 w-full text-sm text-black"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="relative flex flex-col space-y-1">
+                                        <label className="block text-gray-700 text-sm font-medium">
+                                            Password{" "}
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
+                                        </label>
+                                        <input
+                                            type={
+                                                showPassword
+                                                    ? "text"
+                                                    : "password"
+                                            }
+                                            name="password"
+                                            value={registrationData.password}
+                                            onChange={handleRegistrationChange}
+                                            className="border border-gray-300 rounded-lg px-3 py-2 w-full text-sm text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-10"
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={togglePasswordVisibility}
+                                            className="absolute right-3 top-8 text-gray-500 text-sm hover:text-primary transition-colors duration-200 ease-in-out"
+                                        >
+                                            {showPassword ? (
+                                                <FaEyeSlash />
+                                            ) : (
+                                                <FaEye />
+                                            )}
+                                        </button>
+                                    </div>
+                                    <div className="relative flex flex-col space-y-1">
+                                        <label className="block text-gray-700 text-sm font-medium">
+                                            Confirm Password{" "}
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
+                                        </label>
+                                        <input
+                                            type={
+                                                showConfirmPassword
+                                                    ? "text"
+                                                    : "password"
+                                            }
+                                            name="confirmPassword"
+                                            value={
+                                                registrationData.confirmPassword
+                                            }
+                                            onChange={handleRegistrationChange}
+                                            className="border border-gray-300 rounded-lg px-3 py-2 w-full text-sm text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-10"
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={
+                                                toggleConfirmPasswordVisibility
+                                            }
+                                            className="absolute right-3 top-8 text-gray-500 text-sm hover:text-primary transition-colors duration-200 ease-in-out"
+                                        >
+                                            {showConfirmPassword ? (
+                                                <FaEyeSlash />
+                                            ) : (
+                                                <FaEye />
+                                            )}
+                                        </button>
+                                    </div>
+                                </>
+                            )}
 
-                            <div className="flex items-center space-x-2 mt-4">
-                                <input
-                                    type="checkbox"
-                                    name="terms"
-                                    checked={registrationData.terms}
-                                    onChange={handleRegistrationChange}
-                                    className="mr-2"
-                                />
-                                <label className="text-gray-700 text-sm">
-                                    I have read and agree to the{" "}
-                                    <a
-                                        href="#"
-                                        className="text-blue-500 hover:underline"
-                                    >
-                                        Terms of Use
-                                    </a>{" "}
-                                    and{" "}
-                                    <a
-                                        href="#"
-                                        className="text-blue-500 hover:underline"
-                                    >
-                                        Privacy Policy
-                                    </a>
-                                </label>
-                            </div>
+                            {step === 2 && (
+                                <>
+                                    {" "}
+                                    <div className="relative">
+                                        <label className="block text-gray-700 text-sm">
+                                            ID/Passport Number{" "}
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="id_no"
+                                            value={registrationData.id_no}
+                                            onChange={handleRegistrationChange}
+                                            className="border rounded-lg px-3 py-2 w-full text-sm text-black"
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-700 text-sm  mb-1">
+                                            Tax PIN
+                                            <span className="text-red-500 px-1">
+                                                *
+                                            </span>
+                                        </label>
 
-                            <button
-                                type="submit"
-                                className="btn btn-primary rounded-full mt-4 flex items-center justify-center"
-                                disabled={loading}
-                            >
-                                {loading ? (
-                                    <AiOutlineLoading3Quarters className="animate-spin mr-2" />
-                                ) : (
-                                    "Create Account"
-                                )}
-                            </button>
+                                        <input
+                                            type="text"
+                                            name="tax_pin"
+                                            value={registrationData.tax_pin}
+                                            onChange={handleRegistrationChange}
+                                            className="border rounded-lg px-3 py-2 w-full text-sm text-black focus:ring-2 focus:ring-blue-500"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-700 text-sm mb-1">
+                                            Attach ID/Passport{" "}
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
+                                        </label>
+                                        <input
+                                            type="file"
+                                            name="id_passport"
+                                            onChange={handleRegistrationChange}
+                                            className="border rounded-lg px-3 py-2 w-full text-sm text-black file:border-none file:bg-blue-100 file:text-blue-700 file:rounded-lg focus:ring-2 focus:ring-blue-500"
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-700 text-sm mb-1">
+                                            PIN{" "}
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
+                                        </label>
+                                        <input
+                                            type="file"
+                                            name="pin"
+                                            onChange={handleRegistrationChange}
+                                            className="border rounded-lg px-3 py-2 w-full text-sm text-black file:border-none file:bg-blue-100 file:text-blue-700 file:rounded-lg focus:ring-2 focus:ring-blue-500"
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-700 text-sm mb-1">
+                                            Past Investment
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="past_investment"
+                                            value={
+                                                registrationData.past_investment
+                                            }
+                                            onChange={handleRegistrationChange}
+                                            className="border rounded-lg px-3 py-2 w-full text-sm text-black focus:ring-2 focus:ring-blue-500"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-700 text-sm mb-1">
+                                            Website
+                                        </label>
+                                        <input
+                                            type="url"
+                                            name="website"
+                                            value={registrationData.website}
+                                            onChange={handleRegistrationChange}
+                                            className="border rounded-lg px-3 py-2 w-full text-sm text-black focus:ring-2 focus:ring-blue-500"
+                                        />
+                                    </div>
+                                    <div className="relative">
+                                        <label className="block text-gray-700 text-sm mb-1">
+                                            Potential Investment Range
+                                        </label>
+                                        <div
+                                            className="border rounded-lg px-3 py-2 text-sm cursor-pointer text-black focus:ring-2 focus:ring-blue-500"
+                                            onClick={() =>
+                                                handleDropdownToggle(
+                                                    "invRangeOpen"
+                                                )
+                                            }
+                                        >
+                                            {registrationData.inv_range.length >
+                                            0
+                                                ? registrationData.inv_range.join(
+                                                      ", "
+                                                  )
+                                                : "Select ranges"}
+                                        </div>
+                                        {dropdowns.invRangeOpen && (
+                                            <div className="absolute bg-white border rounded-lg text-black mt-2 w-full shadow-lg z-10 max-h-60 overflow-y-auto">
+                                                {[
+                                                    "0-10000",
+                                                    "0-100000",
+                                                    "10000-100000",
+                                                    "100000-250000",
+                                                    "250000-500000",
+                                                    "500000-",
+                                                ].map((range) => (
+                                                    <label
+                                                        key={range}
+                                                        className="block p-2 cursor-pointer hover:bg-blue-50"
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            name={range}
+                                                            checked={registrationData.inv_range.includes(
+                                                                range
+                                                            )}
+                                                            onChange={(e) =>
+                                                                handleCheckboxChange(
+                                                                    e,
+                                                                    "inv_range"
+                                                                )
+                                                            }
+                                                            className="mr-2"
+                                                        />
+                                                        {range}
+                                                    </label>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="relative">
+                                        <label className="block text-gray-700 text-sm mb-1">
+                                            Which industries are you interested
+                                            in investing?
+                                        </label>
+                                        <div
+                                            className="border rounded-lg px-3 py-2 text-sm cursor-pointer focus:ring-2 text-black focus:ring-blue-500"
+                                            onClick={() =>
+                                                handleDropdownToggle(
+                                                    "industriesOpen"
+                                                )
+                                            }
+                                        >
+                                            {registrationData.interested_cats
+                                                .length > 0
+                                                ? registrationData.interested_cats.join(
+                                                      ", "
+                                                  )
+                                                : "Select industries"}
+                                        </div>
+                                        {dropdowns.industriesOpen && (
+                                            <div className="absolute bg-white border text-black rounded-lg mt-2 w-full shadow-lg z-10 max-h-48 overflow-y-auto">
+                                                {[
+                                                    "Agriculture",
+                                                    "Arts/Culture",
+                                                    "Sports/Gaming",
+                                                    "Auto",
+                                                    "Real State",
+                                                    "Food",
+                                                    "Legal",
+                                                    "Security",
+                                                    "Media/Internet",
+                                                    "Technology/Communications",
+                                                    "Retail",
+                                                    "Finance/Accounting",
+                                                    "Pets",
+                                                    "Domestic (Home Help etc)",
+                                                ].map((industry) => (
+                                                    <label
+                                                        key={industry}
+                                                        className="block p-2 cursor-pointer hover:bg-blue-50"
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            name={industry}
+                                                            checked={registrationData.interested_cats.includes(
+                                                                industry
+                                                            )}
+                                                            onChange={(e) =>
+                                                                handleCheckboxChange(
+                                                                    e,
+                                                                    "interested_cats"
+                                                                )
+                                                            }
+                                                            className="mr-2"
+                                                        />
+                                                        {industry}
+                                                    </label>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="flex items-center space-x-2 mt-4">
+                                        <input
+                                            type="checkbox"
+                                            name="terms"
+                                            checked={registrationData.terms}
+                                            onChange={handleRegistrationChange}
+                                            className="mr-2"
+                                        />
+                                        <label className="text-gray-700 text-sm">
+                                            I have read and agree to the{" "}
+                                            <a
+                                                href="#"
+                                                className="text-blue-500 hover:underline"
+                                            >
+                                                Terms of Use
+                                            </a>{" "}
+                                            and{" "}
+                                            <a
+                                                href="#"
+                                                className="text-blue-500 hover:underline"
+                                            >
+                                                Privacy Policy
+                                            </a>
+                                        </label>
+                                    </div>
+                                     <button
+                                        type="submit"
+                                        className="btn btn-primary rounded-full mt-4 flex items-center justify-center"
+                                        disabled={loading}
+                                    >
+                                        {loading ? (
+                                            <AiOutlineLoading3Quarters className="animate-spin mr-2" />
+                                        ) : (
+                                            "Create Account"
+                                        )}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={handleBack}
+                                        className="btn bg-gray-500 hover:bg-gray-600 rounded-full mt-4 flex items-center justify-center"
+                                    >
+                                        Back
+                                    </button>
+                                   
+                                </>
+                            )}
                         </div>
+                        {step < 2 && (
+                            <div className="flex ml-80">
+                                <button
+                                    type="button"
+                                    onClick={handleNext}
+                                    className="btn btn-primary px-20 rounded-full flex items-center justify-center"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        )}
                     </form>
                 )}
             </div>
