@@ -7,7 +7,7 @@ import { useStateContext } from "../../contexts/contextProvider"; // Ensure this
 
 const Modal = ({ isOpen, onClose }) => {
     const [isLogin, setIsLogin] = useState(true);
-    const { user, token, setUser, setToken } = useStateContext(); // Use context for token
+    const { token } = useStateContext(); // Use context for token
     const [isRegistrationComplete, setRegistrationComplete] = useState(false);
 
     useEffect(() => {
@@ -16,21 +16,35 @@ const Modal = ({ isOpen, onClose }) => {
         }
     }, [token, isRegistrationComplete, onClose]);
 
-    // if (!isOpen) return null; // Prevent rendering if modal is closed or token exists
-    if (!isOpen || token) return null; // Prevent rendering if modal is closed or token exists
-
-    const handleOverlayClick = (e) => {
-        if (e.target === e.currentTarget) {
-            onClose();
+    useEffect(() => {
+        // Prevent body scroll when modal is open
+        if (isOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto";
         }
-    };
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [isOpen]);
+
+    if (!isOpen || token) return null; // Prevent rendering if modal is closed or token exists
 
     return (
         <div
-            className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-50"
-            // onClick={handleOverlayClick}
+            className="fixed inset-0 bg-gray-600 bg-opacity-75 flex justify-center items-start z-50 overflow-y-auto"
+            style={{
+                minHeight: "100vh", // Ensure overlay takes full viewport height
+            }}
         >
-            <div className="bg-white rounded-xl p-4 sm:p-6 h-auto no-scrollbar overflow-y-auto relative w-[95vw] max-w-[500px] sm:w-[85vw] sm:max-w-[450px] lg:w-[70vw] lg:max-w-[500px] mx-auto mt-4 sm:mt-6">
+            <div
+                className={`bg-white rounded-xl m-3 p-4 sm:p-6 relative w-[95vw] max-w-[500px] sm:w-[85vw] sm:max-w-[450px] lg:w-[70vw] lg:max-w-[500px] mx-auto mt-3 sm:mt-20 ${
+                    isLogin ? "max-h-[calc(100vh-270px)]" : "none"
+                }`}
+                style={{
+                    maxHeight: isLogin ? "calc(100vh - 30px)" : "none", // Adjust separately for LoginForm and RegisterForm
+                }}
+            >
                 <div className="flex justify-center py-4">
                     <img
                         src={logo2}
@@ -40,7 +54,7 @@ const Modal = ({ isOpen, onClose }) => {
                 </div>
                 <hr className="py-2" />
                 <button
-                    className="absolute top-3 right-5 text-gray-700 text-3xl   hover:text-gray-900"
+                    className="absolute top-3 right-5 text-gray-700 text-3xl hover:text-gray-900"
                     onClick={onClose}
                 >
                     &times;
@@ -63,8 +77,23 @@ const Modal = ({ isOpen, onClose }) => {
                         Register
                     </button>
                 </div>
-
-                {isLogin ? <LoginForm /> : <RegisterForm />}
+                <div>
+                    {/* Render LoginForm or RegisterForm based on isLogin */}
+                    {isLogin ? (
+                        <div
+                            className=""
+                            style={{
+                                maxHeight: "calc(100vh - 40px)", // Limit height for LoginForm
+                            }}
+                        >
+                            <LoginForm />
+                        </div>
+                    ) : (
+                        <div>
+                            <RegisterForm />
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
@@ -73,7 +102,6 @@ const Modal = ({ isOpen, onClose }) => {
 Modal.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    token: PropTypes.string, // Adding token as a prop
 };
 
 export default Modal;

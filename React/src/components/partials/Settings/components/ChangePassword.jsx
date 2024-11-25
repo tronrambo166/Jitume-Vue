@@ -1,7 +1,7 @@
 import React from "react";
 
 const ChangePassword = () => (
-    <div className=" p-8  rounded-lg  border">
+    <div className=" p-8  rounded-lg  ">
         <h3 className="text-xl font-semibold mb-4">Change Password</h3>
         <div className="space-y-4">
             <div>

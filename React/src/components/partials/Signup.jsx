@@ -397,7 +397,7 @@ const RegisterForm = () => {
     };
 
     return (
-        <div className="h-[400px]">
+        <div className="h-[530px] ">
             <form className="flex flex-col px-4 py-2 " onSubmit={handleSubmit}>
                 {step === 1 && (
                     <div>
@@ -495,17 +495,17 @@ const RegisterForm = () => {
                             </div>
                         </label>
 
-                        <div className="pb-10">
+                        <div className="pb-3">
                             <Calendar onDateSelect={handleDateSelect} />
                             {errors.dob && (
                                 <p className="text-red-500">{errors.dob}</p>
                             )}
                         </div>
-                        <div className="text-center mt-4">
-                            <p className="text-sm text-gray-500">
+                        <div className="text-center  ">
+                            <p className="text-sm py-1  text-gray-500">
                                 or sign up with
                             </p>
-                            <div className="flex justify-center mt-2 gap-4">
+                            <div className="flex justify-center mb-2 gap-4">
                                 <button
                                     onClick={facebook}
                                     type="button"
@@ -739,7 +739,7 @@ const RegisterForm = () => {
                         <button
                             type="button"
                             onClick={handleNextStep}
-                            className={`bg-green mb-8 hover:bg-green-700 w-full text-white px-4 py-2 rounded-full flex items-center justify-center mt-5 ${
+                            className={`bg-green  hover:bg-green-700 w-full text-white px-4 py-2 rounded-full flex items-center justify-center  ${
                                 isLoading ? "cursor-not-allowed" : ""
                             }`}
                             disabled={isLoading}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaCross, FaEye, FaEyeSlash, FaTimes, FaWindowClose } from "react-icons/fa";
 import logo2 from "../../images/logo2.png";
 import { useStateContext } from "../../contexts/contextProvider";
 import axiosClient from "../../axiosClient";
@@ -277,20 +277,21 @@ function CreateInvestorAccount({ isOpen, onClose }) {
     };
 
     return (
-        <div className="fixed inset-0 bg-blue-900 bg-opacity-25 flex justify-center items-center z-50">
-            <div
-                className={`bg-white p-6 shadow-lg ${
-                    isSignIn ? "max-w-md min-h-[500px]" : "max-w-2xl"
-                } w-full h-auto no-scrollbar overflow-y-auto relative rounded-xl`}
-            >
+        <div className="fixed inset-0 py-[160px]  px-[30px] bg-blue-900 bg-opacity-25 flex justify-center items-center z-80 overflow-y-auto">
+        <div
+          className={`bg-white mt-6 pb-[40px] pt-[30px] px-6 rounded-lg shadow-lg ${
+            isSignIn ? "max-w-xl  m-6 min-h-[400px] rounded-lg" : "max-w-2xl"
+          } w-full h-[700px] py-6 no-scrollbar relative`}
+        >
+                
+
+                <div className="flex justify-center py-4">
                 <button
                     onClick={onClose}
-                    className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 text-3xl bg-white border-none p-1 px-4 rounded-full"
+                    className="absolute  top-[60px] left-4 text-gray-600 hover:text-gray-800 text-3xl bg-white border-none p-1 px-4 rounded-full"
                 >
-                    &times;
+                   <FaTimes/>
                 </button>
-
-                <div className="flex justify-center my-4">
                     <img
                         src={logo2}
                         alt="Logo"
@@ -428,15 +429,23 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                         </div>
                     </form>
                 ) : (
+                    
                     <form
                         onSubmit={handleRegistrationSubmit}
-                        className="flex flex-col items-center space-y-4"
+                        className="flex bg-white flex-col items-center space-y-4"
                     >
-                        <h2 className="text-2xl font-semibold text-gray-800">
+
+                        <div className="text-center">
+
+                            <h2 className="text-2xl font-semibold text-gray-800">
                             Create Account
                         </h2>
+                        </div>
+                                                <h3 className="text-black left">Page 1/3</h3>
+
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            
                             {step === 1 && (
                                 <>
                                     {" "}
@@ -775,7 +784,8 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                             </div>
                                         )}
                                     </div>
-                                    <div className="flex items-center space-x-2 mt-4">
+                                    <div className="flex flex-col items-center space-x-2 mt-4">
+                                        <div className=" flex items-center">
                                         <input
                                             type="checkbox"
                                             name="terms"
@@ -783,26 +793,29 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                             onChange={handleRegistrationChange}
                                             className="mr-2"
                                         />
-                                        <label className="text-gray-700 text-sm">
-                                            I have read and agree to the{" "}
-                                            <a
-                                                href="#"
-                                                className="text-blue-500 hover:underline"
-                                            >
-                                                Terms of Use
-                                            </a>{" "}
-                                            and{" "}
-                                            <a
-                                                href="#"
-                                                className="text-blue-500 hover:underline"
-                                            >
-                                                Privacy Policy
-                                            </a>
-                                        </label>
-                                    </div>
-                                     <button
+                                        <label className="text-gray-700 text-sm inline">
+  I have read and agree to the{" "}
+  <a href="#" className="text-blue-500 hover:underline">
+    Terms of Use
+  </a>{" "}
+  and{" "}
+  <a href="#" className="text-blue-500 hover:underline">
+    Privacy Policy
+  </a>
+</label>
+
+                                        </div>
+                                        <div className="flex w-full items-center  gap-4 flex-row">
+                                        <button
+                                        type="button"
+                                        onClick={handleBack}
+                                        className="btn bg-gray-500 hover:bg-gray-600 rounded-lg mt-4 flex items-center justify-center"
+                                    >
+                                        Back
+                                    </button>
+                                    <button
                                         type="submit"
-                                        className="btn btn-primary rounded-full mt-4 flex items-center justify-center"
+                                        className="btn btn-primary rounded-lg mt-4 flex items-center justify-center"
                                         disabled={loading}
                                     >
                                         {loading ? (
@@ -811,13 +824,10 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                             "Create Account"
                                         )}
                                     </button>
-                                    <button
-                                        type="button"
-                                        onClick={handleBack}
-                                        className="btn bg-gray-500 hover:bg-gray-600 rounded-full mt-4 flex items-center justify-center"
-                                    >
-                                        Back
-                                    </button>
+                                   
+                                    </div>
+                                    </div>
+                                   
                                    
                                 </>
                             )}

@@ -114,10 +114,11 @@ const LoginForm = () => {
 
     return (
         <>
-            <form
-                className="flex flex-col px-6 space-y-4"
-                onSubmit={handleSubmit}
-            >
+           <form
+    className="flex flex-col px-4 sm:px-6 space-y-3 "
+    style={{ maxHeight: "calc(100vh - 150px)" }}
+    onSubmit={handleSubmit}
+>
                 <div className="text-center pt-1">
                     <h1 className="font-semibold text-gray-700 text-md">
                         Sign In

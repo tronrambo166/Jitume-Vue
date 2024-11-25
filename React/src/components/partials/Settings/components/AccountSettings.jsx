@@ -14,11 +14,11 @@ const AccountSettings = () => {
                     <h1 className="text-2xl font-bold text-gray-800 mb-4">
                         Account Settings
                     </h1>
-                    <div className="bg-white px-6 py-4 rounded-lg shadow-sm">
-                        <div className="flex flex-wrap space-x-4 sm:space-x-6 md:space-x-10 border-b-2 pb-4">
+                    <div className="bg-white px-6 py-4 rounded-lg ">
+                        <div className="flex flex-wrap space-x-4 sm:space-x-6 md:space-x-10  pb-4">
                             {/* Change Password Tab */}
                             <div
-                                className={`cursor-pointer py-2 px-4 rounded-t-lg transition-all duration-300 ease-in-out w-full sm:w-auto ${
+                                className={`cursor-pointer py-2  px-4 rounded-t-lg transition-all duration-300 ease-in-out w-full sm:w-auto ${
                                     activeTab === "changePassword"
                                         ? "text-green-600 font-semibold border-b-2 border-green-600"
                                         : "text-gray-600 hover:text-green-600"

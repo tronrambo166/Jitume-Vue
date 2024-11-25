@@ -13,7 +13,7 @@ const Settings = () => {
                     <h1 className="text-2xl font-bold text-gray-800 mb-4">
                         Settings
                     </h1>
-                    <div className="bg-white px-6 py-4 rounded-lg shadow-sm">
+                    <div className="bg-white px-6 py-4 rounded-lg ">
                         <div className="flex space-x-10 border-b-2 pb-4">
                             {/* Personal Info Tab */}
                             <div
