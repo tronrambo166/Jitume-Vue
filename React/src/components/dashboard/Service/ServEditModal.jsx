@@ -75,6 +75,7 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
 
     const handleSave = async () => {
         try {
+            console.log(formData);
             const response = await axiosClient.post(
                 "business/up_service",
                 formData
@@ -194,7 +195,7 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
                             )}
                         </div>
                     </div>
-                    <div>
+                    {/*<div>
                         <label className="block text-gray-700">Location</label>
                         <input
                             type="text"
@@ -204,11 +205,11 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
                             placeholder="Enter new location"
                             className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
-                    </div>
+                    </div>*/}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div>
+                    {/*<div>
                         <label className="block text-gray-700">Latitude</label>
                         <input
                             type="text"
@@ -218,8 +219,8 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
                             placeholder="Enter latitude"
                             className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
-                    </div>
-                    <div>
+                    </div>*/}
+                    {/*<div>
                         <label className="block text-gray-700">Longitude</label>
                         <input
                             type="text"
@@ -229,7 +230,7 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
                             placeholder="Enter longitude"
                             className="w-full px-3 py-2 border border-gray-300 rounded"
                         />
-                    </div>
+                    </div>*/}
                 </div>
 
                 <div className="mb-4">

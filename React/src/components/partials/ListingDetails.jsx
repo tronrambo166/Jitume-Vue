@@ -399,7 +399,7 @@ const ListingDetails = ({ onClose }) => {
                 .get(url + form.listing_id)
                 .then(({ data }) => {
                     setAllow(data.allowToReview);
-                    setAmount_r(data.amount_required);
+                    //setAmount_r(data.amount_required);
                     setRunning(data.running);
                     //console.log(data)
                 })
@@ -674,7 +674,7 @@ const ListingDetails = ({ onClose }) => {
 
                         <div className="flex items-center pb-3 gap-1">
                             <p className="text-green-800 text-2xl md:text-lg font-semibold">
-                                ${amount_r || 0}
+                                ${details.investment_needed || 0}
                             </p>
                             <p className="text-gray-800 text-sm">
                                 Amount Requested:

@@ -408,13 +408,15 @@ $old_document = $current->document;
             return redirect()->back();
           }
           $create_name=$uniqid.'.'.$ext;
-          $loc='images/listing/';
+          $loc='../React/images/listing/';
           //Move uploaded file
           $image->move($loc, $create_name);
           $final_img=$loc.$create_name;
           $data['image'] = $final_img;
           if($old_cover!=null) unlink($old_cover);
              }
+
+             return $final_img;
 
  $pin=$request->file('pin');
  if($pin) {

@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import { useStateContext } from "../../contexts/contextProvider";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
 import ServiceSearch from "../partials/ServiceSearch";
+import Search from '../pages/components/Search';
 import CardsPagination from "./CardsPagination";
 import BackBtn from "./BackBtn";
 const ServiceResults = () => {
@@ -303,7 +304,8 @@ const ServiceResults = () => {
                 What Are You Looking For?
             </h1> */}
                 <div className="mt-6 sm:mt-8 md:mt-10 lg:mt-12 xl:mt-16">
-                    <ServiceSearch />
+                    <Search />
+                    {/*<ServiceSearch />*/}
                 </div>
 
                 {/* <div className="flex mb-6 flex-col md:flex-row gap-4 justify-center pt-8 px-2 sm:px-6 md:px-4 items-center w-full max-w-3xl mx-auto">

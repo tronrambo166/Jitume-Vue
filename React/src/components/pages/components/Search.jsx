@@ -5,8 +5,10 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import axiosClient from "../../../axiosClient";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
+import { Link, useLocation } from "react-router-dom";
 
 const Search = () => {
+    const locationUrl = useLocation();
     const [location, setLocation] = useState("");
     const [suggestions, setSuggestions] = useState([]);
 
@@ -47,6 +49,8 @@ const Search = () => {
                 navigate(
                     "/serviceResults/" + base64_encode(ids) + "/" + data.loc
                 );
+                if (locationUrl.pathname.includes("serviceResults"))
+                    window.location.reload();
             })
             .catch((err) => {
                 console.log(err);

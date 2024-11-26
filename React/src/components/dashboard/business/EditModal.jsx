@@ -296,7 +296,7 @@ const EditModal = ({
                         </div>
 
                         {/* Location */}
-                        <div className="mb-4">
+                        {/*<div className="mb-4">
                             <label
                                 className="block text-sm font-medium mb-1"
                                 htmlFor="location"
@@ -311,10 +311,10 @@ const EditModal = ({
                                 onChange={handleChange}
                                 className="w-full px-3 py-2 border rounded"
                             />
-                        </div>
+                        </div>*/}
 
                         {/* Latitude */}
-                        <div className="mb-4">
+                        {/*<div className="mb-4">
                             <label
                                 className="block text-sm font-medium mb-1"
                                 htmlFor="lat"
@@ -329,10 +329,10 @@ const EditModal = ({
                                 onChange={handleChange}
                                 className="w-full px-3 py-2 border rounded"
                             />
-                        </div>
+                        </div>*/}
 
                         {/* Longitude */}
-                        <div className="mb-4">
+                        {/*<div className="mb-4">
                             <label
                                 className="block text-sm font-medium mb-1"
                                 htmlFor="lng"
@@ -347,7 +347,7 @@ const EditModal = ({
                                 onChange={handleChange}
                                 className="w-full px-3 py-2 border rounded"
                             />
-                        </div>
+                        </div>*/}
 
                         {/* Contact */}
                         <div className="mb-4">

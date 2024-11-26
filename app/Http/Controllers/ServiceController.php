@@ -277,7 +277,7 @@ $old_video = $current->video;
 $old_document = $current->document;
 
  //FILES
- $image=$request->file('image');
+ $image=$request->file('image'); //return $request->all();
  if($image) {
           $uniqid=hexdec(uniqid());
           $ext=strtolower($image->getClientOriginalExtension());
@@ -287,7 +287,7 @@ $old_document = $current->document;
             return redirect()->back();
           }
           $create_name=$uniqid.'.'.$ext;
-          $loc='images/services/';
+          $loc='../React/images/services/';
           //Move uploaded file
           $image->move($loc, $create_name);
           $final_img=$loc.$create_name;
