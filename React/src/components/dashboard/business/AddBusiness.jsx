@@ -508,10 +508,13 @@ const AddBusiness = () => {
                             },
                             { label: "Video (if applicable)", field: "video" },
                         ].map((fileInput, idx) => (
-                            <div className="flex flex-col" key={idx}>
+                            <div className="flex flex-col mb-4" key={idx}>
+                                {/* Label */}
                                 <label className="text-xs font-medium dark:text-gray-200">
                                     {fileInput.label}
                                 </label>
+
+                                {/* Input Field */}
                                 <div className="border border-gray-300 dark:border-gray-700 p-2 rounded-lg flex items-center justify-between mt-1 dark:bg-gray-900 transition-all duration-200">
                                     <span className="dark:text-white text-sm">
                                         {formData[fileInput.field]
@@ -536,6 +539,13 @@ const AddBusiness = () => {
                                         />
                                     </label>
                                 </div>
+
+                                {/* Informational Text */}
+                                <p className="text-xs text-red-500 mt-1">
+                                    {fileInput.field === "video"
+                                        ? "Max file size: 5MB. If larger, provide a video URL."
+                                        : "Max file size: 2MB."}
+                                </p>
                             </div>
                         ))}
 
