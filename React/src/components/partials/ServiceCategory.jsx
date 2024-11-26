@@ -12,34 +12,39 @@ const CategoryPage = ({ categoryName }) => {
     const [showNotification, setShowNotification] = useState(false);
     const [notificationMessage, setNotificationMessage] = useState("");
     const { name } = useParams();
-    const [range, setRange] = useState([0, 1000000]);  // Track the price range
+    const [range, setRange] = useState([0, 0]); // Adjust range dynamically
+    const [maxPrice, setMaxPrice] = useState(1000000); // Default maximum price
 
     useEffect(() => {
-        // Simulate fetching data
-        setTimeout(() => {
-            const testData = [
-                {
-                    id: 1,
-                    name: "Business 1",
-                    image: "https://via.placeholder.com/300",
-                    contact: "123-456-7890",
-                    price: 100000,
-                    category: "Service",
-                    location: "Kenya",
-                    details: "Business 1 details",
-                },
-                // Add more listings as needed
-            ];
+        const fetchCategoryResults = () => {
+            axiosClient
+                .get(`/categoryResults/${name}`)
+                .then(({ data }) => {
+                    if (data.services && data.services.length > 0) {
+                        setCards(data.services);
 
-            if (testData.length === 0) {
-                setNotificationMessage("Listings not found.");
-                setShowNotification(true);
-            } else {
-                setCards(testData);
-                setLoading(false);
-            }
-        }, 1000); // Simulate network delay
-    }, []);
+                        // Determine the maximum price dynamically
+                        const max = Math.max(
+                            ...data.services.map((card) => card.price)
+                        );
+                        setMaxPrice(max);
+                        setRange([0, max]); // Update the range to reflect the maximum price
+                    } else {
+                        setNotificationMessage("Listings not found.");
+                        setShowNotification(true);
+                    }
+                    setLoading(false);
+                })
+                .catch((err) => {
+                    console.error("Error fetching category results:", err);
+                    setNotificationMessage("Error loading data.");
+                    setShowNotification(true);
+                    setLoading(false);
+                });
+        };
+
+        fetchCategoryResults();
+    }, [name]);
 
     const handleCloseNotification = () => {
         setShowNotification(false);
@@ -47,40 +52,25 @@ const CategoryPage = ({ categoryName }) => {
 
     const handleAmountChange = (value) => {
         setRange(value); // Update the range
-        console.log(value);
+        console.log("Selected range:", value);
     };
 
-    const filteredCards = cards.filter((card) => card.price >= range[0] && card.price <= range[1]);
+    const filteredCards = cards.filter(
+        (card) => card.price >= range[0] && card.price <= range[1]
+    );
+    const sliderMarks = {};
+    const step = Math.floor(maxPrice / 5); // Determine step size for slider marks
 
-    const sliderMarks = {
-        0: "$0",
-        100000: "$100K",
-        200000: "$200K",
-        300000: "$300K",
-        400000: "$400K",
-        500000: "$500K",
-        600000: "$600K",
-        700000: "$700K",
-        800000: "$800K",
-        900000: "$900K",
-        1000000: "$1M",
+    // Create marks for the slider
+    for (let i = 0; i <= maxPrice; i += step) {
+        sliderMarks[i] = `$${(i / 1000).toFixed(1)}K`;
+    }
+    const toggleCollapse = (id) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.classList.toggle("hidden");
+        }
     };
-
-    useEffect(() => {
-        const categoryResults = () => {
-            axiosClient
-                .get("/categoryResults/" + name)
-                .then(({ data }) => {
-                    setCards(data.services);
-                    console.log(data);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        };
-        categoryResults();
-    }, []);
-
     return (
         <div className="p-6 max-w-screen-xl mx-auto space-y-10">
             {/* Heading */}
@@ -95,24 +85,74 @@ const CategoryPage = ({ categoryName }) => {
 
             {/* Amount Range Section */}
             <div className="border border-gray-200 rounded-lg p-6 md:p-8 bg-white shadow-sm">
+                {/* COLLAPSE RANGE */}
+                <div className="mt-4 hidden" id="collapseAmountRange">
+                    <div className="flex justify-between items-center">
+                        <div className="flex flex-col w-1/2 pr-2 space-y-2">
+                            <label
+                                htmlFor="minAmount"
+                                className="text-sm font-medium text-gray-700"
+                            >
+                                Min:
+                            </label>
+                            <input
+                                type="number"
+                                min="0"
+                                id="minAmount"
+                                className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+                                name="minAmount"
+                                onChange={(e) =>
+                                    UpdateValuesMin(e.target.value)
+                                }
+                            />
+                        </div>
+
+                        <div className="flex flex-col w-1/2 pl-2 space-y-2">
+                            <label
+                                htmlFor="maxAmount"
+                                className="text-sm font-medium text-gray-700"
+                            >
+                                Max:
+                            </label>
+                            <input
+                                type="number"
+                                id="maxAmount"
+                                className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+                                name="maxAmount"
+                                onChange={(e) =>
+                                    UpdateValuesMax(e.target.value)
+                                }
+                            />
+                        </div>
+                    </div>
+
+                    <button
+                        className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-32 mx-auto hover:bg-green-700 transition-colors"
+                        onClick={() => {
+                            rangeSliderInitialize();
+                            toggleCollapse("collapseAmountRange");
+                        }}
+                    >
+                        Set
+                    </button>
+                </div>
+
+                {/* COLLAPSE BUTTON */}
+                <button
+                    onClick={() => toggleCollapse("collapseAmountRange")}
+                    className="mr-4 my-2 border rounded-full px-3 py-1"
+                >
+                    Set Range
+                </button>
+
                 <h3 className="text-lg font-semibold mb-4 text-[#1E293B]">
                     Amount Range
                 </h3>
-                <div className="flex items-center mb-4">
-                    <button
-                        onClick={() => console.log(range)}
-                        id="colBut4"
-                        className="mr-4 border border-green-600 text-green-600 rounded-full px-4 py-2 hover:bg-green-600 hover:text-white transition"
-                        name="min"
-                    >
-                        Set Range
-                    </button>
-                </div>
                 <Slider
                     range
                     min={0}
-                    max={1000000}
-                    step={10000}
+                    max={maxPrice}
+                    step={Math.round(maxPrice / 100)} // Dynamic step: divide maxPrice into 100 parts
                     value={range}
                     onChange={handleAmountChange}
                     trackStyle={{
@@ -129,7 +169,7 @@ const CategoryPage = ({ categoryName }) => {
                         borderRadius: "50%",
                         border: "2px solid white",
                     }}
-                    marks={sliderMarks}
+                    marks={sliderMarks} // Show marks for visual guidance
                     activeDotStyle={{ display: "none" }}
                     dotStyle={{ display: "none" }}
                 />
@@ -140,7 +180,7 @@ const CategoryPage = ({ categoryName }) => {
             </div>
 
             {/* Notification */}
-            <div className="mb-6">
+            {/* <div className="mb-6">
                 <h1 className="text-3xl font-bold mb-2">Category: {name}</h1>
                 {showNotification && (
                     <div className="fixed top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-red-500 text-white rounded-lg shadow-md">
@@ -155,7 +195,7 @@ const CategoryPage = ({ categoryName }) => {
                         </div>
                     </div>
                 )}
-            </div>
+            </div> */}
 
             {/* Loading State */}
             {loading ? (

@@ -1,55 +1,81 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import {  useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axiosClient from "../../axiosClient";
 import SearchCategory from "./SearchCategory";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
-const CategoryPage = ({ categoryName }) => {
+const CategoryPage = () => {
     const [cards, setCards] = useState([]);
     const [filteredCards, setFilteredCards] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [showNotification, setShowNotification] = useState(false);
-    const [notificationMessage, setNotificationMessage] = useState("");
-    const { name } = useParams();
-    const [turnoverRange, setTurnoverRange] = useState([0, 1000000]);
-    const [amountRange, setAmountRange] = useState([0, 1000000]);
+    const [turnoverRange, setTurnoverRange] = useState([0, 100]);
+    const [amountRange, setAmountRange] = useState([0, 100]);
+    const [maxPrice, setMaxPrice] = useState(100); // Default maximum price
+    const [maxTurnover, setMaxTurnover] = useState(100); // Default maximum turnover
 
-    const sliderMarks = {
-        0: "$0",
-        100000: "$100K",
-        200000: "$200K",
-        300000: "$300K",
-        400000: "$400K",
-        500000: "$500K",
-        600000: "$600K",
-        700000: "$700K",
-        800000: "$800K",
-        900000: "$900K",
-        1000000: "$1M",
+    const { name } = useParams();
+
+    // Helper function to calculate marks dynamically
+    const calculateMarks = (maxValue) => {
+        const stepSize = maxValue <= 10 ? 1 : Math.ceil(maxValue / 5);
+        const marks = {};
+        for (let i = 0; i <= maxValue; i += stepSize) {
+            marks[i] = i.toLocaleString(); // Format numbers for display
+        }
+        return { marks, step: stepSize };
     };
 
+    const { marks: sliderMarks, step: stepAmount } = calculateMarks(maxPrice);
+    const { marks: sliderMarksTurnover, step: stepTurnover } =
+        calculateMarks(maxTurnover);
+
     useEffect(() => {
+        const parseInvestment = (value) =>
+            parseFloat(value.replace(/,/g, "")) || 0;
+        const parseTurnover = (value) => {
+            const parts = value.split("-").map((v) => parseFloat(v) || 0);
+            return Math.max(...parts);
+        };
+
         const categoryResults = () => {
             axiosClient
                 .get("/categoryResults/" + name)
                 .then(({ data }) => {
                     setCards(data.data);
-                    setFilteredCards(data.data); // Initialize filtered cards
+                    setFilteredCards(data.data);
+
+                    const maxInvestment = Math.max(
+                        ...data.data.map((card) =>
+                            parseInvestment(card.investment_needed)
+                        )
+                    );
+                    const maxTurnoverValue = Math.max(
+                        ...data.data.map((card) =>
+                            parseTurnover(card.y_turnover)
+                        )
+                    );
+
+                    setMaxPrice(maxInvestment || 100);
+                    setMaxTurnover(maxTurnoverValue || 100);
+                    setAmountRange([0, maxInvestment]);
+                    setTurnoverRange([0, maxTurnoverValue]);
                     setLoading(false);
                 })
-                .catch((err) => {
-                    console.log(err);
-                });
+                .catch((err) => console.error(err));
         };
+
         categoryResults();
     }, [name]);
 
     const filterCards = () => {
         const filtered = cards.filter((card) => {
-            const investmentNeeded = parseFloat(card.investment_needed) || 0;
-            const turnover = parseFloat(card.y_turnover) || 0;
+            const investmentNeeded =
+                parseFloat(card.investment_needed.replace(/,/g, "")) || 0;
+            const turnoverParts = card.y_turnover
+                .split("-")
+                .map((v) => parseFloat(v) || 0);
+            const turnover = Math.max(...turnoverParts);
 
             return (
                 investmentNeeded >= amountRange[0] &&
@@ -61,18 +87,19 @@ const CategoryPage = ({ categoryName }) => {
         setFilteredCards(filtered);
     };
 
-    const handleTurnoverChange = (value) => {
-        setTurnoverRange(value);
-    };
-
-    const handleAmountChange = (value) => {
-        setAmountRange(value);
-    };
+    const handleTurnoverChange = (value) => setTurnoverRange(value);
+    const handleAmountChange = (value) => setAmountRange(value);
 
     useEffect(() => {
         filterCards();
     }, [turnoverRange, amountRange]);
-
+    const [isRangeOpen, setIsRangeOpen] = useState(false);
+    const toggleCollapse = (id) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.classList.toggle("hidden");
+        }
+    };
 
     return (
         <div className="p-6 max-w-screen-xl mx-auto w-full sm:p-8 lg:p-10">
@@ -82,30 +109,85 @@ const CategoryPage = ({ categoryName }) => {
             <div className="w-full mb-6 mx-auto max-w-[84vw]">
                 <SearchCategory />
             </div>
-            <div>
-                <div className="flex gap-6 justify-between">
+            <div className="space-y-6 mb-10">
+                <div className="flex flex-col md:flex-row gap-6 ">
                     {/* Amount Range */}
-                    <div className="border border-gray-200 rounded-lg p-4 flex-1">
-                        <h3 className="text-lg font-semibold mb-2 text-[#1E293B]">
+                    <div className="border border-gray-300 py-10 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md flex-1">
+                        {/* COLLAPSE RANGE */}
+                        <div className="mt-4 hidden" id="collapseAmountRange">
+                            <div className="flex justify-between items-center">
+                                <div className="flex flex-col w-1/2 pr-2 space-y-2">
+                                    <label
+                                        htmlFor="minAmount"
+                                        className="text-sm font-medium text-gray-700"
+                                    >
+                                        Min:
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        id="minAmount"
+                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+                                        name="minAmount"
+                                        onChange={(e) =>
+                                            UpdateValuesMin(e.target.value)
+                                        }
+                                    />
+                                </div>
+
+                                <div className="flex flex-col w-1/2 pl-2 space-y-2">
+                                    <label
+                                        htmlFor="maxAmount"
+                                        className="text-sm font-medium text-gray-700"
+                                    >
+                                        Max:
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="maxAmount"
+                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+                                        name="maxAmount"
+                                        onChange={(e) =>
+                                            UpdateValuesMax(e.target.value)
+                                        }
+                                    />
+                                </div>
+                            </div>
+
+                            <button
+                                className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-32 mx-auto hover:bg-green-700 transition-colors"
+                                onClick={() => {
+                                    rangeSliderInitialize();
+                                    toggleCollapse("collapseAmountRange");
+                                }}
+                            >
+                                Set
+                            </button>
+                        </div>
+
+                        {/* COLLAPSE BUTTON */}
+                        <button
+                            onClick={() =>
+                                toggleCollapse("collapseAmountRange")
+                            }
+                            className="mr-4 my-2 border rounded-full px-3 py-1"
+                        >
+                            Set Range
+                        </button>
+
+                        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">
                             Amount Range
                         </h3>
-                        <button
-                            onClick={()=>{console.log(amountRange)}}
-                            id="colBut4"
-                            className="mr-4 my-2 border rounded-full px-3 py-1 "
-                            name="min"
-                        >
-                            Set Range{" "}
-                        </button>
+
                         <Slider
                             range
                             min={0}
-                            max={1000000}
-                            step={10000}
+                            max={maxPrice}
+                            step={100}
                             value={amountRange}
                             onChange={handleAmountChange}
                             trackStyle={{
-                                backgroundColor: "green",
+                                backgroundColor: "#15803D",
                                 height: "10px",
                             }}
                             handleStyle={{
@@ -113,7 +195,7 @@ const CategoryPage = ({ categoryName }) => {
                                 height: "18px",
                                 width: "18px",
                                 marginTop: "-4px",
-                                backgroundColor: "green",
+                                backgroundColor: "#15803D",
                                 borderRadius: "50%",
                                 border: "2px solid white",
                             }}
@@ -121,38 +203,90 @@ const CategoryPage = ({ categoryName }) => {
                             activeDotStyle={{ display: "none" }}
                             dotStyle={{ display: "none" }}
                         />
-                        <div className="flex justify-between mt-8 text-[#1E293B] text-sm">
+
+                        <div className="flex justify-between mt-6 text-gray-600 dark:text-gray-400 text-sm">
                             <span>${amountRange[0].toLocaleString()}</span>
                             <span>${amountRange[1].toLocaleString()}</span>
                         </div>
-                      
                     </div>
 
                     {/* Turnover Range */}
-                    <div className="border border-gray-200 rounded-lg p-4 flex-1">
-                        <h3 className="text-lg font-semibold mb-2 text-[#1E293B]">
+                    <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md flex-1">
+                        {/* COLLAPSE RANGE */}
+                        <div className="mt-4 hidden" id="collapseTurnoverRange">
+                            <div className="flex justify-between items-center">
+                                <div className="flex flex-col w-1/2 pr-2 space-y-2">
+                                    <label
+                                        htmlFor="minTurnover"
+                                        className="text-sm font-medium text-gray-700"
+                                    >
+                                        Min:
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        id="minTurnover"
+                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+                                        name="minTurnover"
+                                        onChange={(e) =>
+                                            UpdateValuesMin(e.target.value)
+                                        }
+                                    />
+                                </div>
+
+                                <div className="flex flex-col w-1/2 pl-2 space-y-2">
+                                    <label
+                                        htmlFor="maxTurnover"
+                                        className="text-sm font-medium text-gray-700"
+                                    >
+                                        Max:
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="maxTurnover"
+                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+                                        name="maxTurnover"
+                                        onChange={(e) =>
+                                            UpdateValuesMax(e.target.value)
+                                        }
+                                    />
+                                </div>
+                            </div>
+
+                            <button
+                                className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-32 mx-auto hover:bg-green-700 transition-colors"
+                                onClick={() => {
+                                    rangeSliderInitialize();
+                                    toggleCollapse("collapseTurnoverRange");
+                                }}
+                            >
+                                Set
+                            </button>
+                        </div>
+
+                        {/* COLLAPSE BUTTON */}
+                        <button
+                            onClick={() =>
+                                toggleCollapse("collapseTurnoverRange")
+                            }
+                            className="mr-4 my-2 border rounded-full px-3 py-1"
+                        >
+                            Set Range
+                        </button>
+
+                        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">
                             Turnover Range
                         </h3>
-                        <button
-                            onClick={() => {
-                                console.log(turnoverRange);
-                            }}
-                            id="colBut4"
-                            className="mr-4 my-2 border rounded-full px-3 py-1 "
-                            name="min"
-                        >
-                            Set Range{" "}
-                        </button>
 
                         <Slider
                             range
                             min={0}
-                            max={1000000}
-                            step={10000}
+                            max={maxTurnover}
+                            step={100}
                             value={turnoverRange}
                             onChange={handleTurnoverChange}
                             trackStyle={{
-                                backgroundColor: "green",
+                                backgroundColor: "#15803D",
                                 height: "10px",
                             }}
                             handleStyle={{
@@ -160,36 +294,21 @@ const CategoryPage = ({ categoryName }) => {
                                 height: "18px",
                                 width: "18px",
                                 marginTop: "-4px",
-                                backgroundColor: "green",
+                                backgroundColor: "#15803D",
                                 borderRadius: "50%",
                                 border: "2px solid white",
                             }}
-                            marks={sliderMarks}
+                            marks={sliderMarksTurnover}
                             activeDotStyle={{ display: "none" }}
                             dotStyle={{ display: "none" }}
                         />
-                        <div className="flex justify-between mt-8 text-[#1E293B] text-sm">
+
+                        <div className="flex justify-between mt-6 text-gray-600 dark:text-gray-400 text-sm">
                             <span>${turnoverRange[0].toLocaleString()}</span>
                             <span>${turnoverRange[1].toLocaleString()}</span>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="mb-6">
-                <h1 className="text-3xl font-bold mb-2">Category: {name}</h1>
-                {showNotification && (
-                    <div className="fixed top-0 left-1/2 transform -translate-x-1/2 mt-4 px-4 py-2 bg-red-500 text-white rounded-lg">
-                        <div className="flex items-center justify-between">
-                            <p>{notificationMessage}</p>
-                            <button
-                                onClick={() => setShowNotification(false)}
-                                className="ml-4 text-white font-bold"
-                            >
-                                &times;
-                            </button>
-                        </div>
-                    </div>
-                )}
             </div>
 
             {loading ? (

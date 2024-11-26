@@ -17,12 +17,15 @@ const DefaultImg = () => {
                 if (userImage) {
                     setImageSrc(userImage); // Use the user's image if available
                 } else {
-                    // Generate fallback image based on initials
+                    // Generate fallback image based on initials and user ID
                     const initials = getInitials(
                         data.user.fname,
                         data.user.lname
                     );
-                    const fallback = generateFallbackImage(initials);
+                    const fallback = generateFallbackImage(
+                        initials,
+                        data.user.id
+                    ); // Pass user ID here
                     setImageSrc(fallback);
                 }
             })
@@ -40,17 +43,20 @@ const DefaultImg = () => {
         return firstInitial + lastInitial;
     };
 
-    const generateFallbackImage = (initials) => {
+    const generateFallbackImage = (initials, userId) => {
         const colors = [
-            "#FF7F7F",
-            "#FFD700",
-            "#90EE90",
-            "#87CEFA",
-            "#DDA0DD",
-            "#FF6347",
+            "#8B0000", // Dark Red (Royal and luxurious)
+            "#FFD700", // Gold (Symbolizing royalty)
+            "#006400", // Dark Green (Rich and elegant)
+            "#4B0082", // Indigo (Deep and regal)
+            "#8A2BE2", // Blue Violet (Royal purple)
+            "#B22222", // Firebrick Red (Warm and sophisticated)
         ];
-        const hash = initials.charCodeAt(0) + initials.charCodeAt(1);
-        const color = colors[hash % colors.length];
+
+        // Use the user ID to generate a unique color
+        // Ensure the userId is a number and calculate the hash
+        const hash = userId; // Directly use user ID
+        const color = colors[hash % colors.length]; // Ensure the color stays within the array range
 
         // Generate a base64 SVG as fallback
         const svg = `
@@ -59,6 +65,8 @@ const DefaultImg = () => {
                     ${initials}
                 </text>
             </svg>`;
+
+        // Return the base64 encoded image
         return `data:image/svg+xml;base64,${btoa(svg)}`;
     };
 

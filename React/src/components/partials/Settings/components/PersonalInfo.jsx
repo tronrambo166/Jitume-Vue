@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { FaCamera, FaPen } from "react-icons/fa";
-import { useAlert } from "../../../partials/AlertContext"; // Import useAlert context
+import { FaCamera, FaPen, FaTrash } from "react-icons/fa";
+import { useAlert } from "../../../partials/AlertContext";
 import axiosClient from "../../../../axiosClient";
 import DefaultImg from "./DefaultImg";
+import ChangePassword from "./ChangePassword";
+
 const PersonalInfo = () => {
     const { showAlert } = useAlert();
     const userImage = DefaultImg();
@@ -50,8 +52,8 @@ const PersonalInfo = () => {
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setImageFile(file);
-            setImagePreview(URL.createObjectURL(file));
+            setImageFile(file); // Store the file for later submission
+            setImagePreview(URL.createObjectURL(file)); // Create and set the preview URL
         }
     };
 
@@ -62,10 +64,10 @@ const PersonalInfo = () => {
             showAlert("error", "First name must only contain letters.");
             return false;
         }
-        if (!nameRegex.test(mname)) {
-            showAlert("error", "Middle name must only contain letters.");
-            return false;
-        }
+        // if (!nameRegex.test(mname)) {
+        //     showAlert("error", "Middle name must only contain letters.");
+        //     return false;
+        // }
         if (!nameRegex.test(lname)) {
             showAlert("error", "Last name must only contain letters.");
             return false;
@@ -105,6 +107,8 @@ const PersonalInfo = () => {
                 setIsEditing(false);
                 setImageFile(null);
                 showAlert("success", "Profile updated successfully!");
+                notifyParent(response.data.user || tempData);
+                console.log("MYRES", response.data);
             } else {
                 showAlert(
                     "error",
@@ -116,6 +120,12 @@ const PersonalInfo = () => {
         } finally {
             setIsSaving(false);
         }
+    };
+
+    const notifyParent = (updatedData) => {
+        window.dispatchEvent(
+            new CustomEvent("userUpdated", { detail: updatedData })
+        );
     };
 
     const discardChanges = () => {
@@ -134,22 +144,29 @@ const PersonalInfo = () => {
         );
     };
 
+    // Function to check for null and return a placeholder
+    const handleNullValue = (value, placeholder) => {
+        return value === null || value === undefined || value === "null"
+            ? placeholder
+            : value;
+    };
+
     return (
-        <div className="p-6 md:p-10 rounded-lg w-full max-w-4xl mx-auto bg-white">
+        <div className="p-6 md:p-10 rounded-lg mt-4 w-full max-w-4xl mx-auto bg-white">
             <div className="flex flex-col md:flex-row items-center justify-between mb-6">
                 <h2 className="text-3xl font-extrabold text-gray-800 mb-3 md:mb-0">
                     Personal Information
                 </h2>
-                <FaPen
+                {/* <FaPen
                     className="text-gray-600 text-xl hover:text-green-500 transition duration-200 cursor-pointer"
                     onClick={handleEditClick}
-                />
+                /> */}
             </div>
 
             <div className="relative w-36 h-36 mb-8">
                 <div className="w-36 h-36 rounded-lg overflow-hidden group">
                     <img
-                        src={imagePreview ? '../'+imagePreview : userImage}
+                        src={imagePreview || userImage}
                         alt="Avatar"
                         className="w-full h-full object-cover"
                     />
@@ -170,31 +187,42 @@ const PersonalInfo = () => {
                         onChange={handleImageChange}
                     />
                 </div>
-
-                <p className="text-sm text-gray-500 mt-2">
-                    {imageFile ? imageFile.name : "Click to upload"}
-                </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Reusable Input Fields */}
                 {[
                     {
                         label: "First Name",
                         name: "fname",
-                        value: tempData.fname,
+                        value: handleNullValue(
+                            tempData.fname,
+                            "First name not provided yet"
+                        ),
                     },
                     {
                         label: "Middle Name",
                         name: "mname",
-                        value: tempData.mname,
+                        value: handleNullValue(
+                            tempData.mname,
+                            "Middle name not provided yet"
+                        ),
                     },
                     {
                         label: "Last Name",
                         name: "lname",
-                        value: tempData.lname,
+                        value: handleNullValue(
+                            tempData.lname,
+                            "Last name not provided yet"
+                        ),
                     },
-                    { label: "Email", name: "email", value: tempData.email },
+                    {
+                        label: "Email",
+                        name: "email",
+                        value: handleNullValue(
+                            tempData.email,
+                            "Email not provided yet"
+                        ),
+                    },
                 ].map((field) => (
                     <div key={field.name} className="flex flex-col">
                         <label
@@ -207,7 +235,7 @@ const PersonalInfo = () => {
                             id={field.name}
                             type="text"
                             name={field.name}
-                            value={field.value || ""}
+                            value={field.value}
                             onChange={handleInputChange}
                             className="mt-1 w-full rounded-lg p-3 bg-white border border-gray-300 text-gray-900 shadow-sm focus:ring-2 focus:ring-green-500 focus:outline-none transition"
                             disabled={!isEditing}
@@ -215,43 +243,56 @@ const PersonalInfo = () => {
                     </div>
                 ))}
 
-                {/* Gender Select */}
                 <div className="flex flex-col">
                     <label className="block text-sm font-semibold text-gray-700 mb-1">
                         Gender
                     </label>
                     <select
                         name="gender"
-                        value={tempData.gender || ""}
+                        value={handleNullValue(
+                            tempData.gender,
+                            "Gender not selected"
+                        )}
                         onChange={handleInputChange}
                         className="mt-1 w-full rounded-lg p-3 bg-white border border-gray-300 text-gray-900 shadow-sm focus:ring-2 focus:ring-green-500 focus:outline-none transition"
                         disabled={!isEditing}
                     >
                         <option value="">Select Gender</option>
-                        <option value="Female">Female</option>
                         <option value="Male">Male</option>
-                        <option value="Non-Binary">Non-Binary</option>
+                        <option value="Female">Female</option>
                     </select>
                 </div>
             </div>
 
-            {isEditing && (
-                <div className="mt-6 flex items-center justify-end space-x-4">
+            <div className="flex justify-between mt-6">
+                {isEditing ? (
+                    <>
+                        <button
+                            onClick={saveChanges}
+                            className="bg-green-700 hover:bg-green-800 text-white font-semibold py-2 px-4 rounded-lg"
+                            disabled={isSaving}
+                        >
+                            {isSaving ? "Saving..." : "Save Changes"}
+                        </button>
+                        <button
+                            onClick={discardChanges}
+                            className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg"
+                        >
+                            Discard
+                        </button>
+                    </>
+                ) : (
                     <button
-                        onClick={discardChanges}
-                        className="rounded-lg px-6 py-2 text-sm bg-gray-300 text-gray-700 hover:bg-gray-400 transition"
+                        onClick={handleEditClick}
+                        className="bg-green btn-primary text-white font-semibold py-2 px-4 rounded-lg"
                     >
-                        Discard
+                        Edit Profile
                     </button>
-                    <button
-                        onClick={saveChanges}
-                        className="rounded-lg px-6 py-2 text-sm bg-green-600 text-white hover:bg-green-700 transition disabled:opacity-50"
-                        disabled={!isFormChanged || isSaving}
-                    >
-                        {isSaving ? "Saving..." : "Save"}
-                    </button>
-                </div>
-            )}
+                )}
+            </div>
+            <div className="mt-4">
+                <ChangePassword />
+            </div>
         </div>
     );
 };

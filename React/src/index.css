@@ -180,6 +180,25 @@ font-size: 14px
     .no-scrollbar::-webkit-scrollbar {
       display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
     }
+
+    .scroll-thin {
+  overflow: auto;
+}
+
+.scroll-thin::-webkit-scrollbar {
+  width: 6px; /* Make the scrollbar thinner */
+  height: 6px; /* Optional: Horizontal scrollbar */
+}
+
+.scroll-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.086); /* Color for the scrollbar thumb */
+  border-radius: 10px;
+}
+
+.scroll-thin::-webkit-scrollbar-track {
+  background: transparent; /* Optional: Transparent track */
+}
+
     
 
     .help{
@@ -307,6 +326,20 @@ html, body {
     background-color: transparent; /* Transparent track */
 }
 
+/* Custom thin scrollbar styles */
+.thin-scrollbar::-webkit-scrollbar {
+  width: 6px; /* Set width for vertical scrollbar */
+  height: 6px; /* Set height for horizontal scrollbar */
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5); /* Color of the scrollbar thumb */
+  border-radius: 3px; /* Rounded corners for the thumb */
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent; /* Track background */
+}
 
 
 

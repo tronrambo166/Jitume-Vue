@@ -33,27 +33,26 @@ const Dashboardhero = () => {
     // Custom notification function
 
     // Fetch user data
- useEffect(() => {
-     axiosClient
-         .get("/checkAuth")
-         .then(({ data }) => {
-             setUser(data.user);
-             setId(data.user.id);
+    useEffect(() => {
+        axiosClient
+            .get("/checkAuth")
+            .then(({ data }) => {
+                setUser(data.user);
+                setId(data.user.id);
 
-             // Log the user image to the console
-             // Nurul Check the structure of the API response to ensure that image exists within data.user. 
-             // If image is missing or null in the response, it will  be set as null in your state.
+                // Log the user image to the console
+                // Nurul Check the structure of the API response to ensure that image exists within data.user.
+                // If image is missing or null in the response, it will  be set as null in your state.
 
-             console.log("User Image: ", data.user.image);
-             console.log("User Data: ", data.user);
-         })
-         .catch(() => {
-             showAlert("error", "Failed to load user data. Redirecting...");
-             navigate("/");
-         })
-         .finally(() => setLoading(false));
- }, []);
-
+                console.log("User Image: ", data.user.image);
+                console.log("User Data: ", data.user);
+            })
+            .catch(() => {
+                showAlert("error", "Failed to load user data. Redirecting...");
+                navigate("/");
+            })
+            .finally(() => setLoading(false));
+    }, []);
 
     // useEffect(() => {
     //     const notifications = () => {
@@ -71,6 +70,26 @@ const Dashboardhero = () => {
     //     };
     //     notifications();
     // }, []);
+    useEffect(() => {
+        const handleUserUpdate = (event) => {
+            const updatedData = event.detail; // Get the updated data object
+            setUser((prevUser) => ({
+                ...prevUser,
+                ...updatedData, // Merge the new data into the existing user state
+            }));
+
+            console.log("User data updated:", updatedData); // Log the updated data
+        };
+
+        // Listen for the custom event
+        window.addEventListener("userUpdated", handleUserUpdate);
+
+        // Cleanup the event listener on unmount
+        return () => {
+            window.removeEventListener("userUpdated", handleUserUpdate);
+            console.log("Event listener unmounted");
+        };
+    }, []);
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [isOpen, setIsOpen] = useState(false); // State to control sidebar open/close

@@ -271,20 +271,34 @@ const RegisterForm = () => {
             [name]: value,
         }));
     };
+const handleNextStep = async () => {
+    if (step === 1 && validateStep1()) {
+        setStep(2); // Move to step 2
+        showAlert("info", "You are now in Step 2.");
+    } else if (step === 2 && validateStep2()) {
+        setIsLoading(true); // Set loading state to true during email sending
+        // Generate a random code for email verification
+        const code = Math.floor(Math.random() * 10000);
 
-    const handleNextStep = async () => {
-        if (step === 1 && validateStep1()) {
-            setStep(2); // Move to step 2
-            showAlert("info", "You are now in Step 2.");
-        } else if (step === 2 && validateStep2()) {
-            // Call handleSubmit and only proceed if the submission is successful
-            // const isSuccess = await handleSubmit();
-            //Send verify mail
-            const code = Math.floor(Math.random() * 10000);
-            const verify = await emailVerify(code);
-            // if(verify) console.log(verify);
+        // Send email verification
+        const verify = await emailVerify(code);
+        if (verify) {
+            // Only proceed to step 3 if the email is sent successfully
+            showAlert(
+                "info",
+                "Verification email sent successfully. Please check your inbox."
+            );
+            setStep(3); // Move to step 3 after email is sent
+        } else {
+            showAlert(
+                "error",
+                "Failed to send verification email. Please try again."
+            );
         }
-    };
+        setIsLoading(false); // Reset loading state
+    }
+};
+
 
     const handleSubmit = async (e) => {
         if (e) e.preventDefault();
@@ -735,19 +749,17 @@ const RegisterForm = () => {
                             Previous
                         </button>
                     )}
-                    {step < 3 && ( // Hide buttons if step is 3
+                    {step < 3 && (
                         <button
                             type="button"
                             onClick={handleNextStep}
-                            className={`bg-green  hover:bg-green-700 w-full text-white px-4 py-2 rounded-full flex items-center justify-center  ${
+                            className={`bg-green mb-8 hover:bg-green-700 w-full text-white px-4 py-2 rounded-full flex items-center justify-center mt-5 ${
                                 isLoading ? "cursor-not-allowed" : ""
                             }`}
                             disabled={isLoading}
                         >
                             {isLoading ? (
                                 <AiOutlineLoading3Quarters className="animate-spin" />
-                            ) : step === 2 ? (
-                                "Next"
                             ) : (
                                 "Next"
                             )}
