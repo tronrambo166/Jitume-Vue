@@ -255,6 +255,15 @@ const RegisterForm = () => {
             newErrors.terms = "";
         }
 
+            axiosClient.get("emailExists/"+formData.email).then((data) => {
+                console.log(data);
+                if (data.data.status === 400) { 
+                newErrors.email = data.data.message;
+                valid = false;
+                console.log(valid);
+                } 
+            });
+        alert(valid)
         // Update state with new errors
         setErrors(newErrors);
         return valid;
@@ -690,9 +699,9 @@ const handleNextStep = async () => {
                             <h2 className="text-md font-semibold text-[#666666]">
                                 Step 3 of 3
                                 <p className="text-center py-2 text-gray-700 dark:text-gray-200 font-medium">
-                                    A verification code has been sent to your
+                                    A verification code has been sent to your &nbsp;
                                     <strong className="text-green-600 dark:text-green-400">
-                                        {formData.email}
+                                        Email
                                     </strong>
                                 </p>
                             </h2>

@@ -692,7 +692,7 @@ const ListingDetails = ({ onClose }) => {
                                         Unlock To Invest
                                     </a>
                                 ) : token && conv ? (
-                                    "Unlocked!"
+                                    <button className="text-white bg-green-800 rounded py-2 px-5"> Unlocked! </button>
                                 ) : (
                                     <a
                                         onClick={() => setIsModalOpen(true)}
@@ -704,15 +704,20 @@ const ListingDetails = ({ onClose }) => {
                                         />
                                         Unlock To Invest
                                     </a>
+                                    
                                 )}
+
                             </div>
 
-                            <div>
+                            {token && !conv &&  <div>
                                 <p className="flex gap-2 whitespace-nowrap items-center py-2 px-1 mr-8 text-[#1E293B] text-[14px] md:text-[16px]">
                                     Unlock this business to learn <br /> more
                                     about it and invest
                                 </p>
-                            </div>
+                                </div>
+                            }
+
+                            
                         </div>
 
                         <div className="my-4 text-left">

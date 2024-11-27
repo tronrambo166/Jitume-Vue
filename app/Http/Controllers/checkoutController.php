@@ -301,9 +301,10 @@ class checkoutController extends Controller
         $subs = BusinessSubscriptions::where('id',$id)->first();
 
     try{
-        ////$cancel = $this->Client->subscriptions->cancel(
-        //$subs->stripe_sub_id,[]
-        //);
+        $cancel = $this->Client->subscriptions->cancel(
+        $subs->stripe_sub_id,[]
+        );
+        return response()->json(['message'=>'Subscription canceled!'], 200);
     }
     catch(\Exception $e){
         BusinessSubscriptions::where('id',$id)->delete();

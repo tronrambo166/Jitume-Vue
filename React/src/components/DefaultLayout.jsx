@@ -34,7 +34,7 @@ export default function DefaultLayout() {
 
 
     //setToken(null);
-  const FIVE_MINS = 1 * 60 * 1000;
+  const FIVE_MINS = 5 * 60 * 1000;
   const GENERAL_DEBOUNCE_TIME = 500;
    // SET USER IDEAL TIME WITH DEBOUNCE
    const handleOnUserIdle = () =>{

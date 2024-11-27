@@ -18,6 +18,14 @@ class AuthController extends Controller
         ]);
     }
 
+    public function emailExists($email) { 
+        $user = User::where('email', $email)->first();
+        if($user)                        
+         return response()->json(['status' => 400, 'message' => 'Email already exists!']);
+        else 
+            return response()->json(['status' => 200]);
+    }
+
     public function emailVerify($email,$code) {
         try{  
     

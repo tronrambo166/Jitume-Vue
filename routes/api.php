@@ -150,7 +150,7 @@ Route::post('add_video', [ServiceController::class, 'add_video'])->name('add_vid
 Route::post('embed_service_videos', [ServiceController::class, 'embed_service_videos'])->name('embed_service_videos');
 
 Route::get('/getCurrSubscription', [checkoutController::class, 'getCurrSubscription'])->name('getCurrSubscription');
-Route::get('/cancelSubscription/{id}', [checkoutController::class, 'cancelSubscription'])->name('cancelSubscription');
+Route::get('cancelSubscription/{id}', [checkoutController::class, 'cancelSubscription'])->name('cancelSubscription');
 
 });
 
@@ -163,12 +163,13 @@ Route::get('getMilestonesAuth/{id}', [BusinessController::class ,'getMilestones'
 });
 //P R O T E C T E D    R O U T E S   ENDS
 
+
 //Email Click Routes
 Route::get('emailVerify/{email}/{code}',[AuthController::class,'emailVerify']);
 Route::get('agreeToMileS/{s_id}/{booker_id}', [bidsEmailController::class, 'agreeToMileS'])->name('agreeToMileS');
 Route::get('agreeToBid/{bidId}', [bidsEmailController::class, 'agreeToBid'])->name('agreeToBid');
 Route::get('agreeToNextmile/{bidId}', [bidsEmailController::class, 'agreeToNextmile'])->name('agreeToNextmile');
-
+Route::get('emailExists/{email}',[AuthController::class,'emailExists']);
 
 
 
