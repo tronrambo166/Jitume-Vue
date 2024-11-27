@@ -217,9 +217,9 @@ const LoginForm = () => {
                 <div className="text-center py-4">
                     <a
                         href="http://"
-                        className="text-center hover:text-green text-black underline text-[13px]"
+                        className="text-center hover:text-green text-black underline text-[14px]"
                     >
-                        Forgot password
+                        Forgot Password
                     </a>
                 </div>
             </form>

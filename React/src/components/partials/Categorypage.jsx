@@ -26,6 +26,22 @@ const CategoryPage = () => {
         return { marks, step: stepSize };
     };
 
+    const [collapseAmountRange, setCollapseAmountRange] = useState(false);
+    const [collapseTurnoverRange, setCollapseTurnoverRange] = useState(false);
+
+    const toggleAmountRange = () => {
+        setCollapseAmountRange(!collapseAmountRange);
+        // Ensure the other collapsible section remains unaffected
+        setCollapseTurnoverRange(false);
+    };
+
+    const [activeCollapse, setActiveCollapse] = useState(null);
+
+    const toggleTurnoverRange = () => {
+        setCollapseTurnoverRange(!collapseTurnoverRange);
+        // Ensure the other collapsible section remains unaffected
+        setCollapseAmountRange(false);
+    };
     const { marks: sliderMarks, step: stepAmount } = calculateMarks(maxPrice);
     const { marks: sliderMarksTurnover, step: stepTurnover } =
         calculateMarks(maxTurnover);
@@ -94,11 +110,43 @@ const CategoryPage = () => {
         filterCards();
     }, [turnoverRange, amountRange]);
     const [isRangeOpen, setIsRangeOpen] = useState(false);
-    const toggleCollapse = (id) => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.classList.toggle("hidden");
-        }
+
+   const toggleCollapse = (id) => {
+       const element = document.getElementById(id);
+       if (element) {
+           // Toggle the 'hidden' class depending on whether the element is currently visible
+           element.classList.toggle(
+               "hidden",
+               !element.classList.contains("hidden")
+           );
+       }
+   };
+
+    // Handle slide change for Amount Range
+    const HandleSlideChange = () => {
+        const minAmount =
+            parseFloat(document.getElementById("minAmount").value) || 0;
+        const maxAmount =
+            parseFloat(document.getElementById("maxAmount").value) || maxPrice;
+
+        setAmountRange([minAmount, maxAmount]);
+        setMaxPrice(maxAmount);
+
+        toggleCollapse("collapseAmountRange"); // Close the range input section
+    };
+
+    // Handle slide change for Turnover Range
+    const HandleSlideChange2 = () => {
+        const minTurnover =
+            parseFloat(document.getElementById("minTurnover").value) || 0;
+        const maxTurnover =
+            parseFloat(document.getElementById("maxTurnover").value) ||
+            maxTurnover;
+
+        setTurnoverRange([minTurnover, maxTurnover]);
+        setMaxTurnover(maxTurnover);
+
+        toggleCollapse("collapseTurnoverRange"); // Close the range input section
     };
 
     return (
@@ -109,73 +157,21 @@ const CategoryPage = () => {
             <div className="w-full mb-6 mx-auto max-w-[84vw]">
                 <SearchCategory />
             </div>
-            <div className="space-y-6 mb-10">
-                <div className="flex flex-col md:flex-row gap-6 ">
+            <div className="space-y-8 mb-10">
+                <div className="flex flex-col md:flex-row gap-8">
                     {/* Amount Range */}
-                    <div className="border border-gray-300 py-10 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md flex-1">
-                        {/* COLLAPSE RANGE */}
-                        <div className="mt-4 hidden" id="collapseAmountRange">
-                            <div className="flex justify-between items-center">
-                                <div className="flex flex-col w-1/2 pr-2 space-y-2">
-                                    <label
-                                        htmlFor="minAmount"
-                                        className="text-sm font-medium text-gray-700"
-                                    >
-                                        Min:
-                                    </label>
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        id="minAmount"
-                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
-                                        name="minAmount"
-                                        onChange={(e) =>
-                                            UpdateValuesMin(e.target.value)
-                                        }
-                                    />
-                                </div>
-
-                                <div className="flex flex-col w-1/2 pl-2 space-y-2">
-                                    <label
-                                        htmlFor="maxAmount"
-                                        className="text-sm font-medium text-gray-700"
-                                    >
-                                        Max:
-                                    </label>
-                                    <input
-                                        type="number"
-                                        id="maxAmount"
-                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
-                                        name="maxAmount"
-                                        onChange={(e) =>
-                                            UpdateValuesMax(e.target.value)
-                                        }
-                                    />
-                                </div>
-                            </div>
-
-                            <button
-                                className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-32 mx-auto hover:bg-green-700 transition-colors"
-                                onClick={() => {
-                                    rangeSliderInitialize();
-                                    toggleCollapse("collapseAmountRange");
-                                }}
-                            >
-                                Set
-                            </button>
-                        </div>
-
+                    <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-6 flex-1">
                         {/* COLLAPSE BUTTON */}
                         <button
-                            onClick={() =>
-                                toggleCollapse("collapseAmountRange")
-                            }
-                            className="mr-4 my-2 border rounded-full px-3 py-1"
+                            onClick={() => {
+                                toggleCollapse("collapseAmountRange");
+                            }}
+                            className="border border-green-600 text-green-600 dark:text-green-400 dark:border-green-400 rounded-full px-4 py-1 text-sm font-medium hover:bg-green-50 dark:hover:bg-green-900 transition-colors"
                         >
                             Set Range
                         </button>
 
-                        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">
+                        <h3 className="text-lg font-semibold mt-4 text-gray-800 dark:text-gray-200">
                             Amount Range
                         </h3>
 
@@ -199,7 +195,6 @@ const CategoryPage = () => {
                                 borderRadius: "50%",
                                 border: "2px solid white",
                             }}
-                            marks={sliderMarks}
                             activeDotStyle={{ display: "none" }}
                             dotStyle={{ display: "none" }}
                         />
@@ -208,73 +203,62 @@ const CategoryPage = () => {
                             <span>${amountRange[0].toLocaleString()}</span>
                             <span>${amountRange[1].toLocaleString()}</span>
                         </div>
-                    </div>
 
-                    {/* Turnover Range */}
-                    <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md flex-1">
-                        {/* COLLAPSE RANGE */}
-                        <div className="mt-4 hidden" id="collapseTurnoverRange">
-                            <div className="flex justify-between items-center">
-                                <div className="flex flex-col w-1/2 pr-2 space-y-2">
+                        <div className="mt-4 hidden" id="collapseAmountRange">
+                            <div className="flex justify-between items-center gap-4">
+                                <div className="flex flex-col w-1/2 space-y-2">
                                     <label
-                                        htmlFor="minTurnover"
-                                        className="text-sm font-medium text-gray-700"
+                                        htmlFor="minAmount"
+                                        className="text-sm font-medium text-gray-700 dark:text-gray-300"
                                     >
                                         Min:
                                     </label>
                                     <input
                                         type="number"
                                         min="0"
-                                        id="minTurnover"
-                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
-                                        name="minTurnover"
-                                        onChange={(e) =>
-                                            UpdateValuesMin(e.target.value)
-                                        }
+                                        id="minAmount"
+                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                                        name="minAmount"
                                     />
                                 </div>
 
-                                <div className="flex flex-col w-1/2 pl-2 space-y-2">
+                                <div className="flex flex-col w-1/2 space-y-2">
                                     <label
-                                        htmlFor="maxTurnover"
-                                        className="text-sm font-medium text-gray-700"
+                                        htmlFor="maxAmount"
+                                        className="text-sm font-medium text-gray-700 dark:text-gray-300"
                                     >
                                         Max:
                                     </label>
                                     <input
                                         type="number"
-                                        id="maxTurnover"
-                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
-                                        name="maxTurnover"
-                                        onChange={(e) =>
-                                            UpdateValuesMax(e.target.value)
-                                        }
+                                        id="maxAmount"
+                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                                        name="maxAmount"
                                     />
                                 </div>
                             </div>
 
                             <button
-                                className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-32 mx-auto hover:bg-green-700 transition-colors"
-                                onClick={() => {
-                                    rangeSliderInitialize();
-                                    toggleCollapse("collapseTurnoverRange");
-                                }}
+                                className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-full sm:w-32 hover:bg-green-700 transition-colors"
+                                onClick={HandleSlideChange} // Pass the function here
                             >
                                 Set
                             </button>
                         </div>
+                    </div>
 
-                        {/* COLLAPSE BUTTON */}
+                    {/* Turnover Range */}
+                    <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-6  flex-1">
                         <button
                             onClick={() =>
                                 toggleCollapse("collapseTurnoverRange")
                             }
-                            className="mr-4 my-2 border rounded-full px-3 py-1"
+                            className="border border-green-600 text-green-600 dark:text-green-400 dark:border-green-400 rounded-full px-4 py-1 text-sm font-medium hover:bg-green-50 dark:hover:bg-green-900 transition-colors"
                         >
                             Set Range
                         </button>
 
-                        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">
+                        <h3 className="text-lg font-semibold mt-4 text-gray-800 dark:text-gray-200">
                             Turnover Range
                         </h3>
 
@@ -298,7 +282,6 @@ const CategoryPage = () => {
                                 borderRadius: "50%",
                                 border: "2px solid white",
                             }}
-                            marks={sliderMarksTurnover}
                             activeDotStyle={{ display: "none" }}
                             dotStyle={{ display: "none" }}
                         />
@@ -306,6 +289,48 @@ const CategoryPage = () => {
                         <div className="flex justify-between mt-6 text-gray-600 dark:text-gray-400 text-sm">
                             <span>${turnoverRange[0].toLocaleString()}</span>
                             <span>${turnoverRange[1].toLocaleString()}</span>
+                        </div>
+
+                        <div className="mt-4 hidden" id="collapseTurnoverRange">
+                            <div className="flex justify-between items-center gap-4">
+                                <div className="flex flex-col w-1/2 space-y-2">
+                                    <label
+                                        htmlFor="minTurnover"
+                                        className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    >
+                                        Min:
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        id="minTurnover"
+                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                                        name="minTurnover"
+                                    />
+                                </div>
+
+                                <div className="flex flex-col w-1/2 space-y-2">
+                                    <label
+                                        htmlFor="maxTurnover"
+                                        className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    >
+                                        Max:
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="maxTurnover"
+                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                                        name="maxTurnover"
+                                    />
+                                </div>
+                            </div>
+
+                            <button
+                                className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-full sm:w-32 hover:bg-green-700 transition-colors"
+                                onClick={HandleSlideChange2} // Pass the function here
+                            >
+                                Set
+                            </button>
                         </div>
                     </div>
                 </div>

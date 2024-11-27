@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import { useStateContext } from "../../contexts/contextProvider";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
 import ServiceSearch from "../partials/ServiceSearch";
-import Search from '../pages/components/Search';
+import Search from "../pages/components/Search";
 import CardsPagination from "./CardsPagination";
 import BackBtn from "./BackBtn";
 const ServiceResults = () => {
@@ -88,70 +88,69 @@ const ServiceResults = () => {
     }, []);
 
     // Nurul/Owen
-   const amountSlider = () => {
-       noUiSlider.create(slider, {
-           start: [0, 1000000],
-           connect: true,
-           range: {
-               min: parseFloat(min),
-               max: parseFloat(max),
-           },
-           step: 10000,
-           margin: 600,
-           pips: {
-               stepped: true,
-               density: 6,
-           },
-       });
+    const amountSlider = () => {
+        noUiSlider.create(slider, {
+            start: [0, 1000000],
+            connect: true,
+            range: {
+                min: parseFloat(min),
+                max: parseFloat(max),
+            },
+            step: 10000,
+            margin: 600,
+            pips: {
+                stepped: true,
+                density: 6,
+            },
+        });
 
-       var skipValues = [
-           document.getElementById("price_low"),
-           document.getElementById("price_high"),
-       ];
+        var skipValues = [
+            document.getElementById("price_low"),
+            document.getElementById("price_high"),
+        ];
 
-       // Define a currency format function
-       const formatCurrency = (value) => {
-           return new Intl.NumberFormat("en-US", {
-               style: "currency",
-               currency: "USD",
-           }).format(value);
-       };
+        // Define a currency format function
+        const formatCurrency = (value) => {
+            return new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+            }).format(value);
+        };
 
-       slider.noUiSlider.on("update", function (values, handle) {
-           // Apply currency formatting
-           skipValues[handle].innerHTML = formatCurrency(
-               parseFloat(values[handle])
-           );
+        slider.noUiSlider.on("update", function (values, handle) {
+            // Apply currency formatting
+            skipValues[handle].innerHTML = formatCurrency(
+                parseFloat(values[handle])
+            );
 
-           // Here you can use local data or preloaded data instead of making an API request.
-           const preResults = localStorage.getItem("s_results");
-           const savedResults = JSON.parse(preResults || "[]");
+            // Here you can use local data or preloaded data instead of making an API request.
+            const preResults = localStorage.getItem("s_results");
+            const savedResults = JSON.parse(preResults || "[]");
 
-           // Filter the saved results based on the slider values
-           const filteredResults = savedResults.filter((value) => {
-               // console.log(value);
-               if (value && value.price) {
-                   var trim_price = value.price.replace(",", "");
-                   const price = parseFloat(trim_price);
-                   return (
-                       price >= parseFloat(values[0]) &&
-                       price <= parseFloat(values[1])
-                   );
-               }
-               return false;
-           });
+            // Filter the saved results based on the slider values
+            const filteredResults = savedResults.filter((value) => {
+                // console.log(value);
+                if (value && value.price) {
+                    var trim_price = value.price.replace(",", "");
+                    const price = parseFloat(trim_price);
+                    return (
+                        price >= parseFloat(values[0]) &&
+                        price <= parseFloat(values[1])
+                    );
+                }
+                return false;
+            });
 
-           // Update the results after filtering
-           setResults(filteredResults);
-           setCurrentPage(1);
+            // Update the results after filtering
+            setResults(filteredResults);
+            setCurrentPage(1);
 
-           // Optional: Process the filtered data, e.g., encode IDs
-           filteredResults.forEach((item) => {
-               item.id = btoa(item.id); // Encode the item ID
-           });
-       });
-   };
-
+            // Optional: Process the filtered data, e.g., encode IDs
+            filteredResults.forEach((item) => {
+                item.id = btoa(item.id); // Encode the item ID
+            });
+        });
+    };
 
     const search = () => {
         // let filteredResults = dummyResults;
@@ -287,11 +286,37 @@ const ServiceResults = () => {
     };
 
     //UPDATE NEW VALUES
-    const UpdateValuesMin = (value) => {
-        min = value;
+    // const UpdateValuesMin = (value) => {
+    //     min = value;
+    // };
+    // const UpdateValuesMax = (value) => {
+    //     max = value;
+    // };
+    //coma logic
+    const formatWithCommas = (value) => {
+        return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     };
+
+    const parseWithoutCommas = (value) => {
+        return value.replace(/,/g, "");
+    };
+
+    const UpdateValuesMin = (value) => {
+        const numericValue = parseWithoutCommas(value); // Remove commas to get a numeric string
+        if (!isNaN(numericValue)) {
+            min = parseInt(numericValue, 10); // Store numeric value
+            document.getElementById("low").value =
+                formatWithCommas(numericValue); // Update input with formatted value
+        }
+    };
+
     const UpdateValuesMax = (value) => {
-        max = value;
+        const numericValue = parseWithoutCommas(value); // Remove commas to get a numeric string
+        if (!isNaN(numericValue)) {
+            max = parseInt(numericValue, 10); // Store numeric value
+            document.getElementById("high").value =
+                formatWithCommas(numericValue); // Update input with formatted value
+        }
     };
 
     //Range Function
@@ -400,7 +425,7 @@ const ServiceResults = () => {
                                             Min:
                                         </label>
                                         <input
-                                            type="number"
+                                            type="text" // Changed to text to allow comma formatting
                                             min="0"
                                             id="low"
                                             className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
@@ -418,10 +443,10 @@ const ServiceResults = () => {
                                             Max:
                                         </label>
                                         <input
-                                            type="number"
+                                            type="text" // Changed to text to allow comma formatting
                                             id="high"
                                             className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
-                                            name="min"
+                                            name="max"
                                             onChange={(e) =>
                                                 UpdateValuesMax(e.target.value)
                                             }

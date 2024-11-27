@@ -71,6 +71,19 @@ const CategoryPage = ({ categoryName }) => {
             element.classList.toggle("hidden");
         }
     };
+    const handleSetRange = () => {
+        const minAmount =
+            parseFloat(document.getElementById("minAmount").value) || 0; // Get min value
+        const maxAmount =
+            parseFloat(document.getElementById("maxAmount").value) || maxPrice; // Get max value, default to maxPrice if not set
+
+        setRange([minAmount, maxAmount]); // Set the range
+        setMaxPrice(maxAmount); // Update maxPrice if necessary
+
+        toggleCollapse("collapseAmountRange"); // Close the range input section
+    };
+    
+
     return (
         <div className="p-6 max-w-screen-xl mx-auto space-y-10">
             {/* Heading */}
@@ -84,14 +97,56 @@ const CategoryPage = ({ categoryName }) => {
             </div>
 
             {/* Amount Range Section */}
-            <div className="border border-gray-200 rounded-lg p-6 md:p-8 bg-white shadow-sm">
+            <div className="border border-gray-200 rounded-lg p-6 md:p-8 bg-white ">
+                <button
+                    onClick={() => {
+                        toggleCollapse("collapseAmountRange");
+                    }}
+                    className="border border-green-600 text-green-600 dark:text-green-400 dark:border-green-400 rounded-full px-4 py-1 text-sm font-medium hover:bg-green-50 dark:hover:bg-green-900 transition-colors"
+                >
+                    Set Range
+                </button>
+
+                <h3 className="text-lg font-semibold mt-4 text-gray-800 dark:text-gray-200">
+                    Amount Range
+                </h3>
+
+                <Slider
+                    range
+                    min={0}
+                    max={maxPrice}
+                    step={Math.round(maxPrice / 100)} // Dynamic step: divide maxPrice into 100 parts
+                    value={range}
+                    onChange={handleAmountChange}
+                    trackStyle={{
+                        backgroundColor: "#15803D", // Dark green for track
+                        height: "8px",
+                        borderRadius: "5px",
+                    }}
+                    handleStyle={{
+                        borderColor: "white",
+                        height: "24px",
+                        width: "24px",
+                        marginTop: "-8px",
+                        backgroundColor: "#15803D", // Dark green for handles
+                        borderRadius: "50%",
+                        border: "2px solid white",
+                    }}
+                    activeDotStyle={{ display: "none" }}
+                    dotStyle={{ display: "none" }}
+                />
+                <div className="flex justify-between mt-4 text-[#1E293B] text-sm">
+                    <span>${range[0].toLocaleString()}</span>
+                    <span>${range[1].toLocaleString()}</span>
+                </div>
+
                 {/* COLLAPSE RANGE */}
-                <div className="mt-4 hidden" id="collapseAmountRange">
-                    <div className="flex justify-between items-center">
+                <div className="mt-6 hidden" id="collapseAmountRange">
+                    <div className="flex justify-between items-center gap-4">
                         <div className="flex flex-col w-1/2 pr-2 space-y-2">
                             <label
                                 htmlFor="minAmount"
-                                className="text-sm font-medium text-gray-700"
+                                className="text-sm font-medium text-gray-700 dark:text-gray-300"
                             >
                                 Min:
                             </label>
@@ -99,7 +154,7 @@ const CategoryPage = ({ categoryName }) => {
                                 type="number"
                                 min="0"
                                 id="minAmount"
-                                className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+                                className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none dark:bg-gray-800 dark:text-gray-200"
                                 name="minAmount"
                                 onChange={(e) =>
                                     UpdateValuesMin(e.target.value)
@@ -110,14 +165,14 @@ const CategoryPage = ({ categoryName }) => {
                         <div className="flex flex-col w-1/2 pl-2 space-y-2">
                             <label
                                 htmlFor="maxAmount"
-                                className="text-sm font-medium text-gray-700"
+                                className="text-sm font-medium text-gray-700 dark:text-gray-300"
                             >
                                 Max:
                             </label>
                             <input
                                 type="number"
                                 id="maxAmount"
-                                className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+                                className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none dark:bg-gray-800 dark:text-gray-200"
                                 name="maxAmount"
                                 onChange={(e) =>
                                     UpdateValuesMax(e.target.value)
@@ -127,55 +182,13 @@ const CategoryPage = ({ categoryName }) => {
                     </div>
 
                     <button
-                        className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-32 mx-auto hover:bg-green-700 transition-colors"
+                        className="mt-6 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-full sm:w-32 mx-auto hover:bg-green-700 transition-colors"
                         onClick={() => {
-                            rangeSliderInitialize();
-                            toggleCollapse("collapseAmountRange");
+                            handleSetRange();
                         }}
                     >
                         Set
                     </button>
-                </div>
-
-                {/* COLLAPSE BUTTON */}
-                <button
-                    onClick={() => toggleCollapse("collapseAmountRange")}
-                    className="mr-4 my-2 border rounded-full px-3 py-1"
-                >
-                    Set Range
-                </button>
-
-                <h3 className="text-lg font-semibold mb-4 text-[#1E293B]">
-                    Amount Range
-                </h3>
-                <Slider
-                    range
-                    min={0}
-                    max={maxPrice}
-                    step={Math.round(maxPrice / 100)} // Dynamic step: divide maxPrice into 100 parts
-                    value={range}
-                    onChange={handleAmountChange}
-                    trackStyle={{
-                        backgroundColor: "green",
-                        height: "10px",
-                        borderRadius: "5px",
-                    }}
-                    handleStyle={{
-                        borderColor: "white",
-                        height: "20px",
-                        width: "20px",
-                        marginTop: "-5px",
-                        backgroundColor: "green",
-                        borderRadius: "50%",
-                        border: "2px solid white",
-                    }}
-                    marks={sliderMarks} // Show marks for visual guidance
-                    activeDotStyle={{ display: "none" }}
-                    dotStyle={{ display: "none" }}
-                />
-                <div className="flex justify-between mt-4 text-[#1E293B] text-sm">
-                    <span>${range[0].toLocaleString()}</span>
-                    <span>${range[1].toLocaleString()}</span>
                 </div>
             </div>
 

@@ -169,162 +169,161 @@ const ListingResults = () => {
     }, []);
 
     //Turnover(Nurul)
-   const rangeSliderInitilize = () => {
-       noUiSlider.create(slider, {
-           start: [0, 1000000],
-           connect: true,
-           range: {
-               min: parseFloat(min),
-               max: parseFloat(max),
-           },
-           step: 10000,
-           margin: 600,
-           pips: {
-               stepped: true,
-               density: 6,
-           },
-       });
+    const rangeSliderInitilize = () => {
+        noUiSlider.create(slider, {
+            start: [0, 1000000],
+            connect: true,
+            range: {
+                min: parseFloat(min),
+                max: parseFloat(max),
+            },
+            step: 10000,
+            margin: 600,
+            pips: {
+                stepped: true,
+                density: 6,
+            },
+        });
 
-       var skipValues = [
-           document.getElementById("price_low"),
-           document.getElementById("price_high"),
-       ];
+        var skipValues = [
+            document.getElementById("price_low"),
+            document.getElementById("price_high"),
+        ];
 
-       // Function to format numbers with commas
-       const formatNumber = (num) => {
-           return new Intl.NumberFormat().format(num);
-       };
+        // Function to format numbers with commas
+        const formatNumber = (num) => {
+            return new Intl.NumberFormat().format(num);
+        };
 
-       slider.noUiSlider.on("update", function (values, handle) {
-           // Format the value with commas and update the HTML
-           skipValues[handle].innerHTML = `$${formatNumber(
-               Math.round(values[handle])
-           )}`;
+        slider.noUiSlider.on("update", function (values, handle) {
+            // Format the value with commas and update the HTML
+            skipValues[handle].innerHTML = `$${formatNumber(
+                Math.round(values[handle])
+            )}`;
 
-           const preResults = localStorage.getItem("results");
-           const savedResults = JSON.parse(preResults);
-           const turnoverRes = [];
+            const preResults = localStorage.getItem("results");
+            const savedResults = JSON.parse(preResults);
+            const turnoverRes = [];
 
-           Object.entries(savedResults).map(([key, value]) => {
-               if (value.y_turnover && typeof value.y_turnover === "string") {
-                   const range = value.y_turnover.split("-");
+            Object.entries(savedResults).map(([key, value]) => {
+                if (value.y_turnover && typeof value.y_turnover === "string") {
+                    const range = value.y_turnover.split("-");
 
-                   if (range.length === 2) {
-                       const db_min = parseInt(range[0], 10);
-                       const db_max = parseInt(range[1], 10);
+                    if (range.length === 2) {
+                        const db_min = parseInt(range[0], 10);
+                        const db_max = parseInt(range[1], 10);
 
-                       if (parseInt(values[1]) <= db_max) {
-                           turnoverRes.push(value);
-                       }
-                   }
-               }
-           });
+                        if (parseInt(values[1]) <= db_max) {
+                            turnoverRes.push(value);
+                        }
+                    }
+                }
+            });
 
-           console.log(turnoverRes);
-           setResults(turnoverRes);
-           setCurrentPage(1);
-       });
-   };
-
+            console.log(turnoverRes);
+            setResults(turnoverRes);
+            setCurrentPage(1);
+        });
+    };
 
     // Amount(OWEN)
     const amountSliderInitilize = () => {
-    noUiSlider.create(slider2, {
-        start: [0, 1000000],
-        connect: true,
-        range: {
-            min: parseFloat(min2),
-            max: parseFloat(max2),
-        },
-        step: 10000,
-        margin: 600,
-        pips: {
-            stepped: true,
-            density: 6,
-        },
-    });
+        noUiSlider.create(slider2, {
+            start: [0, 1000000],
+            connect: true,
+            range: {
+                min: parseFloat(min2),
+                max: parseFloat(max2),
+            },
+            step: 10000,
+            margin: 600,
+            pips: {
+                stepped: true,
+                density: 6,
+            },
+        });
 
-    var skipValues = [
-        document.getElementById("price_low2"),
-        document.getElementById("price_high2"),
-    ];
+        var skipValues = [
+            document.getElementById("price_low2"),
+            document.getElementById("price_high2"),
+        ];
 
-    // Define a currency format function
-    const formatCurrency = (value) => {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-        }).format(value);
-    };
+        // Define a currency format function
+        const formatCurrency = (value) => {
+            return new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+            }).format(value);
+        };
 
-    slider2.noUiSlider.on("update", function (values, handle) {
-        // Apply currency formatting
-        skipValues[handle].innerHTML = formatCurrency(parseFloat(values[handle]));
+        slider2.noUiSlider.on("update", function (values, handle) {
+            // Apply currency formatting
+            skipValues[handle].innerHTML = formatCurrency(
+                parseFloat(values[handle])
+            );
 
-        // Log the current values of the slider for debugging
-        const minValue = parseFloat(values[0]);
-        const maxValue = parseFloat(values[1]);
-        console.log(
-            "Slider Updated - minValue:",
-            minValue,
-            "maxValue:",
-            maxValue
-        );
+            // Log the current values of the slider for debugging
+            const minValue = parseFloat(values[0]);
+            const maxValue = parseFloat(values[1]);
+            console.log(
+                "Slider Updated - minValue:",
+                minValue,
+                "maxValue:",
+                maxValue
+            );
 
-        // Fetch saved results from localStorage
-        const preResults = localStorage.getItem("results");
-        const savedResults = JSON.parse(preResults);
-        console.log("Saved Results from LocalStorage:", savedResults);
+            // Fetch saved results from localStorage
+            const preResults = localStorage.getItem("results");
+            const savedResults = JSON.parse(preResults);
+            console.log("Saved Results from LocalStorage:", savedResults);
 
-        let filteredResults = [];
+            let filteredResults = [];
 
-        // If the slider is at full range (0-1000000), show all results
-        if (minValue === 0 && maxValue === 1000000) {
-            console.log("Full range selected. Showing all results.");
-            filteredResults = savedResults;
-        } else {
-            // Filter results based on the slider range
-            filteredResults = Object.entries(savedResults)
-                .map(([key, value]) => {
-                    if (
-                        value.investment_needed &&
-                        typeof value.investment_needed === "number"
-                    ) {
-                        const investmentAmount = value.investment_needed;
-
-                        // Log each result being checked
-                        console.log(
-                            "Checking result:",
-                            key,
-                            "Investment amount:",
-                            investmentAmount
-                        );
-
+            // If the slider is at full range (0-1000000), show all results
+            if (minValue === 0 && maxValue === 1000000) {
+                console.log("Full range selected. Showing all results.");
+                filteredResults = savedResults;
+            } else {
+                // Filter results based on the slider range
+                filteredResults = Object.entries(savedResults)
+                    .map(([key, value]) => {
                         if (
-                            investmentAmount >= minValue &&
-                            investmentAmount <= maxValue
+                            value.investment_needed &&
+                            typeof value.investment_needed === "number"
                         ) {
-                            console.log("Included:", key);
-                            return value; // Include the result if within the range
+                            const investmentAmount = value.investment_needed;
+
+                            // Log each result being checked
+                            console.log(
+                                "Checking result:",
+                                key,
+                                "Investment amount:",
+                                investmentAmount
+                            );
+
+                            if (
+                                investmentAmount >= minValue &&
+                                investmentAmount <= maxValue
+                            ) {
+                                console.log("Included:", key);
+                                return value; // Include the result if within the range
+                            }
                         }
-                    }
-                    return null; // Ignore results that don't meet the criteria
-                })
-                .filter(Boolean); // Remove null values from the array
-        }
+                        return null; // Ignore results that don't meet the criteria
+                    })
+                    .filter(Boolean); // Remove null values from the array
+            }
 
-        // Log the filtered results before updating state
-        console.log("Filtered Results:", filteredResults);
+            // Log the filtered results before updating state
+            console.log("Filtered Results:", filteredResults);
 
-        // Update the state with the filtered results
-        setResults(filteredResults);
+            // Update the state with the filtered results
+            setResults(filteredResults);
 
-        // Reset to page 1 when filter is applied
-        setCurrentPage(1); 
-    });
-};
-
-
+            // Reset to page 1 when filter is applied
+            setCurrentPage(1);
+        });
+    };
 
     const updateDisplay = (elements, handle, values) => {
         if (elements[handle]) {
@@ -462,11 +461,19 @@ const ListingResults = () => {
     };
 
     //UPDATE NEW VALUES
-    const UpdateValuesMin = (value) => { min = value; }
-    const UpdateValuesMax = (value) => { max = value; }
+    const UpdateValuesMin = (value) => {
+        min = value;
+    };
+    const UpdateValuesMax = (value) => {
+        max = value;
+    };
 
-    const UpdateValuesMin2 = (value) => { min2 = value; }
-    const UpdateValuesMax2 = (value) => { max2 = value; }
+    const UpdateValuesMin2 = (value) => {
+        min2 = value;
+    };
+    const UpdateValuesMax2 = (value) => {
+        max2 = value;
+    };
     //Range Function
 
     return (
