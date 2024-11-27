@@ -11,10 +11,12 @@ import { BsQuestionCircle } from "react-icons/bs";
 import doc from "../../images/doc.png";
 import sharp from "../../images/sharp.png";
 import BarIcon from "./BarIcon";
+import axiosClient from "../../axiosClient";
 import { AiOutlineBarChart, AiOutlineCalendar } from "react-icons/ai";
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const sidebarRef = useRef(null);
+    const [subId, setSubId] = useState(null);
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
@@ -35,6 +37,11 @@ const Sidebar = () => {
     };
 
     useEffect(() => {
+        axiosClient.get("business/getCurrSubscription/").then((data) => {
+            setSubId(data.data.mySub.id);
+        });
+        
+
         handleResize();
         window.addEventListener("resize", handleResize);
         document.addEventListener("mousedown", handleClickOutside);
@@ -44,6 +51,26 @@ const Sidebar = () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
+
+
+        const cancelSubscription = () => {
+        try { alert('ok')
+            const response = axiosClient.get(
+                "business/cancelSubscription",
+                subId
+            );
+
+            if (response.data.status === 200) {
+                showAlert("success", response.data.message);
+            } else {
+                showAlert("error", response.data.message);
+            }
+            console.log(response);
+        } catch (error) {
+            console.error("Error saving data:", error);
+        }
+    };
+
 
     return (
         <>
@@ -384,6 +411,36 @@ const Sidebar = () => {
                                     )}
                                 </NavLink>
                             </li>
+
+                                <li className="nav-item mb-6 rounded-xl py-2">
+                                {/* Added margin-bottom (mb-6) to move it up from the bottom */}
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
+                                            isActive
+                                                ? "bg-green-800 text-white"
+                                                : "hover:bg-gray-200 text-gray-400"
+                                        }`
+                                    }
+                                    
+                                    onClick={() => cancelSubscription}
+                                >
+                                    {({ isActive }) => (
+                                        <>
+                                            <BsQuestionCircle
+                                                className={`text-[18px] ${
+                                                    isActive
+                                                        ? "text-white"
+                                                        : "text-green"
+                                                }`}
+                                            />
+                                            <span>Cancel Subscription</span>
+                                        </>
+                                    )}
+                                </NavLink>
+                            </li>
+
+
                             {/* Plz dont remove the part below  */}
                             <li className="nav-item mb-6 rounded-xl py-2">
                                 <NavLink

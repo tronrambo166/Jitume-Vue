@@ -41,8 +41,8 @@ export default function DefaultLayout() {
     sessionStorage.clear();
     setToken(null);
     $.alert({
-                title: "Please log in!",
-                content: "You're Logged out.",
+                title: "Please Log In!",
+                content: "You're Logged Out.",
                 });
   }
   if(token && token !=null)

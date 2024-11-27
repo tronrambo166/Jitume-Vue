@@ -59,7 +59,7 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::get('/stripeSubscribe/{amount}/{plan}/{days}/{range}/{inv}', [checkoutController::class, 'stripeSubscribeGet'])->name('stripeSubscribe');
     Route::get('/stripeSubscribeSuccess', [checkoutController::class, 'stripeSubscribeSuccess'])->name('stripeSubscribeSuccess');
-    Route::get('/cancelSubscription/{id}', [checkoutController::class, 'cancelSubscription'])->name('cancelSubscription');
+    
 
     //CART
     Route::get('cartStripe', [checkoutController::class, 'cartCheckout'])->name('cartStripe');
@@ -83,7 +83,7 @@ Route::middleware('auth:sanctum')->group(function() {
 
 
     // B U S I N E S S    P R O T E C T E D
-Route::prefix('/business')->group(function(){
+   Route::prefix('/business')->group(function(){
    
    Route::post('update-profile', [PagesController::class, 'update_profile'])->name('update-profile');
 
@@ -148,6 +148,9 @@ Route::get('delete_service/{id}', [ServiceController::class, 'delete_service'])-
 Route::post('add_doc', [ServiceController::class, 'add_docs'])->name('add_docs');
 Route::post('add_video', [ServiceController::class, 'add_video'])->name('add_videos');
 Route::post('embed_service_videos', [ServiceController::class, 'embed_service_videos'])->name('embed_service_videos');
+
+Route::get('/getCurrSubscription', [checkoutController::class, 'getCurrSubscription'])->name('getCurrSubscription');
+Route::get('/cancelSubscription/{id}', [checkoutController::class, 'cancelSubscription'])->name('cancelSubscription');
 
 });
 

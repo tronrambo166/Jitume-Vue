@@ -287,6 +287,13 @@ class checkoutController extends Controller
 
     }
 
+    //SUSBCRIPTION
+    public function getCurrSubscription(){
+    $user_id = Auth::id();
+    $subscribed = BusinessSubscriptions::where('investor_id',$user_id)
+    ->where('active',1)->orderBy('id','DESC')->first();
+    return response()->json(['mySub'=>$subscribed], 200);
+    }
 
      public function cancelSubscription($id)
     {
@@ -294,21 +301,20 @@ class checkoutController extends Controller
         $subs = BusinessSubscriptions::where('id',$id)->first();
 
     try{
-        $cancel = $this->Client->subscriptions->cancel(
-        $subs->stripe_sub_id,[]
-        );
+        ////$cancel = $this->Client->subscriptions->cancel(
+        //$subs->stripe_sub_id,[]
+        //);
     }
     catch(\Exception $e){
-        Session::put('failed','Subscription does not exist!');
         BusinessSubscriptions::where('id',$id)->delete();
-        return redirect()->back();
+        return response()->json(['message'=>'Subscription does not exist!'], 400);
     }
 
 
         BusinessSubscriptions::where('id',$id)->update(['active' => 0]);
 
-        Session::put('Stripe_pay','Subscription Canceled!');
-        return redirect("/");
+        BusinessSubscriptions::where('id',$id)->delete();
+        return response()->json(['message'=>'Subscription canceled!'], 200);
     }
 //SUBSCRIBE________________________
 
