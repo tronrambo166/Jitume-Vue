@@ -326,18 +326,26 @@ const AddService = ({ connected, userId }) => {
             )}
 
             {!Con ? (
-                <div>
-                    <p className="text-center bg-light p-2 ">
+                <div className="flex flex-col items-center  border  rounded-lg justify-center py-4">
+                    <div className="flex justify-start">
                         {" "}
+                        <h2 className="text-xl font-bold mb-4 dark:text-white ">
+                            Add Service
+                        </h2>
+                    </div>
+
+                    <div className="flex flex-col items-center justify-center ">
                         You must onboard to Jitume Stripe platform to receive
                         business milestone payments.
-                    </p>
-                    <button
-                        onClick={connectToStripe}
-                        className="btn-primary py-2 px-6 rounded-lg text-white focus:outline-none"
-                    >
-                        Connect to Stripe
-                    </button>
+                        <div className="mt-4">
+                            <button
+                                onClick={connectToStripe}
+                                className="btn-primary py-2 px-6 rounded-lg text-white focus:outline-none"
+                            >
+                                Connect to Stripe
+                            </button>
+                        </div>
+                    </div>
                 </div>
             ) : (
                 <form
@@ -491,6 +499,9 @@ const AddService = ({ connected, userId }) => {
                                     {formData.image.name}
                                 </p>
                             )}
+                            <p className="text-xs text-red-500 mt-1">
+                                Max image size: 2MB.
+                            </p>
                         </div>
 
                         <div className="relative">
@@ -519,6 +530,9 @@ const AddService = ({ connected, userId }) => {
                                     {formData.identification.name}
                                 </p>
                             )}
+                            <p className="text-xs text-red-500 mt-1">
+                                Max image size: 2MB.
+                            </p>
                         </div>
 
                         <div className="relative">
@@ -547,6 +561,9 @@ const AddService = ({ connected, userId }) => {
                                     {formData.document.name}
                                 </p>
                             )}
+                            <p className="text-xs text-red-500 mt-1">
+                                Max file size: 2MB.
+                            </p>
                         </div>
 
                         <div className="relative">
@@ -575,6 +592,10 @@ const AddService = ({ connected, userId }) => {
                                     {formData.video.name}
                                 </p>
                             )}
+                            <p className="text-xs text-red-500 mt-1">
+                                Max file size: 5MB. If larger, provide a video
+                                URL.
+                            </p>
                         </div>
 
                         <div className="relative">
@@ -603,6 +624,9 @@ const AddService = ({ connected, userId }) => {
                                     {formData.pin.name}
                                 </p>
                             )}
+                            <p className="text-xs text-red-500 mt-1">
+                                Max image size: 2MB.
+                            </p>
                         </div>
 
                         <div>

@@ -46,10 +46,6 @@ const CategoryPage = ({ categoryName }) => {
         fetchCategoryResults();
     }, [name]);
 
-    const handleCloseNotification = () => {
-        setShowNotification(false);
-    };
-
     const handleAmountChange = (value) => {
         setRange(value); // Update the range
         console.log("Selected range:", value);
@@ -67,22 +63,65 @@ const CategoryPage = ({ categoryName }) => {
     }
     const toggleCollapse = (id) => {
         const element = document.getElementById(id);
+        const slider = document.getElementById("sliderElement"); // ID for the slider container
+        const amountRangeDisplay =
+            document.getElementById("amountRangeDisplay"); // ID for the amount range display section
+
         if (element) {
+            // Toggle visibility of the collapse section
             element.classList.toggle("hidden");
+
+            // Hide the slider and amountRangeDisplay when collapse is opened
+            if (!element.classList.contains("hidden")) {
+                if (slider) slider.classList.add("hidden");
+                if (amountRangeDisplay)
+                    amountRangeDisplay.classList.add("hidden");
+            } else {
+                if (slider) slider.classList.remove("hidden");
+                if (amountRangeDisplay)
+                    amountRangeDisplay.classList.remove("hidden");
+            }
         }
     };
     const handleSetRange = () => {
+        // Get the min value and remove commas before parsing
         const minAmount =
-            parseFloat(document.getElementById("minAmount").value) || 0; // Get min value
+            parseFloat(
+                document.getElementById("minAmount").value.replace(/,/g, "")
+            ) || 0;
+
+        // Get the max value and remove commas before parsing
         const maxAmount =
-            parseFloat(document.getElementById("maxAmount").value) || maxPrice; // Get max value, default to maxPrice if not set
+            parseFloat(
+                document.getElementById("maxAmount").value.replace(/,/g, "")
+            ) || maxPrice;
 
         setRange([minAmount, maxAmount]); // Set the range
         setMaxPrice(maxAmount); // Update maxPrice if necessary
 
         toggleCollapse("collapseAmountRange"); // Close the range input section
     };
-    
+    const minn = 1;
+    const maxx = 10000000;
+    // comas logic
+    const [minAmount, setMinAmount] = useState("");
+    const [maxAmount, setMaxAmount] = useState("");
+
+    // Function to format numbers with commas
+    const formatNumberWithCommas = (value) => {
+        value = value.replace(/,/g, ""); // Remove commas if any
+        return value.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Add commas
+    };
+
+    // Handle min amount input change
+    const UpdateValuesMin = (value) => {
+        setMinAmount(formatNumberWithCommas(value));
+    };
+
+    // Handle max amount input change
+    const UpdateValuesMax = (value) => {
+        setMaxAmount(formatNumberWithCommas(value));
+    };
 
     return (
         <div className="p-6 max-w-screen-xl mx-auto space-y-10">
@@ -95,47 +134,54 @@ const CategoryPage = ({ categoryName }) => {
             <div className="w-full mb-6 mx-auto max-w-[84vw]">
                 <SearchCategory />
             </div>
-
+            <div></div>
             {/* Amount Range Section */}
             <div className="border border-gray-200 rounded-lg p-6 md:p-8 bg-white ">
                 <button
                     onClick={() => {
                         toggleCollapse("collapseAmountRange");
                     }}
-                    className="border border-green-600 text-green-600 dark:text-green-400 dark:border-green-400 rounded-full px-4 py-1 text-sm font-medium hover:bg-green-50 dark:hover:bg-green-900 transition-colors"
+                    className="mr-4 my-2 border rounded-full px-3 py-1 "
                 >
                     Set Range
                 </button>
 
-                <h3 className="text-lg font-semibold mt-4 text-gray-800 dark:text-gray-200">
-                    Amount Range
-                </h3>
+                <label className="text-gray-700 font-semibold mb-2">
+                    Price Range
+                </label>
 
-                <Slider
-                    range
-                    min={0}
-                    max={maxPrice}
-                    step={Math.round(maxPrice / 100)} // Dynamic step: divide maxPrice into 100 parts
-                    value={range}
-                    onChange={handleAmountChange}
-                    trackStyle={{
-                        backgroundColor: "#15803D", // Dark green for track
-                        height: "8px",
-                        borderRadius: "5px",
-                    }}
-                    handleStyle={{
-                        borderColor: "white",
-                        height: "24px",
-                        width: "24px",
-                        marginTop: "-8px",
-                        backgroundColor: "#15803D", // Dark green for handles
-                        borderRadius: "50%",
-                        border: "2px solid white",
-                    }}
-                    activeDotStyle={{ display: "none" }}
-                    dotStyle={{ display: "none" }}
-                />
-                <div className="flex justify-between mt-4 text-[#1E293B] text-sm">
+                <div className="py-4" id="sliderElement">
+                    {/* Slider element */}
+                    <Slider
+                        range
+                        min={0}
+                        max={maxPrice}
+                        step={Math.round(maxPrice / 100)} // Dynamic step: divide maxPrice into 100 parts
+                        value={range}
+                        onChange={handleAmountChange}
+                        trackStyle={{
+                            backgroundColor: "#15803D", // Dark green for track
+                            height: "8px",
+                            borderRadius: "5px",
+                        }}
+                        handleStyle={{
+                            borderColor: "white",
+                            height: "24px",
+                            width: "24px",
+                            marginTop: "-8px",
+                            backgroundColor: "#15803D", // Dark green for handles
+                            borderRadius: "50%",
+                            border: "2px solid white",
+                        }}
+                        activeDotStyle={{ display: "none" }}
+                        dotStyle={{ display: "none" }}
+                    />
+                </div>
+
+                <div
+                    id="amountRangeDisplay"
+                    className="flex justify-between mt-4 text-[#1E293B] text-sm"
+                >
                     <span>${range[0].toLocaleString()}</span>
                     <span>${range[1].toLocaleString()}</span>
                 </div>
@@ -148,14 +194,15 @@ const CategoryPage = ({ categoryName }) => {
                                 htmlFor="minAmount"
                                 className="text-sm font-medium text-gray-700 dark:text-gray-300"
                             >
-                                Min:
+                                Min: {minn}
                             </label>
                             <input
-                                type="number"
+                                type="text" // Change to text to allow commas
                                 min="0"
                                 id="minAmount"
                                 className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none dark:bg-gray-800 dark:text-gray-200"
                                 name="minAmount"
+                                value={minAmount}
                                 onChange={(e) =>
                                     UpdateValuesMin(e.target.value)
                                 }
@@ -167,13 +214,14 @@ const CategoryPage = ({ categoryName }) => {
                                 htmlFor="maxAmount"
                                 className="text-sm font-medium text-gray-700 dark:text-gray-300"
                             >
-                                Max:
+                                Max: {maxx}
                             </label>
                             <input
-                                type="number"
+                                type="text" // Change to text to allow commas
                                 id="maxAmount"
                                 className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none dark:bg-gray-800 dark:text-gray-200"
                                 name="maxAmount"
+                                value={maxAmount}
                                 onChange={(e) =>
                                     UpdateValuesMax(e.target.value)
                                 }

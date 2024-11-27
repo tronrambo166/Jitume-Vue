@@ -91,13 +91,13 @@ const NotificationBell = () => {
             {isDropdownOpen && (
                 <div
                     ref={dropdownRef}
-                    className="absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-lg p-4 z-10"
+                    className="absolute right-0 mt-2 w-72 sm:w-80 bg-white shadow-lg rounded-lg p-4 z-20"
                 >
-                    {/* Fixed Header Section */}
-                    <div className="flex justify-between items-center mb-2 p-2 bg-white z-10 border-b border-gray-200 sticky top-0">
-                        <div className="font-semibold text-gray-700 text-sm">
+                    {/* Fixed Header */}
+                    <div className="flex justify-between items-center mb-2 border-b border-gray-200 p-2 sticky top-0 bg-white z-10">
+                        <span className="font-semibold text-gray-700 text-sm">
                             Notifications
-                        </div>
+                        </span>
                         <FaTimes
                             className="cursor-pointer text-gray-500 text-xs"
                             onClick={() => setDropdownOpen(false)}
@@ -105,9 +105,9 @@ const NotificationBell = () => {
                     </div>
 
                     {/* Scrollable Notifications */}
-                    <div className="max-h-72 overflow-y-auto">
+                    <div className="max-h-72 overflow-y-auto scroll-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded-lg">
                         {notifications.length === 0 ? (
-                            <div className="text-center text-gray-500 text-xs">
+                            <div className="text-center text-gray-500 text-sm">
                                 No notifications
                             </div>
                         ) : (
@@ -115,22 +115,22 @@ const NotificationBell = () => {
                                 {notifications.map((notif, index) => (
                                     <li
                                         key={index}
-                                        className="flex items-start space-x-2 py-2 border-b border-gray-200 bg-white"
+                                        className="flex items-start space-x-2 py-2 border-b border-gray-200"
                                     >
                                         <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
                                             <span className="text-xl">
                                                 {notif.icon}
                                             </span>
                                         </div>
-                                        <div className="text-xs">
+                                        <div className="text-sm">
                                             <div className="font-semibold text-gray-800">
                                                 {notif.name}
                                             </div>
                                             <div
                                                 className={`${
                                                     notif.new === 0
-                                                        ? "text-gray-500" // Gray text for read notifications
-                                                        : "text-gray-800" // Regular text color for unread notifications
+                                                        ? "text-gray-500"
+                                                        : "text-gray-800"
                                                 }`}
                                             >
                                                 {notif.text}
@@ -140,7 +140,7 @@ const NotificationBell = () => {
                                             </div>
                                             <div className="mt-2 flex space-x-2">
                                                 <Link
-                                                    to={"./" + notif.link}
+                                                    to={`./${notif.link}`}
                                                     onClick={closeDropdown}
                                                 >
                                                     <button className="text-blue-600 text-xs hover:text-blue-800">

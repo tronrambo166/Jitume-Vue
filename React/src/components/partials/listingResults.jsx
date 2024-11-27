@@ -442,10 +442,18 @@ const ListingResults = () => {
         $("#collapseExample").removeClass("hidden");
         $("#colBut").addClass("hidden");
         $("#colBut2").removeClass("hidden");
+
+        // Hide the price elements when collapse is activated
+        $("#price_low").addClass("hidden");
+        $("#price_high").addClass("hidden");
     };
+
     const hide = () => {
         $("#collapseExample").addClass("hidden");
+        $("#price_low").removeClass("hidden");
+        $("#price_high").removeClass("hidden");
     };
+
     const collapse2 = () => {
         var slider = document.getElementById("slider2");
 
@@ -455,25 +463,74 @@ const ListingResults = () => {
         $("#collapseExample2").removeClass("hidden");
         $("#colBut3").addClass("hidden");
         $("#colBut4").removeClass("hidden");
+
+        // Hide the price elements when collapse2 is activated
+        $("#price_low2").addClass("hidden");
+        $("#price_high2").addClass("hidden");
     };
+
     const hide2 = () => {
         $("#collapseExample2").addClass("hidden");
+        $("#price_low2").removeClass("hidden");
+        $("#price_high2").removeClass("hidden");
     };
 
     //UPDATE NEW VALUES
     const UpdateValuesMin = (value) => {
-        min = value;
-    };
-    const UpdateValuesMax = (value) => {
-        max = value;
+        // Remove commas and update min
+        min = value.replace(/,/g, "");
     };
 
+    const UpdateValuesMax = (value) => {
+        // Remove commas and update max
+        max = value.replace(/,/g, "");
+    };
+
+    // Handling input change for min field
+    const handleMinInput = (e) => {
+        const formattedValue = formatNumberWithCommas(e.target.value);
+        e.target.value = formattedValue; // Update the input field with the formatted value
+        UpdateValuesMin(e.target.value); // Update min with the raw value without commas
+    };
+
+    // Handling input change for max field
+    const handleMaxInput = (e) => {
+        const formattedValue = formatNumberWithCommas(e.target.value);
+        e.target.value = formattedValue; // Update the input field with the formatted value
+        UpdateValuesMax(e.target.value); // Update max with the raw value without commas
+    };
+
+    // AMOUNT LOGIC
     const UpdateValuesMin2 = (value) => {
-        min2 = value;
+        // Remove commas before updating the value
+        min2 = value.replace(/,/g, "");
     };
+
     const UpdateValuesMax2 = (value) => {
-        max2 = value;
+        // Remove commas before updating the value
+        max2 = value.replace(/,/g, "");
     };
+
+    const formatNumberWithCommas = (value) => {
+        // Remove non-numeric characters except for the period (.)
+        const numericValue = value.replace(/[^0-9.]/g, "");
+
+        // Format the number with commas
+        return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+
+    const handleMin2Input = (e) => {
+        const formattedValue = formatNumberWithCommas(e.target.value);
+        e.target.value = formattedValue; // Update the input field with the formatted value
+        UpdateValuesMin2(e.target.value); // Update min2 with the value without commas
+    };
+
+    const handleMax2Input = (e) => {
+        const formattedValue = formatNumberWithCommas(e.target.value);
+        e.target.value = formattedValue; // Update the input field with the formatted value
+        UpdateValuesMax2(e.target.value); // Update max2 with the value without commas
+    };
+
     //Range Function
 
     return (
@@ -528,82 +585,76 @@ const ListingResults = () => {
                 <div className="flex flex-col lg:flex-row items-center gap-6 my-6">
                     <div
                         id="turnover_slider"
-                        className="w-full border rounded-lg jakarta border-[#CBD5E1] space-y-2 px-6 pb-4"
+                        className="w-full jakarta text-md border border-[#cbd5e1] rounded-lg space-y-2 px-6 py-4 mt-1"
                     >
                         <button
                             onClick={collapse}
                             id="colBut4"
-                            className="mr-4 my-2 border rounded-full px-3 py-1 "
+                            className="mr-4 my-2 border rounded-full px-3 py-1"
                             name="min"
                         >
-                            Set Range{" "}
+                            Set Range
                         </button>
 
-                        <label className="text-gray-700 font-semibold ">
+                        <label className="text-gray-700 font-semibold mb-2">
                             Turnover Range
                         </label>
-                        <div id="slider" className=" "></div>
+                        <div id="slider" className=""></div>
 
-                        <div className="row mt-3 ">
+                        <div className="row mt-3 jakarta">
                             <div className="col-6 mt-1">
                                 <span
                                     id="price_low"
-                                    className="py-0 "
+                                    className="py-0 text-sm"
                                     name="min"
                                 ></span>
                             </div>
                             <div className="col-6 mt-1 pr-0">
                                 <span
                                     id="price_high"
-                                    className="float-right py-0 "
+                                    className="float-right py-0 text-sm"
                                     name="min"
                                 ></span>
                             </div>
                         </div>
 
-                        {/*COLLAPSE RANGE*/}
-                        <div className="mt-4 hidden" id="collapseExample">
-                            <div className="flex justify-between items-center">
-                                <div className="flex flex-col w-1/2 pr-2 space-y-2">
+                        {/* COLLAPSE RANGE */}
+                        <div className="mt-3 hidden" id="collapseExample">
+                            <div className="flex gap-4">
+                                <div className="flex-1 space-y-2">
                                     <label
                                         htmlFor="low"
                                         className="text-sm font-medium text-gray-700"
                                     >
-                                        Min:
+                                        Min: {min}
                                     </label>
                                     <input
-                                        type="number"
-                                        min="0"
+                                        type="text"
                                         id="low"
                                         className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
                                         name="min"
-                                        onChange={(e) =>
-                                            UpdateValuesMin(e.target.value)
-                                        }
+                                        onChange={handleMinInput}
                                     />
                                 </div>
-
-                                <div className="flex flex-col w-1/2 pl-2 space-y-2">
+                                <div className="flex-1 space-y-2">
                                     <label
                                         htmlFor="high"
                                         className="text-sm font-medium text-gray-700"
                                     >
-                                        Max:
+                                        Max: {max}
                                     </label>
                                     <input
-                                        type="number"
+                                        type="text"
                                         id="high"
                                         className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
                                         name="max"
-                                        onChange={(e) =>
-                                            UpdateValuesMax(e.target.value)
-                                        }
+                                        onChange={handleMaxInput}
                                     />
                                 </div>
                             </div>
 
                             <button
-                                className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-32 mx-auto hover:bg-green-700 transition-colors"
+                                className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-full sm:w-32 mx-auto hover:bg-green-700 transition-colors"
                                 onClick={(event) => {
                                     rangeSliderInitilize();
                                     hide();
@@ -612,9 +663,9 @@ const ListingResults = () => {
                                 Set
                             </button>
                         </div>
-
-                        {/*COLLAPSE RANGE*/}
+                        {/* COLLAPSE RANGE */}
                     </div>
+
                     {/* Turnover Range Slider */}
 
                     <div
@@ -659,17 +710,15 @@ const ListingResults = () => {
                                         htmlFor="low2"
                                         className="text-sm font-medium text-gray-700"
                                     >
-                                        Min:
+                                        Min: {min2}
                                     </label>
                                     <input
-                                        type="number"
+                                        type="text" // Use text instead of number to allow formatting
                                         min="0"
                                         id="low2"
                                         className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
                                         name="min"
-                                        onChange={(e) =>
-                                            UpdateValuesMin2(e.target.value)
-                                        }
+                                        onInput={handleMin2Input} // Use onInput for real-time formatting
                                     />
                                 </div>
                                 <div className="flex-1 space-y-2">
@@ -677,16 +726,14 @@ const ListingResults = () => {
                                         htmlFor="high2"
                                         className="text-sm font-medium text-gray-700"
                                     >
-                                        Max:
+                                        Max: {max2}
                                     </label>
                                     <input
-                                        type="number"
+                                        type="text" // Use text instead of number to allow formatting
                                         id="high2"
                                         className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
                                         name="min"
-                                        onChange={(e) =>
-                                            UpdateValuesMax2(e.target.value)
-                                        }
+                                        onInput={handleMax2Input} // Use onInput for real-time formatting
                                     />
                                 </div>
                             </div>

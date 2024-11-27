@@ -722,6 +722,133 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 overflow-y-auto no-scrollbar">
                                             <div className="relative">
                                                 <label className="block text-gray-700 text-sm mb-1">
+                                                    Potential Investment{" "}
+                                                    <span className="block">
+                                                        Range
+                                                    </span>
+                                                </label>
+
+                                                <div
+                                                    className="border rounded-lg px-3 py-2 text-sm cursor-pointer text-black focus:ring-2 focus:ring-blue-500"
+                                                    onClick={() =>
+                                                        handleDropdownToggle(
+                                                            "invRangeOpen"
+                                                        )
+                                                    }
+                                                >
+                                                    {registrationData.inv_range
+                                                        .length > 0
+                                                        ? registrationData.inv_range.join(
+                                                              ", "
+                                                          )
+                                                        : "Select ranges"}
+                                                </div>
+                                                {dropdowns.invRangeOpen && (
+                                                    <div className="absolute bg-gray-50 border rounded-lg text-black mt-2 w-full  z-10 max-h-36 overflow-y-auto scroll-thin">
+                                                        {[
+                                                            "0-10000",
+                                                            "0-100000",
+                                                            "10000-100000",
+                                                            "100000-250000",
+                                                            "250000-500000",
+                                                            "500000-",
+                                                        ].map((range) => (
+                                                            <label
+                                                                key={range}
+                                                                className="block p-2 cursor-pointer hover:bg-green-50"
+                                                            >
+                                                                <input
+                                                                    type="checkbox"
+                                                                    name={range}
+                                                                    checked={registrationData.inv_range.includes(
+                                                                        range
+                                                                    )}
+                                                                    onChange={(
+                                                                        e
+                                                                    ) =>
+                                                                        handleCheckboxChange(
+                                                                            e,
+                                                                            "inv_range"
+                                                                        )
+                                                                    }
+                                                                    className="mr-2"
+                                                                />
+                                                                {range}
+                                                            </label>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            <div className="relative">
+                                                <label className="block text-gray-700 text-sm mb-1">
+                                                    Which industries are you
+                                                    interested in investing?
+                                                </label>
+                                                <div
+                                                    className="border rounded-lg px-3 py-2 text-sm cursor-pointer focus:ring-2 text-black focus:ring-blue-500"
+                                                    onClick={() =>
+                                                        handleDropdownToggle(
+                                                            "industriesOpen"
+                                                        )
+                                                    }
+                                                >
+                                                    {registrationData
+                                                        .interested_cats
+                                                        .length > 0
+                                                        ? registrationData.interested_cats.join(
+                                                              ", "
+                                                          )
+                                                        : "Select industries"}
+                                                </div>
+                                                {dropdowns.industriesOpen && (
+                                                    <div className="absolute bg-gray-50  text-black rounded-lg mt-2 w-full  border z-10 max-h-36 overflow-y-auto scroll-thin">
+                                                        {[
+                                                            "Agriculture",
+                                                            "Arts/Culture",
+                                                            "Sports/Gaming",
+                                                            "Auto",
+                                                            "Real State",
+                                                            "Food",
+                                                            "Legal",
+                                                            "Security",
+                                                            "Media/Internet",
+                                                            "Technology/Communications",
+                                                            "Retail",
+                                                            "Finance/Accounting",
+                                                            "Pets",
+                                                            "Domestic (Home Help etc)",
+                                                        ].map((industry) => (
+                                                            <label
+                                                                key={industry}
+                                                                className="block p-2 cursor-pointer hover:bg-green-50"
+                                                            >
+                                                                <input
+                                                                    type="checkbox"
+                                                                    name={
+                                                                        industry
+                                                                    }
+                                                                    checked={registrationData.interested_cats.includes(
+                                                                        industry
+                                                                    )}
+                                                                    onChange={(
+                                                                        e
+                                                                    ) =>
+                                                                        handleCheckboxChange(
+                                                                            e,
+                                                                            "interested_cats"
+                                                                        )
+                                                                    }
+                                                                    className="mr-2"
+                                                                />
+                                                                {industry}
+                                                            </label>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div className="relative">
+                                                <label className="block text-gray-700 text-sm mb-1">
                                                     Attach ID/Passport{" "}
                                                     <span className="text-red-500">
                                                         *
@@ -789,134 +916,6 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                     className="border rounded-lg px-3 py-2 w-full text-sm text-black focus:ring-2 focus:ring-blue-500"
                                                 />
                                             </div>
-
-                                            <div className="relative">
-                                                <label className="block text-gray-700 text-sm mb-1">
-                                                    Potential Investment{" "}
-                                                    <span className="block">
-                                                        Range
-                                                    </span>
-                                                </label>
-
-                                                <div
-                                                    className="border rounded-lg px-3 py-2 text-sm cursor-pointer text-black focus:ring-2 focus:ring-blue-500"
-                                                    onClick={() =>
-                                                        handleDropdownToggle(
-                                                            "invRangeOpen"
-                                                        )
-                                                    }
-                                                >
-                                                    {registrationData.inv_range
-                                                        .length > 0
-                                                        ? registrationData.inv_range.join(
-                                                              ", "
-                                                          )
-                                                        : "Select ranges"}
-                                                </div>
-                                                {dropdowns.invRangeOpen && (
-                                                    <div className="absolute bg-white border rounded-lg text-black mt-2 w-full  z-10 max-h-48 overflow-y-auto scroll-thin">
-                                                        {[
-                                                            "0-10000",
-                                                            "0-100000",
-                                                            "10000-100000",
-                                                            "100000-250000",
-                                                            "250000-500000",
-                                                            "500000-",
-                                                        ].map((range) => (
-                                                            <label
-                                                                key={range}
-                                                                className="block p-2 cursor-pointer hover:bg-blue-50"
-                                                            >
-                                                                <input
-                                                                    type="checkbox"
-                                                                    name={range}
-                                                                    checked={registrationData.inv_range.includes(
-                                                                        range
-                                                                    )}
-                                                                    onChange={(
-                                                                        e
-                                                                    ) =>
-                                                                        handleCheckboxChange(
-                                                                            e,
-                                                                            "inv_range"
-                                                                        )
-                                                                    }
-                                                                    className="mr-2"
-                                                                />
-                                                                {range}
-                                                            </label>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                            </div>
-
-                                            <div className="relative">
-                                                <label className="block text-gray-700 text-sm mb-1">
-                                                    Which industries are you
-                                                    interested in investing?
-                                                </label>
-                                                <div
-                                                    className="border rounded-lg px-3 py-2 text-sm cursor-pointer focus:ring-2 text-black focus:ring-blue-500"
-                                                    onClick={() =>
-                                                        handleDropdownToggle(
-                                                            "industriesOpen"
-                                                        )
-                                                    }
-                                                >
-                                                    {registrationData
-                                                        .interested_cats
-                                                        .length > 0
-                                                        ? registrationData.interested_cats.join(
-                                                              ", "
-                                                          )
-                                                        : "Select industries"}
-                                                </div>
-                                                {dropdowns.industriesOpen && (
-                                                    <div className="absolute bg-white  text-black rounded-lg mt-2 w-full  border z-10 max-h-48 overflow-y-auto scroll-thin">
-                                                        {[
-                                                            "Agriculture",
-                                                            "Arts/Culture",
-                                                            "Sports/Gaming",
-                                                            "Auto",
-                                                            "Real State",
-                                                            "Food",
-                                                            "Legal",
-                                                            "Security",
-                                                            "Media/Internet",
-                                                            "Technology/Communications",
-                                                            "Retail",
-                                                            "Finance/Accounting",
-                                                            "Pets",
-                                                            "Domestic (Home Help etc)",
-                                                        ].map((industry) => (
-                                                            <label
-                                                                key={industry}
-                                                                className="block p-2 cursor-pointer hover:bg-blue-50"
-                                                            >
-                                                                <input
-                                                                    type="checkbox"
-                                                                    name={
-                                                                        industry
-                                                                    }
-                                                                    checked={registrationData.interested_cats.includes(
-                                                                        industry
-                                                                    )}
-                                                                    onChange={(
-                                                                        e
-                                                                    ) =>
-                                                                        handleCheckboxChange(
-                                                                            e,
-                                                                            "interested_cats"
-                                                                        )
-                                                                    }
-                                                                    className="mr-2"
-                                                                />
-                                                                {industry}
-                                                            </label>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                            </div>
                                         </div>
                                         <div className="flex items-center space-x-2 mt-4">
                                             <input
@@ -945,7 +944,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                 </a>
                                             </label>
                                         </div>
-                                        <div className="flex mt-5 items-center justify-between mt-4">
+                                        <div className="flex mt-5 items-center justify-between ">
                                             <button
                                                 type="button"
                                                 onClick={handleBack}
@@ -955,7 +954,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                             </button>
                                             <button
                                                 type="submit"
-                                                className="btn btn-primary rounded-full flex items-center justify-center w-1/3"
+                                                className="btn btn-primary rounded-full flex items-center justify-center  sm:w-1/3 sm:ml-auto"
                                                 disabled={loading}
                                             >
                                                 {loading ? (

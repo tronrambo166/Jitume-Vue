@@ -282,24 +282,25 @@ const AddBusiness = () => {
 
     return (
         <div className="p-4  min-h-screen">
-            <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg mb-8">
-                <h2 className="text-xl font-bold mb-4 dark:text-white">
+            <div className="p-6 bg-white dark:bg-gray-800 rounded-lg border mb-8">
+                <h2 className="text-xl font-bold mb-4 flex justify-center dark:text-white">
                     Add Business
                 </h2>
 
                 {!Con ? (
-                    <div>
-                        <p className="text-center bg-light p-2 ">
-                            {" "}
+                    <div className="flex flex-col items-center justify-center ">
+                        <p className="text-center bg-light  ">
                             You must onboard to Jitume Stripe platform to
                             receive business milestone payments.
                         </p>
-                        <button
-                            onClick={connectToStripe}
-                            className="btn-primary py-2 px-6 rounded-lg text-white focus:outline-none"
-                        >
-                            Connect to Stripe
-                        </button>
+                        <div className="mt-4">
+                            <button
+                                onClick={connectToStripe}
+                                className="btn-primary flex py-2 px-6 rounded-lg text-white focus:outline-none"
+                            >
+                                Connect to Stripe
+                            </button>
+                        </div>
                     </div>
                 ) : (
                     <form

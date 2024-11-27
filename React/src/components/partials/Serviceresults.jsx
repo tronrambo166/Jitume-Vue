@@ -280,9 +280,16 @@ const ServiceResults = () => {
         $("#collapseExample").removeClass("hidden");
         $("#colBut").addClass("hidden");
         $("#colBut2").removeClass("hidden");
+
+        // Show the price elements when collapse is activated
+        $("#price_low").addClass("hidden");
+        $("#price_high").addClass("hidden");
     };
+
     const hide = () => {
         $("#collapseExample").addClass("hidden");
+        $("#price_low").removeClass("hidden");
+        $("#price_high").removeClass("hidden");
     };
 
     //UPDATE NEW VALUES
@@ -384,7 +391,7 @@ const ServiceResults = () => {
                         <button
                             onClick={collapse}
                             id="colBut4"
-                            className="mr-4 my-2 py-0 border rounded-full px-3 py-1 "
+                            className="mr-4 my-2  border rounded-full px-3 py-1 "
                             name="min"
                         >
                             Set Range{" "}
@@ -417,12 +424,12 @@ const ServiceResults = () => {
                             {/*COLLAPSE Amount*/}
                             <div className="mt-3 hidden" id="collapseExample">
                                 <div className="flex gap-4">
-                                    <div className="flex-1 space-y-2">
+                                    <div className="flex-1 space-y-2 ">
                                         <label
                                             htmlFor="low"
                                             className="text-sm font-medium text-gray-700"
                                         >
-                                            Min:
+                                            Min: {min}
                                         </label>
                                         <input
                                             type="text" // Changed to text to allow comma formatting
@@ -435,12 +442,19 @@ const ServiceResults = () => {
                                             }
                                         />
                                     </div>
-                                    <div className="flex-1 space-y-2">
+                                    <div className="flex-1 space-y-2 ">
                                         <label
                                             htmlFor="high"
-                                            className="text-sm font-medium text-gray-700"
+                                            className="text-sm  font-medium text-gray-700"
                                         >
-                                            Max:
+                                            Max: {max}
+                                            <span
+                                                id="price_high"
+                                                className="float-right py-0 "
+                                                name="min"
+                                            >
+                                                {" "}
+                                            </span>
                                         </label>
                                         <input
                                             type="text" // Changed to text to allow comma formatting
