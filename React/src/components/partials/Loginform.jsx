@@ -7,8 +7,8 @@ import {
 import axiosClient from "../../axiosClient";
 import { useStateContext } from "../../contexts/contextProvider";
 import { useAlert } from "../partials/AlertContext";
-
-const LoginForm = () => { 
+import ForgotPassModal from "./ForgotPassModal";
+const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -33,6 +33,11 @@ const LoginForm = () => {
             }
         }
     }, []);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleModalToggle = () => {
+        setIsModalOpen(!isModalOpen);
+    };
 
     // Toggle password visibility
     const togglePasswordVisibility = () => {
@@ -114,11 +119,11 @@ const LoginForm = () => {
 
     return (
         <>
-           <form
-    className="flex flex-col px-4 sm:px-6 space-y-3 "
-    style={{ maxHeight: "calc(100vh - 150px)" }}
-    onSubmit={handleSubmit}
->
+            <form
+                className="flex flex-col px-4 sm:px-6 space-y-3 "
+                style={{ maxHeight: "calc(100vh - 150px)" }}
+                onSubmit={handleSubmit}
+            >
                 <div className="text-center pt-1">
                     <h1 className="font-semibold text-gray-700 text-md">
                         Sign In
@@ -213,16 +218,17 @@ const LoginForm = () => {
                         "Proceed"
                     )}
                 </button>
-
-                <div className="text-center py-4">
-                    <a
-                        href="http://"
-                        className="text-center hover:text-green text-black underline text-[14px]"
-                    >
-                        Forgot Password
-                    </a>
-                </div>
             </form>
+            <div className="text-center py-4">
+                <a
+                    href="#"
+                    className="text-center hover:text-green text-black underline text-[14px]"
+                    onClick={handleModalToggle}
+                >
+                    Forgot Password
+                </a>
+                {isModalOpen && <ForgotPassModal onClose={handleModalToggle} />}
+            </div>
         </>
     );
 };
