@@ -40,7 +40,7 @@ import MyBookings from "./components/dashboard/Service/Mybookings";
 import AddBusinesS from "./components/dashboard/business/AddBusiness";
 import ServiceCategory from "./components/partials/ServiceCategory";
 import Settings from "./components/partials/Settings/Settings";
-
+import MySubscription from "./components/dashboard/mysubscription/MySubscription";
 // Footer Components
 import Careers from "./components/footer-pages/Careers";
 import ReferAbusiness from "./components/footer-pages/ReferAbusiness";
@@ -132,6 +132,7 @@ const router = createBrowserRouter([
             { path: "services-table", element: <ServiceTable /> },
             { path: "addservicemilestone", element: <Addservicemilestone /> },
             { path: "mybookings", element: <MyBookings /> },
+            { path: "my-subscription", element: <MySubscription /> },
             { path: "addbusiness", element: <AddBusinesS /> },
             { path: "settings/", element: <Settings /> },
         ],

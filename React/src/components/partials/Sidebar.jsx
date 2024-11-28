@@ -41,7 +41,6 @@ const Sidebar = () => {
             console.log(data);
             setSubId(data.data.mySub.id);
         });
-        
 
         handleResize();
         window.addEventListener("resize", handleResize);
@@ -53,37 +52,33 @@ const Sidebar = () => {
         };
     }, []);
 
-
-        const cancelSubscription = () => {
+    const cancelSubscription = () => {
         try {
-
             $.confirm({
-            title: "Cancel Subscription?",
-            content: "Are you sure?",
-            buttons: {
-                confirm: function () {
-                    axiosClient.get("business/cancelSubscription/"+subId).then((data) => {
-                        console.log(data);
-                        if (response.data.status === 200) {
-                        showAlert("success", response.data.message);
-                        } else {
-                            showAlert("error", response.data.message);
-                        }
-                    });
-                      
-                },
-                cancel: function () {
-                    $.alert("Canceled!");
-                        },
+                title: "Cancel Subscription?",
+                content: "Are you sure?",
+                buttons: {
+                    confirm: function () {
+                        axiosClient
+                            .get("business/cancelSubscription/" + subId)
+                            .then((data) => {
+                                console.log(data);
+                                if (response.data.status === 200) {
+                                    showAlert("success", response.data.message);
+                                } else {
+                                    showAlert("error", response.data.message);
+                                }
+                            });
                     },
-                });
-
-            
+                    cancel: function () {
+                        $.alert("Canceled!");
+                    },
+                },
+            });
         } catch (error) {
             console.error("Error saving data:", error.response);
         }
     };
-
 
     return (
         <>
@@ -424,8 +419,6 @@ const Sidebar = () => {
                                     )}
                                 </NavLink>
                             </li>
-
-
                             <li className="nav-item mb-6 rounded-xl py-2">
                                 {/* Added margin-bottom (mb-6) to move it up from the bottom */}
                                 <NavLink
@@ -436,7 +429,7 @@ const Sidebar = () => {
                                                 : "hover:bg-gray-200 text-gray-400"
                                         }`
                                     }
-                                    to="/dashboard/mybookings"
+                                    to="/dashboard/my-subscription"
                                     end // Ensures exact match
                                     onClick={() => setIsOpen(false)}
                                 >
@@ -455,29 +448,23 @@ const Sidebar = () => {
                                 </NavLink>
                             </li>
 
-                            {/*Don't remove it*/}
-                            {subId && <button
-                                    className=
-                                        "navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300
-                                            bg-green-800 text-white"
- 
+                            {/* Don't remove it */}
+                            {subId && (
+                                <button
+                                    className="navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 bg-green-800 text-white"
                                     onClick={cancelSubscription}
                                 >
-                                    
-                                            <BsQuestionCircle
-                                            />
-                                            <span>Cancel Subscription</span>
-                                        
+                                    <BsQuestionCircle />
+                                    <span>Cancel Subscription</span>
                                 </button>
-                            }
-                            {/*Don't remove it*/}
+                            )}
+                            {/* Don't remove it */}
 
-
-                            {/* Plz dont remove the part below  */}
+                            {/* Plz don't remove the part below */}
                             <li className="nav-item mb-6 rounded-xl py-2">
                                 <NavLink
                                     className={({ isActive }) =>
-                                        `navLink flex items-center gap-4  px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 `
+                                        `navLink flex items-center gap-4 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300`
                                     }
                                 ></NavLink>
                             </li>
