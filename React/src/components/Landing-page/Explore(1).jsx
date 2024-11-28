@@ -215,7 +215,7 @@ const Explore = () => {
             {/* Explore Button */}
             <button
                 onClick={onSearch}
-                className="flex items-center justify-center gap-2 px-4 sm:px-6 py-3 bg-green-800 hover:bg-green-700 text-white rounded-xl text-sm sm:text-lg shadow-lg hover:opacity-80 transition-opacity duration-300"
+                className="flex items-center mt-14 justify-center gap-2 px-4 sm:px-6 py-3 bg-green-800 hover:bg-green-700 text-white rounded-xl text-sm sm:text-lg shadow-lg hover:opacity-80 transition-opacity duration-300"
                 disabled={isLoading} // Disable button while loading
             >
                 {isLoading && (

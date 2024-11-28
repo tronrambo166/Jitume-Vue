@@ -85,7 +85,7 @@ const MyBusinesses = () => {
     };
 
     return (
-        <div className="bg-white border mt-20 rounded-xl w-full px-4 py-6 sm:px-8">
+        <div className="bg-white border mt-4 rounded-xl w-full px-4 py-6 sm:px-8">
             <h1 className="text-[#2D3748] font-semibold text-xl sm:text-2xl mb-6">
                 My Businesses
             </h1>

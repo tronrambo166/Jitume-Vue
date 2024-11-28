@@ -48,7 +48,7 @@ const MyBookings = () => {
     };
 
     return (
-        <div className="bg-white shadow-md mt-20 rounded-xl w-full p-4">
+        <div className="bg-white shadow-md mt-6 rounded-xl w-full p-4">
             <h1 className="text-[#2D3748] font-semibold text-2xl mb-4">
                 My Bookings
             </h1>

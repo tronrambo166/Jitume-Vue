@@ -143,6 +143,13 @@ const PersonalInfo = () => {
             "Edit mode activated! You can now update your profile."
         );
     };
+    const logImageUrl = () => {
+        console.log(
+            "THE IMAGE THAT IS GOING TO BE SEEN IS THIS :",
+            tempData.image ? `../${tempData.image}` : userImage
+        );
+    };
+    logImageUrl(); // This will log the image URL to the console
 
     // Function to check for null and return a placeholder
     const handleNullValue = (value, placeholder) => {
@@ -166,10 +173,17 @@ const PersonalInfo = () => {
             <div className="relative w-36 h-36 mb-8">
                 <div className="w-36 h-36 rounded-lg overflow-hidden group">
                     <img
-                        src={imagePreview || userImage}
+                        src={
+                            imagePreview
+                                ? imagePreview
+                                : tempData.image
+                                ? `../${tempData.image}`
+                                : userImage
+                        }
                         alt="Avatar"
                         className="w-full h-full object-cover"
                     />
+
                     <label
                         htmlFor="avatar-upload"
                         className={`absolute inset-0 bg-black bg-opacity-10 backdrop-filter backdrop-blur-md opacity-0 group-hover:opacity-100 rounded-lg flex justify-center items-center transition-opacity duration-300 cursor-pointer ${

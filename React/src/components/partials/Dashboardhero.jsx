@@ -27,25 +27,17 @@ const Dashboardhero = () => {
     const userImage = DefaultImg();
     const [user, setUser] = useState({});
     const [id, setId] = useState("");
-    const [loading, setLoading] = useState(true); // Full-page loader state
-    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
+    const [loading, setLoading] = useState(true);
+    const { showAlert } = useAlert();
 
-    // Custom notification function
-
-    // Fetch user data
     useEffect(() => {
         axiosClient
             .get("/checkAuth")
             .then(({ data }) => {
                 setUser(data.user);
                 setId(data.user.id);
-
-                // Log the user image to the console
-                // Nurul Check the structure of the API response to ensure that image exists within data.user.
-                // If image is missing or null in the response, it will  be set as null in your state.
-
-                console.log("User Image: ", data.user.image);
-                console.log("User Data: ", data.user);
+                // console.log("User Image: ", data.user.image);
+                // console.log("User Data: ", data.user);
             })
             .catch(() => {
                 showAlert("error", "Failed to load user data. Redirecting...");
@@ -54,37 +46,16 @@ const Dashboardhero = () => {
             .finally(() => setLoading(false));
     }, []);
 
-    // useEffect(() => {
-    //     const notifications = () => {
-    //         axiosClient
-    //             .get("business/notifications")
-    //             .then(({ data }) => {
-    //                 //setCards(data.data);
-    //                 //res = data.data;
-    //                 console.log('Notifications = ')
-    //                 console.log(data);
-    //             })
-    //             .catch((err) => {
-    //                 console.log(err);
-    //             });
-    //     };
-    //     notifications();
-    // }, []);
     useEffect(() => {
         const handleUserUpdate = (event) => {
-            const updatedData = event.detail; // Get the updated data object
+            const updatedData = event.detail;
             setUser((prevUser) => ({
                 ...prevUser,
-                ...updatedData, // Merge the new data into the existing user state
+                ...updatedData,
             }));
-
-            console.log("User data updated:", updatedData); // Log the updated data
+            console.log("User data updated:", updatedData);
         };
-
-        // Listen for the custom event
         window.addEventListener("userUpdated", handleUserUpdate);
-
-        // Cleanup the event listener on unmount
         return () => {
             window.removeEventListener("userUpdated", handleUserUpdate);
             console.log("Event listener unmounted");
@@ -92,12 +63,16 @@ const Dashboardhero = () => {
     }, []);
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [isOpen, setIsOpen] = useState(false); // State to control sidebar open/close
+    const [isOpen, setIsOpen] = useState(false);
 
     const toggleSidebar = () => {
-        setIsOpen(!isOpen); // Toggle the sidebar state
+        setIsOpen(!isOpen);
     };
-    // Handle logout
+    // Get the image URL from the user object
+    // const imageUrl = user?.image ? `../${user.image}` : userImage;
+    // console.log("Final Image URL:", imageUrl);
+
+
     const onLogout = (ev) => {
         ev.preventDefault();
         setLoading(true);
@@ -106,12 +81,11 @@ const Dashboardhero = () => {
             .then(() => {
                 setUser(null);
                 setToken(null);
-                showAlert("success", "Logged out successfully"); // Show error alert
-
-                navigate("/"); // Redirect to the guest layout
+                showAlert("success", "Logged out successfully");
+                navigate("/");
             })
             .catch(() => {
-                showAlert("error", "Failed to log out. Please try again."); // Show error alert
+                showAlert("error", "Failed to log out. Please try again.");
             })
             .finally(() => setLoading(false));
     };
@@ -173,7 +147,6 @@ const Dashboardhero = () => {
                                 className="rounded-xl w-16 h-16 md:w-20 md:h-20"
                                 alt="Profile"
                             />
-
                             <div className="flex flex-col">
                                 <h2 className="text-black text-sm md:text-lg font-bold">
                                     {user.fname} {user.lname}
@@ -221,16 +194,6 @@ const Dashboardhero = () => {
                                     <span>Account</span>
                                 </Link>
                             )}
-
-                            {/* FaBars Icon next to Account link on mobile */}
-                            {/* {id && (
-                                <div className="flex items-center md:hidden ml-auto">
-                                    <FaBars
-                                        onClick={toggleSidebar}
-                                        className="text-black text-2xl cursor-pointer"
-                                    />
-                                </div>
-                            )} */}
                         </div>
                     </div>
                 </div>
