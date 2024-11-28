@@ -167,10 +167,10 @@ function InvestmentBids() {
         }`} // Green when active
                 >
                     {loading ? (
-                        // <AiOutlineLoading3Quarters
-                        //     className="animate-spin mr-2"
-                        //     size={20}
-                        // />
+                        <AiOutlineLoading3Quarters
+                            className="animate-spin mr-2"
+                            size={20}
+                        />
                     ) : (
                         "Accept Bids"
                     )}
