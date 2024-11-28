@@ -24,7 +24,7 @@ const PersonalInfo = () => {
             .then(({ data }) => {
                 setFormData(data.user);
                 setTempData(data.user);
-                setImagePreview(data.user.image); // Assume the API returns an image URL
+                //setImagePreview(data.user.image); // Assume the API returns an image URL
             })
             .catch(() => {
                 showAlert(
@@ -172,17 +172,23 @@ const PersonalInfo = () => {
 
             <div className="relative w-36 h-36 mb-8">
                 <div className="w-36 h-36 rounded-lg overflow-hidden group">
-                    <img
+                    {imagePreview ? (
+                        <img id="img1"
+                        src={ imagePreview }
+                        alt="Avatar"
+                        className="w-full h-full object-cover"
+                    />
+                        ):(
+                        <img id="img2"
                         src={
-                            imagePreview
-                                ? imagePreview
-                                : tempData.image
-                                ? `../${tempData.image}`
-                                : userImage
+                            '../'+tempData.image
                         }
                         alt="Avatar"
                         className="w-full h-full object-cover"
                     />
+                        )}
+
+                    
 
                     <label
                         htmlFor="avatar-upload"

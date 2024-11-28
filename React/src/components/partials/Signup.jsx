@@ -14,6 +14,7 @@ const RegisterForm = () => {
     const [step, setStep] = useState(1);
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
     const [vcode, setVCode] = useState(null);
+    const [emailExist, setEmailExist] = useState(false);
 
     const [formData, setFormData] = useState({
         firstName: "",
@@ -207,7 +208,7 @@ const RegisterForm = () => {
             isAgreedToTerms: e.target.checked,
         }));
     };
-    const validateStep2 = () => {
+    const validateStep2 = async () => {
         let valid = true;
         let newErrors = { ...errors };
 
@@ -255,15 +256,23 @@ const RegisterForm = () => {
             newErrors.terms = "";
         }
 
-            axiosClient.get("emailExists/"+formData.email).then((data) => {
-                console.log(data);
-                if (data.data.status === 400) { 
-                newErrors.email = data.data.message;
-                valid = false;
-                console.log(valid);
-                } 
-            });
-        alert(valid)
+            try 
+            {
+               const response = await axiosClient.get(
+                   "emailExists/" + formData.email
+               );
+               console.log(response)
+               if (response.data.status === 400) {
+                   newErrors.email = 'Email alreday exists!'; // 
+                   valid = false; // Mark as invalid if email exists
+                   showAlert('error', newErrors.email);
+                       }
+               } catch (error) {
+                   console.error("Error checking email:", error);
+                   newErrors.email = "Error checking email. Please try again.";
+                   //valid = false; // Handle any API call errors
+            }
+
         // Update state with new errors
         setErrors(newErrors);
         return valid;
@@ -284,7 +293,13 @@ const handleNextStep = async () => {
     if (step === 1 && validateStep1()) {
         setStep(2); // Move to step 2
         showAlert("info", "You are now in Step 2.");
-    } else if (step === 2 && validateStep2()) {
+    } else if (step === 2) {
+         const isStep2Valid = await validateStep2();
+          if (!isStep2Valid) {
+            return; // Stop if step 2 is not valid (email exists or other validation fails)
+        }
+
+
         setIsLoading(true); // Set loading state to true during email sending
         // Generate a random code for email verification
         const code = Math.floor(Math.random() * 10000);
@@ -315,10 +330,9 @@ const handleNextStep = async () => {
 
         // Combine OTP input values into a single string
         const otpCode = otp.join("");
-        console.log(otpCode);
+        //console.log(otpCode);
 
         // Verify the OTP code entered by the user
-
         if (vcode != otpCode) {
             showAlert("error", "Invalid OTP. Please try again.");
             setIsLoading(false);
@@ -334,7 +348,7 @@ const handleNextStep = async () => {
             gender: formData.gender,
             dob: `${formData.dobYear}-${formData.dobMonth}-${formData.dobDay}`, // Format: "YYYY-MM-DD"
             password: formData.password,
-        };
+        }; console.log(formattedData);
 
         try {
             const { data } = await axiosClient.post("/register", formattedData);
