@@ -18,15 +18,15 @@ const MySubscription = () => {
             startDate: "01/01/2024",
             endDate: "02/01/2024",
             isActive: true,
-        },
-        {
-            name: "Gold",
-            daysRemaining: 365,
-            price: "$48/month",
-            startDate: "01/01/2024",
-            endDate: "01/01/2025",
-            isActive: false,
-        },
+         },
+        // {
+        //     name: "Gold",
+        //     daysRemaining: 365,
+        //     price: "$48/month",
+        //     startDate: "01/01/2024",
+        //     endDate: "01/01/2025",
+        //     isActive: false,
+        // },
     ];
 
     // Billing history data (to be replaced with API data later)
@@ -123,7 +123,7 @@ const MySubscription = () => {
                 </div>
 
                 {/* Auto Renew Toggle */}
-                <div className="mt-8 border-t pt-6">
+                {/*<div className="mt-8 border-t pt-6">
                     <label className="flex items-center gap-4">
                         <span
                             className={`toggle-label block w-12 h-6 rounded-full relative cursor-pointer ${
@@ -149,10 +149,10 @@ const MySubscription = () => {
                         This option, if checked, will renew your subscription
                         when your current plan expires.
                     </p>
-                </div>
+                </div>*/}
 
                 {/* Billing History Section */}
-                <div className="mt-8">
+          {/*      <div className="mt-8">
                     <h3 className="text-xl font-bold text-green-800">
                         Billing History
                     </h3>
@@ -192,7 +192,7 @@ const MySubscription = () => {
                             ))}
                         </tbody>
                     </table>
-                </div>
+                </div>*/}
             </div>
         </div>
     );

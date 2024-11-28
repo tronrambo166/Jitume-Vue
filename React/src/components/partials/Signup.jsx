@@ -117,8 +117,29 @@ const RegisterForm = () => {
                     target.value,
                     ...prevOtp.slice(index + 1),
                 ];
+                //Verify OTP
+                const otpCode = updatedOtp.join("");
+
+                if(index == 3){
+                    if (vcode == otpCode) {
+                        handleSubmit();
+
+                        // Add a set loading
+                        setIsLoading(true);
+                        // Add a set loading
+                    }
+                    else {
+                        showAlert("error", "Invalid OTP. Please try again.");
+                        setIsLoading(false);
+                        //return; // Stop further execution if OTP verification fails
+                    }
+                }
+                //Verify OTP
+                
                 return updatedOtp;
+
             });
+            //console.log(currotp);
 
             // Move focus to the next input field
             if (index < otp.length - 1) {
@@ -262,10 +283,9 @@ const RegisterForm = () => {
                    "emailExists/" + formData.email
                );
                console.log(response)
-               if (response.data.status === 400) {
-                   newErrors.email = 'Email alreday exists!'; // 
+               if (response.data.status === 400) { 
                    valid = false; // Mark as invalid if email exists
-                   showAlert('error', newErrors.email);
+                   showAlert('error', 'Email alreday exists!');
                        }
                } catch (error) {
                    console.error("Error checking email:", error);
@@ -329,15 +349,15 @@ const handleNextStep = async () => {
         setIsLoading(true);
 
         // Combine OTP input values into a single string
-        const otpCode = otp.join("");
+        //const otpCode = otp.join("");
         //console.log(otpCode);
 
         // Verify the OTP code entered by the user
-        if (vcode != otpCode) {
-            showAlert("error", "Invalid OTP. Please try again.");
-            setIsLoading(false);
-            return; // Stop further execution if OTP verification fails
-        }
+        // if (vcode != otpCode) {
+        //     showAlert("error", "Invalid OTP. Please try again.");
+        //     setIsLoading(false);
+        //     return; // Stop further execution if OTP verification fails
+        // }
 
         // If OTP verification is successful, proceed with registration
         const formattedData = {
@@ -747,16 +767,16 @@ const handleNextStep = async () => {
                                             />
                                         ))}
                                     </form>
-                                    {step === 3 && (
-                                        <button
-                                            type="button"
-                                            onClick={handleSubmit}
-                                            className="bg-green mb-8 hover:bg-green-700 w-full text-white px-4 py-2 rounded-full flex items-center justify-center mt-5"
-                                        >
-                                            Verify
-                                            <FaCheck className="ml-2" />
-                                        </button>
-                                    )}
+                                    {/*step === 3 && (
+                                        // <button
+                                        //     type="button"
+                                        //     onClick={handleSubmit}
+                                        //     className="bg-green mb-8 hover:bg-green-700 w-full text-white px-4 py-2 rounded-full flex items-center justify-center mt-5"
+                                        // >
+                                        //     Verify
+                                        //     <FaCheck className="ml-2" />
+                                        // </button>
+                                    ) */}
                                 </div>
                             </section>
                         </div>

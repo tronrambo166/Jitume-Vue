@@ -6,7 +6,7 @@ import { useStateContext } from "../../contexts/contextProvider";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import Navbar from "./Navbar";
-// import Modal from "./Authmodal";
+ import Modal from "./Authmodal";
 import ServiceHero from "../Heros/ServiceHero";
 import BackBtn from "./BackBtn";
 
@@ -23,6 +23,7 @@ const MilestonePage = () => {
     const { token } = useStateContext();
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [isModalOpen, setModalOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     // const [miles, setMiles] = useState([]);
     const total_steps = miles.length;
@@ -172,7 +173,7 @@ const MilestonePage = () => {
                 {!token && (
                     <div class="w-75 h-100 py-5 my-5 my-auto justify-content-center my-2 text-center mx-auto">
                         <button
-                            onClick={handleAuthModalOpen}
+                            onClick={() => setIsAuthModalOpen(true)}
                             className="btn-primary py-2 px-6 rounded-xl mt-3"
                         >
                             {" "}
@@ -366,6 +367,12 @@ const MilestonePage = () => {
                     </table>
                 </div>
                 <ToastContainer />
+
+                <Modal
+                isOpen={isAuthModalOpen}
+                onClose={() => setIsAuthModalOpen(false)}
+                />
+
             </div>
         </>
     );

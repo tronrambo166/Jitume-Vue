@@ -113,7 +113,7 @@ const EditModal = ({
                 showAlert("warning", response.data.message); // Show warning alert for non-200 status
             }
 
-            console.log(response.data);
+            //console.log(response.data);
         } catch (error) {
             console.log(error);
             showAlert("error", error.message || "An error occurred."); // Show error alert

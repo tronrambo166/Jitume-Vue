@@ -89,7 +89,7 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
                 showAlert("error", response.data.message);
             }
 
-            console.log(response.data);
+            //console.log(response.data);
             onUpdate(formData); // Call onUpdate function with formData
             onClose(); // Close the modal or form
         } catch (error) {

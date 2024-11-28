@@ -180,8 +180,9 @@ const PersonalInfo = () => {
                     />
                         ):(
                         <img id="img2"
-                        src={
+                        src={tempData.image?
                             '../'+tempData.image
+                            : userImage
                         }
                         alt="Avatar"
                         className="w-full h-full object-cover"
