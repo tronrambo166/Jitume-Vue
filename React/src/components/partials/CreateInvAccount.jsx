@@ -5,6 +5,7 @@ import { useStateContext } from "../../contexts/contextProvider";
 import axiosClient from "../../axiosClient";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useAlert } from "../partials/AlertContext";
+import Fogts from "./Fogts";
 function CreateInvestorAccount({ isOpen, onClose }) {
     const [isSignIn, setIsSignIn] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
@@ -360,114 +361,112 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                 {/* Content area without scrollbar */}
                 <div className=" scroll-thin overflow-hidden flex-1 max-h-[70vh]">
                     {isSignIn ? (
-                        <form
-                            onSubmit={handleLoginSubmit}
-                            className="flex flex-col items-center space-y-4"
-                        >
-                            <h2 className="text-2xl font-semibold text-gray-800">
-                                Sign In
-                            </h2>
-                            <p className="text-sm text-gray-600">
-                                Enter your details to log in
-                            </p>
+                        <>
+                            <form
+                                onSubmit={handleLoginSubmit}
+                                className="flex flex-col items-center space-y-4"
+                            >
+                                <h2 className="text-2xl font-semibold text-gray-800">
+                                    Sign In
+                                </h2>
+                                <p className="text-sm text-gray-600">
+                                    Enter your details to log in
+                                </p>
 
-                            <div className="flex flex-col w-full max-w-sm space-y-4">
-                                <div className="flex flex-col">
-                                    <label className="text-gray-700 text-sm">
-                                        Email
-                                    </label>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        value={loginData.email}
-                                        onChange={handleLoginChange}
-                                        className="border rounded-lg px-3 text-black py-2 text-sm"
-                                        required
-                                    />
-                                    {errors.email && (
+                                <div className="flex flex-col w-full max-w-sm space-y-4">
+                                    <div className="flex flex-col">
+                                        <label className="text-gray-700 text-sm">
+                                            Email
+                                        </label>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            value={loginData.email}
+                                            onChange={handleLoginChange}
+                                            className="border rounded-lg px-3 text-black py-2 text-sm"
+                                            required
+                                        />
+                                        {errors.email && (
+                                            <p className="text-red-500 text-xs">
+                                                {errors.email}
+                                            </p>
+                                        )}
+                                    </div>
+                                    <div className="flex flex-col relative space-y-1">
+                                        <label className="text-gray-700 text-sm font-medium">
+                                            Password
+                                        </label>
+                                        <input
+                                            type={
+                                                showPassword
+                                                    ? "text"
+                                                    : "password"
+                                            }
+                                            name="password"
+                                            value={loginData.password}
+                                            onChange={handleLoginChange}
+                                            className="border border-gray-300 rounded-lg px-3 py-2 text-black text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-10"
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={togglePasswordVisibility}
+                                            className="absolute right-3 top-8 text-gray-500 hover:text-primary text-sm transition-colors duration-200 ease-in-out"
+                                        >
+                                            {showPassword ? (
+                                                <FaEyeSlash />
+                                            ) : (
+                                                <FaEye />
+                                            )}
+                                        </button>
+                                        {errors.password && (
+                                            <p className="text-red-500 text-xs mt-1">
+                                                {errors.password}
+                                            </p>
+                                        )}
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <input
+                                            type="checkbox"
+                                            id="rememberMe"
+                                            checked={rememberMe}
+                                            onChange={() =>
+                                                setRememberMe(!rememberMe)
+                                            }
+                                        />
+                                        <label
+                                            htmlFor="rememberMe"
+                                            className="text-sm text-gray-700"
+                                        >
+                                            Remember me
+                                        </label>
+                                    </div>
+
+                                    {errors.general && (
                                         <p className="text-red-500 text-xs">
-                                            {errors.email}
+                                            {errors.general}
                                         </p>
                                     )}
-                                </div>
-                                <div className="flex flex-col relative space-y-1">
-                                    <label className="text-gray-700 text-sm font-medium">
-                                        Password
-                                    </label>
-                                    <input
-                                        type={
-                                            showPassword ? "text" : "password"
-                                        }
-                                        name="password"
-                                        value={loginData.password}
-                                        onChange={handleLoginChange}
-                                        className="border border-gray-300 rounded-lg px-3 py-2 text-black text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-10"
-                                        required
-                                    />
+
                                     <button
-                                        type="button"
-                                        onClick={togglePasswordVisibility}
-                                        className="absolute right-3 top-8 text-gray-500 hover:text-primary text-sm transition-colors duration-200 ease-in-out"
+                                        type="submit"
+                                        className={`px-4 text-white py-2 rounded-full mt-2 flex items-center justify-center ${
+                                            isFormValid
+                                                ? "bg-green"
+                                                : "bg-green/50 cursor-not-allowed"
+                                        }`}
+                                        disabled={!isFormValid || loading}
                                     >
-                                        {showPassword ? (
-                                            <FaEyeSlash />
+                                        {loading ? (
+                                            <AiOutlineLoading3Quarters className="animate-spin mr-2 text-lg" />
                                         ) : (
-                                            <FaEye />
+                                            "Log In"
                                         )}
                                     </button>
-                                    {errors.password && (
-                                        <p className="text-red-500 text-xs mt-1">
-                                            {errors.password}
-                                        </p>
-                                    )}
                                 </div>
-                                <div className="flex items-center space-x-2">
-                                    <input
-                                        type="checkbox"
-                                        id="rememberMe"
-                                        checked={rememberMe}
-                                        onChange={() =>
-                                            setRememberMe(!rememberMe)
-                                        }
-                                    />
-                                    <label
-                                        htmlFor="rememberMe"
-                                        className="text-sm text-gray-700"
-                                    >
-                                        Remember me
-                                    </label>
-                                </div>
-
-                                <a
-                                    href="#"
-                                    className="text-black hover:underline text-sm text-center"
-                                >
-                                    Forgot Password?
-                                </a>
-
-                                {errors.general && (
-                                    <p className="text-red-500 text-xs">
-                                        {errors.general}
-                                    </p>
-                                )}
-
-                                <button
-                                    type="submit"
-                                    className={`px-4 text-white py-2 rounded-full mt-2 flex items-center justify-center ${
-                                        isFormValid
-                                            ? "bg-green"
-                                            : "bg-green/50 cursor-not-allowed"
-                                    }`}
-                                    disabled={!isFormValid || loading}
-                                >
-                                    {loading ? (
-                                        <AiOutlineLoading3Quarters className="animate-spin mr-2 text-lg" />
-                                    ) : (
-                                        "Log In"
-                                    )}
-                                </button>
-                            </div>
-                        </form>
+                            </form>
+                            <Fogts />
+                        </>
                     ) : (
                         <form
                             onSubmit={handleRegistrationSubmit}

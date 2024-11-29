@@ -5,7 +5,16 @@ import calendarIcon from "../../images/calendar.svg";
 import addIcon from "../../images/add.png";
 import chartIcon from "../../images/chart.png";
 import btmIcon from "../../images/btmicon.png";
-import { FaHome, FaWrench, FaRocket, FaRegCheckCircle } from "react-icons/fa";
+import {
+    FaHome,
+    FaWrench,
+    FaRocket,
+    FaRegCheckCircle,
+    FaFileAlt,
+    FaHandshake,
+    FaClipboardList,
+    FaCopy,
+} from "react-icons/fa";
 import { BiFolder } from "react-icons/bi";
 import { BsQuestionCircle } from "react-icons/bs";
 import doc from "../../images/doc.png";
@@ -13,6 +22,8 @@ import sharp from "../../images/sharp.png";
 import BarIcon from "./BarIcon";
 import axiosClient from "../../axiosClient";
 import { AiOutlineBarChart, AiOutlineCalendar } from "react-icons/ai";
+import { BiCreditCard } from "react-icons/bi";
+
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const sidebarRef = useRef(null);
@@ -150,7 +161,7 @@ const Sidebar = () => {
                             >
                                 {({ isActive }) => (
                                     <>
-                                        <BiFolder
+                                        <FaFileAlt
                                             className={`text-[18px] ${
                                                 isActive
                                                     ? "text-white"
@@ -185,7 +196,7 @@ const Sidebar = () => {
                                                     : "text-green"
                                             }`}
                                         />
-                                        <span>Milestones</span>
+                                        <span>Business Milestones</span>
                                     </>
                                 )}
                             </NavLink>
@@ -234,7 +245,7 @@ const Sidebar = () => {
                             >
                                 {({ isActive }) => (
                                     <>
-                                        <AiOutlineBarChart
+                                        <FaHandshake
                                             className={`text-[18px] ${
                                                 isActive
                                                     ? "text-white"
@@ -294,7 +305,7 @@ const Sidebar = () => {
                                 >
                                     {({ isActive }) => (
                                         <>
-                                            <AiOutlineCalendar
+                                            <FaFileAlt
                                                 className={`w-4 h-4 sm:w-5 sm:h-5 ${
                                                     isActive
                                                         ? "text-white"
@@ -322,14 +333,14 @@ const Sidebar = () => {
                                 >
                                     {({ isActive }) => (
                                         <>
-                                            <FaRegCheckCircle
+                                            <FaRocket
                                                 className={`text-[18px] ${
                                                     isActive
                                                         ? "text-white"
                                                         : "text-green"
                                                 }`}
                                             />
-                                            <span>Milestone</span>
+                                            <span>Service Milestones</span>
                                         </>
                                     )}
                                 </NavLink>
@@ -350,7 +361,7 @@ const Sidebar = () => {
                                 >
                                     {({ isActive }) => (
                                         <>
-                                            <AiOutlineCalendar
+                                            <FaRegCheckCircle
                                                 className={`w-4 h-4 sm:w-5 sm:h-5 ${
                                                     isActive
                                                         ? "text-white"
@@ -378,7 +389,7 @@ const Sidebar = () => {
                                 >
                                     {({ isActive }) => (
                                         <>
-                                            <AiOutlineBarChart
+                                            <FaClipboardList
                                                 className={`text-[18px] ${
                                                     isActive
                                                         ? "text-white"
@@ -407,7 +418,7 @@ const Sidebar = () => {
                                 >
                                     {({ isActive }) => (
                                         <>
-                                            <BsQuestionCircle
+                                            <AiOutlineCalendar
                                                 className={`text-[18px] ${
                                                     isActive
                                                         ? "text-white"
@@ -419,11 +430,12 @@ const Sidebar = () => {
                                     )}
                                 </NavLink>
                             </li>
+
                             <li className="nav-item mb-6 rounded-xl py-2">
                                 {/* Added margin-bottom (mb-6) to move it up from the bottom */}
                                 <NavLink
                                     className={({ isActive }) =>
-                                        `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
+                                        `navLink flex items-center gap-4 py-2 px-4  rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
                                             isActive
                                                 ? "bg-green-800 text-white"
                                                 : "hover:bg-gray-200 text-gray-400"
@@ -435,7 +447,7 @@ const Sidebar = () => {
                                 >
                                     {({ isActive }) => (
                                         <>
-                                            <BsQuestionCircle
+                                            <BiCreditCard
                                                 className={`text-[18px] ${
                                                     isActive
                                                         ? "text-white"
@@ -448,19 +460,20 @@ const Sidebar = () => {
                                 </NavLink>
                             </li>
 
-                            {/* Don't remove it */}
+                            {/*Don't remove it*/}
                             {subId && (
                                 <button
-                                    className="navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 bg-green-800 text-white"
+                                    className="navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300
+                                            bg-green-800 text-white"
                                     onClick={cancelSubscription}
                                 >
                                     <BsQuestionCircle />
                                     <span>Cancel Subscription</span>
                                 </button>
                             )}
-                            {/* Don't remove it */}
+                            {/*Don't remove it*/}
 
-                            {/* Plz don't remove the part below */}
+                            {/* Plz dont remove the part below  */}
                             <li className="nav-item mb-6 rounded-xl py-2">
                                 <NavLink
                                     className={({ isActive }) =>

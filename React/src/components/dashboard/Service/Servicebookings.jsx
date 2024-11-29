@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import axiosClient from "../../../axiosClient";
 import { useAlert } from "../../partials/AlertContext";
-
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 function InvestmentBids() {
     const [bids, setBids] = useState([]);
     const [selectedBids, setSelectedBids] = useState([]);
     const [modalContent, setModalContent] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [loadingAccept, setLoadingAccept] = useState(false);
+    const [loadingReject, setLoadingReject] = useState(false);
 
     const { showAlert } = useAlert();
 
@@ -20,7 +21,7 @@ function InvestmentBids() {
     };
 
     const AcceptBids = () => {
-        setLoading(true); // Show spinner
+        setLoadingAccept(true); // Show spinner
         const payload = {
             bid_ids: selectedBids,
             reject: 0,
@@ -42,8 +43,14 @@ function InvestmentBids() {
                 }
             })
             .finally(() => {
-                setLoading(false); // Hide spinner
+                setLoadingAccept(false); // Hide spinner
             });
+    };
+
+    const RejectBids = () => {
+        setLoadingReject(true); // Start loading
+        showAlert("info", "Reject functionality coming soon!");
+        setLoadingReject(false); // Stop loading
     };
 
     useEffect(() => {
@@ -158,15 +165,15 @@ function InvestmentBids() {
             <div className="flex gap-2 pt-3 items-center justify-end">
                 <button
                     onClick={AcceptBids}
-                    disabled={loading || selectedBids.length === 0} // Disable button when loading or no bids selected
+                    disabled={loadingAccept || selectedBids.length === 0} // Disable button when loading or no bids selected
                     className={`py-2 px-4 rounded-lg flex items-center justify-center transition-colors focus:outline-none focus:ring-2 
         ${
-            loading || selectedBids.length === 0
+            loadingAccept || selectedBids.length === 0
                 ? "bg-gray-300 text-white cursor-not-allowed" // Gray when inactive
                 : "bg-green-600 text-white hover:bg-green-700 focus:ring-green-300"
         }`} // Green when active
                 >
-                    {loading ? (
+                    {loadingAccept ? (
                         <AiOutlineLoading3Quarters
                             className="animate-spin mr-2"
                             size={20}
@@ -174,31 +181,31 @@ function InvestmentBids() {
                     ) : (
                         "Accept Bids"
                     )}
-                    {loading && " Accepting..."}
+                    {loadingAccept && " Accepting..."}
                 </button>
 
                 <button
                     onClick={() => {
                         if (selectedBids.length > 0) {
-                            setLoading(true); // Start loading
+                            setLoadingReject(true); // Start loading
                             showAlert(
                                 "info",
                                 "Reject functionality coming soon!"
                             );
-                            setLoading(false); // End loading immediately after showing the alert
+                            setLoadingReject(false); // End loading immediately after showing the alert
                         } else {
                             showAlert("info", "No bids selected to reject.");
                         }
                     }}
-                    disabled={loading || selectedBids.length === 0} // Disable button during loading or if no bids are selected
+                    disabled={loadingReject || selectedBids.length === 0} // Disable button during loading or if no bids are selected
                     className={`py-2 px-4 rounded-lg flex items-center justify-center transition-colors focus:outline-none focus:ring-2 
         ${
-            loading || selectedBids.length === 0
+            loadingReject || selectedBids.length === 0
                 ? "bg-gray-300 text-white cursor-not-allowed" // Gray when loading or no bids selected
                 : "bg-red-500 text-white hover:bg-red-600 focus:ring-red-300"
         }`} // Red when active
                 >
-                    {loading ? (
+                    {loadingReject ? (
                         <AiOutlineLoading3Quarters
                             className="animate-spin mr-2"
                             size={20}
@@ -206,7 +213,7 @@ function InvestmentBids() {
                     ) : (
                         "Reject Bids"
                     )}
-                    {loading && " Rejecting..."}
+                    {loadingReject && " Rejecting..."}
                 </button>
             </div>
 

@@ -87,25 +87,56 @@ const EditModal = ({
 
     const handleFileChange = (e) => {
         const { name, files } = e.target;
-        setFormData({
-            ...formData,
-            [name]: files.length > 0 ? files[0].name : "",
-        });
+
+        // Check if no file is selected
+        if (files.length === 0) {
+            showAlert("error", "No file selected.");
+            return;
+        }
+
+        // Log file data for better debugging
+        console.log(`[File Change] ${name}:`, files[0]); // Logs the file selected with the field name
+
+        // Store only the file name in the formData state
+        setFormData((prev) => ({
+            ...prev,
+            [name]: files[0].name, // Store just the file name, not the entire file object
+        }));
+
+        // Optionally, show success alert after file selection
+        showAlert("success", `${name} file selected successfully.`);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true); // Start loading
-        console.log("Form Data:", formData);
+
+        // Log the form data to ensure image is included
+        console.log("Form Data before submitting:", formData);
+
+        // Prepare the data for submission
         const updatedItem = { ...editItem, ...formData };
 
+        // Create a FormData object for file upload
+        const formDataToSend = new FormData();
+        for (let key in updatedItem) {
+            formDataToSend.append(key, updatedItem[key]);
+        }
+
         try {
-            // Simulate API call
-            //await onSave(updatedItem);
+            // Simulate API call - Sending formData using POST
             const response = await axiosClient.post(
                 "business/up_listing",
-                updatedItem
+                formDataToSend,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data", // Ensure the header is set correctly
+                    },
+                }
             );
+
+            // Log the response data
+            console.log("API Response:", response.data);
 
             if (response.data.status === 200) {
                 showAlert("success", response.data.message); // Show success alert
@@ -113,7 +144,7 @@ const EditModal = ({
                 showAlert("warning", response.data.message); // Show warning alert for non-200 status
             }
 
-            //console.log(response.data);
+            console.log(response.data);
         } catch (error) {
             console.log(error);
             showAlert("error", error.message || "An error occurred."); // Show error alert
@@ -208,7 +239,7 @@ const EditModal = ({
                                 disabled
                             />
                         </div> */}
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg no-scrollbar">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl sm:max-w-lg no-scrollbar">
                 <div className="flex py-4 justify-between items-center">
                     <h2 className="text-xl text-green font-semibold">
                         Edit Business Details
@@ -294,60 +325,6 @@ const EditModal = ({
                                 className="w-full px-3 py-2 border rounded"
                             />
                         </div>
-
-                        {/* Location */}
-                        {/*<div className="mb-4">
-                            <label
-                                className="block text-sm font-medium mb-1"
-                                htmlFor="location"
-                            >
-                                Location
-                            </label>
-                            <input
-                                id="location"
-                                name="location"
-                                type="text"
-                                value={formData.location}
-                                onChange={handleChange}
-                                className="w-full px-3 py-2 border rounded"
-                            />
-                        </div>*/}
-
-                        {/* Latitude */}
-                        {/*<div className="mb-4">
-                            <label
-                                className="block text-sm font-medium mb-1"
-                                htmlFor="lat"
-                            >
-                                Latitude
-                            </label>
-                            <input
-                                id="lat"
-                                name="lat"
-                                type="text"
-                                value={formData.lat}
-                                onChange={handleChange}
-                                className="w-full px-3 py-2 border rounded"
-                            />
-                        </div>*/}
-
-                        {/* Longitude */}
-                        {/*<div className="mb-4">
-                            <label
-                                className="block text-sm font-medium mb-1"
-                                htmlFor="lng"
-                            >
-                                Longitude
-                            </label>
-                            <input
-                                id="lng"
-                                name="lng"
-                                type="text"
-                                value={formData.lng}
-                                onChange={handleChange}
-                                className="w-full px-3 py-2 border rounded"
-                            />
-                        </div>*/}
 
                         {/* Contact */}
                         <div className="mb-4">

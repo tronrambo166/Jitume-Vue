@@ -40,7 +40,7 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
                 details: service.details || "",
                 image: service.image || "",
                 pin: service.pin || "",
-                identification: service.imidentificationage || "",
+                identification: service.identification || "",
                 video: service.video || "",
                 document: service.document || "",
                 link: service.link || "",
@@ -58,43 +58,54 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
 
     const handleFileUpload = (e) => {
         const { name, files } = e.target;
-
         if (files.length === 0) {
             showAlert("error", "No file selected.");
             return;
         }
 
+        // Log file data to confirm it's being handled correctly
+        console.log(`${name} file selected:`, files[0]);
+
         setFormData((prev) => ({
             ...prev,
-            [name]: files[0],
+            [name]: files[0], // Store the file for each field separately
         }));
 
-        // Optional: Show success alert when a file is successfully selected
         showAlert("success", `${name} file selected successfully.`);
     };
 
     const handleSave = async () => {
         try {
-            console.log(formData);
+            // Prepare form data with FormData for file upload
+            const data = new FormData();
+            Object.keys(formData).forEach((key) => {
+                if (formData[key] instanceof File) {
+                    data.append(key, formData[key]); // Append files directly
+                } else {
+                    data.append(key, formData[key]); // Append other fields normally
+                }
+            });
+
+            // Log the form data (including file) to verify
+            console.log("Form Data being sent:", formData);
+
             const response = await axiosClient.post(
                 "business/up_service",
-                formData
+                data, // Send FormData
+                { headers: { "Content-Type": "multipart/form-data" } } // Set content type for file upload
             );
 
             if (response.data.status === 200) {
-                // Use showAlert to display success message
                 showAlert("success", response.data.message);
             } else {
-                // Use showAlert to display error message for non-200 status
                 showAlert("error", response.data.message);
             }
 
-            //console.log(response.data);
+            console.log(response.data);
             onUpdate(formData); // Call onUpdate function with formData
             onClose(); // Close the modal or form
         } catch (error) {
             console.error("Error saving data:", error);
-            // Use showAlert to display error message on request failure
             showAlert("error", "An error occurred while saving the data.");
         }
     };
@@ -102,7 +113,7 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0  bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white no-scrollbar w-full max-w-2xl mx-4 p-6 rounded-lg shadow-lg relative max-h-[90vh] overflow-y-auto">
                 <button
                     onClick={onClose}
@@ -145,7 +156,7 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
                         <div className="relative">
                             <button
                                 className="w-full px-3 py-2 border border-gray-300 rounded text-gray-700 text-left bg-white flex items-center justify-between"
-                                onClick={() => setCategoryOpen(!categoryOpen)} // Toggle dropdown
+                                onClick={() => setCategoryOpen(!categoryOpen)}
                             >
                                 <span>
                                     {formData.category || "Select a category"}
@@ -159,78 +170,31 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
                             {categoryOpen && (
                                 <div className="absolute left-0 right-0 mt-1 bg-white border border-gray-300 rounded shadow-lg z-10">
                                     <ul className="py-2">
-                                        {/* Map through your category options here */}
-                                        <li
-                                            onClick={() =>
-                                                handleCategoryChange(
-                                                    "Category 1"
-                                                )
-                                            }
-                                            className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                                        >
-                                            Category 1
-                                        </li>
-                                        <li
-                                            onClick={() =>
-                                                handleCategoryChange(
-                                                    "Category 2"
-                                                )
-                                            }
-                                            className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                                        >
-                                            Category 2
-                                        </li>
-                                        <li
-                                            onClick={() =>
-                                                handleCategoryChange(
-                                                    "Category 3"
-                                                )
-                                            }
-                                            className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                                        >
-                                            Category 3
-                                        </li>
+                                        {[
+                                            "Category 1",
+                                            "Category 2",
+                                            "Category 3",
+                                        ].map((category) => (
+                                            <li
+                                                key={category}
+                                                onClick={() =>
+                                                    handleChange({
+                                                        target: {
+                                                            name: "category",
+                                                            value: category,
+                                                        },
+                                                    })
+                                                }
+                                                className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                                            >
+                                                {category}
+                                            </li>
+                                        ))}
                                     </ul>
                                 </div>
                             )}
                         </div>
                     </div>
-                    {/*<div>
-                        <label className="block text-gray-700">Location</label>
-                        <input
-                            type="text"
-                            name="location"
-                            value={formData.location}
-                            onChange={handleChange}
-                            placeholder="Enter new location"
-                            className="w-full px-3 py-2 border border-gray-300 rounded"
-                        />
-                    </div>*/}
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    {/*<div>
-                        <label className="block text-gray-700">Latitude</label>
-                        <input
-                            type="text"
-                            name="lat"
-                            value={formData.lat}
-                            onChange={handleChange}
-                            placeholder="Enter latitude"
-                            className="w-full px-3 py-2 border border-gray-300 rounded"
-                        />
-                    </div>*/}
-                    {/*<div>
-                        <label className="block text-gray-700">Longitude</label>
-                        <input
-                            type="text"
-                            name="lng"
-                            value={formData.lng}
-                            onChange={handleChange}
-                            placeholder="Enter longitude"
-                            className="w-full px-3 py-2 border border-gray-300 rounded"
-                        />
-                    </div>*/}
                 </div>
 
                 <div className="mb-4">
@@ -252,8 +216,8 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
                         "identification",
                         "video",
                         "document",
-                    ].map((field, index) => (
-                        <div key={index}>
+                    ].map((field) => (
+                        <div key={field}>
                             <label className="block text-gray-700 capitalize">
                                 {field}
                             </label>
@@ -262,8 +226,8 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
                                     type="file"
                                     name={field}
                                     onChange={handleFileUpload}
-                                    id={`file-upload-${field}`}
                                     className="hidden"
+                                    id={`file-upload-${field}`}
                                 />
                                 <label
                                     htmlFor={`file-upload-${field}`}

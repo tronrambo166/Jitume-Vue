@@ -135,22 +135,18 @@ const CategoryPage = () => {
             }
         }
     };
-    const [isSliderVisible, setIsSliderVisible] = useState(true);
 
     const toggleCollapse2 = (collapseId, sliderId, rangeDisplayId) => {
         const collapseElement = document.getElementById(collapseId);
-        const slider = document.getElementById(sliderId); // ID for the slider container
-        const amountRangeDisplay = document.getElementById(rangeDisplayId); // ID for the amount range display section
+        const slider = document.getElementById(sliderId);
+        const amountRangeDisplay = document.getElementById(rangeDisplayId);
 
         if (collapseElement) {
-            // Toggle the 'hidden' class depending on whether the element is currently visible
-            collapseElement.classList.toggle(
-                "hidden",
-                !collapseElement.classList.contains("hidden")
-            );
+            const isHidden = collapseElement.classList.contains("hidden");
 
-            // Hide the slider and amountRangeDisplay when collapse is opened
-            if (!collapseElement.classList.contains("hidden")) {
+            collapseElement.classList.toggle("hidden", !isHidden);
+
+            if (isHidden) {
                 if (slider) slider.classList.add("hidden");
                 if (amountRangeDisplay)
                     amountRangeDisplay.classList.add("hidden");
@@ -161,6 +157,7 @@ const CategoryPage = () => {
             }
         }
     };
+
     const minn = 0;
     const maxx = 1000000;
     const minn2 = 0;
@@ -198,7 +195,22 @@ const CategoryPage = () => {
         setTurnoverRange([minTurnover, maxTurnover]);
         setMaxTurnover(maxTurnover);
 
-        toggleCollapse("collapseTurnoverRange"); // Close the range input section
+        // Close the range input section
+        toggleCollapse2(
+            "collapseTurnoverRange",
+            "sliderElement1",
+            "amountRangeDisplay1"
+        );
+
+        // Reopen the slider and range display by removing 'hidden' class
+        setTimeout(() => {
+            document
+                .getElementById("sliderElement1")
+                .classList.remove("hidden");
+            document
+                .getElementById("amountRangeDisplay1")
+                .classList.remove("hidden");
+        }, 300); // Add delay if needed for smooth transition
     };
 
     // comas logic
@@ -350,14 +362,13 @@ const CategoryPage = () => {
                             Turnover Range
                         </label>
 
-                        <div className="py-4" id="sliderElement1">
-                            {/* Slider element */}
+                        <div id="sliderElement1" className="py-4">
                             <Slider
                                 range
                                 min={0}
-                                max={10000} // Replace with your actual max value
+                                max={maxTurnover}
                                 step={100}
-                                value={[0, 10000]} // Replace with your actual turnover range
+                                value={turnoverRange}
                                 onChange={handleTurnoverChange}
                                 trackStyle={{
                                     backgroundColor: "#15803D",
@@ -379,10 +390,10 @@ const CategoryPage = () => {
 
                         <div
                             id="amountRangeDisplay1"
-                            className="flex justify-between mt-2 text-gray-600 dark:text-gray-400 text-sm"
+                            className="flex justify-between mt-6 text-gray-600 dark:text-gray-400 text-sm"
                         >
-                            <span>${[0, 10000][0].toLocaleString()}</span>
-                            <span>${[0, 10000][1].toLocaleString()}</span>
+                            <span>${turnoverRange[0].toLocaleString()}</span>
+                            <span>${turnoverRange[1].toLocaleString()}</span>
                         </div>
 
                         <div className="mt-4 hidden" id="collapseTurnoverRange">
@@ -392,12 +403,12 @@ const CategoryPage = () => {
                                         htmlFor="minTurnover"
                                         className="text-sm font-medium text-gray-700 dark:text-gray-300"
                                     >
-                                        Min: {minn2}
+                                        Min:
                                     </label>
                                     <input
                                         type="text"
                                         id="minTurnover"
-                                        // your min turnover value here
+                                        value={minTurnover}
                                         onChange={(e) =>
                                             handleInputChange2(
                                                 e,
@@ -414,12 +425,12 @@ const CategoryPage = () => {
                                         htmlFor="maxTurnover"
                                         className="text-sm font-medium text-gray-700 dark:text-gray-300"
                                     >
-                                        Max: {maxx2}
+                                        Max:
                                     </label>
                                     <input
                                         type="text"
                                         id="maxTurnover"
-                                        // your max turnover value here
+                                        value={maxTurnoveR}
                                         onChange={(e) =>
                                             handleInputChange2(
                                                 e,
