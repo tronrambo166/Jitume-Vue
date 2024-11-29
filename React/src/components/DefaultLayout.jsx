@@ -34,23 +34,29 @@ export default function DefaultLayout() {
 
 
     //setToken(null);
-  const FIVE_MINS = 5 * 60 * 1000;
+  const FIVE_MINS = 1 * 3 * 1000;
   const GENERAL_DEBOUNCE_TIME = 500;
    // SET USER IDEAL TIME WITH DEBOUNCE
-   const handleOnUserIdle = () =>{
-    sessionStorage.clear();
+   const handleOnUserIdle = (e) =>{
+    e.preventDefault();
+    localStorage.clear();
     setToken(null);
     $.alert({
                 title: "Please Log In!",
                 content: "You're Logged Out.",
                 });
   }
-  if(token && token !=null)
-  useIdleTimer({
-    timeout: FIVE_MINS, // time in millisecond
-    onIdle: handleOnUserIdle,
-    debounce: GENERAL_DEBOUNCE_TIME, // time in millisecond
-  });
+
+
+  if(token && token !='false')
+  {
+  //   useIdleTimer({
+  //   timeout: FIVE_MINS, // time in millisecond
+  //   onIdle: handleOnUserIdle(e),
+  //   debounce: GENERAL_DEBOUNCE_TIME, // time in millisecond
+  // });
+
+  }
 
 
     return (

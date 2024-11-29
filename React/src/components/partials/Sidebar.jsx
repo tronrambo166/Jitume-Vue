@@ -63,33 +63,6 @@ const Sidebar = () => {
         };
     }, []);
 
-    const cancelSubscription = () => {
-        try {
-            $.confirm({
-                title: "Cancel Subscription?",
-                content: "Are you sure?",
-                buttons: {
-                    confirm: function () {
-                        axiosClient
-                            .get("business/cancelSubscription/" + subId)
-                            .then((data) => {
-                                console.log(data);
-                                if (response.data.status === 200) {
-                                    showAlert("success", response.data.message);
-                                } else {
-                                    showAlert("error", response.data.message);
-                                }
-                            });
-                    },
-                    cancel: function () {
-                        $.alert("Canceled!");
-                    },
-                },
-            });
-        } catch (error) {
-            console.error("Error saving data:", error.response);
-        }
-    };
 
     return (
         <>
@@ -431,7 +404,7 @@ const Sidebar = () => {
                                 </NavLink>
                             </li>
 
-                            <li className="nav-item mb-6 rounded-xl py-2">
+                            {subId && <li className="nav-item mb-6 rounded-xl py-2">
                                 {/* Added margin-bottom (mb-6) to move it up from the bottom */}
                                 <NavLink
                                     className={({ isActive }) =>
@@ -459,6 +432,7 @@ const Sidebar = () => {
                                     )}
                                 </NavLink>
                             </li>
+                        }
 
                             {/*Don't remove it*/}
                             {subId && (

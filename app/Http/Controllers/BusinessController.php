@@ -1152,6 +1152,7 @@ public function assetEquip_download($id, $type){
       $results['subscribed'] = 1;
 
       $results['sub_id'] = $subs->id;
+      $results['stripe_sub_id'] = $subs->stripe_sub_id;
       $results['trial'] = $subs->trial;
       //expire
         $start_date = new DateTime(date('Y-m-d'));
@@ -1171,6 +1172,8 @@ public function assetEquip_download($id, $type){
       $results['token_left'] = $subs->token_remaining;
       $results['range'] = $subs->chosen_range;
       $results['plan'] = $subs->plan;
+      $results['amount'] = $subs->amount;
+      $results['end_date'] = $expire_date;
 
     }
 

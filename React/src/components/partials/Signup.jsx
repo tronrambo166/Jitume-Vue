@@ -285,7 +285,7 @@ const RegisterForm = () => {
                console.log(response)
                if (response.data.status === 400) { 
                    valid = false; // Mark as invalid if email exists
-                   showAlert('error', 'Email alreday exists!');
+                   showAlert('error', 'Email already exists!');
                        }
                } catch (error) {
                    console.error("Error checking email:", error);

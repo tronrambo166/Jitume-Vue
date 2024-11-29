@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axiosClient from "../../../axiosClient";
 
 const MySubscription = () => {
     const [isAutoRenewEnabled, setAutoRenewEnabled] = useState(true);
@@ -8,25 +9,18 @@ const MySubscription = () => {
         setAutoRenewEnabled(newState);
         console.log(`Auto Renew is now ${newState ? "enabled" : "disabled"}`);
     };
+    const [subscribeData, setSubscribeData] = useState("");
 
     // Subscriptions data (to be replaced with API data later)
     const subscriptions = [
         {
-            name: "Silver",
-            daysRemaining: 36,
-            price: "$10/month",
-            startDate: "01/01/2024",
-            endDate: "02/01/2024",
+            name: subscribeData.plan,
+            daysRemaining: subscribeData.expire,
+            price: subscribeData.amount,
+            endDate: subscribeData.end_date,
+            token_left:subscribeData.token_left,
             isActive: true,
          },
-        // {
-        //     name: "Gold",
-        //     daysRemaining: 365,
-        //     price: "$48/month",
-        //     startDate: "01/01/2024",
-        //     endDate: "01/01/2025",
-        //     isActive: false,
-        // },
     ];
 
     // Billing history data (to be replaced with API data later)
@@ -37,25 +31,56 @@ const MySubscription = () => {
             endDate: "07/01/2021",
             amount: "$30.00",
         },
-        {
-            subscriptionType: "Beginner Plan",
-            startDate: "07/01/2021",
-            endDate: "08/01/2021",
-            amount: "$30.00",
-        },
-        {
-            subscriptionType: "Beginner Plan",
-            startDate: "08/01/2021",
-            endDate: "09/01/2021",
-            amount: "$30.00",
-        },
-        {
-            subscriptionType: "Professional Plan",
-            startDate: "09/01/2021",
-            endDate: "10/01/2021",
-            amount: "$48.00",
-        },
     ];
+
+
+    useEffect(() =>{
+                const isSubscribed = () => {
+            axiosClient
+                .get("/isSubscribed/" + 0)
+                .then(({ data }) => {
+                    console.log(data);
+                    if (data.count > 0) {
+                        setSubscribeData(data.data);
+                        console.log(subscribeData);
+                    }    
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+
+        isSubscribed();
+    }, []);
+
+
+        const cancelSubscription = () => {
+        try {
+            $.confirm({
+                title: "Cancel Subscription?",
+                content: "Are you sure?",
+                buttons: {
+                    confirm: function () {
+                        axiosClient
+                            .get("business/cancelSubscription/" + subscribeData.stripe_sub_id)
+                            .then((data) => {
+                                console.log(data);
+                                if (response.data.status === 200) {
+                                    showAlert("success", response.data.message);
+                                } else {
+                                    showAlert("error", response.data.message);
+                                }
+                            });
+                    },
+                    cancel: function () {
+                        $.alert("Canceled!");
+                    },
+                },
+            });
+        } catch (error) {
+            console.error("Error saving data:", error.response);
+        }
+    };
 
     return (
         <div className="p-4 lg:p-8 min-h-screen flex flex-col items-center">
@@ -93,25 +118,28 @@ const MySubscription = () => {
                                     Upgrade to this plan
                                 </p>
                             )}
-                            <p className="text-gray-600 text-sm mt-2">
-                                <strong>Start Date:</strong> {sub.startDate}
-                            </p>
+                            
                             <p className="text-gray-600 text-sm">
                                 <strong>End Date:</strong> {sub.endDate}
+                            </p>
+                            <p className="text-gray-600 text-sm">
+                                <strong>Token Left:</strong> {sub.token_left}
                             </p>
                             <p className="text-3xl font-semibold mt-4 text-green-800">
                                 {sub.price}
                             </p>
+                            
                             <button
+                                onClick={cancelSubscription}
                                 className={`mt-6 px-4 py-2 rounded ${
                                     sub.isActive
                                         ? "text-green-700 border border-green-600 hover:bg-green-200"
                                         : "text-white bg-green-600 hover:bg-green-700"
                                 }`}
                             >
-                                {sub.isActive
-                                    ? "Cancel Subscription"
-                                    : "Upgrade"}
+                                
+                                    Cancel Subscription
+                                   
                             </button>
                             {!sub.isActive && (
                                 <p className="mt-2 text-sm text-green-600 cursor-pointer hover:underline">
