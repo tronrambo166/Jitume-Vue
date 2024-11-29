@@ -312,7 +312,7 @@ const RegisterForm = () => {
 const handleNextStep = async () => {
     if (step === 1 && validateStep1()) {
         setStep(2); // Move to step 2
-        showAlert("info", "You are now in Step 2.");
+        //showAlert("info", "You are now in Step 2.");
     } else if (step === 2) {
          const isStep2Valid = await validateStep2();
           if (!isStep2Valid) {
@@ -433,10 +433,10 @@ const handleNextStep = async () => {
             setIsLoading(true);
             if (data.status === 200) {
                 setStep(3); // Move to step 3 after successful submission
-                showAlert(
-                    "info",
-                    "You are now in Step 3. Please verify your email."
-                );
+                // showAlert(
+                //     "info",
+                //     "You are now in Step 3. Please verify your email."
+                // );
                 setVCode(code);
                 return true;
             } else {

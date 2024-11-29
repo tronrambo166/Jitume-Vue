@@ -106,7 +106,7 @@ const MySubscription = () => {
                                     ✓
                                 </div>
                             )}
-                            <h3 className="text-lg font-bold text-green-800">
+                            <h3 style={{textTransform:'capitalize'}} className="text-lg font-bold text-green-800">
                                 {sub.name}
                             </h3>
                             {sub.isActive ? (

@@ -39,14 +39,14 @@ return [
     'facebook' => [
     'client_id' => env('FACEBOOK_CLIENT_ID'),
     'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
-    //'redirect' => config('app.api_url').'facebook/callback',
+    'redirect' => config('app.api_url').'facebook/callback',
     'redirect' => env('FB_RDR'),
     ],
 
     'google' => [
     'client_id' => env('GOOGLE_CLIENT_ID'),
     'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-    //'redirect' => config('app.api_url').'google/callback',
+    'redirect' => config('app.api_url').'google/callback',
     'redirect' => env('GOOGLE_RDR'),
     ],
 

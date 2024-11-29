@@ -404,7 +404,7 @@ const Sidebar = () => {
                                 </NavLink>
                             </li>
 
-                            {subId && <li className="nav-item mb-6 rounded-xl py-2">
+                            {1 && <li className="nav-item mb-6 rounded-xl py-2">
                                 {/* Added margin-bottom (mb-6) to move it up from the bottom */}
                                 <NavLink
                                     className={({ isActive }) =>
