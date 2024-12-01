@@ -179,7 +179,19 @@ const RegisterForm = () => {
             setOtp((prevOtp) => [...digits, ...prevOtp.slice(digits.length)]);
             inputRefs.current[Math.min(digits.length, otp.length - 1)].focus();
         }
+
+                //console.log(text)
+                //Verify OTP
+                    const otpCode = text;
+                    if (vcode == otpCode) {
+                        handleSubmit();
+                    }
+                    else {
+                        showAlert("error", "Invalid OTP. Please try again.");
+                    }
+                //Verify OTP
     };
+
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -735,7 +747,7 @@ const handleNextStep = async () => {
                                 <p className="text-center py-2 text-gray-700 dark:text-gray-200 font-medium">
                                     A verification code has been sent to your &nbsp;
                                     <strong className="text-green-600 dark:text-green-400">
-                                        Email
+                                        email
                                     </strong>
                                 </p>
                             </h2>

@@ -207,4 +207,29 @@ class AuthController extends Controller
 
         return response('',204);
     }
+
+
+    public function reset($email, $password)
+    {  
+
+        try{
+            $checkUser = User::where('email', $email)
+            ->first();
+            if(!$checkUser)
+            return response()->json([ 'status' => 400, 'message' => 'User do not exist!']);
+
+            $password= bcrypt($password);
+            $update= User::where('email', $email)
+            -> limit(1)->update(['password'=> $password]);
+
+            if($update) 
+            return response()->json([ 'status' => 200, 'message' => 'Reset Success!']);
+        }
+        catch(\Exception $e){
+            return response()->json([ 'status' => 404, 'message' => $e->getMessage() ]);
+            }   
+
+    }
+
+
 }

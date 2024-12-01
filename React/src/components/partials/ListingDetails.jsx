@@ -147,7 +147,7 @@ const ListingDetails = ({ onClose }) => {
     const plan = "gold";
     const subscrib_id = "123";
 
-    const [conv, setConv] = useState("");
+    const [conv, setConv] = useState(false);
     const [details, setDetails] = useState("");
     const [allowToReview, setAllow] = useState("");
     const [amount_r, setAmount_r] = useState("");
@@ -401,9 +401,9 @@ const ListingDetails = ({ onClose }) => {
                 .get(url + form.listing_id)
                 .then(({ data }) => {
                     setAllow(data.allowToReview);
-                    //setAmount_r(data.amount_required);
+                    setAmount_r(data.amount_required);
                     setRunning(data.running);
-                    //console.log(data)
+                    console.log(data)
                 })
                 .catch((err) => {
                     console.log(err);
@@ -742,7 +742,16 @@ const ListingDetails = ({ onClose }) => {
                                 >
                                     <FaPlusCircle className="text-green" />
                                     <span>Add Review</span>
+
+                                <br></br> &nbsp;&nbsp;<p
+                                    className="bg-green-600 text-white p-3 rounded"
+                                >
+                                     Business is completed
+                                </p>
+
                                 </button>
+
+            
                             )}
 
                             <hr />
@@ -1134,14 +1143,11 @@ const ListingDetails = ({ onClose }) => {
                                         </Link>
                                     </button>
 
-                                    {/* Milestone payout message inside the same gray container */}
-                                    <p className="text-gray-700 p-2 rounded bg-white w-full text-center">
-                                        Milestone payout is currently off due to
-                                        milestone completion process, please
-                                        wait until the next milestone is open.
-                                    </p>
+                                    
                                 </div>
                             )}
+
+                            {/*{token? <p> testY </p>:<p> testNo </p>}*/}
                             {token && conv && amount_r && running ? (
                                 <div className="container mx-auto mt-2 p-6 bg-white border border-gray-300 rounded-lg">
                                     <div>
@@ -1249,11 +1255,11 @@ const ListingDetails = ({ onClose }) => {
                                 </div>
                             ) : (
                                 <div className="w-75 mx-auto row">
-                                    {/* <p className="bg-light text-gray-700 p-2 rounded">
+                                     <p className="bg-light text-gray-700 p-2 rounded">
                 Milestone payout is currently off due to
                 milestone completion process, please wait
                 until next milestone is open.
-            </p> */}
+            </p> 
                                 </div>
                             )}
                         </div>

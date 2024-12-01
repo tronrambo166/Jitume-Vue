@@ -7,10 +7,10 @@
         <div class="row  w-75 m-auto border shadow text-center bg-light" style=" box-shadow: 3px 3px 7px 7px grey; width:70%; background: white;border: 1px solid grey;">
 		<div class="container w-75 m-auto" style="box-shadow: 3px 3px 7px 7px grey; background: white;width:75%; margin:auto; text-align:center">
 		
-		 	<h2 style="color: white;font-family: sans-serif;">  
-		 	<br> Email Verification </h2>
+		 	<h2 style="color: green;font-family: sans-serif;">  
+		 	Email Verification </h2>
 			
-			<h3 style="text-align: center;">Your Jitume Verification code is: {{$code}}
+			<h3 style="text-align: center;">Your Jitume Verification Code is: {{$code}}
             		<!-- <a style='background:green; padding:15px 10px;color:white;' href="<?php echo config('app.api_url');?>emailVerify?email={{$email}}" > Verify </a> --> </h3>
 
 			</div>

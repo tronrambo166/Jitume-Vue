@@ -216,9 +216,9 @@ Route::post('ApplyForShow', [socialController::class, 'ApplyForShow'])->name('Ap
 Route::get('{/anypath}', [PagesController::class, 'home'])->where('path', '.*');
 Route::get('profile/{id}', [PagesController::class, 'profile']);
 Route::post('profile/edit/{id}', [PagesController::class, 'updateProfile']);
-Route::get('forgot/{remail}', [testController::class, 'forgot'])->name('forgot');
-Route::post('send_reset_email', [testController::class, 'send_reset_email'])->name('send_reset_email');
-Route::post('reset/{remail}', [testController::class, 'reset'])->name('reset');
+
+Route::get('resetPassword/{email}/{password}', [AuthController::class, 'reset']);
+
 
 Route::get('/clear', function() {
    \Artisan::call('config:cache');

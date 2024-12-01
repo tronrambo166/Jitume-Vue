@@ -64,11 +64,7 @@ Route::group([ 'prefix' => 'admin'], function(){
 
     Route::get('forgot/{remail}', [adminController::class,'forgot'])->name('forgot');
     Route::post('send_reset_email', [adminController::class,'send_reset_email'])->name('send_reset_email');
-    Route::post('reset/{remail}', [adminController::class,'reset'])->name('reset');
-
-      
-        //Route::get('/', function () {return view('admin.login');})->name('login');
-       
+    Route::post('reset/{remail}', [adminController::class,'reset'])->name('reset');    
 
 });
  Route::get('admin/login', function () {return view('admin.login');})->name('loginA');
