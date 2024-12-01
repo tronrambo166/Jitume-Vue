@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState  } from "react";
 import axiosClient from "../../axiosClient"; // Assuming you have axios setup
 import { useNavigate } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -42,11 +42,14 @@ const WhyChoose = () => {
             sessionStorage.setItem("queryLat", "");
             sessionStorage.setItem("queryLng", "");
 
+            // Navigate after request
             navigate(`/listingResults/${base64_encode(ids)}/${data.loc}`);
-
             if (window.location.pathname.includes("listingResults")) {
-                window.location.reload();
+                // window.location.reload();
+            window.scrollTo(0, 0);
+
             }
+            // Ensure scroll happens after navigation
         } catch (err) {
             console.error(err);
             const response = err.response;

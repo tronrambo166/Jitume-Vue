@@ -4,7 +4,8 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 const categories = [
     "Business Planning",
     "IT",
-    "Legal Project Management",
+    "Legal",
+    "Project Management",
     "Branding and Design",
     "Auto",
     "Finance, Accounting & Tax Marketing",

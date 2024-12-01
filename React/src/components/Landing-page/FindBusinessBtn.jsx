@@ -38,7 +38,9 @@ const FindBusinessBtn = () => {
             navigate(`/listingResults/${base64_encode(ids)}/${data.loc}`);
 
             if (window.location.pathname.includes("listingResults")) {
-                window.location.reload();
+                // window.location.reload();
+            window.scrollTo(0, 0);
+
             }
         } catch (err) {
             console.error(err);

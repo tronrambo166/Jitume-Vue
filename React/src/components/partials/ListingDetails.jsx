@@ -27,6 +27,7 @@ import PaginationComponent from "./moduleParts/PaginationControls";
 import Footer from "../Landing-page/global/Footer2";
 import Nav2 from "../Landing-page/global/Nav2";
 import ScrollToTop from "../pages/ScrollToTop";
+import { useAlert } from "../partials/AlertContext";
 import BackBtn from "./BackBtn";
 const ListingDetails = ({ onClose }) => {
     const { token, setUser, setAuth, auth } = useStateContext();
@@ -35,6 +36,7 @@ const ListingDetails = ({ onClose }) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isUnlockPopupOpen, setIsUnlockPopupOpen] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
+    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
 
     const handleClose = () => {
         setIsVisible(false);
@@ -604,6 +606,18 @@ const ListingDetails = ({ onClose }) => {
             });
     };
 
+    // alert
+    const [alertShown, setAlertShown] = useState(false);
+
+    useEffect(() => {
+        if (token && conv && !alertShown) {
+            showAlert("info", "Business is unlocked ");
+            setAlertShown(true);
+        }
+    }, [token, conv, alertShown]);
+
+    // alrt above
+
     //CORE METHODS END
 
     const Popup = ({ isOpen, onClose }) => {
@@ -692,7 +706,10 @@ const ListingDetails = ({ onClose }) => {
                                         Unlock To Invest
                                     </a>
                                 ) : token && conv ? (
-                                    <button className="text-white bg-green-800 rounded py-2 px-5"> Unlocked! </button>
+                                    <button className="text-white bg-green-800 rounded py-2 px-5 hidden">
+                                        {" "}
+                                        Unlocked!{" "}
+                                    </button>
                                 ) : (
                                     <a
                                         onClick={() => setIsModalOpen(true)}
@@ -704,20 +721,17 @@ const ListingDetails = ({ onClose }) => {
                                         />
                                         Unlock To Invest
                                     </a>
-                                    
                                 )}
-
                             </div>
 
-                            {token && !conv &&  <div>
-                                <p className="flex gap-2 whitespace-nowrap items-center py-2 px-1 mr-8 text-[#1E293B] text-[14px] md:text-[16px]">
-                                    Unlock this business to learn <br /> more
-                                    about it and invest
-                                </p>
+                            {token && !conv && (
+                                <div>
+                                    <p className="flex gap-2 whitespace-nowrap items-center py-2 px-1 mr-8 text-[#1E293B] text-[14px] md:text-[16px]">
+                                        Unlock this business to learn <br />{" "}
+                                        more about it and invest
+                                    </p>
                                 </div>
-                            }
-
-                            
+                            )}
                         </div>
 
                         <div className="my-4 text-left">
@@ -1087,15 +1101,16 @@ const ListingDetails = ({ onClose }) => {
                 onClose={closeUnlockPopup}
             />
 
-            <div className="px-[12px]">
+            <div className="">
                 <div className="p-4 sm:p-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-3  sm:gap-8">
+                    <div className="grid gap-6 sm:grid-cols-3 mb-8">
+                        <ReviewSummary />
+
                         {/* On mobile, ReviewSummary takes up full width, on larger screens it takes 1/3 */}
                         <div className="sm:col-span-1">
-                            <ReviewSummary />
                             {/* Financial Statements Section */}
                             {token && conv && (
-                                <div className=" rounded-lg border border-gray-300 p-4 flex flex-col gap-4 items-center mt-4">
+                                <div className=" rounded-lg border border-gray-300 p-4 flex flex-col gap-4 items-center mt-6">
                                     <button
                                         className="whitespace-nowrap border border-black bg-white hover:bg-gray-200 transition-all duration-200 px-4 py-2 rounded-lg w-full max-w-[300px] text-center"
                                         onClick={download_statement}
@@ -1244,42 +1259,7 @@ const ListingDetails = ({ onClose }) => {
                         </div>
 
                         {/* ReviewList */}
-                        <div className="sm:col-span-2">
-                            <ReviewList reviews={currentReviews} />
-                            <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
-                                <div className="flex items-center">
-                                    <span className="mr-2 text-gray-600">
-                                        Show
-                                    </span>
-                                    <select
-                                        value={itemsPerPage}
-                                        onChange={handleItemsPerPageChange}
-                                        className="border bg-white border-gray-300 rounded-full px-4 py-1 text-gray-600 shadow-sm outline-none focus:ring-1 focus:ring-gray-300 transition ease-in-out duration-150"
-                                    >
-                                        <option value={5}>5</option>
-                                        <option value={6}>6</option>
-                                        <option value={7}>7</option>
-                                        <option value={8}>8</option>
-                                    </select>
-                                    <span className="ml-2 text-gray-600">
-                                        Cards per page
-                                    </span>
-                                </div>
 
-                                <div className="mt-4 sm:mt-0">
-                                    <PaginationComponent
-                                        currentPage={currentPage}
-                                        totalPages={totalPages}
-                                        handlePreviousClick={
-                                            handlePreviousClick
-                                        }
-                                        handlePageClick={handlePageClick}
-                                        handleNextClick={handleNextClick}
-                                        getPageNumbers={getPageNumbers}
-                                    />
-                                </div>
-                            </div>
-                        </div>
                         {/* <div className="mt-6">
     {token && conv && amount_r && running ? (
         <div>
@@ -1387,6 +1367,48 @@ const ListingDetails = ({ onClose }) => {
         </div>
     )}
 </div> */}
+                    </div>
+                    <div className="mt-2 mb-2 ">
+                        <div className="text-center text-2xl  py-4 mb-4 text-green underline font-bold">
+                            <h2>Reviews</h2>
+                        </div>
+                    </div>
+                    <hr></hr>{" "}
+                    <div className="sm:col-span-2">
+                        {currentReviews.length === 0 ? (
+                            <p className="text-gray-600 text-2xl justify-center flex mt-2 mb-2">No reviews</p>
+                        ) : (
+                            <ReviewList reviews={currentReviews} />
+                        )}
+                        <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
+                            <div className="flex items-center">
+                                <span className="mr-2 text-gray-600">Show</span>
+                                <select
+                                    value={itemsPerPage}
+                                    onChange={handleItemsPerPageChange}
+                                    className="border bg-white border-gray-300 rounded-full px-4 py-1 text-gray-600 shadow-sm outline-none focus:ring-1 focus:ring-gray-300 transition ease-in-out duration-150"
+                                >
+                                    <option value={5}>5</option>
+                                    <option value={6}>6</option>
+                                    <option value={7}>7</option>
+                                    <option value={8}>8</option>
+                                </select>
+                                <span className="ml-2 text-gray-600">
+                                    Cards per page
+                                </span>
+                            </div>
+
+                            <div className="mt-4 sm:mt-0">
+                                <PaginationComponent
+                                    currentPage={currentPage}
+                                    totalPages={totalPages}
+                                    handlePreviousClick={handlePreviousClick}
+                                    handlePageClick={handlePageClick}
+                                    handleNextClick={handleNextClick}
+                                    getPageNumbers={getPageNumbers}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -197,12 +197,12 @@ const Search = () => {
                 {/* Search Section */}
                 <div className="flex flex-col sm:flex-row items-center h-auto sm:h-16 p-2 sm:p-0">
                     {/* Categories Dropdown */}
-                    <div className="relative bg-white  flex items-center h-12 sm:h-full w-full sm:w-1/4 mb-2 sm:mb-0">
+                    <div className="relative   flex items-center h-12 sm:h-full w-full sm:w-1/4 mb-2 sm:mb-0">
                         <select
                             ref={categoryRef}
                             value={categoryValue} // controlled value
                             onChange={handleCategoryChange} // handle change
-                            className="border rounded-l-xl h-full focus:outline-none text-gray-500 w-full pl-3 pr-8"
+                            className="border rounded-l-xl h-full focus:outline-none bg-white text-gray-500 w-full pl-3 pr-8"
                         >
                             <option className="text-gray-400" value="">
                                 Select a category
@@ -311,7 +311,7 @@ const Search = () => {
                     {/* Search Button */}
                     <button
                         onClick={onSearch}
-                        className="bg-[#FDE047] text-black rounded-r-lg h-12 sm:h-full py-2 px-10 w-full sm:w-auto"
+                        className="bg-[#FDE047] text-black rounded-r-lg h-12 sm:h-full py-2 px-12 w-full sm:w-auto"
                     >
                         Search
                     </button>

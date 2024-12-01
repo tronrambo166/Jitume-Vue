@@ -20,6 +20,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import Breadcrumb from "./Breadcrumb";
 import { useAlert } from "../partials/AlertContext";
 import DefaultImg from "./Settings/components/DefaultImg";
+import { MdDashboard } from "react-icons/md"; // A clean dashboard icon
 
 const Dashboardhero = () => {
     const { token, setToken } = useStateContext();
@@ -71,7 +72,6 @@ const Dashboardhero = () => {
     // Get the image URL from the user object
     // const imageUrl = user?.image ? `../${user.image}` : userImage;
     // console.log("Final Image URL:", imageUrl);
-
 
     const onLogout = (ev) => {
         ev.preventDefault();
@@ -161,7 +161,7 @@ const Dashboardhero = () => {
                                 to=""
                                 className="flex items-center hover:text-green gap-1"
                             >
-                                <FaWrench />
+                                <MdDashboard />
                                 <span>Overview</span>
                             </Link>
                             <Link
@@ -175,7 +175,7 @@ const Dashboardhero = () => {
                                 to="/dashboard/add-service"
                                 className="flex items-center hover:text-green gap-1"
                             >
-                                <FaWrench />
+                                <FaCopy />
                                 <span>Add Service</span>
                             </Link>
                             <Link

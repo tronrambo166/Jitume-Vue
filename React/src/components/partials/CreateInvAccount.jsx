@@ -45,9 +45,80 @@ function CreateInvestorAccount({ isOpen, onClose }) {
         invRangeOpen: false,
         industriesOpen: false,
     });
+
     const [step, setStep] = useState(1);
 
-    const handleNext = () => setStep(step + 1);
+    const validateStepOne = () => {
+        const errors = {};
+
+        if (!registrationData.fname.trim())
+            errors.fname = "First name is required.";
+        if (!registrationData.lname.trim())
+            errors.lname = "Last name is required.";
+        if (!registrationData.email.trim()) {
+            errors.email = "Email is required.";
+        } else if (!/\S+@\S+\.\S+/.test(registrationData.email)) {
+            errors.email = "Email address is invalid.";
+        }
+        if (!registrationData.password) {
+            errors.password = "Password is required.";
+        } else if (registrationData.password.length < 6) {
+            errors.password = "Password must be at least 6 characters.";
+        }
+        if (registrationData.password !== registrationData.confirmPassword) {
+            errors.confirmPassword = "Passwords do not match.";
+        }
+        if (!registrationData.id_no.trim())
+            errors.id_no = "ID/Passport Number is required.";
+        if (!registrationData.tax_pin.trim())
+            errors.tax_pin = "Tax PIN is required.";
+        console.log(errors);
+
+        return errors;
+    };
+
+    const validateEmailExists = async () => {
+        try {
+            const { data } = await axiosClient.get(
+                "emailExists/" + registrationData.email
+            );
+            if (data.status === 400) {
+                showAlert("error", "Email already exists!");
+                return false;
+            }
+            return true;
+        } catch (error) {
+            console.log(error);
+            showAlert("error", "An error occurred while checking the email.");
+            return false;
+        }
+    };
+
+    const handleNext = async () => {
+        const validationErrors = validateStepOne();
+        setErrors(validationErrors); // Assuming you have a state for errors
+
+        // If there are validation errors, don't proceed to the next step
+        if (Object.keys(validationErrors).length > 0) {
+            return; // Don't proceed if there are errors
+        }
+
+        // Set loading to true when starting the async operation
+        setLoading(true);
+
+        // Now that synchronous validation passed, check for email validity
+        const emailValid = await validateEmailExists(); // Call validateEmailExists
+
+        // Set loading to false after the async operation completes
+        setLoading(false);
+
+        if (emailValid) {
+            // Proceed to the next step only if email is valid and no errors are present
+            setStep(step + 1);
+        }
+    };
+
+
     const handleBack = () => setStep(step - 1);
 
     if (!isOpen) return null;
@@ -184,40 +255,13 @@ function CreateInvestorAccount({ isOpen, onClose }) {
     };
 
     const isFormValid = loginData.email && loginData.password;
+
     const handleRegistrationSubmit = async (e) => {
         e.preventDefault();
 
         let formErrors = [];
-        if (!registrationData.fname) {
-            formErrors.push("First name is required!");
-            showAlert("error", "First name is required!");
-        }
 
-        if (!registrationData.lname) {
-            formErrors.push("Last name is required!");
-            showAlert("error", "Last name is required!");
-        }
-
-        if (!registrationData.email) {
-            formErrors.push("Email is required!");
-            showAlert("error", "Email is required!");
-        }
-
-        if (!registrationData.password) {
-            formErrors.push("Password is required!");
-            showAlert("error", "Password is required!");
-        }
-
-        if (!registrationData.confirmPassword) {
-            formErrors.push("Confirm password is required!");
-            showAlert("error", "Confirm password is required!");
-        }
-
-        if (!registrationData.id_no) {
-            formErrors.push("ID number is required!");
-            showAlert("error", "ID number is required!");
-        }
-
+        
         if (!registrationData.tax_pin) {
             formErrors.push("Tax PIN is required!");
             showAlert("error", "Tax PIN is required!");
@@ -307,6 +351,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
             }
 
             console.log(error); // Log the error for debugging
+            
         } finally {
             setLoading(false); // Stop loading spinner
         }
@@ -479,7 +524,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                             <div className="max-w-4xl mx-auto p-4 overflow-x-hidden">
                                 {step === 1 && (
                                     <>
-                                        <div className="  text-center mb-4">
+                                        <div className="text-center mb-4">
                                             <h1 className="text-lg text-gray-700">
                                                 Registration
                                             </h1>
@@ -505,9 +550,18 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                     onChange={
                                                         handleRegistrationChange
                                                     }
-                                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black"
+                                                    className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
+                                                        errors.fname
+                                                            ? "border-red-500"
+                                                            : ""
+                                                    }`}
                                                     required
                                                 />
+                                                {errors.fname && (
+                                                    <p className="text-red-500 text-xs mt-1">
+                                                        {errors.fname}
+                                                    </p>
+                                                )}
                                             </div>
 
                                             {/* Middle Name */}
@@ -545,9 +599,18 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                     onChange={
                                                         handleRegistrationChange
                                                     }
-                                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black"
+                                                    className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
+                                                        errors.lname
+                                                            ? "border-red-500"
+                                                            : ""
+                                                    }`}
                                                     required
                                                 />
+                                                {errors.lname && (
+                                                    <p className="text-red-500 text-xs mt-1">
+                                                        {errors.lname}
+                                                    </p>
+                                                )}
                                             </div>
 
                                             {/* Email */}
@@ -567,9 +630,18 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                     onChange={
                                                         handleRegistrationChange
                                                     }
-                                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black"
+                                                    className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
+                                                        errors.email
+                                                            ? "border-red-500"
+                                                            : ""
+                                                    }`}
                                                     required
                                                 />
+                                                {errors.email && (
+                                                    <p className="text-red-500 text-xs mt-1">
+                                                        {errors.email}
+                                                    </p>
+                                                )}
                                             </div>
 
                                             {/* Password */}
@@ -593,7 +665,11 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                     onChange={
                                                         handleRegistrationChange
                                                     }
-                                                    className="border border-gray-300 rounded-lg px-3 py-2 w-full text-sm text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-10"
+                                                    className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
+                                                        errors.password
+                                                            ? "border-red-500"
+                                                            : ""
+                                                    }`}
                                                     required
                                                 />
                                                 <button
@@ -601,7 +677,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                     onClick={
                                                         togglePasswordVisibility
                                                     }
-                                                    className="absolute right-3 top-8 text-gray-500 text-sm hover:text-primary transition-colors duration-200 ease-in-out"
+                                                    className="absolute right-3 top-8 text-gray-500 hover:text-primary"
                                                 >
                                                     {showPassword ? (
                                                         <FaEyeSlash />
@@ -609,6 +685,11 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                         <FaEye />
                                                     )}
                                                 </button>
+                                                {errors.password && (
+                                                    <p className="text-red-500 text-xs mt-1">
+                                                        {errors.password}
+                                                    </p>
+                                                )}
                                             </div>
 
                                             {/* Confirm Password */}
@@ -632,7 +713,11 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                     onChange={
                                                         handleRegistrationChange
                                                     }
-                                                    className="border border-gray-300 rounded-lg px-3 py-2 w-full text-sm text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-10"
+                                                    className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
+                                                        errors.confirmPassword
+                                                            ? "border-red-500"
+                                                            : ""
+                                                    }`}
                                                     required
                                                 />
                                                 <button
@@ -640,7 +725,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                     onClick={
                                                         toggleConfirmPasswordVisibility
                                                     }
-                                                    className="absolute right-3 top-8 text-gray-500 text-sm hover:text-primary transition-colors duration-200 ease-in-out"
+                                                    className="absolute right-3 top-8 text-gray-500 hover:text-primary"
                                                 >
                                                     {showConfirmPassword ? (
                                                         <FaEyeSlash />
@@ -648,12 +733,16 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                         <FaEye />
                                                     )}
                                                 </button>
+                                                {errors.confirmPassword && (
+                                                    <p className="text-red-500 text-xs mt-1">
+                                                        {errors.confirmPassword}
+                                                    </p>
+                                                )}
                                             </div>
 
                                             {/* ID/Passport Number */}
-                                            {/* ID/Passport Number */}
-                                            <div className="relative mb-4">
-                                                <label className="block text-gray-700 text-sm mb-1">
+                                            <div className="relative">
+                                                <label className="block text-gray-700 text-sm">
                                                     ID/Passport Number{" "}
                                                     <span className="text-red-500">
                                                         *
@@ -668,16 +757,25 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                     onChange={
                                                         handleRegistrationChange
                                                     }
-                                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                    className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
+                                                        errors.id_no
+                                                            ? "border-red-500"
+                                                            : ""
+                                                    }`}
                                                     required
                                                 />
+                                                {errors.id_no && (
+                                                    <p className="text-red-500 text-xs mt-1">
+                                                        {errors.id_no}
+                                                    </p>
+                                                )}
                                             </div>
 
                                             {/* Tax PIN */}
-                                            <div className="mb-4">
-                                                <label className="block text-gray-700 text-sm mb-1">
-                                                    Tax PIN
-                                                    <span className="text-red-500 px-1">
+                                            <div className="relative">
+                                                <label className="block text-gray-700 text-sm">
+                                                    Tax PIN{" "}
+                                                    <span className="text-red-500">
                                                         *
                                                     </span>
                                                 </label>
@@ -690,18 +788,33 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                     onChange={
                                                         handleRegistrationChange
                                                     }
-                                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                    className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
+                                                        errors.tax_pin
+                                                            ? "border-red-500"
+                                                            : ""
+                                                    }`}
+                                                    required
                                                 />
+                                                {errors.tax_pin && (
+                                                    <p className="text-red-500 text-xs mt-1">
+                                                        {errors.tax_pin}
+                                                    </p>
+                                                )}
+                                            </div>
 
-                                                <div className="mt-4 flex justify-center md:justify-end">
-                                                    <button
-                                                        type="button"
-                                                        onClick={handleNext}
-                                                        className="btn btn-primary px-20 rounded-full flex items-center justify-center"
-                                                    >
-                                                        Next
-                                                    </button>
-                                                </div>
+                                            <div className="mt-4 flex justify-center md:justify-end">
+                                                <button
+                                                    type="button"
+                                                    onClick={handleNext}
+                                                    className="btn btn-primary px-20 rounded-full"
+                                                    disabled={loading} // Disable the button when loading
+                                                >
+                                                    {loading ? (
+                                                        <AiOutlineLoading3Quarters className="animate-spin w-6 h-6 text-white" /> // Spinner icon
+                                                    ) : (
+                                                        "Next"
+                                                    )}
+                                                </button>
                                             </div>
                                         </div>
                                     </>

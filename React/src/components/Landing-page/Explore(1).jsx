@@ -99,7 +99,11 @@ const Explore = () => {
                 navigate(
                     "/listingResults/" + base64_encode(ids) + "/" + data.loc
                 );
-
+                // this the reason of the scroll to top
+                
+                    window.scrollTo(0, 0);
+                
+                // this the reason of the scroll to top
                 if (locationUrl.pathname.includes("listingResults"))
                     window.location.reload();
             })

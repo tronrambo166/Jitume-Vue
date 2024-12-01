@@ -104,6 +104,17 @@ const AddService = ({ connected, userId }) => {
                 data.append(key, formData[key]);
             });
 
+            // Log form data details
+            console.log("Form Data to be submitted:");
+            for (let [key, value] of data.entries()) {
+                // Check if the value is an instance of File
+                if (value instanceof File) {
+                    console.log(`${key}: File - ${value.name}`);
+                } else {
+                    console.log(`${key}: ${value}`);
+                }
+            }
+
             setLoading(true); // Show loading state
 
             const response = await axiosClient.post(
@@ -115,6 +126,7 @@ const AddService = ({ connected, userId }) => {
                     },
                 }
             );
+            console.log(response);
 
             // Handle response statuses
             if (response.status === 200) {

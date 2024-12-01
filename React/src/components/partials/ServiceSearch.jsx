@@ -181,16 +181,40 @@ const Search = () => {
             <div className="flex flex-col bg-white w-full  ">
                 <div className="flex flex-col sm:flex-row items-center h-auto sm:h-16 w-full">
                     {/* Select Category */}
-                    <div className="relative flex items-center h-12 sm:h-full w-full sm:w-1/4 bg-gray-100  sm:rounded-l-xl border mb-1 sm:mb-0">
+                    <div className="relative flex items-center h-full w-full sm:w-1/4 mb-1 sm:mb-0 border rounded-l-lg">
                         <select
                             ref={categoryRef}
-                            value={categoryValue}
-                            onChange={handleCategoryChange}
-                            className="appearance-none bg-transparent text-gray-500 w-full h-full pl-3 pr-8 focus:outline-none"
+                            value={categoryValue} // controlled value
+                            onChange={handleCategoryChange} // handle change
+                            className="border-none bg-transparent focus:outline-none text-gray-500 text-xs sm:text-sm w-full pl-2 pr-2"
                         >
-                            <option value="">Select a category</option>
-                            <option value="category1">Category 1</option>
-                            <option value="category2">Category 2</option>
+                            <option value="">All Categories</option>
+                            <option value="Business Planning">
+                                Business Planning{" "}
+                            </option>
+                            <option
+                                value="Legal Project
+                            Managemen"
+                            >
+                                Project Management
+                            </option>
+                            <option value="Branding and Design">
+                                Branding and Design
+                            </option>
+                            <option value="Auto">Auto</option>
+                            <option value="Legal">Legal</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Accounting & Tax Marketing">
+                                Accounting & Tax Marketing
+                            </option>
+                            <option value="Tax">Tax</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Public Relations">
+                                Public Relations
+                            </option>
+                            <option value="Other">Other</option>
+
+                            {/* Add more options as needed */}
                         </select>
                     </div>
 

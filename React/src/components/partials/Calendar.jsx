@@ -107,7 +107,7 @@ const CalendarDropdown = ({ onDateSelect }) => {
         };
 
         return (
-            <div className="p-2 border rounded-md bg-white w-64 shadow-lg">
+            <div className="pb-1 pt-2 border rounded-md bg-white  w-64 shadow-lg">
                 <div className="flex justify-between items-center mb-2">
                     <button
                         type="button"

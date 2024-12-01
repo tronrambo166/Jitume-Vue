@@ -117,6 +117,7 @@ return (
                       cards.map((card) => (
                           <Link
                               to={`/service-details/${btoa(btoa(card.id))}`}
+                              onClick={() => window.scrollTo(0, 0)}
                               key={card.id}
                               className="flex-shrink-0 w-[260px] sm:w-[320px] md:w-[350px] lg:w-[390px] bg-white border border-gray-200 rounded-2xl p-3 sm:p-4 flex flex-col justify-between"
                           >

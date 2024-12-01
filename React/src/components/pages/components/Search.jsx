@@ -21,7 +21,17 @@ const Search = () => {
     const [nameValue, setNameValue] = useState("");
     const [categoryValue, setCategoryValue] = useState("");
     const [locationValue, setLocationValue] = useState("");
-
+    const categories = [
+        "Business Planning",
+        "IT",
+        "Legal Project Management",
+        "Branding and Design",
+        "Auto",
+        "Finance, Accounting & Tax Marketing",
+        "Tax Marketing",
+        "Public Relations",
+        "Other",
+    ];
     const Search = (e) => {
         e.preventDefault();
         let ids = "";
@@ -197,15 +207,52 @@ const Search = () => {
                             className="border-none bg-transparent focus:outline-none text-gray-500 text-xs sm:text-sm w-full pl-2 pr-2"
                         >
                             <option value="">All Categories</option>
-                            <option value="category1">Category 1</option>
-                            <option value="category2">Category 2</option>
+                            <option value="Business Planning">
+                                Business Planning{" "}
+                            </option>
+                            <option
+                                value=" Project
+                            Managemen"
+                            >
+                                Project Management
+                            </option>
+                            <option value="Legal">Legal</option>
+                            <option value="Branding and Design">
+                                Branding and Design
+                            </option>
+                            <option value="Auto">Auto</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Accounting & Tax Marketing">
+                                Accounting & Tax Marketing
+                            </option>
+                            <option value="Tax">Tax</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Public Relations">
+                                Public Relations
+                            </option>
+                            <option value="Other">Other</option>
+
                             {/* Add more options as needed */}
                         </select>
                     </div>
 
                     {/* Hidden inputs for latitude and longitude */}
-                    <input readOnly type="text" name="lat" id="lat" hidden value="" />
-                    <input readOnly type="text" name="lng" id="lng" hidden value="" />
+                    <input
+                        readOnly
+                        type="text"
+                        name="lat"
+                        id="lat"
+                        hidden
+                        value=""
+                    />
+                    <input
+                        readOnly
+                        type="text"
+                        name="lng"
+                        id="lng"
+                        hidden
+                        value=""
+                    />
 
                     {/* Location Input with Suggestions */}
                     <div className="relative w-full sm:w-1/4 h-10 mb-1 sm:mb-0">

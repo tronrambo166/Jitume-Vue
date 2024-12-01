@@ -21,7 +21,7 @@ const ServiceTable = () => {
                         setBusiness(data.business);
                         setService(data.services);
                         setMyInvest(data.results);
-                        console.log(data.results);
+                        console.log("services", data);
                     })
                     .catch((err) => {
                         console.log(err);

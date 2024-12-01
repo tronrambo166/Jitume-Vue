@@ -38,7 +38,9 @@ const DiscoverLocal = () => {
                 );
 
                 if (window.location.pathname.includes("serviceResults"))
-                    window.location.reload();
+                    // window.location.reload();
+                window.scrollTo(0, 0);
+
             })
             .catch((err) => {
                 console.error("Error during search:", err);

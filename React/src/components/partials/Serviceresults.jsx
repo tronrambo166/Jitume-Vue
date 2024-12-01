@@ -315,7 +315,7 @@ const ServiceResults = () => {
             document.getElementById("low").value =
                 formatWithCommas(numericValue); // Update input with formatted value
         }
-    };
+    }; 
 
     const UpdateValuesMax = (value) => {
         const numericValue = parseWithoutCommas(value); // Remove commas to get a numeric string
@@ -336,7 +336,7 @@ const ServiceResults = () => {
                 What Are You Looking For?
             </h1> */}
                 <div className="mt-6 sm:mt-8 md:mt-10 lg:mt-12 xl:mt-16">
-                    <Search />
+                    <ServiceSearch />
                     {/*<ServiceSearch />*/}
                 </div>
 
