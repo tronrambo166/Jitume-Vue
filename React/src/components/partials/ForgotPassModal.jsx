@@ -1,42 +1,39 @@
 import React, { useState } from "react";
 import { useAlert } from "../partials/AlertContext";
 import axiosClient from "../../axiosClient";
+import { FaEye, FaEyeSlash, FaTimes } from "react-icons/fa";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const ForgotPassModal = ({ onClose }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordC, setPasswordC] = useState("");
-    const [oldCode, setOldCode] = useState(null);
     const [code, setCode] = useState("");
-    const { showAlert } = useAlert();
+    const [oldCode, setOldCode] = useState(null);
+    const [showResetModal, setShowResetModal] = useState(false);
+    const [isNewPasswordVisible, setIsNewPasswordVisible] = useState(false);
+    const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+        useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const { showAlert } = useAlert();
 
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-    };
-    const handlePasswordChange = (e) => {
-        setPassword(e.target.value);
-    };
-    const handlePasswordCChange = (e) => {
-        setPasswordC(e.target.value);
-    };
-
-    const handleCodeChange = (e) => {
-        setCode(e.target.value);
-    };
+    const toggleNewPasswordVisibility = () =>
+        setIsNewPasswordVisible(!isNewPasswordVisible);
+    const toggleConfirmPasswordVisibility = () =>
+        setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
 
     const handleEmailSubmit = async () => {
         if (email.trim()) {
-        const newcode = Math.floor(Math.random() * 10000);
-        // Send email verification
-        const verify = await emailVerify(newcode);
-        setIsLoading(true);
-        //Set a loading here
-        if (verify) {
-            showAlert(
-                "info",
-                "Verification email sent successfully. Please check your inbox."
-            );
+            setIsLoading(true);
+            const newCode = Math.floor(Math.random() * 10000);
+            const verify = await emailVerify(newCode);
+            setIsLoading(false);
+            if (verify) {
+                showAlert(
+                    "info",
+                    "Verification email sent successfully. Please check your inbox and enter the code below."
+                );
+                setShowResetModal(true);
             }
         } else {
             showAlert("error", "Please enter a valid email address.");
@@ -45,141 +42,190 @@ const ForgotPassModal = ({ onClose }) => {
 
     const handleResetSubmit = async () => {
         if (oldCode == code) {
-            if(password == passwordC){
-                const { data } = await axiosClient.get(
-                `resetPassword/${email}/${password}`
-                );
+            if (password === passwordC) {
                 setIsLoading(true);
+                const { data } = await axiosClient.get(
+                    `resetPassword/${email}/${password}`
+                );
+                setIsLoading(false);
                 if (data.status === 200) {
-                    showAlert("success", data.message);
+                    showAlert(
+                        "success",
+                        "Password reset successful! You can now log in with your new password."
+                    );
+                    onClose();
                 } else {
-                    showAlert("error", data.message || "Email not sent.");
+                    showAlert(
+                        "error",
+                        data.message || "Password reset failed."
+                    );
                 }
+            } else {
+                showAlert("error", "Passwords do not match. Please try again.");
             }
-            else
-            showAlert("error", "Password do not match");
-            //onClose(); // Close modal after submission
-        } else {console.log(oldCode)
-            showAlert("error", "Wrong Code");
+        } else {
+            showAlert(
+                "error",
+                "Invalid code. Please check your email and enter the correct code."
+            );
         }
     };
 
-    //MAIL VERIFY
     const emailVerify = async (code) => {
         try {
-            // Make the API request to verify OTP
             const { data } = await axiosClient.get(
                 `emailVerify/${email}/${code}`
             );
-            setIsLoading(true);
             if (data.status === 200) {
                 setOldCode(code);
                 return true;
             } else {
-                showAlert("error", data.message || "Email not sent.");
-                return false; // OTP verification failed
+                showAlert(
+                    "error",
+                    data.message ||
+                        "Failed to send verification email. Try again later."
+                );
+                return false;
             }
         } catch (error) {
-            console.error("Error during email verification:", error);
             showAlert(
                 "error",
-                error.response?.data?.message || "An error occurred."
+                "An error occurred while verifying your email. Please try again."
             );
-            return false; // OTP verification failed
+            return false;
         }
     };
-
 
     return (
         <div
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-            onClick={onClose} // Close modal when clicking outside
+            onClick={onClose}
         >
             <div
-                className="bg-white p-6 rounded shadow-lg w-[400px]"
-                onClick={(e) => e.stopPropagation()} // Prevent modal from closing when clicking inside
+                className="relative bg-white p-6 rounded shadow-lg w-[400px]"
+                onClick={(e) => e.stopPropagation()}
             >
-                <h2 className="text-lg font-bold text-gray-600 mb-4">
-                    Reset Password
-                </h2>
-                <p className="mb-4 text-gray-600">
-                    Please enter your email to reset your password.
-                </p>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    className="w-full p-2 mb-4 border rounded text-gray-600"
-                    value={email}
-                    onChange={handleEmailChange}
+                <FaTimes
+                    className="absolute top-3 right-3 text-gray-500 cursor-pointer hover:text-red-600"
+                    onClick={onClose}
+                    size={24}
                 />
-
-                <div className="flex justify-between">
-                    <button
-                        onClick={onClose}
-                        className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-600 text-white"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        onClick={handleEmailSubmit}
-                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-                    >
-                        Submit
-                    </button>
-                </div>
+                {isLoading ? (
+                    <div className="flex items-center justify-center">
+                        <AiOutlineLoading3Quarters className="animate-spin text-3xl text-green-500" />
+                        <p className="ml-3 text-gray-600">
+                            Processing your request. Please wait...
+                        </p>
+                    </div>
+                ) : (
+                    <>
+                        {!showResetModal ? (
+                            <>
+                                <h2 className="text-lg font-bold text-gray-600 mb-4">
+                                    Reset Password
+                                </h2>
+                                <p className="mb-4 text-gray-600">
+                                    Enter your email address below, and we'll
+                                    send you a verification code to reset your
+                                    password.
+                                </p>
+                                <input
+                                    type="email"
+                                    placeholder="Email"
+                                    className="w-full p-2 mb-4 border rounded text-gray-600"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                                <button
+                                    onClick={handleEmailSubmit}
+                                    className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full"
+                                >
+                                    Send Verification Code
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <h2 className="text-lg font-bold text-gray-600 mb-4">
+                                    Enter Verification Code
+                                </h2>
+                                <p className="mb-4 text-gray-600">
+                                    We sent a code to{" "}
+                                    <strong className="font-bold text-green">
+                                        {email}
+                                    </strong>
+                                    . Please enter the code below to reset your
+                                    password.
+                                </p>
+                                <input
+                                    type="text"
+                                    placeholder="Verification Code"
+                                    className="w-full p-2 mb-4 border rounded text-gray-600"
+                                    value={code}
+                                    onChange={(e) => setCode(e.target.value)}
+                                />
+                                <div className="relative">
+                                    <input
+                                        type={
+                                            isNewPasswordVisible
+                                                ? "text"
+                                                : "password"
+                                        }
+                                        placeholder="New Password"
+                                        className="w-full p-2 mb-4 border rounded text-gray-600"
+                                        value={password}
+                                        onChange={(e) =>
+                                            setPassword(e.target.value)
+                                        }
+                                    />
+                                    <span
+                                        className="absolute right-3 top-3 cursor-pointer text-gray-600"
+                                        onClick={toggleNewPasswordVisibility}
+                                    >
+                                        {isNewPasswordVisible ? (
+                                            <FaEyeSlash />
+                                        ) : (
+                                            <FaEye />
+                                        )}
+                                    </span>
+                                </div>
+                                <div className="relative">
+                                    <input
+                                        type={
+                                            isConfirmPasswordVisible
+                                                ? "text"
+                                                : "password"
+                                        }
+                                        placeholder="Confirm New Password"
+                                        className="w-full p-2 mb-4 border rounded text-gray-600"
+                                        value={passwordC}
+                                        onChange={(e) =>
+                                            setPasswordC(e.target.value)
+                                        }
+                                    />
+                                    <span
+                                        className="absolute right-3 top-3 cursor-pointer text-gray-600"
+                                        onClick={
+                                            toggleConfirmPasswordVisibility
+                                        }
+                                    >
+                                        {isConfirmPasswordVisible ? (
+                                            <FaEyeSlash />
+                                        ) : (
+                                            <FaEye />
+                                        )}
+                                    </span>
+                                </div>
+                                <button
+                                    onClick={handleResetSubmit}
+                                    className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full"
+                                >
+                                    Reset Password
+                                </button>
+                            </>
+                        )}
+                    </>
+                )}
             </div>
-
-            {/*Reset Form Div*/} <br></br>
-            <div
-                className="bg-white p-6 rounded shadow-lg w-[400px]"
-                onClick={(e) => e.stopPropagation()} // Prevent modal from closing when clicking inside
-            >
-                <h2 className="text-lg font-bold text-gray-600 mb-4">
-                    Reset Password
-                </h2>
-                <p className="mb-4 text-gray-600">
-                    Please enter verification code sent to your email.
-                </p>
-                <input
-                    type="text"
-                    placeholder="Code"
-                    className="w-full p-2 mb-4 border rounded text-gray-600"
-                    value={code}
-                    onChange={handleCodeChange}
-                />
-
-                <input
-                    type="password"
-                    placeholder="New password"
-                    className="w-full p-2 mb-4 border rounded text-gray-600"
-                    value={password}
-                    onChange={handlePasswordChange}
-                />
-
-                <input
-                    type="password"
-                    placeholder="Confirm password"
-                    className="w-full p-2 mb-4 border rounded text-gray-600"
-                    value={passwordC}
-                    onChange={handlePasswordCChange}
-                />
-
-                <div className="flex justify-between">
-                    <button
-                        onClick={onClose}
-                        className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-600 text-white"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        onClick={handleResetSubmit}
-                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-                    >
-                        Submit
-                    </button>
-                </div>
-            </div>
-            {/*Reset Form Div*/}
         </div>
     );
 };
