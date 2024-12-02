@@ -7,13 +7,12 @@ import Footer2 from "./Landing-page/global/Footer2";
 import Navbar from "./Landing-page/Navbar";
 import Nav2 from "./Landing-page/global/Nav2";
 // import BusinessHero from "../components/Businesses/BusinessHero";
-//import NavbarGuest from "./partials/NavbarGuest";
-//import Navbar_old from "./partials/Navbar";
+import NavbarGuest from "./partials/NavbarGuest";
+import Navbar_old from "./partials/Navbar";
 import PaymentHero from "./Heros/PaymentHero";
 import { useIdleTimer } from "react-idle-timer";
 
 export default function DefaultLayout() {
-    //const [logged, setLogged] = useState(null)
     const { token, setToken } = useStateContext();
     const location = useLocation();
     const isDashboardRoute = location.pathname.startsWith("/dashboard");
@@ -33,37 +32,51 @@ export default function DefaultLayout() {
             location.pathname.startsWith(`${path}/`)
     );
 
+    const TEN_SECONDS = 10000; // Idle timeout (10 seconds)
+    const DEBOUNCE_TIME = 1000; //it will wait 1 second before checking if the user is idle
 
-  //setLogged(token);
-
-  const FIVE_MINS = 1 * 10 * 1000;
-  const GENERAL_DEBOUNCE_TIME = 500;
-   // SET USER IDEAL TIME WITH DEBOUNCE
-   const handleOnUserIdle = () =>{
-    localStorage.clear();
-    setToken(null);
-    //setLogged(null);
-
-    //if(token)
-    $.alert({
+    // Handle user idle action
+    const handleOnUserIdle = () => {
+        if (token && token !== "false") {
+            localStorage.clear(); // Clear stored session data
+            localStorage.setItem("userLoggedOut", "true"); // Set a flag for logged out
+            setToken(null);
+            $.alert({
                 title: "Please Log In!",
                 content: "You're Logged Out.",
-                });
-            //window.location.reload();
-            //return;
-  }
+            });
+        }
+    };
 
-
-  if(token)
-  {
+    // Initialize idle timer if user is logged in
     useIdleTimer({
-    timeout: FIVE_MINS, // time in millisecond
-    //onIdle: handleOnUserIdle(),
-    debounce: GENERAL_DEBOUNCE_TIME, // time in millisecond
-  });
+        timeout: TEN_SECONDS, // Set to 10 seconds for accurate idle detection
+        onIdle: handleOnUserIdle,
+        debounce: DEBOUNCE_TIME, // 1 second debounce time to prevent premature triggering
+        enabled: !!token && token !== "false", // Only enable if the user is logged in
+    });
 
-  }
+    //     //setToken(null);
+    //   const FIVE_MINS = 1 * 3 * 1000;
+    //   const GENERAL_DEBOUNCE_TIME = 500;
+    //    // SET USER IDEAL TIME WITH DEBOUNCE
+    //    const handleOnUserIdle = (e) =>{
+    //     e.preventDefault();
+    //     localStorage.clear();
+    //     setToken(null);
+    //     $.alert({
+    //                 title: "Please Log In!",
+    //                 content: "You're Logged Out.",
+    //                 });
+    //   }
 
+    if (token && token != "false") {
+        //   useIdleTimer({
+        //   timeout: FIVE_MINS, // time in millisecond
+        //   onIdle: handleOnUserIdle(e),
+        //   debounce: GENERAL_DEBOUNCE_TIME, // time in millisecond
+        // });
+    }
 
     return (
         <div id="defaultLayout" className="relative z-20">
