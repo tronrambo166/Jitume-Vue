@@ -7,12 +7,13 @@ import Footer2 from "./Landing-page/global/Footer2";
 import Navbar from "./Landing-page/Navbar";
 import Nav2 from "./Landing-page/global/Nav2";
 // import BusinessHero from "../components/Businesses/BusinessHero";
-import NavbarGuest from "./partials/NavbarGuest";
-import Navbar_old from "./partials/Navbar";
+//import NavbarGuest from "./partials/NavbarGuest";
+//import Navbar_old from "./partials/Navbar";
 import PaymentHero from "./Heros/PaymentHero";
 import { useIdleTimer } from "react-idle-timer";
 
 export default function DefaultLayout() {
+    //const [logged, setLogged] = useState(null)
     const { token, setToken } = useStateContext();
     const location = useLocation();
     const isDashboardRoute = location.pathname.startsWith("/dashboard");
@@ -33,28 +34,33 @@ export default function DefaultLayout() {
     );
 
 
-    //setToken(null);
-  const FIVE_MINS = 1 * 3 * 1000;
+  //setLogged(token);
+
+  const FIVE_MINS = 1 * 10 * 1000;
   const GENERAL_DEBOUNCE_TIME = 500;
    // SET USER IDEAL TIME WITH DEBOUNCE
-   const handleOnUserIdle = (e) =>{
-    e.preventDefault();
+   const handleOnUserIdle = () =>{
     localStorage.clear();
     setToken(null);
+    //setLogged(null);
+
+    //if(token)
     $.alert({
                 title: "Please Log In!",
                 content: "You're Logged Out.",
                 });
+            //window.location.reload();
+            //return;
   }
 
 
-  if(token && token !='false')
+  if(token)
   {
-  //   useIdleTimer({
-  //   timeout: FIVE_MINS, // time in millisecond
-  //   onIdle: handleOnUserIdle(e),
-  //   debounce: GENERAL_DEBOUNCE_TIME, // time in millisecond
-  // });
+    useIdleTimer({
+    timeout: FIVE_MINS, // time in millisecond
+    onIdle: handleOnUserIdle(),
+    debounce: GENERAL_DEBOUNCE_TIME, // time in millisecond
+  });
 
   }
 
