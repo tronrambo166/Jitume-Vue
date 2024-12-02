@@ -33,7 +33,7 @@ const ProjectManagers = () => {
         setNotificationMessage('Listings not found.');
         setShowNotification(true);
       } else {
-        setCards(testData);
+        //setCards(testData);
         setLoading(false);
       }
     }, 1000); // Simulate network delay
@@ -86,7 +86,7 @@ const ProjectManagers = () => {
 
     ):(
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <h2 className="my-4 font-weight-bold text-center text-dark">Find  a project manager <h6 class="text-center mx-auto">
+        <h2 className="block my-4 font-weight-bold text-center mx-auto text-dark">Find  a project manager <h6 class="text-center mx-auto">
           (Within 20 miles of the Business)</h6> </h2>
           
 

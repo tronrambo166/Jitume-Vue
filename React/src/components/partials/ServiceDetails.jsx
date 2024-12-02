@@ -31,6 +31,7 @@ const ServiceDetails = () => {
     const { bid_id } = useParams();
     const { business_bid_id } = ""; //useParams();
     const [notes, setNotes] = useState("");
+    const [cat, setCat] = useState("");
     const [rebookRes, setRebookRes] = useState("");
     const [details, setDetails] = useState("");
     const [milestonesRes, setMilestonesRes] = useState("");
@@ -210,6 +211,7 @@ const ServiceDetails = () => {
                     if (data.data[0]["rating_count"] == 0)
                         data.data[0]["rating"] = 0;
                     setDetails(data.data[0]);
+                    setCat(data.data[0].category)
                     //console.log(details)
                 })
                 .catch((err) => {
@@ -426,7 +428,19 @@ const ServiceDetails = () => {
                                     </svg>
                                 </div>
                             ) : (
-                                <img
+
+                                cat ? 
+                                    <img
+                                    style={{
+                                        maxHeight: "555px",
+                                    }}
+                                    className="w-full rounded-lg object-cover"
+                                    src={"../../" + details.image}
+                                    alt="Service"
+                                /> 
+                                :
+                                    
+                                    <img
                                     style={{
                                         maxHeight: "555px",
                                     }}
@@ -434,6 +448,9 @@ const ServiceDetails = () => {
                                     src={"../" + details.image}
                                     alt="Service"
                                 />
+                                
+
+                                
                             )}
 
                             {/* Overlay Section with Location */}

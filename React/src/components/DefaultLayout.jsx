@@ -58,7 +58,7 @@ export default function DefaultLayout() {
   {
     useIdleTimer({
     timeout: FIVE_MINS, // time in millisecond
-    onIdle: handleOnUserIdle(),
+    //onIdle: handleOnUserIdle(),
     debounce: GENERAL_DEBOUNCE_TIME, // time in millisecond
   });
 

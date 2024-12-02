@@ -1361,7 +1361,7 @@ $business_loc = $this_business->location;
 $lat = (float)$this_business->lat;
 $lng = (float)$this_business->lng;
 $services = $this->findNearestServices($lat,$lng,100);
-return response()->json(['services' => $services]);
+return response()->json(['services' => $services, 'count'=> $services->count()]);
 }
 else return response()->json(['data'=>false, 'error:'=>'Business does not exist!']);
 
@@ -1413,17 +1413,20 @@ foreach($notifications as $notice)
   if($notice->type == 'investor' || $notice->type == 'customer')
   {
   $notifier =User::where('id',$notice->customer_id)->first();
+  if($notifier)
   $name = $notifier->fname. ' '.$notifier->lname;
   }
   
   else if($notice->type == 'business'){
   $notifier =Listing::where('id',$notice->customer_id)->first();
+  if($notifier)
   $name = $notifier->fname;
   }
   
   else {
     $notifier =Service::where('id',$notice->customer_id)->first();
-    $name = $notifier->fname;
+    if($notifier)$name = $notifier->fname;
+    
   }
 
   $notice->text = str_replace('_name', $name, $notice->text);

@@ -24,7 +24,7 @@ use Stripe\StripeClient;
 use App\Models\taxes;
 use App\Models\BusinessBids;
 use App\Models\ServiceMileStatus;
-use App\Models\Notificationss;
+use App\Models\Notifications;
 
 class bidsEmailController extends Controller
 {
