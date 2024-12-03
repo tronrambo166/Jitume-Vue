@@ -31,8 +31,8 @@ export default function DefaultLayout() {
             location.pathname === path ||
             location.pathname.startsWith(`${path}/`)
     );
-
-    const TEN_SECONDS = 10000; // Idle timeout (10 seconds)
+// i know i have writen this code it say ten seconds but its 5 minutes  ten second is 10000 
+    const TEN_SECONDS = 300000; // Idle timeout (10 seconds)
     const DEBOUNCE_TIME = 1000; //it will wait 1 second before checking if the user is idle
 
     // Handle user idle action

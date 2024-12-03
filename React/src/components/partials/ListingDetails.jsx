@@ -403,7 +403,7 @@ const ListingDetails = ({ onClose }) => {
                     setAllow(data.allowToReview);
                     setAmount_r(data.amount_required);
                     setRunning(data.running);
-                    console.log(data)
+                    console.log(data);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -654,28 +654,29 @@ const ListingDetails = ({ onClose }) => {
             <div className="flex flex-col md:flex-row  justify-start items-start py-4 lg:py-8 mt-3 w-full px-4 md:px-6 lg:px-8">
                 <div className="w-full flex ml-1 md:space-x-6  flex-col md:flex-row gap-4 md:gap-6 lg:gap-8">
                     {/* Left Section */}
-                    <div className="md:w-1/2 ">
+                    <div className="md:w-1/2">
                         <h2 className="bg-yellow-300 text-sm px-4 py-2 inline-block mb-4 rounded-full font-semibold">
                             • More business information
                         </h2>
-                        <p className="text-xl md:text-2xl lg:text-4xl font-bold text-[#334155]">
+                        <p className="text-xl md:text-2xl lg:text-4xl font-bold text-[#334155] mb-4">
                             {details.name}
                         </p>
 
-                        <div className="flex items-center font-semibold gap-2 text-[#1E293B]">
-                            <p className="mb-2 pt-4">#Shop</p>
-                            <p className="mb-2 pt-4">#Grocery Store</p>
-                            <p className="mb-2 pt-4">#Food</p>
+                        <div className="flex items-center font-semibold gap-3 text-[#1E293B] mb-4">
+                            <p>#Shop</p>
+                            <p>#Grocery Store</p>
+                            <p>#Food</p>
                         </div>
 
-                        <p className="text-[#1E293B]  text-[18px] mb-5">
+                        <p className="text-[#1E293B] text-[18px] mb-5">
                             Lorem ipsum dolor sit amet, consectetur adipiscing
                             elit, sed do eiusmod tempor incididunt ut labore et
                             dolore magna aliqua. Ut enim ad minim veniam, quis
-                            nostrud exercitation ullamco laboris nisi ut aliquip
+                            nostrud exercitation ullamco laboris nisi ut
+                            aliquip.
                         </p>
 
-                        <div className="mb-4 py-2 flex flex-col gap-2">
+                        <div className="mb-4 py-2 flex flex-col gap-3">
                             <p className="flex items-center text-gray-700">
                                 <FaMapMarkerAlt className="mr-2 text-lg text-gray-500" />
                                 Franz Josef Strauss, Munich, Germany
@@ -686,7 +687,7 @@ const ListingDetails = ({ onClose }) => {
                             </p>
                         </div>
 
-                        <div className="flex items-center pb-3 gap-1">
+                        <div className="flex items-center gap-2 mt-6">
                             <p className="text-green-800 text-2xl md:text-lg font-semibold">
                                 ${details.investment_needed || 0}
                             </p>
@@ -695,7 +696,7 @@ const ListingDetails = ({ onClose }) => {
                             </p>
                         </div>
 
-                        <div className="flex gap-2">
+                        <div className="flex gap-4 mt-4">
                             <div className="flex items-center gap-10">
                                 {token && !conv ? (
                                     <a
@@ -707,8 +708,7 @@ const ListingDetails = ({ onClose }) => {
                                     </a>
                                 ) : token && conv ? (
                                     <button className="text-white bg-green-800 rounded py-2 px-5 hidden">
-                                        {" "}
-                                        Unlocked!{" "}
+                                        Unlocked!
                                     </button>
                                 ) : (
                                     <a
@@ -742,36 +742,11 @@ const ListingDetails = ({ onClose }) => {
                                 >
                                     <FaPlusCircle className="text-green" />
                                     <span>Add Review</span>
-
-                                <br></br> &nbsp;&nbsp;<p
-                                    className="bg-green-600 text-white p-3 rounded"
-                                >
-                                     Business is completed
-                                </p>
-
-                                </button>
-
-            
-                            )}
-
-                            <hr />
-
-                            {/*        {reviewData.map((item) => (
-                                <div className="mt-4" key={item.user_name}>
-                                    <img
-                                        className="inline rounded-[50%]"
-                                        src="https://via.placeholder.com/30"
-                                        alt="User"
-                                        width="30"
-                                    />
-                                    <p className="inline text-sm">
-                                        <b className="text-green-700">
-                                            {item.user_name}
-                                        </b>{" "}
-                                        {item.text} &nbsp; {item.rating}
+                                    <p className="bg-green-600 text-white p-3 rounded">
+                                        Business is completed
                                     </p>
-                                </div>
-                            ))}*/}
+                                </button>
+                            )}
 
                             {showPopup && (
                                 <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -865,7 +840,7 @@ const ListingDetails = ({ onClose }) => {
                                     </span>
                                 </div> */}
 
-                                <div className="flex flex-col mb-2">
+                                <div className="flex flex-col ">
                                     {/* Skeleton for Rating Stars and Rating Count */}
                                     {!details ? (
                                         <div className="flex items-center justify-end gap-2 text-right">
@@ -1111,156 +1086,132 @@ const ListingDetails = ({ onClose }) => {
             />
 
             <div className="">
-                <div className="p-4 sm:p-6">
-                    <div className="grid gap-6 sm:grid-cols-3 mb-8">
-                        <ReviewSummary />
-
+                <hr className="border-t border-gray-300"></hr>
+                <div className="p-4 sm:p-6 ">
+                    <div className="  flex justify-center gap-4">
                         {/* On mobile, ReviewSummary takes up full width, on larger screens it takes 1/3 */}
-                        <div className="sm:col-span-1">
+                        <div className="sm:col-span-1 flex flex-col lg:flex-row gap-6">
                             {/* Financial Statements Section */}
-                            {token && conv && (
-                                <div className=" rounded-lg border border-gray-300 p-4 flex flex-col gap-4 items-center mt-6">
+                            {token && conv && amount_r && running && (
+                                <div className="w-full lg:max-w-sm flex flex-col gap-6  rounded-lg items-center justify-center p-6 lg:p-10 bg-white">
                                     <button
-                                        className="whitespace-nowrap border border-black bg-white hover:bg-gray-200 transition-all duration-200 px-4 py-2 rounded-lg w-full max-w-[300px] text-center"
+                                        className="border border-gray-300 bg-white hover:bg-gray-100 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium"
                                         onClick={download_statement}
                                     >
-                                        Download Financial Statements
+                                        Download Financial Statement
                                     </button>
                                     <button
                                         onClick={download_business}
-                                        className="whitespace-nowrap border border-black bg-white hover:bg-gray-200 transition-all duration-200 px-4 py-2 rounded-lg w-full max-w-[300px] text-center"
+                                        className="border border-gray-300 bg-white hover:bg-gray-100 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium"
                                     >
-                                        Download Business Documentation
+                                        Download Business Documents
                                     </button>
-                                    <button className="whitespace-nowrap border border-black bg-white hover:bg-gray-200 transition-all duration-200 px-4 py-2 rounded-lg w-full max-w-[300px] text-center">
+                                    <button className="border border-gray-300 bg-white hover:bg-gray-100 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium">
                                         <Link
                                             to={`/business-milestones/${btoa(
                                                 btoa(details.id)
                                             )}`}
                                             key={details.id}
+                                            className="block w-full text-center"
                                         >
                                             View Business Milestones
                                         </Link>
                                     </button>
-
-                                    
                                 </div>
                             )}
 
-                            {/*{token? <p> testY </p>:<p> testNo </p>}*/}
                             {token && conv && amount_r && running ? (
-                                <div className="container mx-auto mt-2 p-6 bg-white border border-gray-300 rounded-lg">
-                                    <div>
-                                        <div className="w-full flex flex-col items-center mt-4">
-                                            <h2 className="text-lg font-semibold text-[#334155] mb-4">
-                                                Enter A Bid To Invest
-                                            </h2>
-                                            <label
-                                                htmlFor="investmentAmount"
-                                                className="text-sm text-[#334155] font-medium"
-                                            >
-                                                Amount:
-                                            </label>
-                                            <input
-                                                type="number"
-                                                id="investmentAmount"
-                                                value={amount}
-                                                onChange={handleAmountChange}
-                                                className="border border-gray-300 rounded-lg p-2 mb-2 w-full"
-                                                placeholder="$"
-                                            />
-                                            {amount && (
-                                                <div className="text-sm">
-                                                    <p>
-                                                        Bid Percentage:{" "}
-                                                        <span
-                                                            id="percent"
-                                                            className="font-bold"
-                                                        >
-                                                            {percentage}
-                                                        </span>
-                                                        %
-                                                    </p>
-                                                </div>
-                                            )}
-                                            <button
-                                                onClick={handleInvestClick}
-                                                className="btn-primary text-white border bg-green-700 hover:bg-green-800 transition-all duration-200 px-4 py-2 rounded-lg mt-4 w-full max-w-[300px]"
-                                            >
-                                                Invest Now
-                                            </button>
-                                            {errorMessage && (
-                                                <p className="error-message text-red-600">
-                                                    {errorMessage}
-                                                </p>
-                                            )}
-                                        </div>
+                                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 p-4 lg:p-8 justify-center items-start w-full">
+                                    <div className="bg-white border border-gray-300 rounded-lg p-6 w-full max-w-lg">
+                                        <h2 className="text-xl font-semibold text-[#334155] mb-6">
+                                            Enter A Bid To Invest
+                                        </h2>
+                                        <label
+                                            htmlFor="investmentAmount"
+                                            className="text-sm text-[#334155] font-medium mb-2 block"
+                                        >
+                                            Amount:
+                                        </label>
+                                        <input
+                                            type="number"
+                                            id="investmentAmount"
+                                            value={amount}
+                                            onChange={handleAmountChange}
+                                            className="border border-gray-300 rounded-lg p-3 mb-4 w-full"
+                                            placeholder="$"
+                                        />
+                                        {amount && (
+                                            <p className="text-sm text-[#334155] mb-4">
+                                                Bid Percentage:{" "}
+                                                <span className="font-bold">
+                                                    {percentage}%
+                                                </span>
+                                            </p>
+                                        )}
+                                        <button
+                                            onClick={handleInvestClick}
+                                            className="bg-green-700 hover:bg-green-800 text-white transition-all duration-200 px-4 py-3 rounded-lg w-full"
+                                        >
+                                            Invest Now
+                                        </button>
+                                        {errorMessage && (
+                                            <p className="text-red-600 mt-4">
+                                                {errorMessage}
+                                            </p>
+                                        )}
+                                    </div>
 
-                                        <div className="w-full flex flex-col items-center mt-4">
-                                            <h2 className="text-lg font-semibold text-[#334155] mb-4">
-                                                Enter Equipment Equivalent Bid
-                                                To Invest
-                                            </h2>
-                                            <label
-                                                htmlFor="equipmentAmount"
-                                                className="text-sm text-[#334155] font-medium"
-                                            >
-                                                Amount:
-                                            </label>
-                                            <input
-                                                type="number"
-                                                id="equipmentAmount"
-                                                value={equipmentAmount}
-                                                onChange={
-                                                    handleEquipmentAmountChange
-                                                }
-                                                className="border border-gray-300 rounded-lg p-2 mb-2 w-full"
-                                                placeholder="$"
-                                            />
-                                            {equipmentAmount && (
-                                                <div className="text-sm">
-                                                    <p>
-                                                        Equipment Investment
-                                                        Percentage:{" "}
-                                                        <span className="font-bold">
-                                                            {
-                                                                equipmentPercentage
-                                                            }
-                                                            %
-                                                        </span>
-                                                    </p>
-                                                </div>
-                                            )}
-
-                                            <button
-                                                onClick={handleEquipmentInvest}
-                                                className="btn-primary text-white border bg-green-700 hover:bg-green-800 transition-all duration-200 px-4 py-2 rounded-lg mt-4 w-full max-w-[300px]"
-                                            >
-                                                Invest in Equipment
-                                            </button>
-                                            {equipmentErrorMessage && (
-                                                <p className="error-message text-red-600">
-                                                    {equipmentErrorMessage}
-                                                </p>
-                                            )}
-                                            {allowToReview && conv && (
-                                                <div className="w-75 mx-auto row">
-                                                    <h4 className="bg-green-600 text-white p-3 rounded">
-                                                        Business is completed!
-                                                    </h4>
-                                                </div>
-                                            )}
-                                        </div>
+                                    <div className="bg-white border border-gray-300 rounded-lg p-6 w-full max-w-lg">
+                                        <h2 className="text-xl font-semibold text-[#334155] mb-6">
+                                            Enter Equipment Equivalent Bid To
+                                            Invest
+                                        </h2>
+                                        <label
+                                            htmlFor="equipmentAmount"
+                                            className="text-sm text-[#334155] font-medium mb-2 block"
+                                        >
+                                            Amount:
+                                        </label>
+                                        <input
+                                            type="number"
+                                            id="equipmentAmount"
+                                            value={equipmentAmount}
+                                            onChange={
+                                                handleEquipmentAmountChange
+                                            }
+                                            className="border border-gray-300 rounded-lg p-3 mb-4 w-full"
+                                            placeholder="$"
+                                        />
+                                        {equipmentAmount && (
+                                            <p className="text-sm text-[#334155] mb-4">
+                                                Equipment Investment Percentage:{" "}
+                                                <span className="font-bold">
+                                                    {equipmentPercentage}%
+                                                </span>
+                                            </p>
+                                        )}
+                                        <button
+                                            onClick={handleEquipmentInvest}
+                                            className="bg-green-700 hover:bg-green-800 text-white transition-all duration-200 px-4 py-3 rounded-lg w-full"
+                                        >
+                                            Invest in Equipment
+                                        </button>
+                                        {equipmentErrorMessage && (
+                                            <p className="text-red-600 mt-4">
+                                                {equipmentErrorMessage}
+                                            </p>
+                                        )}
                                     </div>
                                 </div>
                             ) : (
-                                <div className="w-75 mx-auto row">
-                                     <p className="bg-light text-gray-700 p-2 rounded">
-                Milestone payout is currently off due to
-                milestone completion process, please wait
-                until next milestone is open.
-            </p> 
-                                </div>
+                                <div></div>
+                                // <div className="w-full mx-auto text-center p-4">
+                                //     <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
+                                //         Milestone payout is currently off due to
+                                //         milestone completion process. Please
+                                //         wait until the next milestone is open.
+                                //     </p>
+                                // </div>
                             )}
                         </div>
 
@@ -1374,45 +1325,97 @@ const ListingDetails = ({ onClose }) => {
     )}
 </div> */}
                     </div>
-                    <div className="mt-2 mb-2 ">
-                        <div className="text-center text-2xl  py-4 mb-4 text-green underline font-bold">
-                            <h2>Reviews</h2>
-                        </div>
-                    </div>
-                    <hr></hr>{" "}
-                    <div className="sm:col-span-2">
-                        {currentReviews.length === 0 ? (
-                            <p className="text-gray-600 text-2xl justify-center flex mt-2 mb-2">No reviews</p>
-                        ) : (
-                            <ReviewList reviews={currentReviews} />
-                        )}
-                        <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
-                            <div className="flex items-center">
-                                <span className="mr-2 text-gray-600">Show</span>
-                                <select
-                                    value={itemsPerPage}
-                                    onChange={handleItemsPerPageChange}
-                                    className="border bg-white border-gray-300 rounded-full px-4 py-1 text-gray-600 shadow-sm outline-none focus:ring-1 focus:ring-gray-300 transition ease-in-out duration-150"
-                                >
-                                    <option value={5}>5</option>
-                                    <option value={6}>6</option>
-                                    <option value={7}>7</option>
-                                    <option value={8}>8</option>
-                                </select>
-                                <span className="ml-2 text-gray-600">
-                                    Cards per page
-                                </span>
-                            </div>
 
-                            <div className="mt-4 sm:mt-0">
-                                <PaginationComponent
-                                    currentPage={currentPage}
-                                    totalPages={totalPages}
-                                    handlePreviousClick={handlePreviousClick}
-                                    handlePageClick={handlePageClick}
-                                    handleNextClick={handleNextClick}
-                                    getPageNumbers={getPageNumbers}
-                                />
+                    <div className="flex flex-col lg:flex-row gap-8 p-4">
+                        {/* Review Summary - Left */}
+                        <div className="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 bg-white ">
+                            {token && conv && !(amount_r && running) && (
+                                <div className="flex flex-col gap-6 border border-gray-300 rounded-lg p-6 bg-white">
+                                    <button
+                                        className="border border-gray-300 bg-white hover:bg-gray-100 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium"
+                                        onClick={download_statement}
+                                    >
+                                        Download Financial Statement
+                                    </button>
+                                    <button
+                                        onClick={download_business}
+                                        className="border border-gray-300 bg-white hover:bg-gray-100 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium"
+                                    >
+                                        Download Business Documents
+                                    </button>
+                                    <button className="border border-gray-300 bg-white hover:bg-gray-100 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium">
+                                        <Link
+                                            to={`/business-milestones/${btoa(
+                                                btoa(details.id)
+                                            )}`}
+                                            key={details.id}
+                                            className="block w-full text-center"
+                                        >
+                                            View Business Milestones
+                                        </Link>
+                                    </button>
+                                </div>
+                            )}
+                            <div className="mt-4">
+                                <ReviewSummary />
+                            </div>
+                        </div>
+
+                        {/* Reviews - Right */}
+                        <div className="w-full lg:w-2/3">
+                            <div className="sm:col-span-2 mt-4">
+                                {currentReviews.length === 0 ? (
+                                    <p className="text-gray-600 text-2xl text-center h-40">
+                                        No reviews
+                                    </p>
+                                ) : (
+                                    <>
+                                        <ReviewList reviews={currentReviews} />
+                                        {/* Pagination and Items Per Page */}
+                                        <div className="flex flex-col sm:flex-row justify-between items-center mt-6">
+                                            {/* Items Per Page Selector */}
+                                            <div className="flex items-center">
+                                                <span className="mr-2 text-gray-600">
+                                                    Show
+                                                </span>
+                                                <select
+                                                    value={itemsPerPage}
+                                                    onChange={
+                                                        handleItemsPerPageChange
+                                                    }
+                                                    className="border bg-white border-gray-300 rounded-full px-4 py-1 text-gray-600 shadow-sm outline-none focus:ring-2 focus:ring-gray-300 transition ease-in-out duration-150"
+                                                >
+                                                    <option value={5}>5</option>
+                                                    <option value={6}>6</option>
+                                                    <option value={7}>7</option>
+                                                    <option value={8}>8</option>
+                                                </select>
+                                                <span className="ml-2 text-gray-600">
+                                                    Cards per page
+                                                </span>
+                                            </div>
+                                            {/* Pagination Component */}
+                                            <div className="mt-4 sm:mt-0">
+                                                <PaginationComponent
+                                                    currentPage={currentPage}
+                                                    totalPages={totalPages}
+                                                    handlePreviousClick={
+                                                        handlePreviousClick
+                                                    }
+                                                    handlePageClick={
+                                                        handlePageClick
+                                                    }
+                                                    handleNextClick={
+                                                        handleNextClick
+                                                    }
+                                                    getPageNumbers={
+                                                        getPageNumbers
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>
