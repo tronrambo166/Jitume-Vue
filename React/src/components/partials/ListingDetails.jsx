@@ -1090,7 +1090,7 @@ const ListingDetails = ({ onClose }) => {
                 <div className="p-4 sm:p-6 ">
                     <div className="  flex justify-center gap-4">
                         {/* On mobile, ReviewSummary takes up full width, on larger screens it takes 1/3 */}
-                        <div className="sm:col-span-1 flex flex-col lg:flex-row gap-6">
+                        <div className="sm:col-span-1 flex flex-row">
                             {/* Financial Statements Section */}
                             {token && conv && amount_r && running && (
                                 <div className="w-full lg:max-w-sm flex flex-col gap-6  rounded-lg items-center justify-center p-6 lg:p-10 bg-white">
@@ -1098,7 +1098,7 @@ const ListingDetails = ({ onClose }) => {
                                         className="border border-gray-300 bg-white hover:bg-gray-100 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium"
                                         onClick={download_statement}
                                     >
-                                        Download Financial Statement
+                                        Download Financial Statements
                                     </button>
                                     <button
                                         onClick={download_business}
@@ -1126,6 +1126,14 @@ const ListingDetails = ({ onClose }) => {
                                         <h2 className="text-xl font-semibold text-[#334155] mb-6">
                                             Enter A Bid To Invest
                                         </h2>
+                                        {/* <p className="text-sm text-[#334155] mb-4">
+                                            By investing, you're contributing to
+                                            a valuable opportunity that supports
+                                            growth and progress. Your bid helps
+                                            fund projects and initiatives with
+                                            promising returns, benefiting both
+                                            you and the broader community.
+                                        </p> */}
                                         <label
                                             htmlFor="investmentAmount"
                                             className="text-sm text-[#334155] font-medium mb-2 block"
@@ -1162,10 +1170,17 @@ const ListingDetails = ({ onClose }) => {
                                     </div>
 
                                     <div className="bg-white border border-gray-300 rounded-lg p-6 w-full max-w-lg">
-                                        <h2 className="text-xl font-semibold text-[#334155] mb-6">
-                                            Enter Equipment Equivalent Bid To
-                                            Invest
+                                        <h2 className="text-xl font-semibold  text-[#334155] mb-6">
+                                            Enter Equipment Equivalent Bid
                                         </h2>
+                                        {/* <p className="text-sm text-[#334155] mb-4">
+                                            Investing in equipment ensures that
+                                            your business stays competitive and
+                                            operates efficiently. The right
+                                            equipment can increase productivity
+                                            and reduce operational costs over
+                                            time.
+                                        </p> */}
                                         <label
                                             htmlFor="equipmentAmount"
                                             className="text-sm text-[#334155] font-medium mb-2 block"
@@ -1335,7 +1350,7 @@ const ListingDetails = ({ onClose }) => {
                                         className="border border-gray-300 bg-white hover:bg-gray-100 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium"
                                         onClick={download_statement}
                                     >
-                                        Download Financial Statement
+                                        Download Financial Statements
                                     </button>
                                     <button
                                         onClick={download_business}
