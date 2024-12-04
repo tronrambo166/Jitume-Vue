@@ -15,7 +15,7 @@
 								<p class="account-subtitle">Access to our dashboard</p>
 
 								@if(Session::has('auth_failed'))
-								<p class="bg-light account-subtitle text-warning">{{Session::get('auth_failed')}} !</p>
+								<p class="bg-light account-subtitle text-warning">{{Session::get('auth_failed')}} </p>
 								@endif
 								
 								<!-- Form -->

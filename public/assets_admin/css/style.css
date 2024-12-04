@@ -1664,7 +1664,7 @@ html.menu-opened body {
 -----------------------*/
 
 .sidebar {
-    background-color: #1b5a90;
+    background-color: darkseagreen;
    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
     bottom: 0;
     left: 0;
@@ -1714,8 +1714,8 @@ html.menu-opened body {
     color: #fff;
 }
 .sidebar-menu li.active a {
-    background-color: #00d0f1;
-    color: #fff;
+    background-color: ghostwhite;
+    color: black;
 }
 .menu-title {
     color: #ebebeb;

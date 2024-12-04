@@ -34,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('ratingService/{id}/{rating}/{text}', [ServiceController::class, 'ratingService'])->name('ratingService');
     Route::get('unlockBySubs/{id}/{sub_id}/{plan}', [BusinessController::class, 'unlockBySubs'])->name('unlockBySubs');
 
-    //BIDS
+    //B I D S
     Route::post('bidCommitsEQP', [bidsEmailController::class, 'bidCommitsEQP'])->name('bidCommitsEQP');
     Route::get('bidCommits/{amount}/{business_id}/{percent}', [checkoutController::class, 'bidCommitsForm'])->name('bidCommits');
     Route::post('bidCommits', [checkoutController::class, 'bidCommits'])->name('bidCommits');

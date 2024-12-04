@@ -276,7 +276,7 @@ else{
       Session::put('auth_failed','User dont exist!'); return redirect()->back();
   }
   catch(\Exception $e){
-      Session::put('exception',$e->getMessage());
+      Session::put('auth_failed',$e->getMessage());
       return redirect()->back();
      }
 
