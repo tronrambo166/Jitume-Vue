@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axiosClient from "../../../axiosClient";
-
+import { IoFlashOutline } from "react-icons/io5";
 const MySubscription = () => {
     const [isAutoRenewEnabled, setAutoRenewEnabled] = useState(true);
 
@@ -87,7 +87,14 @@ const MySubscription = () => {
             <div className="bg-white shadow-lg rounded-lg p-6 lg:p-8 w-full max-w-4xl space-y-8">
                 <h2 className="text-2xl font-bold text-green-700">
                     Your Subscription Plan{" "}
-                    {subscriptions.find((sub) => sub.isActive)?.name || "None"}
+                    {/* {subscriptions.find((sub) => sub.isActive)?.name || "None"} */}
+                    {(subscriptions.find((sub) => sub.isActive)?.name || "None")
+                        .split("-")
+                        .map(
+                            (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1)
+                        )
+                        .join("-")}
                 </h2>
 
                 {/* Subscription Plans */}
@@ -101,12 +108,22 @@ const MySubscription = () => {
                                     : "border-transparent bg-white hover:bg-green-100"
                             } rounded-lg p-6 w-full lg:w-1/2 relative hover:shadow-md transition-shadow`}
                         >
+                            <div className="bg-transparent w-16 p-1">
+                                <IoFlashOutline
+                                    size={40}
+                                    className="text-black"
+                                />
+                            </div>
+
                             {sub.isActive && (
                                 <div className="absolute top-4 right-4 bg-green-500 text-white w-6 h-6 flex items-center justify-center rounded-full">
                                     ✓
                                 </div>
                             )}
-                            <h3 style={{textTransform:'capitalize'}} className="text-lg font-bold text-green-800">
+                            <h3
+                                style={{ textTransform: "capitalize" }}
+                                className="text-lg font-bold text-green-800"
+                            >
                                 {sub.name}
                             </h3>
                             {sub.isActive ? (
@@ -118,7 +135,7 @@ const MySubscription = () => {
                                     Upgrade to this plan
                                 </p>
                             )}
-                            
+
                             <p className="text-gray-600 text-sm">
                                 <strong>End Date:</strong> {sub.endDate}
                             </p>
@@ -128,19 +145,19 @@ const MySubscription = () => {
                             <p className="text-3xl font-semibold mt-4 text-green-800">
                                 {sub.price}
                             </p>
-                            
-                            <button
-                                onClick={cancelSubscription}
-                                className={`mt-6 px-4 py-2 rounded ${
-                                    sub.isActive
-                                        ? "text-green-700 border border-green-600 hover:bg-green-200"
-                                        : "text-white bg-green-600 hover:bg-green-700"
-                                }`}
-                            >
-                                
+                            <div className="flex justify-center">
+                                <button
+                                    onClick={cancelSubscription}
+                                    className={`mt-6 px-4 py-2 rounded-lg  ${
+                                        sub.isActive
+                                            ? "text-black border border-green-600 hover:bg-green-200 bg-white"
+                                            : "text-white bg-green-600 hover:bg-green-700"
+                                    }`}
+                                >
                                     Cancel Subscription
-                                   
-                            </button>
+                                </button>
+                            </div>
+
                             {!sub.isActive && (
                                 <p className="mt-2 text-sm text-green-600 cursor-pointer hover:underline">
                                     Learn more about this plan
@@ -180,7 +197,7 @@ const MySubscription = () => {
                 </div>*/}
 
                 {/* Billing History Section */}
-          {/*      <div className="mt-8">
+                {/*      <div className="mt-8">
                     <h3 className="text-xl font-bold text-green-800">
                         Billing History
                     </h3>

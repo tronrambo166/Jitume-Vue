@@ -123,7 +123,7 @@ const Dashboardhero = () => {
                         className="flex items-center text-sm gap-2 cursor-pointer text-white"
                     >
                         <FaUser />
-                        <span>Sign out</span>
+                        <span>Sign Out</span>
                     </div>
                     <Link
                         to="/dashboard/settings"

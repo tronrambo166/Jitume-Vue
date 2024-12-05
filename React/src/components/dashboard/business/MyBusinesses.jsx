@@ -74,7 +74,7 @@ const MyBusinesses = () => {
             .catch((err) => {
                 console.log(err);
                 showAlert("error", "An error occurred. Please try again."); // Show error alert
-            });
+            }); 
     };
 
     const handleSave = () => {

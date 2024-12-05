@@ -4,7 +4,7 @@ import axiosClient from "../../../axiosClient";
 import ServEditModal from "./ServEditModal";
 import { useAlert } from "../../partials/AlertContext";
 
-const ServiceTable = () => {
+const MyInvest = () => {
     const [business, setBusiness] = useState([]);
     const [service, setService] = useState([]);
     const [myInvest, setMyInvest] = useState([]);
@@ -52,7 +52,7 @@ const ServiceTable = () => {
             {/* My Investments Section */}
 
             {/* My Services Section */}
-            <section className="bg-white border mt-4 rounded-xl w-full px-4 py-6 sm:px-8 ">
+            {/* <section className="bg-white border mt-4 rounded-xl w-full px-4 py-6 sm:px-8 ">
                 <h1 className="text-[#2D3748] font-semibold text-xl sm:text-2xl mb-6">
                     My Services
                 </h1>
@@ -110,7 +110,7 @@ const ServiceTable = () => {
                                                 )}`}
                                             >
                                                 <button className="text-green-500 border border-green-500 rounded-lg py-1 px-3 text-xs">
-                                                    View Milestones
+                                                    View milestones
                                                 </button>
                                             </Link>
                                             <button
@@ -136,8 +136,8 @@ const ServiceTable = () => {
                         </tbody>
                     </table>
                 </div>
-            </section>
-            {/* <section className="bg-white border mt-4 rounded-xl w-full px-4 py-6 sm:px-8">
+            </section> */}
+            <section className="bg-white border mt-4 rounded-xl w-full px-4 py-6 sm:px-8">
                 {myInvest.length > 0 ? (
                     <>
                         <h1 className="text-[#2D3748] font-semibold text-xl sm:text-2xl mb-6">
@@ -229,7 +229,7 @@ const ServiceTable = () => {
                         You have no investments.
                     </div>
                 )}
-            </section> */}
+            </section>
 
             {/* My Businesses Section */}
             {/* <section className="bg-white shadow-md rounded-lg mb-6 p-4">
@@ -316,4 +316,4 @@ const ServiceTable = () => {
     );
 };
 
-export default ServiceTable;
+export default MyInvest;
