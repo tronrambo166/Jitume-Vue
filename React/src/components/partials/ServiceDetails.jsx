@@ -306,11 +306,13 @@ const ServiceDetails = () => {
         const payload = {
             date: selectedDate,
             note: notes,
+        
             service_id: form.service_id,
             business_bid_id: bid_id,
         };
 
         console.log(payload);
+        
 
         axiosClient
             .post("/serviceBook", payload)

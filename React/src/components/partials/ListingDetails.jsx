@@ -1090,10 +1090,10 @@ const ListingDetails = ({ onClose }) => {
                 <div className="p-4 sm:p-6 ">
                     <div className="  flex justify-center gap-4">
                         {/* On mobile, ReviewSummary takes up full width, on larger screens it takes 1/3 */}
-                        <div className="sm:col-span-1 flex flex-row">
+                        <div className="sm:col-span- flex flex-row">
                             {/* Financial Statements Section */}
                             {token && conv && amount_r && running && (
-                                <div className="w-full lg:max-w-sm flex flex-col gap-6  rounded-lg items-center justify-center p-6 lg:p-10 bg-white">
+                                <div className="w-full lg:max-w-sm flex flex-col gap-3 border rounded-lg items-center justify-center p-6  bg-white">
                                     <button
                                         className="border border-gray-300 bg-white hover:bg-gray-100 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium"
                                         onClick={download_statement}
@@ -1150,7 +1150,7 @@ const ListingDetails = ({ onClose }) => {
                                         />
                                         {amount && (
                                             <p className="text-sm text-[#334155] mb-4">
-                                                Bid Percentage:{" "}
+                                                Represents:{" "}
                                                 <span className="font-bold">
                                                     {percentage}%
                                                 </span>
@@ -1199,17 +1199,18 @@ const ListingDetails = ({ onClose }) => {
                                         />
                                         {equipmentAmount && (
                                             <p className="text-sm text-[#334155] mb-4">
-                                                Equipment Investment Percentage:{" "}
+                                                Represents:{" "}
                                                 <span className="font-bold">
                                                     {equipmentPercentage}%
                                                 </span>
                                             </p>
                                         )}
+                                        
                                         <button
                                             onClick={handleEquipmentInvest}
                                             className="bg-green-700 hover:bg-green-800 text-white transition-all duration-200 px-4 py-3 rounded-lg w-full"
                                         >
-                                            Invest in Equipment
+                                            Invest With Assets
                                         </button>
                                         {equipmentErrorMessage && (
                                             <p className="text-red-600 mt-4">
@@ -1219,7 +1220,28 @@ const ListingDetails = ({ onClose }) => {
                                     </div>
                                 </div>
                             ) : (
-                                <div></div>
+                                <div>
+                                    <div>
+                                        {token ? (
+                                            <div className="w-full mx-auto text-center p-4">
+                                                <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
+                                                    Milestone payout is
+                                                    currently off due to the
+                                                    milestone completion
+                                                    process. Please wait until
+                                                    the next milestone is open.
+                                                </p>
+                                            </div>
+                                        ) : (
+                                            <div className="w-full mx-auto text-center p-4">
+                                                <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
+                                                    Please login to bid on this
+                                                    project.
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
                                 // <div className="w-full mx-auto text-center p-4">
                                 //     <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
                                 //         Milestone payout is currently off due to
@@ -1343,9 +1365,9 @@ const ListingDetails = ({ onClose }) => {
 
                     <div className="flex flex-col lg:flex-row gap-8 p-4">
                         {/* Review Summary - Left */}
-                        <div className="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 bg-white ">
+                        <div className="w-full sm:w-2/3 md:w-1/2 lg:w-1/3   ">
                             {token && conv && !(amount_r && running) && (
-                                <div className="flex flex-col gap-6 border border-gray-300 rounded-lg p-6 bg-white">
+                                <div className="flex flex-col gap-6 border  border-gray-300 rounded-lg p-6 bg-white">
                                     <button
                                         className="border border-gray-300 bg-white hover:bg-gray-100 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium"
                                         onClick={download_statement}
@@ -1381,7 +1403,7 @@ const ListingDetails = ({ onClose }) => {
                             <div className="sm:col-span-2 mt-4">
                                 {currentReviews.length === 0 ? (
                                     <p className="text-gray-600 text-2xl text-center h-40">
-                                        No reviews
+                                        No Reviews
                                     </p>
                                 ) : (
                                     <>

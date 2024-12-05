@@ -5,6 +5,7 @@ import { useStateContext } from "../../contexts/contextProvider";
 import axiosClient from "../../axiosClient";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Calendar from "./Calendar"; // Import the Calendar component
+import GoogleRecaptcha from "./GoogleRecaptcha";
 
 import { useAlert } from "../partials/AlertContext";
 import { FaEye, FaEyeSlash, FaCheck } from "react-icons/fa";
@@ -40,66 +41,66 @@ const RegisterForm = () => {
         recaptcha: "",
     });
 
-   const isValidDateOfBirth = () => {
-       const { dobMonth, dobDay, dobYear } = formData;
+    const isValidDateOfBirth = () => {
+        const { dobMonth, dobDay, dobYear } = formData;
 
-       // Check if any field is empty
-       if (!dobMonth || !dobDay || !dobYear) {
-           console.error("Date of Birth fields cannot be empty.");
-           return false;
-       }
+        // Check if any field is empty
+        if (!dobMonth || !dobDay || !dobYear) {
+            console.error("Date of Birth fields cannot be empty.");
+            return false;
+        }
 
-       const month = parseInt(dobMonth, 10);
-       const day = parseInt(dobDay, 10);
-       const year = parseInt(dobYear, 10);
+        const month = parseInt(dobMonth, 10);
+        const day = parseInt(dobDay, 10);
+        const year = parseInt(dobYear, 10);
 
-       // Validate if inputs are numbers
-       if (isNaN(month) || isNaN(day) || isNaN(year)) {
-           console.error(
-               "Invalid Date of Birth: Month, Day, or Year is not a number."
-           );
-           return false;
-       }
+        // Validate if inputs are numbers
+        if (isNaN(month) || isNaN(day) || isNaN(year)) {
+            console.error(
+                "Invalid Date of Birth: Month, Day, or Year is not a number."
+            );
+            return false;
+        }
 
-       // Validate year range
-       if (year < 1900 || year > new Date().getFullYear()) {
-           console.error(
-               "Invalid Date of Birth: Year must be between 1900 and the current year."
-           );
-           return false;
-       }
+        // Validate year range
+        if (year < 1900 || year > new Date().getFullYear()) {
+            console.error(
+                "Invalid Date of Birth: Year must be between 1900 and the current year."
+            );
+            return false;
+        }
 
-       // Validate month range
-       if (month < 1 || month > 12) {
-           console.error(
-               "Invalid Date of Birth: Month must be between 1 and 12."
-           );
-           return false;
-       }
+        // Validate month range
+        if (month < 1 || month > 12) {
+            console.error(
+                "Invalid Date of Birth: Month must be between 1 and 12."
+            );
+            return false;
+        }
 
-       // Validate day range
-       const daysInMonth = new Date(year, month, 0).getDate();
-       if (day < 1 || day > daysInMonth) {
-           console.error(
-               `Invalid Date of Birth: Day must be between 1 and ${daysInMonth} for the given month.`
-           );
-           return false;
-       }
+        // Validate day range
+        const daysInMonth = new Date(year, month, 0).getDate();
+        if (day < 1 || day > daysInMonth) {
+            console.error(
+                `Invalid Date of Birth: Day must be between 1 and ${daysInMonth} for the given month.`
+            );
+            return false;
+        }
 
-       // Check if the user is at least 18 years old
-       const dob = new Date(year, month - 1, day); // JavaScript months are 0-based
-       const todayMinus18Years = new Date();
-       todayMinus18Years.setFullYear(todayMinus18Years.getFullYear() - 18);
+        // Check if the user is at least 18 years old
+        const dob = new Date(year, month - 1, day); // JavaScript months are 0-based
+        const todayMinus18Years = new Date();
+        todayMinus18Years.setFullYear(todayMinus18Years.getFullYear() - 18);
 
-       if (dob > todayMinus18Years) {
-           console.error(
-               "Invalid Date of Birth: User must be at least 18 years old."
-           );
-           return false;
-       }
+        if (dob > todayMinus18Years) {
+            console.error(
+                "Invalid Date of Birth: User must be at least 18 years old."
+            );
+            return false;
+        }
 
-       return true; // Date of birth is valid
-   };
+        return true; // Date of birth is valid
+    };
 
     const [otp, setOtp] = useState(Array(4).fill("")); // Array with 4 empty strings
 
@@ -120,24 +121,22 @@ const RegisterForm = () => {
                 //Verify OTP
                 const otpCode = updatedOtp.join("");
 
-                if(index == 3){
+                if (index == 3) {
                     if (vcode == otpCode) {
                         handleSubmit();
 
                         // Add a set loading
                         setIsLoading(true);
                         // Add a set loading
-                    }
-                    else {
+                    } else {
                         showAlert("error", "Invalid OTP. Please try again.");
                         setIsLoading(false);
                         //return; // Stop further execution if OTP verification fails
                     }
                 }
                 //Verify OTP
-                
-                return updatedOtp;
 
+                return updatedOtp;
             });
             //console.log(currotp);
 
@@ -180,16 +179,15 @@ const RegisterForm = () => {
             inputRefs.current[Math.min(digits.length, otp.length - 1)].focus();
         }
 
-                //console.log(text)
-                //Verify OTP
-                    const otpCode = text;
-                    if (vcode == otpCode) {
-                        handleSubmit();
-                    }
-                    else {
-                        showAlert("error", "Invalid OTP. Please try again.");
-                    }
-                //Verify OTP
+        //console.log(text)
+        //Verify OTP
+        const otpCode = text;
+        if (vcode == otpCode) {
+            handleSubmit();
+        } else {
+            showAlert("error", "Invalid OTP. Please try again.");
+        }
+        //Verify OTP
     };
 
     const [showPassword, setShowPassword] = useState(false);
@@ -199,41 +197,40 @@ const RegisterForm = () => {
     const handleToggleConfirmPassword = () =>
         setShowConfirmPassword((prev) => !prev);
 
-  const validateStep1 = () => {
-      let valid = true;
-      let newErrors = { ...errors };
+    const validateStep1 = () => {
+        let valid = true;
+        let newErrors = { ...errors };
 
-      // First Name validation
-      if (!formData.firstName || formData.firstName.trim() === "") {
-          newErrors.firstName = "First name is required.";
-          valid = false;
-      } else {
-          newErrors.firstName = "";
-      }
+        // First Name validation
+        if (!formData.firstName || formData.firstName.trim() === "") {
+            newErrors.firstName = "First name is required.";
+            valid = false;
+        } else {
+            newErrors.firstName = "";
+        }
 
-      // Last Name validation
-      if (!formData.lastName || formData.lastName.trim() === "") {
-          newErrors.lastName = "Last name is required.";
-          valid = false;
-      } else {
-          newErrors.lastName = "";
-      }
+        // Last Name validation
+        if (!formData.lastName || formData.lastName.trim() === "") {
+            newErrors.lastName = "Last name is required.";
+            valid = false;
+        } else {
+            newErrors.lastName = "";
+        }
 
-      // Date of Birth validation
-      if (!formData.dobMonth || !formData.dobDay || !formData.dobYear) {
-          newErrors.dob = "Date of birth is required.";
-          valid = false;
-      } else if (!isValidDateOfBirth()) {
-          newErrors.dob = "You must be at least 18 years old to register.";
-          valid = false;
-      } else {
-          newErrors.dob = "";
-      }
+        // Date of Birth validation
+        if (!formData.dobMonth || !formData.dobDay || !formData.dobYear) {
+            newErrors.dob = "Date of birth is required.";
+            valid = false;
+        } else if (!isValidDateOfBirth()) {
+            newErrors.dob = "You must be at least 18 years old to register.";
+            valid = false;
+        } else {
+            newErrors.dob = "";
+        }
 
-      setErrors(newErrors);
-      return valid;
-  };
-
+        setErrors(newErrors);
+        return valid;
+    };
 
     const handleTermsChange = (e) => {
         setFormData((prevData) => ({
@@ -289,21 +286,20 @@ const RegisterForm = () => {
             newErrors.terms = "";
         }
 
-            try 
-            {
-               const response = await axiosClient.get(
-                   "emailExists/" + formData.email
-               );
-               console.log(response)
-               if (response.data.status === 400) { 
-                   valid = false; // Mark as invalid if email exists
-                   showAlert('error', 'Email already exists!');
-                       }
-               } catch (error) {
-                   console.error("Error checking email:", error);
-                   newErrors.email = "Error checking email. Please try again.";
-                   //valid = false; // Handle any API call errors
+        try {
+            const response = await axiosClient.get(
+                "emailExists/" + formData.email
+            );
+            console.log(response);
+            if (response.data.status === 400) {
+                valid = false; // Mark as invalid if email exists
+                showAlert("error", "Email already exists!");
             }
+        } catch (error) {
+            console.error("Error checking email:", error);
+            newErrors.email = "Error checking email. Please try again.";
+            //valid = false; // Handle any API call errors
+        }
 
         // Update state with new errors
         setErrors(newErrors);
@@ -321,40 +317,38 @@ const RegisterForm = () => {
             [name]: value,
         }));
     };
-const handleNextStep = async () => {
-    if (step === 1 && validateStep1()) {
-        setStep(2); // Move to step 2
-        //showAlert("info", "You are now in Step 2.");
-    } else if (step === 2) {
-         const isStep2Valid = await validateStep2();
-          if (!isStep2Valid) {
-            return; // Stop if step 2 is not valid (email exists or other validation fails)
+    const handleNextStep = async () => {
+        if (step === 1 && validateStep1()) {
+            setStep(2); // Move to step 2
+            //showAlert("info", "You are now in Step 2.");
+        } else if (step === 2) {
+            const isStep2Valid = await validateStep2();
+            if (!isStep2Valid) {
+                return; // Stop if step 2 is not valid (email exists or other validation fails)
+            }
+
+            setIsLoading(true); // Set loading state to true during email sending
+            // Generate a random code for email verification
+            const code = Math.floor(Math.random() * 10000);
+
+            // Send email verification
+            const verify = await emailVerify(code);
+            if (verify) {
+                // Only proceed to step 3 if the email is sent successfully
+                showAlert(
+                    "info",
+                    "Verification email sent successfully. Please check your inbox."
+                );
+                setStep(3); // Move to step 3 after email is sent
+            } else {
+                showAlert(
+                    "error",
+                    "Failed to send verification email. Please try again."
+                );
+            }
+            setIsLoading(false); // Reset loading state
         }
-
-
-        setIsLoading(true); // Set loading state to true during email sending
-        // Generate a random code for email verification
-        const code = Math.floor(Math.random() * 10000);
-
-        // Send email verification
-        const verify = await emailVerify(code);
-        if (verify) {
-            // Only proceed to step 3 if the email is sent successfully
-            showAlert(
-                "info",
-                "Verification email sent successfully. Please check your inbox."
-            );
-            setStep(3); // Move to step 3 after email is sent
-        } else {
-            showAlert(
-                "error",
-                "Failed to send verification email. Please try again."
-            );
-        }
-        setIsLoading(false); // Reset loading state
-    }
-};
-
+    };
 
     const handleSubmit = async (e) => {
         if (e) e.preventDefault();
@@ -380,7 +374,8 @@ const handleNextStep = async () => {
             gender: formData.gender,
             dob: `${formData.dobYear}-${formData.dobMonth}-${formData.dobDay}`, // Format: "YYYY-MM-DD"
             password: formData.password,
-        }; console.log(formattedData);
+        };
+        console.log(formattedData);
 
         try {
             const { data } = await axiosClient.post("/register", formattedData);
@@ -400,13 +395,23 @@ const handleNextStep = async () => {
             setIsLoading(false); // Reset loading state
         }
     };
+    // Old one
+    // const handleRecaptchaChange = (e) => {
+    //     setFormData((prevData) => ({
+    //         ...prevData,
+    //         isRecaptchaChecked: e.target.checked,
+    //     }));
+    // };
 
-    const handleRecaptchaChange = (e) => {
+    //    new one
+    const handleRecaptchaChange = (value) => {
         setFormData((prevData) => ({
             ...prevData,
-            isRecaptchaChecked: e.target.checked,
+            isRecaptchaChecked: value, // Save the reCAPTCHA token here
         }));
+        console.log("reCAPTCHA token received:", value); // Logs the token with a clear message
     };
+    //    new one
 
     const handleDateSelect = ({ year, month, day }) => {
         if (year == null || month == null || day == null) {
@@ -675,7 +680,7 @@ const handleNextStep = async () => {
                                 </p>
                             )}
                         </label>
-                        <div className="relative flex justify-between w-[260px] items-center border border-black rounded-xl p-2 mt-4">
+                        {/* <div className="relative flex justify-between w-[260px] items-center border border-black rounded-xl p-2 mt-4">
                             <div className="flex items-center gap-2">
                                 <input
                                     type="checkbox"
@@ -697,7 +702,11 @@ const handleNextStep = async () => {
                                     {errors.recaptcha}
                                 </p>
                             )}
-                        </div>
+                        </div> */}
+                        <GoogleRecaptcha
+                            onRecaptchaChange={handleRecaptchaChange}
+                            errors={errors}
+                        />
 
                         <div className="mt-4">
                             <div className="flex items-center gap-2">
@@ -745,7 +754,8 @@ const handleNextStep = async () => {
                             <h2 className="text-md font-semibold text-[#666666]">
                                 Step 3 of 3
                                 <p className="text-center py-2 text-gray-700 dark:text-gray-200 font-medium">
-                                    A verification code has been sent to your &nbsp;
+                                    A verification code has been sent to your
+                                    &nbsp;
                                     <strong className="text-green-600 dark:text-green-400">
                                         email
                                     </strong>
