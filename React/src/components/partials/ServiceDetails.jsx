@@ -560,7 +560,7 @@ const ServiceDetails = () => {
                                         onClick={sendMessage}
                                         className="btn-primary px-6 py-2 my-3 rounded-md font-semibold text-white"
                                     >
-                                        send
+                                        Send
                                     </button>
                                 </div>
                             )}

@@ -427,7 +427,7 @@ const Sidebar = () => {
                                                         : "text-green"
                                                 }`}
                                             />
-                                            <span>My Subscription</span>
+                                            <span>My Subscriptions</span>
                                         </>
                                     )}
                                 </NavLink>

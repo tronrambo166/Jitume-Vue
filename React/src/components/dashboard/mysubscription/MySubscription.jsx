@@ -39,10 +39,10 @@ const MySubscription = () => {
             axiosClient
                 .get("/isSubscribed/" + 0)
                 .then(({ data }) => {
-                    console.log(data);
+                    console.log(data.data.length);
                     if (data.count > 0) {
                         setSubscribeData(data.data);
-                        console.log(subscribeData);
+                        //console.log(subscribeData);
                     }    
                 })
                 .catch((err) => {

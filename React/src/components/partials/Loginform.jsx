@@ -110,7 +110,7 @@ const LoginForm = () => {
                 showAlert("error", data.message || "Login failed.");
             }
         } catch (error) {
-            setServerError("Login failed. Please check your credentials.");
+            setServerError("Login failed. Server Error!.");
             showAlert("error", "Login failed.");
         } finally {
             setLoading(false);

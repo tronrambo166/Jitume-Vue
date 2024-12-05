@@ -60,7 +60,7 @@ class AuthController extends Controller
         $data = $request->validated();
         if(!Auth::attempt($data)){
             return response([
-                'message' => 'email or password are wrong',
+                'message' => 'Email or Password is wrong',
                 'auth' => Auth::check()
             ]);
         }
