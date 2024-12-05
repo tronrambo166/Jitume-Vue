@@ -10,6 +10,7 @@ const MySubscription = () => {
         console.log(`Auto Renew is now ${newState ? "enabled" : "disabled"}`);
     };
     const [subscribeData, setSubscribeData] = useState("");
+    const [count, setCount] = useState(null);
 
     // Subscriptions data (to be replaced with API data later)
     const subscriptions = [
@@ -35,14 +36,15 @@ const MySubscription = () => {
 
 
     useEffect(() =>{
-                const isSubscribed = () => {
+            const isSubscribed = () => {
             axiosClient
                 .get("/isSubscribed/" + 0)
                 .then(({ data }) => {
-                    console.log(data.data.length);
+                    console.log(data.data);
+                    setCount(data.count)
                     if (data.count > 0) {
                         setSubscribeData(data.data);
-                        //console.log(subscribeData);
+                        console.log(data);
                     }    
                 })
                 .catch((err) => {
@@ -86,7 +88,7 @@ const MySubscription = () => {
         <div className="p-4 lg:p-8 min-h-screen flex flex-col items-center">
             <div className="bg-white shadow-lg rounded-lg p-6 lg:p-8 w-full max-w-4xl space-y-8">
                 <h2 className="text-2xl font-bold text-green-700">
-                    Your Subscription Plan{" "}
+                    <span className="text-black"> Your Subscription Plan </span>{" "}
                     {/* {subscriptions.find((sub) => sub.isActive)?.name || "None"} */}
                     {(subscriptions.find((sub) => sub.isActive)?.name || "None")
                         .split("-")
@@ -98,6 +100,7 @@ const MySubscription = () => {
                 </h2>
 
                 {/* Subscription Plans */}
+                {count ?(
                 <div className="flex flex-col lg:flex-row gap-6">
                     {subscriptions.map((sub, index) => (
                         <div
@@ -124,7 +127,7 @@ const MySubscription = () => {
                                 style={{ textTransform: "capitalize" }}
                                 className="text-lg font-bold text-green-800"
                             >
-                                {sub.name}
+                                {sub.name} {sub.subcribed}
                             </h3>
                             {sub.isActive ? (
                                 <p className="text-gray-600">
@@ -143,7 +146,7 @@ const MySubscription = () => {
                                 <strong>Token Left:</strong> {sub.token_left}
                             </p>
                             <p className="text-3xl font-semibold mt-4 text-green-800">
-                                {sub.price}
+                                ${sub.price} / mo
                             </p>
                             <div className="flex justify-center">
                                 <button
@@ -166,6 +169,11 @@ const MySubscription = () => {
                         </div>
                     ))}
                 </div>
+            ):(
+            <p className="text-center">You don't have any subscriptions, please 
+            <a className="text-green-600" href="../subscribe/TUE9PQ=="> Subscribe </a> </p>
+            )}
+
 
                 {/* Auto Renew Toggle */}
                 {/*<div className="mt-8 border-t pt-6">
