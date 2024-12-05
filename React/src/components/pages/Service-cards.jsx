@@ -134,7 +134,7 @@ return (
                                       {card.name}
                                   </h3>
                                   <p className="text-sm sm:text-base text-gray-600 mt-2">
-                                      {card.description ||
+                                      {card.details ||
                                           "Lorem ipsum dolor sit amet consectetur. Eu quis vel pellentesque ullamcorper donec lorem auctor egestas adipiscing."}
                                   </p>
                               </div>
