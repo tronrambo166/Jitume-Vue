@@ -312,6 +312,19 @@ const ServiceDetails = () => {
         };
 
         console.log(payload);
+        if(payload.date == null || payload.date == ""){
+            $.alert({
+                        title: "Alert!",
+                        content: "Please select a date",
+                    }); return;
+        }
+
+        if(payload.note == null || payload.note == ""){
+            $.alert({
+                        title: "Alert!",
+                        content: "Please enter a note",
+                    }); return;
+        }
         
 
         axiosClient
@@ -508,7 +521,7 @@ const ServiceDetails = () => {
                             </p>
                             <p className="flex items-center mt-5 mb-5 text-gray-700">
                                 <FaMapMarkerAlt className="mr-2 text-lg text-gray-500" />
-                                Franz Josef Strauss, Munich, Germany
+                                {details.location}
                             </p>
 
                             <div className="flex items-center mt-2 gap-6 text-sm">

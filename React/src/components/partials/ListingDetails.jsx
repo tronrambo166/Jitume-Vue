@@ -152,6 +152,7 @@ const ListingDetails = ({ onClose }) => {
     const [allowToReview, setAllow] = useState("");
     const [amount_r, setAmount_r] = useState("");
     const [running, setRunning] = useState(false);
+    const [mile, setMile] = useState(true);
     const [subscribeData, setSubscribeData] = useState("");
 
     const [isOpen, setIsOpen] = useState(true); // Popup is initially open
@@ -403,6 +404,7 @@ const ListingDetails = ({ onClose }) => {
                     setAllow(data.allowToReview);
                     setAmount_r(data.amount_required);
                     setRunning(data.running);
+                    setMile(data.data.length);
                     console.log(data);
                 })
                 .catch((err) => {
@@ -669,17 +671,13 @@ const ListingDetails = ({ onClose }) => {
                         </div>
 
                         <p className="text-[#1E293B] text-[18px] mb-5">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Ut enim ad minim veniam, quis
-                            nostrud exercitation ullamco laboris nisi ut
-                            aliquip.
+                            {details.details}
                         </p>
 
                         <div className="mb-4 py-2 flex flex-col gap-3">
                             <p className="flex items-center text-gray-700">
                                 <FaMapMarkerAlt className="mr-2 text-lg text-gray-500" />
-                                Franz Josef Strauss, Munich, Germany
+                                {details.location}
                             </p>
                             <p className="flex items-center text-gray-700 mt-2">
                                 <FaPhoneAlt className="mr-2 text-lg text-gray-500" />
@@ -1222,7 +1220,19 @@ const ListingDetails = ({ onClose }) => {
                             ) : (
                                 <div>
                                     <div>
-                                        {token ? (
+                                        {conv && !mile?(
+                                            <div className="w-full mx-auto text-center p-4">
+                                                <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
+                                                    No Milestone is set for this business yet.
+                                                </p>
+                                            </div>
+                                        ) : conv && !amount_r? (
+                                            <div className="w-full mx-auto text-center p-4">
+                                                <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
+                                                    Business is completed or full amount collected.
+                                                </p>
+                                            </div>
+                                        ): conv && !running ? (
                                             <div className="w-full mx-auto text-center p-4">
                                                 <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
                                                     Milestone payout is
@@ -1232,7 +1242,7 @@ const ListingDetails = ({ onClose }) => {
                                                     the next milestone is open.
                                                 </p>
                                             </div>
-                                        ) : (
+                                        ):(
                                             <div className="w-full mx-auto text-center p-4">
                                                 <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
                                                     Please login to bid on this
@@ -1241,7 +1251,7 @@ const ListingDetails = ({ onClose }) => {
                                             </div>
                                         )}
                                     </div>
-                                </div>
+                                </div> 
                                 // <div className="w-full mx-auto text-center p-4">
                                 //     <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
                                 //         Milestone payout is currently off due to

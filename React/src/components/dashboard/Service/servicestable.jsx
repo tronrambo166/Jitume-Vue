@@ -70,7 +70,7 @@ const ServiceTable = () => {
                                     Details
                                 </th>
                                 <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                    Required
+                                    Service Fee
                                 </th>
                                 <th className="px-4 py-2 text-center text-xs font-medium uppercase tracking-wider">
                                     Action
@@ -100,7 +100,7 @@ const ServiceTable = () => {
                                         {item.details}
                                     </td>
                                     <td className="px-4 py-2 text-sm">
-                                        {item.amount}
+                                        ${item.price}
                                     </td>
                                     <td className="px-4 py-2 text-center text-sm">
                                         <div className="flex items-center justify-center space-x-2">

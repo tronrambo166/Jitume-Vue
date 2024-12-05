@@ -675,7 +675,7 @@ return response()->json([ 'data' => $milestones, 'progress' => $progress,
 }
 
 else
-return response()->json([ 'data' => 'Failed!', 'progress' => 0, 'length' => 0 ]);
+return response()->json([ 'data' => $milestones, 'progress' => 0, 'length' => 0 ]);
 
 }
 
