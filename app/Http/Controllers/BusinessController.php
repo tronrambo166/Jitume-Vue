@@ -35,6 +35,7 @@ class BusinessController extends Controller
 	//$services = Services::where('shop_id',Auth::id())->get();
 	return response()->json(['business' => $business]);
   }
+  //TEST
 
 //private $auth_id;
    public function __construct(StripeClient $client)
