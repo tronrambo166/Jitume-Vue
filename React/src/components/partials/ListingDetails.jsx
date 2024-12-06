@@ -1231,7 +1231,7 @@ const ListingDetails = ({ onClose }) => {
                                         ) : conv && !amount_r? (
                                             <div className="w-full mx-auto text-center p-4">
                                                 <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
-                                                    Business is completed or full amount collected.
+                                                    Business is Fully Vested.
                                                 </p>
                                             </div>
                                         ): conv && !running ? (
@@ -1379,33 +1379,7 @@ const ListingDetails = ({ onClose }) => {
                     <div className="flex flex-col lg:flex-row gap-8 p-4">
                         {/* Review Summary - Left */}
                         <div className="w-full sm:w-2/3 md:w-1/2 lg:w-1/3   ">
-                            {token && conv && !(amount_r && running) && (
-                                <div className="flex flex-col gap-6 border  border-gray-300 rounded-lg p-6 bg-white">
-                                    <button
-                                        className="border border-gray-300 bg-white hover:bg-gray-100 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium"
-                                        onClick={download_statement}
-                                    >
-                                        Download Financial Statements
-                                    </button>
-                                    <button
-                                        onClick={download_business}
-                                        className="border border-gray-300 bg-white hover:bg-gray-100 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium"
-                                    >
-                                        Download Business Documents
-                                    </button>
-                                    <button className="border border-gray-300 bg-white hover:bg-gray-100 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium">
-                                        <Link
-                                            to={`/business-milestones/${btoa(
-                                                btoa(details.id)
-                                            )}`}
-                                            key={details.id}
-                                            className="block w-full text-center"
-                                        >
-                                            View Business Milestones
-                                        </Link>
-                                    </button>
-                                </div>
-                            )}
+
                             <div className="mt-4">
                                 <ReviewSummary />
                             </div>
