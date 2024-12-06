@@ -24,6 +24,8 @@ import ReviewList from "./moduleParts/ReviewServicedetailList";
 import PaginationComponent from "./moduleParts/PaginationControls";
 import img from "../../assets/profile.png";
 import ScrollToTop from "../pages/ScrollToTop";
+import { useAlert } from "../partials/AlertContext";
+
 import BackBtn from "./BackBtn";
 const ServiceDetails = () => {
     const { token, setUser, setAuth, auth } = useStateContext();
@@ -40,6 +42,7 @@ const ServiceDetails = () => {
     const [booked, setBooked] = useState("");
     const [allowToReview, setallowToReview] = useState(false);
     const [Contactmodal, setContactmodal] = useState("");
+    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
 
     const [showCalendar, setShowCalendar] = useState(false); // State to show/hide the calendar
     const [selectedDate, setSelectedDate] = useState(""); // State to store the selected date
@@ -211,7 +214,7 @@ const ServiceDetails = () => {
                     if (data.data[0]["rating_count"] == 0)
                         data.data[0]["rating"] = 0;
                     setDetails(data.data[0]);
-                    setCat(data.data[0].category)
+                    setCat(data.data[0].category);
                     //console.log(details)
                 })
                 .catch((err) => {
@@ -244,6 +247,11 @@ const ServiceDetails = () => {
     // Handle contact modal toggle
     const sendMessage = (event) => {
         event.preventDefault();
+        const message = $("#msg").val().trim(); // Trim to remove leading/trailing spaces
+        if (!message) {
+            showAlert("info", "Please enter a message before sending.");
+            return;
+        }
         const payload = {
             service_id: form.service_id,
             msg: $("#msg").val(),
@@ -253,6 +261,7 @@ const ServiceDetails = () => {
             .post("serviceMsg", payload)
             .then(({ data }) => {
                 //console.log(data);
+
                 if (data.success) {
                     $.alert({
                         title: "Alert!",
@@ -306,26 +315,27 @@ const ServiceDetails = () => {
         const payload = {
             date: selectedDate,
             note: notes,
-        
+
             service_id: form.service_id,
             business_bid_id: bid_id,
         };
 
         console.log(payload);
-        if(payload.date == null || payload.date == ""){
+        if (payload.date == null || payload.date == "") {
             $.alert({
-                        title: "Alert!",
-                        content: "Please select a date",
-                    }); return;
+                title: "Alert!",
+                content: "Please select a date",
+            });
+            return;
         }
 
-        if(payload.note == null || payload.note == ""){
+        if (payload.note == null || payload.note == "") {
             $.alert({
-                        title: "Alert!",
-                        content: "Please enter a note",
-                    }); return;
+                title: "Alert!",
+                content: "Please enter a note",
+            });
+            return;
         }
-        
 
         axiosClient
             .post("/serviceBook", payload)
@@ -442,20 +452,17 @@ const ServiceDetails = () => {
                                         <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z" />
                                     </svg>
                                 </div>
-                            ) : (
-
-                                cat ? 
-                                    <img
+                            ) : cat ? (
+                                <img
                                     style={{
                                         maxHeight: "555px",
                                     }}
                                     className="w-full rounded-lg object-cover"
                                     src={"../../" + details.image}
                                     alt="Service"
-                                /> 
-                                :
-                                    
-                                    <img
+                                />
+                            ) : (
+                                <img
                                     style={{
                                         maxHeight: "555px",
                                     }}
@@ -463,9 +470,6 @@ const ServiceDetails = () => {
                                     src={"../" + details.image}
                                     alt="Service"
                                 />
-                                
-
-                                
                             )}
 
                             {/* Overlay Section with Location */}
@@ -560,7 +564,7 @@ const ServiceDetails = () => {
                             {/* Conditional rendering of contact section */}
                             {Contactmodal && token && (
                                 <div className="contact py-4">
-                                    <hr></hr>
+                                    <hr />
                                     <h1 className="font-bold py-2 text-xl">
                                         Contact Us
                                     </h1>
@@ -568,12 +572,12 @@ const ServiceDetails = () => {
                                         id="msg"
                                         name="message"
                                         placeholder="Write your message here"
-                                        className="w-full border-gray-300 border rounded-lg p-2"
+                                        className="w-full border-gray-300 border rounded-lg p-2 focus:outline-none"
                                         rows="4"
                                     ></textarea>
                                     <button
                                         onClick={sendMessage}
-                                        className="btn-primary px-6 py-2 my-3 rounded-md font-semibold text-white"
+                                        className="btn-primary px-6 py-2 my-3 rounded-md font-semibold text-white focus:outline-none"
                                     >
                                         Send
                                     </button>

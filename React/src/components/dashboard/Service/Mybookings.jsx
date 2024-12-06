@@ -95,9 +95,31 @@ const MyBookings = () => {
                                 <td className="px-4 py-4 text-sm">
                                     {item.note}
                                 </td>
-                                <td className="px-4 py-4 text-sm">
+                                {/* <td className="px-4 py-4 text-sm">
                                     {item.created_at}
+                                </td> */}
+                                {/* <td className="px-6 py-4 text-sm   shadow-sm">
+                                    {new Date(item.created_at).toLocaleString(
+                                        "en-US",
+                                        {
+                                            weekday: "long",
+                                            year: "numeric",
+                                            month: "long",
+                                            day: "numeric",
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                            hour12: true,
+                                        }
+                                    )}
+                                </td> */}
+                                <td className="px-6 py-4 text-sm text-gray-700 bg-gray-100 rounded-lg shadow-sm">
+                                    {
+                                        new Date(item.created_at)
+                                            .toISOString()
+                                            .split("T")[0]
+                                    }
                                 </td>
+
                                 <td className="px-4 py-4 text-sm">
                                     {item.location}
                                 </td>

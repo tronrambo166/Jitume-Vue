@@ -95,9 +95,9 @@ const EditModal = ({
         }
 
         // Log file data for better debugging
-        console.log(`[File Change] ${name}:`, files[0]); // Logs the file selected with the field name
+        console.log(`[File Change] ${name}:`, files[0]);
 
-        // Store only the file name in the formData state
+        // Store the file in the formData state
         if (files && files[0]) {
             setFormData((prevData) => ({
                 ...prevData,
@@ -166,7 +166,7 @@ const EditModal = ({
 
     return (
         <div
-            className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50"
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
             onClick={handleOverlayClick}
         >
             {/* ID */}
@@ -311,7 +311,8 @@ const EditModal = ({
                                 {formData.image
                                     ? formData.image.name
                                     : "No file selected"}
-                            </span>
+                                         
+                            </span>
                         </div>
 
                         {/* Details */}
@@ -424,7 +425,7 @@ const EditModal = ({
                         {/* Pin */}
                         <div className="mb-4">
                             <label
-                                className="block text-sm font-medium mb-1"
+                                className="block text-sm font-medium mb-1 text-gray-700"
                                 htmlFor="pin"
                             >
                                 Pin
@@ -434,17 +435,19 @@ const EditModal = ({
                                 name="pin"
                                 type="file"
                                 onChange={handleFileChange}
-                                className="w-full px-3 py-2 border rounded"
+                                className="w-full px-3 py-2 border rounded text-gray-700 focus:ring focus:ring-blue-300"
                             />
-                            <span className="text-gray-500">
-                                {formData.pin || "No file chosen"}
-                            </span>
+                            <div className="mt-2 text-sm text-gray-500">
+                                {formData.pin
+                                    ? `Selected file: ${formData.pin.name}`
+                                    : "No file chosen"}
+                            </div>
                         </div>
 
                         {/* Identification */}
                         <div className="mb-4">
                             <label
-                                className="block text-sm font-medium mb-1"
+                                className="block text-sm font-medium mb-1 text-gray-700"
                                 htmlFor="identification"
                             >
                                 Identification
@@ -454,17 +457,19 @@ const EditModal = ({
                                 name="identification"
                                 type="file"
                                 onChange={handleFileChange}
-                                className="w-full px-3 py-2 border rounded"
+                                className="w-full px-3 py-2 border rounded text-gray-700 focus:ring focus:ring-blue-300"
                             />
-                            <span>
-                                {formData.identification || "No file chosen"}
-                            </span>
+                            <div className="mt-2 text-sm text-gray-500">
+                                {formData.identification
+                                    ? `Selected file: ${formData.identification.name}`
+                                    : "No file chosen"}
+                            </div>
                         </div>
 
                         {/* Document */}
                         <div className="mb-4">
                             <label
-                                className="block text-sm font-medium mb-1"
+                                className="block text-sm font-medium mb-1 text-gray-700"
                                 htmlFor="document"
                             >
                                 Document
@@ -474,17 +479,19 @@ const EditModal = ({
                                 name="document"
                                 type="file"
                                 onChange={handleFileChange}
-                                className="w-full px-3 py-2 border rounded"
+                                className="w-full px-3 py-2 border rounded text-gray-700 focus:ring focus:ring-blue-300"
                             />
-                            <span className="text-gray-500">
-                                {formData.document || "No file chosen"}
-                            </span>
+                            <div className="mt-2 text-sm text-gray-500">
+                                {formData.document
+                                    ? `Selected file: ${formData.document.name}`
+                                    : "No file chosen"}
+                            </div>
                         </div>
 
                         {/* Video */}
                         <div className="mb-4">
                             <label
-                                className="block text-sm font-medium mb-1"
+                                className="block text-sm font-medium mb-1 text-gray-700"
                                 htmlFor="video"
                             >
                                 Video
@@ -494,11 +501,13 @@ const EditModal = ({
                                 name="video"
                                 type="file"
                                 onChange={handleFileChange}
-                                className="w-full px-3 py-2 border rounded"
+                                className="w-full px-3 py-2 border rounded text-gray-700 focus:ring focus:ring-blue-300"
                             />
-                            <span className="text-gray-500">
-                                {formData.video || "No file chosen"}
-                            </span>
+                            <div className="mt-2 text-sm text-gray-500">
+                                {formData.video
+                                    ? `Selected file: ${formData.video.name}`
+                                    : "No file chosen"}
+                            </div>
                         </div>
 
                         {/* Reason */}
@@ -539,7 +548,7 @@ const EditModal = ({
                         {/* Yearly Financial Statement */}
                         <div className="mb-4">
                             <label
-                                className="block text-sm font-medium mb-1"
+                                className="block text-sm font-medium mb-1 text-gray-700"
                                 htmlFor="yeary_fin_statement"
                             >
                                 Yearly Financial Statement
@@ -549,12 +558,13 @@ const EditModal = ({
                                 name="yeary_fin_statement"
                                 type="file"
                                 onChange={handleFileChange}
-                                className="w-full px-3 py-2 border rounded"
+                                className="w-full px-3 py-2 border rounded text-gray-700 focus:ring focus:ring-blue-300"
                             />
-                            <span className="text-gray-500">
-                                {formData.yeary_fin_statement ||
-                                    "No file chosen"}
-                            </span>
+                            <div className="mt-2 text-sm text-gray-500">
+                                {formData.yeary_fin_statement
+                                    ? `Selected file: ${formData.yeary_fin_statement.name}`
+                                    : "No file chosen"}
+                            </div>
                         </div>
 
                         {/* ID Number */}
@@ -578,7 +588,7 @@ const EditModal = ({
                         {/* Tax Pin */}
                         <div className="mb-4">
                             <label
-                                className="block text-sm font-medium mb-1"
+                                className="block text-sm font-medium mb-1 text-gray-700"
                                 htmlFor="tax_pin"
                             >
                                 Tax Pin
@@ -588,11 +598,13 @@ const EditModal = ({
                                 name="tax_pin"
                                 type="file"
                                 onChange={handleFileChange}
-                                className="w-full px-3 py-2 border rounded"
+                                className="w-full px-3 py-2 border rounded text-gray-700 focus:ring focus:ring-blue-300"
                             />
-                            <span className="text-gray-500">
-                                {formData.tax_pin || "No file chosen"}
-                            </span>
+                            <div className="mt-2 text-sm text-gray-500">
+                                {formData.tax_pin
+                                    ? `Selected file: ${formData.tax_pin.name}`
+                                    : "No file chosen"}
+                            </div>
                         </div>
 
                         {/* Rating */}

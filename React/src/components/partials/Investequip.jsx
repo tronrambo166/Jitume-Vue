@@ -7,13 +7,13 @@ import { useNavigate } from "react-router-dom";
 import InvestHero from "../Heros/InvestHero";
 import { MdPhoto } from "react-icons/md";
 import { AiOutlinePlusCircle } from "react-icons/ai";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import BackBtn from "./BackBtn";
+import { useAlert } from "./AlertContext";
+
 const Investequip = () => {
     const { amount, id, percent } = useParams();
-
+    const { showAlert } = useAlert();
     const [formData, setFormData] = useState({
         amount: atob(amount),
         listing_id: atob(id),
@@ -29,7 +29,7 @@ const Investequip = () => {
         legal_doc: "",
         optional_doc: "",
     });
-    // Handle file changes
+
     const handleFileChange = (e, field) => {
         const file = e.target.files[0];
 
@@ -40,7 +40,8 @@ const Investequip = () => {
             const validImageTypes = [
                 "image/jpeg",
                 "image/png",
-                "image/jpg , image/webp",
+                "image/jpg",
+                "image/webp",
             ];
             // Define valid document types for 'legal_doc' and 'optional_doc' fields
             const validDocTypes = [
@@ -52,36 +53,54 @@ const Investequip = () => {
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xlsx (Excel files)
                 "application/rtf", // .rtf (Rich Text Format)
                 "application/vnd.oasis.opendocument.text", // .odt (OpenDocument text)
-                //   "application/zip", // .zip (Compressed files)
             ];
 
             let isValid = false;
 
+            // Validate file type for 'photos' field
             if (field === "photos" && validImageTypes.includes(fileType)) {
                 isValid = true;
-            } else if (
+            }
+            // Validate file type for 'legal_doc' or 'optional_doc' fields
+            else if (
                 (field === "legal_doc" || field === "optional_doc") &&
                 validDocTypes.includes(fileType)
             ) {
                 isValid = true;
             }
 
+            // Optional: Validate file size (e.g., max 5 MB)
+            const maxSize = 5 * 1024 * 1024; // 5 MB
+            if (file.size > maxSize) {
+                showAlert("error", "File is too large. Max size is 5 MB.");
+                document.getElementById(`${field}-input`).value = "";
+                return;
+            }
+
             if (isValid) {
+                console.log(`${field} file selected:`, file);
+
+                // Set the file and file name in the state
                 setFormData((prevData) => ({
                     ...prevData,
-                    [field]: file,
-                    [`${field}Name`]: file.name,
+                    [field]: file, // Store the file directly
                 }));
-                toast.info(`${file.name} selected successfully!`);
+
+                setFileNames((prev) => ({
+                    ...prev,
+                    [field]: file.name, // Update the file name state
+                }));
+
+                showAlert("info", `${file.name} selected successfully!`);
             } else {
-                toast.error(
+                showAlert(
+                    "error",
                     "Invalid file type. Please select the correct file."
                 );
-                // Optionally, clear the input to prompt the user to choose a valid file
                 document.getElementById(`${field}-input`).value = "";
             }
         } else {
-            toast.error("No file selected. Please choose a file.");
+            showAlert("error", "No file selected. Please choose a file.");
         }
     };
 
@@ -89,7 +108,7 @@ const Investequip = () => {
         navigate(-1);
     };
     const navigate = useNavigate();
-    // Handle input changes
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -98,67 +117,58 @@ const Investequip = () => {
         }));
     };
 
-    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const form = new FormData();
         for (const key in formData) {
-            form.append(key, formData[key]);
+            form.append(key, formData[key]); // Append the file or data to FormData
         }
 
-        // Convert FormData to a JSON object for logging
         const formDataObject = {};
         form.forEach((value, key) => {
-            formDataObject[key] = value instanceof File ? value.name : value;
+            formDataObject[key] = value instanceof File ? value : value;
         });
 
-        // Log the formDataObject directly
         console.log("FormData Object:", formDataObject);
 
         try {
-            setLoading(true); // Set loading to true
+            setLoading(true);
 
             const response = await axiosClient.post("bidCommitsEQP", form, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
-            // Check and display all messages from the response
             if (response.data) {
-                // Assuming 'response.data' could have success, error, or any custom messages
                 if (response.data.success) {
-                    toast.success(response.data.success); // Success toast
+                    showAlert("success", response.data.success);
                 }
                 if (response.data.failed) {
-                    toast.error(response.data.failed); // Failure toast
+                    showAlert("error", response.data.failed);
                 }
-                // If there's any custom message to show, display it
                 if (response.data.message) {
-                    toast.info(response.data.message); // Info toast for custom message
+                    showAlert("info", response.data.message);
                 }
             }
         } catch (error) {
             console.error("Error submitting the form:", error);
-            toast.error("An error occurred while submitting the form."); // Error toast
+            showAlert("error", "An error occurred while submitting the form.");
         } finally {
-            setLoading(false); // Set loading to false after request completes
+            setLoading(false);
         }
     };
-    // Check if all required fields are filled
+
     const isFormValid = () => {
-        // Check if photos, legal_doc are filled and serial is not empty
-        // optional_doc is not required, so we skip validation for it
         return (
             formData.photos &&
             formData.legal_doc &&
             formData.serial !== "" &&
-            (formData.optional_doc || formData.optional_doc === null) // optional doc can be null
+            (formData.optional_doc || formData.optional_doc === null)
         );
     };
 
     return (
         <>
-            <ToastContainer />
             <InvestHero />
             <BackBtn />
             <div className="px-4 sm:px-10 mb-60">
@@ -182,17 +192,15 @@ const Investequip = () => {
                         {["photos", "legal_doc", "optional_doc"].map(
                             (docType) => (
                                 <div
-                                    className="flex flex-col sm:flex-row justify-between items-center mb-4"
+                                    className="flex flex-col sm:flex-row justify-between items-start mb-4"
                                     key={docType}
                                 >
-                                    <label className="text-gray-600 font-medium text-sm flex items-center">
+                                    <label className="text-gray-600 font-medium text-sm mb-2 sm:mb-0 flex items-start">
                                         {docType === "photos" ? (
                                             <>
                                                 Upload good quality photos of
                                                 the assets
-                                                <span className="text-red-500 ml-1">
-                                                    *
-                                                </span>
+                                                <span className="text-red-500 ml-1"></span>
                                             </>
                                         ) : docType === "legal_doc" ? (
                                             <>
@@ -200,18 +208,16 @@ const Investequip = () => {
                                                 as evidence of the ownership of
                                                 the assets (original purchase
                                                 receipt/title/certificate etc)
-                                                <span className="text-red-500 ml-1">
-                                                    *
-                                                </span>
+                                                <span className="text-red-500 ml-1"></span>
                                             </>
                                         ) : (
                                             "Any other assets records (optional)"
                                         )}
                                     </label>
-                                    <div className="flex flex-col sm:flex-row items-center gap-2">
+                                    <div className="flex flex-col sm:flex-row items-start gap-2">
                                         <button
                                             type="button"
-                                            className="flex items-center gap-2 mt-2 sm:mt-0 px-4 py-2 border border-gray-300 rounded-md text-gray-600 hover:bg-gray-50"
+                                            className="flex items-center gap-2 mt-2 sm:mt-0 px-4 py-2 min-w-[200px] h-[48px] border border-gray-300 rounded-md text-gray-600 hover:bg-gray-50 overflow-hidden"
                                             onClick={() =>
                                                 document
                                                     .getElementById(
@@ -221,14 +227,16 @@ const Investequip = () => {
                                             }
                                         >
                                             <FaImage className="text-gray-500" />
-                                            {docType === "photos"
-                                                ? "Upload Image"
-                                                : "Upload Document"}
-                                            {docType === "optional_doc" && (
-                                                <span className="text-gray-500">
-                                                    {" "}
-                                                    (optional)
+                                            {/* Display the file name inside the button */}
+                                            {formData[docType] ? (
+                                                <span className="truncate max-w-full">
+                                                    {fileNames[docType]}{" "}
+                                                    {/* Show the uploaded file name */}
                                                 </span>
+                                            ) : docType === "photos" ? (
+                                                "Upload Image"
+                                            ) : (
+                                                "Upload Document"
                                             )}
                                         </button>
                                         <input
@@ -239,12 +247,6 @@ const Investequip = () => {
                                             }
                                             className="hidden"
                                         />
-                                        {/* Display the file name */}
-                                        {formData[`${docType}Name`] && (
-                                            <span className="text-sm text-gray-500">
-                                                {formData[`${docType}Name`]}
-                                            </span>
-                                        )}
                                     </div>
                                 </div>
                             )
@@ -255,7 +257,7 @@ const Investequip = () => {
                             <label className="block text-gray-600 font-medium text-sm mb-2 flex items-center">
                                 Provide the asset's make, model, and serial
                                 number
-                                <span className="text-red-500 ml-1">*</span>
+                                <span className="text-red-500 ml-1"></span>
                             </label>
                             <input
                                 type="text"
