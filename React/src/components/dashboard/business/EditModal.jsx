@@ -142,15 +142,18 @@ const EditModal = ({
             console.log("API Response:", response.data);
 
             if (response.data.status === 200) {
-                //showAlert("success", response.data.message); // Show success alert
+               
+                showAlert("success", response.data.message); // Show success alert
             } else {
-                //showAlert("warning", response.data.message); // Show warning alert for non-200 status
+                
+                showAlert("warning", response.data.message); // Show warning alert for non-200 status
             }
 
             console.log(response.data);
         } catch (error) {
             console.log(error);
-            //showAlert("error", error.message || "An error occurred."); // Show error alert
+           
+            showAlert("error", error.message || "An error occurred."); // Show error alert
         } finally {
             setLoading(false); // Stop loading
         }
