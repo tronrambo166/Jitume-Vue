@@ -276,7 +276,7 @@ $old_video = $current->video;
 $old_document = $current->document;
 
  //FILES
- $image=$request->file('image'); return $image;
+ $image=$request->file('image'); //return $image;
  if($image) {
           $uniqid=hexdec(uniqid());
           $ext=strtolower($image->getClientOriginalExtension());
@@ -289,9 +289,10 @@ $old_document = $current->document;
           $loc='../React/images/services/';
           //Move uploaded file
           $image->move($loc, $create_name);
-          $final_img=$loc.$create_name;
+          $final_img='images/services/'.$create_name;
           $data['image'] = $final_img;
-          if($old_cover!=null) unlink($old_cover);
+          if($old_cover!=null && file_exists('../React/'.$old_cover))
+           unlink($old_cover);
              }
 
  $pin=$request->file('pin');
@@ -415,8 +416,10 @@ File::deleteDirectory($loc);
 $locM = public_path('files/Smilestones/'.$id);
 File::deleteDirectory($locM);
 
-$milestones = Services::where('id',$id)->delete();
-return redirect()->back();
+$milestones = Smilestones::where('listing_id',$id)->delete();
+
+$listing = Services::where('id',$id)->delete();
+return response()->json(['message'=>'Success', 'status'=>200]);
 }
 
 

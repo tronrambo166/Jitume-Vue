@@ -117,6 +117,7 @@ Route::post('add_video', [BusinessController::class, 'add_video'])->name('add_vi
 Route::post('embed_business_video', [BusinessController::class, 'embed_business_video'])->name('embed_business_video');
 
 Route::get('/notifications', [BusinessController::class, 'notifications']);
+Route::get('/notifSetRead', [BusinessController::class, 'notifSetRead']);
 
 //Dashboard -- Service ROUTES
 Route::get('bBQhdsfE_WWe4Q-_f7ieh7Hdhf8F_', [ServiceController::class, 'services'])->name('services');

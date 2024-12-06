@@ -38,6 +38,17 @@ const NotificationBell = () => {
                     new: 0, // Mark all as read when dropdown is opened
                 }))
             );
+
+            //Set as Read/ New ==0
+            axiosClient
+                .get("business/notifSetRead")
+                .then(({ data }) => {
+                    console.log(data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+                //Set as Read/ New ==0
         }
     };
 

@@ -101,7 +101,7 @@ const Alert = ({ type, message }) => {
         <div
             className={`fixed top-5 right-5 flex items-center rounded-lg p-4 border ${config.bg} backdrop-blur-sm  transition-all transform  animate-slide-in z-50`}
         >
-            <div className="mr-3">{config.icon}</div>
+            {/*<div className="mr-3">{config.icon}</div>*/}
             <div className="flex-grow">
                 <span>{message}</span>
             </div>

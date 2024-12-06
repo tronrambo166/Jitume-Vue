@@ -399,7 +399,7 @@ $old_video = $current->video;
 $old_document = $current->document;
 
  //FILES
- $image=$request->file('image');
+ $image=$request->file('image'); //return $image;
  if($image) {
           $uniqid=hexdec(uniqid());
           $ext=strtolower($image->getClientOriginalExtension());
@@ -412,12 +412,11 @@ $old_document = $current->document;
           $loc='../React/images/listing/';
           //Move uploaded file
           $image->move($loc, $create_name);
-          $final_img=$loc.$create_name;
+          $final_img='images/listing/'.$create_name;
           $data['image'] = $final_img;
-          if($old_cover!=null) unlink($old_cover);
+          if($old_cover!=null && file_exists('../React/'.$old_cover))
+           unlink('../React/'.$old_cover);
              }
-
-             return $final_img;
 
  $pin=$request->file('pin');
  if($pin) {
@@ -540,8 +539,10 @@ File::deleteDirectory($loc);
 $locM = public_path('files/milestones/'.$id);
 File::deleteDirectory($locM);
 
-$milestones = Listing::where('id',$id)->delete();
-return redirect()->back();
+$milestones = Milestones::where('listing_id',$id)->delete();
+
+$listing = Listing::where('id',$id)->delete();
+return response()->json(['message'=>'Success', 'status'=>200]);
 }
 
 
@@ -1435,6 +1436,13 @@ foreach($notifications as $notice)
 }
 
 return response()->json(['data' => $notifications]);
+}
+
+
+public function notifSetRead(){ 
+$myNotifications = Notifications::where('receiver_id',Auth::id())->update([
+'new' => 0]);
+return response()->json(['status' => 200]);
 }
 
 

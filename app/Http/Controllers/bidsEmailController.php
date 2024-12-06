@@ -50,14 +50,18 @@ public function bidsAccepted(Request $request)
         $list = listing::where('id',$bid->business_id)->first();
         $info=[ 'business_name'=>$list->name ];
         $user['to'] = $investor_mail; //'tottenham266@gmail.com'; //
-         Mail::send('bids.rejected', $info, function($msg) use ($user){
+         
+         if($investor)
+            Mail::send('bids.rejected', $info, function($msg) use ($user){
              $msg->to($user['to']);
              $msg->subject('Bid Rejected!');
          });
 
          //Refund
-         $this->Client->refunds->create(['charge' => $bid->stripe_charge_id ]);
+         if($bid->type == 'Monetery')
+         $this->Client->refunds->create(['charge' => $bid->stripe_charge_id]);
          //Refund
+
          
          $bid_remove = BusinessBids::where('id',$id)->delete();
          //remove
@@ -120,7 +124,8 @@ public function bidsAccepted(Request $request)
         //Mail
         $info=[ 'business_name'=>$list->name, 'bid_id'=>$id, 'type' => $bid->type ];
         $user['to'] = $investor_mail; //'tottenham266@gmail.com'; //
-         Mail::send('bids.accepted', $info, function($msg) use ($user){
+         if($investor)
+            Mail::send('bids.accepted', $info, function($msg) use ($user){
              $msg->to($user['to']);
              $msg->subject('Bid accepted!');
          });

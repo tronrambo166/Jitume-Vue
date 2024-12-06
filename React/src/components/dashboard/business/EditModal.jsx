@@ -98,10 +98,12 @@ const EditModal = ({
         console.log(`[File Change] ${name}:`, files[0]); // Logs the file selected with the field name
 
         // Store only the file name in the formData state
-        setFormData((prev) => ({
-            ...prev,
-            [name]: files[0].name, // Store just the file name, not the entire file object
-        }));
+        if (files && files[0]) {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: files[0],
+            }));
+        }
 
         // Optionally, show success alert after file selection
         showAlert("success", `${name} file selected successfully.`);
@@ -122,6 +124,7 @@ const EditModal = ({
         for (let key in updatedItem) {
             formDataToSend.append(key, updatedItem[key]);
         }
+        console.log("Form Data :", formDataToSend);
 
         try {
             // Simulate API call - Sending formData using POST
@@ -139,15 +142,15 @@ const EditModal = ({
             console.log("API Response:", response.data);
 
             if (response.data.status === 200) {
-                showAlert("success", response.data.message); // Show success alert
+                //showAlert("success", response.data.message); // Show success alert
             } else {
-                showAlert("warning", response.data.message); // Show warning alert for non-200 status
+                //showAlert("warning", response.data.message); // Show warning alert for non-200 status
             }
 
             console.log(response.data);
         } catch (error) {
             console.log(error);
-            showAlert("error", error.message || "An error occurred."); // Show error alert
+            //showAlert("error", error.message || "An error occurred."); // Show error alert
         } finally {
             setLoading(false); // Stop loading
         }
@@ -305,8 +308,10 @@ const EditModal = ({
                                 aria-required="true" // Indicates that this field is required
                             />
                             <span className="text-sm text-gray-500">
-                                {formData.image}
-                            </span>
+                                {formData.image
+                                    ? formData.image.name
+                                    : "No file selected"}
+                            </span>
                         </div>
 
                         {/* Details */}
