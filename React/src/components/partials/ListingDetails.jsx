@@ -342,8 +342,10 @@ const ListingDetails = ({ onClose }) => {
                 content: "Please enter a bid to invest!",
             });
         else {
+            var percent = parseFloat(percent);
+
             var amount = base64_encode(amount);
-            var percent = base64_encode(percent);
+            percent = base64_encode(percent);
             var purpose = base64_encode("bids");
             var listing_id = base64_encode(form.listing_id);
 
@@ -1090,7 +1092,7 @@ const ListingDetails = ({ onClose }) => {
                         {/* On mobile, ReviewSummary takes up full width, on larger screens it takes 1/3 */}
                         <div className="sm:col-span- flex flex-row">
                             {/* Financial Statements Section */}
-                            {token && conv && amount_r && running && (
+                            {token && conv && (
                                 <div className="w-full lg:max-w-sm flex flex-col gap-3 border rounded-lg items-center justify-center p-6  bg-white">
                                     <button
                                         className="border border-gray-300 bg-white hover:bg-gray-100 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium"
@@ -1149,9 +1151,9 @@ const ListingDetails = ({ onClose }) => {
                                         {amount && (
                                             <p className="text-sm text-[#334155] mb-4">
                                                 Represents:{" "}
-                                                <span className="font-bold">
-                                                    {percentage}%
-                                                </span>
+                                                <span id="percent" className="font-bold">
+                                                    {percentage}
+                                                </span>%
                                             </p>
                                         )}
                                         <button
@@ -1199,8 +1201,8 @@ const ListingDetails = ({ onClose }) => {
                                             <p className="text-sm text-[#334155] mb-4">
                                                 Represents:{" "}
                                                 <span className="font-bold">
-                                                    {equipmentPercentage}%
-                                                </span>
+                                                    {equipmentPercentage}
+                                                </span>%
                                             </p>
                                         )}
                                         
@@ -1244,10 +1246,11 @@ const ListingDetails = ({ onClose }) => {
                                             </div>
                                         ):(
                                             <div className="w-full mx-auto text-center p-4">
-                                                <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
+                                                {!token && <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
                                                     Please login to bid on this
                                                     project.
                                                 </p>
+                                            }
                                             </div>
                                         )}
                                     </div>

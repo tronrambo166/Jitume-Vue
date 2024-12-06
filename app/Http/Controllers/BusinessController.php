@@ -139,20 +139,21 @@ if ($investor_ck->investor == 1) {
 $convs = Conversation::where('investor_id',Auth::id())->get();
 foreach($convs as $conv){
   $miles = AcceptedBids::where('investor_id',Auth::id())
-  ->where('business_id',$conv->listing_id)->get();
-  foreach($miles as $share)
-    $t_share = $t_share+$share->representation;
+  ->where('business_id',$conv->listing_id)->latest()->get();
+  foreach($miles as $share){
+    //$t_share = $t_share+$share->representation;
 
   $my_listing =listing::where('id',$conv->listing_id)->first();
   if($my_listing){
-  $my_listing->myShare = $t_share;
+  $my_listing->myShare = (float)$share->representation;
+  $my_listing->amount =$share->amount;
   $results[] = $my_listing;
+}
 }
 //echo '<pre>'; print_r($results); echo '<pre>';exit;
 }
 }
 //Investments
-// return view('business.index',compact('business','investor','results','services'));
 
 return response()->json(['business'=>$business,'investor'=>$investor,'results'=>$results,'services'=>$services,'user_email'=>$user_email,'user_name'=>$user_name]);
 }
@@ -1424,7 +1425,7 @@ foreach($notifications as $notice)
   }
   
   else {
-    $notifier =Service::where('id',$notice->customer_id)->first();
+    $notifier =Services::where('id',$notice->customer_id)->first();
     if($notifier)$name = $notifier->fname;
     
   }

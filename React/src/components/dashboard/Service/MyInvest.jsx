@@ -156,12 +156,14 @@ const MyInvest = () => {
                                         <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
                                             Value Needed
                                         </th>
-                                        <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                            Details
-                                        </th>
+                                        
                                         <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
                                             Contact
                                         </th>
+                                        <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
+                                            Amount
+                                        </th>
+
                                         <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
                                             Business Share
                                         </th>
@@ -188,12 +190,15 @@ const MyInvest = () => {
                                             <td className="px-4 py-2 text-sm">
                                                 {item.investment_needed}
                                             </td>
-                                            <td className="px-4 py-2 text-sm">
-                                                {item.details}
-                                            </td>
+                                            
                                             <td className="px-4 py-2 text-sm">
                                                 {item.contact}
                                             </td>
+
+                                            <td className="px-4 py-2 text-sm">
+                                                {item.amount}
+                                            </td>
+
                                             <td className="px-4 py-2 text-sm">
                                                 {item.share}%
                                             </td>
