@@ -1180,7 +1180,11 @@ public function assetEquip_download($id, $type){
 
     }
 
-    return response()->json([ 'data' => $results, 'conv'=>$conv, 'count' => $count, 'reviews' => $reviews] );
+    //Investor's Fee
+    $thisListing = Listing::where('id',$listing_id)->first();
+    //Investor's Fee
+
+    return response()->json([ 'data' => $results, 'fee'=> $thisListing->investors_fee, 'conv'=>$conv, 'count' => $count, 'reviews' => $reviews] );
 }
 
 

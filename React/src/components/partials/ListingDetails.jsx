@@ -388,7 +388,7 @@ const ListingDetails = ({ onClose }) => {
                         data.data[0]["rating"] = 0;
 
                     setDetails(data.data[0]);
-                    if (data.data[0].investors_fee == null) setConv(true);
+                    //if (data.data[0].investors_fee == null) setConv(true);
                     console.log(data);
                 })
                 .catch((err) => {
@@ -419,6 +419,10 @@ const ListingDetails = ({ onClose }) => {
                 .get("/isSubscribed/" + form.listing_id)
                 .then(({ data }) => {
                     console.log(data);
+
+                    if (data.fee == null) 
+                        setConv(true);
+                    else
                     setConv(data.conv);
 
                     if (data.count > 0) {
