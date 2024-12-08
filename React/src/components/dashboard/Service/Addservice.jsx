@@ -18,7 +18,7 @@ const AddService = ({ connected, userId }) => {
         image: null,
         pin: null,
         identification: null,
-        video: null,
+        //video: null,
         document: null,
         link: "",
     });
@@ -91,7 +91,7 @@ const AddService = ({ connected, userId }) => {
         try {
             // Call individual upload handlers
             await Promise.all(
-                ["image", "pin", "identification", "video", "document"].map(
+                ["image", "pin", "identification", "document"].map(
                     handleUpload
                 )
             );
@@ -578,7 +578,7 @@ const AddService = ({ connected, userId }) => {
                             </p>
                         </div>
 
-                        <div className="relative">
+                        {/*<div className="relative">
                             <label className="block mb-1 text-gray-700 text-sm font-semibold">
                                 Upload Video
                             </label>
@@ -608,7 +608,7 @@ const AddService = ({ connected, userId }) => {
                                 Max file size: 5MB. If larger, provide a video
                                 URL.
                             </p>
-                        </div>
+                        </div> */}
 
                         <div className="relative">
                             <label className="block mb-1 text-gray-700 text-sm font-semibold">

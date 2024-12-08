@@ -24,7 +24,7 @@ const AddBusiness = () => {
         pin: null, // File
         identification: null, // File
         document: null, // File
-        video: null, // File
+        //video: null, // File
         videoLink: "",
         investors_fee: "", // Number
     });
@@ -507,7 +507,7 @@ const AddBusiness = () => {
                                 label: "Supporting Business Documents",
                                 field: "document",
                             },
-                            { label: "Video (if applicable)", field: "video" },
+                            // { label: "Video (if applicable)", field: "video" },
                         ].map((fileInput, idx) => (
                             <div className="flex flex-col mb-4" key={idx}>
                                 {/* Label */}

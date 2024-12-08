@@ -439,9 +439,8 @@ const ListingDetails = ({ onClose }) => {
         };
 
         isSubscribed();
-        setTimeout(() => {
-            getDetails();
-        }, 500);
+        //setTimeout(() => { isSubscribed(); }, 500);
+        setTimeout(() => { getDetails(); }, 500);
         getMilestones();
     }, []);
 
@@ -707,9 +706,9 @@ const ListingDetails = ({ onClose }) => {
                                         Unlock To Invest
                                     </a>
                                 ) : token && conv ? (
-                                    <button className="text-white bg-green-800 rounded py-2 px-5 hidden">
-                                        Unlocked!
-                                    </button>
+                                    <p className="text-dark bg-gray-100 mt-3 text-gray-700 px-5 rounded-lg shadow-md py-2 md:py-3">
+                                        Business is Unlocked
+                                    </p>
                                 ) : (
                                     <a
                                         onClick={() => setIsModalOpen(true)}
@@ -1092,7 +1091,7 @@ const ListingDetails = ({ onClose }) => {
                         {/* On mobile, ReviewSummary takes up full width, on larger screens it takes 1/3 */}
                         <div className="sm:col-span- flex flex-row">
                             {/* Financial Statements Section */}
-                            {token && conv && (
+                            {token && conv && mile && amount_r && (
                                 <div className="w-full lg:max-w-sm flex flex-col gap-3 border rounded-lg items-center justify-center p-6  bg-white">
                                     <button
                                         className="border border-gray-300 bg-white hover:bg-gray-100 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium"
