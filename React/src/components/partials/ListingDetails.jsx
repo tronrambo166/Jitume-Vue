@@ -420,12 +420,10 @@ const ListingDetails = ({ onClose }) => {
                 .then(({ data }) => {
                     console.log(data);
 
-                    if (data.fee == null) 
-                        setConv(true);
-                    else
-                    setConv(data.conv);
+                    if (data.fee == null) setConv(true);
+                    else setConv(data.conv);
 
-                    $("#unlockButton").removeClass('hidden');
+                    $("#unlockButton").removeClass("hidden");
 
                     if (data.count > 0) {
                         setSubscribeData(data.data);
@@ -446,7 +444,9 @@ const ListingDetails = ({ onClose }) => {
 
         isSubscribed();
         //setTimeout(() => { isSubscribed(); }, 500);
-        setTimeout(() => { getDetails(); }, 500);
+        setTimeout(() => {
+            getDetails();
+        }, 500);
         getMilestones();
     }, []);
 
@@ -702,10 +702,12 @@ const ListingDetails = ({ onClose }) => {
                         </div>
 
                         <div className="flex gap-4 mt-4">
-                            <div className="flex items-center gap-10 hidden" 
-                            id="unlockButton">
+                            <div
+                                className="flex items-center gap-10"
+                                id="unlockButton"
+                            >
                                 {token && !conv ? (
-                                    <a 
+                                    <a
                                         onClick={handleOpen}
                                         className="bg-green hover:bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
                                     >
@@ -1094,25 +1096,25 @@ const ListingDetails = ({ onClose }) => {
             <div className="">
                 <hr className="border-t border-gray-300"></hr>
                 <div className="p-4 sm:p-6 ">
-                    <div className="  flex justify-center gap-4">
+                    <div className="px-8">
                         {/* On mobile, ReviewSummary takes up full width, on larger screens it takes 1/3 */}
-                        <div className="sm:col-span- flex flex-row">
+                        <div className="sm:col-span-8 flex flex-row">
                             {/* Financial Statements Section */}
-                            {token && conv && mile && amount_r && (
-                                <div className="w-full lg:max-w-sm flex flex-col gap-3 border rounded-lg items-center justify-center p-6  bg-white">
+                            {token && conv && mile && amount_r ? (
+                                <div className="w-full lg:max-w-sm flex flex-col gap-4 mt-14 border h-60 border-gray-300 rounded-lg shadow-sm bg-white p-5 mx-auto">
                                     <button
-                                        className="border border-gray-300 bg-white hover:bg-gray-100 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium"
+                                        className="border border-gray-300 bg-white hover:bg-gray-50 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                         onClick={download_statement}
                                     >
                                         Download Financial Statements
                                     </button>
                                     <button
                                         onClick={download_business}
-                                        className="border border-gray-300 bg-white hover:bg-gray-100 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium"
+                                        className="border border-gray-300 bg-white hover:bg-gray-50 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                     >
                                         Download Business Documents
                                     </button>
-                                    <button className="border border-gray-300 bg-white hover:bg-gray-100 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium">
+                                    <button className="border border-gray-300 bg-white hover:bg-gray-50 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none">
                                         <Link
                                             to={`/business-milestones/${btoa(
                                                 btoa(details.id)
@@ -1124,7 +1126,7 @@ const ListingDetails = ({ onClose }) => {
                                         </Link>
                                     </button>
                                 </div>
-                            )}
+                            ) : null}
 
                             {token && conv && amount_r && running ? (
                                 <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 p-4 lg:p-8 justify-center items-start w-full">
@@ -1154,14 +1156,29 @@ const ListingDetails = ({ onClose }) => {
                                             className="border border-gray-300 rounded-lg p-3 mb-4 w-full"
                                             placeholder="$"
                                         />
-                                        {amount && (
+                                        {/* {amount && (
                                             <p className="text-sm text-[#334155] mb-4">
                                                 Represents:{" "}
-                                                <span id="percent" className="font-bold">
+                                                <span
+                                                    id="percent"
+                                                    className="font-bold"
+                                                >
                                                     {percentage}
-                                                </span>%
+                                                </span>
+                                                %
                                             </p>
-                                        )}
+                                        )} */}
+                                        <p className="text-sm text-[#334155] mb-4">
+                                            Represents:{" "}
+                                            <span
+                                                id="percent"
+                                                className="font-bold"
+                                            >
+                                                {percentage || 0}
+                                            </span>
+                                            %
+                                        </p>
+
                                         <button
                                             onClick={handleInvestClick}
                                             className="bg-green-700 hover:bg-green-800 text-white transition-all duration-200 px-4 py-3 rounded-lg w-full"
@@ -1175,8 +1192,8 @@ const ListingDetails = ({ onClose }) => {
                                         )}
                                     </div>
 
-                                    <div className="bg-white border border-gray-300 rounded-lg p-6 w-full max-w-lg">
-                                        <h2 className="text-xl font-semibold  text-[#334155] mb-6">
+                                    <div className="bg-white border border-gray-300  rounded-lg p-6 w-full max-w-lg">
+                                        <h2 className="text-xl font-semibold   text-[#334155] mb-6">
                                             Enter Equipment Equivalent Bid
                                         </h2>
                                         {/* <p className="text-sm text-[#334155] mb-4">
@@ -1203,15 +1220,23 @@ const ListingDetails = ({ onClose }) => {
                                             className="border border-gray-300 rounded-lg p-3 mb-4 w-full"
                                             placeholder="$"
                                         />
-                                        {equipmentAmount && (
+                                        {/* {equipmentAmount && (
                                             <p className="text-sm text-[#334155] mb-4">
                                                 Represents:{" "}
                                                 <span className="font-bold">
                                                     {equipmentPercentage}
-                                                </span>%
+                                                </span>
+                                                %
                                             </p>
-                                        )}
-                                        
+                                        )} */}
+                                        <p className="text-sm text-[#334155] mb-4">
+                                            Represents:{" "}
+                                            <span className="font-bold">
+                                                {equipmentPercentage || 0}
+                                            </span>
+                                            %
+                                        </p>
+
                                         <button
                                             onClick={handleEquipmentInvest}
                                             className="bg-green-700 hover:bg-green-800 text-white transition-all duration-200 px-4 py-3 rounded-lg w-full"
@@ -1228,19 +1253,20 @@ const ListingDetails = ({ onClose }) => {
                             ) : (
                                 <div>
                                     <div>
-                                        {conv && !mile?(
+                                        {conv && !mile ? (
                                             <div className="w-full mx-auto text-center p-4">
                                                 <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
-                                                    No Milestone is set for this business yet.
+                                                    No Milestone is set for this
+                                                    business yet.
                                                 </p>
                                             </div>
-                                        ) : conv && !amount_r? (
+                                        ) : conv && !amount_r ? (
                                             <div className="w-full mx-auto text-center p-4">
                                                 <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
                                                     Business is Fully Vested.
                                                 </p>
                                             </div>
-                                        ): conv && !running ? (
+                                        ) : conv && !running ? (
                                             <div className="w-full mx-auto text-center p-4">
                                                 <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
                                                     Milestone payout is
@@ -1250,17 +1276,18 @@ const ListingDetails = ({ onClose }) => {
                                                     the next milestone is open.
                                                 </p>
                                             </div>
-                                        ):(
-                                            <div className="w-full mx-auto text-center p-4">
-                                                {!token && <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
-                                                    Please login to bid on this
-                                                    project.
-                                                </p>
-                                            }
+                                        ) : (
+                                            <div className="w-full flex justify-center mx-auto text-center p-4">
+                                                {!token && (
+                                                    <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
+                                                        Please login to bid on
+                                                        this project.
+                                                    </p>
+                                                )}
                                             </div>
                                         )}
                                     </div>
-                                </div> 
+                                </div>
                                 // <div className="w-full mx-auto text-center p-4">
                                 //     <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
                                 //         Milestone payout is currently off due to
@@ -1385,7 +1412,6 @@ const ListingDetails = ({ onClose }) => {
                     <div className="flex flex-col lg:flex-row gap-8 p-4">
                         {/* Review Summary - Left */}
                         <div className="w-full sm:w-2/3 md:w-1/2 lg:w-1/3   ">
-
                             <div className="mt-4">
                                 <ReviewSummary />
                             </div>
@@ -1394,57 +1420,72 @@ const ListingDetails = ({ onClose }) => {
                         {/* Reviews - Right */}
                         <div className="w-full lg:w-2/3">
                             <div className="sm:col-span-2 mt-4">
-                                {currentReviews.length === 0 ? (
+                                {currentReviews?.length === 0 ? (
                                     <p className="text-gray-600 text-2xl text-center h-40">
                                         No Reviews
                                     </p>
                                 ) : (
-                                    <>
+                                    <div>
+                                        {/* Review List */}
                                         <ReviewList reviews={currentReviews} />
+
                                         {/* Pagination and Items Per Page */}
-                                        <div className="flex flex-col sm:flex-row justify-between items-center mt-6">
-                                            {/* Items Per Page Selector */}
-                                            <div className="flex items-center">
-                                                <span className="mr-2 text-gray-600">
-                                                    Show
-                                                </span>
-                                                <select
-                                                    value={itemsPerPage}
-                                                    onChange={
-                                                        handleItemsPerPageChange
-                                                    }
-                                                    className="border bg-white border-gray-300 rounded-full px-4 py-1 text-gray-600 shadow-sm outline-none focus:ring-2 focus:ring-gray-300 transition ease-in-out duration-150"
-                                                >
-                                                    <option value={5}>5</option>
-                                                    <option value={6}>6</option>
-                                                    <option value={7}>7</option>
-                                                    <option value={8}>8</option>
-                                                </select>
-                                                <span className="ml-2 text-gray-600">
-                                                    Cards per page
-                                                </span>
+                                        {currentReviews.length > 5 && (
+                                            <div className="flex flex-col sm:flex-row justify-between items-center mt-6">
+                                                {/* Items Per Page Selector */}
+                                                <div className="flex items-center">
+                                                    <span className="mr-2 text-gray-600">
+                                                        Show
+                                                    </span>
+                                                    <select
+                                                        value={itemsPerPage}
+                                                        onChange={
+                                                            handleItemsPerPageChange
+                                                        }
+                                                        className="border bg-white border-gray-300 rounded-full px-4 py-1 text-gray-600 shadow-sm outline-none focus:ring-2 focus:ring-gray-300 transition ease-in-out duration-150"
+                                                    >
+                                                        <option value={5}>
+                                                            5
+                                                        </option>
+                                                        <option value={6}>
+                                                            6
+                                                        </option>
+                                                        <option value={7}>
+                                                            7
+                                                        </option>
+                                                        <option value={8}>
+                                                            8
+                                                        </option>
+                                                    </select>
+                                                    <span className="ml-2 text-gray-600">
+                                                        Cards per page
+                                                    </span>
+                                                </div>
+
+                                                {/* Pagination Component */}
+                                                <div className="mt-4 sm:mt-0">
+                                                    <PaginationComponent
+                                                        currentPage={
+                                                            currentPage
+                                                        }
+                                                        totalPages={totalPages}
+                                                        handlePreviousClick={
+                                                            handlePreviousClick
+                                                        }
+                                                        handlePageClick={
+                                                            handlePageClick
+                                                        }
+                                                        handleNextClick={
+                                                            handleNextClick
+                                                        }
+                                                        getPageNumbers={
+                                                            getPageNumbers
+                                                        }
+                                                    />
+                                                </div>
                                             </div>
-                                            {/* Pagination Component */}
-                                            <div className="mt-4 sm:mt-0">
-                                                <PaginationComponent
-                                                    currentPage={currentPage}
-                                                    totalPages={totalPages}
-                                                    handlePreviousClick={
-                                                        handlePreviousClick
-                                                    }
-                                                    handlePageClick={
-                                                        handlePageClick
-                                                    }
-                                                    handleNextClick={
-                                                        handleNextClick
-                                                    }
-                                                    getPageNumbers={
-                                                        getPageNumbers
-                                                    }
-                                                />
-                                            </div>
-                                        </div>
-                                    </>
+                                        )}
+                                    </div>
                                 )}
                             </div>
                         </div>

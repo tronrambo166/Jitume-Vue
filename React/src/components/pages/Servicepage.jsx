@@ -14,7 +14,7 @@ import { decode as base64_decode, encode as base64_encode } from "base-64";
 import NoisyImg from "../../assets/sev/asante.png"; // Ensure the path is correct
 import SearcH from "./components/Search";
 import InfiniteScrollCategories from "./components/InfiniteScrollCategories";
-import Deadlybg from "../../assets/sev/deadly.png";
+import Deadlybg from "../../assets/sev/Group.png";
 import ServNav from "../Landing-page/Navbar";
 import ScrollToTop from "../pages/ScrollToTop";
 const Servicepage = () => {
