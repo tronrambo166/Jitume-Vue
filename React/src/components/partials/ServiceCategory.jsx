@@ -5,6 +5,7 @@ import axiosClient from "../../axiosClient";
 import SearchCategory from "./SearchCategory";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import BackBtn from "./BackBtn";
 
 const CategoryPage = ({ categoryName }) => {
     const [cards, setCards] = useState([]);
@@ -125,6 +126,8 @@ const CategoryPage = ({ categoryName }) => {
 
     return (
         <div className="p-6 max-w-screen-xl mx-auto space-y-10">
+            <BackBtn />
+
             {/* Heading */}
             <h1 className="text-4xl md:text-6xl mb-6 md:mb-10 font-bold leading-tight text-center font-sharp-grotesk text-[#00290F]">
                 What Are You Looking For?

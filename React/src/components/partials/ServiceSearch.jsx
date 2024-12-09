@@ -190,31 +190,24 @@ const Search = () => {
                         >
                             <option value="">All Categories</option>
                             <option value="Business Planning">
-                                Business Planning{" "}
+                                Business Planning
                             </option>
-                            <option
-                                value="Legal Project
-                            Managemen"
-                            >
+                            <option value="IT">IT</option>
+                            <option value="Legal">Legal</option>
+                            <option value="Project Management">
                                 Project Management
                             </option>
                             <option value="Branding and Design">
                                 Branding and Design
                             </option>
-                            <option value="Auto">Auto</option>
-                            <option value="Legal">Legal</option>
-                            <option value="Finance">Finance</option>
-                            <option value="Accounting & Tax Marketing">
-                                Accounting & Tax Marketing
+                            <option value="Finance, Accounting & Tax">
+                                Finance, Accounting & Tax
                             </option>
-                            <option value="Tax">Tax</option>
                             <option value="Marketing">Marketing</option>
                             <option value="Public Relations">
                                 Public Relations
                             </option>
                             <option value="Other">Other</option>
-
-                            {/* Add more options as needed */}
                         </select>
                     </div>
 

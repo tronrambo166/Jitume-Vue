@@ -190,8 +190,8 @@ function Milestones() {
                                         <option value="Done">Done</option>
                                     </select>
                                 </td>
-                                <td className="py-3 px-4 border-b text-center flex gap-2 items-center">
-                                     <button
+                                <td className="py-3 px-4 border-b text-center flex gap-2 items-center justify-center">
+                                    <button
                                         onClick={() =>
                                             handleSet(
                                                 milestone.id,
@@ -201,7 +201,7 @@ function Milestones() {
                                         className="text-black px-4 py-2 rounded-lg hover:bg-green transition-colors"
                                     >
                                         Set
-                                    </button> 
+                                    </button>
                                     <button
                                         onClick={() =>
                                             handleDelete(milestone.id)

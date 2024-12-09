@@ -123,6 +123,7 @@ const Invest = () => {
                               <Link
                                   to={`/listing/${btoa(btoa(card.id))}`}
                                   key={card.id}
+                                  onClick={() => window.scrollTo(0, 0)}
                               >
                                   <div
                                       key={index}

@@ -112,7 +112,7 @@ const MyBookings = () => {
                                         }
                                     )}
                                 </td> */}
-                                <td className="px-6 py-4 text-sm text-gray-700 bg-gray-100 rounded-lg shadow-sm">
+                                <td className="px-6 py-4 text-sm text-gray-700  rounded-lg shadow-sm">
                                     {
                                         new Date(item.created_at)
                                             .toISOString()

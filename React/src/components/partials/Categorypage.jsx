@@ -4,7 +4,7 @@ import axiosClient from "../../axiosClient";
 import SearchCategory from "./SearchCategory";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
-
+import BackBtn from "./BackBtn";
 const CategoryPage = () => {
     const [cards, setCards] = useState([]);
     const [filteredCards, setFilteredCards] = useState([]);
@@ -236,6 +236,7 @@ const CategoryPage = () => {
     };
     return (
         <div className="p-6 max-w-screen-xl mx-auto w-full sm:p-8 lg:p-10">
+            <BackBtn />
             <h1 className="text-4xl md:text-6xl mb-6 md:mb-10 font-bold leading-tight text-center font-sharp-grotesk text-[#00290F]">
                 What Are You Looking For?
             </h1>

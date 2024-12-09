@@ -45,6 +45,7 @@ const Search = () => {
         console.log(payload);
         axiosClient
             .post("/searchService", payload)
+            
             .then(({ data }) => {
                 console.log(data);
                 Object.entries(data.results).forEach((entry) => {
@@ -56,11 +57,15 @@ const Search = () => {
 
                 sessionStorage.setItem("queryLat", payload.lat);
                 sessionStorage.setItem("queryLng", payload.lng);
+                // Scroll to top before navigating
+                window.scrollTo(0, 0);
+
                 navigate(
                     "/serviceResults/" + base64_encode(ids) + "/" + data.loc
                 );
                 if (locationUrl.pathname.includes("serviceResults"))
-                    window.location.reload();
+                    window.scrollTo(0, 0);
+                // window.location.reload();
             })
             .catch((err) => {
                 console.log(err);
@@ -208,31 +213,24 @@ const Search = () => {
                         >
                             <option value="">All Categories</option>
                             <option value="Business Planning">
-                                Business Planning{" "}
+                                Business Planning
                             </option>
-                            <option
-                                value=" Project
-                            Managemen"
-                            >
+                            <option value="IT">IT</option>
+                            <option value="Legal">Legal</option>
+                            <option value="Project Management">
                                 Project Management
                             </option>
-                            <option value="Legal">Legal</option>
                             <option value="Branding and Design">
                                 Branding and Design
                             </option>
-                            <option value="Auto">Auto</option>
-                            <option value="Finance">Finance</option>
-                            <option value="Accounting & Tax Marketing">
-                                Accounting & Tax Marketing
+                            <option value="Finance, Accounting & Tax">
+                                Finance, Accounting & Tax
                             </option>
-                            <option value="Tax">Tax</option>
                             <option value="Marketing">Marketing</option>
                             <option value="Public Relations">
                                 Public Relations
                             </option>
                             <option value="Other">Other</option>
-
-                            {/* Add more options as needed */}
                         </select>
                     </div>
 

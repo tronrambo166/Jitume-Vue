@@ -1124,15 +1124,15 @@ const ListingDetails = ({ onClose }) => {
 
             <div className="">
                 <hr className="border-t border-gray-300"></hr>
-                <div className="p-4 sm:p-6 ">
-                    <div className="px-8">
+                <div className=" sm:p-6 ">
+                    <div className="px-4">
                         {/* On mobile, ReviewSummary takes up full width, on larger screens it takes 1/3 */}
-                        <div className="sm:col-span-8 flex flex-row">
+                        <div className="sm:col-span-8 flex flex-row justify-center items-center">
                             {/* Financial Statements Section */}
                             {token && conv && mile && amount_r ? (
-                                <div className="w-full lg:max-w-sm flex flex-col gap-4 mt-14 border h-60 border-gray-300 rounded-lg shadow-sm bg-white p-5 mx-auto">
+                                <div className="w-full lg:max-w-sm flex h-[283px]  max-w-lg flex-col gap-4  border  border-gray-300 rounded-lg shadow-sm bg-white p-5 mx-auto">
                                     <button
-                                        className="border border-gray-300 bg-white hover:bg-gray-50 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                        className="border border-gray-300 mt-5 bg-white hover:bg-gray-50 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                         onClick={download_statement}
                                     >
                                         Download Financial Statements
@@ -1158,7 +1158,7 @@ const ListingDetails = ({ onClose }) => {
                             ) : null}
 
                             {token && conv && amount_r && running ? (
-                                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 p-4 lg:p-8 justify-center items-start w-full">
+                                <div className="flex flex-col lg:flex-row gap-8  p-4 lg:p-8 justify-center items-start w-full">
                                     <div className="bg-white border border-gray-300 rounded-lg p-6 w-full max-w-lg">
                                         <h2 className="text-xl font-semibold text-[#334155] mb-6">
                                             Enter A Bid To Invest

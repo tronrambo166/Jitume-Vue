@@ -179,13 +179,13 @@ function InvestmentBids() {
                             <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
                                 Date
                             </th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                            <th className="text-left py-3 px-8 uppercase font-semibold text-[12px]">
                                 Investor
                             </th>
                             <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
                                 Business
                             </th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                            <th className="py-3 px-8 text-left  uppercase font-semibold text-[12px]">
                                 Type
                             </th>
                             <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
@@ -202,7 +202,7 @@ function InvestmentBids() {
                                 key={bid.id}
                                 className="text-gray-500 hover:bg-gray-50 transition-colors"
                             >
-                                <td className="py-3 px-4 border-b text-center">
+                                <td className="py-3 px-4 border-b text-left">
                                     <input
                                         type="checkbox"
                                         checked={selectedBids.includes(bid.id)}
@@ -212,12 +212,13 @@ function InvestmentBids() {
                                         className="form-checkbox h-4 w-4 text-green"
                                     />
                                 </td>
-                                <td className="py-3 px-4 border-b">
+
+                                <td className="py-3 px-4 border-b text-left">
                                     {bid.date}
                                 </td>
 
                                 {/* Investor Button */}
-                                <td className="py-3 px-4 border-b">
+                                <td className="py-3 px-4 border-b text-left">
                                     <button
                                         onClick={() =>
                                             handleInvestorDetails(bid)
@@ -228,12 +229,12 @@ function InvestmentBids() {
                                     </button>
                                 </td>
 
-                                <td className="py-3 px-4 border-b">
+                                <td className="py-3 px-4 border-b text-left">
                                     {bid.business}
                                 </td>
 
                                 {/* Type Button */}
-                                <td className="py-3 px-4 border-b">
+                                <td className="py-3 px-4 border-b text-left">
                                     <button
                                         onClick={() => handleTypeDetails(bid)}
                                         className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors"
@@ -242,10 +243,11 @@ function InvestmentBids() {
                                     </button>
                                 </td>
 
-                                <td className="py-3 px-4 border-b">
+                                <td className="py-3 px-4 border-b text-left">
                                     ${bid.amount}
                                 </td>
-                                <td className="py-3 px-4 border-b">
+
+                                <td className="py-3 px-4 border-b text-left">
                                     {bid.representation}%
                                 </td>
                             </tr>

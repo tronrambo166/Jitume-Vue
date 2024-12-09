@@ -130,7 +130,7 @@ function InvestmentBids() {
                                 key={bid.id}
                                 className="text-gray-500 hover:bg-gray-50 transition-colors"
                             >
-                                <td className="py-3 px-4 border-b text-center">
+                                <td className="py-3 px-4 border-b text-left">
                                     <input
                                         type="checkbox"
                                         checked={selectedBids.includes(bid.id)}
