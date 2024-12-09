@@ -425,6 +425,8 @@ const ListingDetails = ({ onClose }) => {
                     else
                     setConv(data.conv);
 
+                    $("#unlockButton").removeClass('hidden');
+
                     if (data.count > 0) {
                         setSubscribeData(data.data);
                         if (data.data.subscribed == 0)
@@ -700,9 +702,10 @@ const ListingDetails = ({ onClose }) => {
                         </div>
 
                         <div className="flex gap-4 mt-4">
-                            <div className="flex items-center gap-10">
+                            <div className="flex items-center gap-10 hidden" 
+                            id="unlockButton">
                                 {token && !conv ? (
-                                    <a
+                                    <a 
                                         onClick={handleOpen}
                                         className="bg-green hover:bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
                                     >
