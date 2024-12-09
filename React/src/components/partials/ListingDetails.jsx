@@ -376,6 +376,10 @@ const ListingDetails = ({ onClose }) => {
     //CORE METHODS
     let url = "";
     useEffect(() => {
+        
+        if(!token)
+            $("#unlockButton").removeClass("hidden");
+
         const getDetails = () => {
             axiosClient
                 .get("/searchResults/" + form.listing_id)
@@ -703,7 +707,7 @@ const ListingDetails = ({ onClose }) => {
 
                         <div className="flex gap-4 mt-4">
                             <div
-                                className="flex items-center gap-10"
+                                className="flex items-center gap-10 hidden"
                                 id="unlockButton"
                             >
                                 {token && !conv ? (
