@@ -622,12 +622,12 @@ const ListingDetails = ({ onClose }) => {
     // alert
     const [alertShown, setAlertShown] = useState(false);
 
-    useEffect(() => {
-        if (token && conv && !alertShown) {
-            showAlert("info", "Business is unlocked ");
-            setAlertShown(true);
-        }
-    }, [token, conv, alertShown]);
+    // useEffect(() => {
+    //     if (token && conv && !alertShown) {
+    //         showAlert("info", "Business is unlocked ");
+    //         setAlertShown(true);
+    //     }
+    // }, [token, conv, alertShown]);
 
     // alrt above
 
@@ -671,146 +671,171 @@ const ListingDetails = ({ onClose }) => {
                         <h2 className="bg-yellow-300 text-sm px-4 py-2 inline-block mb-4 rounded-full font-semibold">
                             • More business information
                         </h2>
-                        <p className="text-xl md:text-2xl lg:text-4xl font-bold text-[#334155] mb-4">
-                            {details.name}
-                        </p>
-
-                        <div className="flex items-center font-semibold gap-3 text-[#1E293B] mb-4">
-                            <p>#Shop</p>
-                            <p>#Grocery Store</p>
-                            <p>#Food</p>
-                        </div>
-
-                        <p className="text-[#1E293B] text-[18px] mb-5">
-                            {details.details}
-                        </p>
-
-                        <div className="mb-4 py-2 flex flex-col gap-3">
-                            <p className="flex items-center text-gray-700">
-                                <FaMapMarkerAlt className="mr-2 text-lg text-gray-500" />
-                                {details.location}
-                            </p>
-                            <p className="flex items-center text-gray-700 mt-2">
-                                <FaPhoneAlt className="mr-2 text-lg text-gray-500" />
-                                Contact: {details.contact}
-                            </p>
-                        </div>
-
-                        <div className="flex items-center gap-2 mt-6">
-                            <p className="text-green-800 text-2xl md:text-lg font-semibold">
-                                ${details.investment_needed || 0}
-                            </p>
-                            <p className="text-gray-800 text-sm">
-                                Amount Requested:
-                            </p>
-                        </div>
-
-                        <div className="flex gap-4 mt-4">
-                            <div
-                                className="flex items-center gap-10 hidden"
-                                id="unlockButton"
-                            >
-                                {token && !conv ? (
-                                    <a
-                                        onClick={handleOpen}
-                                        className="bg-green hover:bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
-                                    >
-                                        <FaLock className="mr-2" />
-                                        Unlock To Invest
-                                    </a>
-                                ) : token && conv ? (
-                                    <p className="text-dark bg-gray-100 mt-3 text-gray-700 px-5 rounded-lg shadow-md py-2 md:py-3">
-                                        Business is Unlocked
-                                    </p>
-                                ) : (
-                                    <a
-                                        onClick={() => setIsModalOpen(true)}
-                                        className="bg-black hover:bg-gray-700 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
-                                    >
-                                        <FontAwesomeIcon
-                                            icon={faLock}
-                                            className="mr-2 text-sm"
-                                        />
-                                        Unlock To Invest
-                                    </a>
-                                )}
+                        {!details ? (
+                            <div className="flex flex-col items-start gap-4 text-left">
+                                <div className="w-24 h-6 bg-gray-300 rounded-full animate-pulse mb-2"></div>
+                                <div className="w-48 h-6 bg-gray-300 rounded-full animate-pulse mb-2"></div>
+                                <div className="w-36 h-6 bg-gray-300 rounded-full animate-pulse mb-2"></div>
+                                <div className="w-64 h-6 bg-gray-300 rounded-full animate-pulse mb-2"></div>
+                                <div className="w-32 h-6 bg-gray-300 rounded-full animate-pulse mb-2"></div>
+                                <div className="w-40 h-6 bg-gray-300 rounded-full animate-pulse mb-2"></div>
                             </div>
+                        ) : (
+                            <>
+                                <p className="text-xl md:text-2xl lg:text-4xl font-bold text-[#334155] mb-4">
+                                    {details.name}
+                                </p>
 
-                            {token && !conv && (
-                                <div>
-                                    <p className="flex gap-2 whitespace-nowrap items-center py-2 px-1 mr-8 text-[#1E293B] text-[14px] md:text-[16px]">
-                                        Unlock this business to learn <br />{" "}
-                                        more about it and invest
+                                <div className="flex items-center font-semibold gap-3 text-[#1E293B] mb-4">
+                                    <p>#Shop</p>
+                                    <p>#Grocery Store</p>
+                                    <p>#Food</p>
+                                </div>
+
+                                <p className="text-[#1E293B] text-[18px] mb-5">
+                                    {details.details}
+                                </p>
+
+                                <div className="mb-4 py-2 flex flex-col gap-3">
+                                    <p className="flex items-center text-gray-700">
+                                        <FaMapMarkerAlt className="mr-2 text-lg text-gray-500" />
+                                        {details.location}
+                                    </p>
+                                    <p className="flex items-center text-gray-700 mt-2">
+                                        <FaPhoneAlt className="mr-2 text-lg text-gray-500" />
+                                        Contact: {details.contact}
                                     </p>
                                 </div>
-                            )}
-                        </div>
 
-                        <div className="my-4 text-left">
-                            {allowToReview && conv && (
-                                <button
-                                    className="flex items-center space-x-2 py-2 rounded"
-                                    onClick={togglePopup}
-                                >
-                                    <FaPlusCircle className="text-green" />
-                                    <span>Add Review</span>
-                                    <p className="bg-green-600 text-white p-3 rounded">
-                                        Business is completed
+                                <div className="flex items-center gap-2 mt-6">
+                                    <p className="text-green-800 text-2xl md:text-lg font-semibold">
+                                        ${details.investment_needed || 0}
                                     </p>
-                                </button>
-                            )}
+                                    <p className="text-gray-800 text-sm">
+                                        Amount Requested:
+                                    </p>
+                                </div>
 
-                            {showPopup && (
-                                <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                                    <div className="bg-white p-6 rounded shadow-md w-1/3">
-                                        <h4 className="text-lg font-bold mb-4">
-                                            Add Your Review
-                                        </h4>
-                                        <form onSubmit={reviewSubmit}>
-                                            <div className="flex items-center mb-4">
-                                                {[1, 2, 3, 4, 5].map((star) => (
-                                                    <FaStar
-                                                        key={star}
-                                                        className={`cursor-pointer ${
-                                                            star <= rating
-                                                                ? "text-yellow-500"
-                                                                : "text-gray-300"
-                                                        }`}
-                                                        onClick={() =>
-                                                            handleRating(star)
-                                                        }
-                                                    />
-                                                ))}
-                                            </div>
-                                            <textarea
-                                                className="w-full border border-gray-300 rounded p-2 mb-4"
-                                                placeholder="Write your review here..."
-                                                value={review}
-                                                onChange={(e) =>
-                                                    setReview(e.target.value)
+                                <div className="flex gap-4 mt-4">
+                                    <div
+                                        className="flex items-center gap-10"
+                                        id="unlockButton"
+                                    >
+                                        {token && !conv ? (
+                                            <a
+                                                onClick={handleOpen}
+                                                className="bg-green hover:bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
+                                            >
+                                                <FaLock className="mr-2" />
+                                                Unlock To Invest
+                                            </a>
+                                        ) : token && conv ? (
+                                            <p className="text-dark bg-gray-100 mt-3 text-gray-700 px-5 rounded-lg shadow-md py-2 md:py-3">
+                                                Business is Unlocked
+                                            </p>
+                                        ) : (
+                                            <a
+                                                onClick={() =>
+                                                    setIsModalOpen(true)
                                                 }
-                                                required
-                                            />
-                                            <div className="flex justify-end space-x-4">
-                                                <button
-                                                    type="button"
-                                                    className="bg-gray-300 px-4 py-2 rounded"
-                                                    onClick={togglePopup}
-                                                >
-                                                    Cancel
-                                                </button>
-                                                <button
-                                                    type="submit"
-                                                    className="btn-primary text-white px-4 py-2 rounded"
-                                                >
-                                                    Submit
-                                                </button>
-                                            </div>
-                                        </form>
+                                                className="bg-black hover:bg-gray-700 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
+                                            >
+                                                <FontAwesomeIcon
+                                                    icon={faLock}
+                                                    className="mr-2 text-sm"
+                                                />
+                                                Unlock To Invest
+                                            </a>
+                                        )}
                                     </div>
+
+                                    {token && !conv && (
+                                        <div>
+                                            <p className="flex gap-2 whitespace-nowrap items-center py-2 px-1 mr-8 text-[#1E293B] text-[14px] md:text-[16px]">
+                                                Unlock this business to learn{" "}
+                                                <br />
+                                                more about it and invest
+                                            </p>
+                                        </div>
+                                    )}
                                 </div>
-                            )}
-                        </div>
+
+                                <div className="my-4 text-left">
+                                    {allowToReview && conv && (
+                                        <button
+                                            className="flex items-center space-x-2 py-2 rounded"
+                                            onClick={togglePopup}
+                                        >
+                                            <FaPlusCircle className="text-green" />
+                                            <span>Add Review</span>
+                                            <p className="bg-green-600 text-white p-3 rounded">
+                                                Business is completed
+                                            </p>
+                                        </button>
+                                    )}
+
+                                    {showPopup && (
+                                        <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                                            <div className="bg-white p-6 rounded shadow-md w-1/3">
+                                                <h4 className="text-lg font-bold mb-4">
+                                                    Add Your Review
+                                                </h4>
+                                                <form onSubmit={reviewSubmit}>
+                                                    <div className="flex items-center mb-4">
+                                                        {[1, 2, 3, 4, 5].map(
+                                                            (star) => (
+                                                                <FaStar
+                                                                    key={star}
+                                                                    className={`cursor-pointer ${
+                                                                        star <=
+                                                                        rating
+                                                                            ? "text-yellow-500"
+                                                                            : "text-gray-300"
+                                                                    }`}
+                                                                    onClick={() =>
+                                                                        handleRating(
+                                                                            star
+                                                                        )
+                                                                    }
+                                                                />
+                                                            )
+                                                        )}
+                                                    </div>
+                                                    <textarea
+                                                        className="w-full border border-gray-300 rounded p-2 mb-4"
+                                                        placeholder="Write your review here..."
+                                                        value={review}
+                                                        onChange={(e) =>
+                                                            setReview(
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        required
+                                                    />
+                                                    <div className="flex justify-end space-x-4">
+                                                        <button
+                                                            type="button"
+                                                            className="bg-gray-300 px-4 py-2 rounded"
+                                                            onClick={
+                                                                togglePopup
+                                                            }
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                        <button
+                                                            type="submit"
+                                                            className="btn-primary text-white px-4 py-2 rounded"
+                                                        >
+                                                            Submit
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </>
+                        )}
                     </div>
 
                     {/* Right Section (Image) */}
@@ -1255,23 +1280,23 @@ const ListingDetails = ({ onClose }) => {
                                     </div>
                                 </div>
                             ) : (
-                                <div>
+                                <div className="w-full flex justify-center items-center">
                                     <div>
                                         {conv && !mile ? (
-                                            <div className="w-full mx-auto text-center p-4">
+                                            <div className="w-full text-center p-4">
                                                 <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
                                                     No Milestone is set for this
                                                     business yet.
                                                 </p>
                                             </div>
                                         ) : conv && !amount_r ? (
-                                            <div className="w-full mx-auto text-center p-4">
+                                            <div className="w-full text-center p-4">
                                                 <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
                                                     Business is Fully Vested.
                                                 </p>
                                             </div>
                                         ) : conv && !running ? (
-                                            <div className="w-full mx-auto text-center p-4">
+                                            <div className="w-full text-center p-4">
                                                 <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
                                                     Milestone payout is
                                                     currently off due to the
@@ -1281,7 +1306,7 @@ const ListingDetails = ({ onClose }) => {
                                                 </p>
                                             </div>
                                         ) : (
-                                            <div className="w-full flex justify-center mx-auto text-center p-4">
+                                            <div className="w-full text-center p-4">
                                                 {!token && (
                                                     <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
                                                         Please login to bid on
@@ -1292,6 +1317,7 @@ const ListingDetails = ({ onClose }) => {
                                         )}
                                     </div>
                                 </div>
+
                                 // <div className="w-full mx-auto text-center p-4">
                                 //     <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
                                 //         Milestone payout is currently off due to
