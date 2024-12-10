@@ -130,7 +130,7 @@ const Dashboardhero = () => {
                         className="flex items-center space-x-2 hover:text-gray"
                     >
                         <FaCog className="text-white text-xl" />
-                        <span className="text-white text-sm">Setting</span>
+                        <span className="text-white text-sm">Settings</span>
                     </Link>
                     <NotificationBell />
                 </div>

@@ -26,9 +26,9 @@
 
 /* Adjust links position on the service page for desktop view */
 .service-links {
-    @media (min-width: 768px) {
-        margin-left: -160px; /* Adjust this value for the desired shift */
-    }
+   /* @media (min-width: 768px) {
+        margin-left: -160px; 
+    }*/
 }
 
 

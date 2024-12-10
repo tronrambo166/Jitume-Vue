@@ -286,7 +286,7 @@ const ListingDetails = ({ onClose }) => {
                 setErrorMessage("Amount exceeds the investment required!");
             } else {
                 const calculatedPercentage = (
-                    (amount / amount_r) *
+                    (amount / details.investment_needed) *
                     100
                 ).toFixed(2);
                 setPercentage(calculatedPercentage);
