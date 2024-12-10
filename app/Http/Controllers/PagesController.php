@@ -545,7 +545,8 @@ public function categoryCount(){
 //$name = str_replace('-','/',$name);
 //$name = str_replace('_',' ',$name);
 $listing = Listing::groupBy('category')->select('category', DB::raw('count(*) as total'))->get();
-return response()->json([ 'data' => $listing ] );
+$all_listing = Listing::get();
+return response()->json([ 'data' => $listing, 'listing_count' => $all_listing->count() ] );
 }
 
 

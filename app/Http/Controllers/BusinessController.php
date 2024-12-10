@@ -1427,12 +1427,12 @@ foreach($notifications as $notice)
   else if($notice->type == 'business'){
   $notifier =Listing::where('id',$notice->customer_id)->first();
   if($notifier)
-  $name = $notifier->fname;
+  $name = $notifier->name;
   }
   
   else {
     $notifier =Services::where('id',$notice->customer_id)->first();
-    if($notifier)$name = $notifier->fname;
+    if($notifier)$name = $notifier->name;
     
   }
 

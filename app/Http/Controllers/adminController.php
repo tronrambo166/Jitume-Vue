@@ -134,6 +134,29 @@ public function artists()
 public function users()
     {       
     $users= User::get();
+
+    foreach($users as $user){
+        //$investedBusiness= BusinessBids::where('investor_id', $user->id)->
+        //->join('listings', 'BusinessBids.business_id', '=', 'listings.id')
+           // ->select('users.*', 'contacts.phone', 'orders.price')get();
+        //$bookedServices= User::get();
+
+        // $investedBusiness = DB::table('business_bids')
+        // ->join('listings', function ($join) {
+        //     $join->on('business_bids.business_id', '=', 'listings.id')
+        //          ->where('business_bids.investor_id', '=', $user->id);
+        // })
+        // ->get();
+
+        // $bookedServices = DB::table('service_books')
+        // ->join('services', function ($join) {
+        //     $join->on('service_books.service_id', '=', 'services.id')
+        //          ->where('service_books.booker_id', '=', $user->id);
+        // })
+        // ->get();
+        //return $investedBusiness;
+    }
+    
     return view('admin.users', compact('users'));       
     }
 
@@ -319,6 +342,21 @@ else{
       orWhere('category_id',$cat_doc_id)->get();
 
          return response()->json([ 'data'=>$result ]);
+
+     }
+
+
+     public function searchInAdmin(Request $request) {   
+      $searchText=trim($request->text); 
+      $users = User::where('fname', 'like', '%'.$searchText.'%')
+      ->orWhere('fname', 'like', '%'.$searchText.'%')
+      ->orWhere('lname', 'like', '%'.$searchText.'%')
+      ->orWhere('email', 'like', '%'.$searchText.'%')
+      ->orWhere('website', 'like', '%'.$searchText.'%')
+      ->get();
+      //return $users;
+
+      return view('admin.users', compact('users'));     
 
      }
 

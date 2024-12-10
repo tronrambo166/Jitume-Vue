@@ -278,9 +278,9 @@ const PersonalInfo = () => {
                         className="mt-1 w-full rounded-lg p-3 bg-white border border-gray-300 text-gray-900 shadow-sm focus:ring-2 focus:ring-green-500 focus:outline-none transition"
                         disabled={!isEditing}
                     >
-                        <option value="">Select Gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
+                        <option value={tempData.gender}>{tempData.gender}</option>
+                        <option value="M">M</option>
+                        <option value="F">F</option>
                     </select>
                 </div>
             </div>

@@ -48,12 +48,14 @@ const Explore = () => {
     const [checkCat, setcheckCat] = useState(false);
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
+    const [exp, setExp] = useState(null);
     useEffect(() => {
         const getCards = async () => {
             axiosClient
                 .get("/categoryCount")
                 .then(({ data }) => {
-                    //setCat(data.data);
+                    setExp(data.listing_count);
+
                     for (const [key, value] of Object.entries(data.data)) {
                         for (const [key, value2] of Object.entries(
                             categories
@@ -226,7 +228,7 @@ const Explore = () => {
                     <AiOutlineLoading3Quarters className="animate-spin text-white text-lg sm:text-xl" />
                 )}
                 <span>
-                    {isLoading ? "Redirecting..." : "Explore 30+ Businesses"}
+                    {isLoading ? "Redirecting..." : "Explore  " +exp+"+ Businesses"}
                 </span>
             </button>
         </div>

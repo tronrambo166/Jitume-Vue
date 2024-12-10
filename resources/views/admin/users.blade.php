@@ -31,7 +31,7 @@
 																								
 													<th>Image</th>
 													<th>User</th>
-													<th>Type</th>
+													<th class="">Type</th>
 													<th>Website</th>
 													<th>Email</th>
 													
@@ -61,13 +61,13 @@
 													<td>N/A</td>
 													<td>{{$l->fname.' '.$l->lname}}</td>
 
-													@if($l->type == '')
-													<td>Business/Service</td>
+													@if($l->investor == '')
+													<td style="color:green;" class=" font-weight-bold">Business/Service</td>
 													@else
-													<td>{{$l->type}}</td>
+													<td style="color:green;" class=" font-weight-bold">Investor</td>
 													@endif
 
-													@if($l->type == '')
+													@if($l->website == '')
 													<td>N/A</td>
 													@else
 													<td>{{$l->website}}</td>
@@ -83,7 +83,7 @@
 																<i class="fe fe-pencil"></i> Edit
 															</a> -->
 
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal{{$l->id}}">
+							<button type="button" class="border text-dark btn btn-light py-1" data-toggle="modal" data-target="#exampleModal{{$l->id}}">
 							More Info
 							</button>
 
@@ -99,17 +99,32 @@
 												<div class="modal fade" id="exampleModal{{$l->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 												  <div class="modal-dialog" role="document">
 												    <div class="modal-content">
-												      <div class="modal-header">
-												        <h5 class="modal-title" id="exampleModalLabel">User Info ({{$l->fname.' '.$l->lname}})</h5>
+												      <div class="text-center modal-header">
+												        <h5 class="modal-title  text-secondary mx-auto" id="exampleModalLabel">User Info ({{$l->fname.' '.$l->lname}})</h5>
 												        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 												          <span aria-hidden="true">&times;</span>
 												        </button>
 												      </div>
 										      <div class="modal-body">
+
+										      	<div class="my-3 row w-75 mx-auto border">
+
+										        	<div class="col-sm-6">
+										        		<h5 class="w-75 text-center mt-1   ">User Type</h6>
+										        	</div>
+										        	<div class="col-sm-6">
+										        		<p class="text-center mt-1">@if($l->investor == '')
+														Business/Service
+														@else
+														Investor
+														@endif</p>
+										        	</div>
+										        </div>
+										        
 										        <div class="row">
 
 										        	<div class="col-sm-6">
-										        		<h6 class="text-center">DOB</h6>
+										        		<h6 class="w-75 text-left border pl-3 ">DOB</h6>
 										        	</div>
 										        	<div class="col-sm-6">
 										        		<p class="text-center">@if($l->dob == '')
@@ -120,7 +135,7 @@
 										        	</div>
 
 										        	<div class="col-sm-6">
-										        		<h6 class="text-center">Gender</h6>
+										        		<h6 class="w-75 text-left border pl-3 ">Gender</h6>
 										        	</div>
 										        	<div class="col-sm-6">
 										        		<p class="text-center">@if($l->gender == '')
@@ -131,14 +146,14 @@
 										        	</div>
 
 										        	<div class="col-sm-6">
-										        		<h6 class="text-center">Email</h6>
+										        		<h6 class="w-75 text-left border pl-3 ">Email</h6>
 										        	</div>
 										        	<div class="col-sm-6">
 										        		<p class="text-center">{{$l->email}}</p>
 										        	</div>
 
 										        	<div class="col-sm-6">
-										        		<h6 class="text-center">Id No</h6>
+										        		<h6 class="w-75 text-left border pl-3 ">Id No</h6>
 										        	</div>
 										        	<div class="col-sm-6">
 										        		<p class="text-center">@if($l->id_no == '')
@@ -149,7 +164,7 @@
 										        	</div>
 
 										        	<div class="col-sm-6">
-										        		<h6 class="text-center">Tax Pin</h6>
+										        		<h6 class="w-75 text-left border pl-3">Tax Pin</h6>
 										        	</div>
 										        	<div class="col-sm-6">
 										        		<p class="text-center">@if($l->tax_pin == '')
@@ -160,7 +175,7 @@
 										        	</div>
 
 										        	<div class="col-sm-6">
-										        		<h6 class="text-center">Investment Range</h6>
+										        		<h6 class="w-75 text-left border pl-3">Investment Range</h6>
 										        	</div>
 										        	<div class="col-sm-6">
 										        		<p class="text-center">@if($l->inv_range == '')
@@ -176,7 +191,7 @@
 										      </div>
 												      <div class="modal-footer">
 												        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-												        <button type="button" class="btn btn-primary">Save changes</button>
+												        
 												      </div>
 												    </div>
 												  </div>

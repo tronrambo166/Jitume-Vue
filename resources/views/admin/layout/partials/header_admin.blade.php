@@ -20,8 +20,8 @@
 			</a>
 			
 			<div class="top-nav-search">
-				<form>
-					<input type="text" class="form-control" placeholder="Search here">
+				<form method="post" action="{{route('searchInAdmin')}}"> @csrf
+					<input name="text" type="text" class="form-control" placeholder="Search here">
 					<button class="btn" type="submit"><i class="fa fa-search"></i></button>
 				</form>
 			</div>
