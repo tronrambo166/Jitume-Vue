@@ -28,23 +28,19 @@ const AddService = ({ connected, userId }) => {
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
 
     const [isButtonActive, setIsButtonActive] = useState(false);
-   const handleFileChange = (e) => {
-    const { name, files } = e.target;
-    if (files && files[0]) {
-        const file = files[0];
-        const maxSize = 2 * 1024 * 1024;
-        if (file.size > maxSize) {
-            showAlert("error", "File size exceeds the maximum limit of 2 MB.");
-            e.target.value = ""; // Reset the input field
-            return;
+    const handleFileChange = (e) => {
+        const { name, files } = e.target;
+        if (files && files[0]) {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: files[0],
+            }));
+
+            // Use showAlert for file selection feedback
+            showAlert("info", `File selected: ${files[0].name}`);
         }
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: file,
-        }));
-        showAlert("info", `File selected: ${file.name}`);
-    }
-};
+    };
+
 
     // Check if all required fields are filled
     const checkFormValidity = () => {

@@ -51,7 +51,7 @@ const AddBusiness = () => {
 
         setIsFormValid(allRequiredFilled);
     }, [formData]);
-
+    
     const handleFileChange = (e, field) => {
         const file = e.target.files[0];
 
@@ -96,7 +96,7 @@ const AddBusiness = () => {
         // Log FormData content as an object
         const formDataObject = Object.fromEntries(data.entries());
         console.log("Submitted Form Data:", formDataObject);
-
+        
         try {
             setLoading(true); // Start loading
 
@@ -545,7 +545,7 @@ const AddBusiness = () => {
                                 <p className="text-xs text-red-500 mt-1">
                                     {fileInput.field === "video"
                                         ? "Max file size: 5MB. If larger, provide a video URL."
-                                        : "Max file size: 2MB."}
+                                        : "Max file size: 2MB.(For best quality the size should be 590px*340px)"}
                                 </p>
                             </div>
                         ))}

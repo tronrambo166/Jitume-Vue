@@ -6,10 +6,9 @@ const categories = [
     "IT",
     "Legal",
     "Project Management",
-    "Branding And Design",
-    "Auto",
-    "Finance, Accounting & Tax Marketing",
-    "Tax Marketing",
+    "Branding and Design",
+    "Finance, Accounting & Tax",
+    "Marketing",
     "Public Relations",
     "Other",
 ];

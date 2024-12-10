@@ -376,9 +376,7 @@ const ListingDetails = ({ onClose }) => {
     //CORE METHODS
     let url = "";
     useEffect(() => {
-        
-        if(!token)
-            $("#unlockButton").removeClass("hidden");
+        if (!token) $("#unlockButton").removeClass("hidden");
 
         const getDetails = () => {
             axiosClient
@@ -687,9 +685,10 @@ const ListingDetails = ({ onClose }) => {
                                 </p>
 
                                 <div className="flex items-center font-semibold gap-3 text-[#1E293B] mb-4">
-                                    <p>#Shop</p>
+                                    {/* <p>#Shop</p>
                                     <p>#Grocery Store</p>
-                                    <p>#Food</p>
+                                    <p>#Food</p> */}
+                                    <p>#{details.category.replace("/", "-")}</p>
                                 </div>
 
                                 <p className="text-[#1E293B] text-[18px] mb-5">
@@ -731,7 +730,7 @@ const ListingDetails = ({ onClose }) => {
                                             </a>
                                         ) : token && conv ? (
                                             <p className="text-dark bg-gray-100 mt-3 text-gray-700 px-5 rounded-lg shadow-md py-2 md:py-3">
-                                                Business is Unlocked
+                                                Business Is Unlocked
                                             </p>
                                         ) : (
                                             <a
@@ -857,10 +856,12 @@ const ListingDetails = ({ onClose }) => {
                                     </div>
                                 ) : (
                                     <img
-                                        className="object-cover rounded-[24px]"
+                                        className="object-cover rounded-[20px]"
+                                        id="listingimage"
                                         style={{
-                                            maxHeight: "480px",
-                                            width: "690px",
+                                            // maxHeight: "480px",
+                                            height: "340px",
+                                            width: "590px",
                                         }}
                                         src={"../" + details.image}
                                         alt="Business"
@@ -1124,10 +1125,10 @@ const ListingDetails = ({ onClose }) => {
 
             <div className="">
                 <hr className="border-t border-gray-300"></hr>
-                <div className=" sm:p-6 ">
+                <div className=" sm:p-6  ">
                     <div className="px-4">
                         {/* On mobile, ReviewSummary takes up full width, on larger screens it takes 1/3 */}
-                        <div className="sm:col-span-8 flex flex-row justify-center items-center">
+                        <div className="col-span-8 sm:flex sm:flex-row sm:justify-center sm:items-center">
                             {/* Financial Statements Section */}
                             {token && conv && mile && amount_r ? (
                                 <div className="w-full lg:max-w-sm flex h-[283px]  max-w-lg flex-col gap-4  border  border-gray-300 rounded-lg shadow-sm bg-white p-5 mx-auto">
@@ -1292,7 +1293,8 @@ const ListingDetails = ({ onClose }) => {
                                         ) : conv && !amount_r ? (
                                             <div className="w-full text-center p-4">
                                                 <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
-                                                    Business is Fully Vested.
+                                                    Business Is Fully Invested
+                                                    In.
                                                 </p>
                                             </div>
                                         ) : conv && !running ? (

@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import axiosClient from "../../../axiosClient";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
 import { Link, useLocation } from "react-router-dom";
+import { FaChevronDown } from "react-icons/fa"; // Import the icon
 
 const Search = () => {
     const locationUrl = useLocation();
@@ -45,7 +46,7 @@ const Search = () => {
         console.log(payload);
         axiosClient
             .post("/searchService", payload)
-            
+
             .then(({ data }) => {
                 console.log(data);
                 Object.entries(data.results).forEach((entry) => {
@@ -205,11 +206,18 @@ const Search = () => {
                 <div className="flex flex-col sm:flex-row items-center p-1 sm:p-1.5 w-full">
                     {/* Categories Dropdown */}
                     <div className="relative flex items-center h-10 w-full sm:w-1/4 mb-1 sm:mb-0 bg-white rounded-l-lg">
+                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer">
+                            <FaChevronDown
+                                className={`w-4 h-4 text-gray-500 text-sm transition-transform duration-200 ${
+                                    categoryValue ? "rotate-180" : ""
+                                }`}
+                            />
+                        </div>
                         <select
                             ref={categoryRef}
-                            value={categoryValue} // controlled value
-                            onChange={handleCategoryChange} // handle change
-                            className="border-none bg-transparent focus:outline-none text-gray-500 text-xs sm:text-sm w-full pl-2 pr-2"
+                            value={categoryValue}
+                            onChange={handleCategoryChange}
+                            className="border-none bg-transparent focus:outline-none text-gray-500 text-xs sm:text-sm w-full px-4 py-2 pr-10 appearance-none cursor-pointer"
                         >
                             <option value="">All Categories</option>
                             <option value="Business Planning">
@@ -223,7 +231,10 @@ const Search = () => {
                             <option value="Branding and Design">
                                 Branding and Design
                             </option>
-                            <option value="Finance, Accounting & Tax">
+                            <option
+                                value="Finance, Accounting & Tax"
+                                className="whitespace-normal"
+                            >
                                 Finance, Accounting & Tax
                             </option>
                             <option value="Marketing">Marketing</option>
@@ -233,6 +244,35 @@ const Search = () => {
                             <option value="Other">Other</option>
                         </select>
                     </div>
+
+                    <style jsx>{`
+                                select {
+                                    width: 100%;
+                                }
+
+                                select:focus {
+                                    outline: none;
+                                }
+
+                                option {
+                                    width: 100%;
+                                }
+
+                                /* Optional: Style the arrow for the select dropdown if needed */
+                                select::-ms-expand {
+                                    display: none;
+                                }
+
+                                /* Ensuring proper width for select box */
+                                select {
+                                    min-width: 200px; /* Adjust as needed */
+                                }
+
+                                /* Optional: Hides the native dropdown arrow */
+                                select::-webkit-appearance: none;
+                                select:-moz-appearance: none;
+                                select:-ms-appearance: none;
+                                 `}</style>
 
                     {/* Hidden inputs for latitude and longitude */}
                     <input
