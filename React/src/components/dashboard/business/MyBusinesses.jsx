@@ -98,14 +98,15 @@ const MyBusinesses = () => {
                                 <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
                                     Name
                                 </th>
-                                <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
+                                <th className="px-8 py-2 text-left text-xs font-medium uppercase tracking-wider">
                                     Category
                                 </th>
-                                <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                    Amount Required
-                                </th>
-                                <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
+                                
+                                <th className="-[80px] pl-[100px] py-2 text-left text-xs font-medium uppercase tracking-wider">
                                     Details
+                                </th>
+                                <th className="ml-[150px] px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
+                                    Amount Required
                                 </th>
                                 <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
                                     Contact
@@ -129,14 +130,15 @@ const MyBusinesses = () => {
                                         {item.name}
                                     </div>
                                 </td>
-                                <td className="px-2 sm:px-4 py-4 text-xs sm:text-sm">
+                                <td className="px-2 ml-8 sm:px-8 py-4 text-xs sm:text-sm">
                                     {item.category}
+                                </td>
+                               
+                                <td className="px-2 sm:px-4 py-4 text-xs sm:text-sm">
+                                    {item.details}
                                 </td>
                                 <td className="px-2 sm:px-4 py-4 text-xs sm:text-sm">
                                     {item.investment_needed}
-                                </td>
-                                <td className="px-2 sm:px-4 py-4 text-xs sm:text-sm">
-                                    {item.details}
                                 </td>
                                 <td className="px-2 sm:px-4 py-4 text-xs sm:text-sm">
                                     {item.contact}

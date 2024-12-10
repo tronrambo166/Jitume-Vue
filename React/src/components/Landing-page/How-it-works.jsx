@@ -14,7 +14,7 @@ const HowItWorks = () => {
     },
     {
       title: "Choose a Category",
-      description: "Select the business category that fits your needs. Whether it's restaurants, shops, or services, we cover all types of local businesses.",
+      description: "Select the business category that fits your needs. Whether agriculture, renewable energy or arts & culture.",
       icon:  <img src={category} alt="Category Icon" className="w-full h-full object-cover rounded-full hover:animate-spin-slow" />,
     },
     {

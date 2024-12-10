@@ -28,18 +28,23 @@ const AddService = ({ connected, userId }) => {
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
 
     const [isButtonActive, setIsButtonActive] = useState(false);
-    const handleFileChange = (e) => {
-        const { name, files } = e.target;
-        if (files && files[0]) {
-            setFormData((prevData) => ({
-                ...prevData,
-                [name]: files[0],
-            }));
-
-            // Use showAlert for file selection feedback
-            showAlert("info", `File selected: ${files[0].name}`);
+   const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    if (files && files[0]) {
+        const file = files[0];
+        const maxSize = 2 * 1024 * 1024;
+        if (file.size > maxSize) {
+            showAlert("error", "File size exceeds the maximum limit of 2 MB.");
+            e.target.value = ""; // Reset the input field
+            return;
         }
-    };
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: file,
+        }));
+        showAlert("info", `File selected: ${file.name}`);
+    }
+};
 
     // Check if all required fields are filled
     const checkFormValidity = () => {
@@ -222,7 +227,7 @@ const AddService = ({ connected, userId }) => {
                     if (i < 10)
                         if (city == "")
                             $("#result_list").append(
-                                " <div onclick=\"address('" +
+                                "<div onclick=\"address('" +
                                     name +
                                     "," +
                                     country +
@@ -230,36 +235,50 @@ const AddService = ({ connected, userId }) => {
                                     lat +
                                     "', '" +
                                     lng +
-                                    '\');" style="" data-id="' +
+                                    '\');" style="cursor: pointer; padding: 10px; margin: 5px 0; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #f9f9f9; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s ease, box-shadow 0.2s ease;" data-id="' +
                                     name +
-                                    '" class="address  py-1 px-1 my-0 border-top bg-white single_comms">  <p class="h6 small text-dark d-inline" ><i class="fa fa-map-marker mr-1 text-dark" aria-hidden="true"></i> ' +
+                                    '" class="address single_comms">' +
+                                    "<p class='h6 small text-dark d-inline' style='margin: 0; font-weight: 600; color: #333;'>" +
+                                    "<i class='fa fa-map-marker mr-1 text-primary' aria-hidden='true' style='color: #007bff;'></i> " +
                                     name +
-                                    '</p> <p  class="d-inline text-dark"><small>, ' +
+                                    "</p>" +
+                                    "<p class='d-inline text-dark' style='margin-left: 5px; font-size: 0.9rem; color: #555;'>" +
+                                    "<small>, " +
                                     country +
-                                    "</small> </p> </div>"
+                                    "</small>" +
+                                    "</p>" +
+                                "</div>"
                             );
+                            
                         else
-                            $("#result_list").append(
-                                " <div onclick=\"address('" +
-                                    name +
-                                    "," +
-                                    city +
-                                    "," +
-                                    country +
-                                    "', '" +
-                                    lat +
-                                    "', '" +
-                                    lng +
-                                    '\');" style="" data-id="' +
-                                    name +
-                                    '" class="address  py-1 px-1 my-0 border-top bg-white single_comms">  <p class="small h6 text-dark d-inline" ><i class="fa fa-map-marker mr-1 text-dark" aria-hidden="true"></i> ' +
-                                    name +
-                                    '</p> <p  class="d-inline text-dark"><small>, ' +
-                                    city +
-                                    "," +
-                                    country +
-                                    "</small> </p> </div>"
-                            );
+                        $("#result_list").append(
+                            "<div onclick=\"address('" +
+                                name +
+                                "," +
+                                city +
+                                "," +
+                                country +
+                                "', '" +
+                                lat +
+                                "', '" +
+                                lng +
+                                '\');" style="cursor: pointer; padding: 10px; margin: 5px 0; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #f9f9f9; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s ease, box-shadow 0.2s ease;" data-id="' +
+                                name +
+                                '" class="address single_comms">' +
+                                "<p class='small h6 text-dark d-inline' style='margin: 0; font-weight: 600; color: #333;'>" +
+                                "<i class='fa fa-map-marker mr-1 text-primary' aria-hidden='true' style='color: #007bff;'></i> " +
+                                name +
+                                "</p>" +
+                                "<p class='d-inline text-dark' style='margin-left: 5px; font-size: 0.9rem; color: #555;'>" +
+                                "<small>, " +
+                                city +
+                                "," +
+                                country +
+                                "</small>" +
+                                "</p>" +
+                            "</div>"
+                        );
+                        
                 }
                 //document.getElementById('result_list').style.overflowY="scroll";
             },
@@ -440,33 +459,34 @@ const AddService = ({ connected, userId }) => {
                                 <option value="Other">Other</option>
                             </select>
                         </div>
-                        <div>
-                            <label className="block mb-1 text-gray-700 text-sm font-semibold">
-                                Location*
-                            </label>
-                            <input
-                                onKeyUp={getPlaces}
-                                id="searchbox"
-                                type="text"
-                                name="location"
-                                onChange={handleChange}
-                                required
-                                className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Enter a location..."
-                            />
-                            <input hidden name="lat" id="lat" />
-                            <input hidden name="lng" id="lng" />
+                        <div className="">
+    <label className="block mb-1 text-gray-700 text-sm font-semibold">
+        Location*
+    </label>
+    <input
+        onKeyUp={getPlaces}
+        id="searchbox"
+        type="text"
+        name="location"
+        onChange={handleChange}
+        required
+        className="border relative border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Enter a location..."
+    />
+    <input hidden name="lat" id="lat" />
+    <input hidden name="lng" id="lng" />
 
-                            <ul
-                                id="suggestion-list"
-                                className="absolute w-[250px] bg-white border-t-0 rounded-b-md shadow-lg z-10 top-full"
-                            ></ul>
-                            <div
-                                id="result_list"
-                                style={{ top: "582px", left: "809px" }}
-                                className="absolute w-[250px] bg-white border-gray-300 border-t-0 rounded-b-md shadow-lg z-10 top-full"
-                            ></div>
-                        </div>
+    <ul
+        id="suggestion-list"
+        className="absolute w-[250px] bg-white border-t-0 rounded-b-md shadow-lg z-50 max-h-[300px] top-full left-0"
+    ></ul>
+
+    <div
+        id="result_list"
+        className="absolute w-[250px] bg-white border-gray-300 border-t-0 rounded-b-md shadow-lg z-5y0 max-h-[300px] top-[calc(100%+8px)] left-0"
+    ></div>
+</div>
+
                     </div>
 
                     <div>

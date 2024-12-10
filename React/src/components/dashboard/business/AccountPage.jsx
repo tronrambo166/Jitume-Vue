@@ -34,7 +34,7 @@ function AccountPage() {
   }, []);
 
   return (
-    <div className="min-h-screen  flex flex-col justify-center items-center p-6">
+    <div className="min-h-screen  flex flex-col py-[50px] items-center ">
       <div className="w-full max-w-lg bg-white rounded-xl shadow-lg p-8">
         <div className="flex items-center mb-8">
           <FaUser className="text-green w-12 h-12" />
