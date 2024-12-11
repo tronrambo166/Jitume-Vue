@@ -95,108 +95,198 @@
 													</td>
 												</tr>
 
-												<!-- Modal -->
-												<div class="modal fade" id="exampleModal{{$l->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-												  <div class="modal-dialog" role="document">
-												    <div class="modal-content">
-												      <div class="text-center modal-header">
-												        <h5 class="modal-title  text-secondary mx-auto" id="exampleModalLabel">User Info ({{$l->fname.' '.$l->lname}})</h5>
-												        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-												          <span aria-hidden="true">&times;</span>
-												        </button>
-												      </div>
-										      <div class="modal-body">
+						<!-- Modal -->
+						<div class="modal fade" id="exampleModal{{$l->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						  <div class="modal-dialog" role="document">
+						    <div class="modal-content mx-auto text-center">
+						      <div class="text-center modal-header">
+						        <h5 class="modal-title  text-secondary mx-auto" id="exampleModalLabel">User Info ({{$l->fname.' '.$l->lname}})</h5>
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true">&times;</span>
+						        </button>
+						      </div>
+				      <div class="modal-body w-75 mx-auto">
 
-										      	<div class="my-3 row w-75 mx-auto border">
+				      	<div class="my-3 row w-75 mx-auto border">
 
-										        	<div class="col-sm-6">
-										        		<h5 class="w-75 text-center mt-1   ">User Type</h6>
-										        	</div>
-										        	<div class="col-sm-6">
-										        		<p class="text-center mt-1">@if($l->investor == '')
-														Business/Service
-														@else
-														Investor
-														@endif</p>
-										        	</div>
-										        </div>
-										        
-										        <div class="row">
+				        	<div class="col-sm-6">
+				        		<h5 class="w-75 text-center mt-2">User Type</h5>
+				        	</div>
+				        	<div class="col-sm-6">
+				        		<p class="font-weight-bold border shadow text-center mt-2
+				        		">@if($l->investor == '')
+								Business/Service
+								@else
+								Investor
+								@endif</p>
+				        	</div>
+				        </div>
 
-										        	<div class="col-sm-6">
-										        		<h6 class="w-75 text-left border pl-3 ">DOB</h6>
-										        	</div>
-										        	<div class="col-sm-6">
-										        		<p class="text-center">@if($l->dob == '')
-													N/A
-													@else
-													{{$l->dob}}
-													@endif</p>
-										        	</div>
+				        
+				        @if($l->activeBusiness->count() > 0)
+				        <div class="my-3 row mx-auto border py-2">
 
-										        	<div class="col-sm-6">
-										        		<h6 class="w-75 text-left border pl-3 ">Gender</h6>
-										        	</div>
-										        	<div class="col-sm-6">
-										        		<p class="text-center">@if($l->gender == '')
-													N/A
-													@else
-													{{$l->gender}}
-													@endif</p>
-										        	</div>
+				        	<div class="col-sm-5">
+				        		<h6 class="w-75 text-center ">Business With <br> Active Milestones:</h6>
+				        	</div>
+				        	<div class="col-sm-7">
+				        		@foreach($l->activeBusiness as $AB)
+				        		<div class="row mt-1">
+				        			<div class="col-sm-6">
+				        				<p class="text-center text-success small my-0"><b>{{$AB->name}}</b>
+				        			</div>
 
-										        	<div class="col-sm-6">
-										        		<h6 class="w-75 text-left border pl-3 ">Email</h6>
-										        	</div>
-										        	<div class="col-sm-6">
-										        		<p class="text-center">{{$l->email}}</p>
-										        	</div>
+				        			<div class="col-sm-6">
+				        				<p class="text-center small my-0">Required({{$AB->investment_needed}})
+				        			</div>
+				        		</div>
+				        		@endforeach
+				        		
+				        	</div>
+				        </div>
+				        @endif
 
-										        	<div class="col-sm-6">
-										        		<h6 class="w-75 text-left border pl-3 ">Id No</h6>
-										        	</div>
-										        	<div class="col-sm-6">
-										        		<p class="text-center">@if($l->id_no == '')
-													N/A
-													@else
-													{{$l->id_no}}
-													@endif</p>
-										        	</div>
 
-										        	<div class="col-sm-6">
-										        		<h6 class="w-75 text-left border pl-3">Tax Pin</h6>
-										        	</div>
-										        	<div class="col-sm-6">
-										        		<p class="text-center">@if($l->tax_pin == '')
-													N/A
-													@else
-													{{$l->tax_pin}}
-													@endif</p>
-										        	</div>
 
-										        	<div class="col-sm-6">
-										        		<h6 class="w-75 text-left border pl-3">Investment Range</h6>
-										        	</div>
-										        	<div class="col-sm-6">
-										        		<p class="text-center">@if($l->inv_range == '')
-													N/A
-													@else
-													{{$l->inv_range}}
-													@endif</p>
-										        	</div>
+				        @if($l->investedBusiness->count() > 0)
+				        <div class="my-3 row mx-auto border py-2">
 
-										  
+				        	<div class="col-sm-4">
+				        		<h6 class="w-75 text-center mt-1">Invested In:</h6>
+				        	</div>
+				        	<div class="col-sm-7">
+				        		@foreach($l->investedBusiness as $IB)
+				        		<div class="row">
+				        			<div class="col-sm-5">
+				        				<p class="text-center text-success small mt-1"><b>{{$IB->name}}</b>
+				        			</div>
 
-										        </div>
-										      </div>
-												      <div class="modal-footer">
-												        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-												        
-												      </div>
-												    </div>
-												  </div>
-												</div>
-												<!-- Modal -->
+				        			<div class="col-sm-2">
+				        				<p class="text-center small mt-1">${{$IB->amount}}
+				        			</div>
+
+				        			<div class="col-sm-2">
+				        				<p class="text-center small mt-1">{{$IB->type}}
+				        			</div>
+
+				        			<div class="col-sm-3">
+				        				<p class="text-center small mt-1">Share({{$IB->representation}}%)
+				        			</div>
+				        		</div>
+				        		@endforeach
+				        		
+				        	</div>
+				        </div>
+				        @endif
+				        
+
+				        @if($l->bookedServices->count() > 0)
+				        <div class="my-3 row mx-auto border py-2">
+
+				        	<div class="col-sm-4">
+				        		<h6 class="w-75 text-center mt-1">Service Booked:</h6>
+				        	</div>
+				        	<div class="col-sm-7">
+				        		@foreach($l->bookedServices as $BS)
+				        		<div class="row">
+				        			<div class="col-sm-4">
+				        				<p class="text-center text-success small mt-1"><b>{{$BS->name}}</b>
+				        			</div>
+
+				        			<div class="col-sm-5">
+				        				<p class="text-center small mt-1">{{$BS->date}}
+				        			</div>
+
+				        			<div class="col-sm-3">
+				        				<p class="text-center small mt-1">${{$BS->price}}
+				        			</div>
+
+				        		</div>
+				        		@endforeach
+				        		
+				        	</div>
+				        </div>
+				        @endif
+
+
+
+				        <!-- GENERAL DETAILS -->
+				        <div class="row">
+
+				        	<div class="col-sm-6">
+				        		<h6 class="w-75 text-left border pl-3 ">DOB</h6>
+				        	</div>
+				        	<div class="col-sm-6">
+				        		<p class="text-center">@if($l->dob == '')
+							N/A
+							@else
+							{{$l->dob}}
+							@endif</p>
+				        	</div>
+
+				        	<div class="col-sm-6">
+				        		<h6 class="w-75 text-left border pl-3 ">Gender</h6>
+				        	</div>
+				        	<div class="col-sm-6">
+				        		<p class="text-center">@if($l->gender == '')
+							N/A
+							@else
+							{{$l->gender}}
+							@endif</p>
+				        	</div>
+
+				        	<div class="col-sm-6">
+				        		<h6 class="w-75 text-left border pl-3 ">Email</h6>
+				        	</div>
+				        	<div class="col-sm-6">
+				        		<p class="text-center">{{$l->email}}</p>
+				        	</div>
+
+				        	<div class="col-sm-6">
+				        		<h6 class="w-75 text-left border pl-3 ">Id No</h6>
+				        	</div>
+				        	<div class="col-sm-6">
+				        		<p class="text-center">@if($l->id_no == '')
+							N/A
+							@else
+							{{$l->id_no}}
+							@endif</p>
+				        	</div>
+
+				        	<div class="col-sm-6">
+				        		<h6 class="w-75 text-left border pl-3">Tax Pin</h6>
+				        	</div>
+				        	<div class="col-sm-6">
+				        		<p class="text-center">@if($l->tax_pin == '')
+							N/A
+							@else
+							{{$l->tax_pin}}
+							@endif</p>
+				        	</div>
+
+				        	<div class="col-sm-6">
+				        		<h6 class="w-75 text-left border pl-3">Investment Range</h6>
+				        	</div>
+				        	<div class="col-sm-6">
+				        		<p class="text-center">@if($l->inv_range == '')
+							N/A
+							@else
+							{{$l->inv_range}}
+							@endif</p>
+				        	</div>
+
+				  
+
+				        </div>
+				      </div>
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						        
+						      </div>
+						    </div>
+						  </div>
+						</div>
+						<!-- Modal -->
 												@endforeach
 											
 											

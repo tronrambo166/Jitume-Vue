@@ -13,6 +13,7 @@ use App\Models\User;
 // use App\Models\RemovedSongs;
 // use App\Models\mymusic;
 // use App\Models\albums;
+use App\Models\BusinessBids;
 use Mail;
 use Session;
 use Exception;
@@ -134,29 +135,33 @@ public function artists()
 public function users()
     {       
     $users= User::get();
+    $data = array();
 
     foreach($users as $user){
-        //$investedBusiness= BusinessBids::where('investor_id', $user->id)->
-        //->join('listings', 'BusinessBids.business_id', '=', 'listings.id')
-           // ->select('users.*', 'contacts.phone', 'orders.price')get();
-        //$bookedServices= User::get();
+        $investedBusiness = DB::table('business_bids')
+        ->where('investor_id', $user->id)
+            ->join('listings', 'business_bids.business_id', '=', 'listings.id')
+            ->select('business_bids.*', 'listings.name')
+            ->get();
 
-        // $investedBusiness = DB::table('business_bids')
-        // ->join('listings', function ($join) {
-        //     $join->on('business_bids.business_id', '=', 'listings.id')
-        //          ->where('business_bids.investor_id', '=', $user->id);
-        // })
-        // ->get();
+        $activeBusiness = DB::table('business_bids')
+            ->where('owner_id', $user->id)
+            ->join('listings', 'business_bids.business_id', '=', 'listings.id')
+            ->groupBy('business_bids.business_id')
+            ->select('business_bids.*', 'listings.name', 'listings.investment_needed', 'listings.category')
+            ->get();
 
-        // $bookedServices = DB::table('service_books')
-        // ->join('services', function ($join) {
-        //     $join->on('service_books.service_id', '=', 'services.id')
-        //          ->where('service_books.booker_id', '=', $user->id);
-        // })
-        // ->get();
-        //return $investedBusiness;
+        $bookedServices = DB::table('service_books')
+        ->where('booker_id', '=', $user->id)
+        ->join('services', 'service_books.service_id', '=', 'services.id')
+        ->select('service_books.*', 'services.name','services.price')
+        ->get();
+
+        $user->investedBusiness = $investedBusiness;
+        $user->bookedServices = $bookedServices;  
+        $user->activeBusiness = $activeBusiness;        
     }
-    
+    //return $users;
     return view('admin.users', compact('users'));       
     }
 
