@@ -1128,10 +1128,10 @@ const ListingDetails = ({ onClose }) => {
                 <div className=" sm:p-6  ">
                     <div className="px-4">
                         {/* On mobile, ReviewSummary takes up full width, on larger screens it takes 1/3 */}
-                        <div className="col-span-8 sm:flex sm:flex-row sm:justify-center sm:items-center">
+                        <div className="sm:col-span-8 flex flex-col md:flex-row justify-around items-stretch gap-4 p-4">
                             {/* Financial Statements Section */}
                             {token && conv && mile && amount_r ? (
-                                <div className="w-full lg:max-w-sm flex h-[283px]  max-w-lg flex-col gap-4  border  border-gray-300 rounded-lg shadow-sm bg-white p-5 mx-auto">
+                                <div className="w-full md:w-1/3 flex flex-col gap-4 border rounded-lg shadow-sm bg-white p-5">
                                     <button
                                         className="border border-gray-300 mt-5 bg-white hover:bg-gray-50 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                         onClick={download_statement}
@@ -1159,8 +1159,8 @@ const ListingDetails = ({ onClose }) => {
                             ) : null}
 
                             {token && conv && amount_r && running ? (
-                                <div className="flex flex-col lg:flex-row gap-8  p-4 lg:p-8 justify-center items-start w-full">
-                                    <div className="bg-white border border-gray-300 rounded-lg p-6 w-full max-w-lg">
+                                <>
+                                    <div className="w-full md:w-1/3 bg-white border border-gray-300 rounded-lg p-6 flex flex-col justify-between">
                                         <h2 className="text-xl font-semibold text-[#334155] mb-6">
                                             Enter A Bid To Invest
                                         </h2>
@@ -1222,7 +1222,7 @@ const ListingDetails = ({ onClose }) => {
                                         )}
                                     </div>
 
-                                    <div className="bg-white border border-gray-300  rounded-lg p-6 w-full max-w-lg">
+                                    <div className="w-full md:w-1/3 bg-white border border-gray-300 rounded-lg p-6 flex flex-col justify-between">
                                         <h2 className="text-xl font-semibold   text-[#334155] mb-6">
                                             Enter Equipment Equivalent Bid
                                         </h2>
@@ -1279,7 +1279,7 @@ const ListingDetails = ({ onClose }) => {
                                             </p>
                                         )}
                                     </div>
-                                </div>
+                                </>
                             ) : (
                                 <div className="w-full flex justify-center items-center">
                                     <div>
