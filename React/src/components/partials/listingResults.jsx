@@ -436,9 +436,9 @@ const ListingResults = () => {
     const collapse = () => {
         var slider = document.getElementById("slider");
 
-        if (slider && slider.noUiSlider) {
-            slider.noUiSlider.destroy();
-        }
+        // if (slider && slider.noUiSlider) {
+        //     slider.noUiSlider.destroy();
+        // }
         $("#collapseExample").removeClass("hidden");
         $("#colBut").addClass("hidden");
         $("#colBut2").removeClass("hidden");
@@ -457,9 +457,9 @@ const ListingResults = () => {
     const collapse2 = () => {
         var slider = document.getElementById("slider2");
 
-        if (slider && slider.noUiSlider) {
-            slider.noUiSlider.destroy();
-        }
+        // if (slider && slider.noUiSlider) {
+        //     slider.noUiSlider.destroy();
+        // }
         $("#collapseExample2").removeClass("hidden");
         $("#colBut3").addClass("hidden");
         $("#colBut4").removeClass("hidden");
