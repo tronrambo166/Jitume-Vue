@@ -245,34 +245,7 @@ const Search = () => {
                         </select>
                     </div>
 
-                    <style jsx>{`
-                                select {
-                                    width: 100%;
-                                }
-
-                                select:focus {
-                                    outline: none;
-                                }
-
-                                option {
-                                    width: 100%;
-                                }
-
-                                /* Optional: Style the arrow for the select dropdown if needed */
-                                select::-ms-expand {
-                                    display: none;
-                                }
-
-                                /* Ensuring proper width for select box */
-                                select {
-                                    min-width: 200px; /* Adjust as needed */
-                                }
-
-                                /* Optional: Hides the native dropdown arrow */
-                                select::-webkit-appearance: none;
-                                select:-moz-appearance: none;
-                                select:-ms-appearance: none;
-                                 `}</style>
+                    
 
                     {/* Hidden inputs for latitude and longitude */}
                     <input

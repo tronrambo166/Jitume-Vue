@@ -14,7 +14,7 @@ const categories = [
 ];
 
 // Set different items per load based on screen width
-const getItemsPerLoad = () => (window.innerWidth < 640 ? 1 : 5);
+const getItemsPerLoad = () => window.innerWidth;
 
 const HorizontalInfiniteScroll = () => {
     const [visibleCategories, setVisibleCategories] = useState([]);

@@ -1440,6 +1440,7 @@ const ListingDetails = ({ onClose }) => {
     )}
 </div> */}
                     </div>
+                    <hr className=" border-t border-gray-300 mt-8" />
 
                     <div className="flex flex-col lg:flex-row gap-8 p-4">
                         {/* Review Summary - Left */}

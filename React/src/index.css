@@ -453,3 +453,27 @@ input[type="checkbox"]:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.3); /* Green outline when focused */
 }
+/* Style for the select element */
+select {
+    width: 100%;
+    min-width: 180px; /* Adjust as needed */
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+}
+
+/* Focus style for the select element */
+select:focus {
+    outline: none;
+}
+
+/* Style for the option elements */
+option {
+    width: 100%;
+}
+
+/* Hides the native dropdown arrow for IE */
+select::-ms-expand {
+    display: none;
+}

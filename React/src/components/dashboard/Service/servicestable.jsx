@@ -56,7 +56,7 @@ const ServiceTable = () => {
                 <h1 className="text-[#2D3748] font-semibold text-xl sm:text-2xl mb-6">
                     My Services
                 </h1>
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto min-w-full">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-100">
                             <tr className="text-gray-500">
@@ -78,227 +78,77 @@ const ServiceTable = () => {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {service.map((item, index) => (
-                                <tr key={index}>
-                                    <td className="px-4 py-2 flex items-center">
-                                        <img
-                                            className="w-10 h-10 rounded-lg"
-                                            src={"../" + item.image}
-                                            alt="Service"
-                                        />
-                                        <div className="ml-3 text-sm">
-                                            <div className="font-medium">
-                                                {item.name}
+                            {service.length > 0 ? (
+                                service.map((item, index) => (
+                                    <tr key={item.id}>
+                                        <td className="px-4 py-2 flex items-center space-x-4">
+                                            <img
+                                                className="w-10 h-10 rounded-lg object-cover"
+                                                src={`../${item.image}`}
+                                                alt="Service"
+                                            />
+                                            <div className="text-sm">
+                                                <div className="font-medium">
+                                                    {item.name}
+                                                </div>
+                                                <div>{item.contact}</div>
                                             </div>
-                                            <div>{item.contact}</div>
-                                        </div>
-                                    </td>
-                                    <td className="px-4 py-2 text-sm">
-                                        {item.category}
-                                    </td>
-                                    <td className="px-4 py-2 text-sm">
-                                        {item.details}
-                                    </td>
-                                    <td className="px-4 py-2 text-sm">
-                                        ${item.price}
-                                    </td>
-                                    <td className="px-4 py-2 text-center text-sm">
-                                        <div className="flex items-center justify-center space-x-2">
-                                            <Link
-                                                to={`/service-milestones/${btoa(
-                                                    btoa(item.id)
-                                                )}`}
-                                            >
-                                                <button className="text-green-500 border border-green-500 rounded-lg py-1 px-3 text-xs">
-                                                    View Milestones
+                                        </td>
+                                        <td className="px-4 py-2 text-sm">
+                                            {item.category}
+                                        </td>
+                                        <td className="px-4 py-2 text-sm">
+                                            {item.details}
+                                        </td>
+                                        <td className="px-4 py-2 text-sm">
+                                            ${item.price}
+                                        </td>
+                                        <td className="px-4 py-2 text-center text-sm">
+                                            <div className="flex items-center justify-center space-x-2">
+                                                <Link
+                                                    to={`/service-milestones/${btoa(
+                                                        btoa(item.id)
+                                                    )}`}
+                                                >
+                                                    <button className="text-green-500 border border-green-500 rounded-lg py-1 px-3 text-xs hover:bg-green-100">
+                                                        View Milestones
+                                                    </button>
+                                                </Link>
+                                                <button
+                                                    onClick={() =>
+                                                        openEditModal(item)
+                                                    } // Trigger modal
+                                                    className="text-gray-900 border border-gray-500 rounded-lg py-1 px-3 text-xs hover:bg-gray-200"
+                                                >
+                                                    Edit
                                                 </button>
-                                            </Link>
-                                            <button
-                                                onClick={() =>
-                                                    openEditModal(item)
-                                                } // Trigger modal
-                                                className="text-gray-900 border border-gray-500 rounded-lg py-1 px-3 text-xs"
-                                            >
-                                                Edit
-                                            </button>
-                                            <button
-                                                onClick={() =>
-                                                    handleDelete(item.id)
-                                                }
-                                                className="text-red-500 border border-gray-500 rounded-lg py-1 px-3 text-xs"
-                                            >
-                                                Delete
-                                            </button>
-                                        </div>
+                                                <button
+                                                    onClick={() =>
+                                                        handleDelete(item.id)
+                                                    }
+                                                    className="text-red-500 border border-gray-500 rounded-lg py-1 px-3 text-xs hover:bg-red-100"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td
+                                        colSpan="5"
+                                        className="px-4 py-6 text-center text-gray-500 text-sm"
+                                    >
+                                        No services available
                                     </td>
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
                     </table>
                 </div>
             </section>
-            {/* <section className="bg-white border mt-4 rounded-xl w-full px-4 py-6 sm:px-8">
-                {myInvest.length > 0 ? (
-                    <>
-                        <h1 className="text-[#2D3748] font-semibold text-xl sm:text-2xl mb-6">
-                            My Investments
-                        </h1>
-                        <div className="overflow-x-auto">
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-100">
-                                    <tr className="text-gray-500">
-                                        <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                            Name
-                                        </th>
-                                        <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                            Category
-                                        </th>
-                                        <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                            Value Needed
-                                        </th>
-                                        <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                            Details
-                                        </th>
-                                        <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                            Contact
-                                        </th>
-                                        <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                            Business Share
-                                        </th>
-                                        <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                            My Share
-                                        </th>
-                                        <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                            Image
-                                        </th>
-                                        <th className="px-4 py-2 text-center text-xs font-medium uppercase tracking-wider">
-                                            Action
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
-                                    {myInvest.map((item, index) => (
-                                        <tr key={index}>
-                                            <td className="px-4 py-2 text-sm">
-                                                {item.name}
-                                            </td>
-                                            <td className="px-4 py-2 text-sm">
-                                                {item.category}
-                                            </td>
-                                            <td className="px-4 py-2 text-sm">
-                                                {item.investment_needed}
-                                            </td>
-                                            <td className="px-4 py-2 text-sm">
-                                                {item.details}
-                                            </td>
-                                            <td className="px-4 py-2 text-sm">
-                                                {item.contact}
-                                            </td>
-                                            <td className="px-4 py-2 text-sm">
-                                                {item.share}%
-                                            </td>
-                                            <td className="px-4 py-2 text-sm">
-                                                {item.myShare.toFixed()}%
-                                            </td>
-                                            <td className="px-4 py-2 text-sm">
-                                                <img
-                                                    className="w-10 h-10 rounded-lg"
-                                                    src={"../" + item.image}
-                                                    alt="Service"
-                                                />
-                                            </td>
-                                            <td className="px-4 py-2 text-center text-sm">
-                                                <Link
-                                                    to={`/business-milestones/${btoa(
-                                                        btoa(item.id)
-                                                    )}`}
-                                                >
-                                                    <button className="text-green-500 border border-green-500 rounded-lg py-1 px-3 text-xs">
-                                                        View milestones
-                                                    </button>
-                                                </Link>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </>
-                ) : (
-                    <div className="text-gray-500 text-center">
-                        You have no investments.
-                    </div>
-                )}
-            </section> */}
 
-            {/* My Businesses Section */}
-            {/* <section className="bg-white shadow-md rounded-lg mb-6 p-4">
-                <h1 className="text-[#2D3748] font-semibold text-xl mb-3">
-                    My Businesses
-                </h1>
-                <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-100">
-                            <tr className="text-gray-500">
-                                <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                    Name
-                                </th>
-                                <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                    Category
-                                </th>
-                                <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                    Details
-                                </th>
-                                <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                    Amount
-                                </th>
-                                <th className="px-4 py-2 text-center text-xs font-medium uppercase tracking-wider">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                            {business.map((item, index) => (
-                                <tr key={index}>
-                                    <td className="px-4 py-2 flex items-center">
-                                        <img
-                                            className="w-10 h-10 rounded-lg"
-                                            src={"../" + item.image}
-                                            alt="Business"
-                                        />
-                                        <div className="ml-3 text-sm">
-                                            <div className="font-medium">
-                                                {item.name}
-                                            </div>
-                                            <div>{item.contact}</div>
-                                        </div>
-                                    </td>
-                                    <td className="px-4 py-2 text-sm">
-                                        {item.category}
-                                    </td>
-                                    <td className="px-4 py-2 text-sm">
-                                        {item.details}
-                                    </td>
-                                    <td className="px-4 py-2 text-sm">
-                                        {item.amount}
-                                    </td>
-                                    <td className="px-4 py-2 text-center text-sm">
-                                        <Link
-                                            to={`/business-milestones/${btoa(
-                                                btoa(item.id)
-                                            )}`}
-                                        >
-                                            <button className="text-green-500 border border-green-500 rounded-lg py-1 px-3 text-xs">
-                                                View milestones
-                                            </button>
-                                        </Link>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </section> */}
             {isEditModalOpen && (
                 <ServEditModal
                     isOpen={isEditModalOpen}
