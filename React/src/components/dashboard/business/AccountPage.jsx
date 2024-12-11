@@ -66,7 +66,7 @@ function AccountPage() {
             {C ? (
               <button
                 onClick={connectToStripe}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg transition-all ease-in-out duration-200"
+                className="w-full btn-primary  text-white py-3 rounded-lg transition-all ease-in-out duration-200"
               >
                 View Stripe Account
               </button>
