@@ -1128,10 +1128,10 @@ const ListingDetails = ({ onClose }) => {
                 <div className=" sm:p-6  ">
                     <div className="px-4">
                         {/* On mobile, ReviewSummary takes up full width, on larger screens it takes 1/3 */}
-                        <div className="col-span-8 sm:flex sm:flex-row sm:justify-center sm:items-center">
-                            {/* Financial Statements Section */}
+                        <div className="sm:col-span-8 flex flex-col md:flex-row justify-around items-stretch gap-4 p-4">
+                            {/* Left Section: Buttons */}
                             {token && conv && mile && amount_r ? (
-                                <div className="w-full lg:max-w-sm flex h-[283px]  max-w-lg flex-col gap-4  border  border-gray-300 rounded-lg shadow-sm bg-white p-5 mx-auto">
+                                <div className="w-full md:w-1/3 flex flex-col gap-4 border rounded-lg shadow-sm bg-white p-5">
                                     <button
                                         className="border border-gray-300 mt-5 bg-white hover:bg-gray-50 transition-all duration-200 px-6 py-3 rounded-lg w-full text-gray-800 text-base lg:text-lg font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                         onClick={download_statement}
@@ -1158,13 +1158,13 @@ const ListingDetails = ({ onClose }) => {
                                 </div>
                             ) : null}
 
+                            {/* Middle Section: Enter Bid to Invest */}
                             {token && conv && amount_r && running ? (
-                                <div className="flex flex-col lg:flex-row gap-8  p-4 lg:p-8 justify-center items-start w-full">
-                                    <div className="bg-white border border-gray-300 rounded-lg p-6 w-full max-w-lg">
-                                        <h2 className="text-xl font-semibold text-[#334155] mb-6">
-                                            Enter A Bid To Invest
-                                        </h2>
-                                        {/* <p className="text-sm text-[#334155] mb-4">
+                                <div className="w-full md:w-1/3 bg-white border border-gray-300 rounded-lg p-6 flex flex-col justify-between">
+                                    <h3 className="text-xl font-semibold text-[#334155] mb-4 text-center">
+                                        Enter A Bid To Invest
+                                    </h3>{" "}
+                                    {/* <p className="text-sm text-[#334155] mb-4">
                                             By investing, you're contributing to
                                             a valuable opportunity that supports
                                             growth and progress. Your bid helps
@@ -1172,21 +1172,21 @@ const ListingDetails = ({ onClose }) => {
                                             promising returns, benefiting both
                                             you and the broader community.
                                         </p> */}
-                                        <label
-                                            htmlFor="investmentAmount"
-                                            className="text-sm text-[#334155] font-medium mb-2 block"
-                                        >
-                                            Amount:
-                                        </label>
-                                        <input
-                                            type="number"
-                                            id="investmentAmount"
-                                            value={amount}
-                                            onChange={handleAmountChange}
-                                            className="border border-gray-300 rounded-lg p-3 mb-4 w-full"
-                                            placeholder="$"
-                                        />
-                                        {/* {amount && (
+                                    <label
+                                        htmlFor="investmentAmount"
+                                        className="text-sm text-[#334155] font-medium mb-2 block"
+                                    >
+                                        Amount:
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="investmentAmount"
+                                        value={amount}
+                                        onChange={handleAmountChange}
+                                        className="border border-gray-300 rounded-lg p-3 mb-4 w-full"
+                                        placeholder="$"
+                                    />
+                                    {/* {amount && (
                                             <p className="text-sm text-[#334155] mb-4">
                                                 Represents:{" "}
                                                 <span
@@ -1198,35 +1198,37 @@ const ListingDetails = ({ onClose }) => {
                                                 %
                                             </p>
                                         )} */}
-                                        <p className="text-sm text-[#334155] mb-4">
-                                            Represents:{" "}
-                                            <span
-                                                id="percent"
-                                                className="font-bold"
-                                            >
-                                                {percentage || 0}
-                                            </span>
-                                            %
-                                        </p>
-
-                                        <button
-                                            onClick={handleInvestClick}
-                                            className="bg-green-700 hover:bg-green-800 text-white transition-all duration-200 px-4 py-3 rounded-lg w-full"
+                                    <p className="text-sm text-[#334155] mb-4">
+                                        Represents:{" "}
+                                        <span
+                                            id="percent"
+                                            className="font-bold"
                                         >
-                                            Invest Now
-                                        </button>
-                                        {errorMessage && (
-                                            <p className="text-red-600 mt-4">
-                                                {errorMessage}
-                                            </p>
-                                        )}
-                                    </div>
+                                            {percentage || 0}
+                                        </span>
+                                        %
+                                    </p>
+                                    <button
+                                        onClick={handleInvestClick}
+                                        className="bg-green-700 hover:bg-green-800 text-white transition-all duration-200 px-4 py-3 rounded-lg w-full"
+                                    >
+                                        Invest Now
+                                    </button>
+                                    {errorMessage && (
+                                        <p className="text-red-600 mt-4">
+                                            {errorMessage}
+                                        </p>
+                                    )}
+                                </div>
+                            ) : null}
 
-                                    <div className="bg-white border border-gray-300  rounded-lg p-6 w-full max-w-lg">
-                                        <h2 className="text-xl font-semibold   text-[#334155] mb-6">
-                                            Enter Equipment Equivalent Bid
-                                        </h2>
-                                        {/* <p className="text-sm text-[#334155] mb-4">
+                            {/* Right Section: Enter Equipment Equivalent Bid */}
+                            {token && conv && amount_r && running ? (
+                                <div className="w-full md:w-1/3 bg-white border border-gray-300 rounded-lg p-6 flex flex-col justify-between">
+                                    <h3 className="text-xl font-semibold text-[#334155] mb-4 text-center">
+                                        Enter Equipment Equivalent Bid
+                                    </h3>
+                                    {/* <p className="text-sm text-[#334155] mb-4">
                                             Investing in equipment ensures that
                                             your business stays competitive and
                                             operates efficiently. The right
@@ -1234,23 +1236,21 @@ const ListingDetails = ({ onClose }) => {
                                             and reduce operational costs over
                                             time.
                                         </p> */}
-                                        <label
-                                            htmlFor="equipmentAmount"
-                                            className="text-sm text-[#334155] font-medium mb-2 block"
-                                        >
-                                            Amount:
-                                        </label>
-                                        <input
-                                            type="number"
-                                            id="equipmentAmount"
-                                            value={equipmentAmount}
-                                            onChange={
-                                                handleEquipmentAmountChange
-                                            }
-                                            className="border border-gray-300 rounded-lg p-3 mb-4 w-full"
-                                            placeholder="$"
-                                        />
-                                        {/* {equipmentAmount && (
+                                    <label
+                                        htmlFor="equipmentAmount"
+                                        className="text-sm text-[#334155] font-medium mb-2 block"
+                                    >
+                                        Amount:
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="equipmentAmount"
+                                        value={equipmentAmount}
+                                        onChange={handleEquipmentAmountChange}
+                                        className="border border-gray-300 rounded-lg p-3 mb-4 w-full"
+                                        placeholder="$"
+                                    />
+                                    {/* {equipmentAmount && (
                                             <p className="text-sm text-[#334155] mb-4">
                                                 Represents:{" "}
                                                 <span className="font-bold">
@@ -1259,74 +1259,59 @@ const ListingDetails = ({ onClose }) => {
                                                 %
                                             </p>
                                         )} */}
-                                        <p className="text-sm text-[#334155] mb-4">
-                                            Represents:{" "}
-                                            <span className="font-bold">
-                                                {equipmentPercentage || 0}
-                                            </span>
-                                            %
+                                    <p className="text-sm text-[#334155] mb-4">
+                                        Represents:{" "}
+                                        <span className="font-bold">
+                                            {equipmentPercentage || 0}
+                                        </span>
+                                        %
+                                    </p>
+
+                                    <button
+                                        onClick={handleEquipmentInvest}
+                                        className="bg-green-700 hover:bg-green-800 text-white transition-all duration-200 px-4 py-3 rounded-lg w-full"
+                                    >
+                                        Invest With Assets
+                                    </button>
+                                    {equipmentErrorMessage && (
+                                        <p className="text-red-600 mt-4">
+                                            {equipmentErrorMessage}
                                         </p>
-
-                                        <button
-                                            onClick={handleEquipmentInvest}
-                                            className="bg-green-700 hover:bg-green-800 text-white transition-all duration-200 px-4 py-3 rounded-lg w-full"
-                                        >
-                                            Invest With Assets
-                                        </button>
-                                        {equipmentErrorMessage && (
-                                            <p className="text-red-600 mt-4">
-                                                {equipmentErrorMessage}
-                                            </p>
-                                        )}
-                                    </div>
+                                    )}
                                 </div>
-                            ) : (
+                            ) : null}
+
+                            {/* Fallback Section: Informative Messages */}
+                            {!token && (
                                 <div className="w-full flex justify-center items-center">
-                                    <div>
-                                        {conv && !mile ? (
-                                            <div className="w-full text-center p-4">
-                                                <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
-                                                    No Milestone is set for this
-                                                    business yet.
-                                                </p>
-                                            </div>
-                                        ) : conv && !amount_r ? (
-                                            <div className="w-full text-center p-4">
-                                                <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
-                                                    Business Is Fully Invested
-                                                    In.
-                                                </p>
-                                            </div>
-                                        ) : conv && !running ? (
-                                            <div className="w-full text-center p-4">
-                                                <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
-                                                    Milestone payout is
-                                                    currently off due to the
-                                                    milestone completion
-                                                    process. Please wait until
-                                                    the next milestone is open.
-                                                </p>
-                                            </div>
-                                        ) : (
-                                            <div className="w-full text-center p-4">
-                                                {!token && (
-                                                    <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
-                                                        Please login to bid on
-                                                        this project.
-                                                    </p>
-                                                )}
-                                            </div>
-                                        )}
-                                    </div>
+                                    <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
+                                        Please login to bid on this project.
+                                    </p>
                                 </div>
-
-                                // <div className="w-full mx-auto text-center p-4">
-                                //     <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
-                                //         Milestone payout is currently off due to
-                                //         milestone completion process. Please
-                                //         wait until the next milestone is open.
-                                //     </p>
-                                // </div>
+                            )}
+                            {conv && !mile && (
+                                <div className="w-full flex justify-center items-center">
+                                    <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
+                                        No Milestone is set for this business
+                                        yet.
+                                    </p>
+                                </div>
+                            )}
+                            {conv && !amount_r && (
+                                <div className="w-full flex justify-center items-center">
+                                    <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
+                                        Business Is Fully Invested In.
+                                    </p>
+                                </div>
+                            )}
+                            {conv && !running && (
+                                <div className="w-full flex justify-center items-center">
+                                    <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
+                                        Milestone payout is currently off due to
+                                        the milestone completion process. Please
+                                        wait until the next milestone is open.
+                                    </p>
+                                </div>
                             )}
                         </div>
 
