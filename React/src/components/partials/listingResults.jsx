@@ -109,9 +109,11 @@ const ListingResults = () => {
 
                     var x = navigator.geolocation;
                     x.getCurrentPosition(success, failure);
-                    document.querySelector('.permission-granted-button').addEventListener('click', () => {
-                      x.watchPosition(success, failure);
-                    });
+                    document
+                        .querySelector(".permission-granted-button")
+                        .addEventListener("click", () => {
+                            x.watchPosition(success, failure);
+                        });
                 })
                 .catch((err) => {
                     console.log(err);
@@ -531,6 +533,10 @@ const ListingResults = () => {
         UpdateValuesMax2(e.target.value); // Update max2 with the value without commas
     };
 
+    const Cancel = () => {
+        alert("cancel");
+    };
+
     //Range Function
 
     return (
@@ -653,15 +659,23 @@ const ListingResults = () => {
                                 </div>
                             </div>
 
-                            <button
-                                className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-full sm:w-32 mx-auto hover:bg-green-700 transition-colors"
-                                onClick={(event) => {
-                                    rangeSliderInitilize();
-                                    hide();
-                                }}
-                            >
-                                Set
-                            </button>
+                            <div className="mt-4 flex justify-between items-center w-full">
+                                <button
+                                    className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
+                                    onClick={(event) => {
+                                        rangeSliderInitilize();
+                                        hide();
+                                    }}
+                                >
+                                    Set
+                                </button>
+                                <button
+                                    className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                                    onClick={Cancel}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
                         {/* COLLAPSE RANGE */}
                     </div>
@@ -737,16 +751,23 @@ const ListingResults = () => {
                                     />
                                 </div>
                             </div>
-
-                            <button
-                                className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-full sm:w-32 mx-auto hover:bg-green-700 transition-colors"
-                                onClick={(event) => {
-                                    amountSliderInitilize();
-                                    hide2();
-                                }}
-                            >
-                                Set
-                            </button>
+                            <div className="mt-4 flex justify-between items-center w-full">
+                                <button
+                                    className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
+                                    onClick={(event) => {
+                                        amountSliderInitilize();
+                                        hide2();
+                                    }}
+                                >
+                                    Set
+                                </button>
+                                <button
+                                    className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                                    onClick={Cancel}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
 
                         {/*COLLAPSE Amount*/}

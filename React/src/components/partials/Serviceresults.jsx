@@ -291,6 +291,9 @@ const ServiceResults = () => {
         $("#price_low").removeClass("hidden");
         $("#price_high").removeClass("hidden");
     };
+     const Cancel = () => {
+       alert("cancel");
+     };
 
     //UPDATE NEW VALUES
     // const UpdateValuesMin = (value) => {
@@ -467,16 +470,23 @@ const ServiceResults = () => {
                                         />
                                     </div>
                                 </div>
-
-                                <button
-                                    className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-full sm:w-32 mx-auto hover:bg-green-700 transition-colors"
-                                    onClick={(event) => {
-                                        amountSlider();
-                                        hide();
-                                    }}
-                                >
-                                    Set
-                                </button>
+                                <div className="mt-4 flex justify-between items-center w-full">
+                                    <button
+                                        className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
+                                        onClick={(event) => {
+                                            amountSlider();
+                                            hide();
+                                        }}
+                                    >
+                                        Set
+                                    </button>
+                                    <button
+                                        className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                                        onClick={Cancel}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
                             </div>
 
                             {/*COLLAPSE Amount*/}
