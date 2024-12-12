@@ -706,13 +706,26 @@ const ListingDetails = ({ onClose }) => {
                                     </p>
                                 </div>
 
-                                <div className="flex items-center gap-2 mt-6">
-                                    <p className="text-green-800 text-2xl md:text-lg font-semibold">
-                                        ${details.investment_needed || 0}
+                                <div className="flex flex-wrap items-center gap-6 mt-6 ">
+                                    <p className="text-green-700 text-xl font-bold">
+                                        $
+                                        {(
+                                            details.investment_needed || 0
+                                        ).toLocaleString()}
                                     </p>
-                                    <p className="text-gray-800 text-sm">
-                                        Amount Requested:
-                                    </p>
+                                    <div className="flex items-center gap-2 text-sm">
+                                        <span className="text-gray-700 font-medium">
+                                            Amount Requested:
+                                        </span>
+                                        <span className="text-gray-500">|</span>
+                                        <span className="text-green-700">
+                                            Amount Collected: 1,000
+                                        </span>
+                                        <span className="text-gray-500">|</span>
+                                        <span className="text-red-700">
+                                            Amount Needed: 99,0000
+                                        </span>
+                                    </div>
                                 </div>
 
                                 <div className="flex gap-4 mt-4">
