@@ -3,6 +3,7 @@ import { AiOutlineReload } from "react-icons/ai"; // Retry icon
 import { FiSend } from "react-icons/fi"; // Send icon
 import axiosClient from "../../axiosClient";
 import SkeletonLoader from "./SkeletonLoader";
+import DefaultImg from "./Settings/components/DefaultImg";
 
 function Messages() {
     const [messages, setMessages] = useState([]);
@@ -143,7 +144,9 @@ function Messages() {
                         }`}
                     >
                         <img
-                            src={"https://example.com/placeholder-image.png"}
+                            src={
+                                "https://agri-soko-2-1.vercel.app/assets/default-BeD4CxIB.jpg"
+                            }
                             alt="Profile"
                             className="w-12 h-12 rounded-full object-cover mr-4"
                         />
@@ -171,7 +174,9 @@ function Messages() {
                         {/* Header */}
                         <div className="p-4 bg-white flex items-center border-b">
                             <img
-                                src={"/default-profile.png"}
+                                src={
+                                    "https://agri-soko-2-1.vercel.app/assets/default-BeD4CxIB.jpg"
+                                }
                                 alt="Profile"
                                 className="w-10 h-10 rounded-full mr-4"
                             />
@@ -243,7 +248,7 @@ function Messages() {
                             <textarea
                                 className="flex-1 border rounded-lg p-2 mr-2 focus:outline-none focus:ring-1 focus:ring-blue-400 text-gray-700 resize-none"
                                 rows="1"
-                                  placeholder="Type a message..."
+                                placeholder="Type a message..."
                                 value={newMessage}
                                 onChange={(e) => setNewMessage(e.target.value)}
                                 onKeyDown={(e) => {

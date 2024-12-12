@@ -706,17 +706,17 @@ const ListingDetails = ({ onClose }) => {
                                     </p>
                                 </div>
 
-                                <div className="flex flex-wrap items-center gap-6 mt-6 ">
-                                    <p className="text-green-700 text-xl font-bold">
+                                <div className="flex flex-wrap items-center gap-1 mt-6 ">
+                                    <span className="text-gray-700 font-medium">
+                                        Amount Requested:
+                                    </span>
+                                    <p className="text-green-700 text-sm font-bold">
                                         $
                                         {(
                                             details.investment_needed || 0
                                         ).toLocaleString()}
                                     </p>
                                     <div className="flex items-center gap-2 text-sm">
-                                        <span className="text-gray-700 font-medium">
-                                            Amount Requested:
-                                        </span>
                                         <span className="text-gray-500">|</span>
                                         <span className="text-green-700">
                                             Amount Collected: 1,000
@@ -1453,7 +1453,9 @@ const ListingDetails = ({ onClose }) => {
     )}
 </div> */}
                     </div>
-                    <hr className=" border-t border-gray-300 mt-6" />
+                    <div className="mb-4">
+                        <hr className="absolute left-0 w-full border-t border-gray-300 mt-6" />
+                    </div>
 
                     <div className="flex flex-col lg:flex-row gap-8 p-4">
                         {/* Review Summary - Left */}
