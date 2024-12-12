@@ -136,7 +136,7 @@ public function users()
 
 public function listings_active()
     {       
-        $acceptedBids = AcceptedBids::groupBy('business_id')->get();
+        $acceptedBids = AcceptedBids::groupBy('business_id')->latest()->get();
 
         $businesses = new stdClass; $i=0;
         foreach($acceptedBids as $aBid){
@@ -156,7 +156,7 @@ public function listings_active()
 
     public function services_active()
     {       
-        $acceptedBids = serviceBook::groupBy('service_id')->get();
+        $acceptedBids = serviceBook::groupBy('service_id')->latest()->get();
 
         $businesses = new stdClass; $i=0;
         foreach($acceptedBids as $booking){
