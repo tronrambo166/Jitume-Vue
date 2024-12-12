@@ -15,10 +15,13 @@ use App\Models\User;
 // use App\Models\albums;
 use App\Models\BusinessBids;
 use App\Models\AcceptedBids;
+use App\Models\serviceBook;
 use App\Models\Listing;
+use App\Models\Services;
 use Mail;
 use Session;
 use Exception;
+use stdClass;
 class AdminController extends Controller
 {
 
@@ -135,7 +138,7 @@ public function listings_active()
     {       
         $acceptedBids = AcceptedBids::groupBy('business_id')->get();
 
-        $businesses = array();
+        $businesses = new stdClass; $i=0;
         foreach($acceptedBids as $aBid){
             $row = DB::table('listings')
             ->where('listings.id',$aBid->business_id)
@@ -143,11 +146,30 @@ public function listings_active()
             ->select('listings.*', 'users.fname', 'users.lname', 'users.email')
             ->get();
         // ->join('milestones', 'listings.id', '=', 'milestones.listings_id')
-            $businesses[] = $row;
+            $businesses->$i = $row; $i++;
         }
         //return $businesses;
         
         return view('admin.listings_active',compact('businesses'));     
+    }
+
+
+    public function services_active()
+    {       
+        $acceptedBids = serviceBook::groupBy('service_id')->get();
+
+        $businesses = new stdClass; $i=0;
+        foreach($acceptedBids as $booking){
+            $row = DB::table('services')
+            ->where('services.id',$booking->service_id)
+            ->join('users', 'services.shop_id', '=', 'users.id')
+            ->select('services.*', 'users.fname', 'users.lname', 'users.email')
+            ->get();
+            $businesses->$i = $row; $i++;
+        }
+        //return $businesses;
+        
+        return view('admin.services_active',compact('businesses'));     
     }
 
 

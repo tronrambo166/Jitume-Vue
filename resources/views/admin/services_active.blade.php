@@ -8,7 +8,7 @@
 					<div class="page-header">
 						<div class="row">
 							<div class="col-sm-7 col-auto">
-								<h3 class="page-title">Active Businesses</h3>
+								<h3 class="page-title">Active Services</h3>
 								<ul class="breadcrumb">
 									<li class="breadcrumb-item"><a href="index">Dashboard</a></li>
 									<li class="breadcrumb-item active">Users</li>
@@ -30,10 +30,8 @@
 												<tr>											
 													<!-- <th>Image</th> -->
 													<th>User(Owner)</th>
-													<th class="">Business</th>
-													<th>Amount Required</th>
-													<th>Collected</th>
-													<th>Needed</th>
+													<th class="">Service</th>
+													<th>Amount</th>
 													<th>Email</th>
 													
 												</tr>
@@ -46,11 +44,9 @@
 													<!-- <td>N/A</td> -->
 													<td>{{$l[0]->fname.' '.$l[0]->lname}}</td>
 													<td style="color:#267c6f;font-weight: bold;">{{$l[0]->name}}</td>
-													<td>${{$l[0]->investment_needed}}</td>
 
-													<td style="color:#267c6f;font-weight: bold;">${{$l[0]->amount_collected}}</td>
+													<td style="color:#267c6f;font-weight: bold;">${{$l[0]->price}}</td>
 
-													<td>${{$l[0]->investment_needed-$l[0]->amount_collected}}</td>
 	
 													<td>{{$l[0]->email}}</td>
 													
