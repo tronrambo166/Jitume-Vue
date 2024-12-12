@@ -1126,7 +1126,7 @@ const ListingDetails = ({ onClose }) => {
             <div className="">
                 <hr className="border-t border-gray-300"></hr>
                 <div className=" sm:p-6  ">
-                    <div className="px-4">
+                    <div className="mx-auto pr-4 md:pl-0">
                         {/* On mobile, ReviewSummary takes up full width, on larger screens it takes 1/3 */}
                         <div className="sm:col-span-8 flex flex-col md:flex-row justify-around items-stretch gap-4 p-4">
                             {/* Financial Statements Section */}
