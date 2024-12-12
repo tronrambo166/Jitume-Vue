@@ -57,7 +57,7 @@ Route::group([ 'prefix' => 'admin'], function(){
     Route::get('/remove_song/{id}', [adminController::class,'remove_song'])->name('remove_song');
   
     Route::get('/users', [adminController::class,'users'])->name('users');   
-    Route::get('/songs', [adminController::class,'songs'])->name('songs');         
+    Route::get('/listings-active', [adminController::class,'listings_active']);         
     Route::post('/adminLogin', [adminController::class, 'adminLogin'])->name('adminLogin');
     Route::get('/reviews', function () {
     return view('admin.reviews');
