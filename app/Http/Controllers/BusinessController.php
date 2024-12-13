@@ -669,7 +669,7 @@ $total_mile = count($milestones);
 
 $list = Listing::where('id',$id)->first();
 $share = ($list->share)/100;
-$amount_required = $list->investment_needed - $amount_covered;
+$amount_required = $list->investment_needed - $list->amount_collected;
 $progress = ($amount_covered/$list->investment_needed)*100;
 
 return response()->json([ 'data' => $milestones, 'progress' => $progress,

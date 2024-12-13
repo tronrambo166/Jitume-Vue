@@ -87,6 +87,29 @@ const ServiceResults = () => {
         amountSlider();
     }, []);
 
+    //RESULTS
+    const getResults2 = () => {
+            axiosClient
+                .get("/ServiceResults/" + base64_decode(resIds))
+                .then(({ data }) => {
+                    setResults(data.data);
+                    res = data.data;
+                    //console.log(data);
+                    localStorage.setItem(
+                        "s_results",
+                        JSON.stringify(data.data)
+                    );
+
+                    var x = navigator.geolocation;
+                    x.getCurrentPosition(success, failure);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+    //RESULTS
+
+
     // Nurul/Owen
     const amountSlider = () => {
         noUiSlider.create(slider, {
@@ -482,7 +505,11 @@ const ServiceResults = () => {
                                     </button>
                                     <button
                                         className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
-                                        onClick={Cancel}
+                                        onClick={(event) => {
+                                        getResults2();
+                                        amountSlider();
+                                        hide();
+                                    }}
                                     >
                                         Cancel
                                     </button>

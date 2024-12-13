@@ -20,6 +20,7 @@ function Messages() {
                 .then(({ data }) => {
                     setMessages(data.messages);
                     setLoading(false);
+                    console.log(data.messages);
                 })
                 .catch((err) => {
                     console.error(err);

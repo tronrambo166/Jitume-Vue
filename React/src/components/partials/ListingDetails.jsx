@@ -283,7 +283,7 @@ const ListingDetails = ({ onClose }) => {
             if (amount > amount_r) {
                 setAmount("");
                 setPercentage(0);
-                setErrorMessage("Amount exceeds the investment required!");
+                setErrorMessage("Amount exceeds the investment needed!");
             } else {
                 const calculatedPercentage = (
                     (amount / details.investment_needed) *
@@ -719,11 +719,11 @@ const ListingDetails = ({ onClose }) => {
                                     <div className="flex items-center gap-2 text-sm">
                                         <span className="text-gray-500">|</span>
                                         <span className="text-green-700">
-                                            Amount Collected: 1,000
+                                            Amount Collected: {details.amount_collected.toLocaleString()}
                                         </span>
                                         <span className="text-gray-500">|</span>
                                         <span className="text-red-700">
-                                            Amount Needed: 99,0000
+                                            Amount Needed: {(details.investment_needed-details.amount_collected).toLocaleString()}
                                         </span>
                                     </div>
                                 </div>
