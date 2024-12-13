@@ -167,8 +167,11 @@ const ListingResults = () => {
         // };
         //SLIDERS FILTER
 
-        rangeSliderInitilize();
-        amountSliderInitilize();
+        //rangeSliderInitilize();
+        //amountSliderInitilize();
+        setTimeout(() => { rangeSliderInitilize(); }, 300);
+        setTimeout(() => { amountSliderInitilize(); }, 300);
+
     }, []);
 
     //RESUTLS 2
@@ -240,7 +243,7 @@ const ListingResults = () => {
                         const db_min = parseInt(range[0], 10);
                         const db_max = parseInt(range[1], 10);
 
-                        if (parseInt(values[1]) <= db_max) {
+                        if (parseInt(values[1]) <= db_max && parseInt(values[1]) >= db_min) {
                             turnoverRes.push(value);
                         }
                     }
