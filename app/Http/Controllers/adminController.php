@@ -27,14 +27,18 @@ class AdminController extends Controller
 {
     public function __construct()
     {
-        // $admin = Session::get('admin'); 
-        // echo $admin; exit;
-        // if(!$admin || $admin != 'Logged!')
-        //     Redirect::to('admin')->send(); 
+        $admin = Session::get('admin'); 
+        //echo $admin; exit;
+        // if(!$admin)
+        //     Redirect::to('admin/login')->send(); 
     }
 
   public function login()
     {  
+        $admin = Session::get('admin');  echo $admin;exit;
+         if($admin && $admin == 'Logged!')
+             Redirect::to('admin/index_admin')->send(); 
+
         return view('admin.login'); 
     }
 

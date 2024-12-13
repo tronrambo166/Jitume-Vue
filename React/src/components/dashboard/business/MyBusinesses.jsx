@@ -61,7 +61,7 @@ const MyBusinesses = () => {
                 } else if (data.status === 404) {
                     showAlert(
                         "error",
-                        "Milestone not found. Redirecting to add milestone page."
+                        "Please add one or more milestones that cover full amount needed. Redirecting to add milestone page."
                     );
                     setTimeout(() => {
                         navigate(`/dashboard/add-milestone`);

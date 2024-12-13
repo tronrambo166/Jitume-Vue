@@ -115,7 +115,13 @@ else{
 }
 
 
-
+ public function logout()
+    {  
+        Session::forget('admin');
+     //$request->session()->invalidate();
+     //$request->session()->regenerateToken();
+        return redirect('admin/login'); 
+    }
 
     public function adminLogout(Request $request)
 {

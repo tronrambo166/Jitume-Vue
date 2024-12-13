@@ -312,7 +312,7 @@ const ListingDetails = ({ onClose }) => {
                 );
             } else {
                 const calculatedPercentage = (
-                    (amount / amount_r) *
+                    (amount / details.investment_needed) *
                     100
                 ).toFixed(2);
                 setEquipmentPercentage(calculatedPercentage);

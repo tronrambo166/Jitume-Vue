@@ -18,11 +18,11 @@
 							</li>
 
 							<li  class="{{ Request::is('admin/listings-active') ? 'active' : '' }}"> 
-								<a href="listings-active"><i class="fe fe-user-plus"></i> <span>Active Businesses</span></a>
+								<a href="listings-active"><i style="font-size: 18px;" class="fa fa-list fa-1x"></i> <span>Active Businesses</span></a>
 							</li>
 
 							<li  class="{{ Request::is('admin/services-active') ? 'active' : '' }}"> 
-								<a href="services-active"><i class="fe fe-user-plus"></i> <span>Active Services</span></a>
+								<a href="services-active"><i style="font-size: 18px;" class="fa fa-cog fa-1x"></i> <span>Active Services</span></a>
 							</li>
 							
 							

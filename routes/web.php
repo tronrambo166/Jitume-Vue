@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\checkoutController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\PayPalController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,9 +47,11 @@ Route::get('paypal-cancel',[PayPalController::class,'cancel'])->name('paypal.can
 Route::group([ 'prefix' => 'admin'], function(){ 
     
     Route::post('/searchInAdmin', [adminController::class,'searchInAdmin'])->name('searchInAdmin');
-    Route::get('/', function () {return view('admin.login');})->name('loginA');
-    Route::get('/index_admin',[adminController::class, 'index_admin'])->name('index_admin');
-    Route::get('/logout',[adminController::class,'logout'])->name('logout');
+    Route::get('/',[adminController::class,'login'])->name('loginA');
+    Route::get('/login',[adminController::class,'login'])->name('loginA');
+
+    Route::get('/index_admin', [adminController::class, 'index_admin'])->name('index_admin');
+    Route::get('/logout',[UserController::class,'logout'])->name('logout');
 
     Route::get('/artists', [adminController::class,'artists'])->name('artistsList');
     Route::get('/approve/{id}', [adminController::class,'approve'])->name('approve');
@@ -59,7 +62,7 @@ Route::group([ 'prefix' => 'admin'], function(){
     Route::get('/users', [adminController::class,'users'])->name('users');   
     Route::get('/listings-active', [adminController::class,'listings_active']);
     Route::get('/services-active', [adminController::class,'services_active']);         
-    Route::post('/adminLogin', [adminController::class, 'adminLogin'])->name('adminLogin');
+    Route::post('/adminLogin', [UserController::class, 'adminLogin'])->name('adminLogin');
     Route::get('/reviews', function () {
     return view('admin.reviews');
     })->name('reviews');
