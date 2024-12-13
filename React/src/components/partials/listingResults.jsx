@@ -130,9 +130,10 @@ const ListingResults = () => {
         var slider = document.getElementById("slider");
         var slider2 = document.getElementById("slider2");
 
-        if ((slider && slider.noUiSlider) || (slider2 && slider2.noUiSlider)) {
+        if ((slider && slider.noUiSlider) && (slider2 && slider2.noUiSlider)) {
             slider.noUiSlider.destroy();
             slider2.noUiSlider.destroy();
+
         }
 
         //SLIDERS FILTER
@@ -170,6 +171,30 @@ const ListingResults = () => {
         amountSliderInitilize();
     }, []);
 
+    //RESUTLS 2
+    const getResults2 = () => {
+            axiosClient
+                .get("/searchResults/" + base64_decode(resIds))
+                .then(({ data }) => {
+                    setResults(data.data);
+                    res = data.data;
+                    //console.log(results);
+                    localStorage.setItem("results", JSON.stringify(data.data));
+
+                    var x = navigator.geolocation;
+                    x.getCurrentPosition(success, failure);
+                    document
+                        .querySelector(".permission-granted-button")
+                        .addEventListener("click", () => {
+                            x.watchPosition(success, failure);
+                        });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+        //RESUTLS 2
+
     //Turnover(Nurul)
     const rangeSliderInitilize = () => {
         noUiSlider.create(slider, {
@@ -179,11 +204,11 @@ const ListingResults = () => {
                 min: parseFloat(min),
                 max: parseFloat(max),
             },
-            step: 10000,
+            step: 1000,
             margin: 600,
             pips: {
                 stepped: true,
-                density: 6,
+                density: 4,
             },
         });
 
@@ -237,11 +262,11 @@ const ListingResults = () => {
                 min: parseFloat(min2),
                 max: parseFloat(max2),
             },
-            step: 10000,
+            step: 1000,
             margin: 600,
             pips: {
                 stepped: true,
-                density: 6,
+                density: 4,
             },
         });
 
@@ -440,6 +465,7 @@ const ListingResults = () => {
 
         if (slider && slider.noUiSlider) {
             slider.noUiSlider.destroy();
+            //$('.noUi-pips-horizontal').hide();
         }
         $("#collapseExample").removeClass("hidden");
         $("#colBut").addClass("hidden");
@@ -671,7 +697,11 @@ const ListingResults = () => {
                                 </button>
                                 <button
                                     className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
-                                    onClick={Cancel}
+                                    onClick={(event) => {
+                                        getResults2();
+                                        rangeSliderInitilize();
+                                        hide();
+                                    }}
                                 >
                                     Cancel
                                 </button>
@@ -761,9 +791,14 @@ const ListingResults = () => {
                                 >
                                     Set
                                 </button>
+                                
                                 <button
                                     className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
-                                    onClick={Cancel}
+                                    onClick={(event) => {
+                                        getResults2();
+                                        amountSliderInitilize();
+                                        hide2();
+                                    }}
                                 >
                                     Cancel
                                 </button>

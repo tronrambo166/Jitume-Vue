@@ -22,8 +22,16 @@ use Mail;
 use Session;
 use Exception;
 use stdClass;
+use Redirect;
 class AdminController extends Controller
 {
+    public function __construct()
+    {
+        // $admin = Session::get('admin'); 
+        // echo $admin; exit;
+        // if(!$admin || $admin != 'Logged!')
+        //     Redirect::to('admin')->send(); 
+    }
 
   public function login()
     {  

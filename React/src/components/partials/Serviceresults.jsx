@@ -96,11 +96,11 @@ const ServiceResults = () => {
                 min: parseFloat(min),
                 max: parseFloat(max),
             },
-            step: 10000,
+            step: 1000,
             margin: 600,
             pips: {
                 stepped: true,
-                density: 6,
+                density: 4,
             },
         });
 
