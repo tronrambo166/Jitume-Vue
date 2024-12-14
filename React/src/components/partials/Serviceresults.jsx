@@ -318,6 +318,15 @@ const ServiceResults = () => {
        alert("cancel");
      };
 
+     const clearAmountSlider = () => {
+        var slider = document.getElementById("slider");
+        if (slider && slider.noUiSlider) {
+            slider.noUiSlider.destroy();
+        }
+        //min = 0;
+        //max = 1000000;
+    };
+
     //UPDATE NEW VALUES
     // const UpdateValuesMin = (value) => {
     //     min = value;
@@ -425,6 +434,18 @@ const ServiceResults = () => {
                         <label className="text-gray-700 font-semibold mb-2">
                             Price Range
                         </label>
+
+                        <button
+                            className="px-2 py-1 bg-green-400 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                            onClick={(event) => {
+                                clearAmountSlider();
+                                amountSlider();
+                                getResults2();
+                            }}
+                        >
+                            Clear
+                        </button>
+                        
                         <div id="slider" className="">
                             {" "}
                         </div>

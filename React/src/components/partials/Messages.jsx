@@ -40,24 +40,25 @@ function Messages() {
     const handleSelectMessage = (message) => {
         setSelectedMessage(message);
         setChatHistory([
-            { sender: "them", text: message.msg, time: message.created_at },
+            { sender: message.sender, text: message.msg, id: message.id,
+            service_id: message.service_id, time: message.created_at },
         ]);
     };
 
-    const handleSendMessage = () => {
+    const handleSendMessage = (id, service_id) => {
         if (!newMessage.trim()) return;
 
         const tempMessage = {
-            sender: "me",
-            text: newMessage,
-            time: new Date().toLocaleString(),
-            status: "Sending...",
+            msg_id: id,
+            service_id:service_id,
+            msg: newMessage,
+            //time: new Date().toLocaleString(),
         };
 
         setChatHistory((prev) => [...prev, tempMessage]);
         axiosClient
-            .post("/send_message", { message: newMessage })
-            .then(() => {
+            .post("/serviceReply", { tempMessage })
+            .then(({ response }) => {
                 setChatHistory((prev) =>
                     prev.map((msg, index) =>
                         index === prev.length - 1
@@ -65,6 +66,7 @@ function Messages() {
                             : msg
                     )
                 );
+                console.log('hi');
             })
             .catch(() => {
                 setChatHistory((prev) =>
@@ -88,7 +90,7 @@ function Messages() {
                 )
             );
             axiosClient
-                .post("/send_message", { message: message.text })
+                .post("/serviceReply", { message: message.text })
                 .then(() => {
                     setChatHistory((prev) =>
                         prev.map((msg, idx) =>
@@ -212,7 +214,7 @@ function Messages() {
                                         {chat.text}
                                         <div className="flex items-center justify-between text-xs mt-2">
                                             <span className="text-slate-700">
-                                                {formatDate(chat.time)}
+                                                
                                             </span>
                                             {chat.sender === "me" && (
                                                 <span
@@ -240,13 +242,36 @@ function Messages() {
                                             )}
                                         </div>
                                     </div>
+
+                                    <div className="p-4 bg-white border-t flex items-center sticky bottom-0">
+                            <textarea
+                                className="flex-1 border rounded-lg p-2 mr-2 focus:outline-none focus:ring-1 focus:ring-blue-400 text-gray-700 resize-none"
+                                rows="1"
+                                placeholder="Type a message 2..."
+                                value={newMessage}
+                                onChange={(e) => setNewMessage(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter" && !e.shiftKey) {
+                                        e.preventDefault();
+                                        //handleSendMessage();
+                                    }
+                                }}
+                            ></textarea>
+                            <button
+                                className="bg-green-700 text-white p-3 rounded-full hover:bg-lime-700 transition-all"
+                                onClick={handleSendMessage(chat.id,chat.service_id)}
+                            >
+                                <FiSend className="w-5 h-5" />
+                            </button>
+                        </div>
+
                                 </div>
                             ))}
                         </div>
 
                         {/* Input Box */}
                         <div className="p-4 bg-white border-t flex items-center sticky bottom-0">
-                            <textarea
+                            {/*<textarea
                                 className="flex-1 border rounded-lg p-2 mr-2 focus:outline-none focus:ring-1 focus:ring-blue-400 text-gray-700 resize-none"
                                 rows="1"
                                 placeholder="Type a message..."
@@ -255,16 +280,16 @@ function Messages() {
                                 onKeyDown={(e) => {
                                     if (e.key === "Enter" && !e.shiftKey) {
                                         e.preventDefault();
-                                        handleSendMessage();
+                                        //handleSendMessage();
                                     }
                                 }}
-                            ></textarea>
-                            <button
+                            ></textarea>*/}
+                            {/*<button
                                 className="bg-green-700 text-white p-3 rounded-full hover:bg-lime-700 transition-all"
                                 onClick={handleSendMessage}
                             >
                                 <FiSend className="w-5 h-5" />
-                            </button>
+                            </button>*/}
                         </div>
                     </>
                 ) : (
