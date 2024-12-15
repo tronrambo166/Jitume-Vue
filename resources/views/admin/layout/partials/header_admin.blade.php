@@ -75,7 +75,7 @@ timeoutId = setTimeout(logoutUser, inactivityTimeout);
 }
 
 // Function to log out the user
-function logoutUser() { alert('ok');
+function logoutUser() { alert('Session Lost!');
 // Get the CSRF token from a meta tag or a hidden input field
 const csrfToken = document.querySelector('meta[name="csrf_token"]').getAttribute('content');
 
