@@ -63,3 +63,49 @@
 			
 		</div>
 		<!-- /Header -->
+
+		<script>
+// Set the inactivity timeout in milliseconds (15 minutes)
+const inactivityTimeout = 1 * 10 * 1000;
+
+// Function to handle user activity
+function resetTimer() {
+clearTimeout(timeoutId);
+timeoutId = setTimeout(logoutUser, inactivityTimeout);
+}
+
+// Function to log out the user
+function logoutUser() { alert('ok');
+// Get the CSRF token from a meta tag or a hidden input field
+const csrfToken = document.querySelector('meta[name="csrf_token"]').getAttribute('content');
+
+// Send a POST request to the /logout route with the CSRF token
+fetch('logout', {
+    method: 'GET',
+    headers: {
+    'X-CSRF-TOKEN': csrfToken
+    }
+})
+.then(response => {
+    if (response.ok) {
+    // Redirect to the login page or other appropriate action
+    window.location.href = './login';
+    } else {
+    // Handle error, e.g., display an error message
+    console.error('Logout failed:', response.statusText);
+    }
+})
+.catch(error => {
+    console.error('Logout failed:', error);
+});
+}
+
+// Event listeners for user activity
+document.addEventListener('mousemove', resetTimer);
+document.addEventListener('keydown', resetTimer);
+document.addEventListener('click', resetTimer);
+document.addEventListener('scroll', resetTimer);
+
+// Initial timeout
+let timeoutId = setTimeout(logoutUser, inactivityTimeout);
+</script>

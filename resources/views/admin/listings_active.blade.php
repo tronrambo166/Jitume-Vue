@@ -78,7 +78,7 @@
 
 			
 	<script type="text/javascript">
-		new DataTable('#example');
+		//new DataTable('#example');
 	</script>	
 
 			
