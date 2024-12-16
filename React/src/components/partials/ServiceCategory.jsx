@@ -32,10 +32,11 @@ const CategoryPage = ({ categoryName }) => {
                         const max = Math.max(...prices);
                         const min = Math.min(...prices);
 
-                        setMinn(min); // Update minimum price state
+                        // Ensure minimum price is set to 0
+                        setMinn(0); // Explicitly set minimum to 0
                         setMaxx(max); // Update maximum price state
                         setMaxPrice(max); // Update maxPrice for slider
-                        setRange([min, max]); // Update the range to reflect the new min and max
+                        setRange([0, max]); // Update the range to start from 0
                     } else {
                         setNotificationMessage("Listings not found.");
                         setShowNotification(true);
@@ -132,6 +133,17 @@ const CategoryPage = ({ categoryName }) => {
         // Hide the dropdown by toggling its visibility
         toggleCollapse("collapseAmountRange");
     };
+    const handleClear = () => {
+        // Reset the range slider to its initial values (min and max)
+        setRange([minn, maxx]); // Reset the slider range to its initial min and max values
+
+        // Clear the input fields for min and max amount
+        setMinAmount(minn); // Reset min input to initial min value
+        setMaxAmount(maxx); // Reset max input to initial max value
+        // Clear the input fields for min and max amount
+        setMinAmount("");
+        setMaxAmount("");
+    };
 
     return (
         <div className="p-6 max-w-screen-xl mx-auto space-y-10">
@@ -149,18 +161,27 @@ const CategoryPage = ({ categoryName }) => {
             <div></div>
             {/* Amount Range Section */}
             <div className="border border-gray-200 rounded-lg p-6 md:p-8 bg-white ">
-                <button
-                    onClick={() => {
-                        toggleCollapse("collapseAmountRange");
-                    }}
-                    className="mr-4 my-2 border rounded-full px-3 py-1 "
-                >
-                    Set Range
-                </button>
-
-                <label className="text-gray-700 font-semibold mb-2">
-                    Price Range
-                </label>
+                <div className="flex items-center justify-between">
+                    <div>
+                        <button
+                            onClick={() => {
+                                toggleCollapse("collapseAmountRange");
+                            }}
+                            className="mr-4 my-2 border rounded-full px-3 py-1"
+                        >
+                            Set Range
+                        </button>
+                        <label className="text-gray-700 font-semibold mb-2">
+                            Price Range
+                        </label>
+                    </div>
+                    <button
+                        onClick={handleClear}
+                        className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
+                    >
+                        Clear
+                    </button>
+                </div>
 
                 <div className="py-4" id="sliderElement">
                     {/* Slider element */}
@@ -251,7 +272,7 @@ const CategoryPage = ({ categoryName }) => {
                             Set
                         </button>
                         <button
-                            className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                            className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
                             onClick={Cancel}
                         >
                             Cancel

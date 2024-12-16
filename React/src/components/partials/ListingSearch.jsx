@@ -11,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
+import { FaChevronDown } from "react-icons/fa";
 
 import { FaMapMarkerAlt, FaSearch } from "react-icons/fa"; // Import only necessary icons
 
@@ -193,7 +194,7 @@ const Search = () => {
 
     return (
         <div className="px-4 sm:px-0 w-full">
-            <div className="bg-gray-200 border-white w-full border rounded-xl">
+            <div className="bg-gray-200 border  w-full  rounded-xl">
                 {/* Search Section */}
                 <div className="flex flex-col sm:flex-row items-center h-auto sm:h-16 p-2 sm:p-0">
                     {/* Categories Dropdown */}
@@ -202,10 +203,10 @@ const Search = () => {
                             ref={categoryRef}
                             value={categoryValue} // controlled value
                             onChange={handleCategoryChange} // handle change
-                            className="border rounded-l-xl h-full focus:outline-none bg-white text-gray-500 w-full pl-3 pr-8"
+                            className="appearance-none rounded-l-xl h-full focus:outline-none bg-white text-gray-500 w-full pl-3 pr-10"
                         >
                             <option className="text-gray-400" value="">
-                                Select a category
+                                All Categories
                             </option>
                             <option value="Agriculture">Agriculture</option>
                             <option value="Arts/Culture">Arts/Culture</option>
@@ -232,6 +233,12 @@ const Search = () => {
                                 Technology/Communications
                             </option>
                         </select>
+                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                            <FaChevronDown
+                                className="text-gray-500"
+                                size={16}
+                            />
+                        </div>
                     </div>
 
                     {/* Hidden inputs for latitude and longitude */}
@@ -253,7 +260,6 @@ const Search = () => {
                     />
 
                     {/* Separator Line (hidden on small screens) */}
-                    <div className="hidden sm:block h-10 border-l border-gray-300 mx-0"></div>
 
                     {/* Location Input with Suggestions */}
                     <div className="relative w-full sm:w-1/4 h-12 sm:h-full mb-2 sm:mb-0">
@@ -264,7 +270,7 @@ const Search = () => {
                             type="text"
                             placeholder="Location"
                             ref={locationInputRef}
-                            className="border h-full focus:outline-none w-full pl-8"
+                            className=" h-full focus:outline-none w-full pl-8"
                             // value={location}
                             // onChange={handleLocationChange}
                         />
@@ -272,7 +278,7 @@ const Search = () => {
                         {/* Suggestions Dropdown */}
                         <div id="result_list" className="">
                             {suggestions.length > 0 && (
-                                <ul className="absolute z-10 bg-white border border-gray-200  w-full mt-1 max-h-40 overflow-y-auto">
+                                <ul className="absolute z-10 bg-white   w-full mt-1 max-h-40 overflow-y-auto">
                                     {suggestions.map((suggestion, index) => (
                                         <li
                                             key={index}
@@ -293,15 +299,14 @@ const Search = () => {
                     </div>
 
                     {/* Separator Line (hidden on small screens) */}
-                    <div className="hidden sm:block h-10 border-l border-gray-300 mx-0"></div>
 
                     {/* What are you looking for Input */}
                     <div className="relative w-full sm:w-1/4 h-12 sm:h-full mb-2 sm:mb-0 flex-grow">
                         <FaSearch className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" />
                         <input
                             type="text"
-                            placeholder="What are you looking for?"
-                            className="border  h-full focus:outline-none w-full pl-8"
+                            placeholder="What Are You Looking For?"
+                            className=" h-full focus:outline-none w-full pl-8"
                             ref={nameRef}
                             value={nameValue} // controlled value
                             onChange={handleNameChange}
@@ -311,7 +316,7 @@ const Search = () => {
                     {/* Search Button */}
                     <button
                         onClick={onSearch}
-                        className="bg-[#FDE047] text-black rounded-r-lg h-12 sm:h-full py-2 px-12 w-full sm:w-auto"
+                        className="bg-[#FDE047] text-black rounded-r-lg h-12 sm:h-full py-2 px-9 w-full sm:w-auto text-lg"
                     >
                         Search
                     </button>

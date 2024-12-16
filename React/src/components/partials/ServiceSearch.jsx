@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import axiosClient from "../../axiosClient";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
-
+import { FaChevronDown } from "react-icons/fa";
 const Search = () => {
     const [location, setLocation] = useState("");
     const [suggestions, setSuggestions] = useState([]);
@@ -178,15 +178,15 @@ const Search = () => {
 
     return (
         <div className="px-4 sm:px-0 w-full">
-            <div className="flex flex-col bg-white w-full  ">
+            <div className=" border  w-full  rounded-xl">
                 <div className="flex flex-col sm:flex-row items-center h-auto sm:h-16 w-full">
                     {/* Select Category */}
-                    <div className="relative flex items-center h-full w-full sm:w-1/4 mb-1 sm:mb-0 border rounded-l-lg">
+                    <div className="relative flex items-center h-full w-full sm:w-1/4 mb-1 sm:mb-0 rounded-l-lg">
                         <select
                             ref={categoryRef}
                             value={categoryValue} // controlled value
                             onChange={handleCategoryChange} // handle change
-                            className="border-none bg-transparent focus:outline-none text-gray-500 text-xs sm:text-sm w-full pl-2 pr-2"
+                            className="bg-transparent focus:outline-none text-gray-500 text-xs sm:text-sm w-full pl-2 pr-10"
                         >
                             <option value="">All Categories</option>
                             <option value="Business Planning">
@@ -209,10 +209,16 @@ const Search = () => {
                             </option>
                             <option value="Other">Other</option>
                         </select>
+                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none sm:block hidden">
+                            <FaChevronDown
+                                className="text-gray-500"
+                                size={16}
+                            />
+                        </div>
                     </div>
 
                     {/* Location Input */}
-                    <div className="relative w-full sm:w-1/4 h-12 sm:h-full border  mb-1 sm:mb-0">
+                    <div className="relative w-full sm:w-1/4 h-12 sm:h-full   mb-1 sm:mb-0">
                         <FaMapMarkerAlt className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-lg" />
                         <input
                             onKeyUp={getPlaces}
@@ -224,10 +230,10 @@ const Search = () => {
                         />
                         <div
                             id="result_list2"
-                            className="absolute w-full bg-white border-gray-300 border-t-0 rounded-b-md shadow-lg z-10 top-full"
+                            className="absolute w-full bg-white  rounded-b-md shadow-lg z-10 top-full"
                         >
                             {suggestions.length > 0 && (
-                                <ul className="bg-white border border-gray-200  w-full mt-1 max-h-40 overflow-y-auto">
+                                <ul className="bg-white  w-full mt-1 max-h-40 overflow-y-auto">
                                     {suggestions.map((suggestion, index) => (
                                         <li
                                             key={index}
@@ -250,14 +256,14 @@ const Search = () => {
                     </div>
 
                     {/* What are you looking for Input */}
-                    <div className="relative w-full sm:w-1/2 h-12 sm:h-full border  mb-1 sm:mb-0">
+                    <div className="relative w-full sm:w-1/2 h-12 sm:h-full  mb-1 sm:mb-0">
                         <FaSearch className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-lg" />
                         <input
                             ref={nameRef}
                             value={nameValue}
                             onChange={handleNameChange}
                             type="text"
-                            placeholder="What are you looking for?"
+                            placeholder="What Are You Looking For?"
                             className="bg-transparent text-gray-500 h-full w-full pl-8 focus:outline-none"
                         />
                     </div>
@@ -265,7 +271,7 @@ const Search = () => {
                     {/* Search Button */}
                     <button
                         onClick={Search}
-                        className="bg-[#FDE047] text-black h-12 sm:h-full px-14 rounded-lg sm:rounded-r-xl sm:rounded-l-none w-full sm:w-auto"
+                        className="bg-[#FDE047] text-black rounded-r-lg h-12 sm:h-full py-2 px-9 w-full sm:w-auto text-lg"
                     >
                         Search
                     </button>

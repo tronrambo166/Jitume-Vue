@@ -245,8 +245,6 @@ const Search = () => {
                         </select>
                     </div>
 
-                    
-
                     {/* Hidden inputs for latitude and longitude */}
                     <input
                         readOnly
@@ -314,7 +312,7 @@ const Search = () => {
                             value={nameValue} // controlled value
                             onChange={handleNameChange}
                             type="text"
-                            placeholder="What are you looking for?"
+                            placeholder="What Are You Looking For?"
                             className="border-none h-full focus:outline-none w-full pl-8 text-xs sm:text-sm"
                         />
                     </div>

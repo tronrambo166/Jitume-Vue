@@ -471,7 +471,7 @@ const RegisterForm = () => {
     };
 
     return (
-        <div className="h-[530px] ">
+        <div className="h-[545px] ">
             <form className="flex flex-col px-4 py-2 " onSubmit={handleSubmit}>
                 {step === 1 && (
                     <div>

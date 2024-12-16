@@ -3,7 +3,6 @@ import { AiOutlineReload } from "react-icons/ai"; // Retry icon
 import { FiSend } from "react-icons/fi"; // Send icon
 import axiosClient from "../../axiosClient";
 import SkeletonLoader from "./SkeletonLoader";
-import DefaultImg from "./Settings/components/DefaultImg";
 
 function Messages() {
     const [messages, setMessages] = useState([]);
@@ -15,18 +14,23 @@ function Messages() {
 
     useEffect(() => {
         const fetchMessages = () => {
+            console.log("Fetching messages...");
             axiosClient
                 .get("/business/service_messages")
                 .then(({ data }) => {
+                    console.log(
+                        "Messages fetched successfully:",
+                        data.messages
+                    );
                     setMessages(data.messages);
                     setLoading(false);
-                    console.log(data.messages);
                 })
                 .catch((err) => {
-                    console.error(err);
+                    console.error("Error fetching messages:", err);
                     setLoading(false);
                 });
         };
+
         fetchMessages();
 
         const handleResize = () => {
@@ -38,10 +42,16 @@ function Messages() {
     }, []);
 
     const handleSelectMessage = (message) => {
+        console.log("Selected message:", message);
         setSelectedMessage(message);
         setChatHistory([
-            { sender: message.sender, text: message.msg, id: message.id,
-            service_id: message.service_id, time: message.created_at },
+            {
+                sender: message.sender,
+                text: message.msg, // Use 'text' to match the rendering logic
+                id: message.id,
+                service_id: message.service_id,
+                time: message.created_at,
+            },
         ]);
     };
 
@@ -49,29 +59,36 @@ function Messages() {
         if (!newMessage.trim()) return;
 
         const tempMessage = {
-            msg_id: id,
-            service_id:service_id,
-            msg: newMessage,
-            //time: new Date().toLocaleString(),
+            sender: "me", // Indicate the sender is the current user
+            text: newMessage,
+            id,
+            service_id,
+            status: "Sending...", // Temporary status
         };
 
+        console.log("Sending message:", tempMessage);
+
         setChatHistory((prev) => [...prev, tempMessage]);
+
         axiosClient
-            .post("/serviceReply", { tempMessage })
-            .then(({ response }) => {
+            .post("/serviceReply", {
+                msg_id: id,
+                service_id,
+                msg: newMessage,
+            })
+            .then(({ data }) => {
+                console.log("Message sent successfully:", data);
                 setChatHistory((prev) =>
-                    prev.map((msg, index) =>
-                        index === prev.length - 1
-                            ? { ...msg, status: "Sent" }
-                            : msg
+                    prev.map((msg) =>
+                        msg === tempMessage ? { ...msg, status: "Sent" } : msg
                     )
                 );
-                console.log('hi');
             })
-            .catch(() => {
+            .catch((err) => {
+                console.error("Error sending message:", err);
                 setChatHistory((prev) =>
-                    prev.map((msg, index) =>
-                        index === prev.length - 1
+                    prev.map((msg) =>
+                        msg === tempMessage
                             ? { ...msg, status: "Failed to send" }
                             : msg
                     )
@@ -84,21 +101,24 @@ function Messages() {
     const handleRetryMessage = (index) => {
         const message = chatHistory[index];
         if (message.status === "Failed to send") {
+            console.log("Retrying message:", message);
             setChatHistory((prev) =>
                 prev.map((msg, idx) =>
                     idx === index ? { ...msg, status: "Sending..." } : msg
                 )
             );
             axiosClient
-                .post("/serviceReply", { message: message.text })
+                .post("/serviceReply", { msg: message.msg })
                 .then(() => {
+                    console.log("Message resent successfully");
                     setChatHistory((prev) =>
                         prev.map((msg, idx) =>
                             idx === index ? { ...msg, status: "Sent" } : msg
                         )
                     );
                 })
-                .catch(() => {
+                .catch((err) => {
+                    console.error("Error retrying message:", err);
                     setChatHistory((prev) =>
                         prev.map((msg, idx) =>
                             idx === index
@@ -110,28 +130,15 @@ function Messages() {
         }
     };
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleString("en-US", {
-            weekday: "short",
-            month: "short",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-        });
-    };
-
     if (loading) return <SkeletonLoader />;
 
     return (
-        <div className="flex flex-col px-5 mt-4 md:flex-row h-screen text-gray-800">
+        <div className="flex mt-6 px-6 flex-col md:flex-row text-gray-800 relative mx-auto bg-gray-50 shadow-lg">
             {/* Sidebar */}
             <div
-                className={`w-full md:w-1/3 pt-6 bg-white border-r overflow-y-auto ${
+                className={`w-full md:w-1/3 bg-white border-r overflow-y-auto ${
                     isMobileView && selectedMessage ? "hidden" : ""
                 }`}
-                style={{ height: "calc(100vh - 4rem)" }} // Sidebar height adjustment
             >
                 <div className="p-4 border-b bg-white">
                     <h3 className="text-lg font-bold">Conversations</h3>
@@ -140,7 +147,7 @@ function Messages() {
                     <div
                         key={msg.id}
                         onClick={() => handleSelectMessage(msg)}
-                        className={`p-4 flex items-center cursor-pointer transition-all border-b border-gray-200 ${
+                        className={`p-4 flex  items-center cursor-pointer border-b ${
                             selectedMessage?.id === msg.id
                                 ? "bg-slate-100 text-blue-900"
                                 : "hover:bg-gray-50"
@@ -148,36 +155,31 @@ function Messages() {
                     >
                         <img
                             src={
+                                msg.avatarUrl ||
                                 "https://agri-soko-2-1.vercel.app/assets/default-BeD4CxIB.jpg"
                             }
                             alt="Profile"
                             className="w-12 h-12 rounded-full object-cover mr-4"
                         />
                         <div className="flex-1">
-                            <h4 className="font-semibold text-gray-900">
-                                {msg.sender}
-                            </h4>
+                            <h4 className="font-semibold">{msg.sender}</h4>
                             <p className="text-sm text-gray-600 truncate">
                                 {msg.msg}
                             </p>
                         </div>
-                        {selectedMessage?.id === msg.id && (
-                            <div className="ml-2 text-green-600">
-                                <i className="fas fa-check-circle"></i>
-                            </div>
-                        )}
                     </div>
                 ))}
             </div>
 
             {/* Chat Window */}
-            <div className="flex-1 flex flex-col bg-gray-100 h-screen">
+            <div className="flex-1 flex flex-col bg-gray-100 min-h-screen">
                 {selectedMessage ? (
                     <>
-                        {/* Header */}
+                        {/* Chat Header */}
                         <div className="p-4 bg-white flex items-center border-b">
                             <img
                                 src={
+                                    selectedMessage.avatarUrl ||
                                     "https://agri-soko-2-1.vercel.app/assets/default-BeD4CxIB.jpg"
                                 }
                                 alt="Profile"
@@ -187,14 +189,17 @@ function Messages() {
                                 <h4 className="text-lg font-semibold">
                                     {selectedMessage.sender}
                                 </h4>
-                                <p className="text-sm text-gray-500">
-                                    Service: {selectedMessage.service}
-                                </p>
                             </div>
                         </div>
 
-                        {/* Messages */}
-                        <div className="flex-1 p-4 overflow-y-auto space-y-4">
+                        {/* Chat History */}
+                        <div
+                            className="flex-1 p-4 overflow-y-auto"
+                            style={{
+                                flexGrow: 1,
+                                overflowY: "auto",
+                            }}
+                        >
                             {chatHistory.map((chat, index) => (
                                 <div
                                     key={index}
@@ -202,94 +207,79 @@ function Messages() {
                                         chat.sender === "me"
                                             ? "justify-end"
                                             : "justify-start"
-                                    }`}
+                                    } mt-4`}
                                 >
                                     <div
-                                        className={`${
+                                        className={`relative p-4 rounded-lg max-w-xs ${
                                             chat.sender === "me"
                                                 ? "bg-yellow-400 text-black"
                                                 : "bg-white"
-                                        } p-3 rounded-lg max-w-xs`}
+                                        } shadow-md space-y-2`}
+                                        style={{
+                                            wordWrap: "break-word",
+                                            overflowWrap: "break-word",
+                                        }}
                                     >
-                                        {chat.text}
-                                        <div className="flex items-center justify-between text-xs mt-2">
-                                            <span className="text-slate-700">
-                                                
-                                            </span>
-                                            {chat.sender === "me" && (
-                                                <span
-                                                    className={`${
-                                                        chat.status ===
-                                                        "Failed to send"
-                                                            ? "text-red-500"
-                                                            : "text-gray-400"
-                                                    } flex items-center`}
+                                        <p className="text-sm">{chat.text}</p>
+
+                                        {/* Message Status Indicator */}
+
+                                        {chat.sender === "me" &&
+                                            chat.status ===
+                                                "Failed to send" && (
+                                                <button
+                                                    className="text-blue-500 text-xs flex items-center space-x-1"
+                                                    onClick={() =>
+                                                        handleRetryMessage(
+                                                            index
+                                                        )
+                                                    } // Resend button
                                                 >
+                                                    <AiOutlineReload className="w-4 h-4" />{" "}
+                                                    {/* Retry icon */}
                                                     {chat.status ===
-                                                    "Failed to send" ? (
-                                                        <AiOutlineReload
-                                                            className="ml-1 cursor-pointer"
-                                                            onClick={() =>
-                                                                handleRetryMessage(
-                                                                    index
-                                                                )
-                                                            }
-                                                        />
-                                                    ) : (
-                                                        chat.status
+                                                        "Failed to send" && (
+                                                        <div className="absolute bottom-0 right-3 text-red-500 text-[11px] mt-1">
+                                                            Not Sent
+                                                        </div>
                                                     )}
-                                                </span>
+                                                    <span>Resend</span>
+                                                </button>
                                             )}
-                                        </div>
                                     </div>
-
-                                    <div className="p-4 bg-white border-t flex items-center sticky bottom-0">
-                            <textarea
-                                className="flex-1 border rounded-lg p-2 mr-2 focus:outline-none focus:ring-1 focus:ring-blue-400 text-gray-700 resize-none"
-                                rows="1"
-                                placeholder="Type a message 2..."
-                                value={newMessage}
-                                onChange={(e) => setNewMessage(e.target.value)}
-                                onKeyDown={(e) => {
-                                    if (e.key === "Enter" && !e.shiftKey) {
-                                        e.preventDefault();
-                                        //handleSendMessage();
-                                    }
-                                }}
-                            ></textarea>
-                            <button
-                                className="bg-green-700 text-white p-3 rounded-full hover:bg-lime-700 transition-all"
-                                onClick={handleSendMessage(chat.id,chat.service_id)}
-                            >
-                                <FiSend className="w-5 h-5" />
-                            </button>
-                        </div>
-
                                 </div>
                             ))}
                         </div>
 
-                        {/* Input Box */}
-                        <div className="p-4 bg-white border-t flex items-center sticky bottom-0">
-                            {/*<textarea
-                                className="flex-1 border rounded-lg p-2 mr-2 focus:outline-none focus:ring-1 focus:ring-blue-400 text-gray-700 resize-none"
+                        {/* Message Input */}
+                        <div className="p-4 border-t flex items-center sticky bottom-0 bg-white z-10 shadow-lg">
+                            <textarea
+                                className="flex-1 border rounded-lg p-3 mr-3 focus:ring-2 focus:ring-green-500 resize-none text-gray-800 shadow-sm placeholder-gray-400"
                                 rows="1"
                                 placeholder="Type a message..."
                                 value={newMessage}
                                 onChange={(e) => setNewMessage(e.target.value)}
                                 onKeyDown={(e) => {
                                     if (e.key === "Enter" && !e.shiftKey) {
-                                        e.preventDefault();
-                                        //handleSendMessage();
+                                        e.preventDefault(); // Prevent newline
+                                        handleSendMessage(
+                                            selectedMessage.id,
+                                            selectedMessage.service_id
+                                        );
                                     }
                                 }}
-                            ></textarea>*/}
-                            {/*<button
-                                className="bg-green-700 text-white p-3 rounded-full hover:bg-lime-700 transition-all"
-                                onClick={handleSendMessage}
+                            ></textarea>
+                            <button
+                                className="bg-green-700 text-white p-3 rounded-full hover:bg-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-green-400"
+                                onClick={() =>
+                                    handleSendMessage(
+                                        selectedMessage.id,
+                                        selectedMessage.service_id
+                                    )
+                                }
                             >
                                 <FiSend className="w-5 h-5" />
-                            </button>*/}
+                            </button>
                         </div>
                     </>
                 ) : (

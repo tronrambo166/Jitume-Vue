@@ -11,8 +11,8 @@ const CategoryPage = () => {
     const [loading, setLoading] = useState(true);
     const [turnoverRange, setTurnoverRange] = useState([0, 100]);
     const [amountRange, setAmountRange] = useState([0, 100]);
-    const [maxPrice, setMaxPrice] = useState(100); // Default maximum price
-    const [maxTurnover, setMaxTurnover] = useState(100); // Default maximum turnover
+    const [maxPrice, setMaxPrice] = useState(100);
+    const [maxTurnover, setMaxTurnover] = useState(100);
 
     const { name } = useParams();
 
@@ -72,6 +72,7 @@ const CategoryPage = () => {
                     setCards(data.data);
                     setFilteredCards(data.data);
 
+                    // Calculate maxInvestment and maxTurnover dynamically from API data
                     const maxInvestment = Math.max(
                         ...data.data.map((card) =>
                             parseInvestment(card.investment_needed)
@@ -83,17 +84,13 @@ const CategoryPage = () => {
                         )
                     );
 
-                    // Set the investment range
-                    setMaxx(maxInvestment || 0);
-                    setMinn(0); // Default min investment
+                    // Set the maximum values for investment and turnover dynamically
+                    setMaxPrice(maxInvestment || 100); // Default to 100 if undefined
+                    setMaxTurnover(maxTurnoverValue || 100); // Default to 100 if undefined
 
-                    // Set the turnover range
-                    setMaxx2(maxTurnoverValue || 0);
-                    setMinn2(0); // Default min turnover
-
-                    // If you need to update ranges for filters or UI
-                    setAmountRange([0, maxInvestment]);
-                    setTurnoverRange([0, maxTurnoverValue]);
+                    // Set the investment and turnover range
+                    setAmountRange([0, maxInvestment || 100]);
+                    setTurnoverRange([0, maxTurnoverValue || 100]);
 
                     setLoading(false);
                 })
@@ -101,7 +98,7 @@ const CategoryPage = () => {
         };
 
         categoryResults();
-    }, [name]); // Trigger effect when 'name' changes
+    }, [name]);
 
     // Example of using the format function in your render
     console.log(formatWithCommas(maxx)); // For formatted maxx
@@ -111,10 +108,9 @@ const CategoryPage = () => {
         const filtered = cards.filter((card) => {
             const investmentNeeded =
                 parseFloat(card.investment_needed.replace(/,/g, "")) || 0;
-            const turnoverParts = card.y_turnover
-                .split("-")
-                .map((v) => parseFloat(v) || 0);
-            const turnover = Math.max(...turnoverParts);
+            const turnover = Math.max(
+                ...card.y_turnover.split("-").map((v) => parseFloat(v) || 0)
+            );
 
             return (
                 investmentNeeded >= amountRange[0] &&
@@ -241,6 +237,22 @@ const CategoryPage = () => {
             "amountRangeDisplay1"
         );
     };
+    const Clear = () => {
+        // Reset the range slider to the initial min and max values
+        setAmountRange([minn, maxx]);
+
+        // Clear the input fields for min and max amount
+        setMinAmount("");
+        setMaxAmount("");
+    };
+
+    const Clear2 = () => {
+        // Reset the slider range to initial values
+        setTurnoverRange([minn2, maxx2]);
+        // Clear the input fields
+        setMinTurnover("");
+        setMaxTurnoveR("");
+    };
 
     // comas logic
     const [minAmount, setMinAmount] = useState("");
@@ -278,18 +290,28 @@ const CategoryPage = () => {
                     {/* Amount Range */}
                     <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-6 flex-1">
                         {/* COLLAPSE BUTTON */}
-                        <button
-                            onClick={() => {
-                                toggleCollapse("collapseAmountRange");
-                            }}
-                            className="mr-4 my-2 border rounded-full px-3 py-1"
-                        >
-                            Set Range
-                        </button>
+                        <div className="flex items-center">
+                            <button
+                                onClick={() => {
+                                    toggleCollapse("collapseAmountRange");
+                                }}
+                                className="mr-4 my-2 border rounded-full px-3 py-1"
+                            >
+                                Set Range
+                            </button>
 
-                        <label className="text-gray-700 font-semibold mb-2">
-                            Amount Range
-                        </label>
+                            <label className="text-gray-700 font-semibold mb-2">
+                                Amount Range
+                            </label>
+
+                            <button
+                                className="ml-auto px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
+                                onClick={Clear}
+                            >
+                                Clear
+                            </button>
+                        </div>
+
                         <div className="py-4" id="sliderElement">
                             <Slider
                                 range
@@ -375,7 +397,7 @@ const CategoryPage = () => {
 
                                 {/* Cancel Button */}
                                 <button
-                                    className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                                    className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
                                     onClick={Cancel}
                                 >
                                     Cancel
@@ -386,22 +408,31 @@ const CategoryPage = () => {
 
                     {/* Turnover Range */}
                     <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-6 flex-1">
-                        <button
-                            onClick={() =>
-                                toggleCollapse2(
-                                    "collapseTurnoverRange",
-                                    "sliderElement1",
-                                    "amountRangeDisplay1"
-                                )
-                            }
-                            className="mr-4 my-2 border rounded-full px-3 py-1"
-                        >
-                            Set Range
-                        </button>
+                        <div className="flex items-center">
+                            <button
+                                onClick={() =>
+                                    toggleCollapse2(
+                                        "collapseTurnoverRange",
+                                        "sliderElement1",
+                                        "amountRangeDisplay1"
+                                    )
+                                }
+                                className="mr-4 my-2 border rounded-full px-3 py-1"
+                            >
+                                Set Range
+                            </button>
 
-                        <label className="text-gray-700 font-semibold mb-2">
-                            Turnover Range
-                        </label>
+                            <label className="text-gray-700 font-semibold mb-2">
+                                Turnover Range
+                            </label>
+
+                            <button
+                                className="ml-auto px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
+                                onClick={Clear2}
+                            >
+                                Clear
+                            </button>
+                        </div>
 
                         <div id="sliderElement1" className="py-4">
                             <Slider
@@ -494,7 +525,7 @@ const CategoryPage = () => {
 
                                 {/* Cancel Button */}
                                 <button
-                                    className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                                    className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
                                     onClick={cancelTurnover}
                                 >
                                     Cancel
