@@ -423,29 +423,32 @@ const ServiceResults = () => {
                         id="turnover_slider"
                         className=" w-full jakarta  text-md border border-[#cbd5e1] rounded-lg space-y-2 px-6 py-4 "
                     >
-                        <button
-                            onClick={collapse}
-                            id="colBut4"
-                            className="mr-4 my-2  border rounded-full px-3 py-1 "
-                            name="min"
-                        >
-                            Set Range{" "}
-                        </button>
-                        <label className="text-gray-700 font-semibold mb-2">
-                            Price Range
-                        </label>
+                        <div className="flex items-center">
+                            <button
+                                onClick={collapse}
+                                id="colBut4"
+                                className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
+                                name="min"
+                            >
+                                Set Range
+                            </button>
+                            <label className="text-gray-700 ml-4 font-semibold mb-2">
+                                Price Range
+                            </label>
+                            <div className="ml-auto">
+                                <button
+                                    className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
+                                    onClick={(event) => {
+                                        clearAmountSlider();
+                                        amountSlider();
+                                        getResults2();
+                                    }}
+                                >
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
 
-                        <button
-                            className="px-2 py-1 bg-green-400 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
-                            onClick={(event) => {
-                                clearAmountSlider();
-                                amountSlider();
-                                getResults2();
-                            }}
-                        >
-                            Clear
-                        </button>
-                        
                         <div id="slider" className="">
                             {" "}
                         </div>
@@ -525,12 +528,12 @@ const ServiceResults = () => {
                                         Set
                                     </button>
                                     <button
-                                        className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                                        className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
                                         onClick={(event) => {
-                                        getResults2();
-                                        amountSlider();
-                                        hide();
-                                    }}
+                                            getResults2();
+                                            amountSlider();
+                                            hide();
+                                        }}
                                     >
                                         Cancel
                                     </button>

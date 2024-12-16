@@ -295,12 +295,12 @@ const CategoryPage = () => {
                                 onClick={() => {
                                     toggleCollapse("collapseAmountRange");
                                 }}
-                                className="mr-4 my-2 border rounded-full px-3 py-1"
+                                className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
                             >
                                 Set Range
                             </button>
 
-                            <label className="text-gray-700 font-semibold mb-2">
+                            <label className="text-gray-700 ml-2 font-semibold mb-2">
                                 Amount Range
                             </label>
 
@@ -417,12 +417,12 @@ const CategoryPage = () => {
                                         "amountRangeDisplay1"
                                     )
                                 }
-                                className="mr-4 my-2 border rounded-full px-3 py-1"
+                                className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
                             >
                                 Set Range
                             </button>
 
-                            <label className="text-gray-700 font-semibold mb-2">
+                            <label className="text-gray-700 ml-2 font-semibold mb-2">
                                 Turnover Range
                             </label>
 

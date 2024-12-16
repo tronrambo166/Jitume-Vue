@@ -637,30 +637,31 @@ const ListingResults = () => {
                         id="turnover_slider"
                         className="w-full jakarta text-md border border-[#cbd5e1] rounded-lg space-y-2 px-6 py-4 mt-1"
                     >
-                        <button
-                            onClick={collapse}
-                            id="colBut4"
-                            className="mr-4 my-2 border rounded-full px-3 py-1"
-                            name="min"
-                        >
-                            Set Range
-                        </button>
+                        <div class="flex justify-between items-center">
+                            <button
+                                onClick={collapse}
+                                id="colBut4"
+                                className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
+                                name="min"
+                            >
+                                Set Range
+                            </button>
+
+                            <button
+                                className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
+                                onClick={(event) => {
+                                    clearRangeSlider();
+                                    rangeSliderInitilize();
+                                    getResults2();
+                                }}
+                            >
+                                Clear
+                            </button>
+                        </div>
 
                         <label className="text-gray-700 font-semibold mb-2">
                             Turnover Range
                         </label>
-
-                        <button
-                            className="px-2 py-1 bg-green-400 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
-                            onClick={(event) => {
-                                clearRangeSlider();
-                                rangeSliderInitilize();
-                                getResults2();
-                            }}
-                        >
-                            Clear
-                        </button>
-
 
                         <div id="slider" className=""></div>
 
@@ -718,7 +719,7 @@ const ListingResults = () => {
 
                             <div className="mt-4 flex justify-between items-center w-full">
                                 <button
-                                    className="px-2 py-1 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
+                                    className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
                                     onClick={(event) => {
                                         rangeSliderInitilize();
                                         hide();
@@ -727,10 +728,8 @@ const ListingResults = () => {
                                     Set
                                 </button>
 
-                                
-
                                 <button
-                                    className="px-2 py-1 bg-red-500 text-white rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                                    className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
                                     onClick={(event) => {
                                         getResults2();
                                         rangeSliderInitilize();
@@ -746,34 +745,35 @@ const ListingResults = () => {
 
                     {/* Turnover Range Slider */}
 
-
                     <div
                         id="amount_slider"
                         className="w-full jakarta   text-md border border-[#cbd5e1] rounded-lg space-y-2 px-6 py-4  mt-1"
                     >
-                        <button
-                            onClick={collapse2}
-                            id="colBut4"
-                            className="mr-4 my-2  border rounded-full px-3 py-1 "
-                            name="min"
-                        >
-                            Set Range{" "}
-                        </button>
+                        <div class="flex justify-between items-center">
+                            <button
+                                onClick={collapse2}
+                                id="colBut4"
+                                className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
+                                name="min"
+                            >
+                                Set Range
+                            </button>
+
+                            <button
+                                className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
+                                onClick={(event) => {
+                                    clearAmountSlider();
+                                    amountSliderInitilize();
+                                    getResults2();
+                                }}
+                            >
+                                Clear
+                            </button>
+                        </div>
 
                         <label className="text-gray-700 font-semibold mb-2">
                             Amount Range
                         </label>
-
-                        <button
-                            className="px-2 py-1 bg-green-400 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
-                            onClick={(event) => {
-                                clearAmountSlider();
-                                amountSliderInitilize();
-                                getResults2();
-                            }}
-                        >
-                            Clear
-                        </button>
 
                         <div id="slider2" className=""></div>
                         <div className="row mt-3 jakarta">
@@ -838,9 +838,9 @@ const ListingResults = () => {
                                 >
                                     Set
                                 </button>
-                                
+
                                 <button
-                                    className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                                    className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
                                     onClick={(event) => {
                                         getResults2();
                                         amountSliderInitilize();
