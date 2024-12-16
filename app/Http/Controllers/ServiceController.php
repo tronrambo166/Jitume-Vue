@@ -1085,7 +1085,9 @@ public function serviceReply(Request $request){
       'from_id' => $from_id
     ]); 
     if($message)
-    return redirect()->back()->with('success', 'Message Sent!');
+    return response()->json(['success' => 'Message Sent!', 'status'=>200]);
+    else
+    return response()->json(['Error' => 'Message Not Sent!', 'status'=>400]);
     }
 
     catch(\Exception $e){

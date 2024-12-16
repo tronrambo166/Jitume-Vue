@@ -14,14 +14,31 @@ use App\Models\User;
 // use App\Models\mymusic;
 // use App\Models\albums;
 use App\Models\BusinessBids;
+use App\Models\AcceptedBids;
+use App\Models\serviceBook;
+use App\Models\Listing;
+use App\Models\Services;
 use Mail;
 use Session;
 use Exception;
+use stdClass;
+use Redirect;
 class AdminController extends Controller
 {
+    public function __construct()
+    {
+        $admin = Session::get('admin'); 
+        //echo $admin; exit;
+        // if(!$admin)
+        //     Redirect::to('admin/login')->send(); 
+    }
 
   public function login()
     {  
+        $admin = Session::get('admin');  echo $admin;exit;
+         if($admin && $admin == 'Logged!')
+             Redirect::to('admin/index_admin')->send(); 
+
         return view('admin.login'); 
     }
 
@@ -42,16 +59,7 @@ class AdminController extends Controller
  }
 
 
-
-
- // Artists
-
-public function artists()
-    {       
-        $artists= User::latest('id')->get();
-        return view('admin.artists', compact('artists'));       
-    }
-
+ // Approve
 
     public function approve($id)
  {      
@@ -94,41 +102,13 @@ public function artists()
    }
 
 
-
  public function del_artist($id)
     {           
        User::where('id', $id)->delete();
        return back()->with('success', "Deleted!"); 
  }
-
- public function remove_song($id)
-    {  
-       try{ 
-       $song = array();
-       $removed = DB::table('live_songs')->where('position',$id)->first();
-
-       DB::table('live_songs')->where('position', $id)->delete();
-	   for($i=$id+1;$i<26;$i++){
-	   $pos = DB::table('live_songs')->where('position',$i)->first();
-
-       if($pos != null)
-	   DB::table('live_songs')->where('position', $i)->
-       update(['position' => $pos->position-1]);
-	   }
-
-       //Adding to DB
-       $song['artist'] = $removed->artist;
-       $song['song'] = $removed->song;
-       RemovedSongs::insert($song);
-       return back()->with('success', "Deleted!"); 
-   }
-   catch(\Exception $e){
-      Session::put('exception',$e->getMessage());
-      return redirect()->back();
-     }
- }
  
- // Artists
+ // Approve
 
 
 
@@ -166,11 +146,42 @@ public function users()
     }
 
 
-public function songs()
+public function listings_active()
     {       
-   $static20=liveSongs::take(20)->get();
-   $lastDay=DB::table('last_day_songs')->get();
-   return view('admin.songs',compact('static20','lastDay'));     
+        $acceptedBids = AcceptedBids::groupBy('business_id')->latest()->get();
+
+        $businesses = new stdClass; $i=0;
+        foreach($acceptedBids as $aBid){
+            $row = DB::table('listings')
+            ->where('listings.id',$aBid->business_id)
+            ->join('users', 'listings.user_id', '=', 'users.id')
+            ->select('listings.*', 'users.fname', 'users.lname', 'users.email')
+            ->get();
+        // ->join('milestones', 'listings.id', '=', 'milestones.listings_id')
+            $businesses->$i = $row; $i++;
+        }
+        //return $businesses;
+        
+        return view('admin.listings_active',compact('businesses'));     
+    }
+
+
+    public function services_active()
+    {       
+        $acceptedBids = serviceBook::groupBy('service_id')->latest()->get();
+
+        $businesses = new stdClass; $i=0;
+        foreach($acceptedBids as $booking){
+            $row = DB::table('services')
+            ->where('services.id',$booking->service_id)
+            ->join('users', 'services.shop_id', '=', 'users.id')
+            ->select('services.*', 'users.fname', 'users.lname', 'users.email')
+            ->get();
+            $businesses->$i = $row; $i++;
+        }
+        //return $businesses;
+        
+        return view('admin.services_active',compact('businesses'));     
     }
 
 
@@ -243,40 +254,6 @@ public function reset(Request $request, $remail)
 
 
 //______________________________________________________________________________
-
-public function editorLogin(Request $formData)
-{
-
-try{
-
-$email = $formData->email;
-$password = $formData->password;
-$user= admins::where('email', $email)->get(); 
-$check_user=json_decode($user);
-//print_r($check_user); echo $check_user[0]->password; exit;
-
-if($user->count() >0 ) {
-$db_password=$check_user[0]->password; //opd_admin
-if(password_verify($password, $db_password)) { 
-    Session::put('edit_permit',true);
-    setcookie("edit_permit", true, time() + (60 * 30)); 
-    return redirect('/'); 
-	}
-else{
-    Session::put('log_err','Password wrong!'); return redirect()->back();
-   
-
-}
-    }
-
-      Session::put('log_err','User dont exist!'); return redirect()->back();
-  }
-  catch(\Exception $e){
-      Session::put('exception',$e->getMessage());
-      return redirect()->back();
-     }
-
-}
 
 
 public function adminLogin(Request $formData)

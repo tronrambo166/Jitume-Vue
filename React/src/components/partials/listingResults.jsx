@@ -62,7 +62,7 @@ const ListingResults = () => {
 
     // const mapRef = useRef(null);
 
-    var count = results.length;
+    var count = results.length ? results.length:0;
     let res = [];
     var max = 1000000;
     var min = 0;
@@ -92,8 +92,8 @@ const ListingResults = () => {
 
     useEffect(() => {
         console.log("Results Length: ", results.length);
-        //console.log("Total Pages: ", totalPages);
-        //console.log("Current Cards: ", currentCards);
+        console.log("Total Pages: ", totalPages);
+        console.log("Current Cards: ", currentCards);
     }, [results, currentPage]);
 
     //CORE METHODS
@@ -109,14 +109,17 @@ const ListingResults = () => {
 
                     var x = navigator.geolocation;
                     x.getCurrentPosition(success, failure);
-                    // document.querySelector('.permission-granted-button').addEventListener('click', () => {
-                    //   x.watchPosition(success, failure);
-                    // });
+                    document
+                        .querySelector(".permission-granted-button")
+                        .addEventListener("click", () => {
+                            x.watchPosition(success, failure);
+                        });
                 })
                 .catch((err) => {
                     console.log(err);
                 });
         };
+        //setTimeout(() => { rangeSliderInitilize(); }, 300);
         getResults();
         //console.log(res);
 
@@ -128,9 +131,10 @@ const ListingResults = () => {
         var slider = document.getElementById("slider");
         var slider2 = document.getElementById("slider2");
 
-        if ((slider && slider.noUiSlider) || (slider2 && slider2.noUiSlider)) {
+        if ((slider && slider.noUiSlider) && (slider2 && slider2.noUiSlider)) {
             slider.noUiSlider.destroy();
             slider2.noUiSlider.destroy();
+
         }
 
         //SLIDERS FILTER
@@ -164,9 +168,36 @@ const ListingResults = () => {
         // };
         //SLIDERS FILTER
 
-        rangeSliderInitilize();
-        amountSliderInitilize();
+        //rangeSliderInitilize();
+        //amountSliderInitilize();
+        setTimeout(() => { rangeSliderInitilize(); }, 300);
+        setTimeout(() => { amountSliderInitilize(); }, 300);
+
     }, []);
+
+    //RESUTLS 2
+    const getResults2 = () => {
+            axiosClient
+                .get("/searchResults/" + base64_decode(resIds))
+                .then(({ data }) => {
+                    setResults(data.data);
+                    res = data.data;
+                    //console.log(results);
+                    localStorage.setItem("results", JSON.stringify(data.data));
+
+                    var x = navigator.geolocation;
+                    x.getCurrentPosition(success, failure);
+                    document
+                        .querySelector(".permission-granted-button")
+                        .addEventListener("click", () => {
+                            x.watchPosition(success, failure);
+                        });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+        //RESUTLS 2
 
     //Turnover(Nurul)
     const rangeSliderInitilize = () => {
@@ -177,11 +208,11 @@ const ListingResults = () => {
                 min: parseFloat(min),
                 max: parseFloat(max),
             },
-            step: 10000,
+            step: 1000,
             margin: 600,
             pips: {
                 stepped: true,
-                density: 6,
+                density: 4,
             },
         });
 
@@ -213,7 +244,7 @@ const ListingResults = () => {
                         const db_min = parseInt(range[0], 10);
                         const db_max = parseInt(range[1], 10);
 
-                        if (parseInt(values[1]) <= db_max) {
+                        if (parseInt(values[1]) <= db_max && parseInt(values[1]) >= db_min) {
                             turnoverRes.push(value);
                         }
                     }
@@ -235,11 +266,11 @@ const ListingResults = () => {
                 min: parseFloat(min2),
                 max: parseFloat(max2),
             },
-            step: 10000,
+            step: 1000,
             margin: 600,
             pips: {
                 stepped: true,
-                density: 6,
+                density: 4,
             },
         });
 
@@ -438,6 +469,7 @@ const ListingResults = () => {
 
         if (slider && slider.noUiSlider) {
             slider.noUiSlider.destroy();
+            //$('.noUi-pips-horizontal').hide();
         }
         $("#collapseExample").removeClass("hidden");
         $("#colBut").addClass("hidden");
@@ -531,6 +563,24 @@ const ListingResults = () => {
         UpdateValuesMax2(e.target.value); // Update max2 with the value without commas
     };
 
+    const clearRangeSlider = () => {
+        var slider = document.getElementById("slider");
+        if (slider && slider.noUiSlider) {
+            slider.noUiSlider.destroy();
+        }
+        //min = 0;
+        //max = 1000000;
+    };
+    const clearAmountSlider = () => {
+        var slider2 = document.getElementById("slider2");
+        if (slider2 && slider2.noUiSlider) {
+            slider2.noUiSlider.destroy();
+        }
+        //min = 0;
+        //max = 1000000;
+    };
+    
+
     //Range Function
 
     return (
@@ -599,6 +649,19 @@ const ListingResults = () => {
                         <label className="text-gray-700 font-semibold mb-2">
                             Turnover Range
                         </label>
+
+                        <button
+                            className="px-2 py-1 bg-green-400 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                            onClick={(event) => {
+                                clearRangeSlider();
+                                rangeSliderInitilize();
+                                getResults2();
+                            }}
+                        >
+                            Clear
+                        </button>
+
+
                         <div id="slider" className=""></div>
 
                         <div className="row mt-3 jakarta">
@@ -653,20 +716,36 @@ const ListingResults = () => {
                                 </div>
                             </div>
 
-                            <button
-                                className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-full sm:w-32 mx-auto hover:bg-green-700 transition-colors"
-                                onClick={(event) => {
-                                    rangeSliderInitilize();
-                                    hide();
-                                }}
-                            >
-                                Set
-                            </button>
+                            <div className="mt-4 flex justify-between items-center w-full">
+                                <button
+                                    className="px-2 py-1 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
+                                    onClick={(event) => {
+                                        rangeSliderInitilize();
+                                        hide();
+                                    }}
+                                >
+                                    Set
+                                </button>
+
+                                
+
+                                <button
+                                    className="px-2 py-1 bg-red-500 text-white rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                                    onClick={(event) => {
+                                        getResults2();
+                                        rangeSliderInitilize();
+                                        hide();
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
                         {/* COLLAPSE RANGE */}
                     </div>
 
                     {/* Turnover Range Slider */}
+
 
                     <div
                         id="amount_slider"
@@ -684,6 +763,18 @@ const ListingResults = () => {
                         <label className="text-gray-700 font-semibold mb-2">
                             Amount Range
                         </label>
+
+                        <button
+                            className="px-2 py-1 bg-green-400 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                            onClick={(event) => {
+                                clearAmountSlider();
+                                amountSliderInitilize();
+                                getResults2();
+                            }}
+                        >
+                            Clear
+                        </button>
+
                         <div id="slider2" className=""></div>
                         <div className="row mt-3 jakarta">
                             <div className="col-6 mt-1">
@@ -737,16 +828,28 @@ const ListingResults = () => {
                                     />
                                 </div>
                             </div>
-
-                            <button
-                                className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-full sm:w-32 mx-auto hover:bg-green-700 transition-colors"
-                                onClick={(event) => {
-                                    amountSliderInitilize();
-                                    hide2();
-                                }}
-                            >
-                                Set
-                            </button>
+                            <div className="mt-4 flex justify-between items-center w-full">
+                                <button
+                                    className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
+                                    onClick={(event) => {
+                                        amountSliderInitilize();
+                                        hide2();
+                                    }}
+                                >
+                                    Set
+                                </button>
+                                
+                                <button
+                                    className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                                    onClick={(event) => {
+                                        getResults2();
+                                        amountSliderInitilize();
+                                        hide2();
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
 
                         {/*COLLAPSE Amount*/}

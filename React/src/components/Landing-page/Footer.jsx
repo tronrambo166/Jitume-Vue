@@ -105,8 +105,7 @@ const Footer = () => {
                                               {/* <li>Investment projects</li> */}
                                               {/* <li>Investor returns</li> */}
                                               <li><Link target="_blank" to={'/due-diligence'} > Due diligence charter </Link></li>
-                                              <li><Link target="_blank" to={'/help-center'} > Help center </Link></li>
-                                              <li><Link target="_blank" to={'/what-is-jitume'} > What is Jitume </Link></li>
+                                              
                                               {/* <li>Funded community</li> */}
                                           </>
                                       )}
@@ -122,6 +121,8 @@ const Footer = () => {
                                       )}
                                       {title === "About Us" && (
                                           <>
+                                          <li><Link target="_blank" to={'/help-center'} > Help center </Link></li>
+                                              <li><Link target="_blank" to={'/what-is-jitume'} > What is Jitume </Link></li>
                                         <li>
                                         <Link target="_blank" to={'/careers'} > Careers </Link>
                                         </li>

@@ -1,98 +1,305 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
+import { AiOutlineReload } from "react-icons/ai"; // Retry icon
+import { FiSend } from "react-icons/fi"; // Send icon
 import axiosClient from "../../axiosClient";
+import SkeletonLoader from "./SkeletonLoader";
+import DefaultImg from "./Settings/components/DefaultImg";
 
 function Messages() {
-  const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([]);
+    const [selectedMessage, setSelectedMessage] = useState(null);
+    const [chatHistory, setChatHistory] = useState([]);
+    const [newMessage, setNewMessage] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [isMobileView, setIsMobileView] = useState(false);
 
-  const [selectedMessage, setSelectedMessage] = useState(null);
+    useEffect(() => {
+        const fetchMessages = () => {
+            axiosClient
+                .get("/business/service_messages")
+                .then(({ data }) => {
+                    setMessages(data.messages);
+                    setLoading(false);
+                    console.log(data.messages);
+                })
+                .catch((err) => {
+                    console.error(err);
+                    setLoading(false);
+                });
+        };
+        fetchMessages();
 
-  useEffect(() => {
-    const getUser = () => { 
-      axiosClient.get('/business/service_messages')
-        .then(({ data }) => {
-          setMessages(data.messages);           
-          console.log(messages);    
+        const handleResize = () => {
+            setIsMobileView(window.innerWidth < 768);
+        };
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
-        })
-        .catch(err => {
-          console.log(err); 
+    const handleSelectMessage = (message) => {
+        setSelectedMessage(message);
+        setChatHistory([
+            { sender: message.sender, text: message.msg, id: message.id,
+            service_id: message.service_id, time: message.created_at },
+        ]);
+    };
+
+    const handleSendMessage = (id, service_id) => {
+        if (!newMessage.trim()) return;
+
+        const tempMessage = {
+            msg_id: id,
+            service_id:service_id,
+            msg: newMessage,
+            //time: new Date().toLocaleString(),
+        };
+
+        setChatHistory((prev) => [...prev, tempMessage]);
+        axiosClient
+            .post("/serviceReply", { tempMessage })
+            .then(({ response }) => {
+                setChatHistory((prev) =>
+                    prev.map((msg, index) =>
+                        index === prev.length - 1
+                            ? { ...msg, status: "Sent" }
+                            : msg
+                    )
+                );
+                console.log('hi');
+            })
+            .catch(() => {
+                setChatHistory((prev) =>
+                    prev.map((msg, index) =>
+                        index === prev.length - 1
+                            ? { ...msg, status: "Failed to send" }
+                            : msg
+                    )
+                );
+            });
+
+        setNewMessage("");
+    };
+
+    const handleRetryMessage = (index) => {
+        const message = chatHistory[index];
+        if (message.status === "Failed to send") {
+            setChatHistory((prev) =>
+                prev.map((msg, idx) =>
+                    idx === index ? { ...msg, status: "Sending..." } : msg
+                )
+            );
+            axiosClient
+                .post("/serviceReply", { message: message.text })
+                .then(() => {
+                    setChatHistory((prev) =>
+                        prev.map((msg, idx) =>
+                            idx === index ? { ...msg, status: "Sent" } : msg
+                        )
+                    );
+                })
+                .catch(() => {
+                    setChatHistory((prev) =>
+                        prev.map((msg, idx) =>
+                            idx === index
+                                ? { ...msg, status: "Failed to send" }
+                                : msg
+                        )
+                    );
+                });
+        }
+    };
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleString("en-US", {
+            weekday: "short",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
         });
     };
-    getUser();
-  }, []);
 
-  const handleReply = (message) => {
-    setSelectedMessage(message);
-  };
+    if (loading) return <SkeletonLoader />;
 
-  return (
-    <div className="container mx-auto p-6">
-      <h3 className="text-left text-2xl font-semibold mb-6">Messages</h3>
-      <div className="overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="min-w-full bg-white border border-gray-200">
-          <thead className="bg-gray-100 border-b border-gray-200">
-            <tr className='text-gray-700'>
-              <th className="text-left py-3 px-4 uppercase font-semibold text-sm">From</th>
-              <th className="text-left py-3 px-4 uppercase font-semibold text-sm">Related Service</th>
-              <th className="text-left py-3 px-4 uppercase font-semibold text-sm">Message</th>
-              <th className="text-left py-3 px-4 uppercase font-semibold text-sm">Time</th>
-              <th className="text-left py-3 px-4 uppercase font-semibold text-sm">Reply</th>
-            </tr>
-          </thead>
-          <tbody>
-            {messages.map((msg) => (
-              <tr key={msg.id} className="text-gray-700 hover:bg-gray-50 transition-colors">
-                <td className="py-3 px-4 border-b">{msg.sender}</td>
-                <td className="py-3 px-4 border-b">{msg.service}</td>
-                <td className="py-3 px-4 border-b">{msg.msg}</td>
-                <td className="py-3 px-4 border-b">{msg.created_at}</td>
-                <td className="py-3 px-4 border-b text-center">
-                  <button
-                    onClick={() => handleReply(msg)}
-                    className="text-blue-600 hover:underline focus:outline-none"
-                  >
-                    Reply
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Modal for replying to a message */}
-      {selectedMessage && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60">
-          <div className="bg-white p-8 rounded-lg shadow-xl max-w-lg mx-auto relative">
-            <button
-              onClick={() => setSelectedMessage(null)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+    return (
+        <div className="flex flex-col px-5 mt-4 md:flex-row h-screen text-gray-800">
+            {/* Sidebar */}
+            <div
+                className={`w-full md:w-1/3 pt-6 bg-white border-r overflow-y-auto ${
+                    isMobileView && selectedMessage ? "hidden" : ""
+                }`}
+                style={{ height: "calc(100vh - 4rem)" }} // Sidebar height adjustment
             >
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
-            <h4 className="text-2xl font-semibold mb-6">Reply to Message</h4>
-            <p className="mb-4"><strong>From:</strong> {selectedMessage.from}</p>
-            <p className="mb-4"><strong>Message:</strong> {selectedMessage.message}</p>
-            <textarea
-              rows="4"
-              className="w-full border border-gray-300 rounded-lg p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your message..."
-            ></textarea>
-            <div className='flex justify-end'>
-              <button
-                onClick={() => setSelectedMessage(null)}
-                className='btn-primary py-2 px-6 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors'
-              >
-                Send
-              </button>
+                <div className="p-4 border-b bg-white">
+                    <h3 className="text-lg font-bold">Conversations</h3>
+                </div>
+                {messages.map((msg) => (
+                    <div
+                        key={msg.id}
+                        onClick={() => handleSelectMessage(msg)}
+                        className={`p-4 flex items-center cursor-pointer transition-all border-b border-gray-200 ${
+                            selectedMessage?.id === msg.id
+                                ? "bg-slate-100 text-blue-900"
+                                : "hover:bg-gray-50"
+                        }`}
+                    >
+                        <img
+                            src={
+                                "https://agri-soko-2-1.vercel.app/assets/default-BeD4CxIB.jpg"
+                            }
+                            alt="Profile"
+                            className="w-12 h-12 rounded-full object-cover mr-4"
+                        />
+                        <div className="flex-1">
+                            <h4 className="font-semibold text-gray-900">
+                                {msg.sender}
+                            </h4>
+                            <p className="text-sm text-gray-600 truncate">
+                                {msg.msg}
+                            </p>
+                        </div>
+                        {selectedMessage?.id === msg.id && (
+                            <div className="ml-2 text-green-600">
+                                <i className="fas fa-check-circle"></i>
+                            </div>
+                        )}
+                    </div>
+                ))}
             </div>
-          </div>
+
+            {/* Chat Window */}
+            <div className="flex-1 flex flex-col bg-gray-100 h-screen">
+                {selectedMessage ? (
+                    <>
+                        {/* Header */}
+                        <div className="p-4 bg-white flex items-center border-b">
+                            <img
+                                src={
+                                    "https://agri-soko-2-1.vercel.app/assets/default-BeD4CxIB.jpg"
+                                }
+                                alt="Profile"
+                                className="w-10 h-10 rounded-full mr-4"
+                            />
+                            <div>
+                                <h4 className="text-lg font-semibold">
+                                    {selectedMessage.sender}
+                                </h4>
+                                <p className="text-sm text-gray-500">
+                                    Service: {selectedMessage.service}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Messages */}
+                        <div className="flex-1 p-4 overflow-y-auto space-y-4">
+                            {chatHistory.map((chat, index) => (
+                                <div
+                                    key={index}
+                                    className={`flex ${
+                                        chat.sender === "me"
+                                            ? "justify-end"
+                                            : "justify-start"
+                                    }`}
+                                >
+                                    <div
+                                        className={`${
+                                            chat.sender === "me"
+                                                ? "bg-yellow-400 text-black"
+                                                : "bg-white"
+                                        } p-3 rounded-lg max-w-xs`}
+                                    >
+                                        {chat.text}
+                                        <div className="flex items-center justify-between text-xs mt-2">
+                                            <span className="text-slate-700">
+                                                
+                                            </span>
+                                            {chat.sender === "me" && (
+                                                <span
+                                                    className={`${
+                                                        chat.status ===
+                                                        "Failed to send"
+                                                            ? "text-red-500"
+                                                            : "text-gray-400"
+                                                    } flex items-center`}
+                                                >
+                                                    {chat.status ===
+                                                    "Failed to send" ? (
+                                                        <AiOutlineReload
+                                                            className="ml-1 cursor-pointer"
+                                                            onClick={() =>
+                                                                handleRetryMessage(
+                                                                    index
+                                                                )
+                                                            }
+                                                        />
+                                                    ) : (
+                                                        chat.status
+                                                    )}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div className="p-4 bg-white border-t flex items-center sticky bottom-0">
+                            <textarea
+                                className="flex-1 border rounded-lg p-2 mr-2 focus:outline-none focus:ring-1 focus:ring-blue-400 text-gray-700 resize-none"
+                                rows="1"
+                                placeholder="Type a message 2..."
+                                value={newMessage}
+                                onChange={(e) => setNewMessage(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter" && !e.shiftKey) {
+                                        e.preventDefault();
+                                        //handleSendMessage();
+                                    }
+                                }}
+                            ></textarea>
+                            <button
+                                className="bg-green-700 text-white p-3 rounded-full hover:bg-lime-700 transition-all"
+                                onClick={handleSendMessage(chat.id,chat.service_id)}
+                            >
+                                <FiSend className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Input Box */}
+                        <div className="p-4 bg-white border-t flex items-center sticky bottom-0">
+                            {/*<textarea
+                                className="flex-1 border rounded-lg p-2 mr-2 focus:outline-none focus:ring-1 focus:ring-blue-400 text-gray-700 resize-none"
+                                rows="1"
+                                placeholder="Type a message..."
+                                value={newMessage}
+                                onChange={(e) => setNewMessage(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter" && !e.shiftKey) {
+                                        e.preventDefault();
+                                        //handleSendMessage();
+                                    }
+                                }}
+                            ></textarea>*/}
+                            {/*<button
+                                className="bg-green-700 text-white p-3 rounded-full hover:bg-lime-700 transition-all"
+                                onClick={handleSendMessage}
+                            >
+                                <FiSend className="w-5 h-5" />
+                            </button>*/}
+                        </div>
+                    </>
+                ) : (
+                    <div className="flex-1 flex items-center justify-center text-gray-500">
+                        Select a conversation to start chatting
+                    </div>
+                )}
+            </div>
         </div>
-      )}
-    </div>
-  );
+    );
 }
 
 export default Messages;

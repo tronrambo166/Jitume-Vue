@@ -16,6 +16,15 @@
 							<li  class="{{ Request::is('admin/users') ? 'active' : '' }}"> 
 								<a href="users"><i class="fe fe-user-plus"></i> <span>Users</span></a>
 							</li>
+
+							<li  class="{{ Request::is('admin/listings-active') ? 'active' : '' }}"> 
+								<a href="listings-active"><i style="font-size: 18px;" class="fa fa-list fa-1x"></i> <span>Active Businesses</span></a>
+							</li>
+
+							<li  class="{{ Request::is('admin/services-active') ? 'active' : '' }}"> 
+								<a href="services-active"><i style="font-size: 18px;" class="fa fa-cog fa-1x"></i> <span>Active Services</span></a>
+							</li>
+							
 							
 							<!-- <li  class="{{ Request::is('admin/songs') ? 'active' : '' }}"> 
 								<a href="songs"><i class="fe fe-users"></i> <span>Songs</span></a>

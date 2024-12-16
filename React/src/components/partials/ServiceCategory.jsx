@@ -16,6 +16,9 @@ const CategoryPage = ({ categoryName }) => {
     const [range, setRange] = useState([0, 0]); // Adjust range dynamically
     const [maxPrice, setMaxPrice] = useState(1000000); // Default maximum price
 
+    const [minn, setMinn] = useState(0); // Default minimum price
+    const [maxx, setMaxx] = useState(0); // Default maximum price
+
     useEffect(() => {
         const fetchCategoryResults = () => {
             axiosClient
@@ -24,12 +27,15 @@ const CategoryPage = ({ categoryName }) => {
                     if (data.services && data.services.length > 0) {
                         setCards(data.services);
 
-                        // Determine the maximum price dynamically
-                        const max = Math.max(
-                            ...data.services.map((card) => card.price)
-                        );
-                        setMaxPrice(max);
-                        setRange([0, max]); // Update the range to reflect the maximum price
+                        // Determine the maximum and minimum prices dynamically
+                        const prices = data.services.map((card) => card.price);
+                        const max = Math.max(...prices);
+                        const min = Math.min(...prices);
+
+                        setMinn(min); // Update minimum price state
+                        setMaxx(max); // Update maximum price state
+                        setMaxPrice(max); // Update maxPrice for slider
+                        setRange([min, max]); // Update the range to reflect the new min and max
                     } else {
                         setNotificationMessage("Listings not found.");
                         setShowNotification(true);
@@ -102,8 +108,7 @@ const CategoryPage = ({ categoryName }) => {
 
         toggleCollapse("collapseAmountRange"); // Close the range input section
     };
-    const minn = 1;
-    const maxx = 10000000;
+
     // comas logic
     const [minAmount, setMinAmount] = useState("");
     const [maxAmount, setMaxAmount] = useState("");
@@ -122,6 +127,10 @@ const CategoryPage = ({ categoryName }) => {
     // Handle max amount input change
     const UpdateValuesMax = (value) => {
         setMaxAmount(formatNumberWithCommas(value));
+    };
+    const Cancel = () => {
+        // Hide the dropdown by toggling its visibility
+        toggleCollapse("collapseAmountRange");
     };
 
     return (
@@ -217,7 +226,7 @@ const CategoryPage = ({ categoryName }) => {
                                 htmlFor="maxAmount"
                                 className="text-sm font-medium text-gray-700 dark:text-gray-300"
                             >
-                                Max: {maxx}
+                                Max: {maxx.toLocaleString()}
                             </label>
                             <input
                                 type="text" // Change to text to allow commas
@@ -232,14 +241,22 @@ const CategoryPage = ({ categoryName }) => {
                         </div>
                     </div>
 
-                    <button
-                        className="mt-6 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-full sm:w-32 mx-auto hover:bg-green-700 transition-colors"
-                        onClick={() => {
-                            handleSetRange();
-                        }}
-                    >
-                        Set
-                    </button>
+                    <div className="mt-6 flex justify-between">
+                        <button
+                            className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
+                            onClick={() => {
+                                handleSetRange();
+                            }}
+                        >
+                            Set
+                        </button>
+                        <button
+                            className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                            onClick={Cancel}
+                        >
+                            Cancel
+                        </button>
+                    </div>
                 </div>
             </div>
 

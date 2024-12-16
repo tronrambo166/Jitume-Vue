@@ -46,6 +46,17 @@ const CategoryPage = () => {
     const { marks: sliderMarksTurnover, step: stepTurnover } =
         calculateMarks(maxTurnover);
 
+    const [minn, setMinn] = useState(0); // Default minimum investment
+    const [maxx, setMaxx] = useState(0); // Default maximum investment
+
+    const [minn2, setMinn2] = useState(0); // Default minimum turnover
+    const [maxx2, setMaxx2] = useState(0); // Default maximum turnover
+
+    // Function to format numbers with commas
+    const formatWithCommas = (value) => {
+        return new Intl.NumberFormat().format(value);
+    };
+
     useEffect(() => {
         const parseInvestment = (value) =>
             parseFloat(value.replace(/,/g, "")) || 0;
@@ -72,17 +83,29 @@ const CategoryPage = () => {
                         )
                     );
 
-                    setMaxPrice(maxInvestment || 100);
-                    setMaxTurnover(maxTurnoverValue || 100);
+                    // Set the investment range
+                    setMaxx(maxInvestment || 0);
+                    setMinn(0); // Default min investment
+
+                    // Set the turnover range
+                    setMaxx2(maxTurnoverValue || 0);
+                    setMinn2(0); // Default min turnover
+
+                    // If you need to update ranges for filters or UI
                     setAmountRange([0, maxInvestment]);
                     setTurnoverRange([0, maxTurnoverValue]);
+
                     setLoading(false);
                 })
                 .catch((err) => console.error(err));
         };
 
         categoryResults();
-    }, [name]);
+    }, [name]); // Trigger effect when 'name' changes
+
+    // Example of using the format function in your render
+    console.log(formatWithCommas(maxx)); // For formatted maxx
+    console.log(formatWithCommas(maxx2)); // For formatted maxx2
 
     const filterCards = () => {
         const filtered = cards.filter((card) => {
@@ -158,10 +181,6 @@ const CategoryPage = () => {
         }
     };
 
-    const minn = 0;
-    const maxx = 1000000;
-    const minn2 = 0;
-    const maxx2 = 1000000;
     // Handle slide change for Amount Range
     const HandleSlideChange = () => {
         // Remove commas and parse the input values as floats
@@ -211,6 +230,16 @@ const CategoryPage = () => {
                 .getElementById("amountRangeDisplay1")
                 .classList.remove("hidden");
         }, 300); // Add delay if needed for smooth transition
+    };
+    const Cancel = () => {
+        toggleCollapse("collapseAmountRange");
+    };
+    const cancelTurnover = () => {
+        toggleCollapse2(
+            "collapseTurnoverRange",
+            "sliderElement1",
+            "amountRangeDisplay1"
+        );
     };
 
     // comas logic
@@ -320,8 +349,9 @@ const CategoryPage = () => {
                                         htmlFor="maxAmount"
                                         className="text-sm font-medium text-gray-700 dark:text-gray-300"
                                     >
-                                        Max: {maxx}
+                                        Max: {maxx.toLocaleString()}
                                     </label>
+
                                     <input
                                         type="text"
                                         id="maxAmount"
@@ -335,12 +365,22 @@ const CategoryPage = () => {
                                 </div>
                             </div>
 
-                            <button
-                                className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-full sm:w-32 hover:bg-green-700 transition-colors"
-                                onClick={HandleSlideChange} // Pass the function here
-                            >
-                                Set
-                            </button>
+                            <div className="mt-4 flex justify-between">
+                                <button
+                                    className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
+                                    onClick={HandleSlideChange} // Pass the function here
+                                >
+                                    Set
+                                </button>
+
+                                {/* Cancel Button */}
+                                <button
+                                    className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                                    onClick={Cancel}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -404,7 +444,7 @@ const CategoryPage = () => {
                                         htmlFor="minTurnover"
                                         className="text-sm font-medium text-gray-700 dark:text-gray-300"
                                     >
-                                        Min:
+                                        Min: {minn2}
                                     </label>
                                     <input
                                         type="text"
@@ -426,7 +466,7 @@ const CategoryPage = () => {
                                         htmlFor="maxTurnover"
                                         className="text-sm font-medium text-gray-700 dark:text-gray-300"
                                     >
-                                        Max:
+                                        Max: {maxx2.toLocaleString()}
                                     </label>
                                     <input
                                         type="text"
@@ -443,12 +483,23 @@ const CategoryPage = () => {
                                     />
                                 </div>
                             </div>
-                            <button
-                                className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-full sm:w-32 hover:bg-green-700 transition-colors"
-                                onClick={HandleSlideChange2}
-                            >
-                                Set
-                            </button>
+
+                            <div className="mt-4 flex justify-between">
+                                <button
+                                    className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
+                                    onClick={HandleSlideChange2}
+                                >
+                                    Set
+                                </button>
+
+                                {/* Cancel Button */}
+                                <button
+                                    className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                                    onClick={cancelTurnover}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

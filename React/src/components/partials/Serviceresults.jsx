@@ -87,6 +87,29 @@ const ServiceResults = () => {
         amountSlider();
     }, []);
 
+    //RESULTS
+    const getResults2 = () => {
+            axiosClient
+                .get("/ServiceResults/" + base64_decode(resIds))
+                .then(({ data }) => {
+                    setResults(data.data);
+                    res = data.data;
+                    //console.log(data);
+                    localStorage.setItem(
+                        "s_results",
+                        JSON.stringify(data.data)
+                    );
+
+                    var x = navigator.geolocation;
+                    x.getCurrentPosition(success, failure);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+    //RESULTS
+
+
     // Nurul/Owen
     const amountSlider = () => {
         noUiSlider.create(slider, {
@@ -96,11 +119,11 @@ const ServiceResults = () => {
                 min: parseFloat(min),
                 max: parseFloat(max),
             },
-            step: 10000,
+            step: 1000,
             margin: 600,
             pips: {
                 stepped: true,
-                density: 6,
+                density: 4,
             },
         });
 
@@ -291,6 +314,18 @@ const ServiceResults = () => {
         $("#price_low").removeClass("hidden");
         $("#price_high").removeClass("hidden");
     };
+     const Cancel = () => {
+       alert("cancel");
+     };
+
+     const clearAmountSlider = () => {
+        var slider = document.getElementById("slider");
+        if (slider && slider.noUiSlider) {
+            slider.noUiSlider.destroy();
+        }
+        //min = 0;
+        //max = 1000000;
+    };
 
     //UPDATE NEW VALUES
     // const UpdateValuesMin = (value) => {
@@ -399,6 +434,18 @@ const ServiceResults = () => {
                         <label className="text-gray-700 font-semibold mb-2">
                             Price Range
                         </label>
+
+                        <button
+                            className="px-2 py-1 bg-green-400 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                            onClick={(event) => {
+                                clearAmountSlider();
+                                amountSlider();
+                                getResults2();
+                            }}
+                        >
+                            Clear
+                        </button>
+                        
                         <div id="slider" className="">
                             {" "}
                         </div>
@@ -467,16 +514,27 @@ const ServiceResults = () => {
                                         />
                                     </div>
                                 </div>
-
-                                <button
-                                    className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg w-full sm:w-32 mx-auto hover:bg-green-700 transition-colors"
-                                    onClick={(event) => {
+                                <div className="mt-4 flex justify-between items-center w-full">
+                                    <button
+                                        className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
+                                        onClick={(event) => {
+                                            amountSlider();
+                                            hide();
+                                        }}
+                                    >
+                                        Set
+                                    </button>
+                                    <button
+                                        className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                                        onClick={(event) => {
+                                        getResults2();
                                         amountSlider();
                                         hide();
                                     }}
-                                >
-                                    Set
-                                </button>
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
                             </div>
 
                             {/*COLLAPSE Amount*/}
