@@ -19,40 +19,45 @@ const CategoryPage = ({ categoryName }) => {
     const [minn, setMinn] = useState(0); // Default minimum price
     const [maxx, setMaxx] = useState(0); // Default maximum price
 
-    useEffect(() => {
-        const fetchCategoryResults = () => {
-            axiosClient
-                .get(`/categoryResults/${name}`)
-                .then(({ data }) => {
-                    if (data.services && data.services.length > 0) {
-                        setCards(data.services);
+      useEffect(() => {
+          // Fetch category results
+          const fetchCategoryResults = () => {
+              axiosClient
+                  .get(`/categoryResults/${name}`)
+                  .then(({ data }) => {
+                      if (data.services && data.services.length > 0) {
+                          setCards(data.services);
 
-                        // Determine the maximum and minimum prices dynamically
-                        const prices = data.services.map((card) => card.price);
-                        const max = Math.max(...prices);
-                        const min = Math.min(...prices);
+                          const prices = data.services.map(
+                              (card) => card.price
+                          );
+                          const max = Math.max(...prices);
+                          const min = Math.min(...prices);
 
-                        // Ensure minimum price is set to 0
-                        setMinn(0); // Explicitly set minimum to 0
-                        setMaxx(max); // Update maximum price state
-                        setMaxPrice(max); // Update maxPrice for slider
-                        setRange([0, max]); // Update the range to start from 0
-                    } else {
-                        setNotificationMessage("Listings not found.");
-                        setShowNotification(true);
-                    }
-                    setLoading(false);
-                })
-                .catch((err) => {
-                    console.error("Error fetching category results:", err);
-                    setNotificationMessage("Error loading data.");
-                    setShowNotification(true);
-                    setLoading(false);
-                });
-        };
+                          setMinn(0);
+                          setMaxx(max);
+                          setMaxPrice(max);
 
-        fetchCategoryResults();
-    }, [name]);
+                          // Load range from localStorage or set default
+                          const savedRange = JSON.parse(
+                              localStorage.getItem("sliderRange")
+                          );
+                          if (savedRange) {
+                              setRange(savedRange);
+                          } else {
+                              setRange([0, max]);
+                          }
+                      }
+                  })
+                  .catch((err) => {
+                      console.error("Error fetching category results:", err);
+                  })
+                  .finally(() => setLoading(false));
+          };
+
+          fetchCategoryResults();
+      }, [name]);
+
 
     const handleAmountChange = (value) => {
         setRange(value); // Update the range

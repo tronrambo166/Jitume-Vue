@@ -1,6 +1,6 @@
-import { useContext } from "react";
-import { useState, useEffect } from "react";
-import { createContext } from "react";
+// src/contexts/contextProvider.js
+import { useContext, useState, useEffect, createContext } from "react";
+import { useIdleTimer } from "react-idle-timer";
 
 const StateContext = createContext({
     user: null,
@@ -30,31 +30,63 @@ export const ContextProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        const handleTabClose = () => {
-            localStorage.removeItem("ACCESS_TOKEN");
-            setUser(null);
-            setAuth(null);
+        // Check if 20 seconds have elapsed since last tab close
+        const checkTokenExpiry = () => {
+            const logoutTime = localStorage.getItem("LOGOUT_TIME");
+
+            if (logoutTime) {
+                const elapsed = Date.now() - parseInt(logoutTime, 10);
+
+                // If 20+ seconds have passed, clear token and reset state
+                if (elapsed >= 20000) {
+                    localStorage.removeItem("ACCESS_TOKEN");
+                    localStorage.removeItem("LOGOUT_TIME");
+                    setUser(null);
+                    setAuth(null);
+                    setToken(null);
+                }
+            }
         };
 
-        // Check if the tab was closed previously
-        if (!localStorage.getItem("TAB_ACTIVE")) {
-            handleTabClose();
-        }
+        // Save the timestamp when the tab is closed
+        const handleTabClose = () => {
+            const logoutTime = Date.now();
+            localStorage.setItem("LOGOUT_TIME", logoutTime);
+        };
 
-        // Mark tab as active
-        localStorage.setItem("TAB_ACTIVE", "true");
+        // When the app starts/reopens, check if the token should be removed
+        checkTokenExpiry();
 
-        window.addEventListener("unload", () => {
-            localStorage.removeItem("TAB_ACTIVE");
-        });
+        // Add listeners for tab close
+        window.addEventListener("beforeunload", handleTabClose);
 
         return () => {
-            localStorage.removeItem("TAB_ACTIVE");
-            window.removeEventListener("unload", () => {
-                localStorage.removeItem("TAB_ACTIVE");
-            });
+            window.removeEventListener("beforeunload", handleTabClose);
         };
     }, []);
+
+    // Idle timer logic
+    const TEN_SECONDS = 300000; // Idle timeout (10 seconds for testing) 5min
+    const DEBOUNCE_TIME = 1000; // Wait 1 second before checking idle state
+
+    const handleOnUserIdle = () => {
+        if (token && token !== "false") {
+            localStorage.clear(); // Clear stored session data
+            localStorage.setItem("userLoggedOut", "true"); // Set a flag for logged out
+            setToken(null);
+            $.alert({
+                title: "Please Log In!",
+                content: "You're Logged Out.",
+            });
+        }
+    };
+
+    useIdleTimer({
+        timeout: TEN_SECONDS, // Set to 10 seconds for accurate idle detection
+        onIdle: handleOnUserIdle,
+        debounce: DEBOUNCE_TIME, // 1 second debounce time to prevent premature triggering
+        enabled: !!token && token !== "false", // Only enable if the user is logged in
+    });
 
     return (
         <StateContext.Provider

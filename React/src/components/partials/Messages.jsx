@@ -163,7 +163,10 @@ function Messages() {
                         />
                         <div className="flex-1">
                             <h4 className="font-semibold">{msg.sender}</h4>
-                            <p className="text-sm text-gray-600 truncate">
+                            <p
+                                className="text-sm text-gray-600 truncate"
+                                style={{ maxWidth: "200px" }}
+                            >
                                 {msg.msg}
                             </p>
                         </div>
@@ -220,10 +223,11 @@ function Messages() {
                                             overflowWrap: "break-word",
                                         }}
                                     >
-                                        <p className="text-sm">{chat.text}</p>
+                                        <p className="text-sm break-words">
+                                            {chat.text}
+                                        </p>
 
                                         {/* Message Status Indicator */}
-
                                         {chat.sender === "me" &&
                                             chat.status ===
                                                 "Failed to send" && (
@@ -233,7 +237,7 @@ function Messages() {
                                                         handleRetryMessage(
                                                             index
                                                         )
-                                                    } // Resend button
+                                                    }
                                                 >
                                                     <AiOutlineReload className="w-4 h-4" />{" "}
                                                     {/* Retry icon */}

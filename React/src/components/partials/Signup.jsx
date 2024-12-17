@@ -572,7 +572,7 @@ const RegisterForm = () => {
                         <div className="pb-3">
                             <Calendar onDateSelect={handleDateSelect} />
                             {errors.dob && (
-                                <p className="text-red-500">{errors.dob}</p>
+                                <p className="text-red-500 text-xs">{errors.dob}</p>
                             )}
                         </div>
                         <div className="text-center  ">

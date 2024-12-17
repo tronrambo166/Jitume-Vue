@@ -46,11 +46,11 @@ const CategoryPage = () => {
     const { marks: sliderMarksTurnover, step: stepTurnover } =
         calculateMarks(maxTurnover);
 
-    const [minn, setMinn] = useState(0); // Default minimum investment
     const [maxx, setMaxx] = useState(0); // Default maximum investment
-
-    const [minn2, setMinn2] = useState(0); // Default minimum turnover
     const [maxx2, setMaxx2] = useState(0); // Default maximum turnover
+
+    const [minn, setMinn] = useState(0); // Default minimum investment
+    const [minn2, setMinn2] = useState(0); // Default minimum turnover
 
     // Function to format numbers with commas
     const formatWithCommas = (value) => {
@@ -65,36 +65,45 @@ const CategoryPage = () => {
             return Math.max(...parts);
         };
 
-        const categoryResults = () => {
-            axiosClient
-                .get("/categoryResults/" + name)
-                .then(({ data }) => {
-                    setCards(data.data);
-                    setFilteredCards(data.data);
+        const categoryResults = async () => {
+            try {
+                const { data } = await axiosClient.get(
+                    "/categoryResults/" + name
+                );
+                setCards(data.data);
+                setFilteredCards(data.data);
 
-                    // Calculate maxInvestment and maxTurnover dynamically from API data
-                    const maxInvestment = Math.max(
-                        ...data.data.map((card) =>
-                            parseInvestment(card.investment_needed)
-                        )
-                    );
-                    const maxTurnoverValue = Math.max(
-                        ...data.data.map((card) =>
-                            parseTurnover(card.y_turnover)
-                        )
-                    );
+                // Ensure the data is valid before mapping
+                const investments = data.data.map((card) =>
+                    parseInvestment(card.investment_needed)
+                );
+                const turnovers = data.data.map((card) =>
+                    parseTurnover(card.y_turnover)
+                );
 
-                    // Set the maximum values for investment and turnover dynamically
-                    setMaxPrice(maxInvestment || 100); // Default to 100 if undefined
-                    setMaxTurnover(maxTurnoverValue || 100); // Default to 100 if undefined
+                const maxInvestment = Math.max(...investments, 0); // Fallback to 0
+                const maxTurnoverValue = Math.max(...turnovers, 0); // Fallback to 0
 
-                    // Set the investment and turnover range
-                    setAmountRange([0, maxInvestment || 100]);
-                    setTurnoverRange([0, maxTurnoverValue || 100]);
+                const minInvestment = Math.min(...investments, 0); // Fallback to 0
+                const minTurnoverValue = Math.min(...turnovers, 0); // Fallback to 0
 
-                    setLoading(false);
-                })
-                .catch((err) => console.error(err));
+                // Set ranges dynamically
+                setMaxx(maxInvestment);
+                setMinn(minInvestment);
+                setMaxx2(maxTurnoverValue);
+                setMinn2(minTurnoverValue);
+
+                // Update sliders
+                setAmountRange([minInvestment, maxInvestment]);
+                setTurnoverRange([minTurnoverValue, maxTurnoverValue]);
+
+                setMaxPrice(maxInvestment);
+                setMaxTurnover(maxTurnoverValue);
+
+                setLoading(false);
+            } catch (err) {
+                console.error(err);
+            }
         };
 
         categoryResults();
@@ -318,21 +327,34 @@ const CategoryPage = () => {
                                 min={0}
                                 max={maxPrice}
                                 step={100}
-                                value={amountRange}
-                                onChange={handleAmountChange}
-                                trackStyle={{
-                                    backgroundColor: "#15803D",
-                                    height: "10px",
-                                }}
-                                handleStyle={{
-                                    borderColor: "white",
-                                    height: "18px",
-                                    width: "18px",
-                                    marginTop: "-4px",
-                                    backgroundColor: "#15803D",
-                                    borderRadius: "50%",
-                                    border: "2px solid white",
-                                }}
+                                value={amountRange} // Controlled component
+                                onChange={handleAmountChange} // Handles state changes
+                                trackStyle={[
+                                    {
+                                        backgroundColor: "#15803D",
+                                        height: "10px",
+                                    },
+                                ]} // Array for range styles
+                                handleStyle={[
+                                    {
+                                        borderColor: "white",
+                                        height: "18px",
+                                        width: "18px",
+                                        marginTop: "-4px",
+                                        backgroundColor: "#15803D",
+                                        borderRadius: "50%",
+                                        border: "2px solid white",
+                                    },
+                                    {
+                                        borderColor: "white",
+                                        height: "18px",
+                                        width: "18px",
+                                        marginTop: "-4px",
+                                        backgroundColor: "#15803D",
+                                        borderRadius: "50%",
+                                        border: "2px solid white",
+                                    },
+                                ]} // Separate handles for range slider
                                 activeDotStyle={{ display: "none" }}
                                 dotStyle={{ display: "none" }}
                             />
@@ -422,7 +444,7 @@ const CategoryPage = () => {
                                 Set Range
                             </button>
 
-                            <label className="text-gray-700 ml-2 font-semibold mb-2">
+                            <label className="text-gray-700 font-semibold mb-2">
                                 Turnover Range
                             </label>
 
