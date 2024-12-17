@@ -25,7 +25,7 @@ import PaginationComponent from "./moduleParts/PaginationControls";
 import img from "../../assets/profile.png";
 import ScrollToTop from "../pages/ScrollToTop";
 import { useAlert } from "../partials/AlertContext";
-
+import TruncateWithModal from "./TruncateWithModal";
 import BackBtn from "./BackBtn";
 const ServiceDetails = () => {
     const { token, setUser, setAuth, auth } = useStateContext();
@@ -215,7 +215,7 @@ const ServiceDetails = () => {
                         data.data[0]["rating"] = 0;
                     setDetails(data.data[0]);
                     setCat(data.data[0].category);
-                    //console.log(details)
+                    console.log(details);
                 })
                 .catch((err) => {
                     console.log(err); //setLoading(false)
@@ -511,18 +511,13 @@ const ServiceDetails = () => {
                                     </div>
                                 </p>
                             </p>
-                            <p className="py-3 text-[13px]">
-                                Lorem ipsum dolor sit amet consectetur
-                                adipisicing elit. Hic quasi delectus dolores,
-                                quos aperiam ut illum deleniti quaerat quod, ex,
-                                expedita atque officiis molestias ipsam natus
-                                saepe ipsum dolorum quisquam reprehenderit? Quae
-                                magni architecto dignissimos nesciunt numquam
-                                libero vero autem magnam distinctio quod iste,
-                                fuga voluptatibus voluptas corporis sit eos
-                                temporibus et nemo! Aspernatur nam, accusamus
-                                cumque quidem ducimus iusto!
-                            </p>
+                            <TruncateWithModal
+                                maxLength={300} // Customize the truncation length
+                                buttonText="View More" // Customize the button label
+                                modalTitle={details.name} // Customize the modal title
+                                content={details.details}
+                            />
+
                             <p className="flex items-center mt-5 mb-5 text-gray-700">
                                 <FaMapMarkerAlt className="mr-2 text-lg text-gray-500" />
                                 {details.location}

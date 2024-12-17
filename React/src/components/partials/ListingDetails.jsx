@@ -695,7 +695,7 @@ const ListingDetails = ({ onClose }) => {
                                     content={details.details}
                                     maxLength={300} // Customize the truncation length
                                     buttonText="View More" // Customize the button label
-                                    modalTitle="Full Details" // Customize the modal title
+                                    modalTitle={details.name} // Customize the modal title
                                 />
 
                                 <div className="mb-4 py-2 flex flex-col gap-3">

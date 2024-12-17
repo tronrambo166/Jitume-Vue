@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaTimes } from "react-icons/fa"; // Import the close icon
 
 const TruncateWithModal = ({
-    content,
+    content = "No details available", // Default text if content is undefined or empty
     maxLength = 300,
     buttonText = "View More",
     modalTitle = "Details",
@@ -17,7 +17,7 @@ const TruncateWithModal = ({
     return (
         <div>
             {/* Truncated Text with Inline "View More" */}
-            <p className="text-[#1E293B] text-[18px] mb-3">
+            <p className="text-[#1E293B] text-[18px] mb-3 break-words">
                 {isTruncated ? (
                     <>
                         {content.slice(0, maxLength)}...{" "}
@@ -37,10 +37,10 @@ const TruncateWithModal = ({
             {isModalOpen && (
                 <div className="fixed inset-0 p-4 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white w-full max-w-2xl rounded-lg shadow-lg p-6 overflow-y-auto max-h-[80vh] relative">
-                        <h2 className="text-xl font-semibold mb-4">
+                        <h2 className="text-2xl  text-green font-semibold mb-4">
                             {modalTitle}
                         </h2>
-                        <p className="text-[#1E293B] text-[16px] leading-6">
+                        <p className="text-[#1E293B] text-[16px] leading-6 break-words">
                             {content}
                         </p>
                         {/* Close Icon (X) */}

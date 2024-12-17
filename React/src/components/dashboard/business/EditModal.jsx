@@ -144,6 +144,7 @@ const EditModal = ({
             if (response.data.status === 200) {
                
                 showAlert("success", response.data.message); // Show success alert
+                 setShowModal(false);
             } else {
                 
                 showAlert("warning", response.data.message); // Show warning alert for non-200 status
