@@ -296,138 +296,6 @@ const CategoryPage = () => {
             <div className="space-y-8 mb-10">
                 <div></div>
                 <div className="flex flex-col md:flex-row gap-8">
-                    {/* Amount Range */}
-                    <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-6 flex-1">
-                        {/* COLLAPSE BUTTON */}
-                        <div className="flex items-center">
-                            <button
-                                onClick={() => {
-                                    toggleCollapse("collapseAmountRange");
-                                }}
-                                className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
-                            >
-                                Set Range
-                            </button>
-
-                            <label className="text-gray-700 ml-2 font-semibold mb-2">
-                                Amount Range
-                            </label>
-
-                            <button
-                                className="ml-auto px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
-                                onClick={Clear}
-                            >
-                                Clear
-                            </button>
-                        </div>
-
-                        <div className="py-4" id="sliderElement">
-                            <Slider
-                                range
-                                min={0}
-                                max={maxPrice}
-                                step={100}
-                                value={amountRange} // Controlled component
-                                onChange={handleAmountChange} // Handles state changes
-                                trackStyle={[
-                                    {
-                                        backgroundColor: "#15803D",
-                                        height: "10px",
-                                    },
-                                ]} // Array for range styles
-                                handleStyle={[
-                                    {
-                                        borderColor: "white",
-                                        height: "18px",
-                                        width: "18px",
-                                        marginTop: "-4px",
-                                        backgroundColor: "#15803D",
-                                        borderRadius: "50%",
-                                        border: "2px solid white",
-                                    },
-                                    {
-                                        borderColor: "white",
-                                        height: "18px",
-                                        width: "18px",
-                                        marginTop: "-4px",
-                                        backgroundColor: "#15803D",
-                                        borderRadius: "50%",
-                                        border: "2px solid white",
-                                    },
-                                ]} // Separate handles for range slider
-                                activeDotStyle={{ display: "none" }}
-                                dotStyle={{ display: "none" }}
-                            />
-                        </div>
-                        <div
-                            className="flex justify-between mt-2 text-gray-600 dark:text-gray-400 text-sm"
-                            id="amountRangeDisplay"
-                        >
-                            <span>${amountRange[0].toLocaleString()}</span>
-                            <span>${amountRange[1].toLocaleString()}</span>
-                        </div>
-
-                        <div className="mt-4 hidden" id="collapseAmountRange">
-                            <div className="flex justify-between items-center gap-4">
-                                <div className="flex flex-col w-1/2 space-y-2">
-                                    <label
-                                        htmlFor="minAmount"
-                                        className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                    >
-                                        Min: {minn}
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="minAmount"
-                                        value={minAmount}
-                                        onChange={(e) =>
-                                            handleInputChange(e, setMinAmount)
-                                        }
-                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-                                        name="minAmount"
-                                    />
-                                </div>
-
-                                <div className="flex flex-col w-1/2 space-y-2">
-                                    <label
-                                        htmlFor="maxAmount"
-                                        className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                    >
-                                        Max: {maxx.toLocaleString()}
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="maxAmount"
-                                        value={maxAmount}
-                                        onChange={(e) =>
-                                            handleInputChange(e, setMaxAmount)
-                                        }
-                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-                                        name="maxAmount"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="mt-4 flex justify-between">
-                                <button
-                                    className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
-                                    onClick={HandleSlideChange} // Pass the function here
-                                >
-                                    Set
-                                </button>
-
-                                {/* Cancel Button */}
-                                <button
-                                    className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
-                                    onClick={Cancel}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
                     {/* Turnover Range */}
                     <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-6 flex-1">
                         <div className="flex items-center">
@@ -444,7 +312,7 @@ const CategoryPage = () => {
                                 Set Range
                             </button>
 
-                            <label className="text-gray-700 font-semibold mb-2">
+                            <label className="text-gray-700 font-semibold ml-2 mb-2">
                                 Turnover Range
                             </label>
 
@@ -555,6 +423,137 @@ const CategoryPage = () => {
                             </div>
                         </div>
                     </div>
+                    {/* Amount Range */}
+                    <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-6 flex-1">
+                        {/* COLLAPSE BUTTON */}
+                        <div className="flex items-center">
+                            <button
+                                onClick={() => {
+                                    toggleCollapse("collapseAmountRange");
+                                }}
+                                className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
+                            >
+                                Set Range
+                            </button>
+
+                            <label className="text-gray-700 ml-2 font-semibold mb-2">
+                                Amount Range
+                            </label>
+
+                            <button
+                                className="ml-auto px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
+                                onClick={Clear}
+                            >
+                                Clear
+                            </button>
+                        </div>
+
+                        <div className="py-4" id="sliderElement">
+                            <Slider
+                                range
+                                min={0}
+                                max={maxPrice}
+                                step={100}
+                                value={amountRange} // Controlled component
+                                onChange={handleAmountChange} // Handles state changes
+                                trackStyle={[
+                                    {
+                                        backgroundColor: "#15803D",
+                                        height: "10px",
+                                    },
+                                ]} // Array for range styles
+                                handleStyle={[
+                                    {
+                                        borderColor: "white",
+                                        height: "18px",
+                                        width: "18px",
+                                        marginTop: "-4px",
+                                        backgroundColor: "#15803D",
+                                        borderRadius: "50%",
+                                        border: "2px solid white",
+                                    },
+                                    {
+                                        borderColor: "white",
+                                        height: "18px",
+                                        width: "18px",
+                                        marginTop: "-4px",
+                                        backgroundColor: "#15803D",
+                                        borderRadius: "50%",
+                                        border: "2px solid white",
+                                    },
+                                ]} // Separate handles for range slider
+                                activeDotStyle={{ display: "none" }}
+                                dotStyle={{ display: "none" }}
+                            />
+                        </div>
+                        <div
+                            className="flex justify-between mt-6 text-gray-600 dark:text-gray-400 text-sm"
+                            id="amountRangeDisplay"
+                        >
+                            <span>${amountRange[0].toLocaleString()}</span>
+                            <span>${amountRange[1].toLocaleString()}</span>
+                        </div>
+
+                        <div className="mt-4 hidden" id="collapseAmountRange">
+                            <div className="flex justify-between items-center gap-4">
+                                <div className="flex flex-col w-1/2 space-y-2">
+                                    <label
+                                        htmlFor="minAmount"
+                                        className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    >
+                                        Min: {minn}
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="minAmount"
+                                        value={minAmount}
+                                        onChange={(e) =>
+                                            handleInputChange(e, setMinAmount)
+                                        }
+                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                                        name="minAmount"
+                                    />
+                                </div>
+
+                                <div className="flex flex-col w-1/2 space-y-2">
+                                    <label
+                                        htmlFor="maxAmount"
+                                        className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    >
+                                        Max: {maxx.toLocaleString()}
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="maxAmount"
+                                        value={maxAmount}
+                                        onChange={(e) =>
+                                            handleInputChange(e, setMaxAmount)
+                                        }
+                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                                        name="maxAmount"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="mt-4 flex justify-between">
+                                <button
+                                    className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
+                                    onClick={HandleSlideChange} // Pass the function here
+                                >
+                                    Set
+                                </button>
+
+                                {/* Cancel Button */}
+                                <button
+                                    className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
+                                    onClick={Cancel}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -609,11 +608,11 @@ const CategoryPage = () => {
                                         {card.location ||
                                             "Location not available"}
                                     </p>
-                                    <p className="text-sm sm:text-base text-gray-600 mt-2">
-                                        Lorem ipsum dolor sit amet consectetur.
-                                        Eu quis vel pellentesque ullamcorper
-                                        donec lorem auctor egestas adipiscing.
+                                    <p className="text-sm sm:text-base text-gray-600 mt-2 truncate-multiline">
+                                        {card.description ||
+                                            "Lorem ipsum dolor sit amet consectetur. Eu quis vel pellentesque ullamcorper donec lorem auctor egestas adipiscing."}
                                     </p>
+
                                     <p className="text-black space-x-2 font-semibold mt-2">
                                         <span className="text-[#1E293B] jakarta">
                                             Amount Requested:

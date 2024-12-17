@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axiosClient from "../../axiosClient"; // Ensure axiosClient is correctly set up
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import FindServicesBtn from "./FindServicesBtn";
 
 const FindBusinessBtn = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation(); // Hook to get the current location
 
     const handleBrowseBusinesses = async (e) => {
         e.preventDefault();
@@ -39,8 +41,7 @@ const FindBusinessBtn = () => {
 
             if (window.location.pathname.includes("listingResults")) {
                 // window.location.reload();
-            window.scrollTo(0, 0);
-
+                window.scrollTo(0, 0);
             }
         } catch (err) {
             console.error(err);
@@ -57,20 +58,27 @@ const FindBusinessBtn = () => {
         return btoa(str);
     };
 
+    // Check if the current route contains 'service'
+    const isServiceRoute = location.pathname.includes("service");
+
     return (
         <div>
-            <button
-                onClick={handleBrowseBusinesses}
-                disabled={loading}
-                className={`flex items-center justify-center px-6 md:px-8 py-3 md:py-4 font-semibold rounded-lg text-white text-[10px] md:text-[12px] bg-green-500 hover:bg-green-600 transition ${
-                    loading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-            >
-                {loading ? (
-                    <AiOutlineLoading3Quarters className="animate-spin mr-2" />
-                ) : null}
-                {loading ? "Redirecting..." : "Find a business"}
-            </button>
+            {isServiceRoute ? (
+                <FindServicesBtn />
+            ) : (
+                <button
+                    onClick={handleBrowseBusinesses}
+                    disabled={loading}
+                    className={`flex items-center justify-center px-6 md:px-8 py-3 md:py-4 font-semibold rounded-lg text-white text-[10px] md:text-[12px] bg-green-500 hover:bg-green-600 transition ${
+                        loading ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                >
+                    {loading ? (
+                        <AiOutlineLoading3Quarters className="animate-spin mr-2" />
+                    ) : null}
+                    {loading ? "Redirecting..." : "Find Business"}
+                </button>
+            )}
         </div>
     );
 };

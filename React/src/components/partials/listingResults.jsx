@@ -64,10 +64,20 @@ const ListingResults = () => {
 
     var count = results.length ? results.length:0;
     let res = [];
-    var max = 1000000;
-    var min = 0;
-    var max2 = 1000000;
-    var min2 = 0;
+   var max = 1000000;
+   var min = 0;
+   var max2 = 1000000;
+   var min2 = 0;
+
+   // Formatting with commas for display
+   var formattedMax = max.toLocaleString();
+   var formattedMin = min.toLocaleString();
+   var formattedMax2 = max2.toLocaleString();
+   var formattedMin2 = min2.toLocaleString();
+
+   console.log(`Max: ${formattedMax}, Min: ${formattedMin}`);
+   console.log(`Max2: ${formattedMax2}, Min2: ${formattedMin2}`);
+
 
     const openInNewTab = (url) => {
         window.open(url, "_blank");
@@ -690,7 +700,7 @@ const ListingResults = () => {
                                         htmlFor="low"
                                         className="text-sm font-medium text-gray-700"
                                     >
-                                        Min: {min}
+                                        Min: {formattedMin}
                                     </label>
                                     <input
                                         type="text"
@@ -705,7 +715,7 @@ const ListingResults = () => {
                                         htmlFor="high"
                                         className="text-sm font-medium text-gray-700"
                                     >
-                                        Max: {max}
+                                        Max: {formattedMax}
                                     </label>
                                     <input
                                         type="text"
@@ -801,7 +811,7 @@ const ListingResults = () => {
                                         htmlFor="low2"
                                         className="text-sm font-medium text-gray-700"
                                     >
-                                        Min: {min2}
+                                        Min: {formattedMin2}
                                     </label>
                                     <input
                                         type="text" // Use text instead of number to allow formatting
@@ -817,7 +827,7 @@ const ListingResults = () => {
                                         htmlFor="high2"
                                         className="text-sm font-medium text-gray-700"
                                     >
-                                        Max: {max2}
+                                        Max: {formattedMax2}
                                     </label>
                                     <input
                                         type="text" // Use text instead of number to allow formatting
@@ -919,7 +929,7 @@ const ListingResults = () => {
                                             <p className="text-lg font-semibold text-[#1E293B] mb-2">
                                                 {row.name}
                                             </p>
-                                            <p className="text-sm text-[#1E293B] mb-2">
+                                            <p className="text-sm text-[#1E293B] truncate-multiline mb-2">
                                                 {row.details ||
                                                     "Lorem ipsum dolor sit amet consectetur..."}
                                             </p>

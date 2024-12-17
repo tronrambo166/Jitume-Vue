@@ -129,7 +129,7 @@ const ServiceTable = () => {
         category: item.category,
         details: item.details,
         details: (
-            <div className="max-w-[200px] truncate overflow-ellipsis">
+            <div className="max-w-[170px] truncate overflow-ellipsis">
                 {item.details}
             </div>
         ),

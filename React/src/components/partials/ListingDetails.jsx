@@ -29,6 +29,7 @@ import Nav2 from "../Landing-page/global/Nav2";
 import ScrollToTop from "../pages/ScrollToTop";
 import { useAlert } from "../partials/AlertContext";
 import BackBtn from "./BackBtn";
+import TruncateWithModal from "./TruncateWithModal";
 const ListingDetails = ({ onClose }) => {
     const { token, setUser, setAuth, auth } = useStateContext();
     const [loading, setLoading] = useState(false);
@@ -690,10 +691,12 @@ const ListingDetails = ({ onClose }) => {
                                     <p>#Food</p> */}
                                     <p>#{details.category.replace("/", "-")}</p>
                                 </div>
-
-                                <p className="text-[#1E293B] text-[18px] mb-5">
-                                    {details.details}
-                                </p>
+                                <TruncateWithModal
+                                    content={details.details}
+                                    maxLength={300} // Customize the truncation length
+                                    buttonText="View More" // Customize the button label
+                                    modalTitle="Full Details" // Customize the modal title
+                                />
 
                                 <div className="mb-4 py-2 flex flex-col gap-3">
                                     <p className="flex items-center text-gray-700">
@@ -719,11 +722,16 @@ const ListingDetails = ({ onClose }) => {
                                     <div className="flex items-center gap-2 text-sm">
                                         <span className="text-gray-500">|</span>
                                         <span className="text-green-700">
-                                            Amount Collected: {details.amount_collected.toLocaleString()}
+                                            Amount Collected:{" "}
+                                            {details.amount_collected.toLocaleString()}
                                         </span>
                                         <span className="text-gray-500">|</span>
                                         <span className="text-red-700">
-                                            Amount Needed: {(details.investment_needed-details.amount_collected).toLocaleString()}
+                                            Amount Needed:{" "}
+                                            {(
+                                                details.investment_needed -
+                                                details.amount_collected
+                                            ).toLocaleString()}
                                         </span>
                                     </div>
                                 </div>

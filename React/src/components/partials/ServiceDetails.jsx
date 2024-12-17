@@ -774,39 +774,46 @@ const ServiceDetails = () => {
                             {/* On mobile, ReviewList takes up full width, on larger screens it takes 2/3 */}
                             <div className="sm:col-span-2">
                                 <ReviewList reviews={currentReviews} />
-                                <div className="flex flex-col sm:flex-row justify-between items-center ">
-                                    <div className="flex items-center">
-                                        <span className="mr-2 text-gray-600">
-                                            Show
-                                        </span>
-                                        <select
-                                            value={itemsPerPage}
-                                            onChange={handleItemsPerPageChange}
-                                            className="border bg-white border-gray-300 rounded-full px-4 py-1 text-gray-600 shadow-sm outline-none focus:ring-1 focus:ring-gray-300 transition ease-in-out duration-150"
-                                        >
-                                            <option value={5}>5</option>
-                                            <option value={6}>6</option>
-                                            <option value={7}>7</option>
-                                            <option value={8}>8</option>
-                                        </select>
-                                        <span className="ml-2 text-gray-600">
-                                            Cards per page
-                                        </span>
+                                {reviews.length > 5 && ( // Show pagination only if there are more than 5 reviews
+                                    <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
+                                        <div className="flex items-center">
+                                            <span className="mr-2 text-gray-600">
+                                                Show
+                                            </span>
+                                            <select
+                                                value={itemsPerPage}
+                                                onChange={
+                                                    handleItemsPerPageChange
+                                                }
+                                                className="border bg-white border-gray-300 rounded-full px-4 py-1 text-gray-600 shadow-sm outline-none focus:ring-2 focus:ring-gray-300 transition ease-in-out duration-150"
+                                            >
+                                                <option value={5}>5</option>
+                                                <option value={6}>6</option>
+                                                <option value={7}>7</option>
+                                                <option value={8}>8</option>
+                                            </select>
+                                            <span className="ml-2 text-gray-600">
+                                                Cards per page
+                                            </span>
+                                        </div>
+                                        <div className="sm:mt-0">
+                                            <PaginationComponent
+                                                currentPage={currentPage}
+                                                totalPages={totalPages}
+                                                handlePreviousClick={
+                                                    handlePreviousClick
+                                                }
+                                                handlePageClick={
+                                                    handlePageClick
+                                                }
+                                                handleNextClick={
+                                                    handleNextClick
+                                                }
+                                                getPageNumbers={getPageNumbers}
+                                            />
+                                        </div>
                                     </div>
-
-                                    <div className=" sm:mt-0">
-                                        <PaginationComponent
-                                            currentPage={currentPage}
-                                            totalPages={totalPages}
-                                            handlePreviousClick={
-                                                handlePreviousClick
-                                            }
-                                            handlePageClick={handlePageClick}
-                                            handleNextClick={handleNextClick}
-                                            getPageNumbers={getPageNumbers}
-                                        />
-                                    </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                     </div>

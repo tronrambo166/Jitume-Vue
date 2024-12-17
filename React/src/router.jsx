@@ -49,11 +49,17 @@ import KnowledgeHub from "./components/footer-pages/KnowledgeHub";
 import Partner from "./components/footer-pages/Partner";
 import WhatIsJitume from "./components/footer-pages/WhatIsJitume";
 import DueDiligence from "./components/footer-pages/DueDiligence";
-
+// // src/components/ScrollToTop.js
+import ScrollToTop from "./components/partials/ScrollToTop";
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <DefaultLayout />,
+        element: (
+            <>
+                <ScrollToTop />
+                <DefaultLayout />
+            </>
+        ),
         children: [
             { path: "/", element: <Homepage /> },
             { path: "/home", element: <Homepage /> },

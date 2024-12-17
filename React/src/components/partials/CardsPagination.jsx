@@ -8,11 +8,21 @@ const CardsPagination = ({ currentPage, totalPages, onPageChange }) => {
         pageNumbers.push(i);
     }
 
+    const handlePageChange = (page) => {
+        // Scroll to the top of the page
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth", // Adds a smooth scroll effect
+        });
+        // Call the parent handler
+        onPageChange(page);
+    };
+
     return (
         <nav className="flex justify-center items-center space-x-2 mt-4">
             {/* Previous Button */}
             <button
-                onClick={() => onPageChange(currentPage - 1)}
+                onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
                 className={`w-10 h-10 flex justify-center items-center border rounded-lg transition duration-200 ${
                     currentPage === 1
@@ -27,7 +37,7 @@ const CardsPagination = ({ currentPage, totalPages, onPageChange }) => {
             {pageNumbers.map((number) => (
                 <button
                     key={number}
-                    onClick={() => onPageChange(number)}
+                    onClick={() => handlePageChange(number)}
                     className={`w-10 h-10 flex justify-center items-center rounded-lg border transition duration-200 ${
                         currentPage === number
                             ? "bg-green-800 text-white"
@@ -40,7 +50,7 @@ const CardsPagination = ({ currentPage, totalPages, onPageChange }) => {
 
             {/* Next Button */}
             <button
-                onClick={() => onPageChange(currentPage + 1)}
+                onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
                 className={`w-10 h-10 flex justify-center items-center border rounded-lg transition duration-200 ${
                     currentPage === totalPages

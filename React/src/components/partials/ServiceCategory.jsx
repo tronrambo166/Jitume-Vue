@@ -357,7 +357,7 @@ const CategoryPage = ({ categoryName }) => {
                                         {card.location ||
                                             "Location not available"}
                                     </p>
-                                    <p className="text-sm text-gray-600 mt-2">
+                                    <p className="text-sm text-gray-600 mt-2 truncate ">
                                         {card.details}
                                     </p>
                                     <p className="text-black space-x-2 font-semibold mt-2">

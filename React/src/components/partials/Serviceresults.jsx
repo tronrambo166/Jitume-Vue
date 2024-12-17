@@ -57,6 +57,11 @@ const ServiceResults = () => {
     const [cartRes, setCartRes] = useState("");
     var max = 1000000;
     var min = 0;
+    var maxFormatted = max.toLocaleString(); // "1,000,000"
+    var minFormatted = min.toLocaleString(); // "0"
+
+    console.log(maxFormatted); // Outputs: 1,000,000
+    console.log(minFormatted); // Outputs: 0
 
     //KEVIN
     useEffect(() => {
@@ -89,26 +94,22 @@ const ServiceResults = () => {
 
     //RESULTS
     const getResults2 = () => {
-            axiosClient
-                .get("/ServiceResults/" + base64_decode(resIds))
-                .then(({ data }) => {
-                    setResults(data.data);
-                    res = data.data;
-                    //console.log(data);
-                    localStorage.setItem(
-                        "s_results",
-                        JSON.stringify(data.data)
-                    );
+        axiosClient
+            .get("/ServiceResults/" + base64_decode(resIds))
+            .then(({ data }) => {
+                setResults(data.data);
+                res = data.data;
+                //console.log(data);
+                localStorage.setItem("s_results", JSON.stringify(data.data));
 
-                    var x = navigator.geolocation;
-                    x.getCurrentPosition(success, failure);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        };
+                var x = navigator.geolocation;
+                x.getCurrentPosition(success, failure);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     //RESULTS
-
 
     // Nurul/Owen
     const amountSlider = () => {
@@ -314,11 +315,11 @@ const ServiceResults = () => {
         $("#price_low").removeClass("hidden");
         $("#price_high").removeClass("hidden");
     };
-     const Cancel = () => {
-       alert("cancel");
-     };
+    const Cancel = () => {
+        alert("cancel");
+    };
 
-     const clearAmountSlider = () => {
+    const clearAmountSlider = () => {
         var slider = document.getElementById("slider");
         if (slider && slider.noUiSlider) {
             slider.noUiSlider.destroy();
@@ -350,7 +351,7 @@ const ServiceResults = () => {
             document.getElementById("low").value =
                 formatWithCommas(numericValue); // Update input with formatted value
         }
-    }; 
+    };
 
     const UpdateValuesMax = (value) => {
         const numericValue = parseWithoutCommas(value); // Remove commas to get a numeric string
@@ -423,7 +424,7 @@ const ServiceResults = () => {
                         id="turnover_slider"
                         className=" w-full jakarta  text-md border border-[#cbd5e1] rounded-lg space-y-2 px-6 py-4 "
                     >
-                        <div className="flex items-center">
+                        <div className="flex items-center mt-2 mb-6">
                             <button
                                 onClick={collapse}
                                 id="colBut4"
@@ -479,7 +480,7 @@ const ServiceResults = () => {
                                             htmlFor="low"
                                             className="text-sm font-medium text-gray-700"
                                         >
-                                            Min: {min}
+                                            Min: {minFormatted}
                                         </label>
                                         <input
                                             type="text" // Changed to text to allow comma formatting
@@ -497,7 +498,7 @@ const ServiceResults = () => {
                                             htmlFor="high"
                                             className="text-sm  font-medium text-gray-700"
                                         >
-                                            Max: {max}
+                                            Max: {maxFormatted}
                                             <span
                                                 id="price_high"
                                                 className="float-right py-0 "
@@ -635,7 +636,7 @@ const ServiceResults = () => {
                                             <p className="text-lg font-semibold text-slate-800">
                                                 {row.name}
                                             </p>
-                                            <p className="text-sm text-gray-600">
+                                            <p className="text-sm text-gray-600 truncate">
                                                 {row.details ||
                                                     "Lorem ipsum dolor sit amet consectetur..."}
                                             </p>
