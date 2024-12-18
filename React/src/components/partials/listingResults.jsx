@@ -56,15 +56,23 @@ const ListingResults = () => {
     // Amount side
     const [priceRange, setPriceRange] = useState([0, 1000000]); // Initial range
     const [result, setResult] = useState("");
+    const [maxRange, setMaxRange] = useState(1000000);
 
     const locationInputRef = useRef(null);
     const sliderRef = useRef(null);
 
     // const mapRef = useRef(null);
 
-    var count = results.length ? results.length:0;
+    if(results)
+     var count = results.length;
+    else
+     var count = 0;
+
     let res = [];
-   var max = 1000000;
+
+    var max = maxRange;
+    //else max = 1000000;
+
    var min = 0;
    var max2 = 1000000;
    var min2 = 0;
@@ -114,7 +122,8 @@ const ListingResults = () => {
                 .then(({ data }) => {
                     setResults(data.data);
                     res = data.data;
-                    //console.log(results);
+                    //console.log(data);
+                    setMaxRange(data.max_range);
                     localStorage.setItem("results", JSON.stringify(data.data));
 
                     var x = navigator.geolocation;
@@ -146,37 +155,6 @@ const ListingResults = () => {
             slider2.noUiSlider.destroy();
 
         }
-
-        //SLIDERS FILTER
-
-        // const amountSliderInitilize = () => {
-        //     noUiSlider.create(slider2, {
-        //         start: [0, 1000000],
-        //         connect: true,
-        //         range: {
-        //             min: parseFloat(min2),
-        //             max: parseFloat(max2),
-        //         },
-
-        //         step: 10000,
-        //         margin: 600,
-        //         pips: {
-        //             //mode: 'steps',
-        //             stepped: true,
-        //             density: 6,
-        //         },
-        //     });
-        //     var skipValues = [
-        //         document.getElementById("price_low2"),
-        //         document.getElementById("price_high2"),
-        //     ];
-        //     // slider2.noUiSlider.on("update", function (values, handle) {
-        //     //     skipValues[handle].innerHTML = "$" + values[handle];
-        //     //     //console.log(values[1] - values[0]);
-
-        //     // });
-        // };
-        //SLIDERS FILTER
 
         //rangeSliderInitilize();
         //amountSliderInitilize();
@@ -212,7 +190,7 @@ const ListingResults = () => {
     //Turnover(Nurul)
     const rangeSliderInitilize = () => {
         noUiSlider.create(slider, {
-            start: [0, 1000000],
+            start: [0, max],
             connect: true,
             range: {
                 min: parseFloat(min),

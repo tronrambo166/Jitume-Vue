@@ -35,7 +35,7 @@ class AdminController extends Controller
 
   public function login()
     {  
-        $admin = Session::get('admin');  echo $admin;exit;
+        $admin = Session::get('admin');  //echo $admin;exit;
          if($admin && $admin == 'Logged!')
              Redirect::to('admin/index_admin')->send(); 
 
@@ -150,19 +150,24 @@ public function listings_active()
     {       
         $acceptedBids = AcceptedBids::groupBy('business_id')->latest()->get();
 
-        $businesses = new stdClass; $i=0;
+        $businesses = new stdClass; $i=0;$j=0;
         foreach($acceptedBids as $aBid){
             $row = DB::table('listings')
             ->where('listings.id',$aBid->business_id)
             ->join('users', 'listings.user_id', '=', 'users.id')
-            ->select('listings.*', 'users.fname', 'users.lname', 'users.email')
+            ->select('listings.*', 'users.*')
             ->get();
         // ->join('milestones', 'listings.id', '=', 'milestones.listings_id')
-            $businesses->$i = $row; $i++;
+           
+            if(isset($row[0])){
+                $businesses->$i = $row;$i++; 
+                $j++;
+            }
         }
+        $count = $j;
         //return $businesses;
         
-        return view('admin.listings_active',compact('businesses'));     
+        return view('admin.listings_active',compact('businesses','count'));     
     }
 
 
@@ -170,18 +175,27 @@ public function listings_active()
     {       
         $acceptedBids = serviceBook::groupBy('service_id')->latest()->get();
 
-        $businesses = new stdClass; $i=0;
+        $businesses = new stdClass; $i=0;$j=0;
         foreach($acceptedBids as $booking){
             $row = DB::table('services')
             ->where('services.id',$booking->service_id)
             ->join('users', 'services.shop_id', '=', 'users.id')
-            ->select('services.*', 'users.fname', 'users.lname', 'users.email')
+            ->select('services.*', 'users.*')
             ->get();
-            $businesses->$i = $row; $i++;
+            
+
+            //return $row[0];
+            if(isset($row[0])){
+                $businesses->$i = $row;$i++; 
+                $j++;
+            }
+            
         }
+        $count = $j;
+        //return $count;
         //return $businesses;
         
-        return view('admin.services_active',compact('businesses'));     
+        return view('admin.services_active',compact('businesses', 'count'));     
     }
 
 

@@ -335,13 +335,12 @@ return response()->json(['results'=>$listings, 'loc' => $loc, 'success' => "Succ
 public function searchResults($ids){
 
 $results = array();
-
 if($ids==0)
-  return response()->json([ 'data' => $results, 'count'=>0] );
+    return response()->json([ 'data' => $results, 'count'=>0] );
 
-  $ids = explode(',',$ids); 
-
-
+$ids = explode(',',$ids); 
+$max_range = 0;
+$store_range = array();
 foreach($ids as $id){ 
 
      //if(strlen($id) > 3) $id = dechex($id); return $id;
@@ -353,7 +352,7 @@ foreach($ids as $id){
     $files = businessDocs::where('business_id',$id)
     ->where('media',1)->first();
 
-  if($listing){
+    if($listing){
     if(isset($files->file))
     $listing->file = $files->file;
     else 
@@ -362,8 +361,9 @@ foreach($ids as $id){
 
 
     $range = explode('-', $listing->y_turnover);
-    $range[0] = number_format($range[0]);
-    $range[1] = number_format($range[1]);
+    //$range[0] = number_format($range[0]);
+    //$range[1] = number_format($range[1]);
+    $store_range[] = $range[1];
     //$listing->y_turnover = implode('-', $range);
 
     $listing->lat = (float)$listing->lat;
@@ -374,8 +374,11 @@ foreach($ids as $id){
     $results[] = $listing;
 }
 }
+
+rsort($store_range);
+$max_range = $store_range[0];
 if($conv!=null)$conv = true;else $conv=false;
-return response()->json([ 'data' => $results, 'count'=>count($results)] );
+return response()->json([ 'data' => $results, 'count'=>count($results), 'max_range' => $max_range] );
 }
 
 
