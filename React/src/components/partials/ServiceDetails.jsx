@@ -25,7 +25,7 @@ import PaginationComponent from "./moduleParts/PaginationControls";
 import img from "../../assets/profile.png";
 import ScrollToTop from "../pages/ScrollToTop";
 import { useAlert } from "../partials/AlertContext";
-
+import TruncateWithModal from "./TruncateWithModal";
 import BackBtn from "./BackBtn";
 const ServiceDetails = () => {
     const { token, setUser, setAuth, auth } = useStateContext();
@@ -215,7 +215,7 @@ const ServiceDetails = () => {
                         data.data[0]["rating"] = 0;
                     setDetails(data.data[0]);
                     setCat(data.data[0].category);
-                    //console.log(details)
+                    console.log(details);
                 })
                 .catch((err) => {
                     console.log(err); //setLoading(false)
@@ -511,18 +511,13 @@ const ServiceDetails = () => {
                                     </div>
                                 </p>
                             </p>
-                            <p className="py-3 text-[13px]">
-                                Lorem ipsum dolor sit amet consectetur
-                                adipisicing elit. Hic quasi delectus dolores,
-                                quos aperiam ut illum deleniti quaerat quod, ex,
-                                expedita atque officiis molestias ipsam natus
-                                saepe ipsum dolorum quisquam reprehenderit? Quae
-                                magni architecto dignissimos nesciunt numquam
-                                libero vero autem magnam distinctio quod iste,
-                                fuga voluptatibus voluptas corporis sit eos
-                                temporibus et nemo! Aspernatur nam, accusamus
-                                cumque quidem ducimus iusto!
-                            </p>
+                            <TruncateWithModal
+                                maxLength={300} // Customize the truncation length
+                                buttonText="View More" // Customize the button label
+                                modalTitle={details.name} // Customize the modal title
+                                content={details.details}
+                            />
+
                             <p className="flex items-center mt-5 mb-5 text-gray-700">
                                 <FaMapMarkerAlt className="mr-2 text-lg text-gray-500" />
                                 {details.location}
@@ -774,39 +769,46 @@ const ServiceDetails = () => {
                             {/* On mobile, ReviewList takes up full width, on larger screens it takes 2/3 */}
                             <div className="sm:col-span-2">
                                 <ReviewList reviews={currentReviews} />
-                                <div className="flex flex-col sm:flex-row justify-between items-center ">
-                                    <div className="flex items-center">
-                                        <span className="mr-2 text-gray-600">
-                                            Show
-                                        </span>
-                                        <select
-                                            value={itemsPerPage}
-                                            onChange={handleItemsPerPageChange}
-                                            className="border bg-white border-gray-300 rounded-full px-4 py-1 text-gray-600 shadow-sm outline-none focus:ring-1 focus:ring-gray-300 transition ease-in-out duration-150"
-                                        >
-                                            <option value={5}>5</option>
-                                            <option value={6}>6</option>
-                                            <option value={7}>7</option>
-                                            <option value={8}>8</option>
-                                        </select>
-                                        <span className="ml-2 text-gray-600">
-                                            Cards per page
-                                        </span>
+                                {reviews.length > 5 && ( // Show pagination only if there are more than 5 reviews
+                                    <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
+                                        <div className="flex items-center">
+                                            <span className="mr-2 text-gray-600">
+                                                Show
+                                            </span>
+                                            <select
+                                                value={itemsPerPage}
+                                                onChange={
+                                                    handleItemsPerPageChange
+                                                }
+                                                className="border bg-white border-gray-300 rounded-full px-4 py-1 text-gray-600 shadow-sm outline-none focus:ring-2 focus:ring-gray-300 transition ease-in-out duration-150"
+                                            >
+                                                <option value={5}>5</option>
+                                                <option value={6}>6</option>
+                                                <option value={7}>7</option>
+                                                <option value={8}>8</option>
+                                            </select>
+                                            <span className="ml-2 text-gray-600">
+                                                Cards per page
+                                            </span>
+                                        </div>
+                                        <div className="sm:mt-0">
+                                            <PaginationComponent
+                                                currentPage={currentPage}
+                                                totalPages={totalPages}
+                                                handlePreviousClick={
+                                                    handlePreviousClick
+                                                }
+                                                handlePageClick={
+                                                    handlePageClick
+                                                }
+                                                handleNextClick={
+                                                    handleNextClick
+                                                }
+                                                getPageNumbers={getPageNumbers}
+                                            />
+                                        </div>
                                     </div>
-
-                                    <div className=" sm:mt-0">
-                                        <PaginationComponent
-                                            currentPage={currentPage}
-                                            totalPages={totalPages}
-                                            handlePreviousClick={
-                                                handlePreviousClick
-                                            }
-                                            handlePageClick={handlePageClick}
-                                            handleNextClick={handleNextClick}
-                                            getPageNumbers={getPageNumbers}
-                                        />
-                                    </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                     </div>

@@ -133,7 +133,7 @@ return (
                                   <h3 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold">
                                       {card.name}
                                   </h3>
-                                  <p className="text-sm sm:text-base text-gray-600 mt-2">
+                                  <p className="text-sm sm:text-base text-gray-600 mt-2 truncate">
                                       {card.details ||
                                           "Lorem ipsum dolor sit amet consectetur. Eu quis vel pellentesque ullamcorper donec lorem auctor egestas adipiscing."}
                                   </p>

@@ -10,7 +10,7 @@ import Nav2 from "./Landing-page/global/Nav2";
 import NavbarGuest from "./partials/NavbarGuest";
 import Navbar_old from "./partials/Navbar";
 import PaymentHero from "./Heros/PaymentHero";
-import { useIdleTimer } from "react-idle-timer";
+// import { useIdleTimer } from "react-idle-timer";
 
 export default function DefaultLayout() {
     const { token, setToken } = useStateContext();
@@ -32,30 +32,30 @@ export default function DefaultLayout() {
             location.pathname.startsWith(`${path}/`)
     );
 // i know i have writen this code it say ten seconds but its 5 minutes  ten second is 10000 
-    const TEN_SECONDS = 10000; // Idle timeout (10 seconds)
-    //const Five = 300000; // Idle timeout (5 Mins)
-    const DEBOUNCE_TIME = 1000; //it will wait 1 second before checking if the user is idle
+    // const TEN_SECONDS = 300000; // Idle timeout (10 seconds)
+    // //const Five = 300000; // Idle timeout (5 Mins)
+    // const DEBOUNCE_TIME = 1000; //it will wait 1 second before checking if the user is idle
 
     // Handle user idle action
-    const handleOnUserIdle = () => {
-        if (token && token !== "false") {
-            localStorage.clear(); // Clear stored session data
-            localStorage.setItem("userLoggedOut", "true"); // Set a flag for logged out
-            setToken(null);
-            $.alert({
-                title: "Please Log In!",
-                content: "You're Logged Out.",
-            });
-        }
-    };
+    // const handleOnUserIdle = () => {
+    //     if (token && token !== "false") {
+    //         localStorage.clear(); // Clear stored session data
+    //         localStorage.setItem("userLoggedOut", "true"); // Set a flag for logged out
+    //         setToken(null);
+    //         $.alert({
+    //             title: "Please Log In!",
+    //             content: "You're Logged Out.",
+    //         });
+    //     }
+    // };
 
     // Initialize idle timer if user is logged in
-    useIdleTimer({
-        timeout: TEN_SECONDS, // Set to 10 seconds for accurate idle detection
-        onIdle: handleOnUserIdle,
-        debounce: DEBOUNCE_TIME, // 1 second debounce time to prevent premature triggering
-        enabled: !!token && token !== "false", // Only enable if the user is logged in
-    });
+    // useIdleTimer({
+    //     timeout: TEN_SECONDS, // Set to 10 seconds for accurate idle detection
+    //     onIdle: handleOnUserIdle,
+    //     debounce: DEBOUNCE_TIME, // 1 second debounce time to prevent premature triggering
+    //     enabled: !!token && token !== "false", // Only enable if the user is logged in
+    // });
 
     //     //setToken(null);
     //   const FIVE_MINS = 1 * 3 * 1000;

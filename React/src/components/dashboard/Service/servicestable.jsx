@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import axiosClient from "../../../axiosClient";
 import ServEditModal from "./ServEditModal";
 import { useAlert } from "../../partials/AlertContext";
+import ReusableTable from "../business/ReusableTable";
+import { BsThreeDots } from "react-icons/bs";
 
 const ServiceTable = () => {
     const [business, setBusiness] = useState([]);
@@ -30,6 +32,7 @@ const ServiceTable = () => {
         };
         getBusinessAndServices();
     }, []);
+
     const openEditModal = (service) => {
         setSelectedService(service); // Set the service being edited
         setIsEditModalOpen(true); // Open the modal
@@ -38,7 +41,7 @@ const ServiceTable = () => {
     const handleDelete = (id) => {
         axiosClient
             .get("/business/delete_service/" + id)
-            .then(({ data }) => {
+            .then(() => {
                 setService(service.filter((item) => item.id !== id));
                 showAlert("success", "Service deleted successfully.");
             })
@@ -47,119 +50,116 @@ const ServiceTable = () => {
             });
     };
 
-    return (
-        <div className="py-4">
-            {/* My Investments Section */}
+    const handleUpdate = (updatedService) => {
+        setService(
+            service.map((item) =>
+                item.id === updatedService.id ? updatedService : item
+            )
+        );
+        setIsEditModalOpen(false);
+    };
 
+    const ActionDropdown = ({ item }) => {
+        const [showDropdown, setShowDropdown] = useState(false);
+
+        const toggleDropdown = () => setShowDropdown((prev) => !prev);
+
+        return (
+            <div className="relative">
+                {/* Three dots button */}
+                <button
+                    onClick={toggleDropdown}
+                    className="p-2 rounded-full hover:bg-gray-200"
+                >
+                    <BsThreeDots size={20} />
+                </button>
+
+                {/* Dropdown */}
+                {showDropdown && (
+                    <div
+                        className="absolute right-0 z-50 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg"
+                        onMouseLeave={() => setShowDropdown(false)}
+                    >
+                        <Link to={`/service-milestones/${btoa(btoa(item.id))}`}>
+                            <button className="block w-full px-4 py-2 text-left text-green-500 hover:bg-gray-100">
+                                View Milestones
+                            </button>
+                        </Link>
+                        <button
+                            onClick={() => {
+                                openEditModal(item);
+                                setShowDropdown(false);
+                            }}
+                            className="block w-full px-4 py-2 text-left text-gray-900 hover:bg-gray-100"
+                        >
+                            Edit
+                        </button>
+                        <button
+                            onClick={() => {
+                                handleDelete(item.id);
+                                setShowDropdown(false);
+                            }}
+                            className="block w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100"
+                        >
+                            Delete
+                        </button>
+                    </div>
+                )}
+            </div>
+        );
+    };
+
+    const headers = ["Name", "Category", "Details", "Service Fee", "Actions"];
+
+    // Map service data to match ReusableTable format
+    const tableData = service.map((item) => ({
+        name: (
+            <div className="flex items-center space-x-4">
+                <img
+                    className="w-10 h-10 rounded-lg object-cover"
+                    src={`../${item.image}`}
+                    alt="Service"
+                />
+                <div className="text-sm">
+                    <div className="font-medium">{item.name}</div>
+                    <div>{item.contact}</div>
+                </div>
+            </div>
+        ),
+        category: item.category,
+        details: item.details,
+        details: (
+            <div className="max-w-[170px] truncate overflow-ellipsis">
+                {item.details}
+            </div>
+        ),
+
+        "service fee": <span className="-ml-5">${item.price}</span>,
+
+        actions: <ActionDropdown item={item} />,
+    }));
+
+    return (
+        <div className="py-4 px-[21px]">
             {/* My Services Section */}
-            <section className="bg-white border mt-4 rounded-xl w-full px-4 py-6 sm:px-8 ">
-                <h1 className="text-[#2D3748] font-semibold text-xl sm:text-2xl mb-6">
+            <section className="bg-white border rounded-xl w-full">
+                <h1 className="text-[#2D3748] ml-6 mt-6 font-semibold text-xl sm:text-2xl mb-6">
                     My Services
                 </h1>
-                <div className="overflow-x-auto min-w-full">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-100">
-                            <tr className="text-gray-500">
-                                <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                    Name
-                                </th>
-                                <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                    Category
-                                </th>
-                                <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                    Details
-                                </th>
-                                <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                    Service Fee
-                                </th>
-                                <th className="px-4 py-2 text-center text-xs font-medium uppercase tracking-wider">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                            {service.length > 0 ? (
-                                service.map((item, index) => (
-                                    <tr key={item.id}>
-                                        <td className="px-4 py-2 flex items-center space-x-4">
-                                            <img
-                                                className="w-10 h-10 rounded-lg object-cover"
-                                                src={`../${item.image}`}
-                                                alt="Service"
-                                            />
-                                            <div className="text-sm">
-                                                <div className="font-medium">
-                                                    {item.name}
-                                                </div>
-                                                <div>{item.contact}</div>
-                                            </div>
-                                        </td>
-                                        <td className="px-4 py-2 text-sm">
-                                            {item.category}
-                                        </td>
-                                        <td className="px-4 py-2 text-sm">
-                                            {item.details}
-                                        </td>
-                                        <td className="px-4 py-2 text-sm">
-                                            ${item.price}
-                                        </td>
-                                        <td className="px-4 py-2 text-center text-sm">
-                                            <div className="flex items-center justify-center space-x-2">
-                                                <Link
-                                                    to={`/service-milestones/${btoa(
-                                                        btoa(item.id)
-                                                    )}`}
-                                                >
-                                                    <button className="text-green-500 border border-green-500 rounded-lg py-1 px-3 text-xs hover:bg-green-100">
-                                                        View Milestones
-                                                    </button>
-                                                </Link>
-                                                <button
-                                                    onClick={() =>
-                                                        openEditModal(item)
-                                                    } // Trigger modal
-                                                    className="text-gray-900 border border-gray-500 rounded-lg py-1 px-3 text-xs hover:bg-gray-200"
-                                                >
-                                                    Edit
-                                                </button>
-                                                <button
-                                                    onClick={() =>
-                                                        handleDelete(item.id)
-                                                    }
-                                                    className="text-red-500 border border-gray-500 rounded-lg py-1 px-3 text-xs hover:bg-red-100"
-                                                >
-                                                    Delete
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td
-                                        colSpan="5"
-                                        className="px-4 py-6 text-center text-gray-500 text-sm"
-                                    >
-                                        No services available
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
+                <ReusableTable
+                    headers={headers}
+                    data={tableData}
+                    rowsPerPage={5}
+                    tableId="service-table" // Pass unique table ID
+                />
             </section>
 
             {isEditModalOpen && (
                 <ServEditModal
                     isOpen={isEditModalOpen}
-                    onClose={() => {
-                        console.log("Closing modal");
-                        setIsEditModalOpen(false);
-                    }}
+                    onClose={() => setIsEditModalOpen(false)}
                     service={selectedService} // Pass selectedService data
-                    onUpdate={(updatedData) => {
-                        // Handle updating the service here if needed
-                    }}
+                    onUpdate={handleUpdate} // Update service in state
                 />
             )}
         </div>

@@ -65,7 +65,7 @@ const HorizontalInfiniteScroll = () => {
 
     return (
         <div
-            className="relative w-full lg:w-[84.9%] mt-3 mb-3 mx-auto"
+            className="relative w-full lg:w-[84.9%]  mx-auto"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >

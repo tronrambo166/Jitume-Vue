@@ -141,7 +141,7 @@ const Invest = () => {
                                           <h3 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold">
                                               {card.name}
                                           </h3>
-                                          <p className="text-sm sm:text-base text-gray-600 mt-2">
+                                          <p className="text-sm sm:text-base text-gray-600 mt-2 truncate">
                                               {card.details}
                                           </p>
                                       </div>
@@ -162,9 +162,30 @@ const Invest = () => {
                                                   Invested
                                               </span>
                                           </div>
-                                          <div className="h-2 bg-gray-200 rounded-full">
+                                          {/* <div className="h-2 bg-gray-200 rounded-full">
                                               <div className="bg-green-600 h-full w-1/2 rounded-full"></div>
+                                          </div> */}
+                                          <div className="h-2 bg-gray-200 rounded-full mt-2">
+                                              <div
+                                                  className="bg-green-600 h-full rounded-full"
+                                                  style={{
+                                                      // Calculate percentage of amount_collected out of investment_needed
+                                                      width: `${
+                                                          (card.amount_collected /
+                                                              parseInt(
+                                                                  card.investment_needed
+                                                                      .toString()
+                                                                      .replace(
+                                                                          ",",
+                                                                          ""
+                                                                      )
+                                                              )) *
+                                                          100
+                                                      }%`,
+                                                  }}
+                                              ></div>
                                           </div>
+
                                           <div className="text-sm text-gray-800 flex justify-between mt-2">
                                               <span>
                                                   Collected:{" "}

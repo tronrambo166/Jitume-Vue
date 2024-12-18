@@ -19,39 +19,45 @@ const CategoryPage = ({ categoryName }) => {
     const [minn, setMinn] = useState(0); // Default minimum price
     const [maxx, setMaxx] = useState(0); // Default maximum price
 
-    useEffect(() => {
-        const fetchCategoryResults = () => {
-            axiosClient
-                .get(`/categoryResults/${name}`)
-                .then(({ data }) => {
-                    if (data.services && data.services.length > 0) {
-                        setCards(data.services);
+      useEffect(() => {
+          // Fetch category results
+          const fetchCategoryResults = () => {
+              axiosClient
+                  .get(`/categoryResults/${name}`)
+                  .then(({ data }) => {
+                      if (data.services && data.services.length > 0) {
+                          setCards(data.services);
 
-                        // Determine the maximum and minimum prices dynamically
-                        const prices = data.services.map((card) => card.price);
-                        const max = Math.max(...prices);
-                        const min = Math.min(...prices);
+                          const prices = data.services.map(
+                              (card) => card.price
+                          );
+                          const max = Math.max(...prices);
+                          const min = Math.min(...prices);
 
-                        setMinn(min); // Update minimum price state
-                        setMaxx(max); // Update maximum price state
-                        setMaxPrice(max); // Update maxPrice for slider
-                        setRange([min, max]); // Update the range to reflect the new min and max
-                    } else {
-                        setNotificationMessage("Listings not found.");
-                        setShowNotification(true);
-                    }
-                    setLoading(false);
-                })
-                .catch((err) => {
-                    console.error("Error fetching category results:", err);
-                    setNotificationMessage("Error loading data.");
-                    setShowNotification(true);
-                    setLoading(false);
-                });
-        };
+                          setMinn(0);
+                          setMaxx(max);
+                          setMaxPrice(max);
 
-        fetchCategoryResults();
-    }, [name]);
+                          // Load range from localStorage or set default
+                          const savedRange = JSON.parse(
+                              localStorage.getItem("sliderRange")
+                          );
+                          if (savedRange) {
+                              setRange(savedRange);
+                          } else {
+                              setRange([0, max]);
+                          }
+                      }
+                  })
+                  .catch((err) => {
+                      console.error("Error fetching category results:", err);
+                  })
+                  .finally(() => setLoading(false));
+          };
+
+          fetchCategoryResults();
+      }, [name]);
+
 
     const handleAmountChange = (value) => {
         setRange(value); // Update the range
@@ -132,6 +138,17 @@ const CategoryPage = ({ categoryName }) => {
         // Hide the dropdown by toggling its visibility
         toggleCollapse("collapseAmountRange");
     };
+    const handleClear = () => {
+        // Reset the range slider to its initial values (min and max)
+        setRange([minn, maxx]); // Reset the slider range to its initial min and max values
+
+        // Clear the input fields for min and max amount
+        setMinAmount(minn); // Reset min input to initial min value
+        setMaxAmount(maxx); // Reset max input to initial max value
+        // Clear the input fields for min and max amount
+        setMinAmount("");
+        setMaxAmount("");
+    };
 
     return (
         <div className="p-6 max-w-screen-xl mx-auto space-y-10">
@@ -149,18 +166,27 @@ const CategoryPage = ({ categoryName }) => {
             <div></div>
             {/* Amount Range Section */}
             <div className="border border-gray-200 rounded-lg p-6 md:p-8 bg-white ">
-                <button
-                    onClick={() => {
-                        toggleCollapse("collapseAmountRange");
-                    }}
-                    className="mr-4 my-2 border rounded-full px-3 py-1 "
-                >
-                    Set Range
-                </button>
-
-                <label className="text-gray-700 font-semibold mb-2">
-                    Price Range
-                </label>
+                <div className="flex items-center justify-between">
+                    <div>
+                        <button
+                            onClick={() => {
+                                toggleCollapse("collapseAmountRange");
+                            }}
+                            className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
+                        >
+                            Set Range
+                        </button>
+                        <label className="text-gray-700 ml-4 font-semibold mb-2">
+                            Price Range
+                        </label>
+                    </div>
+                    <button
+                        onClick={handleClear}
+                        className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
+                    >
+                        Clear
+                    </button>
+                </div>
 
                 <div className="py-4" id="sliderElement">
                     {/* Slider element */}
@@ -251,7 +277,7 @@ const CategoryPage = ({ categoryName }) => {
                             Set
                         </button>
                         <button
-                            className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                            className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
                             onClick={Cancel}
                         >
                             Cancel
@@ -331,7 +357,7 @@ const CategoryPage = ({ categoryName }) => {
                                         {card.location ||
                                             "Location not available"}
                                     </p>
-                                    <p className="text-sm text-gray-600 mt-2">
+                                    <p className="text-sm text-gray-600 mt-2 truncate ">
                                         {card.details}
                                     </p>
                                     <p className="text-black space-x-2 font-semibold mt-2">

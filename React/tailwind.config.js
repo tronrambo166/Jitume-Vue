@@ -13,12 +13,14 @@ export default {
                     "100%": { transform: "translateX(0)", opacity: "1" },
                 },
             },
+
             colors: {
                 // Light theme colors
                 white: "#FFFFFF",
                 slate: {
                     100: "#F1F5F9",
                 },
+                customGreen: "hsl(143, 45%, 16%)",
                 green: {
                     DEFAULT: "#198754", // This allows usage of className="bg-green"
                 },

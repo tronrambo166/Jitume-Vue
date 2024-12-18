@@ -11,8 +11,8 @@ const CategoryPage = () => {
     const [loading, setLoading] = useState(true);
     const [turnoverRange, setTurnoverRange] = useState([0, 100]);
     const [amountRange, setAmountRange] = useState([0, 100]);
-    const [maxPrice, setMaxPrice] = useState(100); // Default maximum price
-    const [maxTurnover, setMaxTurnover] = useState(100); // Default maximum turnover
+    const [maxPrice, setMaxPrice] = useState(100);
+    const [maxTurnover, setMaxTurnover] = useState(100);
 
     const { name } = useParams();
 
@@ -46,11 +46,11 @@ const CategoryPage = () => {
     const { marks: sliderMarksTurnover, step: stepTurnover } =
         calculateMarks(maxTurnover);
 
-    const [minn, setMinn] = useState(0); // Default minimum investment
     const [maxx, setMaxx] = useState(0); // Default maximum investment
-
-    const [minn2, setMinn2] = useState(0); // Default minimum turnover
     const [maxx2, setMaxx2] = useState(0); // Default maximum turnover
+
+    const [minn, setMinn] = useState(0); // Default minimum investment
+    const [minn2, setMinn2] = useState(0); // Default minimum turnover
 
     // Function to format numbers with commas
     const formatWithCommas = (value) => {
@@ -65,43 +65,49 @@ const CategoryPage = () => {
             return Math.max(...parts);
         };
 
-        const categoryResults = () => {
-            axiosClient
-                .get("/categoryResults/" + name)
-                .then(({ data }) => {
-                    setCards(data.data);
-                    setFilteredCards(data.data);
+        const categoryResults = async () => {
+            try {
+                const { data } = await axiosClient.get(
+                    "/categoryResults/" + name
+                );
+                setCards(data.data);
+                setFilteredCards(data.data);
 
-                    const maxInvestment = Math.max(
-                        ...data.data.map((card) =>
-                            parseInvestment(card.investment_needed)
-                        )
-                    );
-                    const maxTurnoverValue = Math.max(
-                        ...data.data.map((card) =>
-                            parseTurnover(card.y_turnover)
-                        )
-                    );
+                // Ensure the data is valid before mapping
+                const investments = data.data.map((card) =>
+                    parseInvestment(card.investment_needed)
+                );
+                const turnovers = data.data.map((card) =>
+                    parseTurnover(card.y_turnover)
+                );
 
-                    // Set the investment range
-                    setMaxx(maxInvestment || 0);
-                    setMinn(0); // Default min investment
+                const maxInvestment = Math.max(...investments, 0); // Fallback to 0
+                const maxTurnoverValue = Math.max(...turnovers, 0); // Fallback to 0
 
-                    // Set the turnover range
-                    setMaxx2(maxTurnoverValue || 0);
-                    setMinn2(0); // Default min turnover
+                const minInvestment = Math.min(...investments, 0); // Fallback to 0
+                const minTurnoverValue = Math.min(...turnovers, 0); // Fallback to 0
 
-                    // If you need to update ranges for filters or UI
-                    setAmountRange([0, maxInvestment]);
-                    setTurnoverRange([0, maxTurnoverValue]);
+                // Set ranges dynamically
+                setMaxx(maxInvestment);
+                setMinn(minInvestment);
+                setMaxx2(maxTurnoverValue);
+                setMinn2(minTurnoverValue);
 
-                    setLoading(false);
-                })
-                .catch((err) => console.error(err));
+                // Update sliders
+                setAmountRange([minInvestment, maxInvestment]);
+                setTurnoverRange([minTurnoverValue, maxTurnoverValue]);
+
+                setMaxPrice(maxInvestment);
+                setMaxTurnover(maxTurnoverValue);
+
+                setLoading(false);
+            } catch (err) {
+                console.error(err);
+            }
         };
 
         categoryResults();
-    }, [name]); // Trigger effect when 'name' changes
+    }, [name]);
 
     // Example of using the format function in your render
     console.log(formatWithCommas(maxx)); // For formatted maxx
@@ -111,10 +117,9 @@ const CategoryPage = () => {
         const filtered = cards.filter((card) => {
             const investmentNeeded =
                 parseFloat(card.investment_needed.replace(/,/g, "")) || 0;
-            const turnoverParts = card.y_turnover
-                .split("-")
-                .map((v) => parseFloat(v) || 0);
-            const turnover = Math.max(...turnoverParts);
+            const turnover = Math.max(
+                ...card.y_turnover.split("-").map((v) => parseFloat(v) || 0)
+            );
 
             return (
                 investmentNeeded >= amountRange[0] &&
@@ -241,6 +246,22 @@ const CategoryPage = () => {
             "amountRangeDisplay1"
         );
     };
+    const Clear = () => {
+        // Reset the range slider to the initial min and max values
+        setAmountRange([minn, maxx]);
+
+        // Clear the input fields for min and max amount
+        setMinAmount("");
+        setMaxAmount("");
+    };
+
+    const Clear2 = () => {
+        // Reset the slider range to initial values
+        setTurnoverRange([minn2, maxx2]);
+        // Clear the input fields
+        setMinTurnover("");
+        setMaxTurnoveR("");
+    };
 
     // comas logic
     const [minAmount, setMinAmount] = useState("");
@@ -275,133 +296,33 @@ const CategoryPage = () => {
             <div className="space-y-8 mb-10">
                 <div></div>
                 <div className="flex flex-col md:flex-row gap-8">
-                    {/* Amount Range */}
-                    <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-6 flex-1">
-                        {/* COLLAPSE BUTTON */}
-                        <button
-                            onClick={() => {
-                                toggleCollapse("collapseAmountRange");
-                            }}
-                            className="mr-4 my-2 border rounded-full px-3 py-1"
-                        >
-                            Set Range
-                        </button>
-
-                        <label className="text-gray-700 font-semibold mb-2">
-                            Amount Range
-                        </label>
-                        <div className="py-4" id="sliderElement">
-                            <Slider
-                                range
-                                min={0}
-                                max={maxPrice}
-                                step={100}
-                                value={amountRange}
-                                onChange={handleAmountChange}
-                                trackStyle={{
-                                    backgroundColor: "#15803D",
-                                    height: "10px",
-                                }}
-                                handleStyle={{
-                                    borderColor: "white",
-                                    height: "18px",
-                                    width: "18px",
-                                    marginTop: "-4px",
-                                    backgroundColor: "#15803D",
-                                    borderRadius: "50%",
-                                    border: "2px solid white",
-                                }}
-                                activeDotStyle={{ display: "none" }}
-                                dotStyle={{ display: "none" }}
-                            />
-                        </div>
-                        <div
-                            className="flex justify-between mt-2 text-gray-600 dark:text-gray-400 text-sm"
-                            id="amountRangeDisplay"
-                        >
-                            <span>${amountRange[0].toLocaleString()}</span>
-                            <span>${amountRange[1].toLocaleString()}</span>
-                        </div>
-
-                        <div className="mt-4 hidden" id="collapseAmountRange">
-                            <div className="flex justify-between items-center gap-4">
-                                <div className="flex flex-col w-1/2 space-y-2">
-                                    <label
-                                        htmlFor="minAmount"
-                                        className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                    >
-                                        Min: {minn}
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="minAmount"
-                                        value={minAmount}
-                                        onChange={(e) =>
-                                            handleInputChange(e, setMinAmount)
-                                        }
-                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-                                        name="minAmount"
-                                    />
-                                </div>
-
-                                <div className="flex flex-col w-1/2 space-y-2">
-                                    <label
-                                        htmlFor="maxAmount"
-                                        className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                    >
-                                        Max: {maxx.toLocaleString()}
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="maxAmount"
-                                        value={maxAmount}
-                                        onChange={(e) =>
-                                            handleInputChange(e, setMaxAmount)
-                                        }
-                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-                                        name="maxAmount"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="mt-4 flex justify-between">
-                                <button
-                                    className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
-                                    onClick={HandleSlideChange} // Pass the function here
-                                >
-                                    Set
-                                </button>
-
-                                {/* Cancel Button */}
-                                <button
-                                    className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
-                                    onClick={Cancel}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
                     {/* Turnover Range */}
                     <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-6 flex-1">
-                        <button
-                            onClick={() =>
-                                toggleCollapse2(
-                                    "collapseTurnoverRange",
-                                    "sliderElement1",
-                                    "amountRangeDisplay1"
-                                )
-                            }
-                            className="mr-4 my-2 border rounded-full px-3 py-1"
-                        >
-                            Set Range
-                        </button>
+                        <div className="flex items-center">
+                            <button
+                                onClick={() =>
+                                    toggleCollapse2(
+                                        "collapseTurnoverRange",
+                                        "sliderElement1",
+                                        "amountRangeDisplay1"
+                                    )
+                                }
+                                className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
+                            >
+                                Set Range
+                            </button>
 
-                        <label className="text-gray-700 font-semibold mb-2">
-                            Turnover Range
-                        </label>
+                            <label className="text-gray-700 font-semibold ml-2 mb-2">
+                                Turnover Range
+                            </label>
+
+                            <button
+                                className="ml-auto px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
+                                onClick={Clear2}
+                            >
+                                Clear
+                            </button>
+                        </div>
 
                         <div id="sliderElement1" className="py-4">
                             <Slider
@@ -494,8 +415,139 @@ const CategoryPage = () => {
 
                                 {/* Cancel Button */}
                                 <button
-                                    className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                                    className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
                                     onClick={cancelTurnover}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {/* Amount Range */}
+                    <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-6 flex-1">
+                        {/* COLLAPSE BUTTON */}
+                        <div className="flex items-center">
+                            <button
+                                onClick={() => {
+                                    toggleCollapse("collapseAmountRange");
+                                }}
+                                className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
+                            >
+                                Set Range
+                            </button>
+
+                            <label className="text-gray-700 ml-2 font-semibold mb-2">
+                                Amount Range
+                            </label>
+
+                            <button
+                                className="ml-auto px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
+                                onClick={Clear}
+                            >
+                                Clear
+                            </button>
+                        </div>
+
+                        <div className="py-4" id="sliderElement">
+                            <Slider
+                                range
+                                min={0}
+                                max={maxPrice}
+                                step={100}
+                                value={amountRange} // Controlled component
+                                onChange={handleAmountChange} // Handles state changes
+                                trackStyle={[
+                                    {
+                                        backgroundColor: "#15803D",
+                                        height: "10px",
+                                    },
+                                ]} // Array for range styles
+                                handleStyle={[
+                                    {
+                                        borderColor: "white",
+                                        height: "18px",
+                                        width: "18px",
+                                        marginTop: "-4px",
+                                        backgroundColor: "#15803D",
+                                        borderRadius: "50%",
+                                        border: "2px solid white",
+                                    },
+                                    {
+                                        borderColor: "white",
+                                        height: "18px",
+                                        width: "18px",
+                                        marginTop: "-4px",
+                                        backgroundColor: "#15803D",
+                                        borderRadius: "50%",
+                                        border: "2px solid white",
+                                    },
+                                ]} // Separate handles for range slider
+                                activeDotStyle={{ display: "none" }}
+                                dotStyle={{ display: "none" }}
+                            />
+                        </div>
+                        <div
+                            className="flex justify-between mt-6 text-gray-600 dark:text-gray-400 text-sm"
+                            id="amountRangeDisplay"
+                        >
+                            <span>${amountRange[0].toLocaleString()}</span>
+                            <span>${amountRange[1].toLocaleString()}</span>
+                        </div>
+
+                        <div className="mt-4 hidden" id="collapseAmountRange">
+                            <div className="flex justify-between items-center gap-4">
+                                <div className="flex flex-col w-1/2 space-y-2">
+                                    <label
+                                        htmlFor="minAmount"
+                                        className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    >
+                                        Min: {minn}
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="minAmount"
+                                        value={minAmount}
+                                        onChange={(e) =>
+                                            handleInputChange(e, setMinAmount)
+                                        }
+                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                                        name="minAmount"
+                                    />
+                                </div>
+
+                                <div className="flex flex-col w-1/2 space-y-2">
+                                    <label
+                                        htmlFor="maxAmount"
+                                        className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    >
+                                        Max: {maxx.toLocaleString()}
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="maxAmount"
+                                        value={maxAmount}
+                                        onChange={(e) =>
+                                            handleInputChange(e, setMaxAmount)
+                                        }
+                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                                        name="maxAmount"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="mt-4 flex justify-between">
+                                <button
+                                    className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
+                                    onClick={HandleSlideChange} // Pass the function here
+                                >
+                                    Set
+                                </button>
+
+                                {/* Cancel Button */}
+                                <button
+                                    className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
+                                    onClick={Cancel}
                                 >
                                     Cancel
                                 </button>
@@ -556,11 +608,11 @@ const CategoryPage = () => {
                                         {card.location ||
                                             "Location not available"}
                                     </p>
-                                    <p className="text-sm sm:text-base text-gray-600 mt-2">
-                                        Lorem ipsum dolor sit amet consectetur.
-                                        Eu quis vel pellentesque ullamcorper
-                                        donec lorem auctor egestas adipiscing.
+                                    <p className="text-sm sm:text-base text-gray-600 mt-2 truncate-multiline">
+                                        {card.description ||
+                                            "Lorem ipsum dolor sit amet consectetur. Eu quis vel pellentesque ullamcorper donec lorem auctor egestas adipiscing."}
                                     </p>
+
                                     <p className="text-black space-x-2 font-semibold mt-2">
                                         <span className="text-[#1E293B] jakarta">
                                             Amount Requested:

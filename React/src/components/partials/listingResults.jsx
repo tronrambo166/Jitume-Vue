@@ -64,10 +64,20 @@ const ListingResults = () => {
 
     var count = results.length ? results.length:0;
     let res = [];
-    var max = 1000000;
-    var min = 0;
-    var max2 = 1000000;
-    var min2 = 0;
+   var max = 1000000;
+   var min = 0;
+   var max2 = 1000000;
+   var min2 = 0;
+
+   // Formatting with commas for display
+   var formattedMax = max.toLocaleString();
+   var formattedMin = min.toLocaleString();
+   var formattedMax2 = max2.toLocaleString();
+   var formattedMin2 = min2.toLocaleString();
+
+   console.log(`Max: ${formattedMax}, Min: ${formattedMin}`);
+   console.log(`Max2: ${formattedMax2}, Min2: ${formattedMin2}`);
+
 
     const openInNewTab = (url) => {
         window.open(url, "_blank");
@@ -637,30 +647,31 @@ const ListingResults = () => {
                         id="turnover_slider"
                         className="w-full jakarta text-md border border-[#cbd5e1] rounded-lg space-y-2 px-6 py-4 mt-1"
                     >
-                        <button
-                            onClick={collapse}
-                            id="colBut4"
-                            className="mr-4 my-2 border rounded-full px-3 py-1"
-                            name="min"
-                        >
-                            Set Range
-                        </button>
+                        <div class="flex justify-between items-center">
+                            <button
+                                onClick={collapse}
+                                id="colBut4"
+                                className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
+                                name="min"
+                            >
+                                Set Range
+                            </button>
+
+                            <button
+                                className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
+                                onClick={(event) => {
+                                    clearRangeSlider();
+                                    rangeSliderInitilize();
+                                    getResults2();
+                                }}
+                            >
+                                Clear
+                            </button>
+                        </div>
 
                         <label className="text-gray-700 font-semibold mb-2">
                             Turnover Range
                         </label>
-
-                        <button
-                            className="px-2 py-1 bg-green-400 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
-                            onClick={(event) => {
-                                clearRangeSlider();
-                                rangeSliderInitilize();
-                                getResults2();
-                            }}
-                        >
-                            Clear
-                        </button>
-
 
                         <div id="slider" className=""></div>
 
@@ -689,7 +700,7 @@ const ListingResults = () => {
                                         htmlFor="low"
                                         className="text-sm font-medium text-gray-700"
                                     >
-                                        Min: {min}
+                                        Min: {formattedMin}
                                     </label>
                                     <input
                                         type="text"
@@ -704,7 +715,7 @@ const ListingResults = () => {
                                         htmlFor="high"
                                         className="text-sm font-medium text-gray-700"
                                     >
-                                        Max: {max}
+                                        Max: {formattedMax}
                                     </label>
                                     <input
                                         type="text"
@@ -718,7 +729,7 @@ const ListingResults = () => {
 
                             <div className="mt-4 flex justify-between items-center w-full">
                                 <button
-                                    className="px-2 py-1 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
+                                    className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
                                     onClick={(event) => {
                                         rangeSliderInitilize();
                                         hide();
@@ -727,10 +738,8 @@ const ListingResults = () => {
                                     Set
                                 </button>
 
-                                
-
                                 <button
-                                    className="px-2 py-1 bg-red-500 text-white rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                                    className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
                                     onClick={(event) => {
                                         getResults2();
                                         rangeSliderInitilize();
@@ -746,34 +755,35 @@ const ListingResults = () => {
 
                     {/* Turnover Range Slider */}
 
-
                     <div
                         id="amount_slider"
                         className="w-full jakarta   text-md border border-[#cbd5e1] rounded-lg space-y-2 px-6 py-4  mt-1"
                     >
-                        <button
-                            onClick={collapse2}
-                            id="colBut4"
-                            className="mr-4 my-2  border rounded-full px-3 py-1 "
-                            name="min"
-                        >
-                            Set Range{" "}
-                        </button>
+                        <div class="flex justify-between items-center">
+                            <button
+                                onClick={collapse2}
+                                id="colBut4"
+                                className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
+                                name="min"
+                            >
+                                Set Range
+                            </button>
+
+                            <button
+                                className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
+                                onClick={(event) => {
+                                    clearAmountSlider();
+                                    amountSliderInitilize();
+                                    getResults2();
+                                }}
+                            >
+                                Clear
+                            </button>
+                        </div>
 
                         <label className="text-gray-700 font-semibold mb-2">
                             Amount Range
                         </label>
-
-                        <button
-                            className="px-2 py-1 bg-green-400 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
-                            onClick={(event) => {
-                                clearAmountSlider();
-                                amountSliderInitilize();
-                                getResults2();
-                            }}
-                        >
-                            Clear
-                        </button>
 
                         <div id="slider2" className=""></div>
                         <div className="row mt-3 jakarta">
@@ -801,7 +811,7 @@ const ListingResults = () => {
                                         htmlFor="low2"
                                         className="text-sm font-medium text-gray-700"
                                     >
-                                        Min: {min2}
+                                        Min: {formattedMin2}
                                     </label>
                                     <input
                                         type="text" // Use text instead of number to allow formatting
@@ -817,7 +827,7 @@ const ListingResults = () => {
                                         htmlFor="high2"
                                         className="text-sm font-medium text-gray-700"
                                     >
-                                        Max: {max2}
+                                        Max: {formattedMax2}
                                     </label>
                                     <input
                                         type="text" // Use text instead of number to allow formatting
@@ -838,9 +848,9 @@ const ListingResults = () => {
                                 >
                                     Set
                                 </button>
-                                
+
                                 <button
-                                    className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-gray-700 transition-colors"
+                                    className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
                                     onClick={(event) => {
                                         getResults2();
                                         amountSliderInitilize();
@@ -919,7 +929,7 @@ const ListingResults = () => {
                                             <p className="text-lg font-semibold text-[#1E293B] mb-2">
                                                 {row.name}
                                             </p>
-                                            <p className="text-sm text-[#1E293B] mb-2">
+                                            <p className="text-sm text-[#1E293B] truncate-multiline mb-2">
                                                 {row.details ||
                                                     "Lorem ipsum dolor sit amet consectetur..."}
                                             </p>
@@ -983,7 +993,7 @@ const ListingResults = () => {
                             <div
                                 id="map"
                                 style={{
-                                    height: "100%",
+                                     height: "100%",
                                     width: "100%",
                                     borderRadius: "16px",
                                 }}

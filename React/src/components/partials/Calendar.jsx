@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
     AiOutlineCalendar,
     AiOutlineLeft,
@@ -8,20 +8,37 @@ import {
 const CalendarDropdown = ({ onDateSelect }) => {
     const [selectedDate, setSelectedDate] = useState("");
     const [showCalendar, setShowCalendar] = useState(false);
+    const dropdownRef = useRef(null); // Ref to track the calendar container
 
- const handleDateChange = (date) => {
-     setSelectedDate(
-         `${String(date.day).padStart(2, "0")}/${String(date.month).padStart(
-             2,
-             "0"
-         )}/${date.year}`
-     );
-     setShowCalendar(false);
-     if (onDateSelect) {
-         onDateSelect(date);
-     }
- };
+    const handleDateChange = (date) => {
+        setSelectedDate(
+            `${String(date.day).padStart(2, "0")}/${String(date.month).padStart(
+                2,
+                "0"
+            )}/${date.year}`
+        );
+        setShowCalendar(false);
+        if (onDateSelect) {
+            onDateSelect(date);
+        }
+    };
 
+    // Close the calendar when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target)
+            ) {
+                setShowCalendar(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     const Calendar = ({ onSelectDate }) => {
         const today = new Date();
@@ -66,17 +83,16 @@ const CalendarDropdown = ({ onDateSelect }) => {
             }
         };
 
-    const handleDateClick = (day) => {
-        const selectedDate = new Date(currentYear, currentMonth, day);
-        if (selectedDate <= eighteenYearsAgo) {
-            onSelectDate({
-                year: currentYear,
-                month: currentMonth + 1, // Months are 0-indexed
-                day,
-            });
-        }
-    };
-
+        const handleDateClick = (day) => {
+            const selectedDate = new Date(currentYear, currentMonth, day);
+            if (selectedDate <= eighteenYearsAgo) {
+                onSelectDate({
+                    year: currentYear,
+                    month: currentMonth + 1, // Months are 0-indexed
+                    day,
+                });
+            }
+        };
 
         const renderYearView = () => {
             const startYear = eighteenYearsAgo.getFullYear();
@@ -203,7 +219,7 @@ const CalendarDropdown = ({ onDateSelect }) => {
     };
 
     return (
-        <div className="calendar-dropdown-container relative">
+        <div className="calendar-dropdown-container relative" ref={dropdownRef}>
             <label className="block text-gray-700 mb-2">
                 Select Date of Birth:
             </label>
