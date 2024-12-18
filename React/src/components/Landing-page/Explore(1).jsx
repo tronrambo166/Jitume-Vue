@@ -49,6 +49,8 @@ const Explore = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const [exp, setExp] = useState(null);
+    const [currentCount, setCurrentCount] = useState(0);
+
     useEffect(() => {
         const getCards = async () => {
             axiosClient
@@ -73,6 +75,25 @@ const Explore = () => {
         };
         getCards();
     }, []);
+    useEffect(() => {
+        if (exp !== null) {
+            let start = currentCount;
+            const duration = 1000; // Total animation duration in milliseconds
+            const increment = Math.ceil(exp / (duration / 16)); // Increment per frame (~60fps)
+
+            const animateCount = () => {
+                start += increment;
+                if (start >= exp) {
+                    setCurrentCount(exp);
+                } else {
+                    setCurrentCount(start);
+                    requestAnimationFrame(animateCount);
+                }
+            };
+
+            animateCount();
+        }
+    }, [exp]); // This effect runs every time the `exp` value changes.
 
     const onSearch = (e) => {
         e.preventDefault();
@@ -102,9 +123,9 @@ const Explore = () => {
                     "/listingResults/" + base64_encode(ids) + "/" + data.loc
                 );
                 // this the reason of the scroll to top
-                
-                    window.scrollTo(0, 0);
-                
+
+                window.scrollTo(0, 0);
+
                 // this the reason of the scroll to top
                 if (locationUrl.pathname.includes("listingResults"))
                     window.location.reload();
@@ -141,11 +162,11 @@ const Explore = () => {
                 (animation, index) => (
                     <div
                         key={index}
-                        className="relative w-full overflow-hidden"
+                        className="relative w-full overflow-hidden group"
                     >
                         <div
                             key={index}
-                            className={`flex items-center gap-1 ${animation} marquee-fade`}
+                            className={`flex items-center gap-1 ${animation} marquee-fade group-hover:animation-pause`}
                         >
                             {/* Render Categories */}
                             {checkCat
@@ -158,7 +179,7 @@ const Explore = () => {
                                       >
                                           <div
                                               key={index}
-                                              className={`flex items-center p-4 rounded-md  ${category.color} min-w-[200px] sm:min-w-[220px] transition-transform`}
+                                              className={`flex items-center p-4 rounded-md ${category.color} min-w-[200px] sm:min-w-[220px] transition-transform`}
                                           >
                                               <img
                                                   src={category.icon}
@@ -228,7 +249,9 @@ const Explore = () => {
                     <AiOutlineLoading3Quarters className="animate-spin text-white text-lg sm:text-xl" />
                 )}
                 <span>
-                    {isLoading ? "Redirecting..." : "Explore  " +exp+"+ Businesses"}
+                    {isLoading
+                        ? "Redirecting..."
+                        : `Explore ${currentCount}+ Businesses`}
                 </span>
             </button>
         </div>

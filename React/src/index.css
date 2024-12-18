@@ -484,3 +484,15 @@ select::-ms-expand {
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+
+@layer utilities {
+    .animation-pause {
+        animation-play-state: paused !important;
+    }
+}
+
+
+
+
+/*  */
