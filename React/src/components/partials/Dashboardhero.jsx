@@ -40,10 +40,10 @@ const Dashboardhero = () => {
                 // console.log("User Image: ", data.user.image);
                 // console.log("User Data: ", data.user);
             })
-            .catch(() => {
-                showAlert("error", "Failed to load user data. Redirecting...");
-                navigate("/");
-            })
+            // .catch(() => {
+            //     showAlert("error", "Failed to load user data. Redirecting...");
+            //     navigate("/");
+            // })
             .finally(() => setLoading(false));
     }, []);
 
@@ -84,18 +84,25 @@ const Dashboardhero = () => {
                 showAlert("success", "Logged out successfully");
                 navigate("/");
             })
-            .catch(() => {
-                showAlert("error", "Failed to log out. Please try again.");
-            })
+            // .catch(() => {
+            //     // showAlert("error", "Failed to log out. Please try again.");
+            // })
             .finally(() => setLoading(false));
     };
 
     if (loading) {
         return (
             <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
-                <ClipLoader color="#1e3a8a" size={70} />
+                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-green-600"></div>
             </div>
         );
+    }
+    let alertShown = false;
+
+    if (!token && !alertShown) {
+        showAlert("error", "You are not logged in. Please log in to continue.");
+        navigate("/");
+        alertShown = true;
     }
 
     return (

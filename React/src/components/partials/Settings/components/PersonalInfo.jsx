@@ -26,12 +26,12 @@ const PersonalInfo = () => {
                 setTempData(data.user);
                 //setImagePreview(data.user.image); // Assume the API returns an image URL
             })
-            .catch(() => {
-                showAlert(
-                    "error",
-                    "Failed to load user data. Please try again."
-                );
-            });
+            // .catch(() => {
+            //     showAlert(
+            //         "error",
+            //         "Failed to load user data. Please try again."
+            //     );
+            // });
     }, []);
 
     useEffect(() => {

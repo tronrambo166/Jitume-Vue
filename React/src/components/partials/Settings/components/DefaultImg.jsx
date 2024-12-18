@@ -29,12 +29,12 @@ const DefaultImg = () => {
                     setImageSrc(fallback);
                 }
             })
-            .catch(() => {
-                showAlert(
-                    "error",
-                    "Failed to load user data. Please try again."
-                );
-            });
+            // .catch(() => {
+            //     showAlert(
+            //         "error",
+            //         "Failed to load user data. Please try again."
+            //     );
+            // });
     }, [showAlert]);
 
     const getInitials = (firstName, lastName) => {

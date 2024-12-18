@@ -51,7 +51,7 @@ const AddBusiness = () => {
 
         setIsFormValid(allRequiredFilled);
     }, [formData]);
-    
+
     const handleFileChange = (e, field) => {
         const file = e.target.files[0];
 
@@ -96,7 +96,7 @@ const AddBusiness = () => {
         // Log FormData content as an object
         const formDataObject = Object.fromEntries(data.entries());
         console.log("Submitted Form Data:", formDataObject);
-        
+
         try {
             setLoading(true); // Start loading
 
@@ -377,7 +377,7 @@ const AddBusiness = () => {
                         ))}
 
                         {/* Select Input */}
-                        <div className="flex flex-col">
+                        <div className="search-container relative flex flex-col">
                             <label className="block mb-2 text-sm font-semibold">
                                 Location*
                             </label>
@@ -392,17 +392,15 @@ const AddBusiness = () => {
                                 placeholder="Enter a location..."
                             />
 
-                            {/*suggestion-list box*/}
                             <ul
                                 id="suggestion-list"
-                                className="absolute w-[250px] bg-white  border-t-0 rounded-b-md shadow-lg z-10 top-full"
+                                className="absolute w-full bg-white border-t-0 rounded-b-md shadow-lg z-10 top-full max-h-[300px] overflow-y-auto hidden"
                             ></ul>
+
                             <div
                                 id="result_list"
-                                style={{ top: "727px", left: "809px" }}
-                                className="absolute w-[250px] bg-white  border-gray-300 border-t-0 rounded-b-md shadow-lg z-10 top-full"
+                                className="absolute w-full bg-white border-gray-300 border-t-0 rounded-b-md shadow-lg z-10 top-full max-h-[300px] overflow-y-auto hidden"
                             ></div>
-                            {/*suggestion-list box*/}
                         </div>
 
                         <div className="flex flex-col">

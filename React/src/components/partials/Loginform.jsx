@@ -205,15 +205,17 @@ const LoginForm = () => {
 
                 <button
                     type="submit"
-                    className={`px-4 py-2 rounded-full text-white flex items-center justify-center transition ${
+                    className={`px-4 py-2 rounded-full text-white flex items-center justify-center transition min-w-[120px] ${
                         loading
                             ? "bg-green/50 cursor-not-allowed"
                             : "bg-green hover:bg-green-600"
                     }`}
                     disabled={loading}
+                    aria-busy={loading}
+                    aria-disabled={loading}
                 >
                     {loading ? (
-                        <AiOutlineLoading3Quarters className="animate-spin" />
+                        <AiOutlineLoading3Quarters className="animate-spin text-2xl" />
                     ) : (
                         "Proceed"
                     )}

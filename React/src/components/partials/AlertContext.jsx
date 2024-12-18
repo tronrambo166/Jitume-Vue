@@ -109,14 +109,22 @@ const Alert = ({ type, message, id }) => {
     };
 
     const config = typeConfig[type];
-
+    const capitalizeFirstLetter = (message) => {
+        return message
+            .split(" ") // Split the string by spaces
+            .map(
+                (word) => word.charAt(0).toUpperCase() + word.slice(1) // Capitalize the first letter of each word
+            )
+            .join(" "); // Join the words back into a single string
+    };
+    const capitalizedMessage = capitalizeFirstLetter(message);
     return (
         <div
             className={`fixed top-5 right-5 flex items-center rounded-lg p-4 border ${config.bg} backdrop-blur-sm transition-all transform animate-slide-in z-50`}
         >
             <div className="mr-3">{config.icon}</div>
             <div className="flex-grow">
-                <span>{message}</span>
+                <span>{capitalizedMessage}</span>
             </div>
             <button
                 onClick={() => dismissAlert(id)}
