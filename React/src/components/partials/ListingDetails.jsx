@@ -693,7 +693,7 @@ const ListingDetails = ({ onClose }) => {
                                 </div>
                                 <TruncateWithModal
                                     content={details.details}
-                                    maxLength={300} // Customize the truncation length
+                                    maxLength={180} // Customize the truncation length
                                     buttonText="View More" // Customize the button label
                                     modalTitle={details.name} // Customize the modal title
                                 />
