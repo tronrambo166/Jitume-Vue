@@ -911,21 +911,20 @@ const ListingResults = () => {
                                             />
                                         </div>
                                         <div className="flex flex-col pt-4 justify-between flex-grow pb-4">
-                                            <div className="flex flex-wrap gap-2 text-sm font-bold text-[#1E293B] mb-2">
-                                                {(
-                                                    row.tags || [
-                                                        "example",
-                                                        "dummy",
-                                                    ]
-                                                ).map((tag) => (
-                                                    <span
-                                                        key={tag}
-                                                        className="text-[#1E293B] font-semibold"
-                                                    >
-                                                        #{tag}
-                                                    </span>
-                                                ))}
-                                            </div>
+                                        <div className="flex flex-wrap gap-2 text-sm font-bold text-[#1E293B] mb-2">
+    {(row.category 
+        ? row.category.split(',').map((tag, index) => (
+            <span
+                key={index}
+                className="text-[#1E293B] font-semibold"
+            >
+                #{tag.trim()}
+            </span>
+        ))
+        : ["example", "dummy"]
+    )}
+</div>
+
                                             <p className="text-lg font-semibold text-[#1E293B] mb-2">
                                                 {row.name}
                                             </p>

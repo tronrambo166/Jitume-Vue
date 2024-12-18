@@ -615,21 +615,20 @@ const ServiceResults = () => {
                                         </div>
 
                                         <div className="flex flex-col pt-2 justify-between flex-grow">
-                                            <div className="flex flex-wrap gap-2 text-xs font-semibold text-[#1E293B]">
-                                                {(
-                                                    row.tags || [
-                                                        "example",
-                                                        "dummy",
-                                                    ]
-                                                ).map((tag) => (
-                                                    <span
-                                                        key={tag}
-                                                        className="text-[#1E293B] font-semibold"
-                                                    >
-                                                        #{tag}
-                                                    </span>
-                                                ))}
-                                            </div>
+                                        <div className="flex flex-wrap gap-2 text-sm font-bold text-[#1E293B] mb-2">
+    {(row.category 
+        ? row.category.split(',').map((tag, index) => (
+            <span
+                key={index}
+                className="text-[#1E293B] font-semibold"
+            >
+                #{tag.trim()}
+            </span>
+        ))
+        : ["example", "dummy"]
+    )}
+</div>
+
                                         </div>
 
                                         <div className="flex flex-col justify-between flex-grow">

@@ -456,36 +456,40 @@ const AddService = ({ connected, userId }) => {
                             </select>
                         </div>
                         <div className="">
-    <label className="block mb-1 text-gray-700 text-sm font-semibold">
-        Location*
-    </label>
-    <input
-        onKeyUp={getPlaces}
-        id="searchbox"
-        type="text"
-        name="location"
-        onChange={handleChange}
-        required
-        className="border relative border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Enter a location..."
-    />
-    <input hidden name="lat" id="lat" />
-    <input hidden name="lng" id="lng" />
-
-    <ul
-        id="suggestion-list"
-        className="absolute w-[250px] bg-white border-t-0 rounded-b-md shadow-lg z-50 max-h-[300px] top-full left-0"
-    ></ul>
-
-    <div
-        id="result_list"
-        className="absolute w-[250px] bg-white border-gray-300 border-t-0 rounded-b-md shadow-lg z-5y0 max-h-[300px] top-[calc(100%+8px)] left-0"
-    ></div>
+  <label className="block mb-1 text-gray-700 text-sm font-semibold">
+    Location*
+  </label>
+  <input
+    onKeyUp={getPlaces}
+    id="searchbox"
+    type="text"
+    name="location"
+    onChange={handleChange}
+    required
+    className="border relative border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+    placeholder="Enter a location..."
+  />
+  <input hidden name="lat" id="lat" />
+  <input hidden name="lng" id="lng" />
+  
+  {/* Suggestion List */}
+  <ul
+    id="suggestion-list"
+    className="absolute w-full bg-white border-t-0 rounded-b-md shadow-lg z-50 max-h-[300px] top-full left-0 overflow-y-auto hidden"
+  >
+    {/* Render suggestions dynamically here */}
+  </ul>
+  
+  {/* Result List */}
+  <div
+    id="result_list"
+    className="absolute w-full bg-white border-gray-300 border-t-0 rounded-b-md shadow-lg z-50  top-[calc(100%+8px)] left-0 overflow-y-auto hidden"
+  >
+    {/* Render result dynamically here */}
+  </div>
 </div>
 
-                    </div>
-
-                    <div>
+<div>
                         <label className="block mb-1 text-gray-700 text-sm font-semibold">
                             Details*
                         </label>
@@ -499,6 +503,9 @@ const AddService = ({ connected, userId }) => {
                             placeholder="Provide details about your service"
                         />
                     </div>
+                    </div>
+
+              
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="relative">
@@ -594,38 +601,7 @@ const AddService = ({ connected, userId }) => {
                             </p>
                         </div>
 
-                        {/*<div className="relative">
-                            <label className="block mb-1 text-gray-700 text-sm font-semibold">
-                                Upload Video
-                            </label>
-                            <input
-                                type="file"
-                                name="video"
-                                onChange={handleFileChange}
-                                accept="video/*"
-                                className="hidden"
-                                id="upload-video"
-                            />
-                            <label
-                                htmlFor="upload-video"
-                                className="flex items-center w-full border border-gray-300 rounded px-2 py-1 cursor-pointer hover:bg-gray-100"
-                            >
-                                <AiOutlineCloudUpload className="text-2xl mr-2" />
-                                <span className="flex-1 text-left">
-                                    Click to upload video
-                                </span>
-                            </label>
-                            {formData.video && (
-                                <p className="mt-2 text-gray-600">
-                                    {formData.video.name}
-                                </p>
-                            )}
-                            <p className="text-xs text-red-500 mt-1">
-                                Max file size: 5MB. If larger, provide a video
-                                URL.
-                            </p>
-                        </div> */}
-
+                       
                         <div className="relative">
                             <label className="block mb-1 text-gray-700 text-sm font-semibold">
                                 Upload Pin

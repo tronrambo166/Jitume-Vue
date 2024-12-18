@@ -17,7 +17,7 @@ import { FaMapMarkerAlt, FaSearch } from "react-icons/fa"; // Import only necess
 const Search = () => {
     const locationUrl = useLocation();
     //const searchPage = locationUrl.pathname === "/listingResults";
-
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const [location, setLocation] = useState("");
     const [suggestions, setSuggestions] = useState([]);
     const locationInputRef = useRef(null);
@@ -25,6 +25,7 @@ const Search = () => {
     const nameRef = useRef(null);
     const latRef = useRef(null);
     const lngRef = useRef(null);
+const suggestionsRef = useRef(null);
 
     const navigate = useNavigate();
     const [results, setResults] = useState("");
@@ -86,7 +87,18 @@ const Search = () => {
     const handleLocationChange = (event) => {
         setLocationValue(event.target.value);
     };
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (suggestionsRef.current && !suggestionsRef.current.contains(event.target)) {
+                setIsOpen(false); // Close the dropdown if click is outside
+            }
+        };
 
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
     const getPlaces = (e) => {
         e.preventDefault();
         $("#result_list").html("");
@@ -175,6 +187,11 @@ const Search = () => {
         setLng(lng2); // Update state for longitude
     };
 
+    const handleSuggestionClick = (suggestion) => {
+        setLocation(suggestion);
+        setSuggestions([]);
+        setIsDropdownVisible(false); // Hide the dropdown after selection
+    };
     // NEW Mock function to simulate fetching suggestions
     // const handleLocationChange = (e) => {
     //   const value = e.target.value;
@@ -281,26 +298,23 @@ const Search = () => {
                         />
 
                         {/* Suggestions Dropdown */}
-                        <div id="result_list" className="">
-                            {suggestions.length > 0 && (
-                                <ul className="absolute z-10 bg-white  rounded-lg w-full mt-1 max-h-40 overflow-y-auto">
-                                    {suggestions.map((suggestion, index) => (
-                                        <li
-                                            key={index}
-                                            onClick={() =>
-                                                handleSuggestionClick(
-                                                    suggestion
-                                                )
-                                            }
-                                            className="px-4 py-2 cursor-pointer hover:bg-gray-100 flex items-center"
-                                        >
-                                            <FaMapMarkerAlt className="mr-2 text-gray-500" />
-                                            {suggestion}
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
-                        </div>
+                        <div ref={suggestionsRef} id="result_list">
+    {suggestions.length > 0 && (
+        <ul className="absolute z-10 bg-white rounded-lg w-full mt-1 max-h-40 overflow-y-auto">
+            {suggestions.map((suggestion, index) => (
+                <li
+                    key={index}
+                    onClick={() => handleSuggestionClick(suggestion)}
+                    className="px-4 py-2 cursor-pointer hover:bg-gray-100 flex items-center"
+                >
+                    <FaMapMarkerAlt className="mr-2 text-gray-500" />
+                    {suggestion}
+                </li>
+            ))}
+        </ul>
+    )}
+</div>
+
                     </div>
 
                     {/* Separator Line (hidden on small screens) */}
