@@ -57,35 +57,33 @@ const ListingResults = () => {
     const [priceRange, setPriceRange] = useState([0, 1000000]); // Initial range
     const [result, setResult] = useState("");
     const [maxRange, setMaxRange] = useState(1000000);
+    const [maxPrice, setMaxPrice] = useState(0); // State for storing max price
 
     const locationInputRef = useRef(null);
     const sliderRef = useRef(null);
 
     // const mapRef = useRef(null);
 
-    if(results)
-     var count = results.length;
-    else
-     var count = 0;
+    if (results) var count = results.length;
+    else var count = 0;
 
     let res = [];
 
     var max = maxRange;
     //else max = 1000000;
 
-   var min = 0;
-   var max2 = 1000000;
-   var min2 = 0;
+    var min = 0;
+    var max2 = maxPrice;
+    var min2 = 0;
 
-   // Formatting with commas for display
-   var formattedMax = max.toLocaleString();
-   var formattedMin = min.toLocaleString();
-   var formattedMax2 = max2.toLocaleString();
-   var formattedMin2 = min2.toLocaleString();
+    // Formatting with commas for display
+    var formattedMax = max.toLocaleString();
+    var formattedMin = min.toLocaleString();
+    var formattedMax2 = max2.toLocaleString();
+    var formattedMin2 = min2.toLocaleString();
 
-   console.log(`Max: ${formattedMax}, Min: ${formattedMin}`);
-   console.log(`Max2: ${formattedMax2}, Min2: ${formattedMin2}`);
-
+    console.log(`Max: ${formattedMax}, Min: ${formattedMin}`);
+    console.log(`Max2: ${formattedMax2}, Min2: ${formattedMin2}`);
 
     const openInNewTab = (url) => {
         window.open(url, "_blank");
@@ -94,14 +92,16 @@ const ListingResults = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [cardsPerPage] = useState(4); // Number of cards per page
 
-    const totalPages = results? Math.ceil(results.length / cardsPerPage):0;
+    const totalPages = results ? Math.ceil(results.length / cardsPerPage) : 0;
 
     // Calculate total pages
 
     // Calculate the cards to display on the current page
     const indexOfLastCard = currentPage * cardsPerPage;
     const indexOfFirstCard = indexOfLastCard - cardsPerPage;
-    const currentCards = results? results.slice(indexOfFirstCard, indexOfLastCard):[];
+    const currentCards = results
+        ? results.slice(indexOfFirstCard, indexOfLastCard)
+        : [];
     // Function to handle page changes
     const handlePageChange = (newPage) => {
         if (newPage >= 1 && newPage <= totalPages) {
@@ -117,13 +117,26 @@ const ListingResults = () => {
     //CORE METHODS
     useEffect(() => {
         const getResults = () => {
-             axiosClient
+            axiosClient
                 .get("/searchResults/" + base64_decode(resIds))
                 .then(({ data }) => {
                     setResults(data.data);
                     res = data.data;
-                    //console.log(data);
-                    setMaxRange(data.max_range); //alert(data.max_range) 
+                    console.log("daraaaa", data);
+                    // Find the maximum price from the data
+                    const MaxRange = Math.max(
+                        ...data.data.map((item) => parseFloat(item.y_turnover))
+                    );
+                    setMaxRange(MaxRange); // Set the max price to state
+                    
+                    setMaxRange(data.max_range); //alert(data.max_range)
+                    // Find the maximum price from the data
+                    const maxPrice = Math.max(
+                        ...data.data.map((item) =>
+                            parseFloat(item.investment_needed)
+                        )
+                    );
+                    setMaxPrice(maxPrice); // Set the max price to state
                     localStorage.setItem("results", JSON.stringify(data.data));
 
                     var x = navigator.geolocation;
@@ -137,7 +150,7 @@ const ListingResults = () => {
                 .catch((err) => {
                     console.log(err);
                 });
-        }; 
+        };
         //setTimeout(() => { rangeSliderInitilize(); }, 300);
         getResults();
         //console.log(res);
@@ -150,42 +163,44 @@ const ListingResults = () => {
         var slider = document.getElementById("slider");
         var slider2 = document.getElementById("slider2");
 
-        if ((slider && slider.noUiSlider) && (slider2 && slider2.noUiSlider)) {
+        if (slider && slider.noUiSlider && slider2 && slider2.noUiSlider) {
             slider.noUiSlider.destroy();
             slider2.noUiSlider.destroy();
-
         }
 
         //rangeSliderInitilize();
         //amountSliderInitilize();
-        setTimeout(() => { rangeSliderInitilize(); }, 300);
-        setTimeout(() => { amountSliderInitilize(); }, 300);
-
+        setTimeout(() => {
+            rangeSliderInitilize();
+        }, 300);
+        setTimeout(() => {
+            amountSliderInitilize();
+        }, 300);
     }, []);
 
     //RESUTLS 2
     const getResults2 = () => {
-            axiosClient
-                .get("/searchResults/" + base64_decode(resIds))
-                .then(({ data }) => {
-                    setResults(data.data);
-                    res = data.data;
-                    //console.log(results);
-                    localStorage.setItem("results", JSON.stringify(data.data));
+        axiosClient
+            .get("/searchResults/" + base64_decode(resIds))
+            .then(({ data }) => {
+                setResults(data.data);
+                res = data.data;
+                //console.log(results);
+                localStorage.setItem("results", JSON.stringify(data.data));
 
-                    var x = navigator.geolocation;
-                    x.getCurrentPosition(success, failure);
-                    document
-                        .querySelector(".permission-granted-button")
-                        .addEventListener("click", () => {
-                            x.watchPosition(success, failure);
-                        });
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        };
-        //RESUTLS 2
+                var x = navigator.geolocation;
+                x.getCurrentPosition(success, failure);
+                document
+                    .querySelector(".permission-granted-button")
+                    .addEventListener("click", () => {
+                        x.watchPosition(success, failure);
+                    });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+    //RESUTLS 2
 
     //Turnover(Nurul)
     const rangeSliderInitilize = () => {
@@ -232,7 +247,10 @@ const ListingResults = () => {
                         const db_min = parseInt(range[0], 10);
                         const db_max = parseInt(range[1], 10);
 
-                        if (parseInt(values[1]) <= db_max && parseInt(values[1]) >= db_min) {
+                        if (
+                            parseInt(values[1]) <= db_max &&
+                            parseInt(values[1]) >= db_min
+                        ) {
                             turnoverRes.push(value);
                         }
                     }
@@ -567,7 +585,6 @@ const ListingResults = () => {
         //min = 0;
         //max = 1000000;
     };
-    
 
     //Range Function
 
@@ -889,19 +906,20 @@ const ListingResults = () => {
                                             />
                                         </div>
                                         <div className="flex flex-col pt-4 justify-between flex-grow pb-4">
-                                        <div className="flex flex-wrap gap-2 text-sm font-bold text-[#1E293B] mb-2">
-    {(row.category 
-        ? row.category.split(',').map((tag, index) => (
-            <span
-                key={index}
-                className="text-[#1E293B] font-semibold"
-            >
-                #{tag.trim()}
-            </span>
-        ))
-        : ["example", "dummy"]
-    )}
-</div>
+                                            <div className="flex flex-wrap gap-2 text-sm font-bold text-[#1E293B] mb-2">
+                                                {row.category
+                                                    ? row.category
+                                                          .split(",")
+                                                          .map((tag, index) => (
+                                                              <span
+                                                                  key={index}
+                                                                  className="text-[#1E293B] font-semibold"
+                                                              >
+                                                                  #{tag.trim()}
+                                                              </span>
+                                                          ))
+                                                    : ["example", "dummy"]}
+                                            </div>
 
                                             <p className="text-lg font-semibold text-[#1E293B] mb-2">
                                                 {row.name}
@@ -970,7 +988,7 @@ const ListingResults = () => {
                             <div
                                 id="map"
                                 style={{
-                                     height: "100%",
+                                    height: "100%",
                                     width: "100%",
                                     borderRadius: "16px",
                                 }}

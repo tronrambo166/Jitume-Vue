@@ -47,6 +47,7 @@ const ServiceResults = () => {
 
     const { resIds } = useParams();
     const { loc } = useParams();
+    const [maxPrice, setMaxPrice] = useState(0); // State for storing max price
 
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [results, setResults] = useState("");
@@ -55,7 +56,7 @@ const ServiceResults = () => {
     let res = [];
 
     const [cartRes, setCartRes] = useState("");
-    var max = 1000000;
+    var max = maxPrice;
     var min = 0;
     var maxFormatted = max.toLocaleString(); // "1,000,000"
     var minFormatted = min.toLocaleString(); // "0"
@@ -70,13 +71,22 @@ const ServiceResults = () => {
                 .get("/ServiceResults/" + base64_decode(resIds))
                 .then(({ data }) => {
                     setResults(data.data);
-                    res = data.data;
-                    //console.log(data);
+
+                    // Find the maximum price from the data
+                    const maxPrice = Math.max(
+                        ...data.data.map((item) =>
+                            parseFloat(item.price.replace(",", ""))
+                        )
+                    );
+                    setMaxPrice(maxPrice); // Set the max price to state
+
+                    // Store the results in localStorage
                     localStorage.setItem(
                         "s_results",
                         JSON.stringify(data.data)
                     );
 
+                    // Geolocation code
                     var x = navigator.geolocation;
                     x.getCurrentPosition(success, failure);
                 })
@@ -85,12 +95,13 @@ const ServiceResults = () => {
                 });
         };
         getResults();
+    }, [resIds]); // Add dependency on resIds to re-fetch when it changes
 
-        var slider = document.getElementById("slider");
-        if (slider && slider.noUiSlider) slider.noUiSlider.destroy();
-
-        amountSlider();
-    }, []);
+    useEffect(() => {
+        if (maxPrice > 0) {
+            amountSlider(); // Only call amountSlider when maxPrice is valid
+        }
+    }, [maxPrice]); // Trigger when maxPrice is updated
 
     //RESULTS
     const getResults2 = () => {
@@ -615,20 +626,20 @@ const ServiceResults = () => {
                                         </div>
 
                                         <div className="flex flex-col pt-2 justify-between flex-grow">
-                                        <div className="flex flex-wrap gap-2 text-sm font-bold text-[#1E293B] mb-2">
-    {(row.category 
-        ? row.category.split(',').map((tag, index) => (
-            <span
-                key={index}
-                className="text-[#1E293B] font-semibold"
-            >
-                #{tag.trim()}
-            </span>
-        ))
-        : ["example", "dummy"]
-    )}
-</div>
-
+                                            <div className="flex flex-wrap gap-2 text-sm font-bold text-[#1E293B] mb-2">
+                                                {row.category
+                                                    ? row.category
+                                                          .split(",")
+                                                          .map((tag, index) => (
+                                                              <span
+                                                                  key={index}
+                                                                  className="text-[#1E293B] font-semibold"
+                                                              >
+                                                                  #{tag.trim()}
+                                                              </span>
+                                                          ))
+                                                    : ["example", "dummy"]}
+                                            </div>
                                         </div>
 
                                         <div className="flex flex-col justify-between flex-grow">
