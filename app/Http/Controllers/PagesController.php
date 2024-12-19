@@ -914,7 +914,7 @@ public function JitumeSubscribeEmail($email){
         $msg->to($user['to']);
         $msg->subject('Subscribe to Jitume');
     });
-    return response()->json(['status' => 200, 'message' => 'Thank you for Subscribing, you will receive an email with updates!]);
+    return response()->json(['status' => 200, 'message' => 'Thank you for Subscribing, you will receive an email with updates!']);
 
 }
 

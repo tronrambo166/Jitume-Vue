@@ -49,7 +49,7 @@ function Messages() {
         setSelectedMessage(msg);
         //FETCH
           setChatHistory([]);
-          setChatHistorySent([]);
+          //setChatHistorySent([]);
           msg.messages.forEach((message, index) => {
           setChatHistory(prevArray => [...prevArray, message])
           });
@@ -64,9 +64,9 @@ function Messages() {
           //   },
           //  ]);
 
-          msg.sent.forEach((message, index) => {
-          setChatHistorySent(prevArray => [...prevArray, message])
-          });
+          // msg.sent.forEach((message, index) => {
+          // setChatHistorySent(prevArray => [...prevArray, message])
+          // });
           
         
        

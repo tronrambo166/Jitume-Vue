@@ -923,11 +923,25 @@ $messages = ServiceMessages::where('to_id',Auth::id())
 
 foreach($messages as $book)
 {
-  $single = ServiceMessages::where('to_id',Auth::id())
-            ->where('from_id',$book->from_id)->latest()->get();
+  // $single = ServiceMessages::where('to_id',Auth::id())
+  //           ->where('from_id',$book->from_id)->latest()->get();
 
-  $reverseSingle = ServiceMessages::where('to_id',$book->from_id)
-            ->where('from_id',Auth::id())->latest()->get();
+    $single = ServiceMessages::where(function ($query) use ($book) {
+    $query->where('to_id', '=', Auth::id())
+          ->orWhere('to_id', '=', $book->from_id);
+          })->where(function ($query) use ($book) {
+    $query->where('from_id', '=', Auth::id())
+          ->orWhere('from_id', '=', $book->from_id);
+    })->whereColumn('to_id', '!=' , 'from_id')->get();
+
+    foreach($single as $s){
+      if($s->from_id == Auth::id())
+        $s->sender = 'me';
+      else $s->sender = '';
+    }
+
+  //$reverseSingle = ServiceMessages::where('to_id',$book->from_id)
+            //->where('from_id',Auth::id())->latest()->get();
 
   $sender =User::where('id',$book->from_id)->first();
 
@@ -936,7 +950,7 @@ foreach($messages as $book)
   $book->sender = $sender->fname.' '.$sender->lname;
   $book->email = $sender->email;
   $book->messages = $single;
-  $book->sent = $reverseSingle;
+  //$book->sent = $reverseSingle;
   $results[] = $book;
   }
 
