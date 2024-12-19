@@ -913,19 +913,30 @@ return response()->json([ 'results' => $results ]);
 }
 
 
-public function service_messages(){ 
+public function service_messages($from){ 
 $results = [];
-$messages = ServiceMessages::where('to_id',Auth::id())->latest()->get();
+
+//$from_id = (int) $from;
+//if($from_id == 0)
+$messages = ServiceMessages::where('to_id',Auth::id())
+            ->groupBy('from_id')->latest()->get();
+
 foreach($messages as $book)
 {
-  $service =Services::where('id',$book->service_id)->first();
+  $single = ServiceMessages::where('to_id',Auth::id())
+            ->where('from_id',$book->from_id)->latest()->get();
+
+  $reverseSingle = ServiceMessages::where('to_id',$book->from_id)
+            ->where('from_id',Auth::id())->latest()->get();
+
   $sender =User::where('id',$book->from_id)->first();
 
-  if($service && $sender){
-  $book->service = $service->name;
+  if($sender){
+  //$book->service = $service->name;
   $book->sender = $sender->fname.' '.$sender->lname;
-  $book->website = $sender->website;
   $book->email = $sender->email;
+  $book->messages = $single;
+  $book->sent = $reverseSingle;
   $results[] = $book;
   }
 

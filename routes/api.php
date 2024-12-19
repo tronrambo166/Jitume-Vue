@@ -137,7 +137,7 @@ Route::get('service_booking', [ServiceController::class, 'service_booking'])->na
 Route::get('my_booking', [ServiceController::class, 'my_booking'])->name('my_booking');
 Route::get('bBQhdsfE_WWe4Q-_f7ieh7Hdhf6F__', [ServiceController::class, 'booker_milestones'])->name('booker-milestones');
 Route::get('getBookers/{s_id}', [ServiceController::class, 'getBookers'])->name('getBookers');
-Route::get('service_messages', [ServiceController::class, 'service_messages'])->name('service-messages');
+Route::get('service_messages/{from}', [ServiceController::class, 'service_messages'])->name('service-messages');
 
 
 Route::get('/dashhome', [BusinessController::class, 'home']);
@@ -164,7 +164,7 @@ Route::get('getMilestonesAuth/{id}', [BusinessController::class ,'getMilestones'
 });
 //P R O T E C T E D    R O U T E S   ENDS
 
-Route::get('JitumeSubscribeEmail', [PagesController::class, 'JitumeSubscribeEmail']);
+Route::get('JitumeSubscribeEmail/{email}', [PagesController::class, 'JitumeSubscribeEmail']);
 
 
 

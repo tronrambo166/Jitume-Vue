@@ -907,8 +907,15 @@ return view('profile',compact('user'));
 
 }
 
-public function JitumeSubscribeEmail(){
-    return 'ok';
+public function JitumeSubscribeEmail($email){ 
+    $user['to'] = $email;
+    $info = [];
+    Mail::send('subscribe_mail', $info, function($msg) use ($user){
+        $msg->to($user['to']);
+        $msg->subject('Subscribe to Jitume');
+    });
+    return response()->json(['status' => 200, 'message' => 'Thank you for Subscribe, check email.']);
+
 }
 
 //Distance

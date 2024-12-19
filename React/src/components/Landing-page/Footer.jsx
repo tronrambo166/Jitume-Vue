@@ -26,17 +26,20 @@ const Footer = () => {
     setEmail(e.target.value)
   }
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = async (e) =>{
     e.preventDefault();
     if(email == '' || email == null){
       alert('Please enter your email!');
       return;
     }
 
-    const { data } = axiosClient.get(
-                    "/JitumeSubscribeEmail/" + name
+    const { data } = await axiosClient.get(
+                    "/JitumeSubscribeEmail/" + email
                 );
-    alert('Thank you for Subscribe, check email!');
+    console.log(data);
+    if(data.status == 200)
+    alert(data.message);
+    else alert('Something went wrong!');
                 
   }
 

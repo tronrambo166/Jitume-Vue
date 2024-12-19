@@ -8,21 +8,24 @@ function Messages() {
     const [messages, setMessages] = useState([]);
     const [selectedMessage, setSelectedMessage] = useState(null);
     const [chatHistory, setChatHistory] = useState([]);
+    const [chatHistorySent, setChatHistorySent] = useState([]);
     const [newMessage, setNewMessage] = useState("");
     const [loading, setLoading] = useState(true);
     const [isMobileView, setIsMobileView] = useState(false);
 
+    //const [from, setFrom] = useState(0);
+
     useEffect(() => {
-        const fetchMessages = () => {
+        const fetchMessages = (from) => {
             console.log("Fetching messages...");
             axiosClient
-                .get("/business/service_messages")
+                .get("/business/service_messages/"+from)
                 .then(({ data }) => {
                     console.log(
                         "Messages fetched successfully:",
-                        data.messages
+                        data
                     );
-                    setMessages(data.messages);
+                    setMessages(data.messages || []);
                     setLoading(false);
                 })
                 .catch((err) => {
@@ -31,7 +34,7 @@ function Messages() {
                 });
         };
 
-        fetchMessages();
+        fetchMessages(0);
 
         const handleResize = () => {
             setIsMobileView(window.innerWidth < 768);
@@ -41,18 +44,33 @@ function Messages() {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    const handleSelectMessage = (message) => {
-        console.log("Selected message:", message);
-        setSelectedMessage(message);
-        setChatHistory([
-            {
-                sender: message.sender,
-                text: message.msg, // Use 'text' to match the rendering logic
-                id: message.id,
-                service_id: message.service_id,
-                time: message.created_at,
-            },
-        ]);
+    const handleSelectMessage = (msg) => {
+        console.log("Selected message:", msg);
+        setSelectedMessage(msg);
+        //FETCH
+          setChatHistory([]);
+          setChatHistorySent([]);
+          msg.messages.forEach((message, index) => {
+          setChatHistory(prevArray => [...prevArray, message])
+          });
+          
+          // setChatHistory([
+          //   {
+          //       sender: message.sender,
+          //       text: message.msg, // Use 'text' to match the rendering logic
+          //       id: message.id,
+          //       service_id: message.service_id,
+          //       time: message.created_at,
+          //   },
+          //  ]);
+
+          msg.sent.forEach((message, index) => {
+          setChatHistorySent(prevArray => [...prevArray, message])
+          });
+          
+        
+       
+        
     };
 
     const handleSendMessage = (id, service_id) => {
@@ -60,7 +78,7 @@ function Messages() {
 
         const tempMessage = {
             sender: "me", // Indicate the sender is the current user
-            text: newMessage,
+            msg: newMessage,
             id,
             service_id,
             status: "Sending...", // Temporary status
@@ -224,7 +242,8 @@ function Messages() {
                                         }}
                                     >
                                         <p className="text-sm break-words">
-                                            {chat.text}
+                                            {chat.msg} 
+                                            {/* <small> {chat.created_at}</small> */} 
                                         </p>
 
                                         {/* Message Status Indicator */}
