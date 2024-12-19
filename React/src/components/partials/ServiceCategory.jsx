@@ -362,7 +362,7 @@ const CategoryPage = ({ categoryName }) => {
                                     </p>
                                     <p className="text-black space-x-2 font-semibold mt-2">
                                         <span className="text-[#15803D]">
-                                            ${card.price}
+                                            ${card.price.toLocaleString()}
                                         </span>
                                         <span className="text-[#1E293B]">
                                             /Price

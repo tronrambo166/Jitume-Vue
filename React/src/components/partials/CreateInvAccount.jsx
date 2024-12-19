@@ -359,8 +359,10 @@ function CreateInvestorAccount({ isOpen, onClose }) {
 
     return (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-50">
+           
+                
             <div
-                className={`bg-white p-6 shadow-lg w-full ${
+                className={`bg-white p-6 shadow-lg w-[900px] ${
                     isSignIn ? "max-w-md min-h-[500px]" : "max-w-2xl"
                 } max-h-[100vh] overflow-hidden relative rounded-xl flex flex-col`}
             >
@@ -428,7 +430,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                             name="email"
                                             value={loginData.email}
                                             onChange={handleLoginChange}
-                                            className="border rounded-lg px-3 text-black py-2 text-sm"
+                                            className="border rounded-lg px-3 text-black py-3 text-sm"
                                             required
                                         />
                                         {errors.email && (
@@ -450,7 +452,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                             name="password"
                                             value={loginData.password}
                                             onChange={handleLoginChange}
-                                            className="border border-gray-300 rounded-lg px-3 py-2 text-black text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-10"
+                                            className="border border-gray-300 rounded-lg px-3 py-3 text-black text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-10"
                                             required
                                         />
                                         <button

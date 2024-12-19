@@ -56,7 +56,8 @@ const ListingResults = () => {
     // Amount side
     const [priceRange, setPriceRange] = useState([0, 1000000]); // Initial range
     const [result, setResult] = useState("");
-    const [maxRange, setMaxRange] = useState(1000000);
+    // const [maxRange, setMaxRange] = useState(1000000);
+    const [maxRange, setMaxRange] = useState(0);
     const [maxPrice, setMaxPrice] = useState(0); // State for storing max price
 
     const locationInputRef = useRef(null);
@@ -123,20 +124,22 @@ const ListingResults = () => {
                     setResults(data.data);
                     res = data.data;
                     console.log("daraaaa", data);
-                    // Find the maximum price from the data
-                    const MaxRange = Math.max(
-                        ...data.data.map((item) => parseFloat(item.y_turnover))
-                    );
-                    setMaxRange(MaxRange); // Set the max price to state
-                    
-                    setMaxRange(data.max_range); //alert(data.max_range)
-                    // Find the maximum price from the data
-                    const maxPrice = Math.max(
-                        ...data.data.map((item) =>
-                            parseFloat(item.investment_needed)
+
+                    // Calculate maximum turnover and investment values
+                    const maxTurnover = Math.max(
+                        ...data.data.map(
+                            (item) => parseFloat(item.y_turnover) || 0
                         )
                     );
-                    setMaxPrice(maxPrice); // Set the max price to state
+                    setMaxRange(maxTurnover); // Update max range for turnover
+
+                    const maxInvestment = Math.max(
+                        ...data.data.map(
+                            (item) => parseFloat(item.investment_needed) || 0
+                        )
+                    );
+                    setMaxPrice(maxInvestment); // Update max price for investment
+
                     localStorage.setItem("results", JSON.stringify(data.data));
 
                     var x = navigator.geolocation;
@@ -151,32 +154,29 @@ const ListingResults = () => {
                     console.log(err);
                 });
         };
-        //setTimeout(() => { rangeSliderInitilize(); }, 300);
+
         getResults();
-        //console.log(res);
-
-        const onChangeSlider = () => {
-            alert("slider is moving");
-        };
-
-        //x.getCurrentPosition(success, failure);
-        var slider = document.getElementById("slider");
-        var slider2 = document.getElementById("slider2");
-
-        if (slider && slider.noUiSlider && slider2 && slider2.noUiSlider) {
-            slider.noUiSlider.destroy();
-            slider2.noUiSlider.destroy();
-        }
-
-        //rangeSliderInitilize();
-        //amountSliderInitilize();
-        setTimeout(() => {
-            rangeSliderInitilize();
-        }, 300);
-        setTimeout(() => {
-            amountSliderInitilize();
-        }, 300);
     }, []);
+
+    useEffect(() => {
+        // Ensure sliders initialize only when maxRange and maxPrice are updated
+        if (maxRange > 0 && maxPrice > 0) {
+            const slider = document.getElementById("slider");
+            const slider2 = document.getElementById("slider2");
+
+            if (slider && slider.noUiSlider && slider2 && slider2.noUiSlider) {
+                slider.noUiSlider.destroy();
+                slider2.noUiSlider.destroy();
+            }
+
+            setTimeout(() => {
+                rangeSliderInitilize();
+            }, 300);
+            setTimeout(() => {
+                amountSliderInitilize();
+            }, 300);
+        }
+    }, [maxRange, maxPrice]);
 
     //RESUTLS 2
     const getResults2 = () => {
@@ -952,7 +952,7 @@ const ListingResults = () => {
                                             <div className="text-sm text-green-600 mb-1">
                                                 <p>
                                                     $
-                                                    {row.investment_needed ||
+                                                    {row.investment_needed.toLocaleString() ||
                                                         ""}
                                                     <span className="text-[#1E293B]">
                                                         {" "}
@@ -962,7 +962,16 @@ const ListingResults = () => {
                                             </div>
                                             <div className="text-sm text-green-600">
                                                 <p>
-                                                    ${row.y_turnover || ""}
+                                                    {row.y_turnover
+                                                        ? `$${row.y_turnover
+                                                              .split("-")
+                                                              .map((value) =>
+                                                                  parseInt(
+                                                                      value
+                                                                  ).toLocaleString()
+                                                              )
+                                                              .join("-")}`
+                                                        : ""}
                                                     <span className="text-[#1E293B]">
                                                         {" "}
                                                         / Yearly Turnover

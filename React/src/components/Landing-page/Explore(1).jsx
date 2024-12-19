@@ -176,6 +176,7 @@ const Explore = () => {
                                           to={`/category/${category.name
                                               .replace("/", "-")
                                               .replace(" ", "-")}`}
+                                              onClick={() => window.scrollTo(0, 0)}
                                       >
                                           <div
                                               key={index}

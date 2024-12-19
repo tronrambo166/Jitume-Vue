@@ -90,7 +90,7 @@ const suggestionsRef = useRef(null);
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (suggestionsRef.current && !suggestionsRef.current.contains(event.target)) {
-                setIsOpen(false); // Close the dropdown if click is outside
+                setIsDropdownVisible(false); // Close the dropdown if click is outside
             }
         };
 

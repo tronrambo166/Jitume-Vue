@@ -163,7 +163,7 @@ const MyBusinesses = () => {
 
         // Add padding to move it right
         "amount required": (
-            <div className="pl-[12px]">{`$${item.investment_needed}`}</div>
+            <div className="pl-[12px]">{`$${item.investment_needed.toLocaleString()}`}</div>
         ),
         contact: item.contact,
         action: <ActionDropdown item={item} />,

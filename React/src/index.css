@@ -26,9 +26,9 @@
 
 /* Adjust links position on the service page for desktop view */
 .service-links {
-   /* @media (min-width: 768px) {
+   @media (min-width: 768px) {
         margin-left: -160px; 
-    }*/
+    }
 }
 
 
@@ -526,4 +526,44 @@ select::-ms-expand {
 
 .address:hover {
     background-color: #f1f1f1;
+}
+
+#result_list2 {
+    position: absolute; /* Position it below the input */
+    top: 100%; /* Right below the input field */
+    left: 0;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fff;
+    display: none; /* Hidden by default */
+    z-index: 1000; /* Ensure it appears above other elements */
+
+    /* Smooth Scrolling */
+    scroll-behavior: smooth;
+
+    /* Custom scrollbar styling */
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #c0c0c0 #f5f5f5; /* Thumb and track color */
+}
+
+/* For WebKit Browsers */
+#result_list2::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+}
+
+#result_list2::-webkit-scrollbar-thumb {
+    background-color: #c0c0c0; /* Scrollbar thumb color */
+    border-radius: 4px; /* Rounded corners for thumb */
+}
+
+#result_list2::-webkit-scrollbar-thumb:hover {
+    background-color: #a0a0a0; /* Darker thumb color on hover */
+}
+
+#result_list2::-webkit-scrollbar-track {
+    background-color: #f5f5f5; /* Scrollbar track color */
+    border-radius: 4px; /* Rounded corners for track */
 }

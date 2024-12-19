@@ -213,7 +213,7 @@ function ServiceMilestone() {
                                     {bookerName}
                                 </td>
                                 <td className="py-3 px-4 border-b w-1/6">
-                                    ${milestone.amount}
+                                    ${milestone.amount.toLocaleString()}
                                 </td>
                                 <td className="py-3 px-4 border-b w-1/6">
                                     <select

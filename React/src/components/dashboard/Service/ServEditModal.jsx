@@ -96,6 +96,7 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
             );
 
             if (response.data.status === 200) {
+                // showAlert("success", response.data.message);
                 showAlert("success", response.data.message);
             } else {
                 showAlert("error", response.data.message);

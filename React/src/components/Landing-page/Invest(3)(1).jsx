@@ -149,7 +149,8 @@ const Invest = () => {
                                           <div className="text-sm text-gray-800 flex justify-between mb-2">
                                               <span>
                                                   <span className="font-semibold">
-                                                      ${card.investment_needed}
+                                                      $
+                                                      {card.investment_needed.toLocaleString()}
                                                   </span>
                                                   <br />
                                                   Goal

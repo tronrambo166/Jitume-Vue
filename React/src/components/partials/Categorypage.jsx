@@ -618,7 +618,8 @@ const CategoryPage = () => {
                                             Amount Requested:
                                         </span>
                                         <span className="text-[#15803D]">
-                                            {card.investment_needed || "N/A"}
+                                            {card.investment_needed.toLocaleString() ||
+                                                "N/A"}
                                         </span>
                                     </p>
                                     <p className="text-black space-x-2 font-semibold mt-2">
@@ -627,7 +628,16 @@ const CategoryPage = () => {
                                             Turnover:
                                         </span>
                                         <span className="text-[#15803D]">
-                                            {card.y_turnover || "N/A"}
+                                            {card.y_turnover
+                                                ? card.y_turnover
+                                                      .split("-")
+                                                      .map((value) =>
+                                                          parseInt(
+                                                              value
+                                                          ).toLocaleString()
+                                                      )
+                                                      .join("-")
+                                                : "N/A"}
                                         </span>
                                     </p>
                                 </div>

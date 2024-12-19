@@ -243,7 +243,7 @@ function AddMilestone() {
                                         {milestone.business_name}
                                     </td>
                                     <td className="py-3 px-4 border-b">
-                                        ${milestone.amount}
+                                        ${milestone.amount.toLocaleString()}
                                     </td>
                                     <td className="py-3 px-4 border-b">
                                         <select

@@ -134,7 +134,9 @@ const ServiceTable = () => {
             </div>
         ),
 
-        "service fee": <span className="-ml-5">${item.price}</span>,
+        "service fee": (
+            <span className="-ml-5">${item.price.toLocaleString()}</span>
+        ),
 
         actions: <ActionDropdown item={item} />,
     }));

@@ -244,7 +244,7 @@ function InvestmentBids() {
                                 </td>
 
                                 <td className="py-3 px-4 border-b text-left">
-                                    ${bid.amount}
+                                    ${bid.amount.toLocaleString()}
                                 </td>
 
                                 <td className="py-3 px-4 border-b text-left">
