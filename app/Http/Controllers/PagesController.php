@@ -907,6 +907,9 @@ return view('profile',compact('user'));
 
 }
 
+public function JitumeSubscribeEmail(){
+    return 'ok';
+}
 
 //Distance
 public function findNearestListings($latitude, $longitude, $radius = 100)

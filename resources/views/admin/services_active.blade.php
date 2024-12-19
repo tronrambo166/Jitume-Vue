@@ -45,7 +45,7 @@
 												@foreach($businesses as $key=>$l)
 												<tr>
 													<td>
-													<button  type="button" class="border text-dark btn btn-light py-1 font-weight-bold small" data-toggle="modal" data-target="#exampleModal">
+													<button  type="button" class="border text-dark btn btn-light py-1 font-weight-bold small" data-toggle="modal" data-target="#exampleModal{{$l[0]->id}}">
 														{{$l[0]->fname.' '.$l[0]->lname}}
 													</button>
 													</td>

@@ -11,6 +11,7 @@ import x from "../../images/x2.png";
 import linkedin from "../../images/linkedin.png";
 import down from '../../images/down.png'; // Include your dropdown arrow image
 import FindBusinessBtn from './FindBusinessBtn';
+import axiosClient from "../../axiosClient";
 
 const Footer = () => {
   const [openDropdown, setOpenDropdown] = useState(null); // State to track which dropdown is open
@@ -19,6 +20,25 @@ const Footer = () => {
   const handleDropdownToggle = (index) => {
     setOpenDropdown(openDropdown === index ? null : index); // Close if already open
   };
+
+  const [email, setEmail] = useState('');
+  const handleEmail = (e) =>{
+    setEmail(e.target.value)
+  }
+
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+    if(email == '' || email == null){
+      alert('Please enter your email!');
+      return;
+    }
+
+    const { data } = axiosClient.get(
+                    "/JitumeSubscribeEmail/" + name
+                );
+    alert('Thank you for Subscribe, check email!');
+                
+  }
 
   return (
       <footer className="relative bg-[#00290F] mt-[70px] w-full">
@@ -60,14 +80,17 @@ const Footer = () => {
               <div className="flex flex-wrap justify-between">
                   <div className="mt-8 flex flex-col space-y-6 w-full md:w-auto">
                       <h1 className="font-bold">Subscribe for latest update</h1>
+                      <form onSubmit={handleSubmit} >
                       <input
-                          type="text"
+                          type="email"
+                          onChange={handleEmail}
                           placeholder="someone@domain.com"
                           className="w-full md:w-[350px] outline-white p-4 bg-white/10 h-[50px] rounded-xl"
                       />
-                      <button className="text-white w-full md:w-[200px] px-3 py-2 rounded-lg bg-[#22C55E]">
+                      <button type="submit" className="text-white w-full md:w-[200px] px-3 py-2 rounded-lg bg-[#22C55E]">
                           Subscribe
                       </button>
+                      </form>
                   </div>
 
                   {/* Links Section */}

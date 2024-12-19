@@ -94,13 +94,14 @@ const ListingResults = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [cardsPerPage] = useState(4); // Number of cards per page
 
-    const totalPages = Math.ceil(results.length / cardsPerPage);
+    const totalPages = results? Math.ceil(results.length / cardsPerPage):0;
+
     // Calculate total pages
 
     // Calculate the cards to display on the current page
     const indexOfLastCard = currentPage * cardsPerPage;
     const indexOfFirstCard = indexOfLastCard - cardsPerPage;
-    const currentCards = results.slice(indexOfFirstCard, indexOfLastCard);
+    const currentCards = results? results.slice(indexOfFirstCard, indexOfLastCard):[];
     // Function to handle page changes
     const handlePageChange = (newPage) => {
         if (newPage >= 1 && newPage <= totalPages) {
@@ -109,7 +110,6 @@ const ListingResults = () => {
     };
 
     useEffect(() => {
-        console.log("Results Length: ", results.length);
         console.log("Total Pages: ", totalPages);
         console.log("Current Cards: ", currentCards);
     }, [results, currentPage]);
@@ -117,13 +117,13 @@ const ListingResults = () => {
     //CORE METHODS
     useEffect(() => {
         const getResults = () => {
-            axiosClient
+             axiosClient
                 .get("/searchResults/" + base64_decode(resIds))
                 .then(({ data }) => {
                     setResults(data.data);
                     res = data.data;
                     //console.log(data);
-                    setMaxRange(data.max_range);
+                    setMaxRange(data.max_range); //alert(data.max_range) 
                     localStorage.setItem("results", JSON.stringify(data.data));
 
                     var x = navigator.geolocation;
@@ -137,7 +137,7 @@ const ListingResults = () => {
                 .catch((err) => {
                     console.log(err);
                 });
-        };
+        }; 
         //setTimeout(() => { rangeSliderInitilize(); }, 300);
         getResults();
         //console.log(res);

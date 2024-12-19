@@ -164,6 +164,9 @@ Route::get('getMilestonesAuth/{id}', [BusinessController::class ,'getMilestones'
 });
 //P R O T E C T E D    R O U T E S   ENDS
 
+Route::get('JitumeSubscribeEmail', [PagesController::class, 'JitumeSubscribeEmail']);
+
+
 
 //Email Click Routes
 Route::get('emailVerify/{email}/{code}',[AuthController::class,'emailVerify']);
