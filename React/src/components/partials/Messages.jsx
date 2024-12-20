@@ -19,12 +19,9 @@ function Messages() {
         const fetchMessages = (from) => {
             console.log("Fetching messages...");
             axiosClient
-                .get("/business/service_messages/"+from)
+                .get("/business/service_messages/" + from)
                 .then(({ data }) => {
-                    console.log(
-                        "Messages fetched successfully:",
-                        data
-                    );
+                    console.log("Messages fetched successfully:", data);
                     setMessages(data.messages || []);
                     setLoading(false);
                 })
@@ -48,29 +45,25 @@ function Messages() {
         console.log("Selected message:", msg);
         setSelectedMessage(msg);
         //FETCH
-          setChatHistory([]);
-          //setChatHistorySent([]);
-          msg.messages.forEach((message, index) => {
-          setChatHistory(prevArray => [...prevArray, message])
-          });
-          
-          // setChatHistory([
-          //   {
-          //       sender: message.sender,
-          //       text: message.msg, // Use 'text' to match the rendering logic
-          //       id: message.id,
-          //       service_id: message.service_id,
-          //       time: message.created_at,
-          //   },
-          //  ]);
+        setChatHistory([]);
+        //setChatHistorySent([]);
+        msg.messages.forEach((message, index) => {
+            setChatHistory((prevArray) => [...prevArray, message]);
+        });
 
-          // msg.sent.forEach((message, index) => {
-          // setChatHistorySent(prevArray => [...prevArray, message])
-          // });
-          
-        
-       
-        
+        // setChatHistory([
+        //   {
+        //       sender: message.sender,
+        //       text: message.msg, // Use 'text' to match the rendering logic
+        //       id: message.id,
+        //       service_id: message.service_id,
+        //       time: message.created_at,
+        //   },
+        //  ]);
+
+        // msg.sent.forEach((message, index) => {
+        // setChatHistorySent(prevArray => [...prevArray, message])
+        // });
     };
 
     const handleSendMessage = (id, service_id) => {
@@ -231,44 +224,50 @@ function Messages() {
                                     } mt-4`}
                                 >
                                     <div
-                                        className={`relative p-4 rounded-lg max-w-xs ${
+                                        className={`flex ${
                                             chat.sender === "me"
-                                                ? "bg-yellow-400 text-black"
-                                                : "bg-white"
-                                        } shadow-md space-y-2`}
-                                        style={{
-                                            wordWrap: "break-word",
-                                            overflowWrap: "break-word",
-                                        }}
+                                                ? "justify-end"
+                                                : "justify-start"
+                                        } mt-4`}
+                                        key={index}
                                     >
-                                        <p className="text-sm break-words">
-                                            {chat.msg} 
-                                            {/* <small> {chat.created_at}</small> */} 
-                                        </p>
-
-                                        {/* Message Status Indicator */}
-                                        {chat.sender === "me" &&
-                                            chat.status ===
-                                                "Failed to send" && (
-                                                <button
-                                                    className="text-blue-500 text-xs flex items-center space-x-1"
-                                                    onClick={() =>
-                                                        handleRetryMessage(
-                                                            index
-                                                        )
-                                                    }
-                                                >
-                                                    <AiOutlineReload className="w-4 h-4" />{" "}
-                                                    {/* Retry icon */}
-                                                    {chat.status ===
-                                                        "Failed to send" && (
-                                                        <div className="absolute bottom-0 right-3 text-red-500 text-[11px] mt-1">
-                                                            Not Sent
-                                                        </div>
-                                                    )}
-                                                    <span>Resend</span>
-                                                </button>
-                                            )}
+                                        <div
+                                            className={`relative p-4 rounded-lg max-w-xs ${
+                                                chat.sender === "me"
+                                                    ? "bg-yellow-400 text-black"
+                                                    : "bg-white"
+                                            } shadow-md space-y-2`}
+                                            style={{
+                                                wordWrap: "break-word",
+                                                overflowWrap: "break-word",
+                                            }}
+                                        >
+                                            <p className="text-sm break-words">
+                                                {chat.msg}
+                                            </p>
+                                            {/* Add timestamp below the message */}
+                                            <small className="text-gray-500 text-xs mt-2">
+                                                {new Date(
+                                                    chat.created_at
+                                                ).toLocaleString()}
+                                            </small>
+                                            {chat.sender === "me" &&
+                                                chat.status ===
+                                                    "Failed to send" && (
+                                                    <button
+                                                        className="text-blue-500 text-xs flex items-center space-x-1"
+                                                        onClick={() =>
+                                                            handleRetryMessage(
+                                                                index
+                                                            )
+                                                        }
+                                                    >
+                                                        <AiOutlineReload className="w-4 h-4" />{" "}
+                                                        {/* Retry icon */}
+                                                        <span>Resend</span>
+                                                    </button>
+                                                )}
+                                        </div>
                                     </div>
                                 </div>
                             ))}

@@ -33,12 +33,13 @@ export const ContextProvider = ({ children }) => {
         // Check if 20 seconds have elapsed since last tab close
         const checkTokenExpiry = () => {
             const logoutTime = localStorage.getItem("LOGOUT_TIME");
+            const fiveMinutes = 5 * 60 * 1000; // 5 minutes in milliseconds
 
             if (logoutTime) {
                 const elapsed = Date.now() - parseInt(logoutTime, 10);
 
                 // If 20+ seconds have passed, clear token and reset state
-                if (elapsed >= 20000) {
+                if (elapsed >= fiveMinutes) {
                     localStorage.removeItem("ACCESS_TOKEN");
                     localStorage.removeItem("LOGOUT_TIME");
                     setUser(null);
@@ -66,7 +67,7 @@ export const ContextProvider = ({ children }) => {
     }, []);
 
     // Idle timer logic
-    const TEN_SECONDS = 300000; // Idle timeout (10 seconds for testing) 5min
+    const TEN_SECONDS = 30 * 60 * 1000; // Idle timeout (10 seconds for testing) 5min
     const DEBOUNCE_TIME = 1000; // Wait 1 second before checking idle state
 
     const handleOnUserIdle = () => {
