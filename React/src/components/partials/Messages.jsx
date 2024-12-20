@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { AiOutlineReload } from "react-icons/ai"; // Retry icon
 import { FiSend } from "react-icons/fi"; // Send icon
 import axiosClient from "../../axiosClient";
@@ -12,7 +12,7 @@ function Messages() {
     const [newMessage, setNewMessage] = useState("");
     const [loading, setLoading] = useState(true);
     const [isMobileView, setIsMobileView] = useState(false);
-
+    const chatContainerRef = useRef(null);
     //const [from, setFrom] = useState(0);
 
     useEffect(() => {
@@ -40,6 +40,14 @@ function Messages() {
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
+
+    useEffect(() => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop =
+                chatContainerRef.current.scrollHeight;
+        }
+    }, [chatHistory]);
+
 
     const handleSelectMessage = (msg) => {
         console.log("Selected message:", msg);
@@ -69,12 +77,14 @@ function Messages() {
     const handleSendMessage = (id, service_id) => {
         if (!newMessage.trim()) return;
 
+        // Add a temporary timestamp when the message is sent
         const tempMessage = {
             sender: "me", // Indicate the sender is the current user
             msg: newMessage,
             id,
             service_id,
             status: "Sending...", // Temporary status
+            created_at: new Date().toISOString(), // Temporary timestamp
         };
 
         console.log("Sending message:", tempMessage);
@@ -144,7 +154,7 @@ function Messages() {
     if (loading) return <SkeletonLoader />;
 
     return (
-        <div className="flex mt-6 px-6 flex-col md:flex-row text-gray-800 relative mx-auto bg-gray-50 shadow-lg">
+        <div className="flex mt-6 px-6 flex-col md:flex-row text-gray-800 relative mx-auto h-[700px] bg-gray-50 shadow-lg">
             {/* Sidebar */}
             <div
                 className={`w-full md:w-1/3 bg-white border-r overflow-y-auto ${
@@ -178,7 +188,10 @@ function Messages() {
                                 className="text-sm text-gray-600 truncate"
                                 style={{ maxWidth: "200px" }}
                             >
-                                {msg.msg}
+                                {/* Display the latest message */}
+                                {msg.messages && msg.messages.length > 0
+                                    ? msg.messages[msg.messages.length - 1].msg
+                                    : "No messages yet"}
                             </p>
                         </div>
                     </div>
@@ -186,7 +199,7 @@ function Messages() {
             </div>
 
             {/* Chat Window */}
-            <div className="flex-1 flex flex-col bg-gray-100 min-h-screen">
+            <div className="flex-1 flex flex-col bg-gray-100 h-[700px]">
                 {selectedMessage ? (
                     <>
                         {/* Chat Header */}
@@ -213,6 +226,7 @@ function Messages() {
                                 flexGrow: 1,
                                 overflowY: "auto",
                             }}
+                            ref={chatContainerRef}
                         >
                             {chatHistory.map((chat, index) => (
                                 <div
@@ -224,50 +238,39 @@ function Messages() {
                                     } mt-4`}
                                 >
                                     <div
-                                        className={`flex ${
+                                        className={`relative p-4 rounded-lg max-w-xs ${
                                             chat.sender === "me"
-                                                ? "justify-end"
-                                                : "justify-start"
-                                        } mt-4`}
-                                        key={index}
+                                                ? "bg-yellow-400 text-black"
+                                                : "bg-white"
+                                        } shadow-md`}
+                                        style={{
+                                            wordWrap: "break-word",
+                                            overflowWrap: "break-word",
+                                        }}
                                     >
-                                        <div
-                                            className={`relative p-4 rounded-lg max-w-xs ${
-                                                chat.sender === "me"
-                                                    ? "bg-yellow-400 text-black"
-                                                    : "bg-white"
-                                            } shadow-md space-y-2`}
-                                            style={{
-                                                wordWrap: "break-word",
-                                                overflowWrap: "break-word",
-                                            }}
-                                        >
-                                            <p className="text-sm break-words">
-                                                {chat.msg}
-                                            </p>
-                                            {/* Add timestamp below the message */}
-                                            <small className="text-gray-500 text-xs mt-2">
-                                                {new Date(
-                                                    chat.created_at
-                                                ).toLocaleString()}
-                                            </small>
-                                            {chat.sender === "me" &&
-                                                chat.status ===
-                                                    "Failed to send" && (
-                                                    <button
-                                                        className="text-blue-500 text-xs flex items-center space-x-1"
-                                                        onClick={() =>
-                                                            handleRetryMessage(
-                                                                index
-                                                            )
-                                                        }
-                                                    >
-                                                        <AiOutlineReload className="w-4 h-4" />{" "}
-                                                        {/* Retry icon */}
-                                                        <span>Resend</span>
-                                                    </button>
-                                                )}
-                                        </div>
+                                        <p className="text-sm break-words">
+                                            {chat.msg}
+                                        </p>
+                                        <small className="text-gray-500 text-xs mt-2">
+                                            {new Date(
+                                                chat.created_at
+                                            ).toLocaleString()}
+                                        </small>
+                                        {chat.sender === "me" &&
+                                            chat.status ===
+                                                "Failed to send" && (
+                                                <button
+                                                    className="text-blue-500 text-xs flex items-center space-x-1"
+                                                    onClick={() =>
+                                                        handleRetryMessage(
+                                                            index
+                                                        )
+                                                    }
+                                                >
+                                                    <AiOutlineReload className="w-4 h-4" />
+                                                    <span>Resend</span>
+                                                </button>
+                                            )}
                                     </div>
                                 </div>
                             ))}
