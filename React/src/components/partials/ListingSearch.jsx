@@ -88,6 +88,25 @@ const Search = () => {
         setLocationValue(event.target.value);
     };
 
+
+   document.addEventListener("click", (event) => {
+       const dropdown = document.getElementById("result_list");
+       const searchInput = locationInputRef.current; // Adjust based on your actual search input reference
+
+       // Check if the clicked element is outside the dropdown or search input
+       if (
+           dropdown &&
+           searchInput &&
+           !dropdown.contains(event.target) &&
+           !searchInput.contains(event.target)
+       ) {
+           dropdown.style.display = "none";
+       }
+   });
+     
+
+
+
     const getPlaces = (e) => {
         e.preventDefault();
         $("#result_list").html("");

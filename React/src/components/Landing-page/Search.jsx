@@ -25,7 +25,7 @@ const Search = () => {
     const nameRef = useRef(null);
     const latRef = useRef(null);
     const lngRef = useRef(null);
-const suggestionsRef = useRef(null);
+    const suggestionsRef = useRef(null);
 
     const navigate = useNavigate();
     const [results, setResults] = useState("");
@@ -87,18 +87,23 @@ const suggestionsRef = useRef(null);
     const handleLocationChange = (event) => {
         setLocationValue(event.target.value);
     };
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (suggestionsRef.current && !suggestionsRef.current.contains(event.target)) {
-                setIsDropdownVisible(false); // Close the dropdown if click is outside
-            }
-        };
 
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+    // Add an event listener to close the dropdown when clicking outside
+    document.addEventListener("click", (event) => {
+        const dropdown = document.getElementById("result_list");
+        const searchInput = locationInputRef.current; // Adjust based on your actual search input reference
+
+        // Check if the clicked element is outside the dropdown or search input
+        if (
+            dropdown &&
+            searchInput &&
+            !dropdown.contains(event.target) &&
+            !searchInput.contains(event.target)
+        ) {
+            dropdown.style.display = "none";
+        }
+    });
+
     const getPlaces = (e) => {
         e.preventDefault();
         $("#result_list").html("");
@@ -180,6 +185,7 @@ const suggestionsRef = useRef(null);
             },
         });
     };
+
     const address = (place, lat2, lng2) => {
         document.getElementById("searchbox").value = place;
         document.getElementById("result_list").style.display = "none";
@@ -299,22 +305,25 @@ const suggestionsRef = useRef(null);
 
                         {/* Suggestions Dropdown */}
                         <div ref={suggestionsRef} id="result_list">
-    {suggestions.length > 0 && (
-        <ul className="absolute z-10 bg-white rounded-lg w-full mt-1 max-h-40 overflow-y-auto">
-            {suggestions.map((suggestion, index) => (
-                <li
-                    key={index}
-                    onClick={() => handleSuggestionClick(suggestion)}
-                    className="px-4 py-2 cursor-pointer hover:bg-gray-100 flex items-center"
-                >
-                    <FaMapMarkerAlt className="mr-2 text-gray-500" />
-                    {suggestion}
-                </li>
-            ))}
-        </ul>
-    )}
-</div>
-
+                            {suggestions.length > 0 && (
+                                <ul className="absolute z-10 bg-white rounded-lg w-full mt-1 max-h-40 overflow-y-auto">
+                                    {suggestions.map((suggestion, index) => (
+                                        <li
+                                            key={index}
+                                            onClick={() =>
+                                                handleSuggestionClick(
+                                                    suggestion
+                                                )
+                                            }
+                                            className="px-4 py-2 cursor-pointer hover:bg-gray-100 flex items-center"
+                                        >
+                                            <FaMapMarkerAlt className="mr-2 text-gray-500" />
+                                            {suggestion}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
                     </div>
 
                     {/* Separator Line (hidden on small screens) */}

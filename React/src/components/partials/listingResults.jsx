@@ -127,10 +127,16 @@ const ListingResults = () => {
 
                     // Calculate maximum turnover and investment values
                     const maxTurnover = Math.max(
-                        ...data.data.map(
-                            (item) => parseFloat(item.y_turnover) || 0
-                        )
+                        ...data.data.map((item) => {
+                            // Extract the upper limit from the range
+                            const range = item.y_turnover.split("-");
+                            const upperLimit = range[1]
+                                ? range[1].replace(/,/g, "")
+                                : "0"; // Remove commas and handle missing range
+                            return parseFloat(upperLimit) || 0;
+                        })
                     );
+
                     setMaxRange(maxTurnover); // Update max range for turnover
 
                     const maxInvestment = Math.max(

@@ -66,8 +66,11 @@ const Explore = () => {
                                 value2.count = value.total;
                         }
                         setcheckCat(true);
+                        
                     }
                     console.log(categories);
+                     setCurrentCount(data.listing_count);
+                
                 })
                 .catch((err) => {
                     console.log(err);
@@ -75,26 +78,7 @@ const Explore = () => {
         };
         getCards();
     }, []);
-    useEffect(() => {
-        if (exp !== null) {
-            let start = currentCount;
-            const duration = 1000; // Total animation duration in milliseconds
-            const increment = Math.ceil(exp / (duration / 16)); // Increment per frame (~60fps)
-
-            const animateCount = () => {
-                start += increment;
-                if (start >= exp) {
-                    setCurrentCount(exp);
-                } else {
-                    setCurrentCount(start);
-                    requestAnimationFrame(animateCount);
-                }
-            };
-
-            animateCount();
-        }
-    }, [exp]); // This effect runs every time the `exp` value changes.
-
+   
     const onSearch = (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -252,7 +236,7 @@ const Explore = () => {
                 <span>
                     {isLoading
                         ? "Redirecting..."
-                        : `Explore ${currentCount}+ Businesses`}
+                        : `Explore ${currentCount - 1}+ Businesses`}
                 </span>
             </button>
         </div>

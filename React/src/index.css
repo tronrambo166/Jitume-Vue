@@ -527,7 +527,7 @@ select::-ms-expand {
 .address:hover {
     background-color: #f1f1f1;
 }
-
+/*  */
 #result_list2 {
     position: absolute; /* Position it below the input */
     top: 100%; /* Right below the input field */

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FiUpload } from "react-icons/fi";
 import axiosClient from "../../../axiosClient";
 import { AiOutlineLoading3Quarters } from "react-icons/ai"; // Import spinner icon
@@ -33,7 +33,7 @@ const AddBusiness = () => {
     const [isFormValid, setIsFormValid] = useState(false);
     const [showAmountInput, setShowAmountInput] = useState(false);
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
-
+    const locationInputRef = useRef(null);
     useEffect(() => {
         const allRequiredFilled = [
             formData.title,
@@ -170,6 +170,21 @@ const AddBusiness = () => {
             setLoading(false); // Stop loading after request completes
         }
     };
+
+    // Add an event listener to close the dropdown when clicking outside
+    document.addEventListener("click", (event) => {
+        const dropdown = document.getElementById("result_list");
+        const searchInput = document.querySelector('input[name="location"]'); // Adjust based on your actual input field selector
+
+        if (
+            dropdown &&
+            searchInput &&
+            !dropdown.contains(event.target) &&
+            !searchInput.contains(event.target)
+        ) {
+            dropdown.style.display = "none"; // Hide the dropdown when clicking outside
+        }
+    });
 
     const getPlaces = (e) => {
         e.preventDefault();
@@ -386,6 +401,7 @@ const AddBusiness = () => {
                                 id="searchbox"
                                 type="text"
                                 name="location"
+                                ref={locationInputRef}
                                 onChange={handleInputChange}
                                 required
                                 className="border border-gray-300 rounded px-3 py-2 w-full"

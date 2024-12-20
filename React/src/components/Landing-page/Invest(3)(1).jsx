@@ -10,6 +10,7 @@ const Invest = () => {
     const scrollRef = useRef(null);
     const [canScrollBack, setCanScrollBack] = useState(false);
     const [canScrollForward, setCanScrollForward] = useState(false);
+ const [currentCount, setCurrentCount] = useState(0);
 
     useEffect(() => {
         const getCards = () => {
@@ -19,6 +20,7 @@ const Invest = () => {
                 .then(({ data }) => {
                     setLoading(false);
                     setCards(data.data);
+                    setCurrentCount(data.data.length - 1);
                     checkScrollConditions(); // Check scroll on initial load
                     console.log(data);
                 })
@@ -73,13 +75,14 @@ const Invest = () => {
         <>
             <div className="w-full px-4 sm:px-6 lg:px-8 py-8 mt-10 flex flex-col">
                 <div className="flex justify-start">
-                    <span className="text-black bg-yellow-400 px-2 py-1 rounded-full text-sm max-w-xs text-center">
-                        ∙ More than 50+
+                    <span className=" bg-yellow-400 px-4 py-2 rounded-full text-lg font-medium shadow-md max-w-xs text-center">
+                        ∙ More Than {currentCount}+
                     </span>
                 </div>
+
                 <div className="flex justify-between items-center my-4">
                     <h2 className="text-[28px] sm:text-[44px] font-bold text-slate-700 leading-snug sm:leading-tight">
-                        Investing In Promising
+                        Invest In Promising
                         <br /> New Ventures
                     </h2>
                 </div>
