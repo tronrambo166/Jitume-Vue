@@ -61,7 +61,10 @@ Route::group([ 'prefix' => 'admin'], function(){
   
     Route::get('/users', [adminController::class,'users'])->name('users');   
     Route::get('/listings-active', [adminController::class,'listings_active']);
-    Route::get('/services-active', [adminController::class,'services_active']);         
+    Route::get('/services-active', [adminController::class,'services_active']);
+    Route::get('/prospects', [adminController::class,'prospects']);
+    Route::get('/disputes', [adminController::class,'disputes']);
+             
     Route::post('/adminLogin', [UserController::class, 'adminLogin'])->name('adminLogin');
     Route::get('/reviews', function () {
     return view('admin.reviews');

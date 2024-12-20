@@ -188,6 +188,18 @@ const Footer = () => {
                                                         Help center{" "}
                                                     </Link>
                                                 </li>
+
+                                                <li>
+                                                    <Link
+                                                        target="_blank"
+                                                        to={"/Resolution-center"}
+                                                    >
+                                                        {" "}
+                                                        Dispute & Resolution Policy{" "}
+                                                    </Link>
+                                                </li>
+                                                
+
                                                 <li>
                                                     <Link
                                                         target="_blank"

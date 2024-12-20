@@ -18,6 +18,8 @@ use App\Models\AcceptedBids;
 use App\Models\serviceBook;
 use App\Models\Listing;
 use App\Models\Services;
+use App\Models\Prospects;
+use App\Models\Dispute;
 use Mail;
 use Session;
 use Exception;
@@ -198,10 +200,19 @@ public function listings_active()
         return view('admin.services_active',compact('businesses', 'count'));     
     }
 
+    public function prospects()
+    {       
+        $prospects = Prospects::latest()->get();
+        return view('admin.prospects',compact('prospects'));     
+    }
 
+    public function disputes()
+    {       
+        $disputes = Dispute::latest()->get();
+        return view('admin.disputes',compact('disputes'));     
+    }
 
-
-
+    
 
 
 //** Forgot

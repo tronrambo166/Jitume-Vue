@@ -8,7 +8,7 @@
 		<div class="container w-75 m-auto" style="box-shadow: 3px 3px 7px 7px grey; background: white;width:75%; margin:auto; text-align:center">
 		
 		 	<h2 style="color: green;font-family: sans-serif;">  
-		 	Email Verification </h2>
+		 	Subscribe </h2>
 			
 			<p style="text-align: center;">Thanks for subscribing to Jitume. You'll receive updates here.  </p>
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axiosClient from "../../axiosClient";
 import React from "react";
 import BusinessStepHero from "../Heros/BusinessStepHero";
@@ -137,6 +137,10 @@ const MilestonePage = () => {
                                 <th className="px-6 py-3 text-left text-xs font-semibold text-[#334155] uppercase tracking-wider">
                                     Status
                                 </th>
+
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-[#334155] uppercase tracking-wider">
+                                    Resolution
+                                </th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
@@ -167,11 +171,20 @@ const MilestonePage = () => {
                                                 milestone.status ===
                                                 "In Progress"
                                                     ? "bg-[#198754] text-white"
-                                                    : "bg-[#475569] text-white"
+                                                    : "bg-black text-white"
                                             }`}
                                         >
                                             {milestone.status}
                                         </span>
+                                    </td>
+
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <Link to={'/raise-dispute'}
+                                            className="bg-yellow-300 px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-md"
+                                        
+                                        >
+                                            Raise Dispute
+                                        </Link>
                                     </td>
                                 </tr>
                             ))}

@@ -16,6 +16,7 @@ use App\Models\AcceptedBids;
 use App\Models\Review;
 use App\Models\BusinessSubscriptions;
 use App\Models\Notifications;
+use App\Models\Dispute;
 
 use Stripe\StripeClient;
 use Response;
@@ -1450,6 +1451,38 @@ $myNotifications = Notifications::where('receiver_id',Auth::id())->update([
 return response()->json(['status' => 200]);
 }
 
+
+public function raiseDispute(Request $request)
+{
+        try {
+            $project = listing::where('id', $request->project_id)->first();
+            $disputant = User::where('id', Auth::id())->first();
+            $owner = User::where('id', $project->user_id)->first();
+
+            $dispute = Dispute::create([
+                'user_id' => Auth::id(),
+                'project_name' => $project->name,
+                'reason' => $request->reason,
+                'details' => $request->details,   
+            ]); 
+            //MAIL
+            $info=['business_name'=>$project->name,'p_id'=>base64_encode(base64_encode($project->id))];
+            $user['to'] = $disputant->email;
+             Mail::send('dispute_mail', $info, function($msg) use ($user){
+                 $msg->to($user['to']);
+                 $msg->subject('Dispute Raised');
+             });
+            //MAIL
+
+            return response()->json(['status' => 200, 
+              'message' => 'Dispute opened, we will get back to you after reviewing details!']);
+     
+       }
+        catch(\Exception $e){
+            return response()->json(['status' => 400, 'message' => $e->getMessage()]);
+       }  
+
+   }
 
 
 public function findNearestServices($latitude, $longitude, $radius = 100)

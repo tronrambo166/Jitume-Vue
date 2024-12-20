@@ -24,6 +24,14 @@
 							<li  class="{{ Request::is('admin/services-active') ? 'active' : '' }}"> 
 								<a href="services-active"><i style="font-size: 18px;" class="fa fa-cog fa-1x"></i> <span>Active Services</span></a>
 							</li>
+
+							<li  class="{{ Request::is('admin/prospects') ? 'active' : '' }}"> 
+								<a href="prospects"><i style="font-size: 18px;" class="fa fa-cog fa-1x"></i> <span>Prospects</span></a>
+							</li>
+
+							<li  class="{{ Request::is('admin/disputes') ? 'active' : '' }}"> 
+								<a href="disputes"><i style="font-size: 18px;" class="fa fa-cog fa-1x"></i> <span>Disputes</span></a>
+							</li>
 							
 							
 							<!-- <li  class="{{ Request::is('admin/songs') ? 'active' : '' }}"> 

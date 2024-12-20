@@ -13,6 +13,7 @@ use App\Models\businessDocs;
 use App\Models\User;
 use App\Models\Conversation;
 use App\Models\serviceBook;
+use App\Models\Prospects;
 use Session; 
 use Hash;
 use Auth;
@@ -910,6 +911,9 @@ return view('profile',compact('user'));
 public function JitumeSubscribeEmail($email){ 
     $user['to'] = $email;
     $info = [];
+    $prospect = Prospects::create([
+        'email' => $email
+    ]);
     Mail::send('subscribe_mail', $info, function($msg) use ($user){
         $msg->to($user['to']);
         $msg->subject('Subscribe to Jitume');

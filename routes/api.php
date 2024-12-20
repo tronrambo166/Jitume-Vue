@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('download_business/{id}', [PagesController::class, 'download_business'])->name('download_business');
     Route::get('download_statement/{id}', [PagesController::class, 'download_statement'])->name('download_statement'); 
     Route::get('searchResults/{ids}', [PagesController::class,'searchResults'])->name('searchResults');
+    
     // --- MIDDLEWARE 
     //Route::group(['middleware'=>['auth']], function(){ 
     // <--milestones-->
@@ -43,6 +44,8 @@ Route::middleware('auth:sanctum')->group(function() {
     
     Route::get('FindProjectManagers/{bid_id}', [BusinessController::class, 'FindProjectManagers'])->name('FindProjectManagers');
     Route::get('releaseEquipment/{b_owner_id}/{manager_id}', [BusinessController::class, 'releaseEquipment'])->name('releaseEquipment');
+    Route::post('raise-dispute', [BusinessController::class, 'raiseDispute']);
+    
     //});
 
     // PAYMENT  ROUTES
