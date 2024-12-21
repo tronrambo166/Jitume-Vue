@@ -7,10 +7,8 @@ import { ClipLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BackBtn from "./BackBtn";
-import PayStack from "./PayStack";
-import PaystackPop from '@paystack/inline-js'
 
-const PaymentForm = () => {
+const PayStack = () => {
     const [selectedPayment, setSelectedPayment] = useState("card");
     const [loading, setLoading] = useState(false); // Loader state
     // Function to show success toast
@@ -312,32 +310,11 @@ const PaymentForm = () => {
 
                 {/* Card Section left */}
                 <div className="">
-                    {/* <a
-                        href="/"
-                        className="text-black hover:text-green flex items-center"
-                    >
-                        <FaHome className="ml-1" /> Home
-                    </a> */}
-                    {/* 
-                    <div className="card-body mt-4">
-                        <div className="pb-3 pt-2 text-center">
-                            <h6 className="text-xl font-bold text-green-800">
-                                A Secure and Easy Checkout Experience
-                            </h6>
-                            <h5 className="text-lg font-bold">
-                                Pay with your Credit/Debit Card via Stripe
-                            </h5>
-                        </div> */}
-
-                    {/*  action="{{ route('stripe.post.coversation') }}"*/}
+                    
                     <form
                         role="form"
                         onSubmit={
-                            selectedPayment === "card"
-                                ? handleSubmit
-                                : selectedPayment === "bank"
-                                ? bankSubmit
-                                : paypalSubmit
+                                 PayStackSubmit
                         }
                         method="post"
                         class="class2  require-validation m-auto"
@@ -372,7 +349,7 @@ const PaymentForm = () => {
                                     </label>
 
                                     <div className="flex jakarta space-x-4">
-                                        {["card", "PayStack", "paypal"].map(
+                                        {["card"].map(
                                             (method) => (
                                                 <label
                                                     key={method}
@@ -419,7 +396,7 @@ const PaymentForm = () => {
                                         <div className="space-y-4">
                                             <div className="py-4">
                                                 <label className="block text-sm font-semibold mb-2">
-                                                    Card Number - via Stripe
+                                                    Card Number
                                                 </label>
                                                 <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
                                                     <input
@@ -473,109 +450,7 @@ const PaymentForm = () => {
                                         </div>
                                     )}
 
-                                    {/* Conditional Rendering for Bank Payment */}
-                                    {selectedPayment === "bank" && (
-                                        <div className="space-y-4">
-                                            <div className="py-4">
-                                                <label className="block text-sm font-semibold mb-2">
-                                                    Bank Name
-                                                </label>
-                                                <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
-                                                    <input
-                                                        id="bank_name"
-                                                        autocomplete="on"
-                                                        size="20"
-                                                        className="bank-name flex-1 py-2 px-6 border-0 outline-none"
-                                                        type="text"
-                                                        placeholder="Enter Your Bank Name"
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            <div className="py-4">
-                                                <label className="block text-sm font-semibold mb-2">
-                                                    Bank Account Number
-                                                </label>
-                                                <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
-                                                    <input
-                                                        id="bank_acc"
-                                                        autocomplete="on"
-                                                        size="20"
-                                                        className="bank-account-number flex-1 py-2 px-6 border-0 outline-none"
-                                                        type="text"
-                                                        placeholder="Enter Your Bank Account Number"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* Conditional Rendering for Paypal Payment */}
-                                    {selectedPayment === "paypal" && (
-                                        <div className="space-y-4">
-                                        </div>
-                                    )}
-
-                                    
-                                        {selectedPayment === "PayStack" && (
-                                        <div className="space-y-4">
-                                            <div className="py-4">
-                                                <label className="block text-sm font-semibold mb-2">
-                                                    PayStack Card Number
-                                                </label>
-                                                <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
-                                                    <input
-                                                        autocomplete="on"
-                                                        size="20"
-                                                        className="card-number flex-1 py-2 px-6 border-0 outline-none"
-                                                        type="text"
-                                                        placeholder="1234 5678 9012 3456"
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            <div className="flex gap-[10px] w-full max-w-[480px]">
-                                                <div className="w-full">
-                                                    <label className="block text-sm font-semibold mb-2">
-                                                        Exp. Month
-                                                    </label>
-                                                    <input
-                                                        className="card-expiry-month w-full p-2 border border-gray-300 rounded"
-                                                        type="text"
-                                                        placeholder="MM"
-                                                        size="2"
-                                                    />
-                                                </div>
-
-                                                <div className="w-full">
-                                                    <label className="block text-sm font-semibold mb-2">
-                                                        Exp. Year
-                                                    </label>
-                                                    <input
-                                                        className="card-expiry-year w-full p-2 border border-gray-300 rounded"
-                                                        type="text"
-                                                        placeholder="YYYY"
-                                                        size="4"
-                                                    />
-                                                </div>
-
-                                                <div className="w-full">
-                                                    <label className="block text-sm font-semibold mb-2">
-                                                        CVC
-                                                    </label>
-                                                    <input
-                                                        autoComplete="off"
-                                                        placeholder="ex. 311"
-                                                        size="4"
-                                                        className="card-cvc w-full p-2 border border-gray-300 rounded"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-
-                                  
+           
 
                                     <div className="flex items-center jakarta py-6 text-[#ACACAC]">
                                         <input
@@ -602,13 +477,7 @@ const PaymentForm = () => {
                                     </div>
 
                                     <div className="mt-6 w-full sm:w-[480px] text-center">
-                                    {selectedPayment === "paypal"? (
-                                        <button type=""
-                                        className="w-full py-2 my-4 text-white btn-primary rounded focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50" >
-                                        <a href="http://127.0.0.1:8000/paypal-payment">Continue to PayPal</a>
-                                        </button>
-
-                                        ):(
+                                    
                                         <button
                                             type="submit"
                                             className="w-full py-2 my-4 text-white btn-primary rounded focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50"
@@ -623,7 +492,7 @@ const PaymentForm = () => {
                                                 "Submit Payment"
                                             )}
                                         </button>
-                                    )}
+                                  
                                         
                                     </div>
 
@@ -945,4 +814,4 @@ const PaymentForm = () => {
     );
 };
 
-export default PaymentForm;
+export default PayStack;

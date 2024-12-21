@@ -244,7 +244,7 @@ if($image) {
           } }
 
 
-$video=$request->file('video');
+ $video=$request->file('video');
  if($video && $video !='') {     
           $ext=strtolower($video->getClientOriginalExtension());
           if($ext!='mpg' && $ext!= 'mpeg' && $ext!='webm' && $ext!= 'mp4' 
@@ -683,6 +683,16 @@ return response()->json([ 'data' => $milestones, 'progress' => 0, 'length' => 0 
 
 }
 
+ public function checkDispute($listing_id){
+    $accepted = AcceptedBids::where('business_id',$listing_id)
+    ->where('investor_id', Auth::id())->first();
+    if($accepted)
+      $toDispute = true;
+    else
+      $toDispute = false;
+    return response()->json([ 'status' => 200, 'dispute' => $toDispute]);
+
+ }
 
  public function download_milestone_doc($id, $mile_id){
     
@@ -1456,19 +1466,46 @@ public function raiseDispute(Request $request)
 {
         try {
             $mile = Milestones::where('id', $request->project_id)->first();
-            $project = listing::where('id', $$mile->listing_id)->first();
-            $disputant = User::where('id', Auth::id())->first();
+            $project = listing::where('id', $mile->listing_id)->first();
+            //$disputant = User::where('id', Auth::id())->first();
             $owner = User::where('id', $project->user_id)->first();
+
+            //FILE
+            $document=$request->file('document'); //return $document;
+            if($document) {        
+            $ext=strtolower($document->getClientOriginalExtension());
+            if($ext!='pdf' && $ext!= 'docx')
+            {
+              return response()->json([ 'status' => 400, 'message' => 'For document, Only pdf or docx are allowed!']);
+            } 
+
+            $uniqid=hexdec(uniqid());
+            $create_name=$uniqid.'.'.$ext;
+            if (!file_exists('files/disputes/'.$request->project_id)) 
+            mkdir('files/disputes/'.$request->project_id, 0777, true);
+
+            $loc='files/disputes/'.$request->project_id.'/';
+            //Move uploaded file
+            $document->move($loc, $create_name);
+            $final_document=$loc.$create_name;
+            }
+            else $final_document='';
+            //FILE
 
             $dispute = Dispute::create([
                 'user_id' => Auth::id(),
+                'mile_id' => $request->project_id,
+                'mile_name' => $mile->title,
                 'project_name' => $project->name,
                 'reason' => $request->reason,
-                'details' => $request->details,   
+                'details' => $request->details,
+                'document' => $final_document,   
             ]); 
+
             //MAIL
-            $info=['business_name'=>$project->name,'p_id'=>base64_encode(base64_encode($project->id))];
-            $user['to'] = $disputant->email;
+            $info=['business_name'=>$project->name,
+            'mile_name'=>$mile->title, 'p_id'=>base64_encode(base64_encode($project->id))];
+            $user['to'] = $owner->email;
              Mail::send('dispute_mail', $info, function($msg) use ($user){
                  $msg->to($user['to']);
                  $msg->subject('Dispute Raised');

@@ -10,6 +10,7 @@ const MilestonePage = () => {
     const listing_id = atob(atob(id));
     const [miles, setMiles] = useState([]);
     const [hasMile, setHasmile] = useState(false);
+    const [dispute, setDispute] = useState(false);
 
     useEffect(() => {
         const getMilestones = () => {
@@ -35,7 +36,22 @@ const MilestonePage = () => {
                     setHasmile(true);
                 });
         };
+
+        const checkDispute = () => {
+            axiosClient
+                .get("/checkDispute/" + listing_id)
+                .then(({ data }) => {
+                    console.log(data)
+                    if (data.status == 200)
+                        setDispute(data.dispute);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+
         getMilestones();
+        checkDispute();
     }, [listing_id]);
 
     const handleStatusChange = (milestoneName, status) => {
@@ -49,6 +65,7 @@ const MilestonePage = () => {
             method: "GET",
             responseType: "blob",
         }).then((data) => {
+            console.log(data);
             if (data.data.size === 3) {
                 alert(
                     "The business has no such document or the file not found!"
@@ -157,7 +174,7 @@ const MilestonePage = () => {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm hidden sm:table-cell">
                                         <button
-                                            onClick={() =>
+                                            onClick={
                                                 download_doc(milestone.id)
                                             }
                                             className="text-[#334155] hover:underline transition duration-200"
@@ -178,14 +195,17 @@ const MilestonePage = () => {
                                         </span>
                                     </td>
 
-                                    <td className="px-6 py-4 whitespace-nowrap">
+                                    {dispute &&
+                                        <td className="px-6 py-4 whitespace-nowrap">
                                         <Link to={'/raise-dispute/'+btoa(btoa(milestone.id))+'/'+milestone.title}
                                             className="bg-yellow-300 px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-md"
                                         
                                         >
-                                            Raise Dispute
+                                             Raise Dispute
                                         </Link>
                                     </td>
+                                    }
+
                                 </tr>
                             ))}
                         </tbody>

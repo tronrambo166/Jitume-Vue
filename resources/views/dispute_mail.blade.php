@@ -9,7 +9,7 @@
         <div class="container w-75 m-auto" style="box-shadow: 3px 3px 7px 7px grey; background: white;width:75%; margin:auto; text-align:center">
 
             <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Dispute Raised</h2>
-            <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">Hi,<br>A dispute to your business {{$business_name}} has been Opened by John Doe.</p>
+            <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">Hi,<br>A dispute to your business {{$business_name}}, milestone ({{$mile_name}}) has been Opened by John Doe.</p>
             <div class="button-container" style="display: flex; margin-top: 20px;"> <!-- https://test.jitume.com -->
              	<!-- <a target="_blank" href="<?php echo config('app.app_url');?>service-milestones/{{$p_id}}" class="button button-primary" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Pay Here</a> -->
             </div>

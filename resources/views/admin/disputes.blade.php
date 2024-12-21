@@ -53,7 +53,7 @@
 
 													<td>
 													
-														{{$l->reason}}
+														{{$l->mile_name}}
 													
 													</td>
 													

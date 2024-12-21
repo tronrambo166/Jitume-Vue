@@ -247,6 +247,9 @@ table.table td h2 span {
 .table tbody tr {
 	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
+.table tbody tr td p, .table tbody tr td a{
+	font-size: 12px;
+}
 .table tbody tr:last-child {
 	border-color: transparent;
 }

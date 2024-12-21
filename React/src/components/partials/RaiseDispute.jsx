@@ -34,6 +34,7 @@ const RaiseDispute = () => {
     const [project, setProject] = useState("");
     const [reason, setReason] = useState("");
     const [details, setDetails] = useState("");
+    const [docfile, setDocfile] = useState("");
 
     const handleDropdownToggle = (e) => {
         setReason(e.target.value); // Close if already open
@@ -44,6 +45,11 @@ const RaiseDispute = () => {
     const handleDetails = (e) => {
         setDetails(e.target.value); // Close if already open
     };
+    const handleFileChange = (e) => {
+        if (e.target.files.length > 0) {
+            setDocfile(e.target.files[0]);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -52,12 +58,9 @@ const RaiseDispute = () => {
             project_id:parseInt(atob(atob(id))),
             reason:reason,
             details:details,
+            document:docfile,
         }
-        console.log(payload); return;
-        // if (email == "" || email == null) {
-        //     showAlert("error", "Please enter your email!");
-        //     return;
-        // }
+        console.log(payload); //return;
 
        const response = await axiosClient.post(
                 "raise-dispute", payload);
@@ -133,7 +136,7 @@ const RaiseDispute = () => {
                 <form onSubmit={handleSubmit} method="POST">
                     <div style={formGroupStyle}>
                         <label htmlFor="project-name" style={labelStyle}>
-                            Project or Milestone Name
+                            Project or Milestone Name*
                         </label>
                     <p
                         className="flex-1 border rounded-lg p-2 focus:outline-none"
@@ -143,7 +146,7 @@ const RaiseDispute = () => {
 
                     <div style={formGroupStyle}>
                         <label htmlFor="dispute-reason" style={labelStyle}>
-                            Reason for Dispute
+                            Reason for Dispute*
                         </label>
                         <select
                         onChange={handleDropdownToggle} id="dispute-reason" name="dispute-reason" style={inputStyle} required>
@@ -156,7 +159,7 @@ const RaiseDispute = () => {
                     </div>
                     <div style={formGroupStyle}>
                         <label htmlFor="details" style={labelStyle}>
-                            Details
+                            Details*
                         </label>
                         <textarea
                             id="details"
@@ -168,6 +171,20 @@ const RaiseDispute = () => {
                             required
                         ></textarea>
                     </div>
+
+                    <div style={formGroupStyle}>
+                        <label htmlFor="details" style={labelStyle}>
+                            Upload Necessary Document
+                        </label>
+                        <input
+                            id="document"
+                            name="document"
+                            style={textareaStyle}
+                            onChange={handleFileChange}
+                            type="file"
+                        />
+                    </div>
+
                     <div style={{ textAlign: "right" }}>
                         <button type="submit" style={buttonStyle}>
                             Submit Dispute

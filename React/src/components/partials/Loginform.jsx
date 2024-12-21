@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import {
     AiOutlineEye,
     AiOutlineEyeInvisible,
@@ -21,6 +22,9 @@ const LoginForm = () => {
     const passwordRef = useRef();
     const { setUser, setToken } = useStateContext();
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
+
+    const location = useLocation();
+    const isListing = location.pathname.startsWith("/listing/");
 
     // Set rememberMe state from localStorage when the component mounts
     useEffect(() => {
@@ -105,6 +109,11 @@ const LoginForm = () => {
                 showAlert("success", `Login successful! Welcome, ${userName}`);
                 setUser(data.user);
                 setToken(data.token);
+
+                // Listing Details page;
+                if(isListing)
+                    window.location.reload();
+
             } else {
                 setServerError(data.message || "Login failed.");
                 showAlert("error", data.message || "Login failed.");
