@@ -6,6 +6,8 @@ import "rc-slider/assets/index.css";
 import BackBtn from "./BackBtn";
 const RaiseDispute = () => {
 
+    const { id } = useParams();
+    const { name } = useParams();
     const [business, setBusiness] = useState([]);
     const [loading, setLoading] = useState(true);
     const [maxPrice, setMaxPrice] = useState(100);
@@ -26,7 +28,7 @@ const RaiseDispute = () => {
         };
 
     useEffect(() => {
-        getListings();
+        //getListings();
     }, []);
 
     const [project, setProject] = useState("");
@@ -47,7 +49,7 @@ const RaiseDispute = () => {
         e.preventDefault();
         //const project = $('#project-name').val();
         const payload = {
-            project_id:parseInt(project),
+            project_id:parseInt(atob(atob(id))),
             reason:reason,
             details:details,
         }
@@ -131,24 +133,14 @@ const RaiseDispute = () => {
                 <form onSubmit={handleSubmit} method="POST">
                     <div style={formGroupStyle}>
                         <label htmlFor="project-name" style={labelStyle}>
-                            Project or Business Name
+                            Project or Milestone Name
                         </label>
-                        <select
-                    name="business_id"
-                    className="flex-1 border rounded-lg p-2 focus:outline-none"
-                    onChange={handleNameChange}
-                    required
-                >
-                    <option value="" hidden>
-                        Select Business
-                    </option>
-                    {business.map((business) => (
-                        <option key={business.id} value={business.id}>
-                            {business.name}
-                        </option>
-                    ))}
-                </select>
+                    <p
+                        className="flex-1 border rounded-lg p-2 focus:outline-none"
+                        readonly 
+                    >{name}</p>
                     </div>
+
                     <div style={formGroupStyle}>
                         <label htmlFor="dispute-reason" style={labelStyle}>
                             Reason for Dispute

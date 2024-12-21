@@ -30,6 +30,7 @@
 												<tr>											
 													<!-- <th>Image</th> -->
 													<th>Project Name</th>
+													<th>Milestone</th>
 													<th>Reason</th>
 													<th>Details</th>
 													<th>Action</th>
@@ -50,6 +51,12 @@
 													</p>
 													</td>
 
+													<td>
+													
+														{{$l->reason}}
+													
+													</td>
+													
 													<td>
 													
 														{{$l->reason}}

@@ -80,7 +80,7 @@ const router = createBrowserRouter([
             },
             { path: "/business-milestones/:id", element: <MilestonesPage /> },
             { path: "/service-milestones/:id", element: <MilestonesPageS /> },
-            { path: "/raise-dispute", element: <RaiseDispute /> },
+            { path: "/raise-dispute/:id/:name", element: <RaiseDispute /> },
             {
                 path: "/checkout/:amount/:listing_id/:percent/:purpose",
                 element: <PaymentForm />,

@@ -179,7 +179,7 @@ const MilestonePage = () => {
                                     </td>
 
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <Link to={'/raise-dispute'}
+                                        <Link to={'/raise-dispute/'+btoa(btoa(milestone.id))+'/'+milestone.title}
                                             className="bg-yellow-300 px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-md"
                                         
                                         >

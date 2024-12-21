@@ -1455,7 +1455,8 @@ return response()->json(['status' => 200]);
 public function raiseDispute(Request $request)
 {
         try {
-            $project = listing::where('id', $request->project_id)->first();
+            $mile = Milestones::where('id', $request->project_id)->first();
+            $project = listing::where('id', $$mile->listing_id)->first();
             $disputant = User::where('id', Auth::id())->first();
             $owner = User::where('id', $project->user_id)->first();
 
