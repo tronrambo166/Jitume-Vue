@@ -60,9 +60,14 @@ const Homepage = () => {
         if(token){
             var link=document.createElement("a");
             link.id = 'login'; //give it an ID!
-            document.getElementById('login').click();
-            
+            document.getElementById('login').click();    
         }
+        
+        //PayStack Callback
+            const PayStackCallback = (e) => {
+            if (e) e.preventDefault();
+            //...
+            }
         
           
 

@@ -804,7 +804,7 @@ public function bidCommits(Request $request){
     $Business = listing::where('id',$business_id)->first();
     $owner = User::where('id', $Business->user_id)->first();
 
-    $business_id = $request->listing;
+    //$business_id = $request->listing;
     $percent = $request->percent;
 
      try{

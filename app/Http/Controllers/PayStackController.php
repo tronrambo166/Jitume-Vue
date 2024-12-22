@@ -35,17 +35,27 @@ class PayStackController extends Controller
         //$this->Bearer = $this->secret;
     }
 
-    public function initialize()
-    { 
+    public function initialize(Request $request)
+    {   
+        $investor_id = Auth::id();
+        $business_id = $request->listing;
+        $Business = listing::where('id',$business_id)->first();
+        $owner = User::where('id', $Business->user_id)->first();
+        $amount= round($request->amount,2); 
+        $amountReal= round($request->amountOriginal,2);
+
+        $JitumeAmount = round( ($amount - $amountReal), 2);
 
         try {
-          $amount = 100*100; //$.8
-          $subaccount = 'ACCT_n9mpmg5jdy7nit2';
+          $amount = round( (($amount)*128.5*100), 2); //$ to KES
+          $subaccount = 'ACCT_n9mpmg5jdy7nit2';//$owner->subaccount_id;
           $url = "https://api.paystack.co/transaction/initialize";
           $fields = [
             'email' => "customer@email.com",
             'amount' => $amount,
-            "subaccount" => $subaccount
+            'subaccount' => $subaccount,
+            'transaction_charge' => $JitumeAmount,
+            //'callback_url' => 'http://localhost:81/' 
           ];
           $fields_string = http_build_query($fields);
           //open connection
@@ -62,17 +72,13 @@ class PayStackController extends Controller
           curl_setopt($ch,CURLOPT_RETURNTRANSFER, true); 
           //execute post
           $result = curl_exec($ch);
-          
-          //Verify
           $resultArray = json_decode($result, true);
-          //echo '<pre>'; print_r($resultArray); echo '<pre>';
           $ref = $resultArray['data']['reference'];
-          $validAmount = $this->verify($ref);
-          //Verify
+          //$validAmount = $this->verify($ref);
           
-          if($validAmount && $validAmount == $amount)
+          
           return response($result);
-          else response(['Error: Verification failed!'],400);
+          //else response(['Error: Verification failed!'],400);
           //echo '<pre>'; print_r($result); echo '<pre>';
 
         } catch (\Exception $e) {
@@ -107,7 +113,8 @@ class PayStackController extends Controller
           if ($err)
             { return false;} 
           else 
-            {return $response['data']['amount'];}
+            {return $response;}
+            //{return $response['data']['amount'];}
           
           //echo '<pre>'; print_r($result); echo '<pre>';
         } catch (\Exception $e) {

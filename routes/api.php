@@ -56,8 +56,9 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('/stripe.post.coversation', [checkoutController::class, 'stripeConversation'])->name('stripe.post.coversation');
 
     // PayStack  ROUTES
-    Route::get('/initialize', [PayStackController::class, 'initialize']);
+    Route::post('/initialize', [PayStackController::class, 'initialize']);
     Route::get('/create-subaccount', [PayStackController::class, 'create_subaccount']);
+    Route::get('/verify', [PayStackController::class, 'verify']);
 
     //Subscribe***
     Route::get('isSubscribed/{id}', [BusinessController::class, 'isSubscribed'])->name('isSubscribed');
