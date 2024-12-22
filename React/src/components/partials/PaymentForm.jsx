@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { FaCreditCard, FaHome } from "react-icons/fa";
@@ -7,7 +7,6 @@ import { ClipLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BackBtn from "./BackBtn";
-import PayStack from "./PayStack";
 import PaystackPop from '@paystack/inline-js'
 
 const PaymentForm = () => {
@@ -217,6 +216,25 @@ const PaymentForm = () => {
 
 
     //OTHER PAYMENTS
+    useEffect(() => {
+        PayStackInit();
+    }, []);
+
+    const PayStackInit = () => {
+        const popup = new PaystackPop()
+        axiosClient
+            .get("/initialize")
+            .then(( response ) => {
+                console.log(response);
+                if(response.data.status == true){
+                    popup.resumeTransaction(response.data.data.access_code)
+                }
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
     const bankSubmit = (event) => {
         event.preventDefault();
@@ -263,6 +281,7 @@ const PaymentForm = () => {
                     });
                 }, 1000); 
     }
+    //OTHER PAYMENTS
 
     const popupClose = () => {
         setShowModal(false);

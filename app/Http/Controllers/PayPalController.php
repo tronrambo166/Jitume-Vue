@@ -21,7 +21,7 @@ class PayPalController extends Controller
         $sum = 500;
         $apiContext = new ApiContext(
           new OAuthTokenCredential( 'ClientID',  'ClientSecret'  ) );
-// dd($apiContext);
+      // dd($apiContext);
       $payer = new Payer();
       $payer->setPaymentMethod("paypal");
       // dd($payer);

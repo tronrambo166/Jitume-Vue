@@ -10,6 +10,7 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\checkoutController;
 use App\Http\Controllers\bidsEmailController;
 use App\Http\Controllers\socialController;
+use App\Http\Controllers\PayStackController;
 //P R O T E C T E D    R O U T E S
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('logout',[AuthController::class,'logout']);
@@ -49,13 +50,14 @@ Route::middleware('auth:sanctum')->group(function() {
     //});
 
     // PAYMENT  ROUTES
-
-    
     Route::get('/stripe/{amount}/{business_id}', [checkoutController::class, 'goCheckout'])->name('stripe');
     Route::post('/stripe', [checkoutController::class, 'stripePost'])->name('stripe.post');
-    
     //Unlock small fee
     Route::post('/stripe.post.coversation', [checkoutController::class, 'stripeConversation'])->name('stripe.post.coversation');
+
+    // PayStack  ROUTES
+    Route::get('/initialize', [PayStackController::class, 'initialize']);
+    Route::get('/create-subaccount', [PayStackController::class, 'create_subaccount']);
 
     //Subscribe***
     Route::get('isSubscribed/{id}', [BusinessController::class, 'isSubscribed'])->name('isSubscribed');

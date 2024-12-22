@@ -5,6 +5,7 @@ use App\Http\Controllers\checkoutController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\PayPalController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PayStackController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,10 @@ Route::get('milestoneService/{milestone_id}/{amount}', [checkoutController::clas
 Route::get('paypal-payment',[PayPalController::class,"payment"])->name('paypal.payment');
 Route::get('paypal-success',[PayPalController::class,"success"])->name('paypal.success');
 Route::get('paypal-cancel',[PayPalController::class,'cancel'])->name('paypal.cancel');
+
+// PayStack  ROUTES
+    Route::get('/initialize', [PayStackController::class, 'initialize']);
+    Route::get('/create-subaccount', [PayStackController::class, 'create_subaccount']);
 
 
 //** __________________________________________ADMIN_____________________________________________ **//
