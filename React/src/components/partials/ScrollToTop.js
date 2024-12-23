@@ -10,7 +10,7 @@ const ScrollToTop = () => {
         scrollToTop();
     }, [location]);
 
-    return null; // This component doesn't need to render anything
+    return null; // This component doesn't need to render anything okay
 };
 
 export default ScrollToTop;
