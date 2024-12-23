@@ -932,7 +932,7 @@ foreach($messages as $book)
           })->where(function ($query) use ($book) {
     $query->where('from_id', '=', Auth::id())
           ->orWhere('from_id', '=', $book->from_id);
-    })->whereColumn('to_id', '!=' , 'from_id')->get();
+    })->whereColumn('to_id', '!=' , 'from_id')->latest()->get();
 
     foreach($single as $s){
       if($s->from_id == Auth::id())
