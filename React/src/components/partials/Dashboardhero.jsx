@@ -6,6 +6,7 @@ import {
     FaCopy,
     FaDollarSign,
     FaHome,
+    FaDoorOpen,
     FaBars,
 } from "react-icons/fa";
 import profile from "../../../images/profile.png";
@@ -125,12 +126,24 @@ const Dashboardhero = () => {
                         <FaHome />
                         <span>Home</span>
                     </Link>
-                    <div
-                        onClick={onLogout}
-                        className="flex items-center text-sm gap-2 cursor-pointer text-white"
-                    >
-                        <FaUser />
-                        <span>Sign Out</span>
+                    <div>
+                        {!token ? (
+                            <div
+                                onClick={() => navigate("/home")} // Adjust navigation logic as needed
+                                className="flex items-center text-sm gap-2 cursor-pointer text-white"
+                            >
+                                <span>Sign In</span>
+                                <FaDoorOpen /> {/* Use the door icon here */}
+                            </div>
+                        ) : (
+                            <div
+                                onClick={onLogout}
+                                className="flex items-center text-sm gap-2 cursor-pointer text-white"
+                            >
+                                <FaUser />
+                                <span>Sign Out</span>
+                            </div>
+                        )}
                     </div>
                     <Link
                         to="/dashboard/settings"
@@ -189,9 +202,15 @@ const Dashboardhero = () => {
                                 to="/dashboard/messages"
                                 className="flex items-center hover:text-green gap-1"
                             >
-                                <FaEnvelope />
-                                <span>Messages</span>
+                                <div className="relative flex items-center gap-1 hover:text-green">
+                                    <FaEnvelope />
+                                    <span>Messages</span>
+                                    <span className="absolute top-[-8px] right-[-10px] inline-flex items-center justify-center w-3 h-3 text-xs font-semibold text-green-200 bg-red-600 rounded-full pulse">
+                                        2
+                                    </span>
+                                </div>
                             </Link>
+
                             {id && (
                                 <Link
                                     to={`./account/${id}`}

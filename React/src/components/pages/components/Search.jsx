@@ -221,7 +221,7 @@ const Search = () => {
                 {/* Search Section */}
                 <div className="flex flex-col sm:flex-row items-center p-1 sm:p-1.5 w-full">
                     {/* Categories Dropdown */}
-                    <div className="relative flex items-center h-10 w-full sm:w-1/4 mb-1 sm:mb-0 bg-white rounded-l-lg">
+                    <div className="relative flex items-center h-10 w-full sm:w-1/4 mb-1 sm:mb-0 bg-white rounded-lg sm:rounded-lg  lg:rounded-r-none">
                         <div className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer">
                             <FaChevronDown
                                 className={`w-4 h-4 text-gray-500 text-sm transition-transform duration-200 ${
@@ -233,7 +233,7 @@ const Search = () => {
                             ref={categoryRef}
                             value={categoryValue}
                             onChange={handleCategoryChange}
-                            className="border-none bg-transparent focus:outline-none text-gray-500 text-xs sm:text-sm w-full px-4 py-2 pr-10 appearance-none cursor-pointer"
+                            className="border-none  bg-transparent focus:outline-none text-gray-500 text-xs sm:text-sm w-full px-4 py-2 pr-10 appearance-none cursor-pointer"
                         >
                             <option value="">All Categories</option>
                             <option value="Business Planning">
@@ -280,7 +280,7 @@ const Search = () => {
                     />
 
                     {/* Location Input with Suggestions */}
-                    <div className="relative w-full sm:w-1/4 h-10 mb-1 sm:mb-0">
+                    <div className="relative w-full sm:w-1/4 h-10  mb-1 sm:mb-0">
                         <FaMapMarkerAlt className="absolute left-1 top-1/2 transform -translate-y-1/2 text-gray-500 text-lg" />
                         <input
                             onKeyUp={getPlaces}
@@ -290,7 +290,7 @@ const Search = () => {
                             ref={locationInputRef}
                             // type="text"
                             // placeholder="Location"
-                            className="border-none h-full focus:outline-none w-full pl-8 text-xs sm:text-sm"
+                            className="border-none h-full focus:outline-none w-full pl-8 text-xs sm:text-sm rounded-lg sm:rounded-lg lg:rounded-none"
                         />
                         {/* Suggestions Dropdown */}
                         <div
@@ -329,14 +329,14 @@ const Search = () => {
                             onChange={handleNameChange}
                             type="text"
                             placeholder="What Are You Looking For?"
-                            className="border-none h-full focus:outline-none w-full pl-8 text-xs sm:text-sm"
+                            className="border-none  rounded-lg sm:rounded-lg lg:rounded-none h-full focus:outline-none w-full pl-8 text-xs sm:text-sm"
                         />
                     </div>
 
                     {/* Search Button */}
                     <button
                         onClick={Search}
-                        className="bg-[#FDE047] text-black rounded-r-lg h-10 py-1 px-3 sm:px-4 w-full sm:w-auto text-xs sm:text-sm"
+                        className="bg-[#FDE047] text-black rounded-lg sm:rounded-lg lg:rounded-r-lg lg:rounded-l-none h-10 py-1 px-3 sm:px-4 w-full sm:w-auto text-xs sm:text-sm"
                     >
                         Search
                     </button>

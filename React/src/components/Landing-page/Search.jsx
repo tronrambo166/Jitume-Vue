@@ -226,7 +226,7 @@ const Search = () => {
                                 ref={categoryRef}
                                 value={categoryValue} // controlled value
                                 onChange={handleCategoryChange} // handle change
-                                className="appearance-none rounded-l-xl h-full bg-white focus:outline-none text-gray-500 w-full pl-3 pr-10"
+                                className="appearance-none rounded-lg sm:rounded-lg  lg:rounded-r-none h-full bg-white focus:outline-none text-gray-500 w-full pl-3 pr-10"
                             >
                                 <option className="text-gray-400" value="">
                                     All Categories
@@ -290,7 +290,7 @@ const Search = () => {
                     {/* Separator Line (hidden on small screens) */}
 
                     {/* Location Input with Suggestions */}
-                    <div className="relative w-full sm:w-1/4 h-12 sm:h-full mb-2 sm:mb-0">
+                    <div className="relative w-full sm:w-1/4 h-12 sm:h-full mb-2 sm:mb-0 sm:rounded-lg lg:rounded-none">
                         <FaMapMarkerAlt className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" />
                         <input
                             onKeyUp={getPlaces}
@@ -298,7 +298,7 @@ const Search = () => {
                             type="text"
                             placeholder="Location"
                             ref={locationInputRef}
-                            className="  h-full focus:outline-none w-full pl-8"
+                            className="h-full focus:outline-none w-full pl-8 rounded-lg sm:rounded-lg lg:rounded-none"
                             // value={location}
                             // onChange={handleLocationChange}
                         />
@@ -329,12 +329,12 @@ const Search = () => {
                     {/* Separator Line (hidden on small screens) */}
 
                     {/* What are you looking for Input */}
-                    <div className="relative w-full sm:w-1/4 h-12 sm:h-full mb-2 sm:mb-0 flex-grow">
+                    <div className="relative w-full sm:w-1/4 h-12 sm:h-full mb-2 sm:mb-0 flex-grow sm:rounded-lg lg:rounded-none">
                         <FaSearch className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" />
                         <input
                             type="text"
                             placeholder="What Are You Looking For?"
-                            className=" h-full focus:outline-none w-full pl-8"
+                            className="h-full focus:outline-none w-full pl-8 rounded-lg sm:rounded-lg lg:rounded-none"
                             ref={nameRef}
                             value={nameValue} // controlled value
                             onChange={handleNameChange}
@@ -344,7 +344,7 @@ const Search = () => {
                     {/* Search Button */}
                     <button
                         onClick={onSearch}
-                        className="bg-[#FDE047] text-black rounded-r-lg h-12 sm:h-full py-2 px-9 w-full sm:w-auto text-lg"
+                        className="bg-[#FDE047] text-black rounded-lg sm:rounded-lg lg:rounded-r-lg lg:rounded-l-none h-12 sm:h-full py-2 px-9 w-full sm:w-auto text-lg"
                     >
                         Search
                     </button>

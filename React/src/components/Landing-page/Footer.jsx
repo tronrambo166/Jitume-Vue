@@ -42,6 +42,8 @@ const Footer = () => {
         if (data.status == 200) showAlert("success", data.message); 
         else showAlert("error", "Something went wrong!");
     };
+    const isServiceRoute = location.pathname.includes("service");
+    
 
     return (
         <footer className="relative bg-[#00290F] mt-[70px] w-full">
@@ -63,8 +65,11 @@ const Footer = () => {
                         />
                     </div>
                     <p className="text-center md:text-left text-[20px] md:text-[40px] text-white w-full md:w-[670px] leading-[28px] md:leading-[45px]">
-                        Explore endless investment opportunities.
+                        {isServiceRoute
+                            ? "Find Endless Business Services"
+                            : "Explore endless investment opportunities."}
                     </p>
+
                     {/* <button className="px-6 md:px-8 py-3 md:py-4 font-semibold rounded-lg text-[#FFFFFF] text-[10px] md:text-[12px] hover:bg-green-600 bg-[#22C55E]">
                       Find a business
                   </button> */}
@@ -192,13 +197,15 @@ const Footer = () => {
                                                 <li>
                                                     <Link
                                                         target="_blank"
-                                                        to={"/Resolution-center"}
+                                                        to={
+                                                            "/Resolution-center"
+                                                        }
                                                     >
                                                         {" "}
-                                                        Dispute & Resolution Policy{" "}
+                                                        Dispute & Resolution
+                                                        Policy{" "}
                                                     </Link>
                                                 </li>
-                                                
 
                                                 <li>
                                                     <Link

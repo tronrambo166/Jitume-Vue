@@ -62,7 +62,7 @@ const DiscoverLocal = () => {
 
     return (
         <div className="flex flex-col lg:py-20 lg:flex-row justify-between items-center lg:items-stretch px-6 lg:px-12 bg-blue-50 w-full">
-            <div className="w-full lg:w-1/2 flex justify-center mt-10 lg:justify-start mb-6 lg:mb-0">
+            <div className="w-full lg:w-1/2 flex justify-center lg:justify-start mb-6 lg:mb-2 mt-4 lg:mt-0">
                 <img
                     src={Theimg}
                     alt="service"

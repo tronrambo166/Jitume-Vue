@@ -567,3 +567,18 @@ select::-ms-expand {
     background-color: #f5f5f5; /* Scrollbar track color */
     border-radius: 4px; /* Rounded corners for track */
 }
+
+.pulse {
+    animation: pulse-animation 1s infinite;
+}
+
+@keyframes pulse-animation {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+}
