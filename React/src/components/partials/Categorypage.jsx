@@ -285,9 +285,9 @@ const CategoryPage = () => {
         }
     };
     return (
-        <div className="p-6 max-w-screen-xl mx-auto w-full sm:p-8 lg:p-10">
+        <div className="p-4 sm:p-6 lg:p-8 max-w-screen-lg xl:max-w-screen-xl mx-auto w-full">
             <BackBtn />
-            <h1 className="text-4xl md:text-6xl mb-6 md:mb-10 font-bold leading-tight text-center font-sharp-grotesk text-[#00290F]">
+            <h1 className="text-4xl  md:text-6xl mb-6 md:mb-10 font-bold leading-tight text-center font-sharp-grotesk text-[#00290F]">
                 What Are You Looking For?
             </h1>
             <div className="w-full mb-6 mx-auto max-w-[84vw]">

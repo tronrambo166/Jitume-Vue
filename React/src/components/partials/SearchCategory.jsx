@@ -86,12 +86,12 @@ const Search = () => {
                         <input
                             type="text"
                             placeholder="What Are You Looking For?"
-                            className=" h-full focus:outline-none w-full pl-8 text-lg py-2"
+                            className=" h-full focus:outline-none w-full pl-8 rounded-lg sm:rounded-lg lg:rounded-none text-lg py-2"
                         />
                     </div>
 
                     {/* Search Button */}
-                    <button className="bg-[#FDE047] text-black rounded-r-lg h-12 sm:h-full py-2 px-9 w-full sm:w-auto text-lg">
+                    <button className="bg-[#FDE047] text-black rounded-lg sm:rounded-lg lg:rounded-r-lg lg:rounded-l-none h-12 sm:h-fullh-12 sm:h-full py-2 px-9 w-full sm:w-auto text-lg">
                         Search in
                     </button>
                 </div>

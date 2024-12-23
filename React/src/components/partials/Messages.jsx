@@ -41,13 +41,22 @@ function Messages() {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
+    // Fetching messages from the server.
+    // Setting up a listener for resizing the browser window to determine if the view is mobile.
+
+    if (messages.length > 0 && messages[0].length > 0) {
+        const latestMsg = messages[0][0].msg; // Latest message
+        const latestSender = messages[0][0].sender; // Latest sender
+        console.log("Latest Message:", latestMsg);
+        console.log("Latest Sender:", latestSender);
+    }
+
     useEffect(() => {
         if (chatContainerRef.current) {
             chatContainerRef.current.scrollTop =
                 chatContainerRef.current.scrollHeight;
         }
     }, [chatHistory]);
-
 
     const handleSelectMessage = (msg) => {
         console.log("Selected message:", msg);

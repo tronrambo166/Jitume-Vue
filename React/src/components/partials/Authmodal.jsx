@@ -31,7 +31,7 @@ const Modal = ({ isOpen, onClose }) => {
             }}
         >
             <div
-                className={`bg-white rounded-xl m-3 p-4 sm:p-6 relative w-[95vw] max-w-[500px] sm:w-[85vw] sm:max-w-[450px] lg:w-[70vw] lg:max-w-[500px] mx-auto mt-3 sm:mt-20 overflow-hidden`} // Hide scrollbars on modal
+                className={`bg-white  rounded-xl m-3 p-4 sm:p-6 relative w-[95vw] max-w-[500px] sm:w-[85vw] sm:max-w-[450px] lg:w-[70vw] lg:max-w-[500px] mx-auto mt-3 sm:mt-20 overflow-hidden`} // Hide scrollbars on modal
                 style={{
                     maxHeight: isLogin ? "calc(100vh - 30px)" : "none", // Adjust separately for LoginForm and RegisterForm
                 }}

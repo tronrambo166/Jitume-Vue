@@ -329,7 +329,7 @@ const Search = () => {
                     {/* Separator Line (hidden on small screens) */}
 
                     {/* What are you looking for Input */}
-                    <div className="relative w-full sm:w-1/4 h-12 sm:h-full mb-2 sm:mb-0 flex-grow sm:rounded-lg lg:rounded-none">
+                    <div className="relative w-full sm:w-1/4 h-12 sm:h-full mb-2 sm:mb-0 flex-grow ">
                         <FaSearch className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" />
                         <input
                             type="text"
