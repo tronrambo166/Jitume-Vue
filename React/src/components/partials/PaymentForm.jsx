@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BackBtn from "./BackBtn";
 import PaystackPop from '@paystack/inline-js'
+import Paystack from '@paystack/inline-js'
 
 const PaymentForm = () => {
     const [selectedPayment, setSelectedPayment] = useState("card");
@@ -226,6 +227,9 @@ const PaymentForm = () => {
     const onSuccess = (transaction) =>{
      alert(`Succesful! Ref: ${transaction.reference}`);
     }
+    const onClose = () =>{
+     alert(`Closed`);
+    }
 
         const PayStackInit = () => {
         const payload = {
@@ -235,17 +239,28 @@ const PaymentForm = () => {
                 amountOriginal: amount_real,
             };
 
-        const popup = new PaystackPop()
+        const popup = new PaystackPop({
+            onSuccess:(transaction) =>{
+             alert(`Succesful! Ref: ${transaction.reference}`);
+            }
+        });
+        const paystack = new Paystack();
         setTimeout(() => {
             axiosClient
             .post("/initialize", payload)
             .then(( response ) => {
                 console.log(response);
                 if(response.data.status == true){
-                    popup.resumeTransaction(response.data.data.access_code);
-                    setPaystackRef(response.data.data.reference);
-                    console.log(response.data.data.reference)
-                }
+                    var accessCode = response.data.data.access_code;
+                    popup.resumeTransaction(accessCode);
+
+                    console.log(popup);
+                    if(popup.isLoaded) alert('closed')
+                        //alert(popup.transactions[0].status)
+
+                    }
+                    //setPaystackRef(response.data.data.reference);
+                    //console.log(response.data.data.reference)
 
             })
             .catch((error) => {
