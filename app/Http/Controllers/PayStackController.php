@@ -43,11 +43,14 @@ class PayStackController extends Controller
         $owner = User::where('id', $Business->user_id)->first();
         $amount= round($request->amount,2); 
         $amountReal= round($request->amountOriginal,2);
-
         $JitumeAmount = round( ($amount - $amountReal), 2);
 
+        $amount = round( (($amount)*128.5*100), 2); //$ to KES
+        $JitumeAmount = round( (($JitumeAmount)*128.5*100), 2); //$ to KES
+        
+
         try {
-          $amount = round( (($amount)*128.5*100), 2); //$ to KES
+          
           $subaccount = 'ACCT_n9mpmg5jdy7nit2';//$owner->subaccount_id;
           $url = "https://api.paystack.co/transaction/initialize";
           $fields = [
@@ -86,10 +89,10 @@ class PayStackController extends Controller
         }
     }
 
-    public function verify($ref)
-    { 
-
+    public function verify($business_id,$percent,$amountKFront,$amountReal,$ref)
+    {   return response()->json(['data' =>$business_id.'/'.$percent.'/'.$amountKFront.'/'.$amountReal.'/'.$ref, 'status' => 400 ]);
         try {
+            //$ref = "T751929395745907";
             $curl = curl_init();
             curl_setopt_array($curl, array(
             CURLOPT_URL => "https://api.paystack.co/transaction/verify/".$ref,
@@ -110,13 +113,77 @@ class PayStackController extends Controller
           $err = curl_error($curl);
           curl_close($curl);
           
-          if ($err)
-            { return false;} 
-          else 
-            {return $response;}
-            //{return $response['data']['amount'];}
-          
-          //echo '<pre>'; print_r($result); echo '<pre>';
+        if($err) { 
+            return response()->json(['error' =>$err, 'status' => 400 ]);
+          } 
+        else {
+            $amountKEN = $response['data']['amount'];
+            $status = $response['data']['status'];
+            $subaccount=$response['data']['subaccount']['subaccount_code'];
+            if($status == 'success' && $amountKEN == 10000)
+            {               
+                //BACKEND UPADATE
+                $investor_id = Auth::id();
+                //$business_id = $request->listing;
+                $Business = listing::where('id',$business_id)->first();
+                $owner = User::where('id', $Business->user_id)->first();
+                //$percent = $request->percent;
+                    $type = 'Monetery';
+                    $bids = BusinessBids::create([
+                      'date' => date('Y-m-d'),
+                      'investor_id' => $investor_id,
+                      'business_id' => $business_id,
+                      'owner_id' => $Business->user_id,
+                      'type' => $type,
+                      'amount' => $amountReal,
+                      'representation' => $percent,
+                      'paystack_charge_id' => $ref
+                    ]);
+
+                // Milestone Fulfill check
+                    $total_bid_amount = 0;
+                    $mile1 = Milestones::where('listing_id',$business_id)
+                    ->where('status','In Progress')->first();
+                    $this_bids = BusinessBids::where('business_id',$business_id)->get();
+                    foreach($this_bids as $b)
+                    if($b)
+                    $total_bid_amount = $total_bid_amount+($b->amount);
+
+                    if($mile1)
+                    if($total_bid_amount >= $mile1->amount){
+                        $owner = User::where('id',$Business->user_id)->first();
+                        $info=[ 'business_name'=>$Business->name ];
+                        $user['to'] = $owner->email; //'tottenham266@gmail.com'; //
+                         Mail::send('bids.mile_fulfill', $info, function($msg) use ($user){
+                             $msg->to($user['to']);
+                             $msg->subject('Fulfills a milestone!');
+                         });
+                 }
+                 // Milestone Fulfill check
+
+                 //Notification
+                     $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+                     $addNoti = Notifications::create([
+                        'date' => $date,
+                        'receiver_id' => $Business->user_id,
+                        'customer_id' => $investor_id,
+                        'text' => 'You have a new bid from _name!',
+                        'link' => 'investment-bids',
+                        'type' => 'investor',
+
+                      ]);
+                     //Notification
+                    if($bids){
+                    return response()->json(['message' =>  'Stripe_pay','Bid placed! you will get a notification if your bid is accepted!', 'status' => 200]);
+                    //BACKEND UPDATE
+                    }
+                    else {
+                      return response()->json(['error' =>'Amount mismatch!', 'status' => 422 ]);
+                    }
+            
+          }
+        }      
+         // echo '<pre>'; print_r($response); echo '<pre>';
         } catch (\Exception $e) {
             return response()->json(['status' => 400, 'message' => $e->getMessage()]);
         }
@@ -154,6 +221,94 @@ class PayStackController extends Controller
            echo '<pre>'; print_r($result); echo '<pre>';
     }
 
+    public function transfer_funds(){
+
+        //Retrive Subaccount
+        $ref = 'ACCT_n9mpmg5jdy7nit2';
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.paystack.co/subaccount/".$ref,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+              "Authorization: Bearer ".$this->secret,
+              "Cache-Control: no-cache",
+            ),
+          ));
+          
+          $response = curl_exec($curl);
+          $err = curl_error($curl);
+
+          curl_close($curl);
+          
+          if ($err) {
+            echo "cURL Error #:" . $err;
+          } else {
+            $result = json_decode($response,true);
+            $bank = $result['data']['bank'];
+            $account_number = $result['data']['account_number'];
+            $name = $result['data']['business_name'];
+            $curr = $result['data']['currency'];
+              //echo '<pre>'; print_r($result); echo '<pre>';exit;
+          }
+        // Retrive Subaccount
+
+        //Generate Recipient
+          $url = "https://api.paystack.co/transferrecipient";
+          $fields = [
+            'type' => "nuban",
+            'name' => $name,
+            'account_number' => $account_number,
+            'bank_code' => '057',
+            'currency' => $curr
+          ];
+
+          $fields_string = http_build_query($fields);
+          //open connection
+          $ch = curl_init();
+          //set the url, number of POST vars, POST data
+          curl_setopt($ch,CURLOPT_URL, $url);
+          curl_setopt($ch,CURLOPT_POST, true);
+          curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+          curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Authorization: Bearer ".$this->secret,
+            "Cache-Control: no-cache",
+          ));
+          
+          //So that curl_exec returns the contents of the cURL; rather than echoing it
+          curl_setopt($ch,CURLOPT_RETURNTRANSFER, true); 
+          
+          //execute post
+          $result = curl_exec($ch);
+          $result = json_decode($result,true);
+          $recipient_code = $result['data']['recipient_code'];
+          return $recipient_code;
+          // echo '<pre>'; print_r($result); echo '<pre>';exit;
+          
+          //Generate Recipient
+
+          //TRANSFER
+          $url = "https://api.paystack.co/transfer";
+              $fields = [
+                "source" => "balance", "reason" => "Calm down", 
+                "amount" => 500, "recipient" => $recipient_code,
+            "reference" => "your-unique-reference",];
+              $fields_string = http_build_query($fields);$ch = curl_init();
+              curl_setopt($ch,CURLOPT_URL, $url);
+              curl_setopt($ch,CURLOPT_POST, true);
+              curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+              curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                "Authorization: Bearer sk_test_fb3bf64f0b4da439f52bf6b482fa7395a5b4511b",
+                "Cache-Control: no-cache",
+              ));
+              curl_setopt($ch,CURLOPT_RETURNTRANSFER, true); 
+              $result = curl_exec($ch);$result = json_decode($result,true);
+              echo '<pre>'; print_r($result); echo '<pre>';
+    }
 
 //Class Ends
 }

@@ -840,7 +840,7 @@ public function bidCommits(Request $request){
                  $msg->subject('Fulfills a milestone!');
              });
      }
-// Milestone Fulfill check
+     // Milestone Fulfill check
 
      //Notification
          $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));

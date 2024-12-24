@@ -42,9 +42,11 @@ Route::get('paypal-payment',[PayPalController::class,"payment"])->name('paypal.p
 Route::get('paypal-success',[PayPalController::class,"success"])->name('paypal.success');
 Route::get('paypal-cancel',[PayPalController::class,'cancel'])->name('paypal.cancel');
 
-// PayStack  ROUTES
+// PayStack  ROUTES for Test
     Route::get('/initialize', [PayStackController::class, 'initialize']);
     Route::get('/create-subaccount', [PayStackController::class, 'create_subaccount']);
+    Route::get('/verify', [PayStackController::class, 'verify']);
+    Route::get('/transfer', [PayStackController::class, 'transfer_funds']);
 
 
 //** __________________________________________ADMIN_____________________________________________ **//

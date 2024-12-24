@@ -58,7 +58,11 @@ public function bidsAccepted(Request $request)
          });
 
          //Refund
-         if($bid->type == 'Monetery')
+         if($bid->type == 'Monetery' && $bid->paystack_charge_id){
+            //Paystack Refund
+         }
+
+         if($bid->type == 'Monetery' && $bid->stripe_charge_id)
          $this->Client->refunds->create(['charge' => $bid->stripe_charge_id]);
          //Refund
 
@@ -106,9 +110,29 @@ public function bidsAccepted(Request $request)
          $list = listing::where('id',$bid->business_id)->first();
          $owner = User::where('id',$list->user_id)->first();
 
-         if($bid->type == 'Monetery')
-         {
+         //TRANSFERRING FUNDS
+         if($bid->type == 'Monetery' && $bid->paystack_charge_id)
+         {   
+              $url = "https://api.paystack.co/transfer";
+              $recipient_code = 
+              $fields = [
+                "source" => "balance", "reason" => "Calm down", 
+                "amount" => 500, "recipient" => "RCP_gx2wn530m0i3w3m"];
+              $fields_string = http_build_query($fields);$ch = curl_init();
+              curl_setopt($ch,CURLOPT_URL, $url);
+              curl_setopt($ch,CURLOPT_POST, true);
+              curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+              curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                "Authorization: Bearer sk_test_fb3bf64f0b4da439f52bf6b482fa7395a5b4511b",
+                "Cache-Control: no-cache",
+              ));
+              curl_setopt($ch,CURLOPT_RETURNTRANSFER, true); 
+              $result = curl_exec($ch);
+              //echo '<pre>'; print_r($result); echo '<pre>';
+         }
 
+         if($bid->type == 'Monetery' && $bid->stripe_charge_id)
+         {
                 //Split
                     $curr='USD'; //$request->currency; 
                     $tranfer = $this->Client->transfers->create ([ 
@@ -119,7 +143,8 @@ public function bidsAccepted(Request $request)
                             'destination' => $owner->connect_id
                     ]);
                 //Stripe
-        }
+         }
+         //TRANSFERRING FUNDS
 
         //Mail
         $info=[ 'business_name'=>$list->name, 'bid_id'=>$id, 'type' => $bid->type ];

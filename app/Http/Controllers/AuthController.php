@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use App\Models\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Mail;
@@ -14,6 +15,16 @@ class AuthController extends Controller
     public function checkAuth() {
          return response()->json([
             'user' => Auth::user()
+            //'auth' => Auth::check()
+        ]);
+    }
+
+    public function partiesInfo($listing_id) {
+         $listing = listing::where('id', $listing_id)->first();
+         $owner = User::where('id', $listing->user_id)->first();
+         return response()->json([
+            'user' => Auth::user(),
+            'owner' => $owner
             //'auth' => Auth::check()
         ]);
     }

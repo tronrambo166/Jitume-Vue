@@ -58,7 +58,7 @@ Route::middleware('auth:sanctum')->group(function() {
     // PayStack  ROUTES
     Route::post('/initialize', [PayStackController::class, 'initialize']);
     Route::get('/create-subaccount', [PayStackController::class, 'create_subaccount']);
-    Route::get('/verify', [PayStackController::class, 'verify']);
+    Route::get('/paystackVerify/{business_id}/{percent}/{amountKFront}/{amountReal}/{ref}', [PayStackController::class, 'verify']);
 
     //Subscribe***
     Route::get('isSubscribed/{id}', [BusinessController::class, 'isSubscribed'])->name('isSubscribed');
@@ -86,6 +86,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/connect/{id}', [checkoutController::class, 'connect'])->name('connect.stripe');
     Route::get('/saveStripe/{token}', [checkoutController::class, 'saveStripe'])->name('return.stripe');
     Route::get('/checkAuth', [AuthController::class,'checkAuth']);
+    Route::get('/partiesInfo/{listing_id}', [AuthController::class,'partiesInfo']);
 
 
     // B U S I N E S S    P R O T E C T E D

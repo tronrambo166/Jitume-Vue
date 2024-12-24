@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import BackBtn from "./BackBtn";
 import PaystackPop from '@paystack/inline-js'
 import Paystack from '@paystack/inline-js'
-import PaymentHero from "../Heros/PaymentHero";
+import PaymentHero from '../Heros/PaymentHero';
 
 const PaymentForm = () => {
     const [selectedPayment, setSelectedPayment] = useState("card");
@@ -221,54 +221,64 @@ const PaymentForm = () => {
 
 
     //OTHER PAYMENTS
+    const [user, setUser] = useState({});
+    const [owner, setOwner] = useState({});
     useEffect(() => {
-        //PayStackInit();
+        axiosClient.get("/partiesInfo/"+atob(listing_id))
+            .then(({ data }) => {
+                setUser(data.user);
+                setOwner(data.owner);
+                 //console.log(owner);
+
+            });
     }, []);
 
-    const onSuccess = (transaction) =>{
-     alert(`Succesful! Ref: ${transaction.reference}`);
-    }
-    const onClose = () =>{
-     alert(`Closed`);
-    }
 
-        const PayStackInit = () => {
-        const payload = {
-                listing: atob(listing_id),
-                percent: atob(percent),
-                amount: $("#amount").val(),
-                amountOriginal: amount_real,
-            };
+    const PayStackInit = () => {
+        //const popup = new PaystackPop();
+        const popup = new Paystack();
+        const usdToKen = 100*128.5;
 
-        const popup = new PaystackPop({
-            onSuccess:(transaction) =>{
-             alert(`Succesful! Ref: ${transaction.reference}`);
-            }
-        });
-        const paystack = new Paystack();
+        const business_id= atob(listing_id);
+        const share= atob(percent);
+        const amountKFront= (parseFloat(price)*usdToKen).toFixed();
+        const amountReal= amount_real;
+        const subaccount = owner.paystack_acc_id;//'ACCT_n9mpmg5jdy7nit2';
+        const JitumeAmount  = ((price - parseFloat(amount_real))*usdToKen).toFixed();
+        const purpose = purpos;
+
+
         setTimeout(() => {
-            axiosClient
-            .post("/initialize", payload)
-            .then(( response ) => {
-                console.log(response);
-                if(response.data.status == true){
-                    var accessCode = response.data.data.access_code;
-                    popup.resumeTransaction(accessCode);
-
-                    console.log(popup);
-                    if(popup.isLoaded) alert('closed')
-                        //alert(popup.transactions[0].status)
-
-                    }
-                    //setPaystackRef(response.data.data.reference);
-                    //console.log(response.data.data.reference)
-
+            popup.newTransaction({
+              key: 'pk_test_05479d57206db767b2cc76467cab1c7824237ffa',
+              email: user.email,
+              amount: amountKFront,
+              subaccount:subaccount,
+              transaction_charge:JitumeAmount,
+              onSuccess: (transaction) => {
+                console.log(transaction);
+                const ref = transaction.reference
+                
+                axiosClient
+                .get("/paystackVerify/"+business_id+"/"+share+"/"
+                    +amountKFront+"/"+amountReal+"/"+ref)
+                .then(( data ) => {
+                    console.log(data);
+                    //showSuccessToast("Bid placed, you will be notified if bid is accepted!");
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+              },
+              onCancel: () => {
+                console.log("onCancel");
+              },
+              onError: (error) => {
+                console.log("Error: ", error.message);
+              }
             })
-            .catch((error) => {
-                console.log(error);
-            });
             }, 500)
-        }
+    }
 
 
     const bankSubmit = (event) => {
@@ -323,9 +333,8 @@ const PaymentForm = () => {
     };
 
     return (
-
         <>
-        <PaymentHero/>
+            <PaymentHero />
             <BackBtn />
 
             <div className="flex pt-[40px] px-2  text-[#334155] flex-col items-center justify-center">
@@ -949,3 +958,41 @@ const PaymentForm = () => {
 };
 
 export default PaymentForm;
+
+// const PayStackInitOld = () => {
+//         const payload = {
+//                 listing: atob(listing_id),
+//                 percent: atob(percent),
+//                 amount: $("#amount").val(),
+//                 amountOriginal: amount_real,
+//             };
+
+//         const popup = new PaystackPop({
+//             onSuccess:(transaction) =>{
+//              alert(`Succesful! Ref: ${transaction.reference}`);
+//             }
+//         });
+//         const paystack = new Paystack();
+//         setTimeout(() => {
+//             axiosClient
+//             .post("/initialize", payload)
+//             .then(( response ) => {
+//                 console.log(response);
+//                 if(response.data.status == true){
+//                     var accessCode = response.data.data.access_code;
+//                     popup.resumeTransaction(accessCode);
+
+//                     console.log(popup);
+//                     if(popup.isLoaded) alert('closed')
+//                         //alert(popup.transactions[0].status)
+
+//                     }
+//                     //setPaystackRef(response.data.data.reference);
+//                     //console.log(response.data.data.reference)
+
+//             })
+//             .catch((error) => {
+//                 console.log(error);
+//             });
+//             }, 500)
+//         }
