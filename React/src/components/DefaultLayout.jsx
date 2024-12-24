@@ -91,9 +91,7 @@ export default function DefaultLayout() {
             /^\/investEquip\/[^/]+\/[^/]+\/[^/]+$/.test(location.pathname) ? (
                 /^\/checkout\/[^/]+\/[^/]+\/[^/]+\/[^/]+$/.test(
                     location.pathname
-                ) ? (
-                    <PaymentHero />
-                ) : null
+                ) 
             ) : location.pathname === "/" || isHome ? (
                 <Topsection />
             ) : (

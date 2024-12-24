@@ -299,25 +299,27 @@ const CategoryPage = () => {
                     {/* Turnover Range */}
                     <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-6 flex-1">
                         <div className="flex items-center">
-                            <button
-                                onClick={() =>
-                                    toggleCollapse2(
-                                        "collapseTurnoverRange",
-                                        "sliderElement1",
-                                        "amountRangeDisplay1"
-                                    )
-                                }
-                                className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
-                            >
-                                Set Range
-                            </button>
+                            <div className="flex flex-col items-center">
+                                <button
+                                    onClick={() =>
+                                        toggleCollapse2(
+                                            "collapseTurnoverRange",
+                                            "sliderElement1",
+                                            "amountRangeDisplay1"
+                                        )
+                                    }
+                                    className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
+                                >
+                                    Set Range
+                                </button>
 
-                            <label className="text-gray-700 font-semibold ml-2 mb-2">
-                                Turnover Range
-                            </label>
+                                <label className="text-gray-700 font-semibold mt-2">
+                                    Turnover Range
+                                </label>
+                            </div>
 
                             <button
-                                className="ml-auto px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
+                                className="ml-auto mb-6 px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
                                 onClick={Clear2}
                             >
                                 Clear
@@ -426,22 +428,23 @@ const CategoryPage = () => {
                     {/* Amount Range */}
                     <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-6 flex-1">
                         {/* COLLAPSE BUTTON */}
-                        <div className="flex items-center">
-                            <button
-                                onClick={() => {
-                                    toggleCollapse("collapseAmountRange");
-                                }}
-                                className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
-                            >
-                                Set Range
-                            </button>
+                        <div className="flex items-center justify-between">
+                            <div className="flex flex-col items-center">
+                                <button
+                                    onClick={() => {
+                                        toggleCollapse("collapseAmountRange");
+                                    }}
+                                    className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
+                                >
+                                    Set Range
+                                </button>
+                                <label className="text-gray-700 font-semibold mt-2">
+                                    Amount Range
+                                </label>
+                            </div>
 
-                            <label className="text-gray-700 ml-2 font-semibold mb-2">
-                                Amount Range
-                            </label>
-
                             <button
-                                className="ml-auto px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
+                                className="ml-4 px-6 py-2 mb-6 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
                                 onClick={Clear}
                             >
                                 Clear

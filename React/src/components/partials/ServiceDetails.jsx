@@ -430,8 +430,7 @@ const ServiceDetails = () => {
             <BackBtn />
 
             <div className="w-full flex flex-col md:flex-row justify-center md:justify-end items-center py-2 lg:py-4 mt-3">
-                <div className="flex flex-col space-x-6 md:flex-row mx-auto w-full gap-4 md:gap-8 lg:gap-10 px-4 md:px-8">
-                    {" "}
+                <div className="flex flex-col mx-auto w-full gap-4 px-4 md:flex-row md:gap-8 md:px-10 lg:gap-14">
                     {/* Added horizontal padding */}
                     {/* IMAGE SECTION ON THE LEFT */}
                     <div className="flex-grow max-w-full md:max-w-[70%] rounded-lg overflow-hidden opacity-100">
@@ -759,9 +758,9 @@ const ServiceDetails = () => {
                 )}
             </div>
             <div>
-                <div className="px-[34px]">
-                    <div className="  p-4 sm:p-6">
-                        <div className=" grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
+                <div className="px-4 sm:px-[38px]">
+                    <div className="">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
                             {/* On mobile, ReviewSummary takes up full width, on larger screens it takes 1/3 */}
                             <div className="sm:col-span-1">
                                 <ReviewSummary />

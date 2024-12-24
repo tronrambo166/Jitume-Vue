@@ -167,22 +167,23 @@ const CategoryPage = ({ categoryName }) => {
             {/* Amount Range Section */}
             <div className="border border-gray-200 rounded-lg p-6 md:p-8 bg-white ">
                 <div className="flex items-center justify-between">
-                    <div>
+                    <div className="flex flex-col items-center">
                         <button
                             onClick={() => {
                                 toggleCollapse("collapseAmountRange");
                             }}
-                            className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
+                            className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
                         >
                             Set Range
                         </button>
-                        <label className="text-gray-700 ml-4 font-semibold mb-2">
+                        <label className="text-gray-700 font-semibold mt-2">
                             Price Range
                         </label>
                     </div>
+
                     <button
                         onClick={handleClear}
-                        className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
+                        className="px-6 py-2 mb-6 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
                     >
                         Clear
                     </button>

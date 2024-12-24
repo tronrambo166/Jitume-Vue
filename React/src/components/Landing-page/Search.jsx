@@ -215,7 +215,7 @@ const Search = () => {
     // };
 
     return (
-        <div className="flex justify-center mb-5 px-4 sm:px-0">
+        <div className="flex justify-center mb-5 px-4 mt-6 sm:px-0">
             <div className="  rounded-xl mx-auto w-full sm:w-[85%] ">
                 {/* Search Section */}
                 <div className="flex flex-col sm:flex-row items-center h-auto sm:h-16 p-2 sm:p-0">

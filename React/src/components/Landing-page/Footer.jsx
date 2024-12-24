@@ -66,7 +66,7 @@ const Footer = () => {
                     </div>
                     <p className="text-center md:text-left text-[20px] md:text-[40px] text-white w-full md:w-[670px] leading-[28px] md:leading-[45px]">
                         {isServiceRoute
-                            ? "Find Endless Business Services"
+                            ? "Explore Endless Business Services"
                             : "Explore endless investment opportunities."}
                     </p>
 
@@ -97,7 +97,7 @@ const Footer = () => {
                             <input
                                 type="email"
                                 onChange={handleEmail}
-                                placeholder="Example@gmail.com"
+                                placeholder="example@gmail.com"
                                 className="w-full md:w-[350px] p-4 bg-[#1A3A27] text-white placeholder-white/70 rounded-lg outline-none focus:ring-2 focus:ring-green-500"
                             />
                             <button

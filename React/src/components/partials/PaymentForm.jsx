@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import BackBtn from "./BackBtn";
 import PaystackPop from '@paystack/inline-js'
 import Paystack from '@paystack/inline-js'
+import PaymentHero from "../Heros/PaymentHero";
 
 const PaymentForm = () => {
     const [selectedPayment, setSelectedPayment] = useState("card");
@@ -322,7 +323,9 @@ const PaymentForm = () => {
     };
 
     return (
+
         <>
+        <PaymentHero/>
             <BackBtn />
 
             <div className="flex pt-[40px] px-2  text-[#334155] flex-col items-center justify-center">

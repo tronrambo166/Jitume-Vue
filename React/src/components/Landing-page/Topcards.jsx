@@ -33,7 +33,7 @@ const TopCards = () => {
     };
 
     return (
-        <div className="container mx-auto lg:px-0 sm:px-7 md:px-4 py-8">
+        <div className="container mx-auto lg:px-0 sm:px-7 md:px-4 mt-8">
             <div className="flex mx-6 flex-col sm:flex-row justify-center sm:space-x-8 space-y-6 sm:space-y-0">
                 {cards.map((card) => (
                     <div

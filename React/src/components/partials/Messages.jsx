@@ -58,30 +58,58 @@ function Messages() {
         }
     }, [chatHistory]);
 
+    // const handleSelectMessage = (msg) => {
+    //     console.log("Selected message:", msg);
+    //        msg.new = 0; // Mark as read
+    //        setSelectedMessage(msg);
+    //     setSelectedMessage(msg);
+    //     //FETCH
+    //     setChatHistory([]);
+    //     //setChatHistorySent([]);
+    //     msg.messages.forEach((message, index) => {
+    //         setChatHistory((prevArray) => [...prevArray, message]);
+    //     });
+
+    //     // setChatHistory([
+    //     //   {
+    //     //       sender: message.sender,
+    //     //       text: message.msg, // Use 'text' to match the rendering logic
+    //     //       id: message.id,
+    //     //       service_id: message.service_id,
+    //     //       time: message.created_at,
+    //     //   },
+    //     //  ]);
+
+    //     // msg.sent.forEach((message, index) => {
+    //     // setChatHistorySent(prevArray => [...prevArray, message])
+    //     // });
+    // };
+
+
+
     const handleSelectMessage = (msg) => {
         console.log("Selected message:", msg);
+
+        // Mark the message as read
+        msg.new = 0;
         setSelectedMessage(msg);
-        //FETCH
+
+        // Clear existing chat histories
         setChatHistory([]);
-        //setChatHistorySent([]);
-        msg.messages.forEach((message, index) => {
-            setChatHistory((prevArray) => [...prevArray, message]);
-        });
+        // Optional: Clear chat history for sent messages
+        setChatHistorySent([]);
 
-        // setChatHistory([
-        //   {
-        //       sender: message.sender,
-        //       text: message.msg, // Use 'text' to match the rendering logic
-        //       id: message.id,
-        //       service_id: message.service_id,
-        //       time: message.created_at,
-        //   },
-        //  ]);
+        // Populate the chat history
+        if (msg.messages && msg.messages.length > 0) {
+            setChatHistory([...msg.messages]);
+        }
 
-        // msg.sent.forEach((message, index) => {
-        // setChatHistorySent(prevArray => [...prevArray, message])
-        // });
+        // Optional: Populate sent messages history
+        if (msg.sent && msg.sent.length > 0) {
+            setChatHistorySent([...msg.sent]);
+        }
     };
+
 
     const handleSendMessage = (id, service_id) => {
         if (!newMessage.trim()) return;
@@ -173,38 +201,72 @@ function Messages() {
                 <div className="p-4 border-b bg-white">
                     <h3 className="text-lg font-bold">Conversations</h3>
                 </div>
-                {messages.map((msg) => (
-                    <div
-                        key={msg.id}
-                        onClick={() => handleSelectMessage(msg)}
-                        className={`p-4 flex  items-center cursor-pointer border-b ${
-                            selectedMessage?.id === msg.id
-                                ? "bg-slate-100 text-blue-900"
-                                : "hover:bg-gray-50"
-                        }`}
-                    >
-                        <img
-                            src={
-                                msg.avatarUrl ||
-                                "https://agri-soko-2-1.vercel.app/assets/default-BeD4CxIB.jpg"
-                            }
-                            alt="Profile"
-                            className="w-12 h-12 rounded-full object-cover mr-4"
-                        />
-                        <div className="flex-1">
-                            <h4 className="font-semibold">{msg.sender}</h4>
-                            <p
-                                className="text-sm text-gray-600 truncate"
-                                style={{ maxWidth: "200px" }}
-                            >
-                                {/* Display the latest message */}
-                                {msg.messages && msg.messages.length > 0
-                                    ? msg.messages[msg.messages.length - 1].msg
-                                    : "No messages yet"}
-                            </p>
+                {messages
+                    .sort((a, b) => {
+                        // Prioritize new messages
+                        const isNewA = a.new === 1 ? 1 : 0;
+                        const isNewB = b.new === 1 ? 1 : 0;
+
+                        if (isNewA !== isNewB) {
+                            return isNewB - isNewA; // New messages come first
+                        }
+
+                        // If both messages are the same (both new or both old), sort by the latest message
+                        const lastMsgA = a.messages?.length
+                            ? new Date(
+                                  a.messages[a.messages.length - 1].created_at
+                              )
+                            : new Date(0); // If no messages, set to a very old date
+                        const lastMsgB = b.messages?.length
+                            ? new Date(
+                                  b.messages[b.messages.length - 1].created_at
+                              )
+                            : new Date(0); // If no messages, set to a very old date
+
+                        return lastMsgB - lastMsgA; // Latest to the top
+                    })
+                    .map((msg) => (
+                        <div
+                            key={msg.id}
+                            onClick={() => handleSelectMessage(msg)}
+                            className={`p-4 flex items-center cursor-pointer border-b ${
+                                selectedMessage?.id === msg.id
+                                    ? "bg-slate-100 text-blue-900"
+                                    : "hover:bg-gray-50"
+                            }`}
+                        >
+                            <img
+                                src={
+                                    msg.avatarUrl ||
+                                    "https://agri-soko-2-1.vercel.app/assets/default-BeD4CxIB.jpg"
+                                }
+                                alt="Profile"
+                                className="w-12 h-12 rounded-full object-cover mr-4"
+                            />
+                            <div className="flex-1">
+                                <h4 className="font-semibold">{msg.sender}</h4>
+                                <p
+                                    className="text-sm text-gray-600 truncate"
+                                    style={{ maxWidth: "200px" }}
+                                >
+                                    {msg.messages?.length > 0
+                                        ? msg.messages[msg.messages.length - 1]
+                                              .msg
+                                        : "No messages yet"}
+                                </p>
+                            </div>
+                            {/* Show unread message count */}
+                            {msg.new === 1 && (
+                                <span className="ml-2 text-xs text-white bg-red-500 rounded-full px-2 py-1">
+                                    {
+                                        msg.messages.filter(
+                                            (m) => m.status === "unread"
+                                        ).length
+                                    }
+                                </span>
+                            )}
                         </div>
-                    </div>
-                ))}
+                    ))}
             </div>
 
             {/* Chat Window */}

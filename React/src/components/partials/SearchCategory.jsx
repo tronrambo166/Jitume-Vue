@@ -49,12 +49,12 @@ const Search = () => {
                     <div className="hidden sm:block h-10 mx-0"></div>
 
                     {/* Location Input with Suggestions */}
-                    <div className="relative w-full sm:w-1/4 h-12 sm:h-full mb-2 sm:mb-0">
+                    <div className="relative w-full sm:w-1/4 h-12 sm:h-full mb-2 sm:rounded-lg lg:rounded-none sm:mb-0">
                         <FaMapMarkerAlt className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-lg" />
                         <input
                             type="text"
                             placeholder="Location"
-                            className=" h-full focus:outline-none w-full pl-8 text-lg py-2"
+                            className=" h-full focus:outline-none  rounded-lg sm:rounded-lg lg:rounded-none w-full pl-8 text-lg py-2"
                             value={location}
                             onChange={handleLocationChange}
                         />

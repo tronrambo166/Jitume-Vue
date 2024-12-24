@@ -331,7 +331,7 @@ html, body {
 }
 
 .thin-scrollbar::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.08);
+    background-color: rgba(0, 0, 0, 0.5);
     border-radius: 3px;
 }
 
@@ -582,3 +582,5 @@ select::-ms-expand {
         opacity: 0.7;
     }
 }
+
+
