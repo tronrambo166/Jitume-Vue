@@ -338,7 +338,7 @@ const PaymentForm = () => {
                     showErrorToast(data.message);
                 })
                 .catch((err) => {
-                    console.log(err);
+                    console.log (err);
                 });
               },
               onCancel: () => {
