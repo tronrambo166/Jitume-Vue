@@ -243,18 +243,17 @@ const PaymentForm = () => {
         const share= atob(percent);
         const amountKFront= (parseFloat(price)*usdToKen).toFixed();
         const amountReal= amount_real;
+        const purpose = purpos;
         const subaccount = owner.paystack_acc_id;//'ACCT_n9mpmg5jdy7nit2';
         const JitumeAmount  = ((price - parseFloat(amount_real))*usdToKen).toFixed();
-        const purpose = purpos;
-
+        const packages = $("#package").val();
 
         setTimeout(() => {
-            popup.newTransaction({
+        if (purpos === "bids"){
+              popup.newTransaction({
               key: 'pk_test_05479d57206db767b2cc76467cab1c7824237ffa',
               email: user.email,
               amount: amountKFront,
-              subaccount:subaccount,
-              transaction_charge:JitumeAmount,
               onSuccess: (transaction) => {
                 console.log(transaction);
                 const ref = transaction.reference
@@ -262,9 +261,12 @@ const PaymentForm = () => {
                 axiosClient
                 .get("/paystackVerify/"+business_id+"/"+share+"/"
                     +amountKFront+"/"+amountReal+"/"+ref)
-                .then(( data ) => {
+                .then(({data}) => {
                     console.log(data);
-                    //showSuccessToast("Bid placed, you will be notified if bid is accepted!");
+                    if (data.status == 200)
+                    showSuccessToast("Bid placed, you will be notified if bid is accepted!");
+                    else
+                    showErrorToast(data.message);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -277,7 +279,79 @@ const PaymentForm = () => {
                 console.log("Error: ", error.message);
               }
             })
-            }, 500)
+        }
+        else if (purpos === "small_fee"){
+              popup.newTransaction({
+              key: 'pk_test_05479d57206db767b2cc76467cab1c7824237ffa',
+              email: user.email,
+              amount: amountKFront,
+              subaccount:subaccount,
+              transaction_charge:JitumeAmount,
+              onSuccess: (transaction) => {
+                console.log(transaction);
+                const ref = transaction.reference
+                
+                axiosClient
+                .get("/paystackVerifySmallFee/"+packages+"/"+business_id+"/"
+                    +amountKFront+"/"+amountReal+"/"+ref)
+                .then(({data}) => {
+                    console.log(data);
+                    if (data.status == 200)
+                    setTimeout(() => {
+                                navigate("/listing/" + btoa(listing_id));
+                            }, 2000);
+                    else
+                    showErrorToast(data.message);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+              },
+              onCancel: () => {
+                console.log("onCancel");
+              },
+              onError: (error) => {
+                console.log("Error: ", error.message);
+              }
+            })
+        }
+
+        else{
+              popup.newTransaction({
+              key: 'pk_test_05479d57206db767b2cc76467cab1c7824237ffa',
+              email: user.email,
+              amount: amountKFront,
+              subaccount:subaccount,
+              transaction_charge:JitumeAmount,
+              onSuccess: (transaction) => {
+                console.log(transaction);
+                const ref = transaction.reference;
+                
+                axiosClient
+                .get("/paystackVerifyService/"+business_id+"/"
+                    +amountKFront+"/"+amountReal+"/"+ref)
+                .then(({data}) => {
+                    console.log(data);
+                    if (data.status == 200)
+                    showSuccessToast(data.message);
+                    else
+                    showErrorToast(data.message);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+              },
+              onCancel: () => {
+                console.log("onCancel");
+              },
+              onError: (error) => {
+                console.log("Error: ", error.message);
+              }
+            })
+        }
+        //Timeout Ends below
+        }, 500)
+
     }
 
 

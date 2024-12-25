@@ -100,6 +100,8 @@ function Milestones() {
             .post("/business/mile_status", payload)
             .then(({ data }) => {
                 console.log(data);
+                if(data.status == 200)
+                    alert(data.message);
             })
             .catch((err) => {
                 console.log(err);
