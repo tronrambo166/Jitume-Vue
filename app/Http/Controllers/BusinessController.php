@@ -857,7 +857,7 @@ try{
         }
         //Email
 
-       return response()->json(['message' => 'Status set success, mail sent!']);
+       return response()->json(['status' => 200, 'message' => 'Status set success, mail sent!']);
     }
     //Last Milestone Check
 
@@ -884,12 +884,12 @@ try{
       //Email
          
     }
-    return response()->json(['message' => 'Status set success, mail sent!']);
+    return response()->json(['status' => 200,'message' => 'Status set success, mail sent!']);
       
   }
 
   else {
-    return 'ok';
+    return response()->json(['status' => 200,'message' => 'Status set success!']);
   }
 }
 catch(\Exception $e){ 

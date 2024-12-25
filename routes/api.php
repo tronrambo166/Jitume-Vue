@@ -59,17 +59,16 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('/initialize', [PayStackController::class, 'initialize']);
     Route::get('/create-subaccount', [PayStackController::class, 'create_subaccount']);
     Route::get('/paystackVerify/{business_id}/{percent}/{amountKFront}/{amountReal}/{ref}', [PayStackController::class, 'verify']);
+    
+    Route::get('/paystackVerifySmallFee/{package}/{business_id}/{amountKFront}/{amountReal}/{ref}', [PayStackController::class, 'verifySmallFee']);
+
+    Route::get('/paystackVerifyService/{business_id}/{amountKFront}/{amountReal}/{ref}', [PayStackController::class, 'verifyService']);
 
     //Subscribe***
     Route::get('isSubscribed/{id}', [BusinessController::class, 'isSubscribed'])->name('isSubscribed');
 
     Route::get('/stripeSubscribe/{amount}/{plan}/{days}/{range}/{inv}', [checkoutController::class, 'stripeSubscribeGet'])->name('stripeSubscribe');
     Route::get('/stripeSubscribeSuccess', [checkoutController::class, 'stripeSubscribeSuccess'])->name('stripeSubscribeSuccess');
-    
-
-    //CART
-    Route::get('cartStripe', [checkoutController::class, 'cartCheckout'])->name('cartStripe');
-    Route::post('cartstripe', [checkoutController::class, 'cartStripePost'])->name('cartstripe.post');
 
     Route::get('milestoneStripe', [checkoutController::class, 'milestoneCheckout'])->name('milestoneStripe');
     Route::post('milestonestripe', [checkoutController::class, 'milestoneStripePost'])->name('milestonestripe.post');

@@ -90,7 +90,7 @@ class PayStackController extends Controller
     }
 
     public function verify($business_id,$percent,$amountKFront,$amountReal,$ref)
-    {   return response()->json(['data' =>$business_id.'/'.$percent.'/'.$amountKFront.'/'.$amountReal.'/'.$ref, 'status' => 400 ]);
+    {   
         try {
             //$ref = "T751929395745907";
             $curl = curl_init();
@@ -119,10 +119,10 @@ class PayStackController extends Controller
         else {
             $amountKEN = $response['data']['amount'];
             $status = $response['data']['status'];
-            $subaccount=$response['data']['subaccount']['subaccount_code'];
-            if($status == 'success' && $amountKEN == 10000)
+            //$subaccount=$response['data']['subaccount']['subaccount_code'];
+            //BACKEND UPADATE
+            if($status == 'success' && $amountKEN == $amountKFront)
             {               
-                //BACKEND UPADATE
                 $investor_id = Auth::id();
                 //$business_id = $request->listing;
                 $Business = listing::where('id',$business_id)->first();
@@ -174,14 +174,141 @@ class PayStackController extends Controller
                       ]);
                      //Notification
                     if($bids){
-                    return response()->json(['message' =>  'Stripe_pay','Bid placed! you will get a notification if your bid is accepted!', 'status' => 200]);
-                    //BACKEND UPDATE
+                    return response()->json(['message' =>  'Bid placed! you will get a notification if your bid is accepted!', 'status' => 200]);
                     }
                     else {
                       return response()->json(['error' =>'Amount mismatch!', 'status' => 422 ]);
                     }
             
+           }
+           //BACKEND UPADATE
+        }      
+         // echo '<pre>'; print_r($response); echo '<pre>';
+        } catch (\Exception $e) {
+            return response()->json(['status' => 400, 'message' => $e->getMessage()]);
+        }
+    }
+
+
+    public function verifySmallFee($package,$business_id,$amountKFront,$amountReal,$ref)
+    {   
+        try {
+            //$ref = "T751929395745907";
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.paystack.co/transaction/verify/".$ref,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+              "Authorization: Bearer ".$this->secret,
+              "Cache-Control: no-cache",
+            ),
+          ));
+          $response = curl_exec($curl);
+          $response = json_decode($response, true);
+          $err = curl_error($curl);
+          curl_close($curl);
+          
+        if($err) { 
+            return response()->json(['error' =>$err, 'status' => 400 ]);
+          } 
+        else {
+            $amountKEN = $response['data']['amount'];
+            $status = $response['data']['status'];
+            //$subaccount=$response['data']['subaccount']['subaccount_code'];
+            //BACKEND UPADATE
+            if($status == 'success' && $amountKEN == $amountKFront)
+            {               
+                //BACKEND UPADATE
+                $investor_id = Auth::id();
+                $Business = listing::where('id',$business_id)->first();
+                $owner = User::where('id', $Business->user_id)->first();
+                //$percent = $request->percent;
+                    $type = 'Monetery';
+                    $conv = Conversation::create([
+                                'investor_id' => $investor_id,
+                                'listing_id' => $business_id,
+                                'package' => $package,
+                                'price' => $amountReal
+                            ]); 
+
+                    if($conv){
+                    return response()->json(['message' =>  'Success', 'status' => 200]); 
+                    }
+                    else {
+                      return response()->json(['message' =>'Something wrong!', 'status' => 422 ]);
+                    }
+            
           }
+          //BACKEND UPADATE
+        }      
+         // echo '<pre>'; print_r($response); echo '<pre>';
+        } catch (\Exception $e) {
+            return response()->json(['status' => 400, 'message' => $e->getMessage()]);
+        }
+    }
+
+
+        public function verifyService($business_id,$amountKFront,$amountReal,$ref)
+    {   
+        try {
+            //$ref = "T751929395745907";
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.paystack.co/transaction/verify/".$ref,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+              "Authorization: Bearer ".$this->secret,
+              "Cache-Control: no-cache",
+            ),
+          ));
+          $response = curl_exec($curl);
+          $response = json_decode($response, true);
+          $err = curl_error($curl);
+          curl_close($curl);
+          
+        if($err) { 
+            return response()->json(['error' =>$err, 'status' => 400 ]);
+          } 
+        else {
+            $amountKEN = $response['data']['amount'];
+            $status = $response['data']['status'];
+            //$subaccount=$response['data']['subaccount']['subaccount_code'];
+            
+            //BACKEND UPADATE
+            if($status == 'success' && $amountKEN == $amountKFront)
+            {               
+                $investor_id = Auth::id();
+                $mile_id = $business_id;
+                $Business = Services::where('id',$business_id)->first();
+                $owner = User::where('id', $Business->shop_id)->first();
+                //$percent = $request->percent;
+                    $type = 'Monetery';
+                    $conv = Conversation::create([
+                                'investor_id' => $investor_id,
+                                'listing_id' => $business_id,
+                                'package' => $package,
+                                'price' => $amountReal
+                            ]); 
+
+                    if($conv){
+                    return response()->json(['message' =>  'Success', 'status' => 200]); 
+                    }
+                    else {
+                      return response()->json(['message' =>'Something wrong!', 'status' => 422 ]);
+                    }
+            
+          }
+          //BACKEND UPADATE
         }      
          // echo '<pre>'; print_r($response); echo '<pre>';
         } catch (\Exception $e) {
