@@ -6,6 +6,8 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use App\Models\Listing;
+use App\Models\ServiceMileStatus;
+use App\Models\Smilestones;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Mail;
@@ -13,16 +15,34 @@ use Mail;
 class AuthController extends Controller
 {
     public function checkAuth() {
+         $user = User::select('email','id')
+         ->where('id', Auth::id())->first();
          return response()->json([
-            'user' => Auth::user()
-            //'auth' => Auth::check()
+            'user' => $user
         ]);
     }
 
     public function partiesInfo($listing_id) {
-         $listing = listing::where('id', $listing_id)->first();
-         $owner = User::where('id', $listing->user_id)->first();
+         $listing = listing::select('user_id')->where('id', $listing_id)->first();
+         $owner = User::select('paystack_acc_id')
+         ->where('id', $listing->user_id)->first();
          return response()->json([
+            'user' => Auth::user(),
+            'owner' => $owner
+            //'auth' => Auth::check()
+        ]);
+    }
+
+    public function PartiesServiceMile($rep_mile_id)
+    {
+        $mileid = ServiceMileStatus::select('mile_id')->where('id',$rep_mile_id)->first()->mile_id;
+ 
+        $mile = Smilestones::select('id','user_id')->where('id',$mileid)->first();
+
+        $owner = User::select('paystack_acc_id')
+         ->where('id', $mile->user_id)->first();
+         $owner->true_mile_id = $mile->id;
+        return response()->json([
             'user' => Auth::user(),
             'owner' => $owner
             //'auth' => Auth::check()

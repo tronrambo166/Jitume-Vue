@@ -61,7 +61,7 @@
 													
 												</tr>
 
-												<!-- Modal -->
+						<!-- Modal -->
 						<div class="modal fade" id="exampleModal{{$l[0]->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 						  <div class="modal-dialog" role="document">
 						    <div class="modal-content mx-auto text-center">
@@ -165,7 +165,7 @@
 						    </div>
 						  </div>
 						</div>
-						<!-- Modal -->
+						<!-- Modal --> 
 						
 												@endforeach
 												@endif

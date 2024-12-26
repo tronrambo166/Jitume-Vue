@@ -637,8 +637,7 @@ catch(\Exception $e){
         ]);
         ServiceMileStatus::where('id',$rep_id)->update([ 'status' => 'In Progress']);
         
-    //Check if Asset-related Milestone
-
+        //Asset-related
         if ($Business->category == '0') 
         {
         $investor = User::where('id',$investor_id)->first();
@@ -655,8 +654,8 @@ catch(\Exception $e){
              $msg->subject('Equipment release request!');
          });
         }
+        //Asset-related
 
-    //Check if Asset-related Milestone
         }
 
   catch(\Exception $e){
@@ -669,10 +668,7 @@ catch(\Exception $e){
 
    //MAIL
         $business = Services::where('id',$mile->listing_id)->first();
-        $booking = serviceBook::where('booker_id',Auth::id())
-        ->where('service_id',$business->id)
-        ->where('status', 'Confirmed')->latest()->first();
-        $customer = User::where('id',$booking->booker_id)->first();
+        $customer = User::where('id',Auth::id())->first();
 
         $info=[  'name'=>$mile->title,  'amount'=>$mile->amount, 'business'=>$business->name, 's_id' => $business_id, 'customer'=>$customer->fname. ' '.$customer->lname ]; 
         $user['to'] = $owner->email;//'sohaankane@gmail.com';
@@ -684,7 +680,7 @@ catch(\Exception $e){
 
 
 //DB INSERT
-    $mileLat = Smilestones::where('listing_id',$business_id)->where('status','On Hold')->first();
+    //$mileLat = Smilestones::where('listing_id',$business_id)->where('status','On Hold')->first();
 
 // if($mileLat == null) 
 // {
@@ -706,10 +702,8 @@ catch(\Exception $e){
 // }
 // }
 
-       return response()->json(['message' =>  'Stripe_pay','Bid placed! you will get a notification if your bid is accepted!', 'status' => 200]);
-
-
-
+       return response()->json(['message' =>  'Success', 
+                        'service_id' => $service->id, 'status' => 200]);
     }
 
 

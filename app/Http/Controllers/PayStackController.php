@@ -253,7 +253,7 @@ class PayStackController extends Controller
     }
 
 
-        public function verifyService($business_id,$amountKFront,$amountReal,$ref)
+        public function verifyService($true_mile_id,$rep_id,$amountKFront,$amountReal,$ref)
     {   
         try {
             //$ref = "T751929395745907";
@@ -288,27 +288,52 @@ class PayStackController extends Controller
             if($status == 'success' && $amountKEN == $amountKFront)
             {               
                 $investor_id = Auth::id();
-                $mile_id = $business_id;
-                $Business = Services::where('id',$business_id)->first();
-                $owner = User::where('id', $Business->shop_id)->first();
-                //$percent = $request->percent;
-                    $type = 'Monetery';
-                    $conv = Conversation::create([
-                                'investor_id' => $investor_id,
-                                'listing_id' => $business_id,
-                                'package' => $package,
-                                'price' => $amountReal
-                            ]); 
+                $mile = Smilestones::where('id',$true_mile_id)->first();
+                $service = Services::select('id', 'name', 'shop_id')
+                ->where('id',$mile->listing_id)->first();
+                $owner = User::select('email')->where('id', $service->shop_id)->first();
+                $customer = User::select('fname','lname','email')->where('id',$investor_id)->first();
 
-                    if($conv){
-                    return response()->json(['message' =>  'Success', 'status' => 200]); 
-                    }
-                    else {
-                      return response()->json(['message' =>'Something wrong!', 'status' => 422 ]);
-                    }
+                //ASSET-related
+                if ($service->category == '0') 
+                {
+                    $booking = serviceBook::select('business_bid_id')
+                    ->where('service_id',$service->id)
+                    ->where('booker_id',$investor_id)->first();
+                    $accepted_bids = AcceptedBids::select('business_id')
+                    ->where('bid_id',$booking->business_bid_id)
+                    ->first();
+                    $info=[ 'business_owner'=>$accepted_bids->business_id, 'manager'=>$owner->id];
+                    $user['to'] = $customer->email;
+                    Mail::send('services.equip_release_request', $info, function($msg) use ($user){
+                         $msg->to($user['to']);
+                         $msg->subject('Equipment release request!');
+                    });
+                }
+                //ASSET-related
+
+                $update = ServiceMileStatus::where('id',$rep_id)->update([ 'status' => 'In Progress']);
+                $info=['name'=>$mile->title,  'amount'=>$mile->amount, 
+                'business'=>$service->name, 's_id' => $service->id, 
+                'customer'=>$customer->fname. ' '.$customer->lname ]; 
+                $user['to'] = $owner->email;//'sohaankane@gmail.com';
+
+                 
+
+                if($update){
+                    Mail::send('milestoneS.milestone_mail', $info, function($msg) use ($user){
+                     $msg->to($user['to']);
+                     $msg->subject('Milestone Paid!');
+                    });
+                    return response()->json(['message' =>  'Success', 
+                        'service_id' => $service->id, 'status' => 200]); 
+                }
+                else {
+                    return response()->json(['message' =>'Something wrong!', 'status' => 422 ]);
+                }
             
-          }
-          //BACKEND UPADATE
+            }
+           //BACKEND UPADATE
         }      
          // echo '<pre>'; print_r($response); echo '<pre>';
         } catch (\Exception $e) {

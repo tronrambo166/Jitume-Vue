@@ -209,6 +209,10 @@ public function listings_active()
     public function disputes()
     {       
         $disputes = Dispute::latest()->get();
+        foreach ($disputes as $disp){
+            $disputant = User::select('fname', 'lname', 'email')->where('id',$disp->user_id)->first();
+            $disp->user = $disputant;
+        }
         return view('admin.disputes',compact('disputes'));     
     }
 

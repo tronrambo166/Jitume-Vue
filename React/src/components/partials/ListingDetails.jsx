@@ -56,64 +56,7 @@ const ListingDetails = ({ onClose }) => {
 
     const [reviewData, setRev] = useState([]);
     const reviews = reviewData;
-    //const reviewSum = reviewData;
-    //[
-    //     {
-    //         id: 1,
-    //         name: "Leslie Alexander",
-    //         date: "July 22, 2023",
-    //         location: "Reviewed from United States on July 22,2023",
-    //         stars: 5,
-    //         review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.",
-    //         profileImage: [img],
-    //     },
-    //     {
-    //         id: 2,
-    //         name: "David Jones",
-    //         date: "July 22, 2023",
-    //         location: "Reviewed from United States on July 22,2023",
-    //         stars: 5,
-    //         review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.",
-    //         profileImage: [img],
-    //     },
-    //     {
-    //         id: 3,
-    //         name: "Jenny Wilson",
-    //         date: "July 22, 2023",
-    //         location: "Reviewed from United States on July 22,2023",
-    //         stars: 5,
-    //         review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.",
-    //         profileImage: [img],
-    //     },
-    //     {
-    //         id: 4,
-    //         name: "Bessie Cooper",
-    //         date: "July 22, 2023",
-    //         location: "Reviewed from United States on July 22,2023",
-    //         stars: 5,
-    //         review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.",
-    //         profileImage: [img],
-    //     },
-    //     {
-    //         id: 5,
-    //         name: "John Doe",
-    //         date: "July 22, 2023",
-    //         location: "Reviewed from United States on July 22,2023",
-    //         stars: 4,
-    //         review: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...",
-    //         profileImage: [img],
-    //     },
-    //     {
-    //         id: 6,
-    //         name: "Jane Doe",
-    //         date: "July 22, 2023",
-    //         location: "Reviewed from United States on July 22,2023",
-    //         stars: 4,
-    //         review: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...",
-    //         profileImage: [img],
-    //     },
-    // ];
-
+    
     const [itemsPerPage, setItemsPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = Math.ceil(reviews.length / itemsPerPage);

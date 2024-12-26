@@ -215,7 +215,7 @@ const ServiceDetails = () => {
                         data.data[0]["rating"] = 0;
                     setDetails(data.data[0]);
                     setCat(data.data[0].category);
-                    console.log(details);
+                    console.log(data);
                 })
                 .catch((err) => {
                     console.log(err); //setLoading(false)
@@ -231,6 +231,7 @@ const ServiceDetails = () => {
                 .then(({ data }) => {
                     setMilestonesRes(data.data);
                     setallowToReview(data.allow);
+                    setBooked(data.booked);
                     setReviewData(data.reviews);
                     //console.log(milestonesRes.length);
                     console.log(data);
@@ -668,6 +669,13 @@ const ServiceDetails = () => {
                     {/* DESIRED START DATE AND NOTES SECTION ON THE RIGHT */}
                     <div>
                         <div className="flex justify-center md:justify-end">
+                            
+                            
+                            {booked?(
+                                <p className="text-center text-white border bg-green-700 p-3 rounded"> You booked this service! </p>
+                                )
+                            :(
+
                             <div className="w-full md:w-[330px] max-w-lg p-4 border rounded-lg">
                                 {/* Desired Start Date Section */}
                                 <div className="mb-4">
@@ -727,6 +735,9 @@ const ServiceDetails = () => {
                                     )}
                                 </div>
                             </div>
+                            )}
+                            {/*book form*/}
+
                         </div>
 
                         {token && allowToReview && (

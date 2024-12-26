@@ -174,7 +174,7 @@ const RaiseDispute = () => {
 
                     <div style={formGroupStyle}>
                         <label htmlFor="details" style={labelStyle}>
-                            Upload Necessary Document
+                            Upload Necessary Documentation
                         </label>
                         <input
                             id="document"

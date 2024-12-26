@@ -62,7 +62,10 @@ Route::middleware('auth:sanctum')->group(function() {
     
     Route::get('/paystackVerifySmallFee/{package}/{business_id}/{amountKFront}/{amountReal}/{ref}', [PayStackController::class, 'verifySmallFee']);
 
-    Route::get('/paystackVerifyService/{business_id}/{amountKFront}/{amountReal}/{ref}', [PayStackController::class, 'verifyService']);
+    Route::get('/paystackVerifyService/{true_mile_id}/{rep_id}/{amountKFront}/{amountReal}/{ref}', [PayStackController::class, 'verifyService']);
+    
+    Route::get('/partiesInfo/{listing_id}', [AuthController::class,'partiesInfo']);
+    Route::get('/partiesServiceMile/{rep_mile_id}', [AuthController::class,'PartiesServiceMile']);
 
     //Subscribe***
     Route::get('isSubscribed/{id}', [BusinessController::class, 'isSubscribed'])->name('isSubscribed');
@@ -85,7 +88,6 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/connect/{id}', [checkoutController::class, 'connect'])->name('connect.stripe');
     Route::get('/saveStripe/{token}', [checkoutController::class, 'saveStripe'])->name('return.stripe');
     Route::get('/checkAuth', [AuthController::class,'checkAuth']);
-    Route::get('/partiesInfo/{listing_id}', [AuthController::class,'partiesInfo']);
 
 
     // B U S I N E S S    P R O T E C T E D
@@ -144,6 +146,7 @@ Route::get('my_booking', [ServiceController::class, 'my_booking'])->name('my_boo
 Route::get('bBQhdsfE_WWe4Q-_f7ieh7Hdhf6F__', [ServiceController::class, 'booker_milestones'])->name('booker-milestones');
 Route::get('getBookers/{s_id}', [ServiceController::class, 'getBookers'])->name('getBookers');
 Route::get('service_messages/{from}', [ServiceController::class, 'service_messages'])->name('service-messages');
+Route::get('service_messages_count/{from}', [ServiceController::class, 'service_messages_count']);
 
 
 Route::get('/dashhome', [BusinessController::class, 'home']);

@@ -961,6 +961,13 @@ $remove_new = ServiceMessages::where('to_id',Auth::id())->update(['new'=>0]);
 return response()->json(['messages' => $results]);
 }
 
+public function service_messages_count($to_id)
+{
+  $messages = ServiceMessages::where('to_id',$to_id)
+            ->where('new',1)->latest()->count();
+  return response()->json(['count' => $messages]);
+}
+
 
 public function service_booking(){ 
 $results = [];

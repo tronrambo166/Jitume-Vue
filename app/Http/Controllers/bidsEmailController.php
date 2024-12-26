@@ -109,15 +109,16 @@ public function bidsAccepted(Request $request)
 
          $list = listing::where('id',$bid->business_id)->first();
          $owner = User::where('id',$list->user_id)->first();
+         $recipient = $owner->paystack_acc_id;
+         $usdToKen = 100*128.5;
 
          //TRANSFERRING FUNDS
          if($bid->type == 'Monetery' && $bid->paystack_charge_id)
-         {   
-              $url = "https://api.paystack.co/transfer";
-              $recipient_code = 
+         {    $bidAmountKen = $bid->amount*$usdToKen;
+              $url = "https://api.paystack.co/transfer"; 
               $fields = [
                 "source" => "balance", "reason" => "Calm down", 
-                "amount" => 500, "recipient" => "RCP_gx2wn530m0i3w3m"];
+                "amount" => $bidAmountKen, "recipient" => $recipient];
               $fields_string = http_build_query($fields);$ch = curl_init();
               curl_setopt($ch,CURLOPT_URL, $url);
               curl_setopt($ch,CURLOPT_POST, true);
@@ -156,8 +157,6 @@ public function bidsAccepted(Request $request)
          });
         
         //Mail
-
-
               AcceptedBids::create([
               'bid_id' => $id,
               'date' => $bid->date,
@@ -194,12 +193,11 @@ public function bidsAccepted(Request $request)
 
          }
        }
-      Session::put('success','Accepted!');
-      return response()->json(['message' => 'Accepted!']);
+      return response()->json(['message' => 'Accepted!'], 200);
      
        }
         catch(\Exception $e){
-            return response()->json(['status' => 'failed', 'message' => $e->getMessage()]);
+            return response()->json(['message' => $e->getMessage()],400);
        }  
 
    }

@@ -64,7 +64,7 @@
 
 		<script>
 // Set the inactivity timeout in milliseconds (15 minutes)
-const inactivityTimeout = 1 * 60 * 1000;
+const inactivityTimeout = 5 * 60 * 1000;
 
 // Function to handle user activity
 function resetTimer() {

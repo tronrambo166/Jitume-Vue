@@ -201,7 +201,7 @@ const PaymentForm = () => {
                     .then(({ data }) => {
                         if (data.status == 200) {
                             alert("Success!");
-                            navigate("/service-milestones/" + btoa(listing_id));
+                            navigate("/service-milestones/" + btoa(btao(data.service_id)));
                         }
                         if (data.status == 400) alert(data.message);
                     })
@@ -221,14 +221,20 @@ const PaymentForm = () => {
 
 
     //OTHER PAYMENTS
+    let partiesInfo;
     const [user, setUser] = useState({});
     const [owner, setOwner] = useState({});
+    
+    if(purpos == 's_mile')
+         partiesInfo ='/partiesServiceMile/';
+    else partiesInfo ='/partiesInfo/';
     useEffect(() => {
-        axiosClient.get("/partiesInfo/"+atob(listing_id))
+        axiosClient.get(partiesInfo + atob(listing_id))
             .then(({ data }) => {
                 setUser(data.user);
                 setOwner(data.owner);
                  //console.log(owner);
+                 //console.log(data);
 
             });
     }, []);
@@ -317,6 +323,7 @@ const PaymentForm = () => {
         }
 
         else{
+              const true_mile_id = owner.true_mile_id;
               popup.newTransaction({
               key: 'pk_test_05479d57206db767b2cc76467cab1c7824237ffa',
               email: user.email,
@@ -328,12 +335,14 @@ const PaymentForm = () => {
                 const ref = transaction.reference;
                 
                 axiosClient
-                .get("/paystackVerifyService/"+business_id+"/"
+                .get("/paystackVerifyService/"+true_mile_id+"/"+business_id+"/"
                     +amountKFront+"/"+amountReal+"/"+ref)
                 .then(({data}) => {
-                    console.log(data);
-                    if (data.status == 200)
-                    showSuccessToast(data.message);
+                    console.log(data);                    
+                    if (data.status == 200) {
+                            showSuccessToast(data.message);
+                            navigate("/service-milestones/" + btoa(btao(data.service_id)));
+                        }
                     else
                     showErrorToast(data.message);
                 })
@@ -727,8 +736,8 @@ const PaymentForm = () => {
 
                             <div className=" px-[100px] border  px-8 py-[70px] flex gap-4 flex-col">
                                 <div className="purpose ">
-                                    <h2 className="ml-1 text-xl text-[#0A0D13] font-bold mb-1">
-                                        Purpose
+                                    <h2 className="ml-1 mb-2 text-xl text-[#0A0D13] font-bold mb-1">
+                                        Purpose - <span className="font-light">{p}</span>
                                     </h2>
                                     <div className="bg-[#FFC107] jakarta rounded-lg p-3">
                                         <h2 className="font-bold">
