@@ -436,20 +436,25 @@ const ServiceResults = () => {
                         className=" w-full jakarta  text-md border border-[#cbd5e1] rounded-lg space-y-2 px-6 py-4 "
                     >
                         <div className="flex items-center mt-2 mb-6">
-                            <button
-                                onClick={collapse}
-                                id="colBut4"
-                                className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
-                                name="min"
-                            >
-                                Set Range
-                            </button>
-                            <label className="text-gray-700 ml-4 font-semibold mb-2">
-                                Price Range
-                            </label>
+                            <div>
+                                <button
+                                    onClick={collapse}
+                                    id="colBut4"
+                                    className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
+                                    name="min"
+                                >
+                                    Set Range
+                                </button>
+                                <div className="mt-2">
+                                    <label className="text-gray-700 font-semibold mb-2">
+                                        Price Range
+                                    </label>
+                                </div>
+                            </div>
+
                             <div className="ml-auto">
                                 <button
-                                    className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
+                                    className="px-6 py-2 mb-8 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
                                     onClick={(event) => {
                                         clearAmountSlider();
                                         amountSlider();
@@ -686,9 +691,16 @@ const ServiceResults = () => {
                     </div>
 
                     {/* Map Section */}
-                    <div className="h-[500px] sticky top-0 rounded-lg flex items-center justify-center">
+                    <div
+                        className="relative w-full h-screen lg:h-auto rounded-lg flex items-center justify-center"
+                        style={{
+                            top: 0, // Ensures it starts at the top of the container
+                            margin: 0, // Removes any margins
+                            padding: 0, // Removes padding
+                        }}
+                    >
                         <div
-                            className="m-auto map_style w-full h-full"
+                            className="map_style w-full h-full"
                             style={{
                                 borderRadius: "16px",
                                 overflow: "hidden",
@@ -697,8 +709,8 @@ const ServiceResults = () => {
                             <div
                                 id="map"
                                 style={{
-                                    height: "100%",
-                                    width: "100%",
+                                    height: "100%", // Ensures the map fills the parent
+                                    width: "100%", // Full width
                                     borderRadius: "16px",
                                 }}
                             ></div>
@@ -706,7 +718,7 @@ const ServiceResults = () => {
                     </div>
 
                     {/* Pagination Section */}
-                    <div className="flex justify-start ml-6 mt-4 mb-20">
+                    <div className="flex justify-center lg:justify-start ml-6 lg:ml-0 mt-4 mb-20">
                         <CardsPagination
                             currentPage={currentPage}
                             totalPages={totalPages}

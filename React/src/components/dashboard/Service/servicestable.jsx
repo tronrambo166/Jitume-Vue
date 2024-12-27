@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axiosClient from "../../../axiosClient";
 import ServEditModal from "./ServEditModal";
 import { useAlert } from "../../partials/AlertContext";
@@ -59,55 +59,72 @@ const ServiceTable = () => {
         setIsEditModalOpen(false);
     };
 
-    const ActionDropdown = ({ item }) => {
-        const [showDropdown, setShowDropdown] = useState(false);
 
-        const toggleDropdown = () => setShowDropdown((prev) => !prev);
+   const ActionDropdown = ({ item }) => {
+       const [showDropdown, setShowDropdown] = useState(false);
+       const dropdownRef = useRef(null);
 
-        return (
-            <div className="relative">
-                {/* Three dots button */}
-                <button
-                    onClick={toggleDropdown}
-                    className="p-2 rounded-full hover:bg-gray-200"
-                >
-                    <BsThreeDots size={20} />
-                </button>
+       const toggleDropdown = () => setShowDropdown((prev) => !prev);
 
-                {/* Dropdown */}
-                {showDropdown && (
-                    <div
-                        className="absolute right-0 z-50 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg"
-                        onMouseLeave={() => setShowDropdown(false)}
-                    >
-                        <Link to={`/service-milestones/${btoa(btoa(item.id))}`}>
-                            <button className="block w-full px-4 py-2 text-left text-green-500 hover:bg-gray-100">
-                                View Milestones
-                            </button>
-                        </Link>
-                        <button
-                            onClick={() => {
-                                openEditModal(item);
-                                setShowDropdown(false);
-                            }}
-                            className="block w-full px-4 py-2 text-left text-gray-900 hover:bg-gray-100"
-                        >
-                            Edit
-                        </button>
-                        <button
-                            onClick={() => {
-                                handleDelete(item.id);
-                                setShowDropdown(false);
-                            }}
-                            className="block w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100"
-                        >
-                            Delete
-                        </button>
-                    </div>
-                )}
-            </div>
-        );
-    };
+       // Close dropdown when clicking outside
+       useEffect(() => {
+           const handleClickOutside = (event) => {
+               if (
+                   dropdownRef.current &&
+                   !dropdownRef.current.contains(event.target)
+               ) {
+                   setShowDropdown(false);
+               }
+           };
+
+           document.addEventListener("mousedown", handleClickOutside);
+           return () => {
+               document.removeEventListener("mousedown", handleClickOutside);
+           };
+       }, []);
+
+       return (
+           <div className="relative" ref={dropdownRef}>
+               {/* Three dots button */}
+               <button
+                   onClick={toggleDropdown}
+                   className="p-2 rounded-full hover:bg-gray-200"
+               >
+                   <BsThreeDots size={20} />
+               </button>
+
+               {/* Dropdown */}
+               {showDropdown && (
+                   <div className="absolute right-0 top-full z-50 mt-0 -ml-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg">
+                       <Link to={`/service-milestones/${btoa(btoa(item.id))}`}>
+                           <button className="block w-full px-4 py-2 text-left text-green-500 hover:bg-gray-100">
+                               View Milestones
+                           </button>
+                       </Link>
+                       <button
+                           onClick={() => {
+                               openEditModal(item);
+                               setShowDropdown(false);
+                           }}
+                           className="block w-full px-4 py-2 text-left text-gray-900 hover:bg-gray-100"
+                       >
+                           Edit
+                       </button>
+                       <button
+                           onClick={() => {
+                               handleDelete(item.id);
+                               setShowDropdown(false);
+                           }}
+                           className="block w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100"
+                       >
+                           Delete
+                       </button>
+                   </div>
+               )}
+           </div>
+       );
+   };
+
 
     const headers = ["Name", "Category", "Details", "Service Fee", "Actions"];
 
@@ -142,7 +159,7 @@ const ServiceTable = () => {
     }));
 
     return (
-        <div className="py-4 px-[21px]">
+        <div className="py-4 mt-8 lg:mt-0 px-0 sm:px-[21px]">
             {/* My Services Section */}
             <section className="bg-white border rounded-xl w-full">
                 <h1 className="text-[#2D3748] ml-6 mt-6 font-semibold text-xl sm:text-2xl mb-6">

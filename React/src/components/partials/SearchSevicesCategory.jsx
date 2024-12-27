@@ -37,33 +37,29 @@ const Search = () => {
                     {/* Categories Dropdown */}
                     <div className="relative rounded-xl flex items-center h-12 sm:h-full w-full sm:w-1/4 mb-2 sm:mb-0">
                         <select className="appearance-none rounded-lg sm:rounded-lg  lg:rounded-r-none h-full bg-white focus:outline-none text-gray-500 w-full pl-3 pr-10">
-                            <option className="text-gray-400" value="">
-                                All Categories
+                            <option value="">All Categories</option>
+                            <option value="Business Planning">
+                                Business Planning
                             </option>
-                            <option value="Agriculture">Agriculture</option>
-                            <option value="Arts/Culture">Arts/Culture</option>
-                            <option value="Auto">Auto</option>
-                            <option value="Domestic (Home Help etc)">
-                                Domestic (Home Help etc)
-                            </option>
-                            <option value="Fashion">Fashion</option>
-                            <option value="Finance/Accounting">
-                                Finance/Accounting
-                            </option>
-                            <option value="Food">Food</option>
+                            <option value="IT">IT</option>
                             <option value="Legal">Legal</option>
-                            <option value="Media/Internet">
-                                Media/Internet
+                            <option value="Project Management">
+                                Project Management
+                            </option>
+                            <option value="Branding and Design">
+                                Branding and Design
+                            </option>
+                            <option
+                                value="Finance, Accounting & Tax"
+                                className="whitespace-normal"
+                            >
+                                Finance, Accounting & Tax
+                            </option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Public Relations">
+                                Public Relations
                             </option>
                             <option value="Other">Other</option>
-                            <option value="Pets">Pets</option>
-                            <option value="Real State">Real State</option>
-                            <option value="Retail">Retail</option>
-                            <option value="Security">Security</option>
-                            <option value="Sports/Gaming">Sports/Gaming</option>
-                            <option value="Technology/Communications">
-                                Technology/Communications
-                            </option>
                         </select>
                         <FaChevronDown className="absolute right-3 text-gray-500 pointer-events-none" />
                     </div>

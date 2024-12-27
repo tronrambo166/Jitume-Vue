@@ -147,9 +147,9 @@ const Servicepage = () => {
 
     return (
         <div>
-            <div className="relative bg-gradient-to-r from-[#00290f74] to-[#00270e]">
+            <div className="relative bg-gradient-to-r  from-[#00290f74] to-[#00270e]">
                 {/* Background Image */}
-                <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
+                <div className="absolute inset-0 w-full h-full overflow-hidden  z-0">
                     <img
                         src={Deadlybg}
                         alt="Background"
@@ -160,7 +160,7 @@ const Servicepage = () => {
                 </div>
 
                 {/* Noisy Image with blur effect */}
-                <div className="absolute inset-0 w-full h-full overflow-hidden z-10">
+                <div className="absolute inset-0 w-full  h-full overflow-hidden z-10">
                     <img
                         src={NoisyImg}
                         alt="Noisy Image"
@@ -173,17 +173,17 @@ const Servicepage = () => {
                 </div>
 
                 {/* Navbar - adjusted to raise it higher */}
-                <div className="relative z-30 mb-10">
+                <div className="relative z-30 mb-8">
                     {" "}
                     {/* You can adjust the margin here */}
                     <ServNav />
                 </div>
 
                 {/* Content Section */}
-                <div className="relative z-20 px-4 sm:px-6 lg:px-8 py-32">
+                <div className="relative z-20 px-4 sm:px-6 lg:px-8 ">
                     <div className="text-white text-left max-w-md">
-                        <h1 className="text-4xl sm:text-5xl lg:text-5xl font-bold mb-6">
-                            Find The Right Services, For You
+                        <h1 className="text-4xl sm:text-5xl lg:text-5xl  font-bold mb-6">
+                            Find The Right Services For You
                         </h1>
                         <p className="text-base sm:text-base mb-8">
                             Jitume is a simple and transparent investment
@@ -200,7 +200,7 @@ const Servicepage = () => {
                     </div>
 
                     {/* Categories Component */}
-                    <div className="w-full mb-10 flex lg:w-1/2">
+                    <div className="w-full pb-20 flex lg:w-1/2">
                         <InfiniteScrollCategories />
                     </div>
                 </div>

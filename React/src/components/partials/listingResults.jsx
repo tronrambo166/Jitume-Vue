@@ -992,7 +992,14 @@ const ListingResults = () => {
                     </div>
 
                     {/* Map Section */}
-                    <div className="h-[500px] lg:h-auto rounded-lg flex items-center justify-center">
+                    <div
+                        className="relative w-full h-screen lg:h-auto rounded-lg flex items-center justify-center"
+                        style={{
+                            top: 0, // Ensures it starts at the top of the container
+                            margin: 0, // Removes any margins
+                            padding: 0, // Removes padding
+                        }}
+                    >
                         <div
                             className="map_style w-full h-full"
                             style={{
@@ -1003,15 +1010,16 @@ const ListingResults = () => {
                             <div
                                 id="map"
                                 style={{
-                                    height: "100%",
-                                    width: "100%",
+                                    height: "100%", // Ensures the map fills the parent
+                                    width: "100%", // Full width
                                     borderRadius: "16px",
                                 }}
                             ></div>
                         </div>
                     </div>
-                    {/* Pagination - Positioned outside of the cards div */}
-                    <div className="flex justify-start ml-6 mt-4 mb-20">
+
+                    {/* Pagination Section */}
+                    <div className="flex justify-center lg:justify-start ml-6 lg:ml-0 mt-4 mb-20">
                         <CardsPagination
                             currentPage={currentPage}
                             totalPages={totalPages}

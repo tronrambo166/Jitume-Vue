@@ -82,11 +82,28 @@ const MyBusinesses = () => {
 
     const ActionDropdown = ({ item }) => {
         const [showDropdown, setShowDropdown] = useState(false);
+        const dropdownRef = React.useRef(null);
 
         const toggleDropdown = () => setShowDropdown((prev) => !prev);
 
+        useEffect(() => {
+            const handleClickOutside = (event) => {
+                if (
+                    dropdownRef.current &&
+                    !dropdownRef.current.contains(event.target)
+                ) {
+                    setShowDropdown(false);
+                }
+            };
+
+            document.addEventListener("mousedown", handleClickOutside);
+            return () => {
+                document.removeEventListener("mousedown", handleClickOutside);
+            };
+        }, []);
+
         return (
-            <div className="relative">
+            <div className="relative" ref={dropdownRef}>
                 <button
                     onClick={toggleDropdown}
                     className="p-2 rounded-full hover:bg-gray-200"
@@ -95,10 +112,7 @@ const MyBusinesses = () => {
                 </button>
 
                 {showDropdown && (
-                    <div
-                        className="absolute right-0 z-50 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg"
-                        onMouseLeave={() => setShowDropdown(false)}
-                    >
+                    <div className="absolute right-0 z-50 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg">
                         {!item.active && (
                             <button
                                 onClick={() => {
@@ -170,7 +184,7 @@ const MyBusinesses = () => {
     }));
 
     return (
-        <div className="py-6 px-[21px] space-y-6">
+        <div className="py-6 mt-6 lg:mt-0 px-0  sm:px-[21px] space-y-6">
             {/* Adjusted padding and added vertical spacing */}
             <section className="bg-white border border-gray-300 rounded-xl w-full">
                 {/* Added padding, border and rounded corners for all edges */}

@@ -70,7 +70,7 @@ const WhyChoose = () => {
             {/* Left Section */}
             <div className="flex flex-col justify-between ml-8">
                 <div>
-                    <span className="text-black bg-yellow-400 px-2 py-2 rounded-full text-sm mb-2 inline-block">
+                    <span className="text-black bg-[#F8D849] px-2 py-2 rounded-full text-sm mb-2 inline-block">
                         ∙ Why Choose Us
                     </span>
                     <h2 className="text-slate-700 text-2xl md:text-3xl font-bold font-sharp-grotesk mb-5">

@@ -121,7 +121,7 @@ function Milestones() {
               );
 
     return (
-        <div className="container mx-auto p-6">
+        <div className="container mx-auto p-0 sm:p-6 mt-12 lg:mt-0">
             <h3 className="text-left text-2xl font-semibold mb-6">
                 Business Milestones
             </h3>

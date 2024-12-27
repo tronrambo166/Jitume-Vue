@@ -224,7 +224,8 @@ function InvestmentBids() {
     };
 
     return (
-        <div className="container mx-auto p-6">
+        <div className="container mx-auto p-0 sm:p-6 mt-12 sm:mt-0">
+            {" "}
             <h3 className="text-left text-lg font-semibold mb-6">
                 Investment Bids
             </h3>
@@ -314,7 +315,6 @@ function InvestmentBids() {
                     </tbody>
                 </table>
             </div>
-
             <div className="flex gap-2 pt-3 items-center justify-end">
                 <button
                     onClick={AcceptBids(0)}
@@ -346,7 +346,6 @@ function InvestmentBids() {
                     {loadingReject ? "Rejecting..." : "Reject Bids"}
                 </button>
             </div>
-
             {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">

@@ -126,10 +126,10 @@ const Explore = () => {
     };
 
     return (
-        <div className="flex flex-col items-center py-8 sm:py-12 mb-10">
+        <div className="flex flex-col items-center py-8 sm:py-12 ">
             {/* Business Categories Label */}
-            <div className="mb-2 sm:mb-4">
-                <span className="text-black bg-yellow-400 px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm  tracking-wider uppercase">
+            <div className=" sm:mb-4">
+                <span className="text-black bg-[#F8D849] px-2 py-2 rounded-full text-sm mb-2 sm:py-2  sm:text-sm  tracking-wider uppercase">
                     • Business categories
                 </span>
             </div>
@@ -160,7 +160,7 @@ const Explore = () => {
                                           to={`/category/${category.name
                                               .replace("/", "-")
                                               .replace(" ", "-")}`}
-                                              onClick={() => window.scrollTo(0, 0)}
+                                          onClick={() => window.scrollTo(0, 0)}
                                       >
                                           <div
                                               key={index}
@@ -236,7 +236,7 @@ const Explore = () => {
                 <span>
                     {isLoading
                         ? "Redirecting..."
-                        : `Explore ${currentCount }+ Businesses`}
+                        : `Explore ${currentCount}+ Businesses`}
                 </span>
             </button>
         </div>

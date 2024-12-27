@@ -217,7 +217,7 @@ const PersonalInfo = () => {
                         name: "fname",
                         value: handleNullValue(
                             tempData.fname,
-                            "First name not provided yet"
+                            ""
                         ),
                     },
                     {
@@ -225,7 +225,7 @@ const PersonalInfo = () => {
                         name: "mname",
                         value: handleNullValue(
                             tempData.mname,
-                            "Middle name not provided yet"
+                            ""
                         ),
                     },
                     {
@@ -233,7 +233,7 @@ const PersonalInfo = () => {
                         name: "lname",
                         value: handleNullValue(
                             tempData.lname,
-                            "Last name not provided yet"
+                            ""
                         ),
                     },
                     {
@@ -241,7 +241,7 @@ const PersonalInfo = () => {
                         name: "email",
                         value: handleNullValue(
                             tempData.email,
-                            "Email not provided yet"
+                            ""
                         ),
                     },
                 ].map((field) => (

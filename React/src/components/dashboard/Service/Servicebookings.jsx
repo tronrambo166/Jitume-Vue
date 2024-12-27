@@ -99,7 +99,8 @@ function InvestmentBids() {
     };
 
     return (
-        <div className="container mx-auto p-6">
+        <div className="container mx-auto px-0 sm:px-6 mt-12 sm:mt-0">
+            {" "}
             <h3 className="text-left text-lg font-semibold mb-6">
                 Service Booking
             </h3>
@@ -216,7 +217,6 @@ function InvestmentBids() {
                     {loadingReject && " Rejecting..."}
                 </button>
             </div>
-
             {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">

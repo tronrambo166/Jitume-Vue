@@ -213,7 +213,7 @@ const Search = () => {
 
     return (
         <div className="px-4 sm:px-0 w-full">
-            <div className="bg-gray-200 border  w-full  rounded-xl">
+            <div className="bg-gray-200 border  w-full  rounded-lg">
                 {/* Search Section */}
                 <div className="flex flex-col sm:flex-row items-center h-auto sm:h-16 p-2 sm:p-0">
                     {/* Categories Dropdown */}
@@ -222,7 +222,7 @@ const Search = () => {
                             ref={categoryRef}
                             value={categoryValue} // controlled value
                             onChange={handleCategoryChange} // handle change
-                            className="appearance-none rounded-l-xl h-full focus:outline-none bg-white text-gray-500 w-full pl-3 pr-10"
+                            className="appearance-none rounded-lg sm:rounded-lg  lg:rounded-r-none h-full bg-white focus:outline-none text-gray-500 w-full pl-3 pr-10"
                         >
                             <option className="text-gray-400" value="">
                                 All Categories
@@ -289,7 +289,7 @@ const Search = () => {
                             type="text"
                             placeholder="Location"
                             ref={locationInputRef}
-                            className=" h-full focus:outline-none w-full pl-8"
+                            className=" h-full focus:outline-none  rounded-lg sm:rounded-lg lg:rounded-none w-full pl-8 text-lg py-2"
                             // value={location}
                             // onChange={handleLocationChange}
                         />
@@ -325,7 +325,7 @@ const Search = () => {
                         <input
                             type="text"
                             placeholder="What Are You Looking For?"
-                            className=" h-full focus:outline-none w-full pl-8"
+                            className=" h-full focus:outline-none w-full pl-8 rounded-lg sm:rounded-lg lg:rounded-none text-lg py-2"
                             ref={nameRef}
                             value={nameValue} // controlled value
                             onChange={handleNameChange}
@@ -335,7 +335,7 @@ const Search = () => {
                     {/* Search Button */}
                     <button
                         onClick={onSearch}
-                        className="bg-[#FDE047] text-black rounded-r-lg h-12 sm:h-full py-2 px-9 w-full sm:w-auto text-lg"
+                        className="bg-[#FDE047] text-black rounded-lg sm:rounded-lg lg:rounded-r-lg lg:rounded-l-none h-12 sm:h-full py-2 px-9 w-full sm:w-auto text-lg"
                     >
                         Search
                     </button>

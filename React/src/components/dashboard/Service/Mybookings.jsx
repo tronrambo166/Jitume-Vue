@@ -48,7 +48,7 @@ const MyBookings = () => {
     };
 
     return (
-        <div className="bg-white shadow-md mt-6 rounded-xl w-full p-4">
+        <div className="bg-white shadow-md mt-12 p-12 sm:mt-0 rounded-xl w-full px-0 sm:px-4">
             <h1 className="text-[#2D3748] font-semibold text-2xl mb-4">
                 My Bookings
             </h1>
@@ -120,9 +120,10 @@ const MyBookings = () => {
                                     }
                                 </td>
 
-                                <td className="px-4 py-4 text-sm">
+                                <td className="px-4 py-4 text-sm truncate max-w-xs">
                                     {item.location}
                                 </td>
+
                                 <td className="px-4 py-4 text-sm">
                                     {item.status}
                                 </td>

@@ -195,15 +195,16 @@ const Search = () => {
 
     return (
         <div className="px-4 sm:px-0 w-full">
-            <div className=" border  w-full  rounded-xl">
+            <div className="bg-gray-200 p-2 sm:p-0 border w-full rounded-lg">
+                {" "}
                 <div className="flex flex-col sm:flex-row items-center h-auto sm:h-16 w-full">
                     {/* Select Category */}
-                    <div className="relative flex items-center h-full w-full sm:w-1/4 mb-1 sm:mb-0 rounded-l-lg">
+                    <div className="relative  rounded-xl flex items-center h-12 sm:h-full w-full sm:w-1/4 mb-2 sm:mb-0">
                         <select
                             ref={categoryRef}
                             value={categoryValue} // controlled value
                             onChange={handleCategoryChange} // handle change
-                            className="bg-transparent focus:outline-none text-gray-500 text-xs sm:text-sm w-full pl-2 pr-10"
+                            className="appearance-none rounded-lg sm:rounded-lg  lg:rounded-r-none h-full bg-white focus:outline-none text-gray-500 w-full pl-3 pr-10"
                         >
                             <option value="">All Categories</option>
                             <option value="Business Planning">
@@ -226,16 +227,11 @@ const Search = () => {
                             </option>
                             <option value="Other">Other</option>
                         </select>
-                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none sm:block hidden">
-                            <FaChevronDown
-                                className="text-gray-500"
-                                size={16}
-                            />
-                        </div>
+                        <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none" />
                     </div>
 
                     {/* Location Input */}
-                    <div className="relative w-full sm:w-1/4 h-12 sm:h-full   mb-1 sm:mb-0">
+                    <div className="relative w-full sm:w-1/4 h-12 sm:h-full mb-1 sm:mb-0 rounded-lg">
                         <FaMapMarkerAlt className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-lg" />
                         <input
                             onKeyUp={getPlaces}
@@ -243,14 +239,14 @@ const Search = () => {
                             type="text"
                             placeholder="Location"
                             ref={locationInputRef}
-                            className="bg-transparent text-gray-500 h-full w-full pl-8 focus:outline-none"
+                            className=" h-full focus:outline-none  rounded-lg sm:rounded-lg lg:rounded-none w-full pl-8 text-lg py-2"
                         />
                         <div
                             id="result_list2"
-                            className="absolute w-full bg-white  rounded-b-md shadow-lg z-10 top-full"
+                            className="absolute w-full bg-white rounded-b-md shadow-lg z-10 top-full"
                         >
                             {suggestions.length > 0 && (
-                                <ul className="bg-white  w-full mt-1 max-h-40 overflow-y-auto">
+                                <ul className="bg-white w-full mt-1 max-h-40 overflow-y-auto">
                                     {suggestions.map((suggestion, index) => (
                                         <li
                                             key={index}
@@ -273,7 +269,7 @@ const Search = () => {
                     </div>
 
                     {/* What are you looking for Input */}
-                    <div className="relative w-full sm:w-1/2 h-12 sm:h-full  mb-1 sm:mb-0">
+                    <div className="relative w-full sm:w-1/2 h-12 sm:h-full mb-1 sm:mb-0 rounded-lg">
                         <FaSearch className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-lg" />
                         <input
                             ref={nameRef}
@@ -281,14 +277,14 @@ const Search = () => {
                             onChange={handleNameChange}
                             type="text"
                             placeholder="What Are You Looking For?"
-                            className="bg-transparent text-gray-500 h-full w-full pl-8 focus:outline-none"
+                            className=" h-full focus:outline-none w-full pl-8 rounded-lg sm:rounded-lg lg:rounded-none text-lg py-2"
                         />
                     </div>
 
                     {/* Search Button */}
                     <button
                         onClick={Search}
-                        className="bg-[#FDE047] text-black rounded-r-lg h-12 sm:h-full py-2 px-9 w-full sm:w-auto text-lg"
+                        className="bg-[#FDE047] text-black rounded-lg sm:rounded-lg lg:rounded-r-lg lg:rounded-l-none h-12 sm:h-full py-2 px-9 w-full sm:w-auto text-lg"
                     >
                         Search
                     </button>

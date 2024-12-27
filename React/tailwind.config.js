@@ -6,6 +6,7 @@ export default {
         extend: {
             animation: {
                 "slide-in": "slideIn 0.5s ease-out forwards",
+                bounce: "bounce 0.6s infinite",
             },
             keyframes: {
                 slideIn: {

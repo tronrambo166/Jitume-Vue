@@ -71,7 +71,7 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
             [name]: files[0], // Store the file for each field separately
         }));
 
-        showAlert("success", `${name} file selected successfully.`);
+        showAlert("info", `${name} file selected successfully.`);
     };
 
     const handleSave = async () => {

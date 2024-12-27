@@ -5,6 +5,8 @@ import SearchCategory from "./SearchCategory";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import BackBtn from "./BackBtn";
+import CardsPagination from "./CardsPagination";
+
 const CategoryPage = () => {
     const [cards, setCards] = useState([]);
     const [filteredCards, setFilteredCards] = useState([]);
@@ -28,6 +30,9 @@ const CategoryPage = () => {
 
     const [collapseAmountRange, setCollapseAmountRange] = useState(false);
     const [collapseTurnoverRange, setCollapseTurnoverRange] = useState(false);
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(6); // Items per page (adjust as needed)
 
     const toggleAmountRange = () => {
         setCollapseAmountRange(!collapseAmountRange);
@@ -284,189 +289,72 @@ const CategoryPage = () => {
             setAmount(value.replace(/\B(?=(\d{3})+(?!\d))/g, ",")); // Add commas
         }
     };
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedCards = filteredCards.slice(startIndex, endIndex);
+
     return (
-        <div className="p-4 sm:p-6 lg:p-8 max-w-screen-lg xl:max-w-screen-xl mx-auto w-full">
+        <>
             <BackBtn />
-            <h1 className="text-4xl  md:text-6xl mb-6 md:mb-10 font-bold leading-tight text-center font-sharp-grotesk text-[#00290F]">
-                What Are You Looking For?
-            </h1>
-            <div className="w-full mb-6 mx-auto max-w-[84vw]">
-                <SearchCategory />
-            </div>
-            <div className="space-y-8 mb-10">
-                <div></div>
-                <div className="flex flex-col md:flex-row gap-8">
-                    {/* Turnover Range */}
-                    <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-6 flex-1">
-                        <div className="flex items-center">
-                            <div className="flex flex-col items-center">
-                                <button
-                                    onClick={() =>
-                                        toggleCollapse2(
-                                            "collapseTurnoverRange",
-                                            "sliderElement1",
-                                            "amountRangeDisplay1"
-                                        )
-                                    }
-                                    className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
-                                >
-                                    Set Range
-                                </button>
+            <div className="p-4 sm:p-6 lg:p-8 max-w-screen-lg xl:max-w-screen-xl mx-auto w-full">
+                <h1 className="text-2xl sm:text-3xl md:text-6xl mb-4 sm:mb-6 md:mb-10 font-bold leading-tight text-center font-sharp-grotesk text-[#00290F]">
+                    What Are You Looking For?
+                </h1>
 
-                                <label className="text-gray-700 font-semibold mt-2">
-                                    Turnover Range
-                                </label>
-                            </div>
-
-                            <button
-                                className="ml-auto mb-6 px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
-                                onClick={Clear2}
-                            >
-                                Clear
-                            </button>
-                        </div>
-
-                        <div id="sliderElement1" className="py-4">
-                            <Slider
-                                range
-                                min={0}
-                                max={maxTurnover}
-                                step={100}
-                                value={turnoverRange}
-                                onChange={handleTurnoverChange}
-                                trackStyle={{
-                                    backgroundColor: "#15803D",
-                                    height: "10px",
-                                }}
-                                handleStyle={{
-                                    borderColor: "white",
-                                    height: "18px",
-                                    width: "18px",
-                                    marginTop: "-4px",
-                                    backgroundColor: "#15803D",
-                                    borderRadius: "50%",
-                                    border: "2px solid white",
-                                }}
-                                activeDotStyle={{ display: "none" }}
-                                dotStyle={{ display: "none" }}
-                            />
-                        </div>
-
-                        <div
-                            id="amountRangeDisplay1"
-                            className="flex justify-between mt-6 text-gray-600 dark:text-gray-400 text-sm"
-                        >
-                            <span>${turnoverRange[0].toLocaleString()}</span>
-                            <span>${turnoverRange[1].toLocaleString()}</span>
-                        </div>
-
-                        <div className="mt-4 hidden" id="collapseTurnoverRange">
-                            <div className="flex justify-between items-center gap-4">
-                                <div className="flex flex-col w-1/2 space-y-2">
-                                    <label
-                                        htmlFor="minTurnover"
-                                        className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                    >
-                                        Min: {minn2}
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="minTurnover"
-                                        value={minTurnover}
-                                        onChange={(e) =>
-                                            handleInputChange2(
-                                                e,
-                                                setMinTurnover
+                <div className="w-full mb-6 mx-auto max-w-[84vw]">
+                    <SearchCategory />
+                </div>
+                <div className="space-y-8 mb-10">
+                    <div></div>
+                    <div className="flex flex-col md:flex-row gap-8">
+                        {/* Turnover Range */}
+                        <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-6 flex-1">
+                            <div className="flex items-center">
+                                <div className="flex flex-col items-center">
+                                    <button
+                                        onClick={() =>
+                                            toggleCollapse2(
+                                                "collapseTurnoverRange",
+                                                "sliderElement1",
+                                                "amountRangeDisplay1"
                                             )
                                         }
-                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-                                        name="minTurnover"
-                                    />
-                                </div>
-
-                                <div className="flex flex-col w-1/2 space-y-2">
-                                    <label
-                                        htmlFor="maxTurnover"
-                                        className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                        className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
                                     >
-                                        Max: {maxx2.toLocaleString()}
+                                        Set Range
+                                    </button>
+
+                                    <label className="text-gray-700 font-semibold mt-2">
+                                        Turnover Range
                                     </label>
-                                    <input
-                                        type="text"
-                                        id="maxTurnover"
-                                        value={maxTurnoveR}
-                                        onChange={(e) =>
-                                            handleInputChange2(
-                                                e,
-                                                setMaxTurnoveR
-                                            )
-                                        }
-                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-                                        name="maxTurnover"
-                                    />
                                 </div>
-                            </div>
 
-                            <div className="mt-4 flex justify-between">
                                 <button
-                                    className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
-                                    onClick={HandleSlideChange2}
+                                    className="ml-auto mb-6 px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
+                                    onClick={Clear2}
                                 >
-                                    Set
-                                </button>
-
-                                {/* Cancel Button */}
-                                <button
-                                    className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
-                                    onClick={cancelTurnover}
-                                >
-                                    Cancel
+                                    Clear
                                 </button>
                             </div>
-                        </div>
-                    </div>
-                    {/* Amount Range */}
-                    <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-6 flex-1">
-                        {/* COLLAPSE BUTTON */}
-                        <div className="flex items-center justify-between">
-                            <div className="flex flex-col items-center">
-                                <button
-                                    onClick={() => {
-                                        toggleCollapse("collapseAmountRange");
-                                    }}
-                                    className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
-                                >
-                                    Set Range
-                                </button>
-                                <label className="text-gray-700 font-semibold mt-2">
-                                    Amount Range
-                                </label>
-                            </div>
 
-                            <button
-                                className="ml-4 px-6 py-2 mb-6 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
-                                onClick={Clear}
-                            >
-                                Clear
-                            </button>
-                        </div>
-
-                        <div className="py-4" id="sliderElement">
-                            <Slider
-                                range
-                                min={0}
-                                max={maxPrice}
-                                step={100}
-                                value={amountRange} // Controlled component
-                                onChange={handleAmountChange} // Handles state changes
-                                trackStyle={[
-                                    {
+                            <div id="sliderElement1" className="py-4">
+                                <Slider
+                                    range
+                                    min={0}
+                                    max={maxTurnover}
+                                    step={100}
+                                    value={turnoverRange}
+                                    onChange={handleTurnoverChange}
+                                    trackStyle={{
                                         backgroundColor: "#15803D",
                                         height: "10px",
-                                    },
-                                ]} // Array for range styles
-                                handleStyle={[
-                                    {
+                                    }}
+                                    handleStyle={{
                                         borderColor: "white",
                                         height: "18px",
                                         width: "18px",
@@ -474,182 +362,339 @@ const CategoryPage = () => {
                                         backgroundColor: "#15803D",
                                         borderRadius: "50%",
                                         border: "2px solid white",
-                                    },
-                                    {
-                                        borderColor: "white",
-                                        height: "18px",
-                                        width: "18px",
-                                        marginTop: "-4px",
-                                        backgroundColor: "#15803D",
-                                        borderRadius: "50%",
-                                        border: "2px solid white",
-                                    },
-                                ]} // Separate handles for range slider
-                                activeDotStyle={{ display: "none" }}
-                                dotStyle={{ display: "none" }}
-                            />
-                        </div>
-                        <div
-                            className="flex justify-between mt-6 text-gray-600 dark:text-gray-400 text-sm"
-                            id="amountRangeDisplay"
-                        >
-                            <span>${amountRange[0].toLocaleString()}</span>
-                            <span>${amountRange[1].toLocaleString()}</span>
-                        </div>
-
-                        <div className="mt-4 hidden" id="collapseAmountRange">
-                            <div className="flex justify-between items-center gap-4">
-                                <div className="flex flex-col w-1/2 space-y-2">
-                                    <label
-                                        htmlFor="minAmount"
-                                        className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                    >
-                                        Min: {minn}
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="minAmount"
-                                        value={minAmount}
-                                        onChange={(e) =>
-                                            handleInputChange(e, setMinAmount)
-                                        }
-                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-                                        name="minAmount"
-                                    />
-                                </div>
-
-                                <div className="flex flex-col w-1/2 space-y-2">
-                                    <label
-                                        htmlFor="maxAmount"
-                                        className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                    >
-                                        Max: {maxx.toLocaleString()}
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="maxAmount"
-                                        value={maxAmount}
-                                        onChange={(e) =>
-                                            handleInputChange(e, setMaxAmount)
-                                        }
-                                        className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-                                        name="maxAmount"
-                                    />
-                                </div>
+                                    }}
+                                    activeDotStyle={{ display: "none" }}
+                                    dotStyle={{ display: "none" }}
+                                />
                             </div>
 
-                            <div className="mt-4 flex justify-between">
-                                <button
-                                    className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
-                                    onClick={HandleSlideChange} // Pass the function here
-                                >
-                                    Set
-                                </button>
+                            <div
+                                id="amountRangeDisplay1"
+                                className="flex justify-between mt-6 text-gray-600 dark:text-gray-400 text-sm"
+                            >
+                                <span>
+                                    ${turnoverRange[0].toLocaleString()}
+                                </span>
+                                <span>
+                                    ${turnoverRange[1].toLocaleString()}
+                                </span>
+                            </div>
 
-                                {/* Cancel Button */}
+                            <div
+                                className="mt-4 hidden"
+                                id="collapseTurnoverRange"
+                            >
+                                <div className="flex justify-between items-center gap-4">
+                                    <div className="flex flex-col w-1/2 space-y-2">
+                                        <label
+                                            htmlFor="minTurnover"
+                                            className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                        >
+                                            Min: {minn2}
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="minTurnover"
+                                            value={minTurnover}
+                                            onChange={(e) =>
+                                                handleInputChange2(
+                                                    e,
+                                                    setMinTurnover
+                                                )
+                                            }
+                                            className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                                            name="minTurnover"
+                                        />
+                                    </div>
+
+                                    <div className="flex flex-col w-1/2 space-y-2">
+                                        <label
+                                            htmlFor="maxTurnover"
+                                            className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                        >
+                                            Max: {maxx2.toLocaleString()}
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="maxTurnover"
+                                            value={maxTurnoveR}
+                                            onChange={(e) =>
+                                                handleInputChange2(
+                                                    e,
+                                                    setMaxTurnoveR
+                                                )
+                                            }
+                                            className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                                            name="maxTurnover"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="mt-4 flex justify-between">
+                                    <button
+                                        className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
+                                        onClick={HandleSlideChange2}
+                                    >
+                                        Set
+                                    </button>
+
+                                    {/* Cancel Button */}
+                                    <button
+                                        className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
+                                        onClick={cancelTurnover}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {/* Amount Range */}
+                        <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-6 flex-1">
+                            {/* COLLAPSE BUTTON */}
+                            <div className="flex items-center justify-between">
+                                <div className="flex flex-col items-center">
+                                    <button
+                                        onClick={() => {
+                                            toggleCollapse(
+                                                "collapseAmountRange"
+                                            );
+                                        }}
+                                        className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
+                                    >
+                                        Set Range
+                                    </button>
+                                    <label className="text-gray-700 font-semibold mt-2">
+                                        Amount Range
+                                    </label>
+                                </div>
+
                                 <button
-                                    className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
-                                    onClick={Cancel}
+                                    className="ml-4 px-6 py-2 mb-6 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
+                                    onClick={Clear}
                                 >
-                                    Cancel
+                                    Clear
                                 </button>
+                            </div>
+
+                            <div className="py-4" id="sliderElement">
+                                <Slider
+                                    range
+                                    min={0}
+                                    max={maxPrice}
+                                    step={100}
+                                    value={amountRange} // Controlled component
+                                    onChange={handleAmountChange} // Handles state changes
+                                    trackStyle={[
+                                        {
+                                            backgroundColor: "#15803D",
+                                            height: "10px",
+                                        },
+                                    ]} // Array for range styles
+                                    handleStyle={[
+                                        {
+                                            borderColor: "white",
+                                            height: "18px",
+                                            width: "18px",
+                                            marginTop: "-4px",
+                                            backgroundColor: "#15803D",
+                                            borderRadius: "50%",
+                                            border: "2px solid white",
+                                        },
+                                        {
+                                            borderColor: "white",
+                                            height: "18px",
+                                            width: "18px",
+                                            marginTop: "-4px",
+                                            backgroundColor: "#15803D",
+                                            borderRadius: "50%",
+                                            border: "2px solid white",
+                                        },
+                                    ]} // Separate handles for range slider
+                                    activeDotStyle={{ display: "none" }}
+                                    dotStyle={{ display: "none" }}
+                                />
+                            </div>
+                            <div
+                                className="flex justify-between mt-6 text-gray-600 dark:text-gray-400 text-sm"
+                                id="amountRangeDisplay"
+                            >
+                                <span>${amountRange[0].toLocaleString()}</span>
+                                <span>${amountRange[1].toLocaleString()}</span>
+                            </div>
+
+                            <div
+                                className="mt-4 hidden"
+                                id="collapseAmountRange"
+                            >
+                                <div className="flex justify-between items-center gap-4">
+                                    <div className="flex flex-col w-1/2 space-y-2">
+                                        <label
+                                            htmlFor="minAmount"
+                                            className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                        >
+                                            Min: {minn}
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="minAmount"
+                                            value={minAmount}
+                                            onChange={(e) =>
+                                                handleInputChange(
+                                                    e,
+                                                    setMinAmount
+                                                )
+                                            }
+                                            className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                                            name="minAmount"
+                                        />
+                                    </div>
+
+                                    <div className="flex flex-col w-1/2 space-y-2">
+                                        <label
+                                            htmlFor="maxAmount"
+                                            className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                        >
+                                            Max: {maxx.toLocaleString()}
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="maxAmount"
+                                            value={maxAmount}
+                                            onChange={(e) =>
+                                                handleInputChange(
+                                                    e,
+                                                    setMaxAmount
+                                                )
+                                            }
+                                            className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                                            name="maxAmount"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="mt-4 flex justify-between">
+                                    <button
+                                        className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
+                                        onClick={HandleSlideChange} // Pass the function here
+                                    >
+                                        Set
+                                    </button>
+
+                                    {/* Cancel Button */}
+                                    <button
+                                        className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
+                                        onClick={Cancel}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                {loading ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
+                        {Array(4)
+                            .fill()
+                            .map((_, index) => (
+                                <div
+                                    key={index}
+                                    className="bg-gray-200 rounded-2xl w-full overflow-hidden animate-pulse"
+                                >
+                                    <div className="w-full h-40 sm:h-48 bg-gray-300"></div>
+                                    <div className="p-3 sm:p-4 space-y-4">
+                                        <div className="h-6 bg-gray-300 rounded w-3/4"></div>
+                                        <div className="h-6 bg-gray-300 rounded w-3/4"></div>
+                                        <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+                                    </div>
+                                </div>
+                            ))}
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {filteredCards.length === 0 ? (
+                            <p className="text-center text-gray-500 col-span-full">
+                                No listings available.
+                            </p>
+                        ) : (
+                            filteredCards
+                                .slice(
+                                    (currentPage - 1) * itemsPerPage,
+                                    currentPage * itemsPerPage
+                                )
+                                .map((card) => (
+                                    <Link
+                                        to={`/listing/${btoa(btoa(card.id))}`}
+                                        key={card.id}
+                                        className="flex-shrink-0 w-full sm:w-[320px] md:w-[350px] lg:w-[390px] bg-white border border-gray-200 rounded-2xl p-3 sm:p-4 flex flex-col justify-between overflow-hidden"
+                                    >
+                                        <img
+                                            src={"../" + card.image}
+                                            alt={card.name}
+                                            className="w-full h-60 sm:h-48 object-cover rounded-lg"
+                                        />
+                                        <p className="text-sm sm:text-base mt-2 mb-2 font-semibold text-[#1E293B]">
+                                            #Motorcycle Transport #Bikes
+                                        </p>
+                                        <div className="mt-3 flex-grow">
+                                            <h2 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold">
+                                                {card.name}
+                                            </h2>
+                                            <p className="text-sm sm:text-base text-gray-500">
+                                                {card.contact ||
+                                                    "Contact not available"}
+                                            </p>
+                                            <p className="text-sm sm:text-base text-gray-500">
+                                                {card.location ||
+                                                    "Location not available"}
+                                            </p>
+                                            <p className="text-sm sm:text-base text-gray-600 mt-2 truncate-multiline">
+                                                {card.description ||
+                                                    "Lorem ipsum dolor sit amet consectetur. Eu quis vel pellentesque ullamcorper donec lorem auctor egestas adipiscing."}
+                                            </p>
+
+                                            <p className="text-black space-x-2 font-semibold mt-2">
+                                                <span className="text-[#1E293B] jakarta">
+                                                    Amount Requested:
+                                                </span>
+                                                <span className="text-[#15803D]">
+                                                    {card.investment_needed.toLocaleString() ||
+                                                        "N/A"}
+                                                </span>
+                                            </p>
+                                            <p className="text-black space-x-2 font-semibold mt-2">
+                                                <span className="text-[#1E293B] jakarta">
+                                                    {" "}
+                                                    Turnover:
+                                                </span>
+                                                <span className="text-[#15803D]">
+                                                    {card.y_turnover
+                                                        ? card.y_turnover
+                                                              .split("-")
+                                                              .map((value) =>
+                                                                  parseInt(
+                                                                      value
+                                                                  ).toLocaleString()
+                                                              )
+                                                              .join("-")
+                                                        : "N/A"}
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </Link>
+                                ))
+                        )}
+                    </div>
+                )}
+                <CardsPagination
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(filteredCards.length / itemsPerPage)}
+                    onPageChange={handlePageChange}
+                />
             </div>
-
-            {loading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {Array(4)
-                        .fill()
-                        .map((_, index) => (
-                            <div
-                                key={index}
-                                className="bg-gray-200 rounded-2xl w-full overflow-hidden animate-pulse"
-                            >
-                                <div className="w-full h-40 sm:h-48 bg-gray-300"></div>
-                                <div className="p-3 sm:p-4 space-y-4">
-                                    <div className="h-6 bg-gray-300 rounded w-3/4"></div>
-                                    <div className="h-6 bg-gray-300 rounded w-3/4"></div>
-                                    <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-                                </div>
-                            </div>
-                        ))}
-                </div>
-            ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredCards.length === 0 ? (
-                        <p className="text-center text-gray-500 col-span-full">
-                            No listings available.
-                        </p>
-                    ) : (
-                        filteredCards.map((card) => (
-                            <Link
-                                to={`/listing/${btoa(btoa(card.id))}`}
-                                key={card.id}
-                                className="flex-shrink-0 w-[260px] sm:w-[320px] md:w-[350px] lg:w-[390px] bg-white border border-gray-200 rounded-2xl p-3 sm:p-4 flex flex-col justify-between overflow-hidden"
-                            >
-                                <img
-                                    src={"../" + card.image}
-                                    alt={card.name}
-                                    className="w-full h-60 sm:h-48 object-cover rounded-lg"
-                                />
-                                <p className="text-sm sm:text-base mt-2 mb-2 font-semibold text-[#1E293B]">
-                                    #Motorcycle Transport #Bikes
-                                </p>
-                                <div className="mt-3 flex-grow">
-                                    <h2 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold">
-                                        {card.name}
-                                    </h2>
-                                    <p className="text-sm sm:text-base text-gray-500">
-                                        {card.contact ||
-                                            "Contact not available"}
-                                    </p>
-                                    <p className="text-sm sm:text-base text-gray-500">
-                                        {card.location ||
-                                            "Location not available"}
-                                    </p>
-                                    <p className="text-sm sm:text-base text-gray-600 mt-2 truncate-multiline">
-                                        {card.description ||
-                                            "Lorem ipsum dolor sit amet consectetur. Eu quis vel pellentesque ullamcorper donec lorem auctor egestas adipiscing."}
-                                    </p>
-
-                                    <p className="text-black space-x-2 font-semibold mt-2">
-                                        <span className="text-[#1E293B] jakarta">
-                                            Amount Requested:
-                                        </span>
-                                        <span className="text-[#15803D]">
-                                            {card.investment_needed.toLocaleString() ||
-                                                "N/A"}
-                                        </span>
-                                    </p>
-                                    <p className="text-black space-x-2 font-semibold mt-2">
-                                        <span className="text-[#1E293B] jakarta">
-                                            {" "}
-                                            Turnover:
-                                        </span>
-                                        <span className="text-[#15803D]">
-                                            {card.y_turnover
-                                                ? card.y_turnover
-                                                      .split("-")
-                                                      .map((value) =>
-                                                          parseInt(
-                                                              value
-                                                          ).toLocaleString()
-                                                      )
-                                                      .join("-")
-                                                : "N/A"}
-                                        </span>
-                                    </p>
-                                </div>
-                            </Link>
-                        ))
-                    )}
-                </div>
-            )}
-        </div>
+        </>
     );
 };
 export default CategoryPage;

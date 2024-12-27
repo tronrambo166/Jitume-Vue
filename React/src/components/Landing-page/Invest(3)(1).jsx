@@ -73,9 +73,9 @@ const Invest = () => {
 
     return (
         <>
-            <div className="w-full px-4 sm:px-6 lg:px-8 py-8 mt-10 flex flex-col">
+            <div className="w-full px-4 sm:px-6 lg:px-8 py-8  flex flex-col">
                 <div className="flex justify-start">
-                    <span className=" bg-yellow-400 px-4 py-2 rounded-full text-lg font-medium shadow-md max-w-xs text-center">
+                    <span className=" bg-[#F8D849] px-2 py-2 rounded-full text-sm mb-2 font-medium shadow-md max-w-xs text-center">
                         ∙ More Than {currentCount}+
                     </span>
                 </div>
