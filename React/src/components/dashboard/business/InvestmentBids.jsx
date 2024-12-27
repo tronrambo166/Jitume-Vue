@@ -71,6 +71,57 @@ function InvestmentBids() {
         setIsModalOpen(true);
     };
 
+        //DOWNLOAD
+    const download = (doc) => (e) => {
+        axiosClient({
+            url: "download_bids_doc/" + btoa(doc), //your url
+            method: "GET",
+            responseType: "blob",
+        }).then((data) => {
+            console.log(data);
+            if (data.data.size == 3) {
+                $.alert({
+                    title: "Alert!",
+                    content:
+                        "The business has no such document or the file not found!",
+                    type: "red",
+                    buttons: {
+                        tryAgain: {
+                            text: "Close",
+                            btnClass: "btn-red",
+                            action: function () {},
+                        },
+                    },
+                });
+            } //console.log(data);
+            else {
+                const href = URL.createObjectURL(data.data);
+                const link = document.createElement("a");
+                link.href = href;
+                const type = data.data.type;
+
+                if (type.includes("image"))
+                    link.setAttribute(
+                        "download",
+                        "image.jpg"
+                    );
+
+                else if (
+                    data.data.type ==
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                )
+                    link.setAttribute(
+                        "download",
+                        "document.docx"
+                    ); //or any other extension
+                else link.setAttribute("download", "document.pdf");
+
+                document.body.appendChild(link);
+                link.click();
+            }
+        });
+    };
+
     const handleInvestorDetails = (bid) => {
         openModal({
             title: "Investor Details",
@@ -118,18 +169,26 @@ function InvestmentBids() {
                             <strong>
                                 Download good quality photos of the assets:
                             </strong>{" "}
-                            Property
-                            <img src={bid.photos[0]} alt="Asset" />
+                            
+                            <button
+                                onClick={download(
+                                    bid.photos
+                                )} >
+                                <img height="40px" width="40px" src={'http://127.0.0.1:8000/'+bid.photos[0]} alt="Asset" />
+                            <i className="fa fa-download"> </i> </button>
                         </p>
                         <p>
-                            <strong>Location:</strong> New York City
+                            <strong>Legal Document - </strong> <button
+                                onClick={download(
+                                    bid.legal_doc
+                                )} >
+                                Download
+                            </button>
                         </p>
                         <p>
-                            <strong>Market Value:</strong> $1,000,000
+                            <strong>Serial:</strong> {bid.serial}
                         </p>
-                        <p>
-                            <strong>Condition:</strong> Excellent
-                        </p>
+
                     </div>
                 ),
             });

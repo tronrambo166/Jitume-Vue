@@ -714,6 +714,26 @@ return response()->json([ 'data' => $milestones, 'progress' => 0, 'length' => 0 
     }
 
 
+    public function download_bids_doc($doc){
+    
+    //$doc = Milestones::where('id',$mile_id)->first();
+    $doc = base64_decode($doc);
+    if($doc)
+    if( $doc == null || !file_exists(public_path($doc)) ){
+
+        return response('404');
+    }
+    
+    $headers = array('Content-Type'=> 'application/pdf');
+    $url= public_path($doc);
+    $extension = pathinfo($url, PATHINFO_EXTENSION);
+
+    response()->json(['type'=>$extension]);
+    return response()->download($url);
+
+    }
+
+
 
 public function milestones($id){
 if($id == 'all'){
@@ -1433,21 +1453,25 @@ foreach($notifications as $notice)
   $notifier =User::where('id',$notice->customer_id)->first();
   if($notifier)
   $name = $notifier->fname. ' '.$notifier->lname;
+  else unset($notice);
   }
   
   else if($notice->type == 'business'){
   $notifier =Listing::where('id',$notice->customer_id)->first();
   if($notifier)
   $name = $notifier->name;
+  else unset($notice);
   }
   
   else {
     $notifier =Services::where('id',$notice->customer_id)->first();
     if($notifier)$name = $notifier->name;
+    else unset($notice);
     
   }
 
-  $notice->text = str_replace('_name', $name, $notice->text);
+  if(isset($notice))
+    $notice->text = str_replace('_name', $name, $notice->text);
 
 }
 

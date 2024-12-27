@@ -341,9 +341,9 @@ catch(\Exception $e){
 
 }
 
-public function bidCommitsEQP(Request $request){ 
+public function  bidCommitsEQP(Request $request){ 
 
-  try{
+  try{ 
 
    if(Auth::check())
         $investor_id = Auth::id();
@@ -362,6 +362,7 @@ public function bidCommitsEQP(Request $request){
 
         $legal_doc=$request->file('legal_doc');
         $optional_doc=$request->file('optional_doc');
+        $photos=$request->file('photos');
 
 // DOCS UPLOAD
          if($legal_doc) { 
@@ -387,7 +388,7 @@ public function bidCommitsEQP(Request $request){
           $ext=strtolower($optional_doc->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
           {
-            return response()->json(['failed' => 'For business document, Only pdf & docx are allowed!']);
+            return response()->json(['status' => 400, 'message' => 'For business document, Only pdf & docx are allowed!']);
           }
           $create_name=$uniqid.'.'.$ext;
           if (!file_exists('files/bidsEquip/'.$listing_id.'/'.$investor_id)) 
@@ -402,18 +403,18 @@ public function bidCommitsEQP(Request $request){
 
           $photos=$request->file('photos');$total_img='';
           if($photos !='') {
-          foreach ($photos as $single_img) { 
+            //foreach ($photos as $single_img) { 
             # code... 
           $uniqid=hexdec(uniqid());
-          $ext=strtolower($single_img->getClientOriginalExtension());
+          $ext=strtolower($photos->getClientOriginalExtension());
           $create_name=$uniqid.'.'.$ext;
           $loc='files/bidsEquip/'.$listing_id.'/'.$investor_id.'/';
           //Move uploaded file
-          $single_img->move($loc, $create_name);
+          $photos->move($loc, $create_name);
           $final_img=$loc.$create_name;
 
-          $total_img = $total_img.$final_img.',';
-            }
+          //$total_img = $total_img.$final_img.',';
+            //}
            }  
 // DOCS UPLOAD
     $Business = listing::where('id',$listing_id)->first();
@@ -429,7 +430,7 @@ public function bidCommitsEQP(Request $request){
       'serial' => $serial,
       'legal_doc' => $final_legal_doc,
       'optional_doc' => $final_optional_doc,
-      'photos' => $total_img
+      'photos' => $final_img
     ]);
 
     if($bids){
@@ -466,7 +467,7 @@ public function bidCommitsEQP(Request $request){
           ]);
          //Notifications
 
-      return response()->json(['success' => 'Success! You will get a notifications if your bid is accepted!']);
+      return response()->json(['status' => 200, 'message' => 'Success! You will get a notifications if your bid is accepted!']);
     }
 }
 

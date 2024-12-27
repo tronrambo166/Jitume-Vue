@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('milestoneCommitsEQP/{ids}', [BusinessController::class, 'milestoneCommitsEQP'])->name('milestoneCommitsEQP');
     Route::get('download_milestoneDoc/{id}/{mile_id}', [BusinessController::class, 'download_milestone_doc'])->name('download_milestoneDoc');
     Route::get('download_milestoneDocS/{id}/{mile_id}', [ServiceController::class, 'download_milestone_doc'])->name('download_milestoneDocS');
+    Route::get('download_bids_doc/{id}', [BusinessController::class, 'download_bids_doc'])->name('download_bids_doc');
     // <--milestones-->
     Route::get('ratingListing/{id}/{rating}/{text}', [BusinessController::class, 'ratingListing'])->name('ratingListing');
     Route::get('ratingService/{id}/{rating}/{text}', [ServiceController::class, 'ratingService'])->name('ratingService');

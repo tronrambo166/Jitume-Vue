@@ -138,16 +138,10 @@ const Investequip = () => {
             const response = await axiosClient.post("bidCommitsEQP", form, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
-
+            console.log(response);
             if (response.data) {
-                if (response.data.success) {
-                    showAlert("success", response.data.success);
-                }
-                if (response.data.failed) {
-                    showAlert("error", response.data.failed);
-                }
                 if (response.data.message) {
-                    showAlert("info", response.data.message);
+                    showAlert("success", response.data.success);
                 }
             }
         } catch (error) {
