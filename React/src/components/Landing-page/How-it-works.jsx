@@ -70,20 +70,20 @@ const HowItWorks = () => {
     ];
 
     return (
-        <div className="w-full bg-[#F1F7FE] px-[34px] pt-[70px] aspect-[4/3] container mx-auto">
-            <div className="flex justify-between items-center">
+        <div className="w-full bg-[#F1F7FE] px-4 pt-10 md:px-[34px] md:pt-[70px] aspect-[4/3] container mx-auto">
+            {/* Header Section */}
+            <div className="flex flex-col md:flex-row justify-between items-center">
                 <div>
                     <div className="flex justify-center items-center gap-1 px-6 py-2 bg-[#F8D849] rounded-full max-w-[150px] whitespace-nowrap overflow-hidden">
                         <FaCircle className="text-[6px]" />
                         <h1 className="text-[16px]">How It Works</h1>
                     </div>
-
-                    <h1 className="text-[#334155] font-semibold leading-[70px] text-[50px] max-h-[8em] mx-auto">
+                    <h1 className="text-[#334155] font-semibold leading-snug text-[28px] md:text-[50px] mt-4 md:mt-0 max-h-[8em] mx-auto">
                         Discover How It All Works
-                        <br /> With Simple Steps
+                        <br className="hidden md:block" /> With Simple Steps
                     </h1>
                 </div>
-                <p className="mt-4 leading-[1.6] text-[#334155] text-[18px] font-light w-[450px] pt-2 max-h-[8.2em] overflow-hidden">
+                <p className="mt-4 leading-[1.6] text-[#334155] text-[14px] md:text-[18px] font-light w-full md:w-[450px] pt-2">
                     Explore the seamless process that connects you with nearby
                     businesses. Whether you're searching for services or looking
                     to grow your own, our platform simplifies the experience
@@ -91,20 +91,20 @@ const HowItWorks = () => {
                 </p>
             </div>
             {/* Cards Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-[120px] text-[#1E293B]">
+            <div className="grid grid-cols-1 gap-4 mt-8 md:mt-[120px] md:grid-cols-2 lg:grid-cols-3 text-[#1E293B]">
                 {cards.map((card, index) => (
                     <div
                         key={index}
-                        className="relative bg-white h-[240px] rounded-lg p-6 flex flex-col transform transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+                        className="relative bg-white rounded-lg p-4 md:h-[240px] flex flex-col shadow-sm transform transition-transform duration-300 hover:scale-105"
                     >
-                        <div className="absolute top-[-20px] left-[25px] w-[50px] h-[50px] bg-green-200 rounded-full flex items-center justify-center overflow-hidden">
+                        <div className="absolute top-[-16px] left-[16px] md:top-[-20px] md:left-[25px] w-[40px] h-[40px] md:w-[50px] md:h-[50px] bg-green-200 rounded-full flex items-center justify-center overflow-hidden">
                             {card.icon}
                         </div>
 
-                        <h2 className="text-lg mt-10 font-semibold transition-colors duration-300 hover:text-green-600">
+                        <h2 className="text-md md:text-lg mt-8 md:mt-10 font-semibold transition-colors duration-300 hover:text-green-600">
                             {card.title}
                         </h2>
-                        <p className="text-gray-600 text-[15px] py-3 transition-colors duration-300 hover:text-gray-800">
+                        <p className="text-gray-600 text-[13px] md:text-[15px] py-2 md:py-3 transition-colors duration-300 hover:text-gray-800">
                             {card.description}
                         </p>
                     </div>
