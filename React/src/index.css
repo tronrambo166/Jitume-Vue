@@ -584,3 +584,16 @@ select::-ms-expand {
 }
 
 
+
+
+.border-l-short {
+    border-left: 1px solid; /* Adjust width */
+    border-left-height: 50%;
+    height: 50%;
+}
+.border-r-short {
+    border-right: 1px solid; /* Adjust width */
+    border-color: #a0a0a079;
+    border-right-height: 50%;
+    height: 50%;
+}

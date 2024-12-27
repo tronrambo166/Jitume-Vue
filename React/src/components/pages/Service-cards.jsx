@@ -67,7 +67,7 @@ return (
     <>
         <div className="w-full px-4 sm:px-6 lg:px-8 py-8 mt-10 flex flex-col">
             <div className="flex justify-start">
-                <span className="text-black font-semibold bg-yellow-400 px-2 py-1 rounded-full text-sm max-w-xs text-center">
+                <span className="text-black font-semibold bg-[#F8D849] px-2 py-1 rounded-full text-sm max-w-xs text-center">
                     ∙ Featured Services
                 </span>
             </div>

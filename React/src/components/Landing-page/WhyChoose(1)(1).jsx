@@ -64,11 +64,11 @@ const WhyChoose = () => {
     const base64_encode = (str) => {
         return btoa(str);
     };
-
+ 
     return (
-        <div className="max-w-7xl mx-auto px-2 sm:px-0 py-4 grid md:grid-cols-2 gap-6 items-stretch">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 grid md:grid-cols-2 gap-6 items-stretch">
             {/* Left Section */}
-            <div className="flex flex-col justify-between ml-8">
+            <div className="flex flex-col justify-between sm:ml-0">
                 <div>
                     <span className="text-black bg-[#F8D849] px-2 py-2 rounded-full text-sm mb-2 inline-block">
                         ∙ Why Choose Us
@@ -159,8 +159,8 @@ const WhyChoose = () => {
             </div>
 
             {/* Right Section */}
-            <div className="flex justify-center ml-3">
-                <div className="bg-gray-50 p-0.3 rounded-lg border border-gray-300 ">
+            <div className="flex justify-center  ">
+                <div className="bg-gray-50 rounded-t-lg border-t border-l-short border-r-short relative">
                     <img
                         src={Image6}
                         alt="Jitume investment"
