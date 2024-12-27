@@ -65,9 +65,14 @@ const Footer = () => {
                         />
                     </div>
                     <p className="text-center md:text-left text-[20px] md:text-[40px] text-white w-full md:w-[670px] leading-[28px] md:leading-[45px]">
-                        {isServiceRoute
-                            ? "Explore Endless Business Services"
-                            : "Explore endless investment opportunities."}
+                        {isServiceRoute ? (
+                            <>
+                                Explore endless business <br />
+                                services
+                            </>
+                        ) : (
+                            "Explore endless investment opportunities."
+                        )}
                     </p>
 
                     {/* <button className="px-6 md:px-8 py-3 md:py-4 font-semibold rounded-lg text-[#FFFFFF] text-[10px] md:text-[12px] hover:bg-green-600 bg-[#22C55E]">
@@ -86,7 +91,7 @@ const Footer = () => {
 
             <div className="mt-[20px] mx-auto px-[34px] text-white max-w-7xl">
                 <div className="flex flex-wrap justify-between">
-                    <div className="mt-8 flex flex-col space-y-6 w-full md:w-auto">
+                    <div className=" flex flex-col space-y-6 w-full md:w-auto">
                         <h1 className="text-white font-bold text-lg">
                             Subscribe for latest update
                         </h1>

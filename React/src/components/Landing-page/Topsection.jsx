@@ -13,17 +13,18 @@ const Topsection = () => {
     const isDashboardRoute = location.pathname.startsWith("/dashboard");
 
     return (
-        <div className="relative w-full bg-[#00290F] pb-10">
+        <div className="relative w-full bg-[#00290F] pb-10 overflow-x-hidden">
             {/* Overlay */}
             <div
                 className="absolute inset-0 bg-cover bg-center z-10"
-                style={{ backgroundImage: `url(${overlayImage})` }}
+                style={{
+                    backgroundImage: `url(${overlayImage})`,
+                }}
             ></div>
 
             {/* Content */}
             <div className="relative z-20">
-                {!token ? <NavbarGuest /> : <Navbar />}
-                {/*<Navbar />*/}
+                {token ? <Navbar /> : <NavbarGuest />}
                 <Hero />
                 <Search />
                 <InfiniteScrollCategories />

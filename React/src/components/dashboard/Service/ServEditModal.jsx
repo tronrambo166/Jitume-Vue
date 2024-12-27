@@ -73,8 +73,10 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
 
         showAlert("info", `${name} file selected successfully.`);
     };
+    const [loading, setLoading] = useState(false); // Loading state
 
     const handleSave = async () => {
+        setLoading(true);
         try {
             // Prepare form data with FormData for file upload
             const data = new FormData();
@@ -97,7 +99,8 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
 
             if (response.data.status === 200) {
                 // showAlert("success", response.data.message);
-                showAlert("success", response.data.message);
+                // showAlert("success", response.data.message);
+                showAlert("success", "Service updated successfully.");
             } else {
                 showAlert("error", response.data.message);
             }
@@ -108,6 +111,8 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
         } catch (error) {
             console.error("Error saving data:", error);
             showAlert("error", "An error occurred while saving the data.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -271,9 +276,17 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
                     </button>
                     <button
                         onClick={handleSave}
-                        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                        disabled={loading} // Disable button while loading
+                        className={`px-4 py-2 rounded text-white ${
+                            loading
+                                ? "bg-green-400 cursor-not-allowed"
+                                : "bg-green-500 hover:bg-green-600"
+                        } flex items-center justify-center`}
                     >
-                        Save
+                        {loading && (
+                            <AiOutlineLoading3Quarters className="animate-spin mr-2" />
+                        )}
+                        {loading ? "Saving..." : "Save"}
                     </button>
                 </div>
             </div>

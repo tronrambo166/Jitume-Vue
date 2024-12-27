@@ -126,16 +126,16 @@ const Explore = () => {
     };
 
     return (
-        <div className="flex flex-col items-center py-8 sm:py-12 ">
+        <div className="flex flex-col items-center mt-10">
             {/* Business Categories Label */}
-            <div className=" sm:mb-4">
-                <span className="text-black bg-[#F8D849] px-2 py-2 rounded-full text-sm mb-2 sm:py-2  sm:text-sm  tracking-wider uppercase">
+            <div className="mb-4 sm:mb-4">
+                <span className="text-black bg-[#F8D849] px-2 py-2 rounded-full text-sm mb-2 sm:py-2 sm:text-sm tracking-wider uppercase">
                     • Business categories
                 </span>
             </div>
 
             {/* Heading Section */}
-            <h1 className="font-sharp-grotesk text-[24px] sm:text-[36px] md:text-[44px] font-semibold leading-[32px] sm:leading-[46px] md:leading-[55.88px] tracking-[0.02em] text-slate-700 text-center mb-4 sm:mb-10">
+            <h1 className="font-sharp-grotesk text-[24px] sm:text-[36px] md:text-[44px] font-semibold leading-[32px] sm:leading-[46px] md:leading-[55.88px] tracking-[0.02em] text-slate-700 text-center mb-4 sm:mb-10 mt-4 sm:mt-0">
                 Exploring the latest categories
                 <br />
                 of business trends
@@ -227,7 +227,7 @@ const Explore = () => {
             {/* Explore Button */}
             <button
                 onClick={onSearch}
-                className="flex items-center mt-14 justify-center gap-2 px-4 sm:px-6 py-3 bg-green-800 hover:bg-green-700 text-white rounded-xl text-sm sm:text-lg shadow-lg hover:opacity-80 transition-opacity duration-300"
+                className="flex items-center mt-12 mb-16 justify-center gap-2 px-4 sm:px-6 py-3 bg-green-800 hover:bg-green-700 text-white rounded-xl text-sm sm:text-lg shadow-lg hover:opacity-80 transition-opacity duration-300"
                 disabled={isLoading} // Disable button while loading
             >
                 {isLoading && (
