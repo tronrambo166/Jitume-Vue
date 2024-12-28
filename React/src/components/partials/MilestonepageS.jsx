@@ -20,10 +20,11 @@ const MilestonePage = () => {
     const [allow, setallow] = useState(false);
     const [reviews, setReviews] = useState([]);
     const [curr_step, setCurrStep] = useState(0);
-    const { token } = useStateContext();
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [isModalOpen, setModalOpen] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const { token } = useStateContext();
+    const { setListing_id,amounts, setAmounts,setPurpose,setPercent } = useStateContext();
 
     // const [miles, setMiles] = useState([]);
     const total_steps = miles.length;
@@ -79,6 +80,8 @@ const MilestonePage = () => {
         var amount = btoa(amount);
         var mile_id = btoa(mile_id);
         var purpose = btoa("s_mile");
+        setAmounts(250000);
+        console.log(amounts+'ff')
         $.confirm({
             title: "Please Confirm",
             content: "Are you sure?",

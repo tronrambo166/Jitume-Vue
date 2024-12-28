@@ -1,6 +1,7 @@
 // src/contexts/contextProvider.js
 import { useContext, useState, useEffect, createContext } from "react";
 import { useIdleTimer } from "react-idle-timer";
+//import PaymentForm from '../components/partials/PaymentForm';
 
 const StateContext = createContext({
     user: null,
@@ -11,6 +12,17 @@ const StateContext = createContext({
     setAuth: () => {},
     setUser: () => {},
     setToken: () => {},
+
+    //CHECKOUT data
+        listing_id: null,
+        amounts: null,
+        purpose: null,
+        percent: null,
+        setListing_id: () => {},
+        setAmounts: () => {},
+        setPurpose: () => {},
+        setPercent: () => {},
+    //CHECKOUT data
 });
 
 export const ContextProvider = ({ children }) => {
@@ -18,7 +30,10 @@ export const ContextProvider = ({ children }) => {
     const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
     const [auth, setAuth] = useState({});
     const [cards, setCards] = useState({});
-    const [res, setRes] = useState("");
+    const [amounts, _setAmounts] = useState(0);
+    const [listing_id, setListing_id] = useState({});
+    const [purpose, setPurpose] = useState({});
+    const [percent, setPercent] = useState({});
 
     const setToken = (token) => {
         _setToken(token);
@@ -27,6 +42,11 @@ export const ContextProvider = ({ children }) => {
         } else {
             localStorage.removeItem("ACCESS_TOKEN");
         }
+    };
+
+    const setAmounts = (amounts) => {
+        _setAmounts(amounts);
+        console.log(amounts)
     };
 
     useEffect(() => {
@@ -100,8 +120,15 @@ export const ContextProvider = ({ children }) => {
                 auth,
                 cards,
                 setCards,
-                res,
-                setRes,
+                //PAYMENT PAGE
+                listing_id,
+                amounts,
+                purpose,
+                percent,
+                setListing_id,
+                setAmounts,
+                setPurpose,
+                setPercent
             }}
         >
             {children}

@@ -10,8 +10,12 @@ import BackBtn from "./BackBtn";
 import PaystackPop from '@paystack/inline-js'
 import Paystack from '@paystack/inline-js'
 import PaymentHero from '../Heros/PaymentHero';
+import { useStateContext } from "../../contexts/contextProvider";
 
 const PaymentForm = () => {
+    const { amounts } = useStateContext();
+    console.log(amounts)
+
     const [selectedPayment, setSelectedPayment] = useState("card");
     const [loading, setLoading] = useState(false); // Loader state
     // Function to show success toast
@@ -103,6 +107,8 @@ const PaymentForm = () => {
     });
     //Stripe CARD Method Code
 
+
+// GETTING Parameters
     const { listing_id } = useParams();
     let { purpose } = useParams();
     const purpos = base64_decode(purpose);
@@ -115,6 +121,7 @@ const PaymentForm = () => {
     let { amount } = useParams();
     const amount_real = base64_decode(amount);
     const { percent } = useParams(); //alert(atob(percent))
+// GETTING Parameters
 
     const [showModal, setShowModal] = useState(false);
     const [paystackRef, setPaystackRef] = useState(null);
