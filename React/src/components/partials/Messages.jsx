@@ -14,20 +14,34 @@ function Messages() {
     const [isMobileView, setIsMobileView] = useState(false);
     const chatContainerRef = useRef(null);
     //const [from, setFrom] = useState(0);
-
+    const [check, setcheck] = useState(0);
     useEffect(() => {
+        let isMounted = true; // Guard for fetch
+
         const fetchMessages = (from) => {
-            console.log("Fetching messages...");
+            if (check === 0) {
+                console.log("Fetching messages..." + messages.length);
+            }
+
             axiosClient
                 .get("/business/service_messages/" + from)
                 .then(({ data }) => {
-                    console.log("Messages fetched successfully:", data);
-                    setMessages(data.messages || []);
-                    setLoading(false);
+                    if (isMounted) {
+                        console.log("Messages fetched successfully:", data);
+                        // if (messages.length === 0) {
+                        //     setMessages(data.messages || []);
+                        //     setcheck(1);
+                        // }
+
+                        setMessages(data.messages || []);
+                        setLoading(false);
+                    }
                 })
                 .catch((err) => {
-                    console.error("Error fetching messages:", err);
-                    setLoading(false);
+                    if (isMounted) {
+                        console.error("Error fetching messages:", err);
+                        setLoading(false);
+                    }
                 });
         };
 
@@ -38,7 +52,11 @@ function Messages() {
         };
         handleResize();
         window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
+
+        return () => {
+            isMounted = false; // Prevent updates on unmounted component
+            window.removeEventListener("resize", handleResize);
+        };
     }, []);
 
     // Fetching messages from the server.
@@ -51,13 +69,12 @@ function Messages() {
         console.log("Latest Sender:", latestSender);
     }
 
-   useEffect(() => {
-       if (chatContainerRef.current) {
-           chatContainerRef.current.scrollTop =
-               chatContainerRef.current.scrollHeight;
-       }
-   }, [chatHistory]);
-
+    useEffect(() => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop =
+                chatContainerRef.current.scrollHeight;
+        }
+    }, [chatHistory]);
 
     // const handleSelectMessage = (msg) => {
     //     console.log("Selected message:", msg);
@@ -86,14 +103,13 @@ function Messages() {
     //     // });
     // };
 
-
-
     const handleSelectMessage = (msg) => {
         console.log("Selected message:", msg);
 
         // Mark the message as read
-        msg.new = 0;
+        // msg.new = 0;
         setSelectedMessage(msg);
+        console.log("Something", msg.new);
 
         // Clear existing chat histories
         setChatHistory([]);
@@ -110,7 +126,6 @@ function Messages() {
             setChatHistorySent([...msg.sent]);
         }
     };
-
 
     const handleSendMessage = (id, service_id) => {
         if (!newMessage.trim()) return;
@@ -247,23 +262,22 @@ function Messages() {
                             <div className="flex-1">
                                 <h4 className="font-semibold">{msg.sender}</h4>
                                 <p
-                                    className="text-sm text-gray-600 truncate"
+                                    className={`text-sm   ${
+                                        msg.messages[0].new == 1
+                                            ? "bg-green text-black"
+                                            : " text-gray-600"
+                                    } `}
                                     style={{ maxWidth: "200px" }}
                                 >
                                     {msg.messages?.length > 0
-                                        ? msg.messages[msg.messages.length - 1]
-                                              .msg
+                                        ? msg.messages[0].msg
                                         : "No messages yet"}
                                 </p>
                             </div>
                             {/* Show unread message count */}
                             {msg.new === 1 && (
                                 <span className="ml-2 text-xs text-white bg-red-500 rounded-full px-2 py-1">
-                                    {
-                                        msg.messages.filter(
-                                            (m) => m.status === "unread"
-                                        ).length
-                                    }
+                                    {msg.new}
                                 </span>
                             )}
                         </div>
@@ -316,7 +330,11 @@ function Messages() {
                                             className={`relative p-4 rounded-lg max-w-xs ${
                                                 chat.sender === "me"
                                                     ? "bg-yellow-400 text-black"
-                                                    : "bg-white"
+                                                    : //
+                                                    chat.new === 1
+                                                    ? "bg-blue-500 text-white"
+                                                    : //
+                                                      "bg-white"
                                             } shadow-md`}
                                             style={{
                                                 wordWrap: "break-word",
