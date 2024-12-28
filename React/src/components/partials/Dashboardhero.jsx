@@ -216,9 +216,11 @@ const Dashboardhero = () => {
                                 <div className="relative flex items-center gap-1 hover:text-green">
                                     <FaEnvelope />
                                     <span>Messages</span>
-                                    <span className="absolute top-[-8px] right-[-10px] inline-flex items-center justify-center w-3 h-3 text-xs font-semibold text-green-200 bg-red-600 rounded-full pulse">
-                                        {count}
-                                    </span>
+                                    {count > 0 && (
+                                        <span className="absolute top-[-8px] right-[-10px] inline-flex items-center justify-center w-3 h-3 text-xs font-semibold text-green-200 bg-red-600 rounded-full pulse">
+                                            {count}
+                                        </span>
+                                    )}
                                 </div>
                             </Link>
 

@@ -108,6 +108,14 @@ function Messages() {
 
         // Mark the message as read
         // msg.new = 0;
+         if (msg.new === 1) {
+             setMessages((prevMessages) =>
+                 prevMessages.map((message) =>
+                     message.id === msg.id ? { ...message, new: 0 } : message
+                 )
+             );
+         }
+
         setSelectedMessage(msg);
         console.log("Something", msg.new);
 
@@ -126,6 +134,10 @@ function Messages() {
             setChatHistorySent([...msg.sent]);
         }
     };
+    useEffect(() => {
+        console.log("Messages state updated:", messages);
+    }, [messages]);
+
 
     const handleSendMessage = (id, service_id) => {
         if (!newMessage.trim()) return;
@@ -262,24 +274,26 @@ function Messages() {
                             <div className="flex-1">
                                 <h4 className="font-semibold">{msg.sender}</h4>
                                 <p
-                                    className={`text-sm   ${
-                                        msg.messages[0].new == 1
-                                            ? "bg-green text-black"
-                                            : " text-gray-600"
-                                    } `}
-                                    style={{ maxWidth: "200px" }}
+                                    className={`text-sm ${
+                                        msg.messages &&
+                                        msg.messages.length > 0 &&
+                                        msg.messages[0]?.new === 1
+                                            ? "bg-green-500 bg-opacity-30 text-black font-medium shadow-lg backdrop-blur-md border border-green-300"
+                                            : "text-gray-600"
+                                    }`}
                                 >
-                                    {msg.messages?.length > 0
-                                        ? msg.messages[0].msg
+                                    {msg.messages && msg.messages.length > 0
+                                        ? msg.messages[0]?.msg ||
+                                          "No messages yet"
                                         : "No messages yet"}
                                 </p>
                             </div>
                             {/* Show unread message count */}
-                            {msg.new === 1 && (
+                            {/* {msg.new > 0 && (
                                 <span className="ml-2 text-xs text-white bg-red-500 rounded-full px-2 py-1">
-                                    {msg.new}
+                                    {msg.new} okay
                                 </span>
-                            )}
+                            )} */}
                         </div>
                     ))}
             </div>
