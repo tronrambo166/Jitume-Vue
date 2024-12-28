@@ -51,12 +51,13 @@ function Messages() {
         console.log("Latest Sender:", latestSender);
     }
 
-    useEffect(() => {
-        if (chatContainerRef.current) {
-            chatContainerRef.current.scrollTop =
-                chatContainerRef.current.scrollHeight;
-        }
-    }, [chatHistory]);
+   useEffect(() => {
+       if (chatContainerRef.current) {
+           chatContainerRef.current.scrollTop =
+               chatContainerRef.current.scrollHeight;
+       }
+   }, [chatHistory]);
+
 
     // const handleSelectMessage = (msg) => {
     //     console.log("Selected message:", msg);
@@ -299,52 +300,55 @@ function Messages() {
                             }}
                             ref={chatContainerRef}
                         >
-                            {chatHistory.map((chat, index) => (
-                                <div
-                                    key={index}
-                                    className={`flex ${
-                                        chat.sender === "me"
-                                            ? "justify-end"
-                                            : "justify-start"
-                                    } mt-4`}
-                                >
+                            {chatHistory
+                                .slice() // Create a shallow copy
+                                .reverse() // Reverse the array
+                                .map((chat, index) => (
                                     <div
-                                        className={`relative p-4 rounded-lg max-w-xs ${
+                                        key={index}
+                                        className={`flex ${
                                             chat.sender === "me"
-                                                ? "bg-yellow-400 text-black"
-                                                : "bg-white"
-                                        } shadow-md`}
-                                        style={{
-                                            wordWrap: "break-word",
-                                            overflowWrap: "break-word",
-                                        }}
+                                                ? "justify-end"
+                                                : "justify-start"
+                                        } mt-4`}
                                     >
-                                        <p className="text-sm break-words">
-                                            {chat.msg}
-                                        </p>
-                                        <small className="text-gray-500 text-xs mt-2">
-                                            {new Date(
-                                                chat.created_at
-                                            ).toLocaleString()}
-                                        </small>
-                                        {chat.sender === "me" &&
-                                            chat.status ===
-                                                "Failed to send" && (
-                                                <button
-                                                    className="text-blue-500 text-xs flex items-center space-x-1"
-                                                    onClick={() =>
-                                                        handleRetryMessage(
-                                                            index
-                                                        )
-                                                    }
-                                                >
-                                                    <AiOutlineReload className="w-4 h-4" />
-                                                    <span>Resend</span>
-                                                </button>
-                                            )}
+                                        <div
+                                            className={`relative p-4 rounded-lg max-w-xs ${
+                                                chat.sender === "me"
+                                                    ? "bg-yellow-400 text-black"
+                                                    : "bg-white"
+                                            } shadow-md`}
+                                            style={{
+                                                wordWrap: "break-word",
+                                                overflowWrap: "break-word",
+                                            }}
+                                        >
+                                            <p className="text-sm break-words">
+                                                {chat.msg}
+                                            </p>
+                                            <small className="text-gray-500 text-xs mt-2">
+                                                {new Date(
+                                                    chat.created_at
+                                                ).toLocaleString()}
+                                            </small>
+                                            {chat.sender === "me" &&
+                                                chat.status ===
+                                                    "Failed to send" && (
+                                                    <button
+                                                        className="text-blue-500 text-xs flex items-center space-x-1"
+                                                        onClick={() =>
+                                                            handleRetryMessage(
+                                                                index
+                                                            )
+                                                        }
+                                                    >
+                                                        <AiOutlineReload className="w-4 h-4" />
+                                                        <span>Resend</span>
+                                                    </button>
+                                                )}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
                         </div>
 
                         {/* Message Input */}
