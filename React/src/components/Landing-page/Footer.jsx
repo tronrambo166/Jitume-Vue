@@ -71,7 +71,7 @@ const Footer = () => {
                                 services
                             </>
                         ) : (
-                            "Explore endless investment opportunities."
+                            "Explore endless investment opportunities"
                         )}
                     </p>
 
