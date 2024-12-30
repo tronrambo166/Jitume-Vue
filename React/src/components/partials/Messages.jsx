@@ -203,13 +203,6 @@ function Messages() {
                 });
         }
     };
-    useEffect(() => {
-        const interval = setInterval(() => {
-            fetchMessages(0);
-        }, 5000); // Fetch new messages every 5 seconds
-
-        return () => clearInterval(interval); // Cleanup interval on component unmount
-    }, []);
 
     if (loading) return <SkeletonLoader />;
 
@@ -269,28 +262,32 @@ function Messages() {
                                 <h4 className="font-semibold">{msg.sender}</h4>
                                 <p
                                     className={`text-sm ${
+                                        msg.messages &&
+                                        msg.messages[0] &&
                                         msg.messages[0].new === 1
                                             ? "bg-green-500 bg-opacity-20 text-black font-medium shadow-lg backdrop-blur-md border border-green-300 rounded-lg p-3 pr-16"
                                             : "text-gray-600"
                                     }`}
                                     style={{ maxWidth: "200px" }}
                                 >
-                                    {msg.messages[0].new === 1 && (
-                                        <span className="absolute top-1 right-2 font-semibold text-xs text-green-600">
-                                            New
-                                        </span>
-                                    )}
-                                    {msg.messages?.length > 0
+                                    {msg.messages &&
+                                        msg.messages[0] &&
+                                        msg.messages[0].new === 1 && (
+                                            <span className="absolute top-1 right-2 font-semibold text-xs text-green-600">
+                                                New
+                                            </span>
+                                        )}
+                                    {msg.messages && msg.messages.length > 0
                                         ? msg.messages[0].msg
                                         : "No messages yet"}
                                 </p>
                             </div>
                             {/* Show unread message count */}
-                            {msg.new === 1 && (
+                            {/* {msg.new === 1 && (
                                 <span className="ml-2 text-xs text-white bg-red-500 rounded-full px-2 py-1">
                                     {msg.new}
                                 </span>
-                            )}
+                            )} */}
                         </div>
                     ))}
             </div>

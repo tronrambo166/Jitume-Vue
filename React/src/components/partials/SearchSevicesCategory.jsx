@@ -1,11 +1,12 @@
 import { FaMapMarkerAlt, FaSearch, FaChevronDown } from "react-icons/fa";
 import { useState, useRef, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const Search = () => {
+const Search = ({ value, setLocationQuery, setNameQuery }) => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
-    const [location, setLocation] = useState("");
+    const [location, setLocation] = useState(value.locationQuery || ""); // Initial value for location
+    const [searchItem, setSearchItem] = useState(value.nameQuery || ""); // Initial value for search item
     const [suggestions, setSuggestions] = useState([]);
     const locationInputRef = useRef(null);
     const suggestionsRef = useRef(null);
@@ -21,9 +22,15 @@ const Search = () => {
             .then((data) => {
                 const fetchedSuggestions = data.features.map((feature) => {
                     const { name, city, country } = feature.properties;
-                    return `${name}, ${city || ""} ${country}`.trim();
+
+                    // Concatenate name, city, and country into a string for rendering
+                    const fullLocation = `${name}, ${city || ""} ${
+                        country || ""
+                    }`.trim();
+
+                    return fullLocation; // Return just the string, not the object
                 });
-                setSuggestions(fetchedSuggestions.slice(0, 10));
+                setSuggestions(fetchedSuggestions.slice(0, 10)); // Update the state with the string array
             })
             .catch((error) =>
                 console.error("Error fetching suggestions:", error)
@@ -60,16 +67,35 @@ const Search = () => {
     };
 
     const handleSuggestionClick = (suggestion) => {
-        setLocation(suggestion);
+        // Strip out anything after the first comma
+        const cleanLocation = suggestion.split(",")[0]; // Get the first part (city or name)
+        setLocation(cleanLocation); // Set location to the clean location
         setSuggestions([]);
     };
 
     const handleCategoryChange = (e) => {
         const selectedCategory = e.target.value;
         if (selectedCategory) {
+            // Reset location and search item
+            setLocation(""); // Clear location input
+            setSearchItem(""); // Clear search item input
+
+            // Update parent component's query state (if needed)
+            setLocationQuery("");
+            setNameQuery("");
+
+            // Navigate to the selected category
             const formattedCategory = selectedCategory.replaceAll(" ", "-");
             navigate(`/servicecategory/${formattedCategory}`);
         }
+    };
+
+    const handleSearchSubmit = () => {
+        // Pass the search term and location query to parent component
+        setLocationQuery(location);
+        setNameQuery(searchItem);
+        console.log("Location chosen is:", location);
+        console.log("Search item is:", searchItem);
     };
 
     return (
@@ -95,10 +121,7 @@ const Search = () => {
                             <option value="Branding And Design">
                                 Branding and Design
                             </option>
-                            <option
-                                value="Finance, Accounting & Tax"
-                                className="whitespace-normal"
-                            >
+                            <option value="Finance, Accounting & Tax">
                                 Finance, Accounting & Tax
                             </option>
                             <option value="Marketing">Marketing</option>
@@ -135,7 +158,8 @@ const Search = () => {
                                         className="px-4 py-2 cursor-pointer hover:bg-gray-100 flex items-center"
                                     >
                                         <FaMapMarkerAlt className="mr-2 text-gray-500" />
-                                        {suggestion}
+                                        {suggestion}{" "}
+                                        {/* Ensure that suggestion is a string */}
                                     </li>
                                 ))}
                             </ul>
@@ -149,12 +173,17 @@ const Search = () => {
                             type="text"
                             placeholder="What Are You Looking For?"
                             className="h-full focus:outline-none w-full pl-8 rounded-lg sm:rounded-lg lg:rounded-none text-lg py-2"
+                            value={searchItem} // Bind searchItem to the input
+                            onChange={(e) => setSearchItem(e.target.value)} // Update searchItem state
                         />
                     </div>
 
                     {/* Search Button */}
-                    <button className="bg-[#FDE047] text-black rounded-lg sm:rounded-lg lg:rounded-r-lg lg:rounded-l-none h-12 sm:h-full py-2 px-9 w-full sm:w-auto text-lg">
-                        Search in
+                    <button
+                        onClick={handleSearchSubmit}
+                        className="bg-[#FDE047] text-black rounded-lg sm:rounded-lg lg:rounded-r-lg lg:rounded-l-none h-12 sm:h-full py-2 px-9 w-full sm:w-auto text-lg"
+                    >
+                        Search
                     </button>
                 </div>
             </div>

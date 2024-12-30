@@ -15,6 +15,8 @@ const CategoryPage = () => {
     const [amountRange, setAmountRange] = useState([0, 100]);
     const [maxPrice, setMaxPrice] = useState(100);
     const [maxTurnover, setMaxTurnover] = useState(100);
+    const [locationQuery, setLocationQuery] = useState("");
+    const [nameQuery, setNameQuery] = useState(""); // Name query
 
     const { name } = useParams();
 
@@ -123,18 +125,30 @@ const CategoryPage = () => {
             const investmentNeeded =
                 parseFloat(card.investment_needed.replace(/,/g, "")) || 0;
             const turnover = Math.max(
-                ...card.y_turnover.split("-").map((v) => parseFloat(v) || 0)
+                ...card.y_turnover
+                    .split("-")
+                    .map((v) => parseFloat(v.trim()) || 0)
             );
 
             return (
                 investmentNeeded >= amountRange[0] &&
                 investmentNeeded <= amountRange[1] &&
                 turnover >= turnoverRange[0] &&
-                turnover <= turnoverRange[1]
+                turnover <= turnoverRange[1] &&
+                (locationQuery === "" ||
+                    card.location
+                        .toLowerCase()
+                        .includes(locationQuery.toLowerCase())) &&
+                (nameQuery === "" ||
+                    card.name.toLowerCase().includes(nameQuery.toLowerCase()))
             );
         });
+
         setFilteredCards(filtered);
     };
+    useEffect(() => {
+        filterCards();
+    }, [amountRange, turnoverRange, locationQuery, nameQuery]);
 
     const handleTurnoverChange = (value) => setTurnoverRange(value);
     const handleAmountChange = (value) => setAmountRange(value);
@@ -307,7 +321,11 @@ const CategoryPage = () => {
                 </h1>
 
                 <div className="w-full mb-6 mx-auto max-w-[84vw]">
-                    <SearchCategory />
+                    <SearchCategory
+                        value={{ locationQuery, nameQuery }} // Pass both queries here
+                        setLocationQuery={setLocationQuery}
+                        setNameQuery={setNameQuery}
+                    />
                 </div>
                 <div className="space-y-8 mb-10">
                     <div></div>

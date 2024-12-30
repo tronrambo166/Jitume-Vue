@@ -1,54 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
-import { FaChevronDown, FaMapMarkerAlt, FaSearch } from "react-icons/fa";
+import { FaMapMarkerAlt, FaSearch, FaChevronDown } from "react-icons/fa";
+import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Search = () => {
+const Search = ({ value, setLocationQuery, setNameQuery }) => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
-    const [location, setLocation] = useState("");
+    const [location, setLocation] = useState(value.locationQuery || ""); // Initial value for location
+    const [searchItem, setSearchItem] = useState(value.nameQuery || ""); // Initial value for search item
     const [suggestions, setSuggestions] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState("All Categories"); // Default category
     const locationInputRef = useRef(null);
     const suggestionsRef = useRef(null);
 
     // Extract category from the route
-    useEffect(() => {
-        const currentCategory = decodeURIComponent(pathname) // Decodes URL-encoded category names
-            .split("/")
-            .pop()
-            .replaceAll("-", " ") // Replace hyphens with spaces
-            .trim();
-
-        // List of available categories with hyphenated names to match URL format
-        const availableCategories = [
-            "Agriculture",
-            "Arts/Culture",
-            "Auto",
-            "Domestic",
-            "Fashion",
-            "Finance-Accounting", // Ensure this uses a hyphen
-            "Food",
-            "Legal",
-            "Media-Internet", // Use hyphen instead of slash
-            "Other",
-            "Pets",
-            "Real-State", // Use hyphen instead of slash
-            "Retail",
-            "Security",
-            "Sports-Gaming", // Use hyphen instead of slash
-            "Technology-Communications", // Use hyphen instead of slash
-        ];
-
-        // Check if the current category matches an available category
-        if (availableCategories.includes(currentCategory)) {
-            setSelectedCategory(currentCategory);
-        } else if (pathname.includes("/category")) {
-            // Handle invalid category routes
-            setSelectedCategory("Invalid Category");
-        } else {
-            setSelectedCategory("All Categories");
-        }
-    }, [pathname]);
+    const currentCategory = pathname.split("/").pop().replaceAll("-", " ");
 
     const fetchSuggestions = (searchText) => {
         fetch(
@@ -58,9 +22,15 @@ const Search = () => {
             .then((data) => {
                 const fetchedSuggestions = data.features.map((feature) => {
                     const { name, city, country } = feature.properties;
-                    return `${name}, ${city || ""} ${country}`.trim();
+
+                    // Concatenate name, city, and country into a string for rendering
+                    const fullLocation = `${name}, ${city || ""} ${
+                        country || ""
+                    }`.trim();
+
+                    return fullLocation; // Return just the string, not the object
                 });
-                setSuggestions(fetchedSuggestions.slice(0, 10));
+                setSuggestions(fetchedSuggestions.slice(0, 10)); // Update the state with the string array
             })
             .catch((error) =>
                 console.error("Error fetching suggestions:", error)
@@ -97,19 +67,37 @@ const Search = () => {
     };
 
     const handleSuggestionClick = (suggestion) => {
-        setLocation(suggestion);
+        // Strip out anything after the first comma
+        const cleanLocation = suggestion.split(",")[0]; // Get the first part (city or name)
+        setLocation(cleanLocation); // Set location to the clean location
         setSuggestions([]);
     };
 
     const handleCategoryChange = (e) => {
-        const newCategory = e.target.value;
-        setSelectedCategory(newCategory);
+        const selectedCategory = e.target.value;
+        if (selectedCategory) {
+            // Reset location and search item
+            setLocation(""); // Clear location input
+            setSearchItem(""); // Clear search item input
 
-        if (newCategory) {
-            const formattedCategory = newCategory.replaceAll(" ", "-"); // Ensure hyphens for URL
+            // Update parent component's query state (if needed)
+            setLocationQuery("");
+            setNameQuery("");
+
+            // Navigate to the selected category
+            const formattedCategory = selectedCategory.replaceAll(" ", "-");
             navigate(`/category/${formattedCategory}`);
         }
     };
+
+    const handleSearchSubmit = () => {
+        // Pass the search term and location query to parent component
+        setLocationQuery(location);
+        setNameQuery(searchItem);
+        console.log("Location chosen is:", location);
+        console.log("Search item is:", searchItem);
+    };
+
     return (
         <div className="px-4 sm:px-0 w-full">
             <div className="bg-gray-200 border w-full rounded-lg">
@@ -118,7 +106,7 @@ const Search = () => {
                     <div className="relative rounded-xl flex items-center h-12 sm:h-full w-full sm:w-1/4 mb-2 sm:mb-0">
                         <select
                             className="appearance-none rounded-lg sm:rounded-lg lg:rounded-r-none h-full bg-white focus:outline-none text-gray-500 w-full pl-3 pr-10"
-                            value={selectedCategory} // Bind to state
+                            value={currentCategory || ""}
                             onChange={handleCategoryChange}
                         >
                             <option value="All Categories">
@@ -151,7 +139,7 @@ const Search = () => {
                         <FaChevronDown className="absolute right-3 text-gray-500 pointer-events-none" />
                     </div>
 
-                    {/* Other Input Fields */}
+                    {/* Location Input with Suggestions */}
                     <div className="relative w-full sm:w-1/4 h-12 sm:h-full mb-2 sm:mb-0">
                         <FaMapMarkerAlt className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-lg" />
                         <input
@@ -176,7 +164,8 @@ const Search = () => {
                                         className="px-4 py-2 cursor-pointer hover:bg-gray-100 flex items-center"
                                     >
                                         <FaMapMarkerAlt className="mr-2 text-gray-500" />
-                                        {suggestion}
+                                        {suggestion}{" "}
+                                        {/* Ensure that suggestion is a string */}
                                     </li>
                                 ))}
                             </ul>
@@ -190,12 +179,17 @@ const Search = () => {
                             type="text"
                             placeholder="What Are You Looking For?"
                             className="h-full focus:outline-none w-full pl-8 rounded-lg sm:rounded-lg lg:rounded-none text-lg py-2"
+                            value={searchItem} // Bind searchItem to the input
+                            onChange={(e) => setSearchItem(e.target.value)} // Update searchItem state
                         />
                     </div>
 
                     {/* Search Button */}
-                    <button className="bg-[#FDE047] text-black rounded-lg sm:rounded-lg lg:rounded-r-lg lg:rounded-l-none h-12 sm:h-full py-2 px-9 w-full sm:w-auto text-lg">
-                        Search in
+                    <button
+                        onClick={handleSearchSubmit}
+                        className="bg-[#FDE047] text-black rounded-lg sm:rounded-lg lg:rounded-r-lg lg:rounded-l-none h-12 sm:h-full py-2 px-9 w-full sm:w-auto text-lg"
+                    >
+                        Search
                     </button>
                 </div>
             </div>

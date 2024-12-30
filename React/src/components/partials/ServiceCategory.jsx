@@ -19,6 +19,8 @@ const CategoryPage = ({ categoryName }) => {
 
     const [minn, setMinn] = useState(0); // Default minimum price
     const [maxx, setMaxx] = useState(0); // Default maximum price
+    const [locationQuery, setLocationQuery] = useState("");
+    const [nameQuery, setNameQuery] = useState(""); // Name query
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
@@ -68,8 +70,17 @@ const CategoryPage = ({ categoryName }) => {
     };
 
     const filteredCards = cards.filter(
-        (card) => card.price >= range[0] && card.price <= range[1]
+        (card) =>
+            card.price >= range[0] && // Price filter
+            card.price <= range[1] &&
+            (card.location
+                .toLowerCase()
+                .includes(locationQuery.toLowerCase()) || // Location filter
+                locationQuery === "") &&
+            (card.name.toLowerCase().includes(nameQuery.toLowerCase()) || // Name filter
+                nameQuery === "")
     );
+
     const sliderMarks = {};
     const step = Math.floor(maxPrice / 5); // Determine step size for slider marks
 
@@ -169,10 +180,16 @@ const CategoryPage = ({ categoryName }) => {
                 <h1 className="text-2xl sm:text-3xl md:text-6xl mb-4 sm:mb-6 md:mb-10 font-bold leading-tight text-center font-sharp-grotesk text-[#00290F]">
                     What Are You Looking For?
                 </h1>
+
                 {/* Search Category */}
                 <div className="w-full mb-6 mx-auto max-w-[84vw]">
-                    <SearchSevicesCategory />
+                    <SearchSevicesCategory
+                        value={{ locationQuery, nameQuery }} // Pass both queries here
+                        setLocationQuery={setLocationQuery}
+                        setNameQuery={setNameQuery}
+                    />
                 </div>
+
                 <div></div>
                 {/* Amount Range Section */}
                 <div className="border border-gray-200 rounded-lg p-6 md:p-8 bg-white ">
@@ -376,7 +393,7 @@ const CategoryPage = ({ categoryName }) => {
                                                 <h2 className="text-lg sm:text-xl mt-1 font-semibold text-slate-800">
                                                     {card.name}
                                                 </h2>
-                                                
+
                                                 <p className="text-sm text-gray-500">
                                                     {card.location ||
                                                         "Location not available"}
