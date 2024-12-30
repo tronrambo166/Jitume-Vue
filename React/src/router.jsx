@@ -4,7 +4,7 @@ import Homepage from "./components/pages/Homepage";
 import Servicepage from "./components/pages/Servicepage";
 import ListingResults from "./components/partials/listingResults";
 import ListingDetails from "./components/partials/ListingDetails";
-
+import Test from "./contexts/Test";
 // Dashboard Components
 import Dashboard from "./components/pages/Dashboard";
 import MyBusinesses from "./components/dashboard/business/MyBusinesses";
@@ -111,6 +111,9 @@ const router = createBrowserRouter([
             { path: "/register", element: <Register /> },
             { path: "/login", element: <Login /> },
             { path: "/user-form", element: <UserForm /> },
+            // test test
+            { path: "/test", element: <Test /> },
+            // test test
 
             //FOOTER
             { path: "/careers", element: <Careers /> },

@@ -86,12 +86,13 @@ export default function DefaultLayout() {
             {location.pathname === "/services" ||
             /^\/subscribe(\/|$)/.test(location.pathname) ||
             /^\/checkout(\/|$)/.test(location.pathname) ||
+            /^\/checkoutS(\/|$)/.test(location.pathname) ||
             /^\/business-milestones(\/|$)/.test(location.pathname) ||
             /^\/service-milestones(\/|$)/.test(location.pathname) ||
             /^\/investEquip\/[^/]+\/[^/]+\/[^/]+$/.test(location.pathname) ? (
                 /^\/checkout\/[^/]+\/[^/]+\/[^/]+\/[^/]+$/.test(
                     location.pathname
-                ) 
+                )
             ) : location.pathname === "/" || isHome ? (
                 <Topsection />
             ) : (

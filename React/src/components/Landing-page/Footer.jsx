@@ -93,7 +93,7 @@ const Footer = () => {
                 <div className="flex flex-wrap justify-between">
                     <div className=" flex flex-col space-y-6 w-full md:w-auto">
                         <h1 className="text-white font-bold text-lg">
-                            Subscribe for latest update
+                            Subscribe for latest updates
                         </h1>
                         <form
                             onSubmit={handleSubmit}

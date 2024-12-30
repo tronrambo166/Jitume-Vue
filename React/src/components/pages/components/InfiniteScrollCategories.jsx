@@ -6,7 +6,8 @@ const categories = [
     "IT",
     "Legal",
     "Project Management",
-    "Branding and Design",
+    "Branding & Design",
+
     "Finance, Accounting & Tax",
     "Marketing",
     "Public Relations",
@@ -93,8 +94,8 @@ const HorizontalInfiniteScroll = () => {
                         >
                             <Link
                                 to={`/servicecategory/${category
-                                    .replace("/", "-")
-                                    .replace(" ", "-")}`}
+                                    .replace(/&/g, "And") // Replace & with 'And'
+                                    .replace(/[\s/]/g, "-")}`} // Replace spaces and slashes with '-'
                             >
                                 {category}
                             </Link>

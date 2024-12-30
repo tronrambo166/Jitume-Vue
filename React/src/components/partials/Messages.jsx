@@ -108,14 +108,6 @@ function Messages() {
 
         // Mark the message as read
         // msg.new = 0;
-         if (msg.new === 1) {
-             setMessages((prevMessages) =>
-                 prevMessages.map((message) =>
-                     message.id === msg.id ? { ...message, new: 0 } : message
-                 )
-             );
-         }
-
         setSelectedMessage(msg);
         console.log("Something", msg.new);
 
@@ -134,10 +126,6 @@ function Messages() {
             setChatHistorySent([...msg.sent]);
         }
     };
-    useEffect(() => {
-        console.log("Messages state updated:", messages);
-    }, [messages]);
-
 
     const handleSendMessage = (id, service_id) => {
         if (!newMessage.trim()) return;
@@ -215,6 +203,13 @@ function Messages() {
                 });
         }
     };
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchMessages(0);
+        }, 5000); // Fetch new messages every 5 seconds
+
+        return () => clearInterval(interval); // Cleanup interval on component unmount
+    }, []);
 
     if (loading) return <SkeletonLoader />;
 
@@ -231,27 +226,26 @@ function Messages() {
                 </div>
                 {messages
                     .sort((a, b) => {
-                        // Prioritize new messages
                         const isNewA = a.new === 1 ? 1 : 0;
                         const isNewB = b.new === 1 ? 1 : 0;
 
                         if (isNewA !== isNewB) {
-                            return isNewB - isNewA; // New messages come first
+                            return isNewB - isNewA; // Prioritize new messages first
                         }
 
-                        // If both messages are the same (both new or both old), sort by the latest message
+                        // If both messages have the same 'new' status, sort by the latest timestamp
                         const lastMsgA = a.messages?.length
                             ? new Date(
                                   a.messages[a.messages.length - 1].created_at
                               )
-                            : new Date(0); // If no messages, set to a very old date
+                            : new Date(0); // Default to a very old date if no messages exist
                         const lastMsgB = b.messages?.length
                             ? new Date(
                                   b.messages[b.messages.length - 1].created_at
                               )
-                            : new Date(0); // If no messages, set to a very old date
+                            : new Date(0); // Default to a very old date if no messages exist
 
-                        return lastMsgB - lastMsgA; // Latest to the top
+                        return lastMsgB - lastMsgA; // Show the latest message first
                     })
                     .map((msg) => (
                         <div
@@ -275,25 +269,28 @@ function Messages() {
                                 <h4 className="font-semibold">{msg.sender}</h4>
                                 <p
                                     className={`text-sm ${
-                                        msg.messages &&
-                                        msg.messages.length > 0 &&
-                                        msg.messages[0]?.new === 1
-                                            ? "bg-green-500 bg-opacity-30 text-black font-medium shadow-lg backdrop-blur-md border border-green-300"
+                                        msg.messages[0].new === 1
+                                            ? "bg-green-500 bg-opacity-20 text-black font-medium shadow-lg backdrop-blur-md border border-green-300 rounded-lg p-3 pr-16"
                                             : "text-gray-600"
                                     }`}
+                                    style={{ maxWidth: "200px" }}
                                 >
-                                    {msg.messages && msg.messages.length > 0
-                                        ? msg.messages[0]?.msg ||
-                                          "No messages yet"
+                                    {msg.messages[0].new === 1 && (
+                                        <span className="absolute top-1 right-2 font-semibold text-xs text-green-600">
+                                            New
+                                        </span>
+                                    )}
+                                    {msg.messages?.length > 0
+                                        ? msg.messages[0].msg
                                         : "No messages yet"}
                                 </p>
                             </div>
                             {/* Show unread message count */}
-                            {/* {msg.new > 0 && (
+                            {msg.new === 1 && (
                                 <span className="ml-2 text-xs text-white bg-red-500 rounded-full px-2 py-1">
-                                    {msg.new} okay
+                                    {msg.new}
                                 </span>
-                            )} */}
+                            )}
                         </div>
                     ))}
             </div>
@@ -346,7 +343,7 @@ function Messages() {
                                                     ? "bg-yellow-400 text-black"
                                                     : //
                                                     chat.new === 1
-                                                    ? "bg-blue-500 text-white"
+                                                    ? "bg-green-500 bg-opacity-20 text-black font-medium shadow-lg backdrop-blur-md border border-green-300 rounded-lg p-3 pr-16"
                                                     : //
                                                       "bg-white"
                                             } shadow-md`}

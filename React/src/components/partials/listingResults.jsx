@@ -225,46 +225,34 @@ const ListingResults = () => {
             },
         });
 
-        var skipValues = [
+        const skipValues = [
             document.getElementById("price_low"),
             document.getElementById("price_high"),
         ];
 
-        // Function to format numbers with commas
-        const formatNumber = (num) => {
-            return new Intl.NumberFormat().format(num);
-        };
-
-        slider.noUiSlider.on("update", function (values, handle) {
-            // Format the value with commas and update the HTML
-            skipValues[handle].innerHTML = `$${formatNumber(
-                Math.round(values[handle])
+        slider.noUiSlider.on("update", function (values) {
+            skipValues[0].innerHTML = `$${new Intl.NumberFormat().format(
+                Math.round(values[0])
+            )}`;
+            skipValues[1].innerHTML = `$${new Intl.NumberFormat().format(
+                Math.round(values[1])
             )}`;
 
             const preResults = localStorage.getItem("results");
             const savedResults = JSON.parse(preResults);
-            const turnoverRes = [];
 
-            Object.entries(savedResults).map(([key, value]) => {
-                if (value.y_turnover && typeof value.y_turnover === "string") {
-                    const range = value.y_turnover.split("-");
+            const turnoverRange = {
+                min: parseFloat(values[0]),
+                max: parseFloat(values[1]),
+            };
+            const amountRange = slider2.noUiSlider.get(); // Get current amount range
 
-                    if (range.length === 2) {
-                        const db_min = parseInt(range[0], 10);
-                        const db_max = parseInt(range[1], 10);
-
-                        if (
-                            parseInt(values[1]) <= db_max &&
-                            parseInt(values[1]) >= db_min
-                        ) {
-                            turnoverRes.push(value);
-                        }
-                    }
-                }
+            const filteredResults = filterResults(savedResults, turnoverRange, {
+                min: parseFloat(amountRange[0]),
+                max: parseFloat(amountRange[1]),
             });
 
-            console.log(turnoverRes);
-            setResults(turnoverRes);
+            setResults(filteredResults);
             setCurrentPage(1);
         });
     };
@@ -286,84 +274,42 @@ const ListingResults = () => {
             },
         });
 
-        var skipValues = [
+        const skipValues = [
             document.getElementById("price_low2"),
             document.getElementById("price_high2"),
         ];
 
-        // Define a currency format function
-        const formatCurrency = (value) => {
-            return new Intl.NumberFormat("en-US", {
+        slider2.noUiSlider.on("update", function (values) {
+            skipValues[0].innerHTML = `${new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "USD",
-            }).format(value);
-        };
+                maximumFractionDigits: 0, // Remove decimals
+            }).format(values[0])}`;
+            skipValues[1].innerHTML = `${new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+                maximumFractionDigits: 0, // Remove decimals
+            }).format(values[1])}`;
 
-        slider2.noUiSlider.on("update", function (values, handle) {
-            // Apply currency formatting
-            skipValues[handle].innerHTML = formatCurrency(
-                parseFloat(values[handle])
-            );
-
-            // Log the current values of the slider for debugging
-            const minValue = parseFloat(values[0]);
-            const maxValue = parseFloat(values[1]);
-            console.log(
-                "Slider Updated - minValue:",
-                minValue,
-                "maxValue:",
-                maxValue
-            );
-
-            // Fetch saved results from localStorage
             const preResults = localStorage.getItem("results");
             const savedResults = JSON.parse(preResults);
-            console.log("Saved Results from LocalStorage:", savedResults);
 
-            let filteredResults = [];
+            const amountRange = {
+                min: parseFloat(values[0]),
+                max: parseFloat(values[1]),
+            };
+            const turnoverRange = slider.noUiSlider.get(); // Get current turnover range
 
-            // If the slider is at full range (0-1000000), show all results
-            if (minValue === 0 && maxValue === 1000000) {
-                console.log("Full range selected. Showing all results.");
-                filteredResults = savedResults;
-            } else {
-                // Filter results based on the slider range
-                filteredResults = Object.entries(savedResults)
-                    .map(([key, value]) => {
-                        if (
-                            value.investment_needed &&
-                            typeof value.investment_needed === "number"
-                        ) {
-                            const investmentAmount = value.investment_needed;
+            const filteredResults = filterResults(
+                savedResults,
+                {
+                    min: parseFloat(turnoverRange[0]),
+                    max: parseFloat(turnoverRange[1]),
+                },
+                amountRange
+            );
 
-                            // Log each result being checked
-                            console.log(
-                                "Checking result:",
-                                key,
-                                "Investment amount:",
-                                investmentAmount
-                            );
-
-                            if (
-                                investmentAmount >= minValue &&
-                                investmentAmount <= maxValue
-                            ) {
-                                console.log("Included:", key);
-                                return value; // Include the result if within the range
-                            }
-                        }
-                        return null; // Ignore results that don't meet the criteria
-                    })
-                    .filter(Boolean); // Remove null values from the array
-            }
-
-            // Log the filtered results before updating state
-            console.log("Filtered Results:", filteredResults);
-
-            // Update the state with the filtered results
             setResults(filteredResults);
-
-            // Reset to page 1 when filter is applied
             setCurrentPage(1);
         });
     };
@@ -381,15 +327,38 @@ const ListingResults = () => {
         setResult(filteredResults);
     };
 
-    const filterResults = (range) => {
-        const storedData = localStorage.getItem("amountResults");
-        const parsedData = storedData ? JSON.parse(storedData) : [];
-        return parsedData.filter((item) => {
+    const filterResults = (savedResults, turnoverRange, amountRange) => {
+        return savedResults.filter((item) => {
+            let matchesTurnover = false;
+            let matchesAmount = false;
+
+            // Turnover Filter
             if (item.y_turnover && typeof item.y_turnover === "string") {
                 const [db_min, db_max] = item.y_turnover.split("-").map(Number);
-                return range[0] <= db_max && range[1] >= db_min;
+                if (
+                    db_min <= turnoverRange.max &&
+                    db_max >= turnoverRange.min
+                ) {
+                    matchesTurnover = true;
+                }
             }
-            return false;
+
+            // Amount Filter
+            if (
+                item.investment_needed &&
+                typeof item.investment_needed === "number"
+            ) {
+                const investmentAmount = item.investment_needed;
+                if (
+                    investmentAmount >= amountRange.min &&
+                    investmentAmount <= amountRange.max
+                ) {
+                    matchesAmount = true;
+                }
+            }
+
+            // Include results that match both filters
+            return matchesTurnover && matchesAmount;
         });
     };
 

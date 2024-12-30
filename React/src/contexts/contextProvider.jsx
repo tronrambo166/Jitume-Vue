@@ -14,14 +14,14 @@ const StateContext = createContext({
     setToken: () => {},
 
     //CHECKOUT data
-        listing_id: null,
-        amounts: null,
-        purpose: null,
-        percent: null,
-        setListing_id: () => {},
-        setAmounts: () => {},
-        setPurpose: () => {},
-        setPercent: () => {},
+    listing_id: null,
+    amounts: null,
+    purpose: null,
+    percent: null,
+    setListing_id: () => {},
+    setAmounts: () => {},
+    setPurpose: () => {},
+    setPercent: () => {},
     //CHECKOUT data
 });
 
@@ -46,7 +46,7 @@ export const ContextProvider = ({ children }) => {
 
     const setAmounts = (amounts) => {
         _setAmounts(amounts);
-        console.log(amounts)
+        console.log("From the context we have", amounts);
     };
 
     useEffect(() => {
@@ -128,7 +128,7 @@ export const ContextProvider = ({ children }) => {
                 setListing_id,
                 setAmounts,
                 setPurpose,
-                setPercent
+                setPercent,
             }}
         >
             {children}

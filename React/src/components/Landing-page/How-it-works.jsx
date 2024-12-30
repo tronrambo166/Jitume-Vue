@@ -70,7 +70,7 @@ const HowItWorks = () => {
     ];
 
     return (
-        <div className="w-full bg-[#F1F7FE] px-4 pt-10 md:px-[34px] md:pt-[70px] aspect-[4/3] container mx-auto">
+        <div className="w-full bg-[#F1F7FE] px-4 pt-10 md:px-[34px] md:pt-[70px] pb-16 container mx-auto">
             {/* Header Section */}
             <div className="flex flex-col md:flex-row justify-between items-center">
                 <div>
