@@ -34,30 +34,43 @@ const Dashboardhero = () => {
     const { showAlert } = useAlert();
 
     useEffect(() => {
-        axiosClient
-            .get("/checkAuth")
-            .then(({ data }) => {
+        const fetchUserData = async () => {
+            try {
+                const { data } = await axiosClient.get("/checkAuth");
                 setUser(data.user);
                 setId(data.user.id);
-                MessagesCount(data.user.id);
-            })
-            .catch(() => {
+            } catch {
                 showAlert("error", "Failed to load user data. Redirecting...");
                 navigate("/");
-            })
-            .finally(() => setLoading(false));
+            } finally {
+                setLoading(false);
+            }
+        };
 
-
+        fetchUserData();
     }, []);
 
-    const MessagesCount = (id) =>{
-        axiosClient
-            .get("business/service_messages_count/"+id)
-                .then(({ data }) => {
-                    console.log('count', data);
-                    setCount(data.count);
-                })
-    }
+    useEffect(() => {
+        if (!id) return;
+
+        const fetchMessageCount = async () => {
+            try {
+                const { data } = await axiosClient.get(
+                    `business/service_messages_count/${id}`
+                );
+                console.log("count", data);
+                setCount(data.count);
+            } catch (error) {
+                console.error("Error fetching messages count:", error);
+            }
+        };
+
+        fetchMessageCount();
+
+        const interval = setInterval(fetchMessageCount, 2000); // 2 seconds for testing
+
+        return () => clearInterval(interval);
+    }, [id]);
 
     useEffect(() => {
         const handleUserUpdate = (event) => {
@@ -81,9 +94,6 @@ const Dashboardhero = () => {
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
     };
-    // Get the image URL from the user object
-    // const imageUrl = user?.image ? `../${user.image}` : userImage;
-    // console.log("Final Image URL:", imageUrl);
 
     const onLogout = (ev) => {
         ev.preventDefault();

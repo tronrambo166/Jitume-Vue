@@ -66,11 +66,9 @@ const Explore = () => {
                                 value2.count = value.total;
                         }
                         setcheckCat(true);
-                        
                     }
                     console.log(categories);
-                     setCurrentCount(data.listing_count - 1);
-                
+                    setCurrentCount(data.listing_count - 1);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -78,7 +76,7 @@ const Explore = () => {
         };
         getCards();
     }, []);
-   
+
     const onSearch = (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -129,8 +127,8 @@ const Explore = () => {
         <div className="flex flex-col items-center mt-10">
             {/* Business Categories Label */}
             <div className="mb-4 sm:mb-4">
-                <span className="text-black bg-[#F8D849] px-2 py-2 rounded-full text-sm mb-2 sm:py-2 sm:text-sm tracking-wider uppercase">
-                    • Business categories
+                <span className="text-black bg-[#F8D849] px-2 py-2 rounded-full text-sm mb-2 sm:py-2 sm:text-sm tracking-wider ">
+                    • Business Categories
                 </span>
             </div>
 
