@@ -185,7 +185,7 @@ const ListingResults = () => {
     }, [maxRange, maxPrice]);
 
     //RESUTLS 2
-    const getResults2 = () => {
+    const getResults2 = (type) => {
         axiosClient
             .get("/searchResults/" + base64_decode(resIds))
             .then(({ data }) => {
@@ -205,6 +205,16 @@ const ListingResults = () => {
             .catch((err) => {
                 console.log(err);
             });
+            if(type == 'R'){
+                max = maxRange;
+                min = 0;
+            }
+            else{
+                max2 = maxPrice;
+                min2 = 0;
+            }
+
+            
     };
     //RESUTLS 2
 
@@ -465,6 +475,7 @@ const ListingResults = () => {
         $("#collapseExample").addClass("hidden");
         $("#price_low").removeClass("hidden");
         $("#price_high").removeClass("hidden");
+        console.log(min,max)
     };
 
     const collapse2 = () => {
@@ -486,6 +497,7 @@ const ListingResults = () => {
         $("#collapseExample2").addClass("hidden");
         $("#price_low2").removeClass("hidden");
         $("#price_high2").removeClass("hidden");
+        console.log(min,max)
     };
 
     //UPDATE NEW VALUES
@@ -557,8 +569,7 @@ const ListingResults = () => {
         if (slider2 && slider2.noUiSlider) {
             slider2.noUiSlider.destroy();
         }
-        //min = 0;
-        //max = 1000000;
+        console.log(min,max)
     };
 
     //Range Function
@@ -711,7 +722,7 @@ const ListingResults = () => {
                                 <button
                                     className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
                                     onClick={(event) => {
-                                        getResults2();
+                                        getResults2('R');
                                         rangeSliderInitilize();
                                         hide();
                                     }}
@@ -724,6 +735,9 @@ const ListingResults = () => {
                     </div>
 
                     {/* Turnover Range Slider */}
+
+
+                    {/* Amount Slider Starts */}
 
                     <div
                         id="amount_slider"
@@ -743,8 +757,8 @@ const ListingResults = () => {
                                 className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
                                 onClick={(event) => {
                                     clearAmountSlider();
-                                    amountSliderInitilize();
-                                    getResults2();
+                                    //getResults2();
+                                    //rangeSliderInitilize();
                                 }}
                             >
                                 Clear
@@ -823,7 +837,7 @@ const ListingResults = () => {
                                     className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
                                     onClick={(event) => {
                                         getResults2();
-                                        amountSliderInitilize();
+                                        amountSliderInitilize('A');
                                         hide2();
                                     }}
                                 >
