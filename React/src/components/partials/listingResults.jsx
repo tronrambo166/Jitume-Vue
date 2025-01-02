@@ -59,6 +59,8 @@ const ListingResults = () => {
     // const [maxRange, setMaxRange] = useState(1000000);
     const [maxRange, setMaxRange] = useState(0);
     const [maxPrice, setMaxPrice] = useState(0); // State for storing max price
+    const [maxAfterRangeSet, setMaxAfterRangeSet] = useState(0);
+    const [minAfterRangeSet, setMinAfterRangeSet] = useState(0);
 
     const locationInputRef = useRef(null);
     const sliderRef = useRef(null);
@@ -111,8 +113,8 @@ const ListingResults = () => {
     };
 
     useEffect(() => {
-        console.log("Total Pages: ", totalPages);
-        console.log("Current Cards: ", currentCards);
+        //console.log("Total Pages: ", totalPages);
+        //console.log("Current Cards: ", currentCards);
     }, [results, currentPage]);
 
     //CORE METHODS
@@ -123,7 +125,7 @@ const ListingResults = () => {
                 .then(({ data }) => {
                     setResults(data.data);
                     res = data.data;
-                    console.log("daraaaa", data);
+                    //console.log("daraaaa", data);
 
                     // Calculate maximum turnover and investment values
                     const maxTurnover = Math.max(
@@ -475,10 +477,18 @@ const ListingResults = () => {
         $("#collapseExample").addClass("hidden");
         $("#price_low").removeClass("hidden");
         $("#price_high").removeClass("hidden");
-        console.log(min,max)
+        
+        setMinAfterRangeSet(min);
+        setMaxAfterRangeSet(max);
     };
 
     const collapse2 = () => {
+        //console.log('On after set slider 1', maxAfterRangeSet)
+        //Updating Slider 1 Values
+        UpdateValuesMax(maxAfterRangeSet);
+        UpdateValuesMin(minAfterRangeSet);
+        //Updating Slider 1 Values
+
         var slider = document.getElementById("slider2");
 
         if (slider && slider.noUiSlider) {
@@ -497,7 +507,7 @@ const ListingResults = () => {
         $("#collapseExample2").addClass("hidden");
         $("#price_low2").removeClass("hidden");
         $("#price_high2").removeClass("hidden");
-        console.log(min,max)
+        console.log('On set',min,max)
     };
 
     //UPDATE NEW VALUES
@@ -568,6 +578,9 @@ const ListingResults = () => {
         var slider2 = document.getElementById("slider2");
         if (slider2 && slider2.noUiSlider) {
             slider2.noUiSlider.destroy();
+        }
+        if (slider && slider.noUiSlider) {
+            slider.noUiSlider.destroy();
         }
         console.log(min,max)
     };
@@ -758,7 +771,7 @@ const ListingResults = () => {
                                 onClick={(event) => {
                                     clearAmountSlider();
                                     //getResults2();
-                                    //rangeSliderInitilize();
+                                    rangeSliderInitilize();
                                 }}
                             >
                                 Clear
