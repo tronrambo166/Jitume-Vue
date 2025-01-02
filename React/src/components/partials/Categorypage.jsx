@@ -338,8 +338,8 @@ const CategoryPage = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const paginatedCards = filteredCards.slice(startIndex, endIndex);
-    const realstep = 1;
-    const realstep2 = 1;
+    const realstep = step;
+    const realstep2 = step2;
 
     return (
         <>
@@ -747,7 +747,7 @@ const CategoryPage = () => {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {filteredCards.length === 0 ? (
+                        {filteredCards.length == 0 ? (
                             <p className="text-center text-gray-500 col-span-full">
                                 No listings available.
                             </p>
@@ -769,7 +769,7 @@ const CategoryPage = () => {
                                             className="w-full h-60 sm:h-48 object-cover rounded-lg"
                                         />
                                         <p className="text-sm sm:text-base mt-2 mb-2 font-semibold text-[#1E293B]">
-                                            #Motorcycle Transport #Bikes
+                                            {card.category}
                                         </p>
                                         <div className="mt-3 flex-grow">
                                             <h2 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold">

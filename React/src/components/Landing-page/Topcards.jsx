@@ -1,8 +1,8 @@
 import { FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import Frame1 from "../../images/Frame1.png";
-import Frame2 from "../../images/Frame 2.png";
-import Frame3 from "../../images/Frame 3.png";
+import Frame2 from "../../assets/sev/renewable.jpg";
+import Frame3 from "../../assets/sev/image.png";
 
 const TopCards = () => {
     const navigate = useNavigate(); // Initialize useNavigate hook
