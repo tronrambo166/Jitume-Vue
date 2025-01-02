@@ -82,16 +82,24 @@ const CategoryPage = ({ categoryName }) => {
     );
 
     const step = Math.round(maxPrice / 100); // Determine step size for slider marks
-     
 
     const realstep = 1;
-    // Create marks for the slider
-    const sliderMarks = {};
 
+    const [hoverValue, setHoverValue] = useState(null); // State for hovered value
+
+    // Generate slider marks
+    const sliderMarks = {};
     for (let i = 0; i <= maxPrice; i += step) {
-        // Display '|' instead of numbers for marks
         sliderMarks[i] = i % (step * 5) === 0 ? "|" : ""; // Vertical line every 5 steps
     }
+
+    const handleMarkHover = (value) => {
+        setHoverValue(value); // Set hovered value
+    };
+
+    const handleMarkLeave = () => {
+        setHoverValue(null); // Clear hovered value
+    };
 
     // Example output of sliderMarks for debugging
     console.log(sliderMarks);
@@ -224,17 +232,16 @@ const CategoryPage = ({ categoryName }) => {
                         </button>
                     </div>
 
-                    <div className="py-4" id="sliderElement">
-                        {/* Slider element */}
+                    <div className="py-4 relative" id="sliderElement">
                         <Slider
                             range
                             min={0}
                             max={maxPrice}
-                            step={realstep} // Dynamic step: divide maxPrice into 100 parts
+                            step={realstep}
                             value={range}
                             onChange={handleAmountChange}
                             trackStyle={{
-                                backgroundColor: "#15803D", // Dark green for track
+                                backgroundColor: "#15803D",
                                 height: "8px",
                                 borderRadius: "5px",
                             }}
@@ -243,14 +250,44 @@ const CategoryPage = ({ categoryName }) => {
                                 height: "24px",
                                 width: "24px",
                                 marginTop: "-8px",
-                                backgroundColor: "#15803D", // Dark green for handles
+                                backgroundColor: "#15803D",
                                 borderRadius: "50%",
                                 border: "2px solid white",
                             }}
                             activeDotStyle={{ display: "none" }}
                             dotStyle={{ display: "none" }}
-                            marks={sliderMarks}
+                            marks={Object.keys(sliderMarks).reduce(
+                                (acc, key) => {
+                                    acc[key] = (
+                                        <div
+                                            onMouseEnter={() =>
+                                                handleMarkHover(key)
+                                            }
+                                            onMouseLeave={handleMarkLeave}
+                                            style={{ cursor: "pointer" }}
+                                        >
+                                            {sliderMarks[key]}
+                                        </div>
+                                    );
+                                    return acc;
+                                },
+                                {}
+                            )}
                         />
+
+                        {/* Tooltip */}
+                        {/* {hoverValue !== null && (
+                            <div
+                                className="absolute bg-black/50 text-white text-xs rounded p-1"
+                                style={{
+                                    top: "-30px",
+                                    left: `${(hoverValue / maxPrice) * 100}%`,
+                                    transform: "translateX(-50%)",
+                                }}
+                            >
+                                {hoverValue}
+                            </div>
+                        )} */}
                     </div>
 
                     <div

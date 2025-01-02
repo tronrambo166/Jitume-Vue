@@ -20,19 +20,45 @@ const CategoryPage = () => {
 
     const { name } = useParams();
 
-    const step = Math.round(maxPrice / 100); 
+    const step = Math.round(maxPrice / 100);
+
+    // Generate slider marks
+    const [hoverValue, setHoverValue] = useState(null); // State for hovered mark value
 
     const sliderMarks = {};
     for (let i = 0; i <= maxPrice; i += step) {
-        sliderMarks[i] = i % (step * 5) === 0 ? "|" : "";
+        sliderMarks[i] = i % (step * 5) === 0 ? "|" : ""; // Vertical line every 5 steps
     }
+
+    const handleMarkHover = (value) => {
+        setHoverValue(value); // Set hovered mark value
+    };
+
+    const handleMarkLeave = () => {
+        setHoverValue(null); // Clear hovered mark value
+    };
+
+
+    // Generate slider marks2
+    const [hoverValue2, setHoverValue2] = useState(null); // State for hovered mark value
+
 
     const step2 = Math.round(maxTurnover / 100);
 
-    const sliderMarksTurnover = {};
+     const sliderMarksTurnover = {};
     for (let i = 0; i <= maxTurnover; i += step2) {
-        sliderMarksTurnover[i] = i % (step2 * 5) === 0 ? "|" : "";
+        sliderMarksTurnover[i] = i % (step2 * 5) === 0 ? "|" : ""; // Vertical line every 5 steps
     }
+
+    const handleMarkHover2 = (value) => {
+        setHoverValue2(value); // Set hovered mark value
+    };
+
+    const handleMarkLeave2 = () => {
+        setHoverValue2(null); // Clear hovered mark value
+    };
+    
+
 
     const [collapseAmountRange, setCollapseAmountRange] = useState(false);
     const [collapseTurnoverRange, setCollapseTurnoverRange] = useState(false);
@@ -363,31 +389,78 @@ const CategoryPage = () => {
                                 </button>
                             </div>
 
-                            <div id="sliderElement1" className="py-4">
+                            <div className="py-4 relative" id="sliderElement1">
                                 <Slider
                                     range
                                     min={0}
-                                    max={maxTurnover}
-                                    step={realstep}
-                                    value={turnoverRange}
-                                    onChange={handleTurnoverChange}
-                                    trackStyle={{
-                                        backgroundColor: "#15803D",
-                                        height: "10px",
-                                    }}
-                                    handleStyle={{
-                                        borderColor: "white",
-                                        height: "18px",
-                                        width: "18px",
-                                        marginTop: "-4px",
-                                        backgroundColor: "#15803D",
-                                        borderRadius: "50%",
-                                        border: "2px solid white",
-                                    }}
+                                    max={maxTurnover} // Updated for turnover range
+                                    step={realstep} // Your defined step for turnover
+                                    value={turnoverRange} // Controlled component for turnover
+                                    onChange={handleTurnoverChange} // Handles state changes
+                                    trackStyle={[
+                                        {
+                                            backgroundColor: "#15803D",
+                                            height: "10px",
+                                        },
+                                    ]}
+                                    handleStyle={[
+                                        {
+                                            borderColor: "white",
+                                            height: "18px",
+                                            width: "18px",
+                                            marginTop: "-4px",
+                                            backgroundColor: "#15803D",
+                                            borderRadius: "50%",
+                                            border: "2px solid white",
+                                        },
+                                        {
+                                            borderColor: "white",
+                                            height: "18px",
+                                            width: "18px",
+                                            marginTop: "-4px",
+                                            backgroundColor: "#15803D",
+                                            borderRadius: "50%",
+                                            border: "2px solid white",
+                                        },
+                                    ]}
                                     activeDotStyle={{ display: "none" }}
                                     dotStyle={{ display: "none" }}
-                                    marks={sliderMarksTurnover}
+                                    marks={Object.keys(
+                                        sliderMarksTurnover
+                                    ).reduce((acc, key) => {
+                                        acc[key] = (
+                                            <div
+                                                onMouseEnter={() =>
+                                                    handleMarkHover2(key)
+                                                }
+                                                onMouseLeave={handleMarkLeave2}
+                                                style={{
+                                                    cursor: "pointer",
+                                                }}
+                                            >
+                                                {sliderMarksTurnover[key]}
+                                            </div>
+                                        );
+                                        return acc;
+                                    }, {})}
                                 />
+
+                                {/* Tooltip */}
+                                {/* {hoverValue2 !== null && (
+                                    <div
+                                        className="absolute bg-black/50 text-white text-xs rounded p-1"
+                                        style={{
+                                            top: "-30px", // Position above the slider
+                                            left: `${
+                                                (hoverValue2 / maxTurnover) *
+                                                100
+                                            }%`, // Tooltip position based on hovered mark value
+                                            transform: "translateX(-50%)", // Center tooltip over the mark
+                                        }}
+                                    >
+                                        {hoverValue2}
+                                    </div>
+                                )} */}
                             </div>
 
                             <div
@@ -498,7 +571,7 @@ const CategoryPage = () => {
                                 </button>
                             </div>
 
-                            <div className="py-4" id="sliderElement">
+                            <div className="py-4 relative" id="sliderElement">
                                 <Slider
                                     range
                                     min={0}
@@ -534,9 +607,46 @@ const CategoryPage = () => {
                                     ]} // Separate handles for range slider
                                     activeDotStyle={{ display: "none" }}
                                     dotStyle={{ display: "none" }}
-                                    marks={sliderMarks}
+                                    marks={Object.keys(sliderMarks).reduce(
+                                        (acc, key) => {
+                                            acc[key] = (
+                                                <div
+                                                    onMouseEnter={() =>
+                                                        handleMarkHover(key)
+                                                    }
+                                                    onMouseLeave={
+                                                        handleMarkLeave
+                                                    }
+                                                    style={{
+                                                        cursor: "pointer",
+                                                    }}
+                                                >
+                                                    {sliderMarks[key]}
+                                                </div>
+                                            );
+                                            return acc;
+                                        },
+                                        {}
+                                    )}
                                 />
+
+                                {/* Tooltip */}
+                                {/* {hoverValue !== null && (
+                                    <div
+                                        className="absolute bg-black/50 text-white text-xs rounded p-1"
+                                        style={{
+                                            top: "-30px",
+                                            left: `${
+                                                (hoverValue / maxPrice) * 100
+                                            }%`,
+                                            transform: "translateX(-50%)",
+                                        }}
+                                    >
+                                        {hoverValue}
+                                    </div>
+                                )} */}
                             </div>
+
                             <div
                                 className="flex justify-between mt-6 text-gray-600 dark:text-gray-400 text-sm"
                                 id="amountRangeDisplay"

@@ -22,9 +22,9 @@ const TopCards = () => {
         },
         {
             id: 3,
-            title: "Delve into Arts & Culture",
+            title: "Delve Into Tech",
             image: Frame3,
-            category: "arts-culture", // Add category name for navigation
+            category: "technology-communications", // Add category name for navigation
         },
     ];
 
