@@ -1,7 +1,7 @@
 import { FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import Frame1 from "../../images/Frame1.png";
-import Frame2 from "../../assets/sev/renewable.jpg";
+import Frame2 from "../../assets/sev/renewableenergy.jpg";
 import Frame3 from "../../assets/sev/image.png";
 
 const TopCards = () => {
@@ -44,8 +44,11 @@ const TopCards = () => {
                         <img
                             src={card.image}
                             alt={card.title}
-                            className="w-full h-60 object-cover rounded-lg transition-transform duration-300 transform hover:scale-105"
+                            className={`w-full h-60 object-cover rounded-lg transition-transform duration-300 transform hover:scale-105 ${
+                                card.id === 2 ? "brightness-90" : ""
+                            }`}
                         />
+
                         <div className="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-center">
                             <p className="text-white text-lg font-semibold">
                                 {card.title}
