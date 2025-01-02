@@ -358,11 +358,9 @@ function CreateInvestorAccount({ isOpen, onClose }) {
     };
 
     return (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-50">
-           
-                
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex justify-center items-start z-50 overflow-y-auto">
             <div
-                className={`bg-white p-6 shadow-lg w-[900px] ${
+                className={`bg-white  rounded-xl m-3 p-4 sm:p-6 relative w-[95vw] max-w-[500px] sm:w-[85vw] sm:max-w-[450px] lg:w-[70vw] lg:max-w-[500px] mx-auto mt-3 sm:mt-20 overflow-hidden ${
                     isSignIn ? "max-w-md min-h-[500px]" : "max-w-2xl"
                 } max-h-[100vh] overflow-hidden relative rounded-xl flex flex-col`}
             >
@@ -534,6 +532,8 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                 Step 1 of 3
                                             </h2>
                                         </div>
+                                        <hr className="my-4"></hr>
+
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             {/* First Name */}
                                             <div className="relative">
@@ -803,21 +803,22 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                     </p>
                                                 )}
                                             </div>
+                                        </div>
+                                        <hr className="my-4"></hr>
 
-                                            <div className="mt-4 flex justify-center md:justify-end">
-                                                <button
-                                                    type="button"
-                                                    onClick={handleNext}
-                                                    className="btn btn-primary px-20 rounded-full"
-                                                    disabled={loading} // Disable the button when loading
-                                                >
-                                                    {loading ? (
-                                                        <AiOutlineLoading3Quarters className="animate-spin w-6 h-6 text-white" /> // Spinner icon
-                                                    ) : (
-                                                        "Next"
-                                                    )}
-                                                </button>
-                                            </div>
+                                        <div className="mt-4 flex justify-center lg:justify-end">
+                                            <button
+                                                type="button"
+                                                onClick={handleNext}
+                                                className="btn btn-primary px-20 rounded-full"
+                                                disabled={loading} // Disable the button when loading
+                                            >
+                                                {loading ? (
+                                                    <AiOutlineLoading3Quarters className="animate-spin w-6 h-6 text-white" /> // Spinner icon
+                                                ) : (
+                                                    "Next"
+                                                )}
+                                            </button>
                                         </div>
                                     </>
                                 )}
@@ -833,6 +834,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                 Step 2 of 3
                                             </h2>
                                         </div>
+                                        <hr className="my-4"></hr>
                                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 overflow-y-auto no-scrollbar">
                                             <div className="relative">
                                                 <label className="block text-gray-700 text-sm mb-1">
@@ -1058,6 +1060,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                 </a>
                                             </label>
                                         </div>
+                                        <hr className="my-4"></hr>
                                         <div className="flex mt-5 items-center justify-between ">
                                             <button
                                                 type="button"
@@ -1068,7 +1071,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                             </button>
                                             <button
                                                 type="submit"
-                                                className="btn btn-primary rounded-full flex items-center justify-center  sm:w-1/3 sm:ml-auto"
+                                                className="btn btn-primary whitespace-nowrap rounded-full flex items-center justify-center  sm:w-1/3 sm:ml-auto"
                                                 disabled={loading}
                                             >
                                                 {loading ? (

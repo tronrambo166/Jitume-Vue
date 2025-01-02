@@ -71,24 +71,27 @@ const ServiceResults = () => {
                 .get("/ServiceResults/" + base64_decode(resIds))
                 .then(({ data }) => {
                     setResults(data.data);
+                    res = data.data;
+                    // console.log(data);
+                    // Geolocation code
+                    var x = navigator.geolocation;
+                    x.getCurrentPosition(success, failure);
 
                     // Find the maximum price from the data
+                    // const maxPrice = 1000000
                     const maxPrice = Math.max(
                         ...data.data.map((item) =>
                             parseFloat(item.price.replace(",", ""))
                         )
                     );
                     setMaxPrice(maxPrice); // Set the max price to state
+                    
 
                     // Store the results in localStorage
                     localStorage.setItem(
                         "s_results",
                         JSON.stringify(data.data)
                     );
-
-                    // Geolocation code
-                    var x = navigator.geolocation;
-                    x.getCurrentPosition(success, failure);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -110,28 +113,30 @@ const ServiceResults = () => {
             .then(({ data }) => {
                 setResults(data.data);
                 res = data.data;
-                //console.log(data);
-                localStorage.setItem("s_results", JSON.stringify(data.data));
-
                 var x = navigator.geolocation;
                 x.getCurrentPosition(success, failure);
+                //console.log(data);
+                localStorage.setItem("s_results", JSON.stringify(data.data));
             })
             .catch((err) => {
                 console.log(err);
             });
+             max = maxPrice;
+             min = 0;
     };
+
     //RESULTS
 
     // Nurul/Owen
     const amountSlider = () => {
         noUiSlider.create(slider, {
-            start: [0, 1000000],
+            start: [0, max],
             connect: true,
             range: {
                 min: parseFloat(min),
                 max: parseFloat(max),
             },
-            step: 1000,
+            step: 1,
             margin: 600,
             pips: {
                 stepped: true,
@@ -187,6 +192,7 @@ const ServiceResults = () => {
         });
     };
 
+  
     const search = () => {
         // let filteredResults = dummyResults;
         // if (selectedCategory) {
@@ -251,7 +257,7 @@ const ServiceResults = () => {
         Object.entries(res).map(([key, value]) => {
             //INFO
             const contentString =
-                '<a className ="info_map py-0 font-weight-bold  text-center" target="_blank" href="/service-details/' +
+                '<a class="info_map py-0 font-weight-bold  text-center" target="_blank" href="/service-details/' +
                 btoa(btoa(value.id)) +
                 '">' +
                 value.name +

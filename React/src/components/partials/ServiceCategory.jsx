@@ -81,13 +81,21 @@ const CategoryPage = ({ categoryName }) => {
                 nameQuery === "")
     );
 
-    const sliderMarks = {};
-    const step = Math.floor(maxPrice / 5); // Determine step size for slider marks
+    const step = Math.round(maxPrice / 100); // Determine step size for slider marks
+     
 
+    const realstep = 1;
     // Create marks for the slider
+    const sliderMarks = {};
+
     for (let i = 0; i <= maxPrice; i += step) {
-        sliderMarks[i] = `$${(i / 1000).toFixed(1)}K`;
+        // Display '|' instead of numbers for marks
+        sliderMarks[i] = i % (step * 5) === 0 ? "|" : ""; // Vertical line every 5 steps
     }
+
+    // Example output of sliderMarks for debugging
+    console.log(sliderMarks);
+
     const toggleCollapse = (id) => {
         const element = document.getElementById(id);
         const slider = document.getElementById("sliderElement"); // ID for the slider container
@@ -222,7 +230,7 @@ const CategoryPage = ({ categoryName }) => {
                             range
                             min={0}
                             max={maxPrice}
-                            step={Math.round(maxPrice / 100)} // Dynamic step: divide maxPrice into 100 parts
+                            step={realstep} // Dynamic step: divide maxPrice into 100 parts
                             value={range}
                             onChange={handleAmountChange}
                             trackStyle={{
@@ -241,6 +249,7 @@ const CategoryPage = ({ categoryName }) => {
                             }}
                             activeDotStyle={{ display: "none" }}
                             dotStyle={{ display: "none" }}
+                            marks={sliderMarks}
                         />
                     </div>
 

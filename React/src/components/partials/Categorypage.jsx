@@ -20,15 +20,19 @@ const CategoryPage = () => {
 
     const { name } = useParams();
 
-    // Helper function to calculate marks dynamically
-    const calculateMarks = (maxValue) => {
-        const stepSize = maxValue <= 10 ? 1 : Math.ceil(maxValue / 5);
-        const marks = {};
-        for (let i = 0; i <= maxValue; i += stepSize) {
-            marks[i] = i.toLocaleString(); // Format numbers for display
-        }
-        return { marks, step: stepSize };
-    };
+    const step = Math.round(maxPrice / 100); 
+
+    const sliderMarks = {};
+    for (let i = 0; i <= maxPrice; i += step) {
+        sliderMarks[i] = i % (step * 5) === 0 ? "|" : "";
+    }
+
+    const step2 = Math.round(maxTurnover / 100);
+
+    const sliderMarksTurnover = {};
+    for (let i = 0; i <= maxTurnover; i += step2) {
+        sliderMarksTurnover[i] = i % (step2 * 5) === 0 ? "|" : "";
+    }
 
     const [collapseAmountRange, setCollapseAmountRange] = useState(false);
     const [collapseTurnoverRange, setCollapseTurnoverRange] = useState(false);
@@ -49,9 +53,6 @@ const CategoryPage = () => {
         // Ensure the other collapsible section remains unaffected
         setCollapseAmountRange(false);
     };
-    const { marks: sliderMarks, step: stepAmount } = calculateMarks(maxPrice);
-    const { marks: sliderMarksTurnover, step: stepTurnover } =
-        calculateMarks(maxTurnover);
 
     const [maxx, setMaxx] = useState(0); // Default maximum investment
     const [maxx2, setMaxx2] = useState(0); // Default maximum turnover
@@ -311,6 +312,8 @@ const CategoryPage = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const paginatedCards = filteredCards.slice(startIndex, endIndex);
+    const realstep = 1;
+    const realstep2 = 1;
 
     return (
         <>
@@ -365,7 +368,7 @@ const CategoryPage = () => {
                                     range
                                     min={0}
                                     max={maxTurnover}
-                                    step={100}
+                                    step={realstep}
                                     value={turnoverRange}
                                     onChange={handleTurnoverChange}
                                     trackStyle={{
@@ -383,6 +386,7 @@ const CategoryPage = () => {
                                     }}
                                     activeDotStyle={{ display: "none" }}
                                     dotStyle={{ display: "none" }}
+                                    marks={sliderMarksTurnover}
                                 />
                             </div>
 
@@ -499,7 +503,7 @@ const CategoryPage = () => {
                                     range
                                     min={0}
                                     max={maxPrice}
-                                    step={100}
+                                    step={realstep2}
                                     value={amountRange} // Controlled component
                                     onChange={handleAmountChange} // Handles state changes
                                     trackStyle={[
@@ -530,6 +534,7 @@ const CategoryPage = () => {
                                     ]} // Separate handles for range slider
                                     activeDotStyle={{ display: "none" }}
                                     dotStyle={{ display: "none" }}
+                                    marks={sliderMarks}
                                 />
                             </div>
                             <div

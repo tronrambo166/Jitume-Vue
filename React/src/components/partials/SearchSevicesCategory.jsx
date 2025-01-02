@@ -97,6 +97,11 @@ const Search = ({ value, setLocationQuery, setNameQuery }) => {
         console.log("Location chosen is:", location);
         console.log("Search item is:", searchItem);
     };
+      const handleKeyDown = (event) => {
+          if (event.key === "Enter") {
+              handleSearchSubmit();
+          }
+      };
 
     return (
         <div className="px-4 sm:px-0 w-full">
@@ -142,6 +147,7 @@ const Search = ({ value, setLocationQuery, setNameQuery }) => {
                             placeholder="Location"
                             className="h-full focus:outline-none rounded-lg sm:rounded-lg lg:rounded-none w-full pl-8 text-lg py-2"
                             value={location}
+                            onKeyDown={handleKeyDown}
                             onChange={handleLocationChange}
                         />
                         {suggestions.length > 0 && (
@@ -174,6 +180,7 @@ const Search = ({ value, setLocationQuery, setNameQuery }) => {
                             placeholder="What Are You Looking For?"
                             className="h-full focus:outline-none w-full pl-8 rounded-lg sm:rounded-lg lg:rounded-none text-lg py-2"
                             value={searchItem} // Bind searchItem to the input
+                            onKeyDown={handleKeyDown}
                             onChange={(e) => setSearchItem(e.target.value)} // Update searchItem state
                         />
                     </div>
