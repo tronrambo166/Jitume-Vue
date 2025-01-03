@@ -62,6 +62,9 @@ const ListingResults = () => {
     const [maxAfterRangeSet, setMaxAfterRangeSet] = useState(0);
     const [minAfterRangeSet, setMinAfterRangeSet] = useState(0);
 
+    const [maxAfterAmSet, setMaxAfterAmSet] = useState(0);
+    const [minAfterAmSet, setMinAfterAmSet] = useState(0);
+
     const locationInputRef = useRef(null);
     const sliderRef = useRef(null);
 
@@ -161,6 +164,7 @@ const ListingResults = () => {
                 .catch((err) => {
                     console.log(err);
                 });
+                console.log('get res 1', min, max);
         };
 
         getResults();
@@ -215,6 +219,7 @@ const ListingResults = () => {
                 max2 = maxPrice;
                 min2 = 0;
             }
+            console.log('get res 2', min, max);
 
             
     };
@@ -222,6 +227,12 @@ const ListingResults = () => {
 
     //Turnover(Nurul)
     const rangeSliderInitilize = () => {
+        
+        if(maxAfterRangeSet !=0){
+            min = minAfterRangeSet;
+            max = maxAfterRangeSet;
+        }
+
         noUiSlider.create(slider, {
             start: [0, max],
             connect: true,
@@ -257,8 +268,9 @@ const ListingResults = () => {
                 min: parseFloat(values[0]),
                 max: parseFloat(values[1]),
             };
-            const amountRange = slider2.noUiSlider.get(); // Get current amount range
 
+            const amountRange = slider2.noUiSlider? slider2.noUiSlider.get():[];
+             // Get current amount range
             const filteredResults = filterResults(savedResults, turnoverRange, {
                 min: parseFloat(amountRange[0]),
                 max: parseFloat(amountRange[1]),
@@ -271,6 +283,12 @@ const ListingResults = () => {
 
     // Amount(OWEN)
     const amountSliderInitilize = () => {
+
+        if(maxAfterAmSet !=0){
+            min = minAfterAmSet;
+            max = maxAfterAmSet;
+        }
+
         noUiSlider.create(slider2, {
             start: [0, 1000000],
             connect: true,
@@ -458,6 +476,13 @@ const ListingResults = () => {
 
     //Range Function
     const collapse = () => {
+        //Updating Slider 1 Values
+        if(maxAfterAmSet!=0){
+        UpdateValuesMax2(maxAfterAmSet);
+        UpdateValuesMin2(minAfterAmSet);
+        }
+        //Updating Slider 1 Values
+
         var slider = document.getElementById("slider");
 
         if (slider && slider.noUiSlider) {
@@ -483,11 +508,14 @@ const ListingResults = () => {
     };
 
     const collapse2 = () => {
-        //console.log('On after set slider 1', maxAfterRangeSet)
+        
         //Updating Slider 1 Values
-        UpdateValuesMax(maxAfterRangeSet);
-        UpdateValuesMin(minAfterRangeSet);
+        if(maxAfterRangeSet!=0){
+            UpdateValuesMax(maxAfterRangeSet);
+            UpdateValuesMin(minAfterRangeSet);
+        }
         //Updating Slider 1 Values
+        console.log('On after set slider 1', min, max)
 
         var slider = document.getElementById("slider2");
 
@@ -507,7 +535,8 @@ const ListingResults = () => {
         $("#collapseExample2").addClass("hidden");
         $("#price_low2").removeClass("hidden");
         $("#price_high2").removeClass("hidden");
-        console.log('On set',min,max)
+        setMinAfterAmSet(min2);
+        setMaxAfterAmSet(max2);
     };
 
     //UPDATE NEW VALUES
@@ -567,22 +596,28 @@ const ListingResults = () => {
     };
 
     const clearRangeSlider = () => {
+        var slider2 = document.getElementById("slider2");
         var slider = document.getElementById("slider");
+        
         if (slider && slider.noUiSlider) {
             slider.noUiSlider.destroy();
+        }
+        if (slider2 && slider2.noUiSlider) {
+            slider2.noUiSlider.destroy();
         }
         //min = 0;
         //max = 1000000;
     };
     const clearAmountSlider = () => {
         var slider2 = document.getElementById("slider2");
+        var slider = document.getElementById("slider");
         if (slider2 && slider2.noUiSlider) {
             slider2.noUiSlider.destroy();
         }
         if (slider && slider.noUiSlider) {
             slider.noUiSlider.destroy();
         }
-        console.log(min,max)
+        console.log('After clear', min,max)
     };
 
     //Range Function
@@ -655,8 +690,9 @@ const ListingResults = () => {
                                 className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
                                 onClick={(event) => {
                                     clearRangeSlider();
+                                    amountSliderInitilize();
                                     rangeSliderInitilize();
-                                    getResults2();
+                                    //getResults2();
                                 }}
                             >
                                 Clear
@@ -772,6 +808,7 @@ const ListingResults = () => {
                                     clearAmountSlider();
                                     //getResults2();
                                     rangeSliderInitilize();
+                                    amountSliderInitilize();
                                 }}
                             >
                                 Clear
