@@ -345,6 +345,13 @@ const CategoryPage = ({ categoryName }) => {
                                     onChange={(e) =>
                                         UpdateValuesMin(e.target.value)
                                     }
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                            document
+                                                .getElementById("maxAmount")
+                                                .focus(); // Move focus to maxAmount input
+                                        }
+                                    }}
                                 />
                             </div>
 
@@ -364,12 +371,20 @@ const CategoryPage = ({ categoryName }) => {
                                     onChange={(e) =>
                                         UpdateValuesMax(e.target.value)
                                     }
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                            document
+                                                .getElementById("setButton")
+                                                .focus(); // Move focus to Set button
+                                        }
+                                    }}
                                 />
                             </div>
                         </div>
 
                         <div className="mt-6 flex justify-between">
                             <button
+                                id="setButton"
                                 className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
                                 onClick={() => {
                                     handleSetRange();
@@ -378,7 +393,7 @@ const CategoryPage = ({ categoryName }) => {
                                 Set
                             </button>
                             <button
-                                className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
+                                className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
                                 onClick={Cancel}
                             >
                                 Cancel
