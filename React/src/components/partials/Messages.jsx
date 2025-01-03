@@ -3,6 +3,7 @@ import { AiOutlineReload } from "react-icons/ai"; // Retry icon
 import { FiSend } from "react-icons/fi"; // Send icon
 import axiosClient from "../../axiosClient";
 import SkeletonLoader from "./SkeletonLoader";
+import { FaArrowCircleLeft } from "react-icons/fa";
 
 function Messages() {
     const [messages, setMessages] = useState([]);
@@ -297,7 +298,13 @@ function Messages() {
                 {selectedMessage ? (
                     <>
                         {/* Chat Header */}
-                        <div className="p-4 bg-white flex items-center border-b">
+                        <div className="p-4 bg-white fixed-top w-full z-50 flex items-center border-b">
+                            <button
+                                onClick={() => setSelectedMessage(null)} // Reset selectedMessage to null
+                                className="text-blue-500 hover:text-blue-700"
+                            >
+                                <FaArrowCircleLeft className="text-green-600" />
+                            </button>
                             <img
                                 src={
                                     selectedMessage.avatarUrl ||
@@ -378,7 +385,7 @@ function Messages() {
                         </div>
 
                         {/* Message Input */}
-                        <div className="p-4 border-t flex items-center sticky bottom-0 bg-white z-10 shadow-lg">
+                        <div className="p-4  border-t flex items-center fixed-bottom-0 bg-white z-10 shadow-lg">
                             <textarea
                                 className="flex-1 border rounded-lg p-3 mr-3 focus:ring-2 focus:ring-green-500 resize-none text-gray-800 shadow-sm placeholder-gray-400"
                                 rows="1"

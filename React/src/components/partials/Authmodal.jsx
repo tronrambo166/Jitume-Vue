@@ -79,12 +79,7 @@ const Modal = ({ isOpen, onClose }) => {
                 <div className="overflow-y-auto max-h-[calc(100vh-180px)] thin-scrollbar">
                     {isLogin ? (
                         <div>
-                            <h2 className="text-center text-lg font-semibold mb-2">
-                                Sign In
-                            </h2>
-                            <p className="text-center text-sm text-gray-600 mb-4">
-                                Enter details to log in
-                            </p>
+                            
                             <LoginForm />
                         </div>
                     ) : (
