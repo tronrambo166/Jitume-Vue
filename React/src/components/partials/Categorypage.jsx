@@ -20,45 +20,7 @@ const CategoryPage = () => {
 
     const { name } = useParams();
 
-    const step = Math.round(maxPrice / 100);
-
-    // Generate slider marks
-    const [hoverValue, setHoverValue] = useState(null); // State for hovered mark value
-
-    const sliderMarks = {};
-    for (let i = 0; i <= maxPrice; i += step) {
-        sliderMarks[i] = i % (step * 5) === 0 ? "|" : ""; // Vertical line every 5 steps
-    }
-
-    const handleMarkHover = (value) => {
-        setHoverValue(value); // Set hovered mark value
-    };
-
-    const handleMarkLeave = () => {
-        setHoverValue(null); // Clear hovered mark value
-    };
-
-
-    // Generate slider marks2
-    const [hoverValue2, setHoverValue2] = useState(null); // State for hovered mark value
-
-
-    const step2 = Math.round(maxTurnover / 100);
-
-     const sliderMarksTurnover = {};
-    for (let i = 0; i <= maxTurnover; i += step2) {
-        sliderMarksTurnover[i] = i % (step2 * 5) === 0 ? "|" : ""; // Vertical line every 5 steps
-    }
-
-    const handleMarkHover2 = (value) => {
-        setHoverValue2(value); // Set hovered mark value
-    };
-
-    const handleMarkLeave2 = () => {
-        setHoverValue2(null); // Clear hovered mark value
-    };
-    
-
+    // Helper function to calculate marks dynamically
 
     const [collapseAmountRange, setCollapseAmountRange] = useState(false);
     const [collapseTurnoverRange, setCollapseTurnoverRange] = useState(false);
@@ -79,6 +41,28 @@ const CategoryPage = () => {
         // Ensure the other collapsible section remains unaffected
         setCollapseAmountRange(false);
     };
+
+    const calculateMarks = (maxValue) => {
+        const stepSize = maxValue <= 10 ? 1 : Math.ceil(maxValue / 5);
+        const marks = {};
+        for (let i = 0; i <= maxValue; i += stepSize) {
+            marks[i] = i.toLocaleString(); // Format numbers for display
+        }
+        return { marks, step: stepSize };
+    };
+
+    const { marks: sliderMarks } = calculateMarks(maxPrice);
+    const { marks: sliderMarksTurnover } = calculateMarks(maxTurnover);
+    const step = Math.round(maxPrice / 100); // Determine step size for slider marks
+
+    for (let i = 0; i <= maxPrice; i += step) {
+        sliderMarks[i] = i % (step * 5) === 0 ? "|" : ""; // Vertical line every 5 steps
+    }
+    const step2 = Math.round(maxTurnover / 100); // Determine step size for slider marks
+
+    for (let i = 0; i <= maxTurnover; i += step2) {
+        sliderMarksTurnover[i] = i % (step2 * 5) === 0 ? "|" : ""; // Vertical line every 5 steps
+    }
 
     const [maxx, setMaxx] = useState(0); // Default maximum investment
     const [maxx2, setMaxx2] = useState(0); // Default maximum turnover
@@ -147,36 +131,94 @@ const CategoryPage = () => {
     console.log(formatWithCommas(maxx)); // For formatted maxx
     console.log(formatWithCommas(maxx2)); // For formatted maxx2
 
+
+
+    const filterCardsByLocationAndName = () => {
+        setLoading(true); // Trigger loading for location and name filters
+
+        setTimeout(() => {
+            const filtered = cards.filter((card) => {
+                const investmentNeeded =
+                    parseFloat(card.investment_needed.replace(/,/g, "")) || 0;
+
+                // Parse the turnover range
+                const turnoverRangeArray = card.y_turnover
+                    .split("-")
+                    .map((v) => parseFloat(v.trim()) || 0);
+                const minTurnoverValue = Math.min(...turnoverRangeArray);
+                const maxTurnoverValue = Math.max(...turnoverRangeArray);
+
+                // Check for overlap with the selected turnover range
+                const turnoverInRange =
+                    minTurnoverValue <= turnoverRange[1] &&
+                    maxTurnoverValue >= turnoverRange[0];
+
+                return (
+                    investmentNeeded >= amountRange[0] &&
+                    investmentNeeded <= amountRange[1] &&
+                    turnoverInRange &&
+                    (locationQuery === "" ||
+                        card.location
+                            .toLowerCase()
+                            .includes(locationQuery.toLowerCase())) &&
+                    (nameQuery === "" ||
+                        card.name
+                            .toLowerCase()
+                            .includes(nameQuery.toLowerCase()))
+                );
+            });
+
+            setFilteredCards(filtered);
+            setLoading(false); // Stop loading
+        }, 2000); // Add a 2-second delay
+    };
+
     const filterCards = () => {
         const filtered = cards.filter((card) => {
             const investmentNeeded =
                 parseFloat(card.investment_needed.replace(/,/g, "")) || 0;
-            const turnover = Math.max(
-                ...card.y_turnover
-                    .split("-")
-                    .map((v) => parseFloat(v.trim()) || 0)
-            );
+
+            // Parse the turnover range
+            const turnoverRangeArray = card.y_turnover
+                .split("-")
+                .map((v) => parseFloat(v.trim()) || 0);
+            const minTurnoverValue = Math.min(...turnoverRangeArray);
+            const maxTurnoverValue = Math.max(...turnoverRangeArray);
+
+            // Check for overlap with the selected turnover range
+            const turnoverInRange =
+                minTurnoverValue <= turnoverRange[1] &&
+                maxTurnoverValue >= turnoverRange[0];
 
             return (
                 investmentNeeded >= amountRange[0] &&
                 investmentNeeded <= amountRange[1] &&
-                turnover >= turnoverRange[0] &&
-                turnover <= turnoverRange[1] &&
-                (locationQuery === "" ||
-                    card.location
-                        .toLowerCase()
-                        .includes(locationQuery.toLowerCase())) &&
-                (nameQuery === "" ||
-                    card.name.toLowerCase().includes(nameQuery.toLowerCase()))
+                turnoverInRange
             );
         });
 
         setFilteredCards(filtered);
     };
+
+    // Trigger `filterCardsByLocationAndName` when name or location changes
+    useEffect(() => {
+        if (locationQuery || nameQuery) {
+            filterCardsByLocationAndName();
+        } else {
+            filterCards(); // Apply other filters without loading
+        }
+    }, [locationQuery, nameQuery]);
+
+    // Trigger `filterCards` for amount and turnover range changes
+    useEffect(() => {
+        filterCards();
+    }, [amountRange, turnoverRange]);
+
     useEffect(() => {
         filterCards();
     }, [amountRange, turnoverRange, locationQuery, nameQuery]);
 
+    
     const handleTurnoverChange = (value) => setTurnoverRange(value);
     const handleAmountChange = (value) => setAmountRange(value);
 
@@ -282,6 +324,10 @@ const CategoryPage = () => {
                 .classList.remove("hidden");
         }, 300); // Add delay if needed for smooth transition
     };
+
+
+
+    
     const Cancel = () => {
         toggleCollapse("collapseAmountRange");
     };
@@ -338,8 +384,6 @@ const CategoryPage = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const paginatedCards = filteredCards.slice(startIndex, endIndex);
-    const realstep = step;
-    const realstep2 = step2;
 
     return (
         <>
@@ -389,78 +433,31 @@ const CategoryPage = () => {
                                 </button>
                             </div>
 
-                            <div className="py-4 relative" id="sliderElement1">
+                            <div id="sliderElement1" className="py-4">
                                 <Slider
                                     range
                                     min={0}
-                                    max={maxTurnover} // Updated for turnover range
-                                    step={realstep} // Your defined step for turnover
-                                    value={turnoverRange} // Controlled component for turnover
-                                    onChange={handleTurnoverChange} // Handles state changes
-                                    trackStyle={[
-                                        {
-                                            backgroundColor: "#15803D",
-                                            height: "10px",
-                                        },
-                                    ]}
-                                    handleStyle={[
-                                        {
-                                            borderColor: "white",
-                                            height: "18px",
-                                            width: "18px",
-                                            marginTop: "-4px",
-                                            backgroundColor: "#15803D",
-                                            borderRadius: "50%",
-                                            border: "2px solid white",
-                                        },
-                                        {
-                                            borderColor: "white",
-                                            height: "18px",
-                                            width: "18px",
-                                            marginTop: "-4px",
-                                            backgroundColor: "#15803D",
-                                            borderRadius: "50%",
-                                            border: "2px solid white",
-                                        },
-                                    ]}
+                                    max={maxTurnover}
+                                    step={100}
+                                    value={turnoverRange}
+                                    onChange={handleTurnoverChange}
+                                    trackStyle={{
+                                        backgroundColor: "#15803D",
+                                        height: "10px",
+                                    }}
+                                    handleStyle={{
+                                        borderColor: "white",
+                                        height: "18px",
+                                        width: "18px",
+                                        marginTop: "-4px",
+                                        backgroundColor: "#15803D",
+                                        borderRadius: "50%",
+                                        border: "2px solid white",
+                                    }}
                                     activeDotStyle={{ display: "none" }}
                                     dotStyle={{ display: "none" }}
-                                    marks={Object.keys(
-                                        sliderMarksTurnover
-                                    ).reduce((acc, key) => {
-                                        acc[key] = (
-                                            <div
-                                                onMouseEnter={() =>
-                                                    handleMarkHover2(key)
-                                                }
-                                                onMouseLeave={handleMarkLeave2}
-                                                style={{
-                                                    cursor: "pointer",
-                                                }}
-                                            >
-                                                {sliderMarksTurnover[key]}
-                                            </div>
-                                        );
-                                        return acc;
-                                    }, {})}
+                                    marks={sliderMarksTurnover}
                                 />
-
-                                {/* Tooltip */}
-                                {/* {hoverValue2 !== null && (
-                                    <div
-                                        className="absolute bg-black/50 text-white text-xs rounded p-1"
-                                        style={{
-                                            top: "-30px", // Position above the slider
-                                            left: `${
-                                                (hoverValue2 / maxTurnover) *
-                                                100
-                                            }%`, // Tooltip position based on hovered mark value
-                                            transform: "translateX(-50%)", // Center tooltip over the mark
-                                        }}
-                                    >
-                                        {hoverValue2}
-                                    </div>
-                                )} */}
                             </div>
 
                             <div
@@ -497,6 +494,15 @@ const CategoryPage = () => {
                                                     setMinTurnover
                                                 )
                                             }
+                                            onKeyDown={(e) => {
+                                                if (e.key === "Enter") {
+                                                    document
+                                                        .getElementById(
+                                                            "maxTurnover"
+                                                        )
+                                                        .focus();
+                                                }
+                                            }}
                                             className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
                                             name="minTurnover"
                                         />
@@ -519,6 +525,15 @@ const CategoryPage = () => {
                                                     setMaxTurnoveR
                                                 )
                                             }
+                                            onKeyDown={(e) => {
+                                                if (e.key === "Enter") {
+                                                    document
+                                                        .getElementById(
+                                                            "setButton"
+                                                        )
+                                                        .focus();
+                                                }
+                                            }}
                                             className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
                                             name="maxTurnover"
                                         />
@@ -527,6 +542,7 @@ const CategoryPage = () => {
 
                                 <div className="mt-4 flex justify-between">
                                     <button
+                                        id="setButton"
                                         className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
                                         onClick={HandleSlideChange2}
                                     >
@@ -535,7 +551,7 @@ const CategoryPage = () => {
 
                                     {/* Cancel Button */}
                                     <button
-                                        className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
+                                        className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
                                         onClick={cancelTurnover}
                                     >
                                         Cancel
@@ -571,12 +587,12 @@ const CategoryPage = () => {
                                 </button>
                             </div>
 
-                            <div className="py-4 relative" id="sliderElement">
+                            <div className="py-4" id="sliderElement">
                                 <Slider
                                     range
                                     min={0}
                                     max={maxPrice}
-                                    step={realstep2}
+                                    step={100}
                                     value={amountRange} // Controlled component
                                     onChange={handleAmountChange} // Handles state changes
                                     trackStyle={[
@@ -607,46 +623,9 @@ const CategoryPage = () => {
                                     ]} // Separate handles for range slider
                                     activeDotStyle={{ display: "none" }}
                                     dotStyle={{ display: "none" }}
-                                    marks={Object.keys(sliderMarks).reduce(
-                                        (acc, key) => {
-                                            acc[key] = (
-                                                <div
-                                                    onMouseEnter={() =>
-                                                        handleMarkHover(key)
-                                                    }
-                                                    onMouseLeave={
-                                                        handleMarkLeave
-                                                    }
-                                                    style={{
-                                                        cursor: "pointer",
-                                                    }}
-                                                >
-                                                    {sliderMarks[key]}
-                                                </div>
-                                            );
-                                            return acc;
-                                        },
-                                        {}
-                                    )}
+                                    marks={sliderMarks}
                                 />
-
-                                {/* Tooltip */}
-                                {/* {hoverValue !== null && (
-                                    <div
-                                        className="absolute bg-black/50 text-white text-xs rounded p-1"
-                                        style={{
-                                            top: "-30px",
-                                            left: `${
-                                                (hoverValue / maxPrice) * 100
-                                            }%`,
-                                            transform: "translateX(-50%)",
-                                        }}
-                                    >
-                                        {hoverValue}
-                                    </div>
-                                )} */}
                             </div>
-
                             <div
                                 className="flex justify-between mt-6 text-gray-600 dark:text-gray-400 text-sm"
                                 id="amountRangeDisplay"
@@ -655,74 +634,73 @@ const CategoryPage = () => {
                                 <span>${amountRange[1].toLocaleString()}</span>
                             </div>
 
-                            <div
-                                className="mt-4 hidden"
-                                id="collapseAmountRange"
-                            >
-                                <div className="flex justify-between items-center gap-4">
-                                    <div className="flex flex-col w-1/2 space-y-2">
-                                        <label
-                                            htmlFor="minAmount"
-                                            className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                        >
-                                            Min: {minn}
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="minAmount"
-                                            value={minAmount}
-                                            onChange={(e) =>
-                                                handleInputChange(
-                                                    e,
-                                                    setMinAmount
-                                                )
-                                            }
-                                            className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-                                            name="minAmount"
-                                        />
-                                    </div>
+                            <div className="mt-4 hidden" id="collapseAmountRange">
+    <div className="flex justify-between items-center gap-4">
+        <div className="flex flex-col w-1/2 space-y-2">
+            <label
+                htmlFor="minAmount"
+                className="text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+                Min: {minn}
+            </label>
+            <input
+                type="text"
+                id="minAmount"
+                value={minAmount}
+                onChange={(e) => handleInputChange(e, setMinAmount)}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        document.getElementById("maxAmount").focus();
+                    }
+                }}
+                className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                name="minAmount"
+            />
+        </div>
 
-                                    <div className="flex flex-col w-1/2 space-y-2">
-                                        <label
-                                            htmlFor="maxAmount"
-                                            className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                        >
-                                            Max: {maxx.toLocaleString()}
-                                        </label>
+        <div className="flex flex-col w-1/2 space-y-2">
+            <label
+                htmlFor="maxAmount"
+                className="text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+                Max: {maxx.toLocaleString()}
+            </label>
 
-                                        <input
-                                            type="text"
-                                            id="maxAmount"
-                                            value={maxAmount}
-                                            onChange={(e) =>
-                                                handleInputChange(
-                                                    e,
-                                                    setMaxAmount
-                                                )
-                                            }
-                                            className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-                                            name="maxAmount"
-                                        />
-                                    </div>
-                                </div>
+            <input
+                type="text"
+                id="maxAmount"
+                value={maxAmount}
+                onChange={(e) => handleInputChange(e, setMaxAmount)}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        document.getElementById("setAmountButton").focus();
+                    }
+                }}
+                className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                name="maxAmount"
+            />
+        </div>
+    </div>
 
-                                <div className="mt-4 flex justify-between">
-                                    <button
-                                        className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
-                                        onClick={HandleSlideChange} // Pass the function here
-                                    >
-                                        Set
-                                    </button>
+    <div className="mt-4 flex justify-between">
+        <button
+            id="setAmountButton"
+            className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
+            onClick={HandleSlideChange} // Pass the function here
+        >
+            Set
+        </button>
 
-                                    {/* Cancel Button */}
-                                    <button
-                                        className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
-                                        onClick={Cancel}
-                                    >
-                                        Cancel
-                                    </button>
-                                </div>
-                            </div>
+        {/* Cancel Button */}
+        <button
+            className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
+            onClick={Cancel}
+        >
+            Cancel
+        </button>
+    </div>
+</div>
+
                         </div>
                     </div>
                 </div>
@@ -747,7 +725,7 @@ const CategoryPage = () => {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {filteredCards.length == 0 ? (
+                        {filteredCards.length === 0 ? (
                             <p className="text-center text-gray-500 col-span-full">
                                 No listings available.
                             </p>
@@ -769,7 +747,7 @@ const CategoryPage = () => {
                                             className="w-full h-60 sm:h-48 object-cover rounded-lg"
                                         />
                                         <p className="text-sm sm:text-base mt-2 mb-2 font-semibold text-[#1E293B]">
-                                            {card.category}
+                                            #Motorcycle Transport #Bikes
                                         </p>
                                         <div className="mt-3 flex-grow">
                                             <h2 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold">

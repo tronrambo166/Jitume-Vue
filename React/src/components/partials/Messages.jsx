@@ -267,13 +267,13 @@ function Messages() {
                                         msg.messages[0].new === 1
                                             ? "bg-green-500 bg-opacity-20 text-black font-medium shadow-lg backdrop-blur-md border border-green-300 rounded-lg p-3 pr-16"
                                             : "text-gray-600"
-                                    }`}
+                                    }truncatee`}
                                     style={{ maxWidth: "200px" }}
                                 >
                                     {msg.messages &&
                                         msg.messages[0] &&
                                         msg.messages[0].new === 1 && (
-                                            <span className="absolute top-1 right-2 font-semibold text-xs text-green-600">
+                                            <span className="absolute top-1 right-2 font-semibold text-xs text-green-600 animate-pulse">
                                                 New
                                             </span>
                                         )}

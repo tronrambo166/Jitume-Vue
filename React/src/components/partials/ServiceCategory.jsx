@@ -69,17 +69,44 @@ const CategoryPage = ({ categoryName }) => {
         console.log("Selected range:", value);
     };
 
-    const filteredCards = cards.filter(
-        (card) =>
-            card.price >= range[0] && // Price filter
-            card.price <= range[1] &&
-            (card.location
-                .toLowerCase()
-                .includes(locationQuery.toLowerCase()) || // Location filter
-                locationQuery === "") &&
-            (card.name.toLowerCase().includes(nameQuery.toLowerCase()) || // Name filter
-                nameQuery === "")
-    );
+    const [filteredCards, setFilteredCards] = useState([]);
+
+    const filterCards = () => {
+        const filtered = cards.filter((card) => {
+            return (
+                card.price >= range[0] && // Price filter
+                card.price <= range[1] &&
+                (card.location
+                    .toLowerCase()
+                    .includes(locationQuery.toLowerCase()) || // Location filter
+                    locationQuery === "") &&
+                (card.name.toLowerCase().includes(nameQuery.toLowerCase()) || // Name filter
+                    nameQuery === "")
+            );
+        });
+
+        setFilteredCards(filtered);
+    };
+
+    // Trigger the loader only when location or name query changes
+    useEffect(() => {
+        if (locationQuery || nameQuery) {
+            setLoading(true); // Trigger loader
+            const timeout = setTimeout(() => {
+                filterCards(); // Apply the filter after a delay
+                setLoading(false); // Stop loader
+            }, 500); // Optional: Adjust the delay for the loader
+
+            return () => clearTimeout(timeout); // Cleanup timeout on component unmount or query change
+        } else {
+            filterCards(); // Apply other filters without loader
+        }
+    }, [locationQuery, nameQuery]);
+
+    // Trigger filtering for price and other ranges without loader
+    useEffect(() => {
+        filterCards(); // Apply other filters without loader
+    }, [range]); // You can add more dependencies as needed
 
     const step = Math.round(maxPrice / 100); // Determine step size for slider marks
 

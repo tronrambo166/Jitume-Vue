@@ -58,7 +58,7 @@ const Dashboardhero = () => {
                 const { data } = await axiosClient.get(
                     `business/service_messages_count/${id}`
                 );
-                console.log("count", data);
+                // console.log("count", data);
                 setCount(data.count);
             } catch (error) {
                 console.error("Error fetching messages count:", error);
@@ -84,7 +84,7 @@ const Dashboardhero = () => {
         window.addEventListener("userUpdated", handleUserUpdate);
         return () => {
             window.removeEventListener("userUpdated", handleUserUpdate);
-            console.log("Event listener unmounted");
+            // console.log("Event listener unmounted");
         };
     }, []);
 
