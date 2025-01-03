@@ -11,6 +11,7 @@ use App\Http\Controllers\checkoutController;
 use App\Http\Controllers\bidsEmailController;
 use App\Http\Controllers\socialController;
 use App\Http\Controllers\PayStackController;
+use App\Http\Controllers\MpesaController;
 //P R O T E C T E D    R O U T E S
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('logout',[AuthController::class,'logout']);
@@ -56,7 +57,10 @@ Route::middleware('auth:sanctum')->group(function() {
     //Unlock small fee
     Route::post('/stripe.post.coversation', [checkoutController::class, 'stripeConversation'])->name('stripe.post.coversation');
 
-    // PayStack  ROUTES
+    // PayStack/Mpesa  ROUTES
+    Route::get('/mpesaStk', [MpesaController::class,'stk']);
+    Route::get('/mpesaCallback', [MpesaController::class,'mpesaCallback']);
+
     Route::post('/initialize', [PayStackController::class, 'initialize']);
     Route::get('/create-subaccount', [PayStackController::class, 'create_subaccount']);
     Route::get('/paystackVerify/{business_id}/{percent}/{amountKFront}/{amountReal}/{ref}', [PayStackController::class, 'verify']);

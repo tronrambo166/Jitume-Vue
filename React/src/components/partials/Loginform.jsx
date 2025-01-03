@@ -120,7 +120,7 @@ const LoginForm = () => {
             }
         } catch (error) {
             setServerError("Login failed. Server Error!.");
-            showAlert("error", "Login failed.");
+            console.log(error);
         } finally {
             setLoading(false);
         }

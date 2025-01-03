@@ -246,10 +246,8 @@ const PaymentForm = () => {
             });
     }, []);
 
-
-    const PayStackInit = () => {
-        //const popup = new PaystackPop();
-        const popup = new Paystack();
+//MPESA
+    const MpesaInit = () => {
         const usdToKen = 100*128.5;
 
         const business_id= atob(listing_id);
@@ -257,52 +255,53 @@ const PaymentForm = () => {
         const amountKFront= (parseFloat(price)*usdToKen).toFixed();
         const amountReal= amount_real;
         const purpose = purpos;
-        const subaccount = owner.paystack_acc_id;//'ACCT_n9mpmg5jdy7nit2';
-        const JitumeAmount  = ((price - parseFloat(amount_real))*usdToKen).toFixed();
-        const packages = $("#package").val();
+        //const subaccount = owner.paystack_acc_id;//'ACCT_n9mpmg5jdy7nit2';
+        //const JitumeAmount  = ((price - parseFloat(amount_real))*usdToKen).toFixed();
+        //const packages = $("#package").val();
 
         setTimeout(() => {
-        if (purpos === "bids"){
-              popup.newTransaction({
-              key: 'pk_test_05479d57206db767b2cc76467cab1c7824237ffa',
-              email: user.email,
-              amount: amountKFront,
-              onSuccess: (transaction) => {
-                console.log(transaction);
-                const ref = transaction.reference
-                
+        if (purpos == "bids") {
                 axiosClient
-                .get("/paystackVerify/"+business_id+"/"+share+"/"
-                    +amountKFront+"/"+amountReal+"/"+ref)
-                .then(({data}) => {
-                    console.log(data);
-                    if (data.status == 200)
-                    showSuccessToast("Bid placed, you will be notified if bid is accepted!");
-                    else
-                    showErrorToast(data.message);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-              },
-              onCancel: () => {
-                console.log("onCancel");
-              },
-              onError: (error) => {
-                console.log("Error: ", error.message);
-              }
-            })
-        }
+                    .get("/mpesaStk")
+                    .then(( data ) => {
+                        console.log(data);
+                        if (data.status == 200) {
+                            //navigate("/");
+                        }
+                        if (data.status == 400)
+                            showErrorToast(data.message);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+
+                // axiosClient
+                //     .post("/bidCommits", payload)
+                //     .then(({ data }) => {
+                //         if (data.status == 200) {
+                //             showSuccessToast(
+                //                 "Bid placed, you will be notified if bid is accepted!"
+                //             );
+                //             // alert('Bid placed, you will be notified if bid is accepted!');
+                //             navigate("/");
+                //         }
+                //         if (data.status == 400)
+                //             // alert(data.message);
+                //             showErrorToast(data.message);
+                //     })
+                //     .catch((err) => {
+                //         console.log(err);
+                //         setLoading(false); 
+                //         const response = err.response;
+                //         showErrorToast(response.data.message);
+                //         if (response && response.status === 422) {
+                //             console.log(response.data.errors);
+                //             showErrorToast(response.data.errors);
+                //         }
+                //     });
+        } 
         else if (purpos === "small_fee"){
-              popup.newTransaction({
-              key: 'pk_test_05479d57206db767b2cc76467cab1c7824237ffa',
-              email: user.email,
-              amount: amountKFront,
-              subaccount:subaccount,
-              transaction_charge:JitumeAmount,
-              onSuccess: (transaction) => {
-                console.log(transaction);
-                const ref = transaction.reference
+              
                 
                 axiosClient
                 .get("/paystackVerifySmallFee/"+packages+"/"+business_id+"/"
@@ -319,28 +318,10 @@ const PaymentForm = () => {
                 .catch((err) => {
                     console.log(err);
                 });
-              },
-              onCancel: () => {
-                console.log("onCancel");
-              },
-              onError: (error) => {
-                console.log("Error: ", error.message);
-              }
-            })
         }
 
         else{
-              const true_mile_id = owner.true_mile_id;
-              popup.newTransaction({
-              key: 'pk_test_05479d57206db767b2cc76467cab1c7824237ffa',
-              email: user.email,
-              amount: amountKFront,
-              subaccount:subaccount,
-              transaction_charge:JitumeAmount,
-              onSuccess: (transaction) => {
-                console.log(transaction);
-                const ref = transaction.reference;
-                
+              const true_mile_id = owner.true_mile_id;  
                 axiosClient
                 .get("/paystackVerifyService/"+true_mile_id+"/"+business_id+"/"
                     +amountKFront+"/"+amountReal+"/"+ref)
@@ -356,20 +337,12 @@ const PaymentForm = () => {
                 .catch((err) => {
                     console.log (err);
                 });
-              },
-              onCancel: () => {
-                console.log("onCancel");
-              },
-              onError: (error) => {
-                console.log("Error: ", error.message);
-              }
-            })
         }
         //Timeout Ends below
         }, 500)
 
     }
-
+//MPESA
 
     const bankSubmit = (event) => {
         event.preventDefault();
@@ -570,9 +543,9 @@ const PaymentForm = () => {
                                             )
                                         )} &nbsp;&nbsp; <span className="mt-3">or Pay With &nbsp; </span>
 
-                                        <a onClick={PayStackInit} style={{maxHeight: '45px', cursor:'pointer'}} className="grid grid-rows-3 grid-flow-col gap-2 bg-neutral-300 p-3 rounded text-[#041a31f0] font-bold">
-                                        <img clasName="rounded row-start-1 row" src="../../../../src/images/randomIcons/paystack.png" />
-                                        <span className="row-start-1 row"> PayStack </span>   </a>
+                                        <a onClick={MpesaInit} style={{maxHeight: '45px', cursor:'pointer'}} className="grid grid-rows-3 grid-flow-col gap-2 bg-neutral-300 p-3 rounded text-[#041a31f0] font-bold">
+                                        <img clasName="rounded row-start-1 row" src="../../../../src/images/randomIcons/mpesa.png" />
+                                        <span className="row-start-1 row"> Mpesa </span>   </a>
 
                                     </div>
 

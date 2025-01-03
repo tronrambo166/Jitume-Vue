@@ -12,6 +12,7 @@
         "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.8",
         "paypal/rest-api-sdk-php": "^1.6",
+        "safaricom/mpesa": "^1.0",
         "stripe/stripe-php": "^15.7"
     },
     "require-dev": {

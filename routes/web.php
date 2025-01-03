@@ -6,6 +6,7 @@ use App\Http\Controllers\adminController;
 use App\Http\Controllers\PayPalController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PayStackController;
+use App\Http\Controllers\MpesaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,9 @@ Route::get('paypal-success',[PayPalController::class,"success"])->name('paypal.s
 Route::get('paypal-cancel',[PayPalController::class,'cancel'])->name('paypal.cancel');
 
 // PayStack  ROUTES for Test
+    Route::get('/mpesaStk', [MpesaController::class,'stk']);
+    Route::get('/AccountBalance', [MpesaController::class,'AccountBalance']);
+
     Route::get('/initialize', [PayStackController::class, 'initialize']);
     Route::get('/create-subaccount', [PayStackController::class, 'create_subaccount']);
     Route::get('/verify', [PayStackController::class, 'verify']);
