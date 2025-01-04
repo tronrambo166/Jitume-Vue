@@ -329,7 +329,7 @@ const ListingResults = () => {
                 max: parseFloat(values[1]),
             };
             // const turnoverRange = slider.noUiSlider.get(); // Get current turnover range
-            const turnoverRange = slider2.noUiSlider ? slider2.noUiSlider.get() : [0, 0];
+            const turnoverRange = slider2.noUiSlider ? slider2.noUiSlider.get() : [0, max];
 
             const filteredResults = filterResults(
                 savedResults,
