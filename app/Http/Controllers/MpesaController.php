@@ -56,7 +56,7 @@ class MpesaController extends Controller
         $PartyB = '174379';
         $PhoneNumber = '254721601031';
         $CallBackURL = 'https://yourdomain.com/api/mpesaCallback';
-        $AccountReference = 'AccountReference';
+        $AccountReference = 'TuJitume';
         $TransactionDesc = 'TransactionDesc';
         $Remarks = 'Remarks';
         $Timestamp = date('YYYYMMDDHHmmss');
@@ -113,6 +113,39 @@ class MpesaController extends Controller
         return $balanceInquiry;
     }
 
+
+    public function b2c_Split() 
+    {
+        $mpesa= new \Safaricom\Mpesa\Mpesa();
+        $CommandID = 'AccountBalance';
+        $InitiatorName = 'testAPIuser';
+        $IdentifierType = '4';
+        $SecurityCredential = 'WN+80die7gzcSO7qLKo9rcClqsm17xj2Qm4V/SdprNq6jmf3fBS97N8EbbqU0/A90+gb8URI1rlKYNerxAsheTMSOZOqUN8UeLziGQ58vGMDYOlhVHxmJ+SilsRhNMGJqO2fTiqcakRT1WjlONm4o5T65hYcjRmS73r6U+8s8MZAt7b6iABo1mlsmQjh6z7HQC7Axy1iZKP785NaYgw8tCLhuVaidsgkL28vXq6AiiciVnAn+fCI5OYGVa4gK8uzAm54LAY0Z+mUdakvwPC90/UFhecmee3AYbUTAEpSjYO2lpYo51mopB8Vo06GqqKVaQOBRhn4JgWDxPh/4OB7YQ==';
+        $Amount = '10';
+        $PartyA = '600987';//254 708374149
+        $PartyA = '254 708374149';
+
+        $QueueTimeOutURL = 'https://mydomain.com/AccountBalance/queue/';
+        $ResultURL = 'https://mydomain.com/AccountBalance/result/';
+        $Remarks = 'Remarks';
+        $Occasion = 'Occasion';
+
+        $b2cTransaction=$mpesa->b2c(
+        $InitiatorName,
+        $SecurityCredential,
+        $CommandID,
+        $Amount,
+        $PartyA,
+        $PartyB,
+        $Remarks,
+        $QueueTimeOutURL,
+        $ResultURL,
+        $Occasion
+        );
+        return $b2cTransaction;
+    }
+
+
     public function mpesaCallback() 
     {
         $mpesa= new \Safaricom\Mpesa\Mpesa();
@@ -124,6 +157,8 @@ class MpesaController extends Controller
         //$callbackData=$mpesa->finishTransaction(false)
     }
 
+
+// ...... MPESA ENDS .......
 
 
     public function verify($business_id,$percent,$amountKFront,$amountReal,$ref)

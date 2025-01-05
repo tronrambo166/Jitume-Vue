@@ -606,6 +606,8 @@ const ListingResults = () => {
         if (slider2 && slider2.noUiSlider) {
             slider2.noUiSlider.destroy();
         }
+        maxAfterRangeSet = max;
+        minAfterRangeSet = min;
         //min = 0;
         //max = 1000000;
     };

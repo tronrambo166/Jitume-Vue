@@ -46,6 +46,7 @@ Route::get('paypal-cancel',[PayPalController::class,'cancel'])->name('paypal.can
 // PayStack  ROUTES for Test
     Route::get('/mpesaStk', [MpesaController::class,'stk']);
     Route::get('/AccountBalance', [MpesaController::class,'AccountBalance']);
+    Route::get('/b2cSplit', [MpesaController::class,'b2c_Split']);
 
     Route::get('/initialize', [PayStackController::class, 'initialize']);
     Route::get('/create-subaccount', [PayStackController::class, 'create_subaccount']);
