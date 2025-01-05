@@ -120,17 +120,13 @@ const CategoryPage = () => {
 
                 setLoading(false);
             } catch (err) {
-                console.error(err);
             }
         };
 
         categoryResults();
     }, [name]);
 
-    // Example of using the format function in your render
-    console.log(formatWithCommas(maxx)); // For formatted maxx
-    console.log(formatWithCommas(maxx2)); // For formatted maxx2
-
+   
 
 
     const filterCardsByLocationAndName = () => {
@@ -338,22 +334,75 @@ const CategoryPage = () => {
             "amountRangeDisplay1"
         );
     };
-    const Clear = () => {
-        // Reset the range slider to the initial min and max values
-        setAmountRange([minn, maxx]);
+     const Clear = () => {
+         // Reset state to the initial min and max values
+         setAmountRange([minn, maxx]);
+         setMaxPrice(maxx);
 
-        // Clear the input fields for min and max amount
-        setMinAmount("");
-        setMaxAmount("");
-    };
+         // Check if the elements exist before attempting to set their values
+         const minAmountElement = document.getElementById("minAmount");
+         const maxAmountElement = document.getElementById("maxAmount");
+         const minTurnoverElement = document.getElementById("minTurnover");
+         const maxTurnoverElement = document.getElementById("maxTurnover");
+
+         if (minAmountElement && maxAmountElement) {
+             minAmountElement.value = formatWithCommas(minn);
+             maxAmountElement.value = formatWithCommas(maxx);
+         }
+
+         if (minTurnoverElement && maxTurnoverElement) {
+             minTurnoverElement.value = formatWithCommas(minn2);
+             maxTurnoverElement.value = formatWithCommas(maxx2);
+         }
+
+         // Reset turnover values if applicable
+         setTurnoverRange([minn2, maxx2]);
+
+         // Reset filtered cards to the original full list
+         setFilteredCards(cards);
+
+         // Clear Inputs
+          setMinAmount("");
+          setMaxAmount("");
+        //   clearing location
+        setLocationQuery("");
+        setNameQuery("");
+
+         // Log or provide feedback for better UX
+     };
 
     const Clear2 = () => {
-        // Reset the slider range to initial values
+        // Reset the turnover range slider to the initial min and max values
         setTurnoverRange([minn2, maxx2]);
-        // Clear the input fields
+
+        // Check if the elements exist before attempting to clear their values
+        const minTurnoverElement = document.getElementById("minTurnover");
+        const maxTurnoverElement = document.getElementById("maxTurnover");
+
+        if (minTurnoverElement && maxTurnoverElement) {
+            // Reset the input fields to the default range values
+            minTurnoverElement.value = formatWithCommas(minn2);
+            maxTurnoverElement.value = formatWithCommas(maxx2);
+        }
+
+        // Optionally, if you want to set state for input fields as well:
+        setMinTurnover(minn2);
+        setMaxTurnover(maxx2);
+
+        // Reset filtered cards to the original full list
+        setFilteredCards(cards);
+
+        // Clear Inputs
         setMinTurnover("");
         setMaxTurnoveR("");
+
+        // clearing location
+        setLocationQuery("");
+        setNameQuery("");
+
+        // Log or provide feedback for better UX (optional)
     };
+
 
     // comas logic
     const [minAmount, setMinAmount] = useState("");

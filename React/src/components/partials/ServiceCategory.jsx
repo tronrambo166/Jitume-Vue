@@ -34,7 +34,6 @@ const CategoryPage = ({ categoryName }) => {
                 .then(({ data }) => {
                     if (data.services && data.services.length > 0) {
                         setCards(data.services);
-                        console.log(data);
 
                         const prices = data.services.map((card) => card.price);
                         const max = Math.max(...prices);
@@ -56,7 +55,6 @@ const CategoryPage = ({ categoryName }) => {
                     }
                 })
                 .catch((err) => {
-                    console.error("Error fetching category results:", err);
                 })
                 .finally(() => setLoading(false));
         };
@@ -66,7 +64,6 @@ const CategoryPage = ({ categoryName }) => {
 
     const handleAmountChange = (value) => {
         setRange(value); // Update the range
-        console.log("Selected range:", value);
     };
 
     const [filteredCards, setFilteredCards] = useState([]);
@@ -129,7 +126,6 @@ const CategoryPage = ({ categoryName }) => {
     };
 
     // Example output of sliderMarks for debugging
-    console.log(sliderMarks);
 
     const toggleCollapse = (id) => {
         const element = document.getElementById(id);
@@ -196,15 +192,22 @@ const CategoryPage = ({ categoryName }) => {
         toggleCollapse("collapseAmountRange");
     };
     const handleClear = () => {
-        // Reset the range slider to its initial values (min and max)
-        setRange([minn, maxx]); // Reset the slider range to its initial min and max values
+        // Reset the range slider to initial values
+        setRange([minn, maxx]);
+
+        // Clear the local storage saved range
+        localStorage.removeItem("sliderRange");
 
         // Clear the input fields for min and max amount
-        setMinAmount(minn); // Reset min input to initial min value
-        setMaxAmount(maxx); // Reset max input to initial max value
-        // Clear the input fields for min and max amount
-        setMinAmount("");
-        setMaxAmount("");
+        setMinAmount(""); // Reset min input
+        setMaxAmount(""); // Reset max input
+
+        // clearing location
+        setLocationQuery("");
+        setNameQuery("");
+
+        // Optionally, reset the max price if you want to return it to the default max
+        setMaxPrice(maxx); // Ensure max price reflects the cleared state
     };
 
     const handlePageChange = (pageNumber) => {
