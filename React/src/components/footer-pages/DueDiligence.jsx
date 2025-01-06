@@ -20,7 +20,7 @@ const headingStyle1 = { fontSize: '28px', marginBottom: '16px' };
     return (
         <div className="p-6 max-w-screen-xl mx-auto">
             <h1 className="text-4xl md:text-6xl mb-6 md:mb-10 font-bold leading-tight text-center font-sharp-grotesk text-[#00290F]">
-                Due Diligence Charter for Jitume
+                Due Diligence Charter for Tujitume
 
 
             </h1>
@@ -28,7 +28,7 @@ const headingStyle1 = { fontSize: '28px', marginBottom: '16px' };
             <div className="mb-6">
             
       <h1 style={headingStyle1}>Overview</h1>
-      <p style={paragraphStyle}>Jitume is a platform connecting businesses with investors by offering secure, transparent, and milestone-based project management. The platform is committed to ensuring accountability, regulatory compliance, and a secure environment for both businesses and investors. This charter outlines the due diligence measures Jitume undertakes to ensure a safe, compliant, and efficient service environment.</p>
+      <p style={paragraphStyle}>Tujitume is a platform connecting businesses with investors by offering secure, transparent, and milestone-based project management. The platform is committed to ensuring accountability, regulatory compliance, and a secure environment for both businesses and investors. This charter outlines the due diligence measures Tujitume undertakes to ensure a safe, compliant, and efficient service environment.</p>
 
       <h2 style={headingStyle2}>1. Identity Verification and Compliance</h2>
       <ul style={listStyle}>
@@ -55,7 +55,7 @@ const headingStyle1 = { fontSize: '28px', marginBottom: '16px' };
             <li style={listItemStyle}>Adjustments to project scopes, if necessary, will be documented and agreed upon by both parties to maintain transparency.</li>
           </ul>
         </li>
-        <li style={listItemStyle}><strong>Milestone Compliance:</strong> Jitume will facilitate milestone evaluations to ensure projects are on track, delivering a clear framework for investor and startup engagement and satisfaction.</li>
+        <li style={listItemStyle}><strong>Milestone Compliance:</strong> Tujitume will facilitate milestone evaluations to ensure projects are on track, delivering a clear framework for investor and startup engagement and satisfaction.</li>
       </ul>
 
       <h2 style={headingStyle2}>3. Optional Third-Party Project Managers</h2>
@@ -65,7 +65,7 @@ const headingStyle1 = { fontSize: '28px', marginBottom: '16px' };
           <ul>
             <li style={listItemStyle}>Both investors and businesses can opt to include third-party project managers to supervise project progress.</li>
             <li style={listItemStyle}>Third-party managers will provide independent assessments at each milestone, ensuring an unbiased evaluation of deliverables and adherence to timelines.</li>
-            <li style={listItemStyle}>Jitume will maintain a network of qualified project managers available for selection based on project requirements and user preferences.</li>
+            <li style={listItemStyle}>Tujitume will maintain a network of qualified project managers available for selection based on project requirements and user preferences.</li>
           </ul>
         </li>
         <li style={listItemStyle}><strong>Transparency Assurance:</strong> Third-party managers will be held to high standards of integrity, and their involvement will be limited to reporting on the project’s alignment with agreed objectives, ensuring neutrality.</li>
@@ -95,7 +95,7 @@ const headingStyle1 = { fontSize: '28px', marginBottom: '16px' };
             <li style={listItemStyle}>Users are provided with transparency in how their data is collected, stored, and used, ensuring informed consent.</li>
           </ul>
         </li>
-        <li style={listItemStyle}><strong>Security Audits:</strong> Jitume will perform regular security audits and assessments to maintain high standards of data protection and system security.</li>
+        <li style={listItemStyle}><strong>Security Audits:</strong> Tujitume will perform regular security audits and assessments to maintain high standards of data protection and system security.</li>
       </ul>
 
       <h2 style={headingStyle2}>6. Monitoring and Reporting</h2>
@@ -103,7 +103,7 @@ const headingStyle1 = { fontSize: '28px', marginBottom: '16px' };
         <li style={listItemStyle}><strong>Objective:</strong> Ensure ongoing compliance and address issues promptly for continuous improvement.</li>
         <li style={listItemStyle}><strong>Process:</strong>
           <ul>
-            <li style={listItemStyle}>Jitume will conduct regular audits of all projects and financial transactions.</li>
+            <li style={listItemStyle}>Tujitume will conduct regular audits of all projects and financial transactions.</li>
             <li style={listItemStyle}>A feedback mechanism will be available for users to report any irregularities or concerns.</li>
             <li style={listItemStyle}>A dedicated compliance team will oversee the platform’s adherence to this charter and provide periodic updates to stakeholders.</li>
           </ul>
@@ -111,7 +111,7 @@ const headingStyle1 = { fontSize: '28px', marginBottom: '16px' };
       </ul>
 
       <h1 style={headingStyle1}>Conclusion</h1>
-      <p style={paragraphStyle}>This Due Diligence Charter formalizes Jitume’s commitment to secure, compliant, and transparent operations, fostering an environment of trust and accountability for both investors and businesses. Through these measures, Jitume aims to empower the growth and success of businesses while protecting investors' interests.</p>
+      <p style={paragraphStyle}>This Due Diligence Charter formalizes Tujitume’s commitment to secure, compliant, and transparent operations, fostering an environment of trust and accountability for both investors and businesses. Through these measures, Tujitume aims to empower the growth and success of businesses while protecting investors' interests.</p>
                 
             </div>
           

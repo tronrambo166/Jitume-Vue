@@ -144,7 +144,7 @@ const ServiceTable = () => {
             </div>
         ),
         category: item.category,
-        details: item.details,
+        //details: item.details,
         details: (
             <div className="max-w-[170px] truncate overflow-ellipsis">
                 {item.details}

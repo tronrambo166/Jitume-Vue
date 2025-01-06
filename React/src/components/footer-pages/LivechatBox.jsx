@@ -3,13 +3,13 @@ import { FaRobot, FaUser, FaPaperPlane } from "react-icons/fa";
 
 const LivechatBox = () => {
     const getMainMenuText = () => {
-        return `Main Menu:\n1: "What is Jitume?"\n2: "How does Jitume work?"\n3: "Why invest with Jitume?"\n4: "Key Features for Investors"\n5: "How to Evaluate Opportunities"\n6: "Frequently Asked Questions"\n\nReply with the number of your choice.`;
+        return `Main Menu:\n1: "What is Tujitume?"\n2: "How does Tujitume work?"\n3: "Why invest with Tujitume?"\n4: "Key Features for Investors"\n5: "How to Evaluate Opportunities"\n6: "Frequently Asked Questions"\n\nReply with the number of your choice.`;
     };
 
     const [messages, setMessages] = useState([
         {
             sender: "AI",
-            text: "Welcome to Jitume Chatbot! How can I assist you today?",
+            text: "Welcome to Tujitume Chatbot! How can I assist you today?",
         },
         { sender: "AI", text: getMainMenuText() },
     ]);
@@ -53,18 +53,18 @@ const LivechatBox = () => {
         const lowercaseInput = userInput.toLowerCase();
 
         const responses = {
-            1: `**What is Jitume?**
-Jitume is a platform that connects investors with vetted businesses seeking funding. By fostering a secure and transparent investment ecosystem, Jitume ensures both investors and entrepreneurs achieve their goals.
+            1: `**What is Tujitume?**
+Tujitume is a platform that connects investors with vetted businesses seeking funding. By fostering a secure and transparent investment ecosystem, Tujitume ensures both investors and entrepreneurs achieve their goals.
 
 Would you like to know more about:
-- Jitume's Mission (type 'mission')
+- Tujitume's Mission (type 'mission')
 - Founding Story (type 'story')
 - Key Benefits (type 'benefits')?
 
 Type "menu" to return to the Main Menu.`,
 
-            2: `**How does Jitume work?**
-Jitume uses a milestone-based escrow system:
+            2: `**How does Tujitume work?**
+Tujitume uses a milestone-based escrow system:
 - Businesses propose projects and set milestones.
 - Investors fund projects in phases.
 - Funds are released when milestones are achieved.
@@ -78,13 +78,13 @@ Type "menu" to return to the Main Menu.`,
 
             // other responses remain unchanged...
 
-            mission: `**Jitume's Mission**
+            mission: `**Tujitume's Mission**
 Our mission is to bridge the gap between investors and high-potential businesses, fostering economic growth and empowerment through secure, transparent, and impactful investments.
 
 Type "menu" to return to the Main Menu.`,
 
             story: `**Founding Story**
-Jitume was founded by a group of passionate entrepreneurs who saw a need for a safer, more transparent way for investors and businesses to collaborate. Since its inception, Jitume has facilitated millions in successful funding!
+Tujitume was founded by a group of passionate entrepreneurs who saw a need for a safer, more transparent way for investors and businesses to collaborate. Since its inception, Jitume has facilitated millions in successful funding!
 
 Type "menu" to return to the Main Menu.`,
 

@@ -38,6 +38,7 @@ const ListingDetails = ({ onClose }) => {
     const [isUnlockPopupOpen, setIsUnlockPopupOpen] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
+    const navigate = useNavigate();
 
     const handleClose = () => {
         setIsVisible(false);
@@ -47,7 +48,6 @@ const ListingDetails = ({ onClose }) => {
         setIsVisible(true);
     };
     const { id } = useParams();
-    const navigate = useNavigate(); // Hook for navigation
     const form = {
         listing_id: atob(atob(id)),
         range: "gold",
@@ -299,14 +299,13 @@ const ListingDetails = ({ onClose }) => {
                 buttons: {
                     confirm: function () {
                         window.location.href =
-                            "/checkout/" +
-                            amount +
-                            "/" +
-                            listing_id +
-                            "/" +
-                            percent +
-                            "/" +
-                            purpose;
+                        //"/checkout/" +amount +"/" +listing_id +"/" +percent +"/" +purpose;
+                        navigate("/checkoutS", { state: {
+                         amount: amount,
+                         listing_id: listing_id,
+                         percent: percent,
+                         purpose: purpose
+                        } });
                     },
                     cancel: function () {
                         $.alert("Canceled!");

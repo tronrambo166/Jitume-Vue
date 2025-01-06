@@ -183,10 +183,10 @@ const ListingResults = () => {
 
             setTimeout(() => {
                 rangeSliderInitilize();
-            }, 300);
+            }, 10);
             setTimeout(() => {
                 amountSliderInitilize();
-            }, 300);
+            }, 10);
         }
     }, [maxRange, maxPrice]);
 
@@ -231,7 +231,7 @@ const ListingResults = () => {
         if(maxAfterRangeSet !=0){
             min = minAfterRangeSet;
             max = maxAfterRangeSet;
-        }
+        } //alert(maxAfterRangeSet)
 
         noUiSlider.create(slider, {
             start: [0, max],
@@ -283,7 +283,7 @@ const ListingResults = () => {
 
     // Amount(OWEN)
     const amountSliderInitilize = () => {
-
+    //alert('am', maxAfterAmSet)
         if(maxAfterAmSet !=0){
             min = minAfterAmSet;
             max = maxAfterAmSet;
@@ -479,8 +479,8 @@ const ListingResults = () => {
     const collapse = () => {
         //Updating Slider 1 Values
         if(maxAfterAmSet!=0){
-        UpdateValuesMax2(maxAfterAmSet);
-        UpdateValuesMin2(minAfterAmSet);
+        max2 = maxAfterAmSet;
+        min2 = minAfterAmSet;
         }
         //Updating Slider 1 Values
 
@@ -512,8 +512,8 @@ const ListingResults = () => {
         
         //Updating Slider 1 Values
         if(maxAfterRangeSet!=0){
-            UpdateValuesMax(maxAfterRangeSet);
-            UpdateValuesMin(minAfterRangeSet);
+            max = maxAfterRangeSet;
+            min = minAfterRangeSet;
         }
         //Updating Slider 1 Values
         console.log('On after set slider 1', min, max)
@@ -563,6 +563,7 @@ const ListingResults = () => {
         const formattedValue = formatNumberWithCommas(e.target.value);
         e.target.value = formattedValue; // Update the input field with the formatted value
         UpdateValuesMax(e.target.value); // Update max with the raw value without commas
+        setMaxAfterRangeSet(0);
     };
 
     // AMOUNT LOGIC
@@ -594,22 +595,28 @@ const ListingResults = () => {
         const formattedValue = formatNumberWithCommas(e.target.value);
         e.target.value = formattedValue; // Update the input field with the formatted value
         UpdateValuesMax2(e.target.value); // Update max2 with the value without commas
+        setMaxAfterAmSet(0);
     };
 
     const clearRangeSlider = () => {
+        setMaxAfterAmSet(max2);
+        setMinAfterAmSet(min2);
+        setMaxAfterRangeSet(0);
+        //alert(maxAfterRangeSet)
+
         var slider2 = document.getElementById("slider2");
         var slider = document.getElementById("slider");
         
+        if (slider2 && slider2.noUiSlider) {
+            //slider2.noUiSlider.destroy();
+            //amountSliderInitilize();
+        }
+        
         if (slider && slider.noUiSlider) {
             slider.noUiSlider.destroy();
-        }
-        if (slider2 && slider2.noUiSlider) {
-            slider2.noUiSlider.destroy();
-        }
-        maxAfterRangeSet = max;
-        minAfterRangeSet = min;
-        //min = 0;
-        //max = 1000000;
+            rangeSliderInitilize();
+        }    
+
     };
     const clearAmountSlider = () => {
         var slider2 = document.getElementById("slider2");
@@ -620,7 +627,9 @@ const ListingResults = () => {
         if (slider && slider.noUiSlider) {
             slider.noUiSlider.destroy();
         }
-        console.log('After clear', min,max)
+
+        setMaxAfterRangeSet(max);
+        setMinAfterRangeSet(min);
     };
 
     //Range Function
@@ -693,8 +702,6 @@ const ListingResults = () => {
                                 className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
                                 onClick={(event) => {
                                     clearRangeSlider();
-                                    amountSliderInitilize();
-                                    rangeSliderInitilize();
                                     //getResults2();
                                 }}
                             >

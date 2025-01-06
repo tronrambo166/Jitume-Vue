@@ -82,11 +82,11 @@ const router = createBrowserRouter([
             { path: "/service-milestones/:id", element: <MilestonesPageS /> },
             { path: "/raise-dispute/:id/:name", element: <RaiseDispute /> },
             {
-                path: "/checkout/:amount/:listing_id/:percent/:purpose",
+                path: "/checkoutB",
                 element: <PaymentForm />,
             },
             {
-                path: "/checkoutS/:listing_id/:amount/:purpose/:percent",
+                path: "/checkoutS",
                 element: <PaymentForm />,
             },
             {

@@ -218,7 +218,7 @@ const Footer = () => {
                                                         to={"/what-is-jitume"}
                                                     >
                                                         {" "}
-                                                        What is Jitume{" "}
+                                                        What is Tujitume{" "}
                                                     </Link>
                                                 </li>
                                                 <li>

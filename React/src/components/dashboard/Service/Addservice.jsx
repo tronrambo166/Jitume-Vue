@@ -362,7 +362,7 @@ const AddService = ({ connected, userId }) => {
                     </div>
 
                     <div className="flex flex-col items-center justify-center ">
-                        You must onboard to Jitume Stripe platform to receive
+                        You must onboard to Tujitume Stripe platform to receive
                         business milestone payments.
                         <div className="mt-4">
                             <button

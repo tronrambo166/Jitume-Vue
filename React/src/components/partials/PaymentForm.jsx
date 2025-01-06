@@ -11,11 +11,10 @@ import PaystackPop from '@paystack/inline-js'
 import Paystack from '@paystack/inline-js'
 import PaymentHero from '../Heros/PaymentHero';
 import { useStateContext } from "../../contexts/contextProvider";
+import { useLocation } from "react-router-dom";
 
 const PaymentForm = () => {
-    const { amounts } = useStateContext();
-    console.log(amounts)
-
+    const location = useLocation();
     const [selectedPayment, setSelectedPayment] = useState("card");
     const [loading, setLoading] = useState(false); // Loader state
     // Function to show success toast
@@ -109,18 +108,21 @@ const PaymentForm = () => {
 
 
 // GETTING Parameters
-    const { listing_id } = useParams();
-    let { purpose } = useParams();
+//let { amount } = useParams();
+//let { purpose } = useParams();
+//const { listing_id } = useParams();
+const { amount } = location.state || { amount: 0 };
+const { listing_id } = location.state || { listing_id: 0 };
+const { purpose } = location.state || { purpose: 0 };
+const { percent } = location.state || { percent: 0 };
+console.log(percent);
+    
     const purpos = base64_decode(purpose);
-
     var p = "";
     if (purpos === "bids") p = "Investment To Business";
     else if (purpos === "s_mile") p = "Pay Service milestone";
     else p = "Small Fee To Unlock Business";
-
-    let { amount } = useParams();
     const amount_real = base64_decode(amount);
-    const { percent } = useParams(); //alert(atob(percent))
 // GETTING Parameters
 
     const [showModal, setShowModal] = useState(false);

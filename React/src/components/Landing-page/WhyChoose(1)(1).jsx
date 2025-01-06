@@ -74,7 +74,7 @@ const WhyChoose = () => {
                         ∙ Why Choose Us
                     </span>
                     <h2 className="text-slate-700 text-2xl md:text-3xl font-bold font-sharp-grotesk mb-5">
-                        Why Jitume is the right <br /> choice for your
+                        Why Tujitume is the right <br /> choice for your
                         investment <br /> goals
                     </h2>
                     <p className="text-base md:text-lg text-gray-600 mb-2">

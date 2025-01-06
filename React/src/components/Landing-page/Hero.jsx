@@ -54,7 +54,7 @@ const Hero = () => {
             </h2>
             <div>
                 <h3 className="text-white py-4 text-[14px] mt-6 sm:text-[16px] md:text-[18px]">
-                    Jitume is a simple and transparent investment platform
+                    Tujitume is a simple and transparent investment platform
                     designed for experienced and
                     <br />
                     aspiring socially responsible investors

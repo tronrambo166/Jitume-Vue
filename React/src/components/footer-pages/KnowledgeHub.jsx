@@ -20,7 +20,7 @@ const KnowledgeHub = () => {
             </h1>
  
             <div className="mb-6">
-               <p>Welcome to the Jitume Knowledge Hub—a comprehensive resource designed to equip businesses with the knowledge and tools they need to attract investment and thrive in their local markets. At Jitume, we understand that each region presents unique challenges and opportunities, and our Knowledge Hub is here to guide you through these with insights, strategies, and best practices tailored to your needs.</p>
+               <p>Welcome to the Tujitume Knowledge Hub—a comprehensive resource designed to equip businesses with the knowledge and tools they need to attract investment and thrive in their local markets. At Tujitume, we understand that each region presents unique challenges and opportunities, and our Knowledge Hub is here to guide you through these with insights, strategies, and best practices tailored to your needs.</p>
 
     <p className="text-xl my-3"><strong>What You'll Find in the Knowledge Hub</strong></p>
     <p><strong>1. Preparing for Investment</strong></p>
@@ -46,8 +46,8 @@ const KnowledgeHub = () => {
 
      <br></br><p><strong>4. Project & Performance Management</strong></p>
     <ul>
-        <li><strong>Project Management Guides:</strong> Learn how to utilize Jitume’s project management tools to organize your funding phases, set milestones, and ensure successful delivery.</li>
-        <li><strong>Accountability & Transparency Tools:</strong> Explore best practices for maintaining transparency with investors, leveraging Jitume’s escrow system for secure, phased funding.</li>
+        <li><strong>Project Management Guides:</strong> Learn how to utilize Tujitume’s project management tools to organize your funding phases, set milestones, and ensure successful delivery.</li>
+        <li><strong>Accountability & Transparency Tools:</strong> Explore best practices for maintaining transparency with investors, leveraging Tujitume’s escrow system for secure, phased funding.</li>
         <li><strong>Metrics for Success:</strong> Understand the key performance indicators (KPIs) investors expect and how to showcase your business’s performance effectively.</li>
     </ul>
 
@@ -65,9 +65,9 @@ const KnowledgeHub = () => {
         <li><strong>Investor Financial Reporting:</strong> Learn how to report your financials accurately and transparently, meeting investor standards.</li>
     </ul>
 
-     <br></br><p><strong>How Jitume’s Knowledge Hub Supports Your Business Journey</strong></p>
+     <br></br><p><strong>How Tujitume’s Knowledge Hub Supports Your Business Journey</strong></p>
     <p>Whether you're just starting your journey to attract investment or are scaling your business with new funding, the Knowledge Hub provides practical, actionable information to support you. Through well-researched articles, tools, and templates, we’re here to help you unlock your business’s full potential.</p>
-    <p>Explore the Jitume Knowledge Hub and start preparing for the next stage in your business journey. Let’s work together to connect your business with the right investors and make your vision a reality.</p>                
+    <p>Explore the Tujitume Knowledge Hub and start preparing for the next stage in your business journey. Let’s work together to connect your business with the right investors and make your vision a reality.</p>                
             </div>
           
         </div>

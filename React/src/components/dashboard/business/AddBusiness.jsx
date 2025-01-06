@@ -305,7 +305,7 @@ const AddBusiness = () => {
                 {!Con ? (
                     <div className="flex flex-col items-center justify-center ">
                         <p className="text-center bg-light  ">
-                            You must onboard to Jitume Stripe platform to
+                            You must onboard to Tujitume Stripe platform to
                             receive business milestone payments.
                         </p>
                         <div className="mt-4">

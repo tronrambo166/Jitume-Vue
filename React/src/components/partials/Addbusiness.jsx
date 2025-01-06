@@ -80,7 +80,7 @@ const AddBusiness = ({ connected, userId }) => {
       {connected === 0 ? (
         <div className="w-full max-w-lg mx-auto bg-gray-100 p-4 rounded-lg shadow-md mb-6">
           <p className="text-center text-gray-700 mb-4">
-            Before adding a business, you must onboard to Jitume Stripe platform to receive business milestone payments.
+            Before adding a business, you must onboard to Tujitume Stripe platform to receive business milestone payments.
           </p>
           <a
             href={`/connect-stripe/${userId}`}

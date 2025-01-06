@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import axiosClient from "../../axiosClient";
 import React from "react";
@@ -25,7 +26,7 @@ const MilestonePage = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { token } = useStateContext();
     const { setListing_id,amounts, setAmounts,setPurpose,setPercent } = useStateContext();
-
+    const navigate = useNavigate();
     // const [miles, setMiles] = useState([]);
     const total_steps = miles.length;
     //const curr_step = 0;
@@ -80,22 +81,18 @@ const MilestonePage = () => {
         var amount = btoa(amount);
         var mile_id = btoa(mile_id);
         var purpose = btoa("s_mile");
-        setAmounts(250000);
-        console.log(amounts+'ff')
         $.confirm({
             title: "Please Confirm",
             content: "Are you sure?",
             buttons: {
                 confirm: function () {
-                    window.location.href =
-                        "/checkoutS/" +
-                        mile_id +
-                        "/" +
-                        amount +
-                        "/" +
-                        purpose +
-                        "/" +
-                        btoa("null");
+                    //window.location.href =
+                    //"/checkoutS/" +mile_id +"/" +amount +"/" +purpose +"/" +btoa("null");
+                    navigate("/checkoutS", { state: {
+                     amount: amount,
+                     listing_id: mile_id,
+                     purpose: purpose
+                    } });
                 },
                 cancel: function () {
                     $.alert("Canceled!");

@@ -16,16 +16,16 @@ const HelpCenter = () => {
 
             <div className="mb-6">
                 <p>
-                    Welcome to Jitume's Help Center for Investors! We are
+                    Welcome to Tujitume's Help Center for Investors! We are
                     committed to making your investment journey on our platform
                     as seamless, secure, and rewarding as possible. Here, you’ll
                     find all the essential information you need to get started,
                     manage your investments, and engage with the businesses
                     seeking funding.
                     <h2 className="text-xl mt-3">
-                        <b>Getting Started with Jitume as an Investor</b>
+                        <b>Getting Started with Tujitume as an Investor</b>
                     </h2>
-                    Jitume is more than just a web application. We’re a platform
+                    Tujitume is more than just a web application. We’re a platform
                     designed to empower businesses and investors alike by
                     facilitating meaningful connections and providing vital
                     support for investment readiness in regional markets. Our
@@ -35,19 +35,19 @@ const HelpCenter = () => {
                     <h2 className="text-xl mt-3">
                         <b>Our Approach</b>
                     </h2>
-                    At Jitume, we prioritize transparency and accountability.
+                    At Tujitume, we prioritize transparency and accountability.
                     Our platform features an integrated escrow system that
                     guarantees secure, phased funding and service delivery. We
                     provide users with tailored insights and robust project
                     management tools, promoting clarity and efficiency in every
-                    transaction. By joining Jitume, you become part of a
+                    transaction. By joining Tujitume, you become part of a
                     solution-oriented team focused on fostering sustainable,
                     thriving business partnerships.
                     <h2 className="text-xl mt-3">
                         <b>Why Join Us?</b>
                     </h2>
-                    <b> 1. What is Jitume? </b> <br></br>
-                    Jitume is an innovative platform that connects investors
+                    <b> 1. What is Tujitume? </b> <br></br>
+                    Tujitume is an innovative platform that connects investors
                     like you with businesses in need of funding. Our platform
                     provides a secure and transparent way to explore, evaluate,
                     and invest in businesses that are ready for growth within
@@ -55,39 +55,39 @@ const HelpCenter = () => {
                     transactions, monitor business performance, and ensure
                     successful partnerships.
                     <br></br>
-                    <b> 2. How does Jitume work? </b> <br></br>
-                    Jitume’s system is designed to create a trusted environment
+                    <b> 2. How does Tujitume work? </b> <br></br>
+                    Tujitume’s system is designed to create a trusted environment
                     for investors. We employ a phased escrow system that ensures
                     funds are released in structured stages as project
                     milestones are achieved. This phased approach protects your
                     investment, providing accountability and transparency
                     throughout the project lifecycle.
                     <br></br>
-                    <b> 3. Why invest with Jitume? </b> <br></br>
+                    <b> 3. Why invest with Tujitume? </b> <br></br>
                     Our platform gives you access to a curated selection of
                     promising businesses, all vetted and supported with the
                     tools and services necessary for growth. With detailed
                     insights, project management tools, and a secure investment
-                    process, Jitume offers an environment where your investments
+                    process, Tujitume offers an environment where your investments
                     can flourish in collaboration with local entrepreneurs.
                     <h2 className="text-xl mt-3">
                         <b>Key Features for Investors</b>
                     </h2>
                     <b> 1. Secure Escrow System: </b>
-                    The Jitume escrow system manages all funding in stages,
+                    The Tujitume escrow system manages all funding in stages,
                     holding funds until specific milestones are met. This
                     process safeguards your investment and ensures that the
                     business delivers on its commitments, reducing risk and
                     maximizing transparency.
                     <br></br>
                     <b> 2. Comprehensive Project Management: </b>
-                    Jitume offers powerful project management tools that let you
+                    Tujitume offers powerful project management tools that let you
                     track the progress of your investments in real-time. Access
                     detailed insights on business performance and stay informed
                     at each stage of the funding process.
                     <br></br>
                     <b> 3. Tailored Business Insights: </b> <br></br>
-                    Jitume provides you with market-relevant insights and
+                    Tujitume provides you with market-relevant insights and
                     customized information for each investment opportunity. Our
                     platform adapts to regional specifics, allowing you to make
                     more informed decisions based on local market conditions.
@@ -95,16 +95,16 @@ const HelpCenter = () => {
                         <b>How to Evaluate Opportunities</b>
                     </h2>
                     <b> 1. Browse Opportunities: </b>
-                    Start by exploring businesses on the Jitume platform. Each
+                    Start by exploring businesses on the Tujitume platform. Each
                     business profile includes key information, project goals,
                     funding requirements, and performance metrics.
                     <br></br>
                     <b> 2. Assess Risks and Milestones: </b>
                     Review the phased milestones and potential risks for each
-                    project. Jitume’s transparent milestone system helps you
+                    project. Tujitume’s transparent milestone system helps you
                     evaluate a business’s readiness for funding.
                     <br></br> <b> 3. Due Diligence: </b>
-                    Take advantage of Jitume’s tailored insights to perform
+                    Take advantage of Tujitume’s tailored insights to perform
                     thorough due diligence on each business. Understand the
                     business's goals, market needs, and strategic plans before
                     committing.
@@ -122,7 +122,7 @@ const HelpCenter = () => {
                     released in stages as the business meets key milestones.
                     <br></br>
                     <b> 3. Track Progress: </b>
-                    Use Jitume’s project management tools to monitor the
+                    Use Tujitume’s project management tools to monitor the
                     performance of your investment. You’ll receive updates and
                     performance reports, allowing you to track project outcomes
                     and success rates.
@@ -130,22 +130,22 @@ const HelpCenter = () => {
                         <b>Account and Security</b>
                     </h2>
                     <b> * Setting Up Your Account: </b>
-                    Create a secure account with Jitume and set up two-factor
+                    Create a secure account with Tujitume and set up two-factor
                     authentication to safeguard your information.
                     <br></br>
                     <b> * Transaction Security: </b>
-                    Jitume uses advanced encryption and security protocols to
+                    Tujitume uses advanced encryption and security protocols to
                     protect your transactions and personal data.
                     <br></br>
                     <b> * Escrow Management: </b>
-                    The Jitume escrow system ensures that your funds are managed
+                    The Tujitume escrow system ensures that your funds are managed
                     with the utmost care, offering transparency and security at
                     every stage of the investment
                     <h2 className="text-xl mt-3">
                         <b>Frequently Asked Questions</b>
                     </h2>
                     <b> 1. Is there a minimum investment amount? </b>
-                    Jitume offers flexible investment options with minimum
+                    Tujitume offers flexible investment options with minimum
                     requirements that vary by project. Please check individual
                     project profiles for specifics.
                     <br></br>
@@ -155,7 +155,7 @@ const HelpCenter = () => {
                     depending on the stage of the project. Contact support for
                     further assistance.
                     <br></br>{" "}
-                    <b> 3. How does Jitume handle unsuccessful projects?</b>
+                    <b> 3. How does Tujitume handle unsuccessful projects?</b>
                     In the event a business fails to meet agreed milestones, the
                     escrow system holds back further funding, and we work with
                     the business to provide corrective measures. Your investment
@@ -168,7 +168,7 @@ const HelpCenter = () => {
                     <Link>
                         <b>Contact </b>
                     </Link>{" "}
-                    Support: Reach us at support@jitume.com for any inquiries or
+                    Support: Reach us at support@tujitume.com for any inquiries or
                     support needs.
                 </p>
             </div>

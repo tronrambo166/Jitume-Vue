@@ -21,14 +21,14 @@ const DisputeResolutionPolicy = () => {
                 Dispute & Resolution Policy
             </h1>
             <p style={{ marginBottom: '20px' }}>
-                At Jitume, we prioritize transparency, fairness, and trust to ensure smooth collaborations between businesses and investors. However, we understand that disputes may occasionally arise. This page outlines our dispute resolution process, refund policy, and the steps to ensure equitable outcomes for all parties involved.
+                At Tujitume, we prioritize transparency, fairness, and trust to ensure smooth collaborations between businesses and investors. However, we understand that disputes may occasionally arise. This page outlines our dispute resolution process, refund policy, and the steps to ensure equitable outcomes for all parties involved.
             </p>
 
             <h2 style={{ marginTop: '30px', fontSize: '20px', color: '#444' }}>1. Filing a Dispute</h2>
             <p>If you encounter an issue requiring resolution, follow these steps:</p>
             <ul style={{ margin: '10px 0 20px', paddingLeft: '20px' }}>
                 <li>
-                    <strong>Initiate a Dispute:</strong> Log in to your Jitume account, navigate to the project milestone in question, and click on the "Raise Dispute" button. Provide detailed information about the issue, including supporting documents and evidence.
+                    <strong>Initiate a Dispute:</strong> Log in to your Tujitume account, navigate to the project milestone in question, and click on the "Raise Dispute" button. Provide detailed information about the issue, including supporting documents and evidence.
                 </li>
                 <li>
                     <strong>Escrow Freeze:</strong> Once a dispute is raised, any funds held in escrow for the disputed project phase will be frozen until the matter is resolved.
@@ -39,7 +39,7 @@ const DisputeResolutionPolicy = () => {
             </ul>
 
             <h2 style={{ marginTop: '30px', fontSize: '20px', color: '#444' }}>2. Mediation Process</h2>
-            <p>Jitume’s dedicated resolution team will mediate the dispute to ensure an impartial and fair outcome.</p>
+            <p>Tujitume’s dedicated resolution team will mediate the dispute to ensure an impartial and fair outcome.</p>
             <ul style={{ margin: '10px 0 20px', paddingLeft: '20px' }}>
                 <li>
                     <strong>Review of Submissions:</strong> The resolution team will analyze evidence and arguments provided by both parties.
@@ -71,13 +71,13 @@ const DisputeResolutionPolicy = () => {
                 <li>
                     <strong>Non-Refundable Scenarios:</strong>
                     <ul style={{ marginTop: '5px', paddingLeft: '20px' }}>
-                        <li>If the dispute arises due to reasons beyond Jitume’s control, such as force majeure or mutual miscommunication not involving escrow funds.</li>
+                        <li>If the dispute arises due to reasons beyond Tujitume’s control, such as force majeure or mutual miscommunication not involving escrow funds.</li>
                     </ul>
                 </li>
             </ul>
 
             <h2 style={{ marginTop: '30px', fontSize: '20px', color: '#444' }}>4. Escrow-Linked Disputes</h2>
-            <p>Jitume’s escrow system ensures accountability for every transaction. Disputes related to escrow-managed funds will be resolved by determining whether the agreed milestones or deliverables have been met.</p>
+            <p>Tujitume’s escrow system ensures accountability for every transaction. Disputes related to escrow-managed funds will be resolved by determining whether the agreed milestones or deliverables have been met.</p>
             <ul style={{ margin: '10px 0 20px', paddingLeft: '20px' }}>
                 <li>Release of funds to the appropriate party if milestones are verified.</li>
                 <li>Refund to the investor if the business fails to deliver.</li>
@@ -94,19 +94,19 @@ const DisputeResolutionPolicy = () => {
                     <strong>Regular Communication:</strong> Maintain open and transparent communication between parties to address concerns early.
                 </li>
                 <li>
-                    <strong>Use of Project Tools:</strong> Leverage Jitume’s project management tools to document progress and feedback in real time.
+                    <strong>Use of Project Tools:</strong> Leverage Tujitume’s project management tools to document progress and feedback in real time.
                 </li>
             </ul>
 
             <h2 style={{ marginTop: '30px', fontSize: '20px', color: '#444' }}>6. Contact Support</h2>
             <p>For further assistance, our support team is available to guide you through the process:</p>
             <ul style={{ margin: '10px 0 20px', paddingLeft: '20px' }}>
-                <li>Email: support@jitume.com</li>
+                <li>Email: support@tujitume.com</li>
                 <li>Live Chat: Available on your dashboard.</li>
             </ul>
 
             <p style={{ marginTop: '30px' }}>
-                At Jitume, our goal is to facilitate successful partnerships while ensuring accountability and trust at every stage. Should any issues arise, rest assured that our dispute resolution process is designed to protect the interests of all parties involved.
+                At Tujitume, our goal is to facilitate successful partnerships while ensuring accountability and trust at every stage. Should any issues arise, rest assured that our dispute resolution process is designed to protect the interests of all parties involved.
             </p>
         </div>
     );

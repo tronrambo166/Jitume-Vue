@@ -200,7 +200,7 @@ const RaiseDispute = () => {
                 </h2>
                 <p>If you need further assistance, contact our support team:</p>
                 <ul>
-                    <li>Email: <a href="mailto:support@jitume.com">support@jitume.com</a></li>
+                    <li>Email: <a href="mailto:support@tujitume.com">support@tujitume.com</a></li>
                     <li>Live Chat: Available on your dashboard</li>
                 </ul>
             </div>
