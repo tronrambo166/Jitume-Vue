@@ -20,6 +20,7 @@ use Auth;
 use Mail;
 use PDF;
 use Response;
+use App\Http\Controllers\testController;
 
 
 
@@ -859,15 +860,17 @@ Services::create([
 
 
 public function update_profile(Request $req){
-       
+    $obj = new testController();
     try{
-         $user_id=Auth::id();      
+         $user_id=Auth::id();
+         $current = User::where('id',$user_id)->first();     
          $data['fname'] = $req->fname;
          $data['lname'] = $req->lname;
          $data['mname'] =  $req->mname;
          //$data['email'] = $req->email;
          $data['dob'] = $req->dob;
          $data['gender'] = $req->gender;
+         $old_cover = $current->image;
          
          // if($req->password!=null)
          // $data['password'] = password_hash($req->password,PASSWORD_DEFAULT);
@@ -883,9 +886,15 @@ public function update_profile(Request $req){
           $create_name=$uniqid.'.'.$ext;
           $loc='../React/images/users/';
           //Move uploaded file
-          $image->move($loc, $create_name);
+          //$image->move($loc, $create_name);
           $final_img='images/users/'.$create_name;
+          //Compress
+          $compressedImage = $obj->compressImage($image, $loc.$create_name, 60);
           $data['image'] = $final_img;
+
+          if($old_cover!=null && file_exists('../React/'.$old_cover))
+           unlink('../React/'.$old_cover);
+
           }
         
          $Update = User::where('id',$user_id)->update($data);

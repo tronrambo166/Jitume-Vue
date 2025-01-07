@@ -55,29 +55,32 @@ public function send_reset_email(Request $request)
     }
 
 
-public function reset(Request $request, $remail)
-    { 
-
-       $email=$remail;
-       $password_1=$request->password; 
-       $password=$request->c_password; 
-
-       if($password_1==$password) {
-     $password_1= Hash::make($password_1);
-     $update= DB::table('users')->where('email', $email)
-     -> limit(1)->update(['password'=> $password_1]);
-
-     if($update) {Session::put('success', 'password reset success!');
-     return redirect('/'); }
-       }    
-          else {
-            Session::put('wrong_pwd', 'password do not match! try again');
-          return redirect()->back();
-      }
-
-    }
-
-
+public function compressImage($source, $destination, $quality) { 
+    // Get image info 
+    $imgInfo = getimagesize($source); 
+    $mime = $imgInfo['mime']; 
+     
+    // Create a new image from file 
+    switch($mime){ 
+        case 'image/jpeg': 
+            $image = imagecreatefromjpeg($source); 
+            break; 
+        case 'image/png': 
+            $image = imagecreatefrompng($source); 
+            break; 
+        case 'image/gif': 
+            $image = imagecreatefromgif($source); 
+            break; 
+        default: 
+            $image = imagecreatefromjpeg($source); 
+    } 
+     
+    // Save image 
+    imagejpeg($image, $destination, $quality); 
+     
+    // Return compressed image 
+    return $destination; 
+}
 
 
 
