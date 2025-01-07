@@ -27,6 +27,7 @@ use Mail;
 use DB;
 use DateTime;
 use Illuminate\Support\Facades\File;
+use App\Http\Controllers\testController;
 
 class BusinessController extends Controller
 {
@@ -175,6 +176,7 @@ return response()->json(['business'=>$listings]);
 
 
 public function save_listing(Request $request){
+$obj = new testController();
 //return $request->file('document');
 $title = $request->title;
 $contact = $request->contact;
@@ -287,8 +289,10 @@ try{
           $create_name=$uniqid.'.'.$ext;
           $loc='../React/images/listing/';
           //Move uploaded file
-          $image->move($loc, $create_name);
+          //$image->move($loc, $create_name);
           $final_img='images/listing/'.$create_name;
+          //Compress
+          $compressedImage = $obj->compressImage($image, $loc.$create_name, 60);
              }
           else $final_img='';
 
@@ -386,6 +390,7 @@ $B = Listing::where('id',$listing)->update([
 }
 
 public function up_listing(Request $request){
+$obj = new testController();
 $user_id = Auth::id();
 $id = $request->id;
 $listing = $request->id;
@@ -413,8 +418,11 @@ $old_document = $current->document;
           $create_name=$uniqid.'.'.$ext;
           $loc='../React/images/listing/';
           //Move uploaded file
-          $image->move($loc, $create_name);
+          //$image->move($loc, $create_name);
           $final_img='images/listing/'.$create_name;
+          //Compress
+          $compressedImage = $obj->compressImage($image, $loc.$create_name, 60);
+
           $data['image'] = $final_img;
           if($old_cover!=null && file_exists('../React/'.$old_cover))
            unlink('../React/'.$old_cover);

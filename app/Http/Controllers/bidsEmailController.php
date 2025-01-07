@@ -25,6 +25,7 @@ use App\Models\taxes;
 use App\Models\BusinessBids;
 use App\Models\ServiceMileStatus;
 use App\Models\Notifications;
+use App\Http\Controllers\testController;
 
 class bidsEmailController extends Controller
 {
@@ -342,7 +343,7 @@ catch(\Exception $e){
 }
 
 public function  bidCommitsEQP(Request $request){ 
-
+  $obj = new testController();
   try{ 
 
    if(Auth::check())
@@ -365,7 +366,26 @@ public function  bidCommitsEQP(Request $request){
         $photos=$request->file('photos');
 
 // DOCS UPLOAD
-         if($legal_doc) { 
+        //$total_img='';
+          if($photos !='') {
+            //foreach ($photos as $single_img) { 
+            # code... 
+          $uniqid=hexdec(uniqid());
+          $ext=strtolower($photos->getClientOriginalExtension());
+          $create_name=$uniqid.'.'.$ext;
+          $loc='files/bidsEquip/'.$listing_id.'/'.$investor_id.'/';
+          //Move uploaded file
+          //$photos->move($loc, $create_name);
+          $final_img=$loc.$create_name;
+
+          //Compress
+          $compressedImage = $obj->compressImage($photos, $final_img, 60);
+
+          //$total_img = $total_img.$final_img.',';
+            //}
+           } 
+
+          if($legal_doc) { 
           $uniqid=hexdec(uniqid());
           $ext=strtolower($legal_doc->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
@@ -399,23 +419,7 @@ public function  bidCommitsEQP(Request $request){
           $optional_doc->move($loc, $create_name);
           $final_optional_doc=$loc.$create_name;
              }else $final_optional_doc='';
-               
-
-          $photos=$request->file('photos');$total_img='';
-          if($photos !='') {
-            //foreach ($photos as $single_img) { 
-            # code... 
-          $uniqid=hexdec(uniqid());
-          $ext=strtolower($photos->getClientOriginalExtension());
-          $create_name=$uniqid.'.'.$ext;
-          $loc='files/bidsEquip/'.$listing_id.'/'.$investor_id.'/';
-          //Move uploaded file
-          $photos->move($loc, $create_name);
-          $final_img=$loc.$create_name;
-
-          //$total_img = $total_img.$final_img.',';
-            //}
-           }  
+                
 // DOCS UPLOAD
     $Business = listing::where('id',$listing_id)->first();
     $type = 'Asset';

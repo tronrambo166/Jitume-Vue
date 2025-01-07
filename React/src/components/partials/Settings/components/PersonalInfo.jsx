@@ -108,7 +108,7 @@ const PersonalInfo = () => {
                 setImageFile(null);
                 showAlert("success", "Profile updated successfully!");
                 notifyParent(response.data.user || tempData);
-                console.log("MYRES", response.data);
+                console.log("MYRES", response);
             } else {
                 showAlert(
                     "error",
@@ -117,6 +117,7 @@ const PersonalInfo = () => {
             }
         } catch (error) {
             showAlert("error", "An error occurred while saving changes.");
+            console.log(error);
         } finally {
             setIsSaving(false);
         }
