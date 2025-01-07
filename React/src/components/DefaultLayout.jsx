@@ -9,8 +9,8 @@ const Footer = lazy(() => import("./Landing-page/Footer"));
 const Footer2 = lazy(() => import("./Landing-page/global/Footer2"));
 const Nav2 = lazy(() => import("./Landing-page/global/Nav2"));
 // import BusinessHero from "../components/Businesses/BusinessHero";
-const NavbarGuest = lazy(() => import("./partials/NavbarGuest"));
-const Navbar_old = lazy(() => import("./partials/Navbar"));
+// const NavbarGuest = lazy(() => import("./partials/NavbarGuest"));
+// const Navbar_old = lazy(() => import("./partials/Navbar"));
 const PaymentHero = lazy(() => import("./Heros/PaymentHero"));
 import Animation from "../assets/Animation.json"
 export default function DefaultLayout() {
