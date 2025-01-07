@@ -17,7 +17,6 @@ import ServiceMilestone from "./components/dashboard/Service/ServiceMilestone";
 import ServiceBookings from "./components/dashboard/Service/Servicebookings";
 import Messages from "./components/partials/Messages";
 import AccountPage from "./components/dashboard/business/AccountPage";
-import AddBusiness from "./components/partials/Addbusiness";
 import PaymentForm from "./components/partials/PaymentForm";
 import ServiceDetails from "./components/partials/ServiceDetails";
 import MilestonesPage from "./components/partials/Milestonepage";
@@ -26,15 +25,10 @@ import ServiceResults from "./components/partials/Serviceresults";
 import Subscribepage from "./components/partials/Subscribepage";
 import Mile from "./components/partials/mile";
 import Invest from "./components/partials/Investequip";
-import Users from "./views/users"; // Ensure this path is correct
-import UserForm from "./views/userForm";
-import Register from "./views/register";
-import Login from "./views/login";
 import ServiceTable from "./components/dashboard/Service/servicestable";
 import CategoryPage from "./components/partials/Categorypage";
 import ProjectManagers from "./components/partials/ProjectManagers";
 import EquipmentRelease from "./components/partials/EquipmentRelease";
-import InvestorRegistration from "./components/partials/Investreg";
 import Addservicemilestone from "./components/dashboard/Service/Addservicemilestone";
 import MyBookings from "./components/dashboard/Service/Mybookings";
 import AddBusinesS from "./components/dashboard/business/AddBusiness";
@@ -66,7 +60,6 @@ const router = createBrowserRouter([
             { path: "/", element: <Homepage /> },
             { path: "/home", element: <Homepage /> },
             { path: "/services", element: <Servicepage /> },
-            { path: "/users", element: <Users /> },
             {
                 path: "/listingResults/:resIds/:loc",
                 name: "listingResults",
@@ -104,13 +97,9 @@ const router = createBrowserRouter([
             { path: "/category/:name", element: <CategoryPage /> },
             { path: "/servicecategory/:name", element: <ServiceCategory /> },
 
-            { path: "/createinvestor", element: <InvestorRegistration /> },
 
             { path: "/mile", element: <Mile /> },
             { path: "/investEquip/:amount/:id/:percent", element: <Invest /> },
-            { path: "/register", element: <Register /> },
-            { path: "/login", element: <Login /> },
-            { path: "/user-form", element: <UserForm /> },
             // test test
             { path: "/test", element: <Test /> },
             // test test
@@ -140,7 +129,6 @@ const router = createBrowserRouter([
             { path: "service-bookings", element: <ServiceBookings /> },
             { path: "messages", element: <Messages /> },
             { path: "account/:user_id", element: <AccountPage /> },
-            { path: "add-business", element: <AddBusiness /> },
             { path: "payment-form", element: <PaymentForm /> },
             { path: "services-table", element: <ServiceTable /> },
             { path: "addservicemilestone", element: <Addservicemilestone /> },

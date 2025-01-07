@@ -2,13 +2,13 @@ import React, { useState  } from "react";
 import axiosClient from "../../axiosClient"; // Assuming you have axios setup
 import { useNavigate } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import Imge4 from "../../assets/image4.png";
+import Imge4 from "../../assets/image4.webp";
 import Image6 from "../../assets/image6.png";
-import accountman from "../../assets/accountman.png";
+import accountman from "../../assets/accountman.webp";
 import customsu from "../../assets/customsu.png";
 import tracking from "../../assets/Track.png";
 import wellSecure from "../../assets/Wellsecure.png";
-import consistentence from "../../assets/consistence.png";
+import consistentence from "../../assets/consistence.webp";
 
 const WhyChoose = () => {
     const navigate = useNavigate();

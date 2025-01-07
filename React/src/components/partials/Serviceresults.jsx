@@ -8,9 +8,8 @@ import {
     faSearch,
     faPhone,
 } from "@fortawesome/free-solid-svg-icons";
-import Footer from "./footer";
+// import Footer from "./footer";
 import PriceRangeFilter from "./PriceRangeFilter";
-import Navbar from "./Navbar";
 import axiosClient from "../../axiosClient";
 import { Link } from "react-router-dom";
 import { useStateContext } from "../../contexts/contextProvider";

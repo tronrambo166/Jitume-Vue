@@ -13,7 +13,6 @@ import axiosClient from "../../axiosClient";
 import { Link } from "react-router-dom";
 import { useStateContext } from "../../contexts/contextProvider";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
-import Navbar from "./Navbar";
 import Modal from "./Authmodal";
 import { FaStar, FaPlusCircle, FaMapMarkerAlt } from "react-icons/fa";
 import Calendar from "./moduleParts/Calendar";

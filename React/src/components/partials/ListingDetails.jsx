@@ -9,7 +9,6 @@ import {
     faExclamationCircle,
     faMapMarkerAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import Navbar from "./Navbar";
 import AuthModal from "./Authmodal";
 import { useEffect } from "react";
 import axiosClient from "../../axiosClient";
