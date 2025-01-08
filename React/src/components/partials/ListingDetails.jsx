@@ -55,7 +55,7 @@ const ListingDetails = ({ onClose }) => {
 
     const [reviewData, setRev] = useState([]);
     const reviews = reviewData;
-    
+
     const [itemsPerPage, setItemsPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = Math.ceil(reviews.length / itemsPerPage);
@@ -298,13 +298,15 @@ const ListingDetails = ({ onClose }) => {
                 buttons: {
                     confirm: function () {
                         window.location.href =
-                        //"/checkout/" +amount +"/" +listing_id +"/" +percent +"/" +purpose;
-                        navigate("/checkoutS", { state: {
-                         amount: amount,
-                         listing_id: listing_id,
-                         percent: percent,
-                         purpose: purpose
-                        } });
+                            //"/checkout/" +amount +"/" +listing_id +"/" +percent +"/" +purpose;
+                            navigate("/checkoutS", {
+                                state: {
+                                    amount: amount,
+                                    listing_id: listing_id,
+                                    percent: percent,
+                                    purpose: purpose,
+                                },
+                            });
                     },
                     cancel: function () {
                         $.alert("Canceled!");
@@ -1233,7 +1235,7 @@ const ListingDetails = ({ onClose }) => {
                                             onClick={handleEquipmentInvest}
                                             className="bg-green-700 hover:bg-green-800 text-white transition-all duration-200 px-4 py-3 rounded-lg w-full"
                                         >
-                                            Invest With Assets
+                                            Invest With Equipment
                                         </button>
                                         {equipmentErrorMessage && (
                                             <p className="text-red-600 mt-4">

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axiosClient from "../../axiosClient";
 import { useNavigate } from "react-router-dom";
-import Theimg from "../../assets/sev/Frame.webp";
+import Theimg from "../../assets/sev/Frame2.webp";
 import { AiOutlineLoading3Quarters } from "react-icons/ai"; // Import spinner icon
 
 const DiscoverLocal = () => {

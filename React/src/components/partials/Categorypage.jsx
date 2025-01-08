@@ -76,59 +76,71 @@ const CategoryPage = () => {
     };
 
     useEffect(() => {
-        const parseInvestment = (value) =>
-            parseFloat(value.replace(/,/g, "")) || 0;
-        const parseTurnover = (value) => {
-            const parts = value.split("-").map((v) => parseFloat(v) || 0);
-            return Math.max(...parts);
-        };
-
         const categoryResults = async () => {
             try {
+                setLoading(true); // Start loading
                 const { data } = await axiosClient.get(
                     "/categoryResults/" + name
                 );
-                setCards(data.data);
-                setFilteredCards(data.data);
 
-                // Ensure the data is valid before mapping
-                const investments = data.data.map((card) =>
-                    parseInvestment(card.investment_needed)
-                );
-                const turnovers = data.data.map((card) =>
-                    parseTurnover(card.y_turnover)
-                );
+                if (data && data.data && data.data.length > 0) {
+                    setCards(data.data);
+                    setFilteredCards(data.data);
 
-                const maxInvestment = Math.max(...investments, 0); // Fallback to 0
-                const maxTurnoverValue = Math.max(...turnovers, 0); // Fallback to 0
+                    const investments = data.data.map(
+                        (card) =>
+                            parseFloat(
+                                card.investment_needed.replace(/,/g, "")
+                            ) || 0
+                    );
+                    const turnovers = data.data.map((card) => {
+                        const parts = card.y_turnover
+                            .split("-")
+                            .map((v) => parseFloat(v) || 0);
+                        return Math.max(...parts);
+                    });
 
-                const minInvestment = Math.min(...investments, 0); // Fallback to 0
-                const minTurnoverValue = Math.min(...turnovers, 0); // Fallback to 0
+                    const maxInvestment = Math.max(...investments, 0);
+                    const minInvestment = Math.min(...investments, 0);
+                    const maxTurnoverValue = Math.max(...turnovers, 0);
+                    const minTurnoverValue = Math.min(...turnovers, 0);
 
-                // Set ranges dynamically
-                setMaxx(maxInvestment);
-                setMinn(minInvestment);
-                setMaxx2(maxTurnoverValue);
-                setMinn2(minTurnoverValue);
+                    setMaxx(maxInvestment);
+                    setMinn(minInvestment);
+                    setMaxx2(maxTurnoverValue);
+                    setMinn2(minTurnoverValue);
 
-                // Update sliders
-                setAmountRange([minInvestment, maxInvestment]);
-                setTurnoverRange([minTurnoverValue, maxTurnoverValue]);
+                    setAmountRange([minInvestment, maxInvestment]);
+                    setTurnoverRange([minTurnoverValue, maxTurnoverValue]);
 
-                setMaxPrice(maxInvestment);
-                setMaxTurnover(maxTurnoverValue);
-
-                setLoading(false);
+                    setMaxPrice(maxInvestment);
+                    setMaxTurnover(maxTurnoverValue);
+                } else {
+                    // Handle empty data
+                    setCards([]);
+                    setFilteredCards([]);
+                    setAmountRange([0, 100]); // Reset to default
+                    setTurnoverRange([0, 100]); // Reset to default
+                    setMaxx(100);
+                    setMinn(0);
+                    setMaxx2(100);
+                    setMinn2(0);
+                }
             } catch (err) {
+                setCards([]);
+                setFilteredCards([]);
+                setAmountRange([0, 100]);
+                setTurnoverRange([0, 100]);
+            } finally {
+                setLoading(false); // End loading
             }
         };
 
         categoryResults();
     }, [name]);
 
-   
-
-
+    const just = filteredCards.length 
+    
     const filterCardsByLocationAndName = () => {
         setLoading(true); // Trigger loading for location and name filters
 
@@ -214,7 +226,6 @@ const CategoryPage = () => {
         filterCards();
     }, [amountRange, turnoverRange, locationQuery, nameQuery]);
 
-    
     const handleTurnoverChange = (value) => setTurnoverRange(value);
     const handleAmountChange = (value) => setAmountRange(value);
 
@@ -321,9 +332,6 @@ const CategoryPage = () => {
         }, 300); // Add delay if needed for smooth transition
     };
 
-
-
-    
     const Cancel = () => {
         toggleCollapse("collapseAmountRange");
     };
@@ -334,42 +342,42 @@ const CategoryPage = () => {
             "amountRangeDisplay1"
         );
     };
-     const Clear = () => {
-         // Reset state to the initial min and max values
-         setAmountRange([minn, maxx]);
-         setMaxPrice(maxx);
+    const Clear = () => {
+        // Reset state to the initial min and max values
+        setAmountRange([minn, maxx]);
+        setMaxPrice(maxx);
 
-         // Check if the elements exist before attempting to set their values
-         const minAmountElement = document.getElementById("minAmount");
-         const maxAmountElement = document.getElementById("maxAmount");
-         const minTurnoverElement = document.getElementById("minTurnover");
-         const maxTurnoverElement = document.getElementById("maxTurnover");
+        // Check if the elements exist before attempting to set their values
+        const minAmountElement = document.getElementById("minAmount");
+        const maxAmountElement = document.getElementById("maxAmount");
+        // const minTurnoverElement = document.getElementById("minTurnover");
+        // const maxTurnoverElement = document.getElementById("maxTurnover");
 
-         if (minAmountElement && maxAmountElement) {
-             minAmountElement.value = formatWithCommas(minn);
-             maxAmountElement.value = formatWithCommas(maxx);
-         }
+        if (minAmountElement && maxAmountElement) {
+            minAmountElement.value = formatWithCommas(minn);
+            maxAmountElement.value = formatWithCommas(maxx);
+        }
 
-         if (minTurnoverElement && maxTurnoverElement) {
-             minTurnoverElement.value = formatWithCommas(minn2);
-             maxTurnoverElement.value = formatWithCommas(maxx2);
-         }
+        // if (minTurnoverElement && maxTurnoverElement) {
+        //     minTurnoverElement.value = formatWithCommas(minn2);
+        //     maxTurnoverElement.value = formatWithCommas(maxx2);
+        // }
 
-         // Reset turnover values if applicable
-         setTurnoverRange([minn2, maxx2]);
+        // Reset turnover values if applicable
+        // setTurnoverRange([minn2, maxx2]);
 
-         // Reset filtered cards to the original full list
-         setFilteredCards(cards);
+        // Reset filtered cards to the original full list
+        // setFilteredCards(cards);
 
-         // Clear Inputs
-          setMinAmount("");
-          setMaxAmount("");
+        // Clear Inputs
+        setMinAmount("");
+        setMaxAmount("");
         //   clearing location
         setLocationQuery("");
         setNameQuery("");
 
-         // Log or provide feedback for better UX
-     };
+        // Log or provide feedback for better UX
+    };
 
     const Clear2 = () => {
         // Reset the turnover range slider to the initial min and max values
@@ -390,7 +398,7 @@ const CategoryPage = () => {
         setMaxTurnover(maxx2);
 
         // Reset filtered cards to the original full list
-        setFilteredCards(cards);
+        // setFilteredCards(cards);
 
         // Clear Inputs
         setMinTurnover("");
@@ -402,7 +410,6 @@ const CategoryPage = () => {
 
         // Log or provide feedback for better UX (optional)
     };
-
 
     // comas logic
     const [minAmount, setMinAmount] = useState("");
@@ -450,7 +457,12 @@ const CategoryPage = () => {
                     />
                 </div>
                 <div className="space-y-8 mb-10">
-                    <div></div>
+                    <div>
+                        <h1 className=" text-gray-700 text-2xl mb-2   font-semibold ">
+                            <b>{just} Results Found</b>
+                           
+                        </h1>
+                    </div>
                     <div className="flex flex-col md:flex-row gap-8">
                         {/* Turnover Range */}
                         <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-6 flex-1">
@@ -478,7 +490,7 @@ const CategoryPage = () => {
                                     className="ml-auto mb-6 px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
                                     onClick={Clear2}
                                 >
-                                    Clear
+                                    Clear2
                                 </button>
                             </div>
 
@@ -683,73 +695,93 @@ const CategoryPage = () => {
                                 <span>${amountRange[1].toLocaleString()}</span>
                             </div>
 
-                            <div className="mt-4 hidden" id="collapseAmountRange">
-    <div className="flex justify-between items-center gap-4">
-        <div className="flex flex-col w-1/2 space-y-2">
-            <label
-                htmlFor="minAmount"
-                className="text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
-                Min: {minn}
-            </label>
-            <input
-                type="text"
-                id="minAmount"
-                value={minAmount}
-                onChange={(e) => handleInputChange(e, setMinAmount)}
-                onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                        document.getElementById("maxAmount").focus();
-                    }
-                }}
-                className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-                name="minAmount"
-            />
-        </div>
+                            <div
+                                className="mt-4 hidden"
+                                id="collapseAmountRange"
+                            >
+                                <div className="flex justify-between items-center gap-4">
+                                    <div className="flex flex-col w-1/2 space-y-2">
+                                        <label
+                                            htmlFor="minAmount"
+                                            className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                        >
+                                            Min: {minn}
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="minAmount"
+                                            value={minAmount}
+                                            onChange={(e) =>
+                                                handleInputChange(
+                                                    e,
+                                                    setMinAmount
+                                                )
+                                            }
+                                            onKeyDown={(e) => {
+                                                if (e.key === "Enter") {
+                                                    document
+                                                        .getElementById(
+                                                            "maxAmount"
+                                                        )
+                                                        .focus();
+                                                }
+                                            }}
+                                            className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                                            name="minAmount"
+                                        />
+                                    </div>
 
-        <div className="flex flex-col w-1/2 space-y-2">
-            <label
-                htmlFor="maxAmount"
-                className="text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
-                Max: {maxx.toLocaleString()}
-            </label>
+                                    <div className="flex flex-col w-1/2 space-y-2">
+                                        <label
+                                            htmlFor="maxAmount"
+                                            className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                        >
+                                            Max: {maxx.toLocaleString()}
+                                        </label>
 
-            <input
-                type="text"
-                id="maxAmount"
-                value={maxAmount}
-                onChange={(e) => handleInputChange(e, setMaxAmount)}
-                onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                        document.getElementById("setAmountButton").focus();
-                    }
-                }}
-                className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-                name="maxAmount"
-            />
-        </div>
-    </div>
+                                        <input
+                                            type="text"
+                                            id="maxAmount"
+                                            value={maxAmount}
+                                            onChange={(e) =>
+                                                handleInputChange(
+                                                    e,
+                                                    setMaxAmount
+                                                )
+                                            }
+                                            onKeyDown={(e) => {
+                                                if (e.key === "Enter") {
+                                                    document
+                                                        .getElementById(
+                                                            "setAmountButton"
+                                                        )
+                                                        .focus();
+                                                }
+                                            }}
+                                            className="w-full px-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-green-500 dark:focus:ring-green-300 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                                            name="maxAmount"
+                                        />
+                                    </div>
+                                </div>
 
-    <div className="mt-4 flex justify-between">
-        <button
-            id="setAmountButton"
-            className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
-            onClick={HandleSlideChange} // Pass the function here
-        >
-            Set
-        </button>
+                                <div className="mt-4 flex justify-between">
+                                    <button
+                                        id="setAmountButton"
+                                        className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg sm:w-32 hover:bg-green-700 transition-colors"
+                                        onClick={HandleSlideChange} // Pass the function here
+                                    >
+                                        Set
+                                    </button>
 
-        {/* Cancel Button */}
-        <button
-            className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
-            onClick={Cancel}
-        >
-            Cancel
-        </button>
-    </div>
-</div>
-
+                                    {/* Cancel Button */}
+                                    <button
+                                        className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
+                                        onClick={Cancel}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -796,7 +828,7 @@ const CategoryPage = () => {
                                             className="w-full h-60 sm:h-48 object-cover rounded-lg"
                                         />
                                         <p className="text-sm sm:text-base mt-2 mb-2 font-semibold text-[#1E293B]">
-                                            #Motorcycle Transport #Bikes
+                                            #{card.category}
                                         </p>
                                         <div className="mt-3 flex-grow">
                                             <h2 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold">
@@ -811,7 +843,7 @@ const CategoryPage = () => {
                                                     "Location not available"}
                                             </p>
                                             <p className="text-sm sm:text-base text-gray-600 mt-2 truncate-multiline">
-                                                {card.description ||
+                                                {card.details ||
                                                     "Lorem ipsum dolor sit amet consectetur. Eu quis vel pellentesque ullamcorper donec lorem auctor egestas adipiscing."}
                                             </p>
 

@@ -178,6 +178,10 @@ const CategoryPage = ({ categoryName }) => {
         return value.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Add commas
     };
 
+    const dontknow = filteredCards.length
+
+    
+
     // Handle min amount input change
     const UpdateValuesMin = (value) => {
         setMinAmount(formatNumberWithCommas(value));
@@ -236,7 +240,11 @@ const CategoryPage = ({ categoryName }) => {
                     />
                 </div>
 
-                <div></div>
+                <div>
+                    <h1 className=" text-gray-700 text-2xl mb-2   font-semibold ">
+                        <b>{dontknow} Results Found</b>
+                    </h1>
+                </div>
                 {/* Amount Range Section */}
                 <div className="border border-gray-200 rounded-lg p-6 md:p-8 bg-white ">
                     <div className="flex items-center justify-between">
