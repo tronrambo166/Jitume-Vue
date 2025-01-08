@@ -286,7 +286,6 @@ const ListingDetails = ({ onClose }) => {
             });
         else {
             var percent = parseFloat(percent);
-
             var amount = base64_encode(amount);
             percent = base64_encode(percent);
             var purpose = base64_encode("bids");

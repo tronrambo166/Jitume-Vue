@@ -874,7 +874,6 @@ public function update_profile(Request $req){
          
          // if($req->password!=null)
          // $data['password'] = password_hash($req->password,PASSWORD_DEFAULT);
-
          //FILE
          if (!file_exists('../React/images/users')) 
           mkdir('../React/images/users', 0777, true);
