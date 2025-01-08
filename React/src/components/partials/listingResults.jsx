@@ -619,6 +619,12 @@ const ListingResults = () => {
         }    
 
     };
+
+    useEffect(() => {
+        // This runs whenever maxAfterRangeSet changes
+        // alert(maxAfterRangeSet);
+    }, [maxAfterRangeSet]);
+
     const clearAmountSlider = () => {
         var slider2 = document.getElementById("slider2");
         var slider = document.getElementById("slider");
