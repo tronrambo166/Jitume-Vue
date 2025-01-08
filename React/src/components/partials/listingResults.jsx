@@ -616,7 +616,6 @@ const ListingResults = () => {
         if (slider && slider.noUiSlider) {
             slider.noUiSlider.destroy();
         }
-
         setMaxAfterRangeSet(max);
         setMinAfterRangeSet(min);
         setMaxAfterAmSet(1);
