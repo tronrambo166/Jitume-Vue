@@ -12,8 +12,6 @@ use Hash;
 class testController extends Controller
 {
    
-
-
 	
  public function login() {
     return view('home');
