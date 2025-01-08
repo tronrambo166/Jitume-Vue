@@ -297,9 +297,9 @@ const ListingDetails = ({ onClose }) => {
                 content: "Are you sure to bid?",
                 buttons: {
                     confirm: function () {
-                        window.location.href =
+                        //window.location.href =
                             //"/checkout/" +amount +"/" +listing_id +"/" +percent +"/" +purpose;
-                            navigate("/checkoutS", {
+                            navigate("/checkout", {
                                 state: {
                                     amount: amount,
                                     listing_id: listing_id,

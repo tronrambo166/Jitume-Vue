@@ -600,8 +600,10 @@ const ListingResults = () => {
     const clearRangeSlider = () => {
         setMaxAfterAmSet(max2);
         setMinAfterAmSet(min2);
-        setMaxAfterRangeSet(0);
-        //alert(maxAfterRangeSet)
+
+        const zero = 0;
+        setMaxAfterRangeSet(zero);
+        console.log('max',maxAfterRangeSet);
 
         var slider2 = document.getElementById("slider2");
         var slider = document.getElementById("slider");

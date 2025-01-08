@@ -88,7 +88,7 @@ const MilestonePage = () => {
                 confirm: function () {
                     //window.location.href =
                     //"/checkoutS/" +mile_id +"/" +amount +"/" +purpose +"/" +btoa("null");
-                    navigate("/checkoutS", { state: {
+                    navigate("/checkout", { state: {
                      amount: amount,
                      listing_id: mile_id,
                      purpose: purpose
