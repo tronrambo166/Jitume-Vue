@@ -42,7 +42,7 @@ const InvestHero = () => {
           {/* Overlay Image */}
           <div className="absolute inset-0 z-10">
               <img
-                  src={pathname + overlay.webp}
+                  src={pathname + "overlay.webp"}
                   alt="Overlay"
                   className="w-full h-full object-cover opacity-50"
               />

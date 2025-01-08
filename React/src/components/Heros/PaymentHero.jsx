@@ -43,7 +43,7 @@ const PaymentHero = () => {
                     {" "}
                     {/* Ensure the z-index is lower than the links */}
                     <img
-                        src={imagepath + overlay.webp}
+                        src={imagepath + "overlay.webp"}
                         alt="Overlay"
                         className="w-full h-full object-cover opacity-50" // Adjust opacity as needed
                     />
