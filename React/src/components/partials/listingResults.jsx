@@ -226,11 +226,11 @@ const ListingResults = () => {
 
     //Turnover(Nurul)
     const rangeSliderInitilize = () => {
-        
-        if(maxAfterRangeSet !=0){
+        if(maxAfterRangeSet !=0 && maxAfterRangeSet !=1){
             min = minAfterRangeSet;
             max = maxAfterRangeSet;
-        } //alert(maxAfterRangeSet)
+        }
+        setMaxAfterRangeSet(0);
 
         noUiSlider.create(slider, {
             start: [0, max],
@@ -282,11 +282,12 @@ const ListingResults = () => {
 
     // Amount(OWEN)
     const amountSliderInitilize = () => {
-    //alert('am', maxAfterAmSet)
-        if(maxAfterAmSet !=0){
-            min = minAfterAmSet;
-            max = maxAfterAmSet;
+    //alert(max2); alert(maxAfterAmSet)
+        if(maxAfterAmSet !=0 && maxAfterAmSet !=1){
+            min2 = minAfterAmSet;
+            max2 = maxAfterAmSet;
         }
+        setMaxAfterAmSet(0);
 
         noUiSlider.create(slider2, {
             start: [0, 1000000],
@@ -601,30 +602,11 @@ const ListingResults = () => {
         setMaxAfterAmSet(max2);
         setMinAfterAmSet(min2);
 
-        const zero = 0;
-        setMaxAfterRangeSet(zero);
-        console.log('max',maxAfterRangeSet);
-
-        var slider2 = document.getElementById("slider2");
-        var slider = document.getElementById("slider");
-        
-        if (slider2 && slider2.noUiSlider) {
-            //slider2.noUiSlider.destroy();
-            //amountSliderInitilize();
-        }
-        
-        if (slider && slider.noUiSlider) {
-            slider.noUiSlider.destroy();
-            rangeSliderInitilize();
-        }    
-
+        setMaxAfterRangeSet(1);
+        //console.log('max',maxAfterRangeSet);  
     };
 
-    useEffect(() => {
-        // This runs whenever maxAfterRangeSet changes
-        // alert(maxAfterRangeSet);
-    }, [maxAfterRangeSet]);
-
+    
     const clearAmountSlider = () => {
         var slider2 = document.getElementById("slider2");
         var slider = document.getElementById("slider");
@@ -637,7 +619,37 @@ const ListingResults = () => {
 
         setMaxAfterRangeSet(max);
         setMinAfterRangeSet(min);
+        setMaxAfterAmSet(1);
     };
+
+
+    useEffect(() => {
+        // This runs whenever maxAfterRangeSet changes
+        if(maxAfterRangeSet == 1){
+            var slider = document.getElementById("slider");
+            var slider2 = document.getElementById("slider2");
+             
+            if (slider && slider.noUiSlider) {
+            //setTimeout(() => {
+            slider.noUiSlider.destroy();
+            rangeSliderInitilize();
+            //}, 500);
+
+            }
+
+            if (slider2 && slider2.noUiSlider) {
+            slider2.noUiSlider.destroy();
+            amountSliderInitilize();
+            }  
+        }
+
+        if(maxAfterAmSet == 1){
+           setTimeout(() => { rangeSliderInitilize();}, 1000);
+           amountSliderInitilize();
+        }
+        
+    }, [maxAfterRangeSet,maxAfterAmSet]);
+
 
     //Range Function
 
@@ -824,8 +836,7 @@ const ListingResults = () => {
                                 onClick={(event) => {
                                     clearAmountSlider();
                                     //getResults2();
-                                    rangeSliderInitilize();
-                                    amountSliderInitilize();
+                                    
                                 }}
                             >
                                 Clear
