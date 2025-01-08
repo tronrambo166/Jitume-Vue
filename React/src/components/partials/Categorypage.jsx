@@ -490,7 +490,7 @@ const CategoryPage = () => {
                                     className="ml-auto mb-6 px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-green-100 transition-colors"
                                     onClick={Clear2}
                                 >
-                                    Clear2
+                                    Clear
                                 </button>
                             </div>
 
