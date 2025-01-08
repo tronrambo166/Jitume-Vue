@@ -5,15 +5,14 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Imge4 from "../../assets/image4.webp";
 import Image6 from "../../assets/image6.png";
 import accountman from "../../assets/accountman.webp";
-import customsu from "../../assets/customsu.png";
 import tracking from "../../assets/Track.png";
 import wellSecure from "../../assets/Wellsecure.png";
-import consistentence from "../../assets/consistence.webp";
+
 
 const WhyChoose = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-
+    const imgpath = "../../src/assets/";
     const handleBrowseBusinesses = async (e) => {
         e.preventDefault();
         setLoading(true); // Show spinner
@@ -87,7 +86,7 @@ const WhyChoose = () => {
                         <div className="space-y-9">
                             <div className="flex items-center space-x-2 mt-7 mb-1">
                                 <img
-                                    src={accountman}
+                                    src={imgpath + "accountman.webp"}
                                     alt="Account Management"
                                     className="w-6 h-6"
                                 />
@@ -97,7 +96,7 @@ const WhyChoose = () => {
                             </div>
                             <div className="flex items-center space-x-3">
                                 <img
-                                    src={tracking}
+                                    src={imgpath + "Track.png"}
                                     alt="Tracking Investments"
                                     className="w-6 h-6"
                                 />
@@ -107,7 +106,7 @@ const WhyChoose = () => {
                             </div>
                             <div className="flex items-center space-x-3">
                                 <img
-                                    src={wellSecure}
+                                    src={imgpath + "Wellsecure.png"}
                                     alt="Well Secured"
                                     className="w-6 h-6"
                                 />
@@ -121,7 +120,7 @@ const WhyChoose = () => {
                         <div className="space-y-9">
                             <div className="flex items-center space-x-3 mt-7 mb-1">
                                 <img
-                                    src={customsu}
+                                    src={imgpath + "customsu.png"}
                                     alt="24/7 Customer Support"
                                     className="w-6 h-6"
                                 />
@@ -131,7 +130,7 @@ const WhyChoose = () => {
                             </div>
                             <div className="flex items-center space-x-3">
                                 <img
-                                    src={consistentence}
+                                    src={imgpath + "consistence.webp"}
                                     alt="Consistent Updates"
                                     className="w-6 h-6"
                                 />
@@ -162,7 +161,7 @@ const WhyChoose = () => {
             <div className="flex justify-center  ">
                 <div className="bg-gray-50 rounded-t-lg border-t border-l-short border-r-short relative">
                     <img
-                        src={Image6}
+                        src={imgpath + "image6.png"}
                         alt="Jitume investment"
                         className="rounded-lg ml-3 mt-4"
                     />
@@ -176,7 +175,7 @@ const WhyChoose = () => {
                             <br /> Fund Raising
                         </p>
                         <img
-                            src={Imge4}
+                            src={imgpath + "image4.webp"}
                             alt="Jitume investment"
                             className="rounded-lg mt-3"
                         />

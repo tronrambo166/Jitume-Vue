@@ -4,21 +4,20 @@ import Navbar from "./Navbar";
 import NavbarGuest from "./Navbar";
 import Search from "./Search";
 import TopCards from "./Topcards";
-import overlayImage from "../../images/overlay.png"; // Adjust path if needed
 import { useStateContext } from "../../contexts/contextProvider";
 import axiosClient from "../../axiosClient";
 
 const Topsection = () => {
     const { token } = useStateContext();
     const isDashboardRoute = location.pathname.startsWith("/dashboard");
-
+   const imgpath = "../../src/images/";
     return (
         <div className="relative w-full bg-[#00290F] pb-10 overflow-x-hidden">
             {/* Overlay */}
             <div
                 className="absolute inset-0 bg-cover bg-center z-10"
                 style={{
-                    backgroundImage: `url(${overlayImage})`,
+                    backgroundImage: `url(${imgpath}overlay.webp)`,
                 }}
             ></div>
 
