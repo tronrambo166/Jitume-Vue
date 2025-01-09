@@ -16,6 +16,7 @@ const HowItWorks = () => {
                     src={location}
                     alt="Location Icon"
                     className="w-full h-full object-cover rounded-full hover:animate-spin-slow"
+                    loading="lazy"
                 />
             ),
         },
@@ -28,6 +29,7 @@ const HowItWorks = () => {
                     src={category}
                     alt="Category Icon"
                     className="w-full h-full object-cover rounded-full hover:animate-spin-slow"
+                    loading="lazy"
                 />
             ),
         },
@@ -40,6 +42,7 @@ const HowItWorks = () => {
                     src={graph}
                     alt="Graph Icon"
                     className="w-full h-full object-cover rounded-full hover:animate-spin-slow"
+                    loading="lazy"
                 />
             ),
         },
@@ -52,6 +55,7 @@ const HowItWorks = () => {
                     src={choose}
                     alt="Choose Icon"
                     className="w-full h-full object-cover rounded-full hover:animate-spin-slow"
+                    loading="lazy"
                 />
             ),
         },
@@ -64,6 +68,7 @@ const HowItWorks = () => {
                     src={growth}
                     alt="Growth Icon"
                     className="w-full h-full object-cover rounded-full hover:animate-spin-slow"
+                    loading="lazy"
                 />
             ),
         },

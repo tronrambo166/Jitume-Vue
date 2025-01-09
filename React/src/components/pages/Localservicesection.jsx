@@ -67,6 +67,7 @@ const DiscoverLocal = () => {
                     src={Theimg}
                     alt="service"
                     className="object-contain w-full h-auto rounded-md"
+                    loading="lazy"
                 />
             </div>
 

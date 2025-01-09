@@ -205,6 +205,7 @@ const Explore = () => {
                                                   src={category.icon}
                                                   alt={category.name}
                                                   className="w-5 h-5 sm:w-7 sm:h-7 mr-2 sm:mr-3"
+                                                  loading="lazy"
                                               />
                                               <div className="flex flex-col items-start">
                                                   <h2 className="text-xs sm:text-xs md:text-md font-medium text-slate-800">

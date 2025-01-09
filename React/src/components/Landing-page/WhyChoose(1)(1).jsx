@@ -164,6 +164,7 @@ const WhyChoose = () => {
                         src={imgpath + "image6.png"}
                         alt="Jitume investment"
                         className="rounded-lg ml-3 mt-4"
+                        loading="lazy"
                     />
                     <div className="mt-3">
                         <p className="text-[22px] md:text-[24px] text-slate-700 font-semibold ml-3">
@@ -178,6 +179,7 @@ const WhyChoose = () => {
                             src={imgpath + "image4.webp"}
                             alt="Jitume investment"
                             className="rounded-lg mt-3"
+                            loading="lazy"
                         />
                     </div>
                 </div>

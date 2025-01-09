@@ -136,6 +136,7 @@ const Invest = () => {
                                           src={card.image}
                                           alt={card.name}
                                           className="w-full h-40 sm:h-48 object-cover rounded-lg"
+                                          loading="lazy"
                                       />
                                       <div className="mt-3 flex-grow">
                                           <p className="text-sm sm:text-base text-gray-500">

@@ -134,6 +134,7 @@ const Footer = () => {
                                                     ? "rotate-180"
                                                     : "rotate-0"
                                             } block lg:hidden`}
+                                            loading="lazy"
                                         />
                                     </h3>
                                     {/* Dropdown Links */}
@@ -255,7 +256,7 @@ const Footer = () => {
 
                 {/* Footer Bottom Section */}
                 <div className="py-7 flex flex-col md:flex-row justify-between items-center">
-                    <img src={logo} width={110} alt="logo" />
+                    <img src={logo} width={110} alt="logo" loading="lazy" />
                     <div className="flex space-x-4 mt-6 md:mt-0">
                         <a
                             href="https://facebook.com"
@@ -268,6 +269,7 @@ const Footer = () => {
                                 height={30}
                                 alt="custom icon"
                                 className="object-contain"
+                                loading="lazy"
                             />
                         </a>
                         <a
@@ -281,6 +283,7 @@ const Footer = () => {
                                 height={30}
                                 alt="x logo"
                                 className="object-contain"
+                                loading="lazy"
                             />
                         </a>
                         <a
@@ -302,6 +305,7 @@ const Footer = () => {
                                 height={30}
                                 alt="custom icon"
                                 className="object-contain"
+                                loading="lazy"
                             />
                         </a>
                         {/* <a

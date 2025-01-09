@@ -155,6 +155,7 @@ const Servicepage = () => {
                         alt="Background"
                         className="object-cover w-full h-full"
                         style={{ transform: "translateX(8%)" }}
+                        loading="lazy"
                     />
                     <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#0e2b18] via-[#00290fe9] to-transparent"></div>
                 </div>
@@ -165,6 +166,7 @@ const Servicepage = () => {
                         src={NoisyImg}
                         alt="Noisy Image"
                         className="object-cover w-full h-full opacity-100"
+                        loading="lazy"
                     />
                     {/* Blur overlay gradient */}
                     <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#001a0fd1] via-[#01362073] to-[#001A0F00]">

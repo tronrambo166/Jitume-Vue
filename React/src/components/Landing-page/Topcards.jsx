@@ -47,6 +47,7 @@ const TopCards = () => {
                             className={`w-full h-60 object-cover rounded-lg transition-transform duration-300 transform hover:scale-105 ${
                                 card.id === 2 ? "brightness-90" : ""
                             }`}
+                            loading="lazy"
                         />
 
                         <div className="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-center">
