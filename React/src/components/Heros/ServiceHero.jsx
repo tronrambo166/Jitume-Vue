@@ -7,7 +7,7 @@ const ServiceHero = () => {
        const handleGoBack = () => {
            navigate(-1); // Go back to the last visited page
        };
-       const imgpath = "../../src/assets/";
+       const imgpath = "../../src/images/";
     return (
         <div className="bg-[#00290F] w-full text-white min-h-[0vh] relative">
             <div className="relative z-20">

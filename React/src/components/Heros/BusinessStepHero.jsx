@@ -11,7 +11,7 @@ const MilestoneHero = () => {
       };
       const pathname = "../../src/images/";
     return (
-        <div className="bg-[#00290F] w-full text-white min-h-[50vh] relative">
+        <div className="bg-[#00290F] w-full text-white min-h-[0vh] relative">
             <div className="relative z-20">
                 <Navbar />
             </div>
