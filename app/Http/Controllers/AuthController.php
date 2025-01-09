@@ -15,7 +15,7 @@ use Mail;
 class AuthController extends Controller
 {
     public function checkAuth() {
-         $user = User::select('email','id', 'fname', 'lname', 'gender')
+         $user = User::select('email','id', 'fname', 'lname', 'gender','image')
          ->where('id', Auth::id())->first();
          return response()->json([
             'user' => $user
