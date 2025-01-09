@@ -269,7 +269,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 {/* Footer Bottom Section */}
                 <div className="py-7 flex flex-col md:flex-row justify-between items-center">
-                    <img src={logo} width={140} alt="logo" loading="lazy" />
+                    <img
+                        src={logo}
+                        width={140}
+                        alt="logo"
+                        className="hover:opacity-75 transition-opacity cursor-pointer"
+                        onClick={() => window.scrollTo(0, 0)}
+                        loading="lazy"
+                    />
 
                     <div className="flex space-x-4 mt-6 md:mt-0">
                         <a
