@@ -33,7 +33,7 @@ const Dashboard = () => {
                 {/* Footer */}
                 <div className="flex-none">
                     <Suspense fallback={<div>Loading Footer...</div>}>
-                        <Footer />
+                        {/* <Footer /> */}
                     </Suspense>
                 </div>
             </div>

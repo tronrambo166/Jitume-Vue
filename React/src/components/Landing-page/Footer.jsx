@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import bannerImage from "../../images/bannerbg.png";
 import rightImage from "../../images/bannerbg2.png";
-import logo2 from "../../images/Mask group.png";
+import logo2 from "../../images/Tujitumelogo.svg";
 import logo from "../../images/TujitumeLogo.svg";
 import icon3 from "../../images/Icon 3.png";
 // import fb from "../../images/fb2.png";
@@ -70,13 +70,14 @@ document.addEventListener("DOMContentLoaded", () => {
             >
                 {/* Left Content */}
                 <div className="w-full md:w-auto space-y-4 px-[20px] md:pl-[34px] flex flex-col items-center md:items-start pt-8 md:pt-0">
-                    <div className="bg-yellow-400 w-[80px] md:w-[100px] rounded-full flex flex-col justify-center items-center px-4 md:px-6 py-2">
+                    <div className="bg-yellow-400 rounded-full flex flex-col justify-center items-center px-4 md:px-6 py-2">
                         <img
                             src={logo2}
                             alt=""
-                            className="w-[50px] h-auto md:w-[60px] md:h-[80%] max-h-[80px]"
+                            className="w-[80px] h-auto md:w-[90px] md:h-[100%] max-h-[120px]"
                         />
                     </div>
+
                     <p className="text-center md:text-left text-[20px] md:text-[40px] text-white w-full md:w-[670px] leading-[28px] md:leading-[45px]">
                         {isServiceRoute ? (
                             <>

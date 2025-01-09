@@ -7,7 +7,7 @@ import Image6 from "../../assets/image6.png";
 import accountman from "../../assets/accountman.webp";
 import tracking from "../../assets/Track.png";
 import wellSecure from "../../assets/Wellsecure.png";
-
+import logo from "../../images/Tujitumelogo.svg";
 
 const WhyChoose = () => {
     const navigate = useNavigate();
@@ -161,9 +161,10 @@ const WhyChoose = () => {
             <div className="flex justify-center  ">
                 <div className="bg-gray-50 rounded-t-lg border-t border-l-short border-r-short relative">
                     <img
-                        src={imgpath + "image6.png"}
+                        src={logo}
                         alt="Jitume investment"
                         className="rounded-lg ml-3 mt-4"
+                        width={170}
                         loading="lazy"
                     />
                     <div className="mt-3">
