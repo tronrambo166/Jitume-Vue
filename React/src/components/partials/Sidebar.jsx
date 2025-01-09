@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
-import logo from "../../images/logo3.png";
+import logo from "../../images/Tujitumelogo.svg";
 import calendarIcon from "../../images/calendar.svg";
 import addIcon from "../../images/add.png";
 import chartIcon from "../../images/chart.png";

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import LoginForm from "./Loginform";
 import RegisterForm from "./Signup";
-import logo2 from "../../images/logo2.png";
+import logo2 from "../../images/Tujitumelogo.svg";
 import { useStateContext } from "../../contexts/contextProvider";
 
 const Modal = ({ isOpen, onClose }) => {

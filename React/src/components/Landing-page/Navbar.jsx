@@ -9,7 +9,7 @@ import down from "../../images/down.png";
 // import { useLocation } from "react";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
-import logo from "../../images/logo.png";
+import logo from "../../images/TujitumeLogo.svg";
 import Modal from "../partials/Authmodal";
 import CreateInvAccountModal from "../partials/CreateInvAccount";
 import { useStateContext } from "../../contexts/contextProvider";
@@ -80,9 +80,16 @@ const Navbar = () => {
         >
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-1">
-                    <Link to="/">
+                    <Link
+                        to="/"
+                        className="hover:opacity-75 transition-opacity"
+                    >
                         <span>
-                            <img src={logo} width={110} alt="Logo" />
+                            <img
+                                src={logo}
+                                width={130}
+                                alt="Logo"
+                            />
                         </span>
                     </Link>
                 </div>

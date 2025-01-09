@@ -7,7 +7,7 @@ import {
     AiOutlineMenu,
     AiOutlineClose,
 } from "react-icons/ai";
-import logo from "../../../images/logo2.png";
+import logo from "../../../images/Tujitumelogo.svg";
 import down from "../../../images/down.png";
 import { FaChevronDown } from "react-icons/fa";
 import Modal from "../../partials/Authmodal";
@@ -73,7 +73,7 @@ const Nav2 = () => {
                 <div className="flex items-center gap-1">
                     <Link>
                         <span to="/">
-                            <img src={logo} width={108} alt="Logo" />
+                            <img src={logo} width={130} alt="Logo" />
                         </span>
                     </Link>
                 </div>

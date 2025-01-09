@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaEye, FaEyeSlash, FaCheck } from "react-icons/fa";
-import logo2 from "../../images/logo2.png";
+import logo2 from "../../images/Tujitumelogo.svg";
 import { useStateContext } from "../../contexts/contextProvider";
 import axiosClient from "../../axiosClient";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";

@@ -3,17 +3,22 @@ import { Link } from "react-router-dom";
 import bannerImage from "../../images/bannerbg.png";
 import rightImage from "../../images/bannerbg2.png";
 import logo2 from "../../images/Mask group.png";
-import logo from "../../images/logo.png";
+import logo from "../../images/TujitumeLogo.svg";
 import icon3 from "../../images/Icon 3.png";
-import fb from "../../images/fb2.png";
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+// import fb from "../../images/fb2.png";
+// import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 import x from "../../images/x2.png";
-import linkedin from "../../images/linkedin.png";
+// import linkedin from "../../images/linkedin.png";
 import down from "../../images/down.png"; // Include your dropdown arrow image
 import FindBusinessBtn from "./FindBusinessBtn";
 import axiosClient from "../../axiosClient";
 import { useAlert } from "../../components/partials/AlertContext";
-
+import {
+    FaFacebookF,
+    // FaXTwitter,
+    FaInstagram,
+    FaLinkedinIn,
+} from "react-icons/fa";
 const Footer = () => {
     const [openDropdown, setOpenDropdown] = useState(null); // State to track which dropdown is open
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
@@ -27,6 +32,15 @@ const Footer = () => {
     const handleEmail = (e) => {
         setEmail(e.target.value);
     };
+document.addEventListener("DOMContentLoaded", () => {
+    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+
+    lazyImages.forEach((img) => {
+        img.addEventListener("load", () => {
+            img.classList.add("loaded");
+        });
+    });
+});
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -39,11 +53,10 @@ const Footer = () => {
             "/JitumeSubscribeEmail/" + email
         );
         console.log(data);
-        if (data.status == 200) showAlert("success", data.message); 
+        if (data.status == 200) showAlert("success", data.message);
         else showAlert("error", "Something went wrong!");
     };
     const isServiceRoute = location.pathname.includes("service");
-    
 
     return (
         <footer className="relative bg-[#00290F] mt-[70px] w-full">
@@ -256,21 +269,16 @@ const Footer = () => {
 
                 {/* Footer Bottom Section */}
                 <div className="py-7 flex flex-col md:flex-row justify-between items-center">
-                    <img src={logo} width={110} alt="logo" loading="lazy" />
+                    <img src={logo} width={140} alt="logo" loading="lazy" />
+
                     <div className="flex space-x-4 mt-6 md:mt-0">
                         <a
                             href="https://facebook.com"
                             target="_blank"
                             rel="noopener noreferrer"
+                            className="bg-white/10 p-3 rounded-full flex items-center justify-center"
                         >
-                            <img
-                                src={fb}
-                                width={45}
-                                height={30}
-                                alt="custom icon"
-                                className="object-contain"
-                                loading="lazy"
-                            />
+                            <FaFacebookF size={24} className="text-white" />
                         </a>
                         <a
                             href="https://x.com"
@@ -288,41 +296,20 @@ const Footer = () => {
                         </a>
                         <a
                             href="https://instagram.com"
-                            className="bg-white/10 p-2 rounded-full"
                             target="_blank"
                             rel="noopener noreferrer"
+                            className="bg-white/10 p-3 rounded-full flex items-center justify-center"
                         >
-                            <FaInstagram size={30} className="text-white" />
+                            <FaInstagram size={24} className="text-white" />
                         </a>
                         <a
                             href="https://linkedin.com"
                             target="_blank"
                             rel="noopener noreferrer"
+                            className="bg-white/10 p-3 rounded-full flex items-center justify-center"
                         >
-                            <img
-                                src={linkedin}
-                                width={44}
-                                height={30}
-                                alt="custom icon"
-                                className="object-contain"
-                                loading="lazy"
-                            />
+                            <FaLinkedinIn size={24} className="text-white" />
                         </a>
-                        {/* <a
-                          href="https://linkedin.com"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                      >
-                          <div className="bg-white/10 px-[9px] py-[14px] rounded-full">
-                              <img
-                                  src={icon3}
-                                  width={30}
-                                  height={30}
-                                  alt="custom icon"
-                                  className="object-contain"
-                              />
-                          </div>
-                      </a> */}
                     </div>
                 </div>
             </div>
