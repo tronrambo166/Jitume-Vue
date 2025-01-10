@@ -229,7 +229,7 @@ const MilestonePage = () => {
                         </React.Fragment>
                     ))}
                 </div>
-                <div className="overflow-x-auto sm:rounded-lg max-w-5xl mx-auto border  border-gray-300 ">
+                <div className="overflow-x-auto sm:rounded-lg  mx-auto border  border-gray-300 ">
                     <table className="table-auto w-full border-collapse border border-gray-300">
                         <thead>
                             <tr className="bg-[#E5E7EB]">

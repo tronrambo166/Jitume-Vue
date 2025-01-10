@@ -96,7 +96,7 @@ const MilestonePage = () => {
     return (
         <>
             <BusinessStepHero />
-            <BackBtn/>
+            <BackBtn />
             <div className="container mx-auto p-5">
                 <div className="text-center mb-10 mt-10">
                     <h1 className="text-3xl sm:text-4xl font-bold text-[#334155]">
@@ -138,7 +138,7 @@ const MilestonePage = () => {
                         ))}
                     </div>
                 </div>
-                <div className="overflow-x-auto  sm:rounded-lg max-w-5xl mx-auto border border-gray-300">
+                <div className="overflow-x-auto  sm:rounded-lg  mx-auto border border-gray-300">
                     <table className="min-w-full bg-white border-collapse">
                         <thead className="bg-[#E5E7EB]">
                             <tr>
@@ -174,15 +174,13 @@ const MilestonePage = () => {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm hidden sm:table-cell">
                                         <button
-                                            onClick={
-                                                download_doc(milestone.id)
-                                            }
+                                            onClick={download_doc(milestone.id)}
                                             className="text-[#334155] hover:underline transition duration-200"
                                         >
                                             Download Milestone Documentation
                                         </button>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
+                                    <td className="px-6 py-4 whitespace-nowrap  text-start">
                                         <span
                                             className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-md ${
                                                 milestone.status ===
@@ -195,17 +193,21 @@ const MilestonePage = () => {
                                         </span>
                                     </td>
 
-                                    {dispute &&
+                                    {dispute && (
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                        <Link to={'/raise-dispute/'+btoa(btoa(milestone.id))+'/'+milestone.title}
-                                            className="bg-yellow-300 px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-md"
-                                        
-                                        >
-                                             Raise Dispute
-                                        </Link>
-                                    </td>
-                                    }
-
+                                            <Link
+                                                to={
+                                                    "/raise-dispute/" +
+                                                    btoa(btoa(milestone.id)) +
+                                                    "/" +
+                                                    milestone.title
+                                                }
+                                                className="bg-yellow-300 px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-md"
+                                            >
+                                                Raise Dispute
+                                            </Link>
+                                        </td>
+                                    )}
                                 </tr>
                             ))}
                         </tbody>
