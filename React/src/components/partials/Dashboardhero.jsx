@@ -9,7 +9,7 @@ import {
     FaDoorOpen,
     FaBars,
 } from "react-icons/fa";
-import profile from "../../../images/profile.png";
+import profile from "../../images/profile.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosClient from "../../axiosClient";

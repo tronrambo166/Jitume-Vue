@@ -133,7 +133,7 @@ const Invest = () => {
                                       className="flex-shrink-0 w-[260px] sm:w-[320px] md:w-[350px] lg:w-[390px] bg-white border border-gray-200 rounded-2xl p-3 sm:p-4 flex flex-col justify-between"
                                   >
                                       <img
-                                          src={card.image}
+                                          src={'https://tujitume.com/'+card.image}
                                           alt={card.name}
                                           className="w-full h-40 sm:h-48 object-cover rounded-lg"
                                           loading="lazy"
