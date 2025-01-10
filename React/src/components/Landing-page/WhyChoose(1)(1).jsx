@@ -86,7 +86,7 @@ const WhyChoose = () => {
                         <div className="space-y-9">
                             <div className="flex items-center space-x-2 mt-7 mb-1">
                                 <img
-                                    src={imgpath + "accountman.webp"}
+                                    src={accountman}
                                     alt="Account Management"
                                     className="w-6 h-6"
                                 />
@@ -96,7 +96,7 @@ const WhyChoose = () => {
                             </div>
                             <div className="flex items-center space-x-3">
                                 <img
-                                    src={imgpath + "Track.png"}
+                                    src={tracking}
                                     alt="Tracking Investments"
                                     className="w-6 h-6"
                                 />
@@ -106,7 +106,7 @@ const WhyChoose = () => {
                             </div>
                             <div className="flex items-center space-x-3">
                                 <img
-                                    src={imgpath + "Wellsecure.png"}
+                                    src={wellSecure}
                                     alt="Well Secured"
                                     className="w-6 h-6"
                                 />
