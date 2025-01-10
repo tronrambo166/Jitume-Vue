@@ -185,7 +185,7 @@ const Servicepage = () => {
                 <div className="relative z-20 px-4 sm:px-6 lg:px-8 ">
                     <div className="text-white text-left max-w-md">
                         <h1 className="text-4xl sm:text-5xl lg:text-5xl  font-bold mb-6">
-                            Find The Right Services For You
+                             Find The Right Services For You
                         </h1>
                         <p className="text-base sm:text-base mb-8">
                             Tujitume is a simple and transparent investment

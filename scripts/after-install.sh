@@ -20,8 +20,8 @@ sudo chown -R www-data React
 unlink bootstrap/cache/config.php
 #Killing Screen & Create New NPM Screen
 killall screen
-screen -S serversession
-echo $STY
-cd /var/www/test.jitume/React
-sudo npm run dev
+#screen -S serversession
+#echo $STY
+#cd /var/www/test.jitume/React
+#sudo npm run dev
 
