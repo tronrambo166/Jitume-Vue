@@ -188,7 +188,7 @@ const Servicepage = () => {
                             Find The Right Services For You
                         </h1>
                         <p className="text-base sm:text-base mb-8">
-                            Jitume is a simple and transparent investment
+                            Tujitume is a simple and transparent investment
                             platform designed for experienced and aspiring
                             socially responsible investors.
                         </p>
