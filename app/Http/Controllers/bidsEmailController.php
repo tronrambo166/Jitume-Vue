@@ -30,9 +30,12 @@ use App\Http\Controllers\testController;
 class bidsEmailController extends Controller
 {
 
+protected $api_base_url;
+protected $Client;
 public function __construct(StripeClient $client)
     {
         $this->Client = $client;
+        $this->api_base_url = env('API_BASE_URL');
     }
 
 public function bidsAccepted(Request $request)
@@ -373,13 +376,14 @@ public function  bidCommitsEQP(Request $request){
           $uniqid=hexdec(uniqid());
           $ext=strtolower($photos->getClientOriginalExtension());
           $create_name=$uniqid.'.'.$ext;
-          $loc='files/bidsEquip/'.$listing_id.'/'.$investor_id.'/';
+          $loc = 'files/bidsEquip/'.$listing_id.'/'.$investor_id.'/';
           //Move uploaded file
           //$photos->move($loc, $create_name);
-          $final_img=$loc.$create_name;
+          $up_img=$loc.$create_name;
 
           //Compress
-          $compressedImage = $obj->compressImage($photos, $final_img, 60);
+          $compressedImage = $obj->compressImage($photos, $up_img, 60);
+          $final_img=$this->api_base_url.$up_img;
 
           //$total_img = $total_img.$final_img.',';
             //}

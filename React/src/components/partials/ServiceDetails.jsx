@@ -457,7 +457,7 @@ const ServiceDetails = () => {
                                         maxHeight: "555px",
                                     }}
                                     className="w-full rounded-lg object-cover"
-                                    src={"../../" + details.image}
+                                    src={details.image}
                                     alt="Service"
                                 />
                             ) : (

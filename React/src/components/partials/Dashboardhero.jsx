@@ -183,7 +183,7 @@ const Dashboardhero = () => {
                         <div className="flex gap-2 items-center">
                             <img
                                 src={
-                                    user?.image ? `../${user.image}` : userImage
+                                    user?.image ? user.image : userImage
                                 }
                                 className="rounded-xl w-16 h-16 md:w-20 md:h-20"
                                 alt="Profile"

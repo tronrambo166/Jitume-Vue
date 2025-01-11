@@ -29,9 +29,12 @@ use App\Http\Controllers\testController;
 class ServiceController extends Controller
 {
 
+protected $api_base_url;
+
 public function __construct()
     {
         //$this->middleware('business');
+        $this->api_base_url = env('API_BASE_URL');
     }
 
 public function auth_id(){
@@ -93,12 +96,19 @@ $user_id = Auth::id();
 
 //File Type Check!
 $image=$request->file('image');
-if($image) {
+  if($image) 
+  {
           $ext=strtolower($image->getClientOriginalExtension());
+          $size=($image->getSize())/1048576; // Get MB
+          if($size == 2 || $size > 2)
+          {
+            return response()->json([ 'status' => 404, 'message' => 'Image size must be less than 2MB!']);
+          }
           if($ext!='jpg' && $ext!= 'png' && $ext!='jpeg' && $ext!= 'svg'&& $ext!='gif')
           {
             return response()->json([ 'status' => 404, 'message' => 'For Cover, Only images are allowed!']);
-          } }
+          } 
+  }
 
   $pin=$request->file('pin');
   if($pin) {
@@ -158,10 +168,10 @@ $listing = Services::create([
           $uniqid=hexdec(uniqid());
           $ext=strtolower($image->getClientOriginalExtension());
           $create_name=$uniqid.'.'.$ext;
-          $loc='../React/images/services/';
+          $loc = 'images/services/';
           //Move uploaded file
           //$image->move($loc, $create_name);
-          $final_img='images/services/'.$create_name;
+          $final_img=$this->api_base_url.$loc.$create_name;
           //Compress
           $compressedImage = $obj->compressImage($image, $loc.$create_name, 60);
              }
@@ -285,21 +295,26 @@ $old_document = $current->document;
  if($image) {
           $uniqid=hexdec(uniqid());
           $ext=strtolower($image->getClientOriginalExtension());
+          $size=($image->getSize())/1048576; // Get MB
+          if($size == 2 || $size > 2)
+          {
+            return response()->json([ 'status' => 404, 'message' => 'Image size must be less than 2MB!']);
+          }
           if($ext!='jpg' && $ext!= 'png' && $ext!='jpeg' && $ext!= 'svg'&& $ext!='gif')
           {
             Session::put('error','For Cover, Only images are allowed!');
             return redirect()->back();
           }
           $create_name=$uniqid.'.'.$ext;
-          $loc='../React/images/services/';
+          $loc='images/services/';
           //Move uploaded file
           //$image->move($loc, $create_name);
-          $final_img='images/services/'.$create_name;
+          $final_img=$this->api_base_url.$loc.$create_name;
           //Compress
           $compressedImage = $obj->compressImage($image, $loc.$create_name, 60);
 
           $data['image'] = $final_img;
-          if($old_cover!=null && file_exists('../React/'.$old_cover))
+          if($old_cover!=null && file_exists($old_cover))
            unlink($old_cover);
              }
 
@@ -884,7 +899,7 @@ $id = $request->id;
           $loc='images/listing/';
           //Move uploaded file
           $image->move($loc, $create_name);
-          $final_img=$loc.$create_name;
+          $final_img=$this->api_base_url.$loc.$create_name;
           Smilestones::where('id',$id)->update(['image' => $final_img ]); 
              }
 

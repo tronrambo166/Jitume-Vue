@@ -134,7 +134,7 @@ const ServiceTable = () => {
             <div className="flex items-center space-x-4">
                 <img
                     className="w-10 h-10 rounded-lg object-cover"
-                    src={`../${item.image}`}
+                    src={item.image}
                     alt="Service"
                 />
                 <div className="text-sm">

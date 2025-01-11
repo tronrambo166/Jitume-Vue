@@ -26,7 +26,11 @@ use App\Http\Controllers\testController;
 
 class PagesController extends Controller
 {
-    //-------------------Login-Register
+    protected $api_base_url;
+    public function __construct()
+    {   
+        $this->api_base_url = env('API_BASE_URL');
+    }
 	
 
     public function skip(){
@@ -796,70 +800,9 @@ public function removeCart($id){
 
     } 
 
-public function save_service(Request $request){
-$s_name = $request->s_name;
-$phone = $request->phone;
-$service_cats = implode(',', $request->service_cats);
-$instant_book = $request->instant_book;
-$s_details = $request->s_details;
-$s_loction = $request->s_loction;
-$max_guests = $request->max_guests;
-$min_guests = $request->min_guests;
-$reservation_start = $request->reservation_start;
-$reservation_end = $request->reservation_end;
-$s_per_day = $request->s_per_day;
-$s_per_hour = $request->s_per_hour;
 
-$user_id = Auth::id();
-
-
-
-Services::create([
-            'user_id' => $user_id,
-            's_name' => $s_name,
-            'phone' => $phone,
-            'service_cats' => $service_cats,
-            'instant_book' => $instant_book,
-            's_details' => $s_details,
-            's_loction' => $s_loction,
-            'max_guests' => $max_guests,
-            'min_guests' => $min_guests,
-            'reservation_start' => $reservation_start,
-            'reservation_end' => $reservation_end,
-            's_per_day' => $s_per_day,
-            's_per_hour' => $s_per_hour
-           ]);
-
-          $image=$request->file('s_posters'); //print_r($image);
-
-          if($image) {
-          foreach ($image as $single_img) { 
-            # code...
-          $uniqid=hexdec(uniqid());
-          $ext=strtolower($single_img->getClientOriginalExtension());
-          $create_name=$uniqid.'.'.$ext;
-          $loc='images/services/';
-          //Move uploaded file
-          $single_img->move($loc, $create_name);
-          $final_img=$loc.$create_name;
-           //getting event id
-          $ev=Services::orderBy('id', 'DESC')->first();
-          $ev_id=($ev->id);
-
-           Images::create([
-            'img_name' => $create_name,
-            's_id' => $ev_id
-           ]);
-
-             } }
-
-        Session::put('success','Service added!');
-        return redirect('home');
-
-}
-
-
-public function update_profile(Request $req){
+public function update_profile(Request $req)
+{
     $obj = new testController();
     try{
          $user_id=Auth::id();
@@ -874,25 +817,23 @@ public function update_profile(Request $req){
          
          // if($req->password!=null)
          // $data['password'] = password_hash($req->password,PASSWORD_DEFAULT)
+         
          //FILE
-         if (!file_exists('../React/images/users')) 
-          mkdir('../React/images/users', 0777, true);
-
           $image=$req->file('image');
           if($image) {
           $uniqid=hexdec(uniqid());
           $ext=strtolower($image->getClientOriginalExtension());
           $create_name=$uniqid.'.'.$ext;
-          $loc='../React/images/users/';
+          $loc='images/users/';
           //Move uploaded file
           //$image->move($loc, $create_name);
-          $final_img='images/users/'.$create_name;
+          $final_img=$this->api_base_url.$loc.$create_name;
           //Compress
           $compressedImage = $obj->compressImage($image, $loc.$create_name, 60);
           $data['image'] = $final_img;
 
-          if($old_cover!=null && file_exists('../React/'.$old_cover))
-           unlink('../React/'.$old_cover);
+          if($old_cover!=null && file_exists($old_cover))
+           unlink($old_cover);
 
           }
         
@@ -905,7 +846,7 @@ public function update_profile(Request $req){
             return response()->json([ 'status' => 404, 'message' => $e->getMessage() ]);
         }
        
-    }
+}
     
 
 

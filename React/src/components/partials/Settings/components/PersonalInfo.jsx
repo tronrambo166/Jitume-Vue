@@ -182,7 +182,7 @@ const PersonalInfo = () => {
                         ):(
                         <img id="img2"
                         src={tempData.image?
-                            '../'+tempData.image
+                            tempData.image
                             : userImage
                         }
                         alt="Avatar"
