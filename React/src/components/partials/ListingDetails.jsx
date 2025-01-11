@@ -826,7 +826,7 @@ const ListingDetails = ({ onClose }) => {
                                             height: "340px",
                                             width: "590px",
                                         }}
-                                        src={"../" + details.image}
+                                        src={details.image}
                                         alt="Business"
                                     />
                                 )}
