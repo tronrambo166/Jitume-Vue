@@ -5,24 +5,19 @@ import rightImage from "../../images/bannerbg2.png";
 import logo2 from "../../images/Tujitumelogo.svg";
 import logo from "../../images/TujitumeLogo.svg";
 import icon3 from "../../images/Icon 3.png";
-// import fb from "../../images/fb2.png";
-// import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+import fb from "../../images/fb2.png";
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 import x from "../../images/x2.png";
-// import linkedin from "../../images/linkedin.png";
+import linkedin from "../../images/linkedin.png";
 import down from "../../images/down.png"; // Include your dropdown arrow image
 import FindBusinessBtn from "./FindBusinessBtn";
 import axiosClient from "../../axiosClient";
 import { useAlert } from "../../components/partials/AlertContext";
-import {
-    FaFacebookF,
-    // FaXTwitter,
-    FaInstagram,
-    FaLinkedinIn,
-} from "react-icons/fa";
+
 const Footer = () => {
     const [openDropdown, setOpenDropdown] = useState(null); // State to track which dropdown is open
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
-    const imgpath = "../../src/images/";
+
     // Toggle dropdown
     const handleDropdownToggle = (index) => {
         setOpenDropdown(openDropdown === index ? null : index); // Close if already open
@@ -32,15 +27,6 @@ const Footer = () => {
     const handleEmail = (e) => {
         setEmail(e.target.value);
     };
-document.addEventListener("DOMContentLoaded", () => {
-    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-
-    lazyImages.forEach((img) => {
-        img.addEventListener("load", () => {
-            img.classList.add("loaded");
-        });
-    });
-});
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -63,21 +49,20 @@ document.addEventListener("DOMContentLoaded", () => {
             <div
                 className="absolute -top-[100px] w-[90%] mt-[100px] left-1/2 transform -translate-x-1/2 banner py-2 h-[305px] rounded-lg shadow-lg flex flex-col md:flex-row items-center relative"
                 style={{
-                    backgroundImage: `url(${imgpath}bannerbg.png)`,
+                    backgroundImage: `url(${bannerImage})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                 }}
             >
                 {/* Left Content */}
                 <div className="w-full md:w-auto space-y-4 px-[20px] md:pl-[34px] flex flex-col items-center md:items-start pt-8 md:pt-0">
-                    <div className="bg-yellow-400 rounded-full flex flex-col justify-center items-center px-4 md:px-6 py-2">
+                    <div className="bg-yellow-400 w-[80px] md:w-[100px] rounded-full flex flex-col justify-center items-center px-4 md:px-6 py-2">
                         <img
                             src={logo2}
                             alt=""
-                            className="w-[80px] h-auto md:w-[90px] md:h-[100%] max-h-[120px]"
+                            className="w-[50px] h-auto md:w-[60px] md:h-[80%] max-h-[80px]"
                         />
                     </div>
-
                     <p className="text-center md:text-left text-[20px] md:text-[40px] text-white w-full md:w-[670px] leading-[28px] md:leading-[45px]">
                         {isServiceRoute ? (
                             <>
@@ -148,7 +133,6 @@ document.addEventListener("DOMContentLoaded", () => {
                                                     ? "rotate-180"
                                                     : "rotate-0"
                                             } block lg:hidden`}
-                                            loading="lazy"
                                         />
                                     </h3>
                                     {/* Dropdown Links */}
@@ -270,23 +254,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 {/* Footer Bottom Section */}
                 <div className="py-7 flex flex-col md:flex-row justify-between items-center">
-                    <img
-                        src={logo}
-                        width={140}
-                        alt="logo"
-                        className="hover:opacity-75 transition-opacity cursor-pointer"
-                        onClick={() => window.scrollTo(0, 0)}
-                        loading="lazy"
-                    />
-
+                    <img src={logo} width={110} alt="logo" />
                     <div className="flex space-x-4 mt-6 md:mt-0">
                         <a
                             href="https://facebook.com"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-white/10 p-3 rounded-full flex items-center justify-center"
                         >
-                            <FaFacebookF size={24} className="text-white" />
+                            <img
+                                src={fb}
+                                width={45}
+                                height={30}
+                                alt="custom icon"
+                                className="object-contain"
+                            />
                         </a>
                         <a
                             href="https://x.com"
@@ -299,25 +280,44 @@ document.addEventListener("DOMContentLoaded", () => {
                                 height={30}
                                 alt="x logo"
                                 className="object-contain"
-                                loading="lazy"
                             />
                         </a>
                         <a
                             href="https://instagram.com"
+                            className="bg-white/10 p-2 rounded-full"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-white/10 p-3 rounded-full flex items-center justify-center"
                         >
-                            <FaInstagram size={24} className="text-white" />
+                            <FaInstagram size={30} className="text-white" />
                         </a>
                         <a
                             href="https://linkedin.com"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-white/10 p-3 rounded-full flex items-center justify-center"
                         >
-                            <FaLinkedinIn size={24} className="text-white" />
+                            <img
+                                src={linkedin}
+                                width={44}
+                                height={30}
+                                alt="custom icon"
+                                className="object-contain"
+                            />
                         </a>
+                        {/* <a
+                          href="https://linkedin.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                      >
+                          <div className="bg-white/10 px-[9px] py-[14px] rounded-full">
+                              <img
+                                  src={icon3}
+                                  width={30}
+                                  height={30}
+                                  alt="custom icon"
+                                  className="object-contain"
+                              />
+                          </div>
+                      </a> */}
                     </div>
                 </div>
             </div>
