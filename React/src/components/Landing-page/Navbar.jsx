@@ -114,7 +114,7 @@ const Navbar = () => {
                         isServicePage && !token ? "service-links" : ""
                     }`}
                 >
-                    <div className="ml-[100px] flex items-center gap-[55px]">
+                    <div className="ml-[96px] flex items-center gap-[55px]">
                         <Link
                             to="/home"
                             className="group relative hover:text-white"

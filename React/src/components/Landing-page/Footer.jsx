@@ -13,6 +13,7 @@ import down from "../../images/down.png"; // Include your dropdown arrow image
 import FindBusinessBtn from "./FindBusinessBtn";
 import axiosClient from "../../axiosClient";
 import { useAlert } from "../../components/partials/AlertContext";
+import bannerbg from "../../images/bannerbg.png";
 import {
     FaFacebookF,
     // FaXTwitter,
@@ -22,7 +23,6 @@ import {
 const Footer = () => {
     const [openDropdown, setOpenDropdown] = useState(null); // State to track which dropdown is open
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
-    const imgpath = "../../src/images/";
     // Toggle dropdown
     const handleDropdownToggle = (index) => {
         setOpenDropdown(openDropdown === index ? null : index); // Close if already open
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div
                 className="absolute -top-[100px] w-[90%] mt-[100px] left-1/2 transform -translate-x-1/2 banner py-2 h-[305px] rounded-lg shadow-lg flex flex-col md:flex-row items-center relative"
                 style={{
-                    backgroundImage: `url(${imgpath}bannerbg.png)`,
+                    backgroundImage: `url(${bannerbg})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                 }}

@@ -4,81 +4,44 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import { decode as base64_decode, encode as base64_encode } from "base-64";
 import axiosClient from "../../axiosClient";
-
-const imgpath = "../../src/assets/";
+import e1 from "../../assets/E1.png";
+import e2 from "../../assets/E2.png";
+import e3 from "../../assets/E3.png";
+import e4 from "../../assets/E4.png";
+import e5 from "../../assets/E5.png";
+import e6 from "../../assets/E6.png";
+import e7 from "../../assets/E7.png";
+import e8 from "../../assets/E8.png";
+import e9 from "../../assets/E9.png";
+import e10 from "../../assets/E10.png";
 
 const categories = [
-    {
-        name: "Agriculture",
-        count: 0,
-        color: "bg-blue-50",
-        icon: imgpath + "E1.png",
-    },
-    {
-        name: "Renewable Energy",
-        count: 0,
-        color: "bg-[#F3F8FE]",
-        icon: imgpath + "E2.png",
-    },
-    {
-        name: "Arts/Culture",
-        count: 0,
-        color: "bg-red-50",
-        icon: imgpath + "E3.png",
-    },
-    { name: "Auto", count: 0, color: "bg-gray-100", icon: imgpath + "E4.png" },
+    { name: "Agriculture", count: 0, color: "bg-blue-50", icon: e1 },
+    { name: "Renewable Energy", count: 0, color: "bg-[#F3F8FE]", icon: e2 },
+    { name: "Arts/Culture", count: 0, color: "bg-red-50", icon: e3 },
+    { name: "Auto", count: 0, color: "bg-gray-100", icon: e4 },
     {
         name: "Domestic (HomeHelp-etc)",
         count: 0,
         color: "bg-yellow-50",
-        icon: imgpath + "E5.png",
+        icon: e5,
     },
-    {
-        name: "Fashion",
-        count: 0,
-        color: "bg-gray-100",
-        icon: imgpath + "E6.png",
-    },
-    {
-        name: "Finance/Accounting",
-        count: 0,
-        color: "bg-red-50",
-        icon: imgpath + "E7.png",
-    },
-    { name: "Food", count: 0, color: "bg-yellow-50", icon: imgpath + "E8.png" },
-    { name: "Legal", count: 0, color: "bg-blue-50", icon: imgpath + "E9.png" },
-    {
-        name: "Media/Internet",
-        count: 0,
-        color: "bg-purple-50",
-        icon: imgpath + "E10.png",
-    },
-    { name: "Pets", count: 0, color: "bg-gray-100", icon: imgpath + "E1.png" },
-    {
-        name: "Real Estate",
-        count: 0,
-        color: "bg-red-50",
-        icon: imgpath + "E2.png",
-    },
-    {
-        name: "Security",
-        count: 0,
-        color: "bg-red-50",
-        icon: imgpath + "E2.png",
-    },
-    {
-        name: "Sports/Gaming",
-        count: 0,
-        color: "bg-red-50",
-        icon: imgpath + "E2.png",
-    },
+    { name: "Fashion", count: 0, color: "bg-gray-100", icon: e6 },
+    { name: "Finance/Accounting", count: 0, color: "bg-red-50", icon: e7 },
+    { name: "Food", count: 0, color: "bg-yellow-50", icon: e8 },
+    { name: "Legal", count: 0, color: "bg-blue-50", icon: e9 },
+    { name: "Media/Internet", count: 0, color: "bg-purple-50", icon: e10 },
+    { name: "Pets", count: 0, color: "bg-gray-100", icon: e1 },
+    { name: "Real Estate", count: 0, color: "bg-red-50", icon: e2 },
+    { name: "Security", count: 0, color: "bg-red-50", icon: e2 },
+    { name: "Sports/Gaming", count: 0, color: "bg-red-50", icon: e2 },
     {
         name: "Technology/Communications",
         count: 0,
         color: "bg-red-50",
-        icon: imgpath + "E2.png",
+        icon: e2,
     },
-    { name: "Other", count: 0, color: "bg-red-50", icon: imgpath + "E2.png" },
+    { name: "Other", count: 0, color: "bg-red-50", icon: e2 },
 ];
 
 const Explore = () => {
@@ -205,7 +168,6 @@ const Explore = () => {
                                                   src={category.icon}
                                                   alt={category.name}
                                                   className="w-5 h-5 sm:w-7 sm:h-7 mr-2 sm:mr-3"
-                                                  loading="lazy"
                                               />
                                               <div className="flex flex-col items-start">
                                                   <h2 className="text-xs sm:text-xs md:text-md font-medium text-slate-800">

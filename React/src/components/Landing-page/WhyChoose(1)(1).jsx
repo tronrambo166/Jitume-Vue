@@ -1,18 +1,19 @@
-import React, { useState  } from "react";
+import React, { useState } from "react";
 import axiosClient from "../../axiosClient"; // Assuming you have axios setup
 import { useNavigate } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Imge4 from "../../assets/image4.webp";
 import Image6 from "../../assets/image6.png";
 import accountman from "../../assets/accountman.webp";
+import customsu from "../../assets/customsu.png";
 import tracking from "../../assets/Track.png";
 import wellSecure from "../../assets/Wellsecure.png";
-import logo from "../../images/Tujitumelogo.svg";
+import consistentence from "../../assets/consistence.webp";
 
 const WhyChoose = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const imgpath = "../../src/assets/";
+
     const handleBrowseBusinesses = async (e) => {
         e.preventDefault();
         setLoading(true); // Show spinner
@@ -45,8 +46,7 @@ const WhyChoose = () => {
             navigate(`/listingResults/${base64_encode(ids)}/${data.loc}`);
             if (window.location.pathname.includes("listingResults")) {
                 // window.location.reload();
-            window.scrollTo(0, 0);
-
+                window.scrollTo(0, 0);
             }
             // Ensure scroll happens after navigation
         } catch (err) {
@@ -63,7 +63,7 @@ const WhyChoose = () => {
     const base64_encode = (str) => {
         return btoa(str);
     };
- 
+
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 grid md:grid-cols-2 gap-6 items-stretch">
             {/* Left Section */}
@@ -89,6 +89,7 @@ const WhyChoose = () => {
                                     src={accountman}
                                     alt="Account Management"
                                     className="w-6 h-6"
+                                    loading="lazy"
                                 />
                                 <p className="text-base md:text-lg text-slate-700 font-semibold">
                                     Account Management
@@ -99,6 +100,7 @@ const WhyChoose = () => {
                                     src={tracking}
                                     alt="Tracking Investments"
                                     className="w-6 h-6"
+                                    loading="lazy"
                                 />
                                 <p className="text-base md:text-lg text-slate-700 font-semibold">
                                     Tracking Investments
@@ -109,6 +111,7 @@ const WhyChoose = () => {
                                     src={wellSecure}
                                     alt="Well Secured"
                                     className="w-6 h-6"
+                                    loading="lazy"
                                 />
                                 <p className="text-base md:text-lg text-slate-700 font-semibold">
                                     Well Secured
@@ -120,9 +123,10 @@ const WhyChoose = () => {
                         <div className="space-y-9">
                             <div className="flex items-center space-x-3 mt-7 mb-1">
                                 <img
-                                    src={imgpath + "customsu.png"}
+                                    src={customsu}
                                     alt="24/7 Customer Support"
                                     className="w-6 h-6"
+                                    loading="lazy"
                                 />
                                 <p className="text-base md:text-lg text-slate-700 font-semibold">
                                     24/7 Customer Support
@@ -130,7 +134,7 @@ const WhyChoose = () => {
                             </div>
                             <div className="flex items-center space-x-3">
                                 <img
-                                    src={imgpath + "consistence.webp"}
+                                    src={consistentence}
                                     alt="Consistent Updates"
                                     className="w-6 h-6"
                                 />
@@ -161,10 +165,9 @@ const WhyChoose = () => {
             <div className="flex justify-center  ">
                 <div className="bg-gray-50 rounded-t-lg border-t border-l-short border-r-short relative">
                     <img
-                        src={logo}
+                        src={Image6}
                         alt="Jitume investment"
                         className="rounded-lg ml-3 mt-4"
-                        width={170}
                         loading="lazy"
                     />
                     <div className="mt-3">
@@ -177,7 +180,7 @@ const WhyChoose = () => {
                             <br /> Fund Raising
                         </p>
                         <img
-                            src={imgpath + "image4.webp"}
+                            src={Imge4}
                             alt="Jitume investment"
                             className="rounded-lg mt-3"
                             loading="lazy"
