@@ -9,6 +9,7 @@ import customsu from "../../assets/customsu.png";
 import tracking from "../../assets/Track.png";
 import wellSecure from "../../assets/Wellsecure.png";
 import consistentence from "../../assets/consistence.webp";
+import logo from "../../images/Tujitumelogo.svg";
 
 const WhyChoose = () => {
     const navigate = useNavigate();
@@ -165,9 +166,10 @@ const WhyChoose = () => {
             <div className="flex justify-center  ">
                 <div className="bg-gray-50 rounded-t-lg border-t border-l-short border-r-short relative">
                     <img
-                        src={Image6}
+                        src={logo}
                         alt="Jitume investment"
                         className="rounded-lg ml-3 mt-4"
+                        width={170}
                         loading="lazy"
                     />
                     <div className="mt-3">
