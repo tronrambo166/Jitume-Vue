@@ -1,17 +1,16 @@
 import Navbar from "../Landing-page/Navbar";
-
-import { Link , useNavigate} from "react-router-dom";
+import overlayImage from "../../images/overlay.webp"; // Adjust the path to your image
+import { Link, useNavigate } from "react-router-dom";
 import { FaArrowRight, FaChevronRight } from "react-icons/fa"; // Import the arrow icon
 
 const MilestoneHero = () => {
-      const navigate = useNavigate(); // Hook to navigate programmatically
+    const navigate = useNavigate(); // Hook to navigate programmatically
 
-      const handleGoBack = () => {
-          navigate(-1); // Go back to the last visited page
-      };
-      const pathname = "../../src/images/";
+    const handleGoBack = () => {
+        navigate(-1); // Go back to the last visited page
+    };
     return (
-        <div className="bg-[#00290F] w-full text-white min-h-[0vh] relative">
+        <div className="bg-[#00290F] w-full text-white min-h-[50vh] relative">
             <div className="relative z-20">
                 <Navbar />
             </div>
@@ -39,7 +38,7 @@ const MilestoneHero = () => {
             {/* Overlay Image */}
             <div className="absolute inset-0 z-10">
                 <img
-                    src={pathname + "overlay.webp"}
+                    src={overlayImage}
                     alt="Overlay"
                     className="w-full h-full object-cover opacity-50" // Adjust opacity as needed
                 />

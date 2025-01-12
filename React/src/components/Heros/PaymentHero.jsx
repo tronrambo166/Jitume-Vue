@@ -1,5 +1,5 @@
 import Navbar from "../Landing-page/Navbar";
-
+import overlayImage from "../../images/overlay.webp";
 import { Link, useNavigate } from "react-router-dom";
 import { FaArrowRight, FaChevronRight } from "react-icons/fa";
 
@@ -9,7 +9,6 @@ const PaymentHero = () => {
     const handleGoBack = () => {
         navigate(-1); // Go back to the last visited page
     };
-    const imagepath = "../../src/images/";
 
     return (
         <div>
@@ -43,7 +42,7 @@ const PaymentHero = () => {
                     {" "}
                     {/* Ensure the z-index is lower than the links */}
                     <img
-                        src={imagepath + "overlay.webp"}
+                        src={overlayImage}
                         alt="Overlay"
                         className="w-full h-full object-cover opacity-50" // Adjust opacity as needed
                     />
