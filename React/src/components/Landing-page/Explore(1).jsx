@@ -200,7 +200,7 @@ const Explore = () => {
                                 categories.map((category, index) => (
                                     <div
                                         key={index}
-                                        className={`flex items-center p-4 rounded-md shadow-md ${category.color} min-w-[200px] sm:min-w-[220px] min-h-[80px] sm:min-h-[100px] max-h-[100px] sm:max-h-[120px] transition-transform`}
+                                        className={`flex items-center p-4 rounded-md shadow-md ${category.color} min-w-[200px] sm:min-w-[220px] min-h-[80px] sm:min-h-[100px] max-h-[80px] sm:max-h-[120px] transition-transform`}
                                     >
                                         <img
                                             src={category.icon}
