@@ -3,7 +3,7 @@ import axiosClient from "../../../axiosClient";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useAlert } from "../../partials/AlertContext";
 import { FaCloudDownloadAlt } from "react-icons/fa";
-
+import { GrDocumentDownload } from "react-icons/gr";
 function InvestmentBids() {
     const [bids, setBids] = useState([]);
     const [selectedBids, setSelectedBids] = useState([]);
@@ -12,7 +12,18 @@ function InvestmentBids() {
     const [loadingAccept, setLoadingAccept] = useState(false); // Added missing state
     const [loadingReject, setLoadingReject] = useState(false); // Added missing state
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
+    const openImageModal = (imageUrl) => {
+        setSelectedImage(imageUrl);
+        setIsImageModalOpen(true);
+    };
+
+    const closeImageModal = () => {
+        setSelectedImage(null);
+        setIsImageModalOpen(false);
+    };
     const AcceptBids = (reject) => (e) => {
         e.preventDefault();
 
@@ -56,6 +67,7 @@ function InvestmentBids() {
                 }
             });
     };
+    
 
     const handleCheckboxChange = (id) => {
         setSelectedBids((prevSelected) => {
@@ -165,31 +177,60 @@ function InvestmentBids() {
             openModal({
                 title: "Asset Details",
                 body: (
-                    <div>
-                        <p>
-                            <strong>
-                                Download good quality photos of the assets:
-                            </strong>{" "}
-                            
-                            <button
-                                onClick={download(
-                                    bid.photos
-                                )} >
-                                <img height="40px" width="40px" src={bid.photos} alt="Asset" />
-                            <FaCloudDownloadAlt /> </button>
-                        </p>
-                        <p>
-                            <strong>Legal Document - </strong> <button
-                                onClick={download(
-                                    bid.legal_doc
-                                )} >
-                                Download
-                            </button>
-                        </p>
-                        <p>
-                            <strong>Serial:</strong> {bid.serial}
-                        </p>
+                    <div className="p-6  rounded-lg  space-y-6 max-w-4xl mx-auto">
+                        {/* Title */}
+                        <div>
+                            <p className="font-bold text-xl mb-4">
+                                Download High-Quality Photos:
+                            </p>
+                        </div>
 
+                        {/* Images Grid */}
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            {bid.photos.map((photo, index) => (
+                                <div
+                                    key={index}
+                                    className="flex flex-col items-center space-y-2"
+                                >
+                                    <img
+                                        src={photo}
+                                        alt={`Asset ${index + 1}`}
+                                        className="w-32 h-32 object-cover rounded-lg shadow-md"
+                                    />
+                                    <button
+                                        onClick={() => download(photo)()}
+                                        className="flex items-center space-x-2 ml-10 bg-green text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                                    >
+                                        <FaCloudDownloadAlt className="text-xl" />
+                                        <span>Download</span>
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Legal Document Section */}
+                        <div>
+                            <p className="font-bold text-xl mb-4">
+                                Download Legal Document:
+                            </p>
+                            <button
+                                onClick={() => download(bid.legal_doc)()}
+                                className="flex items-center space-x-2 bg-green text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                            >
+                                <GrDocumentDownload className="text-xl" />
+                                <span>Download Document</span>
+                            </button>
+                        </div>
+
+                        {/* Serial Information */}
+                        <div>
+                            <p className="font-bold text-xl">
+                                Serial:{" "}
+                                <span className="font-normal text-gray-700">
+                                    {bid.serial}
+                                </span>
+                            </p>
+                        </div>
                     </div>
                 ),
             });
