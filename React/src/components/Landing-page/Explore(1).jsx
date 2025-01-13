@@ -162,7 +162,7 @@ const Explore = () => {
                                       >
                                           <div
                                               key={index}
-                                              className={`flex items-center p-4 rounded-md ${category.color} min-w-[200px] sm:min-w-[220px] transition-transform`}
+                                              className={`flex items-center p-4 rounded-md ${category.color} min-w-[200px] sm:min-w-[220px] mb-6 transition-transform`}
                                           >
                                               <img
                                                   src={category.icon}
@@ -200,7 +200,7 @@ const Explore = () => {
                                 categories.map((category, index) => (
                                     <div
                                         key={index}
-                                        className={`flex items-center p-4 rounded-md shadow-md ${category.color} min-w-[200px] sm:min-w-[220px] min-h-[80px] sm:min-h-[100px] max-h-[80px] sm:max-h-[120px] transition-transform`}
+                                        className={`flex items-center p-4 rounded-md  ${category.color} min-w-[200px] sm:min-w-[220px] mb-7 transition-transform`}
                                     >
                                         <img
                                             src={category.icon}
@@ -208,7 +208,7 @@ const Explore = () => {
                                             className="w-5 h-5 sm:w-7 sm:h-7 mr-2 sm:mr-3"
                                         />
                                         <div className="flex flex-col items-start">
-                                            <h2 className="text-xs sm:text-sm md:text-md font-medium text-slate-800 truncate">
+                                            <h2 className="text-xs sm:text-xs md:text-md font-medium text-slate-800">
                                                 {category.name}
                                             </h2>
                                             <p className="text-xs sm:text-sm text-gray-600 truncate">
