@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import bannerImage from "../../images/bannerbg.png";
 import rightImage from "../../images/bannerbg2.png";
 import logo2 from "../../images/Tujitumelogo.svg";
-import logo from "../../images/TujitumeLogo.svg";
+import logo from "../../images/TujitumeLogo-white.svg";
 import icon3 from "../../images/Icon 3.png";
 // import fb from "../../images/fb2.png";
 // import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";

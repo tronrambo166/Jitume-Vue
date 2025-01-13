@@ -823,7 +823,7 @@ const CategoryPage = () => {
                                         className="flex-shrink-0 w-full sm:w-[320px] md:w-[350px] lg:w-[390px] bg-white border border-gray-200 rounded-2xl p-3 sm:p-4 flex flex-col justify-between overflow-hidden"
                                     >
                                         <img
-                                            src={"../" + card.image}
+                                            src={card.image}
                                             alt={card.name}
                                             className="w-full h-60 sm:h-48 object-cover rounded-lg"
                                         />

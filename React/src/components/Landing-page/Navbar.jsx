@@ -9,7 +9,7 @@ import down from "../../images/down.png";
 // import { useLocation } from "react";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
-import logo from "../../images/TujitumeLogo.svg";
+import logo from "../../images/TujitumeLogo-white.svg";
 import Modal from "../partials/Authmodal";
 import CreateInvAccountModal from "../partials/CreateInvAccount";
 import { useStateContext } from "../../contexts/contextProvider";

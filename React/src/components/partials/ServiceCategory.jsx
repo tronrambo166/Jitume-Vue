@@ -481,7 +481,7 @@ const CategoryPage = ({ categoryName }) => {
                                             className="bg-white border border-gray-200 rounded-2xl p-4 flex flex-col justify-between "
                                         >
                                             <img
-                                                src={"../" + card.image}
+                                                src={card.image}
                                                 alt={card.name}
                                                 className="w-full h-40 sm:h-48 object-cover rounded-lg"
                                             />
