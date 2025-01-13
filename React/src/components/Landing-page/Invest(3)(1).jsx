@@ -21,7 +21,7 @@ const Invest = () => {
                     setLoading(false);
                     setCards(data.data);
                     setCurrentCount(data.data.length - 1);
-                    checkScrollConditions(); // Check scroll on initial load
+                    setTimeout(checkScrollConditions, 0); // Ensure scroll conditions are checked after the DOM updates
                     console.log(data);
                 })
                 .catch((err) => {
@@ -35,8 +35,11 @@ const Invest = () => {
     const checkScrollConditions = () => {
         if (scrollRef.current) {
             const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-            setCanScrollBack(scrollLeft > 0);
-            setCanScrollForward(scrollLeft + clientWidth < scrollWidth);
+            const isAtStart = scrollLeft <= 0; // If scrolled to the start
+            const isAtEnd = scrollLeft + clientWidth >= scrollWidth; // If scrolled to the end
+
+            setCanScrollBack(!isAtStart); // Enable left button if not at the start
+            setCanScrollForward(!isAtEnd); // Enable right button if not at the end
         }
     };
 
@@ -73,9 +76,9 @@ const Invest = () => {
 
     return (
         <>
-            <div className="w-full px-4 sm:px-6 lg:px-8 py-8  flex flex-col">
+            <div className="w-full px-4 sm:px-6 lg:px-8 py-8 flex flex-col">
                 <div className="flex justify-start">
-                    <span className=" bg-[#F8D849] px-2 py-2 rounded-full text-sm mb-2 font-medium shadow-md max-w-xs text-center">
+                    <span className="bg-[#F8D849] px-2 py-2 rounded-full text-sm mb-2 font-medium shadow-md max-w-xs text-center">
                         ∙ More Than {currentCount}+
                     </span>
                 </div>
@@ -136,6 +139,7 @@ const Invest = () => {
                                           src={card.image}
                                           alt={card.name}
                                           className="w-full h-40 sm:h-48 object-cover rounded-lg"
+                                          loading="lazy"
                                       />
                                       <div className="mt-3 flex-grow">
                                           <p className="text-sm sm:text-base text-gray-500">
@@ -166,14 +170,10 @@ const Invest = () => {
                                                   Invested
                                               </span>
                                           </div>
-                                          {/* <div className="h-2 bg-gray-200 rounded-full">
-                                              <div className="bg-green-600 h-full w-1/2 rounded-full"></div>
-                                          </div> */}
                                           <div className="h-2 bg-gray-200 rounded-full mt-2">
                                               <div
                                                   className="bg-green-600 h-full rounded-full"
                                                   style={{
-                                                      // Calculate percentage of amount_collected out of investment_needed
                                                       width: `${
                                                           (card.amount_collected /
                                                               parseInt(
