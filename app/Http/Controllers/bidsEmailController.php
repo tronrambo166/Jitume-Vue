@@ -371,14 +371,15 @@ public function  bidCommitsEQP(Request $request){
 // DOCS UPLOAD
         //$total_img='';
           if($photos !='') {
+          if (!file_exists('files/bidsEquip/'.$listing_id.'/'.$investor_id)) 
+          mkdir('files/bidsEquip/'.$listing_id.'/'.$investor_id, 0777, true);
+
             //foreach ($photos as $single_img) { 
-            # code... 
           $uniqid=hexdec(uniqid());
           $ext=strtolower($photos->getClientOriginalExtension());
           $create_name=$uniqid.'.'.$ext;
           $loc = 'files/bidsEquip/'.$listing_id.'/'.$investor_id.'/';
           //Move uploaded file
-          //$photos->move($loc, $create_name);
           $up_img=$loc.$create_name;
 
           //Compress
@@ -480,7 +481,7 @@ public function  bidCommitsEQP(Request $request){
 }
 
     catch(\Exception $e){
-      return response()->json(['failed' =>  $e->getMessage()]);
+      return response()->json(['status' => 400,'message' =>  $e->getMessage()]);
     }
 
 }

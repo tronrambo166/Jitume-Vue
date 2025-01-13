@@ -729,9 +729,13 @@ return response()->json([ 'data' => $milestones, 'progress' => 0, 'length' => 0 
 
 
     public function download_bids_doc($doc){
-    
-    //$doc = Milestones::where('id',$mile_id)->first();
     $doc = base64_decode($doc);
+
+    if (str_contains($doc, env('API_BASE_URL'))){
+      $split = explode(env('API_BASE_URL'), $doc);
+      $doc = $split[1];
+    }
+
     if($doc)
     if( $doc == null || !file_exists(public_path($doc)) ){
 
@@ -1590,6 +1594,7 @@ public function findNearestServices($latitude, $longitude, $radius = 100)
 
         return $listings;
     } 
+
 
 //Class Bracket
 }

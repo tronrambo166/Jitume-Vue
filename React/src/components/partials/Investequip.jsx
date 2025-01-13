@@ -139,16 +139,16 @@ const Investequip = () => {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             console.log(response);
-            if (response.data) {
-                if (response.data.message) {
-                    showAlert("success", response.data.success);
-                }
+            if (response.data.status == 200) {
+                    showAlert("success", response.data.message);
             }
+            else showAlert("failed", response.data.message);
         } catch (error) {
             console.error("Error submitting the form:", error);
             showAlert("error", "An error occurred while submitting the form.");
         } finally {
             setLoading(false);
+            setFormData({});
         }
     };
 
@@ -285,7 +285,7 @@ const Investequip = () => {
                                 {loading ? (
                                     <AiOutlineLoading3Quarters className="animate-spin mr-2" />
                                 ) : (
-                                    "Save Info"
+                                    "Place Bid"
                                 )}
                             </button>
                         </div>

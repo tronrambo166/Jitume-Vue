@@ -132,10 +132,9 @@ const AddService = ({ connected, userId }) => {
             // Handle response statuses
             if (response.status === 200) {
                 if (response.data.status === 200) {
-                    showAlert("success", "Service added successfully!");
                     showAlert(
                         "info",
-                        "Please Add milestones for your service!"
+                        "Success, Please Add milestones for your service!"
                     );
                     navigate("/dashboard/addservicemilestone"); // Redirect to the milestone page
                 } else {

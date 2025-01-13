@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axiosClient from "../../../axiosClient";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useAlert } from "../../partials/AlertContext";
+import { FaCloudDownloadAlt } from "react-icons/fa";
 
 function InvestmentBids() {
     const [bids, setBids] = useState([]);
@@ -174,8 +175,8 @@ function InvestmentBids() {
                                 onClick={download(
                                     bid.photos
                                 )} >
-                                <img height="40px" width="40px" src={'http://127.0.0.1:8000/'+bid.photos[0]} alt="Asset" />
-                            <i className="fa fa-download"> </i> </button>
+                                <img height="40px" width="40px" src={bid.photos} alt="Asset" />
+                            <FaCloudDownloadAlt /> </button>
                         </p>
                         <p>
                             <strong>Legal Document - </strong> <button

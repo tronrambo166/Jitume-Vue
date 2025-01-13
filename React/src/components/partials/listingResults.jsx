@@ -87,8 +87,8 @@ const ListingResults = () => {
     var formattedMax2 = max2.toLocaleString();
     var formattedMin2 = min2.toLocaleString();
 
-    console.log(`Max: ${formattedMax}, Min: ${formattedMin}`);
-    console.log(`Max2: ${formattedMax2}, Min2: ${formattedMin2}`);
+    //console.log(`Max: ${formattedMax}, Min: ${formattedMin}`);
+    //console.log(`Max2: ${formattedMax2}, Min2: ${formattedMin2}`);
 
     const openInNewTab = (url) => {
         window.open(url, "_blank");
@@ -163,7 +163,6 @@ const ListingResults = () => {
                 .catch((err) => {
                     console.log(err);
                 });
-                console.log('get res 1', min, max);
         };
 
         getResults();
@@ -181,11 +180,12 @@ const ListingResults = () => {
             }
 
             setTimeout(() => {
-                rangeSliderInitilize();
-            }, 10);
-            setTimeout(() => {
                 amountSliderInitilize();
-            }, 10);
+            }, 200);
+            setTimeout(() => {
+                rangeSliderInitilize();
+            }, 300);
+
         }
     }, [maxRange, maxPrice]);
 
@@ -289,6 +289,7 @@ const ListingResults = () => {
             max2 = maxAfterAmSet;
         }
         setMaxAfterAmSet(0);
+        console.log(min2,max2)
 
         noUiSlider.create(slider2, {
             start: [0, 1000000],
@@ -324,13 +325,14 @@ const ListingResults = () => {
 
             const preResults = localStorage.getItem("results");
             const savedResults = JSON.parse(preResults);
+            console.log(skipValues[0]);console.log(skipValues[1]);
 
             const amountRange = {
                 min: parseFloat(values[0]),
                 max: parseFloat(values[1]),
             };
             // const turnoverRange = slider.noUiSlider.get(); // Get current turnover range
-            const turnoverRange = slider2.noUiSlider ? slider2.noUiSlider.get() : [0, max];
+            const turnoverRange = slider.noUiSlider ? slider.noUiSlider.get() : [0, max];
 
             const filteredResults = filterResults(
                 savedResults,
@@ -972,7 +974,7 @@ const ListingResults = () => {
                                     <div className="border p-5 border-gray-200 shadow-sm bg-white rounded-2xl flex flex-col w-full max-w-[500px] sm:max-w-[600px] lg:max-w-[700px] mx-auto h-full">
                                         <div className="w-full h-[180px] sm:h-[200px] lg:h-[250px]">
                                             <img
-                                                src={"../../" + row.image}
+                                                src={row.image}
                                                 alt={row.name}
                                                 className="w-full h-full object-cover rounded-lg"
                                             />

@@ -629,7 +629,7 @@ const ServiceResults = () => {
                                     <div className="border p-5 border-[#0000001A]/10 shadow-sm bg-white h-[500px] rounded-2xl flex flex-col w-full max-w-[900px] mx-auto">
                                         <div>
                                             <img
-                                                src={"../../" + row.image}
+                                                src={row.image}
                                                 alt={row.listing_name}
                                                 className="w-full h-[250px] object-cover rounded-lg"
                                             />
