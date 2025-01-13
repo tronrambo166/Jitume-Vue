@@ -528,7 +528,7 @@ return response()->json([ 'data' => $results, 'count'=>$count] );
 public function categoryResults($name){
 $results = array();
 if($name == 'Project-Management')
-$name == '0'
+$name == '0';
 $name = str_replace('-','/',$name);
 $name = str_replace('_',' ',$name);
 
