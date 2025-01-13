@@ -20,9 +20,8 @@ use App\Http\Controllers\MpesaController;
 */
 
 Route::get('/', function () {
-    echo 'Unauthorized!';
-    echo 'Redirecting...';
-    echo "<script>window.location.href='http://beta.tujitume.com:81/'</script>";
+    echo 'Redirecting to beta...';
+    echo "<script>window.location.href='https://beta.tujitume.com/'</script>";
 
 });
 
