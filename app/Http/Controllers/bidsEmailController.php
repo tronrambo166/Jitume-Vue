@@ -174,10 +174,13 @@ public function bidsAccepted(Request $request)
               'optional_doc' => $bid->optional_doc,
               'photos' => $bid->photos
             ]);
-                
+            
+            //After Bid is Accepted
               $amount_collected = $list->amount_collected + $bid->amount;
+              $invest_count = $list->invest_count + 1;
               Listing::where('id', $bid->business_id)->update([
-                'amount_collected' => $amount_collected
+                'amount_collected' => $amount_collected,
+                'invest_count' => $invest_count
               ]);
 
          $bid_remove = BusinessBids::where('id',$id)->delete();

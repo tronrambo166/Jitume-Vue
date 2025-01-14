@@ -59,7 +59,7 @@ function AccountPage() {
           </div>
           <div className="flex justify-between">
             <span className="text-gray-600">Balance Pending:</span>
-            <span className="font-semibold text-red-600">{balP}</span>
+            <span className="font-semibold text-yellow-600">{balP}</span>
           </div>
 
           <div className="mt-6">

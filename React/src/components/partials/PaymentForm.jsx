@@ -177,12 +177,11 @@ console.log(percent);
                     .post("/bidCommits", payload)
                     .then(({ data }) => {
                         if (data.status == 200) {
-                            showSuccessToast(
+                                showSuccessToast(
                                 "Bid placed, you will be notified if bid is accepted!"
                             );
-
                             // alert('Bid placed, you will be notified if bid is accepted!');
-                            navigate("/");
+                            setTimeout(() => { navigate("/"); }, 5000)
                         }
                         if (data.status == 400)
                             // alert(data.message);
@@ -224,7 +223,7 @@ console.log(percent);
             }
 
             //timeout
-        }, 1000);
+        }, 2000);
         //timeout
     };
 
