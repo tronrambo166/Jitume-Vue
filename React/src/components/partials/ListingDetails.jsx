@@ -513,15 +513,15 @@ const ListingDetails = ({ onClose }) => {
             content: "Are you sure?",
             buttons: {
                 confirm: function () {
-                    window.location.href =
-                        "/checkout/" +
-                        amount +
-                        "/" +
-                        business_id +
-                        "/" +
-                        btoa("null") +
-                        "/" +
-                        purpose;
+                    navigate("/checkout", {
+                                state: {
+                                    amount: amount,
+                                    listing_id: listing_id,
+                                    purpose: purpose,
+                                    percent: '',
+                                    
+                                },
+                            });
                 },
                 cancel: function () {
                     $.alert("Canceled!");
