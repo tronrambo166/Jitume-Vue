@@ -65,7 +65,7 @@ const MyBusinesses = () => {
                     );
                     setTimeout(() => {
                         navigate(`/dashboard/add-milestone`);
-                    }, 3000);
+                    }, 5000);
                 }
             })
             .catch(() => {

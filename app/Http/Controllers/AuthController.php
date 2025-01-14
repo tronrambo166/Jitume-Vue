@@ -130,19 +130,35 @@ class AuthController extends Controller
         $passport=$data['id_passport'];
         if($passport) {
           $ext=strtolower($passport->getClientOriginalExtension());
+          
+          $size=($passport->getSize())/1048576; // Get MB
+          if($size == 2 || $size > 2)
+          {
+            return response()->json([ 'status' => 400, 'message' => 'Document size must be less than 2MB!']);
+          }
+
           if($ext!='pdf' && $ext!= 'docx')
           {
             return response()->json([ 'status' => 400, 'message' => 'Only pdf & docx are allowed!']);
-          } }
+          } 
+        }
 
 
         if(isset($data['pin'])){
         $pin=$data['pin'];
           $ext=strtolower($pin->getClientOriginalExtension());
+
+          $size=($pin->getSize())/1048576; // Get MB
+          if($size == 2 || $size > 2)
+          {
+            return response()->json([ 'status' => 400, 'message' => 'Document size must be less than 2MB!']);
+          }
+          
           if($ext!='pdf' && $ext!= 'docx')
           {
             return response()->json([ 'status' => 400, 'message' => 'Only pdf & docx are allowed!']);
-          } }
+          } 
+        }
 
             //File Type Check END!
 

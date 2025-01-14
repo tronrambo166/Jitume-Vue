@@ -158,6 +158,9 @@ const MilestonePage = () => {
                                 <th className="px-6 py-3 text-left text-xs font-semibold text-[#334155] uppercase tracking-wider">
                                     Resolution
                                 </th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-[#334155] uppercase tracking-wider">
+                                    Due
+                                </th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
@@ -208,6 +211,15 @@ const MilestonePage = () => {
                                             </Link>
                                         </td>
                                     )}
+
+                                    <td className="px-6 py-4 whitespace-nowrap  text-start">
+                                        <span
+                                        className="bg-gray-200 text-green-700 px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-md"
+                                            >
+                                            {milestone.time_left}
+                                        </span>
+                                    </td>
+
                                 </tr>
                             ))}
                         </tbody>

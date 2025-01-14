@@ -20,6 +20,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
     const [loginData, setLoginData] = useState({
         email: "",
         password: "",
+        browserLoginCheck: 1,
     });
 
     const [registrationData, setRegistrationData] = useState({
@@ -229,12 +230,13 @@ function CreateInvestorAccount({ isOpen, onClose }) {
 
         try {
             const { data } = await axiosClient.post("/login", loginData);
-            if (data.token) {
+            console.log(data)
+            if (data.auth) {
                 setUser(data.user);
                 setToken(data.token);
                 showAlert(
                     "success",
-                    `Login successful! Welcome, ${data.user.name}`
+                    `Login successful! Welcome, ${data.user.fname}`
                 ); // Show success alert
                 onClose(); // Close the modal
             } else {

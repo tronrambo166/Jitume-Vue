@@ -289,7 +289,7 @@ const MilestonePage = () => {
                                         <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
                                             {"-"}
                                         </td>
-                                        <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
+                                        <td className="bg-gray-200 text-green-700 border border-gray-300 px-6 py-3 text-[#0F172A]">
                                             {milestone.time_left}
                                         </td>
                                     </tr>
