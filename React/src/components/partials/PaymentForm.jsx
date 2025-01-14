@@ -113,8 +113,8 @@ const PaymentForm = () => {
 //const { listing_id } = useParams();
 const { amount } = location.state || { amount: 0 };
 const { listing_id } = location.state || { listing_id: 0 };
-const { purpose } = location.state || { purpose: 0 };
-const { percent } = location.state || { percent: 0 };
+const { purpose } = location.state || { purpose: 'MA==' };
+const { percent } = location.state || { percent: 'MA==' };
 console.log(percent);
     
     const purpos = base64_decode(purpose);

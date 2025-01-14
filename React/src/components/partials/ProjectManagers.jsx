@@ -115,7 +115,7 @@ const ProjectManagers = () => {
                                 className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow"
                             >
                                 <img
-                                    src={"../" + card.image}
+                                    src={card.image}
                                     alt={card.name}
                                     className="w-full h-38 object-cover"
                                 />
