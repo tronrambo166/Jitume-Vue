@@ -113,8 +113,8 @@ const PaymentForm = () => {
 //const { listing_id } = useParams();
 const { amount } = location.state || { amount: 0 };
 const { listing_id } = location.state || { listing_id: 0 };
-const { purpose } = location.state || { purpose: 'MA==' };
-const { percent } = location.state || { percent: 'MA==' };
+const { purpose } = location.state || { purpose: btoa(1) };
+const { percent } = location.state || { percent: btoa(1) };
 console.log(percent);
     
     const purpos = base64_decode(purpose);
@@ -135,7 +135,7 @@ console.log(percent);
         setTimeout(() => {
             const payload = {
                 listing: atob(listing_id),
-                percent: atob(percent),
+                percent: percent?atob(percent):0,
                 package: $("#package").val(),
                 amount: $("#amount").val(),
                 amountOriginal: amount_real,
@@ -252,7 +252,7 @@ console.log(percent);
         const usdToKen = 100*128.5;
 
         const business_id= atob(listing_id);
-        const share= atob(percent);
+        //const share= atob(percent);
         const amountKFront= (parseFloat(price)*usdToKen).toFixed();
         const amountReal= amount_real;
         const purpose = purpos;
@@ -351,7 +351,7 @@ console.log(percent);
         setTimeout(() => {
             const payload = {
                 listing: atob(listing_id),
-                percent: atob(percent),
+                //percent: atob(percent),
                 package: $("#package").val(),
                 amount: $("#amount").val(),
                 amountOriginal: amount_real,
@@ -375,7 +375,7 @@ console.log(percent);
         setTimeout(() => {
             const payload = {
                 listing: atob(listing_id),
-                percent: atob(percent),
+                //percent: atob(percent),
                 package: $("#package").val(),
                 amount: $("#amount").val(),
                 amountOriginal: amount_real,
