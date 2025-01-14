@@ -516,7 +516,7 @@ const ListingDetails = ({ onClose }) => {
                     navigate("/checkout", {
                                 state: {
                                     amount: amount,
-                                    listing_id: listing_id,
+                                    listing_id: business_id,
                                     purpose: purpose,
                                     percent: '',
                                     
