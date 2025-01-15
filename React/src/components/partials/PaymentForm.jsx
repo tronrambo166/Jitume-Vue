@@ -181,8 +181,11 @@ console.log(percent);
                                 title: "Payment Successful",
                                 content: "Go to Dashboard to see investment status.",
                                 buttons: {
-                                    confirm: function () {
+                                    yes: function () {
                                         navigate("/dashboard");
+                                    },
+                                    home: function () {
+                                        navigate("/");
                                     },
                                     cancel: function () {
                                         $.alert("Canceled!");
@@ -221,8 +224,11 @@ console.log(percent);
                                 title: "Payment Successful",
                                 content: "Go to Milestone page to see status.",
                                 buttons: {
-                                    confirm: function () {
+                                    yes: function () {
                                         navigate("/service-milestones/"+ data.service_id);
+                                    },
+                                    home: function () {
+                                        navigate("/");
                                     },
                                     cancel: function () {
                                         $.alert("Canceled!");

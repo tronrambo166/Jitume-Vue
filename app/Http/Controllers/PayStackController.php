@@ -128,7 +128,7 @@ class PayStackController extends Controller
                 $Business = listing::where('id',$business_id)->first();
                 $owner = User::where('id', $Business->user_id)->first();
                 //$percent = $request->percent;
-                    $type = 'Monetery';
+                    $type = 'Monetary';
                     $bids = BusinessBids::create([
                       'date' => date('Y-m-d'),
                       'investor_id' => $investor_id,
@@ -228,7 +228,7 @@ class PayStackController extends Controller
                 $Business = listing::where('id',$business_id)->first();
                 $owner = User::where('id', $Business->user_id)->first();
                 //$percent = $request->percent;
-                    $type = 'Monetery';
+                    $type = 'Monetary';
                     $conv = Conversation::create([
                                 'investor_id' => $investor_id,
                                 'listing_id' => $business_id,

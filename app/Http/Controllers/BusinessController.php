@@ -133,25 +133,39 @@ else $investor = false;
 
 
 //Investments
-$results = []; $t_share = 0;
-if ($investor_ck->investor == 1) {
-$convs = Conversation::where('investor_id',Auth::id())->get();
-foreach($convs as $conv){
-  $miles = AcceptedBids::where('investor_id',Auth::id())
-  ->where('business_id',$conv->listing_id)->latest()->get();
-  foreach($miles as $share){
-    //$t_share = $t_share+$share->representation;
 
-  $my_listing =listing::where('id',$conv->listing_id)->first();
-  if($my_listing){
-  $my_listing->myShare = (float)$share->representation;
-  $my_listing->amount =$share->amount;
-  $results[] = $my_listing;
-}
-}
-//echo '<pre>'; print_r($results); echo '<pre>';exit;
-}
-}
+$results = []; $t_share = 0;
+//if ($investor_ck->investor == 1) {
+  $convs = Conversation::where('investor_id',Auth::id())->get();
+  foreach($convs as $conv){
+      $pending = BusinessBids::where('investor_id',Auth::id())
+      ->where('business_id',$conv->listing_id)->latest()->get();
+
+      $miles = AcceptedBids::where('investor_id',Auth::id())
+      ->where('business_id',$conv->listing_id)->latest()->get();
+      foreach($miles as $share){
+        $my_listing =listing::where('id',$conv->listing_id)->first();
+        if($my_listing){
+        $my_listing->myShare = (float)$share->representation;
+        $my_listing->amount =$share->amount;
+        $my_listing->status = $share->status;
+        $results[] = $my_listing;
+      }
+    }
+
+    foreach($pending as $share){
+        $my_listing =listing::where('id',$conv->listing_id)->first();
+        if($my_listing){
+        $my_listing->myShare = (float)$share->representation;
+        $my_listing->amount =$share->amount;
+        $my_listing->status = 'Pending';
+        $results[] = $my_listing;
+      }
+    }
+  //echo '<pre>'; print_r($results); echo '<pre>';exit;
+  }
+//}
+
 //Investments
 
 return response()->json(['business'=>$business,'investor'=>$investor,'results'=>$results,'services'=>$services,'user_email'=>$user_email,'user_name'=>$user_name]);
@@ -992,7 +1006,7 @@ public function milestoneCommits($amount,$business_id,$percent){
       }
     }
 
-    $type = 'Monetery';
+    $type = 'Monetary';
     $bids = BusinessBids::create([
       'date' => date('Y-m-d'),
       'investor_id' => $investor_id,
@@ -1109,6 +1123,33 @@ return response()->json(['bids' => $bids]);
  catch(\Exception $e){
   Session::put('failed',$e->getMessage());
   return response()->json(['status' => 'failed', 'message' => $e->getMessage()]);
+ }
+}
+
+public function asset_bids(){
+  if(Auth::check())
+      $investor = User::where('id', Auth::id())->first();
+
+$res = AcceptedBids::where('owner_id', Auth::id())->latest()->get();
+$bids = array();
+try{
+foreach($res as $r){
+  $inv = User::where('id',$r->investor_id)->first();
+  $business = listing::where('id',$r->business_id)->first();
+
+  if($business && $inv){
+  $r->investor = $inv->fname.' '.$inv->lname;
+  $r->business = $business->name;
+  $r->email = $inv->email;
+  $bids[] = $r;
+  }
+} 
+
+return response()->json(['status'=>200, 'bids' => $bids]);
+}
+ catch(\Exception $e){
+  Session::put('failed',$e->getMessage());
+  return response()->json(['status' => '400', 'message' => $e->getMessage()]);
  }
 }
 
@@ -1453,6 +1494,11 @@ $info=['investor_name'=>$investor_name, 'contact'=>$investor->email,
              $msg->to($user['to']);
              $msg->subject('Equipment release!');
          });
+
+      // //Update Status
+      //    AcceptedBids::where('bid_id',$booking->business_bid_id)->update([
+      //       'status' => 'Manager Assigned']);
+      // //Update Status
 
 if($mail1 && $mail2)
 return response()->json(['status' => 200]);

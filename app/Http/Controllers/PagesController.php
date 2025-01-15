@@ -391,9 +391,9 @@ return response()->json([ 'data' => $results, 'count'=>count($results), 'max_ran
 public function latBusiness(){
 $results = array();
 
-    $listingSpecial = Listing::where('active',1)->
-    where('category','Agriculture')->
-    orWhere('category','Renewable/Energy')->latest()->get();
+    $listingSpecial = Listing::where('category','Agriculture')
+    ->orWhere('category','Renewable/Energy')
+    ->where('active',1)->latest()->get();
     $results = $listingSpecial;
 
     $listings = Listing::where('active',1)->latest()->get();$i=1;

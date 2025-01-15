@@ -152,13 +152,29 @@ const Investequip = () => {
 
             // Handle server response
             if (response.data.status === 200) {
-                showAlert("success", response.data.message); // Show success alert
+                $.confirm({
+                title: "Bid Placed!",
+                content: "Go to Dashboard to see investment status.",
+                buttons: {
+                    yes: function () {
+                        navigate("/dashboard");
+                    },
+                    home: function () {
+                        navigate("/");
+                    },
+                    cancel: function () {
+                        $.alert("Canceled!");
+                    },
+                    },
+                });
+
             } else {
                 showAlert("failed", response.data.message); // Show failure alert
             }
         } catch (error) {
+            const response = err.response;
             console.error("Error submitting the form:", error);
-            showAlert("error", "An error occurred while submitting the form."); // Show error alert
+            showAlert("error", response.data.message); // Show error alert
         } finally {
             setLoading(false); // Hide loader
 
@@ -216,7 +232,7 @@ const Investequip = () => {
                                             <>
                                                 Upload good quality photos of
                                                 the assets
-                                                <span className="text-red-500 ml-1">Should be in Image format</span>
+                                                <span className="text-red-500 ml-1">ex: jpg/png/gif etc. (less than 2MB)</span>
                                             </>
                                         ) : docType === "legal_doc" ? (
                                             <>
@@ -224,12 +240,12 @@ const Investequip = () => {
                                                 as evidence of the ownership of
                                                 the assets (original purchase
                                                 receipt/title/certificate etc)
-                                                <span className="text-red-500 ml-1">Should be in Document format</span>
+                                                <span className="text-red-500 ml-1">ex: pdf/docx (less than 2MB)</span>
                                             </>
                                         ) : (
-                                            "Any other assets records"
+                                            "Any other assets records (optinal)"
                                         )}
-                                        <span className="text-red-500 ml-1">(optional)</span>
+                                        
                                     </label>
                                     <div className="flex flex-col sm:flex-row items-start gap-2">
                                         <button

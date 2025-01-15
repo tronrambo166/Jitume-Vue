@@ -653,6 +653,11 @@ catch(\Exception $e){
              $msg->to($user['to']);
              $msg->subject('Equipment release request!');
          });
+
+         //Update Status
+         AcceptedBids::where('bid_id',$booking->business_bid_id)->update([
+            'status' => 'Manager Assigned']);
+         //Update Status
         }
         //Asset-related
 
@@ -701,9 +706,9 @@ catch(\Exception $e){
 //     return redirect("/");
 // }
 // }
-
+       $s_id = base64_encode(base64_encode($business->id));
        return response()->json(['message' =>  'Success', 
-                        'service_id' => $business->id, 'status' => 200]);
+                        'service_id' => $s_id, 'status' => 200]);
     }
 
 
@@ -756,8 +761,10 @@ public function bidCommitsForm($amount,$business_id,$percent)
 
 public function bidCommits(Request $request){
  //return $request->all();
-   if(Auth::check())
+   if(Auth::check()){
         $investor_id = Auth::id();
+        $investor = User::select('email','id')->where('id',$investor_id)->first();
+    }
     else {
         if(Session::has('investor_email')){   
         $mail = Session::get('investor_email');
@@ -802,7 +809,7 @@ public function bidCommits(Request $request){
     $percent = $request->percent;
 
      try{
-        $type = 'Monetery';
+        $type = 'Monetary';
         $bids = BusinessBids::create([
           'date' => date('Y-m-d'),
           'investor_id' => $investor_id,
@@ -847,7 +854,18 @@ public function bidCommits(Request $request){
             'type' => 'investor',
 
           ]);
-         //Notification
+    //Notification
+
+    //Mail
+        $info=[ 'business_name'=>$Business->name, 'bid_id'=>$bids->id, 'type' => 
+        'Monetary' ];
+        $user['to'] = $investor->email; //'tottenham266@gmail.com'; //
+         if($investor)
+            Mail::send('bids.under_review', $info, function($msg) use ($user){
+             $msg->to($user['to']);
+             $msg->subject('Bid Under Review!');
+         });
+    //Mail
 
 }
 

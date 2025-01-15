@@ -1024,10 +1024,13 @@ return response()->json(['results' => $results]);
 public function serviceBook(Request $request){ 
 
   try{
-   if(Auth::check())
-        $booker_id = Auth::id();
+   if(Auth::check()){
+      $booker_id = Auth::id();
+      $investor_mail = User::select('email')->where('id', Auth::id())->first()->email;
+   }
+      
     else {
-        return response()->json(['failed' => 'You must sign in to book!']);
+        return response()->json(['status' => 400, 'message' => 'You must sign in to book!']);
     }
     $owner = Services::where('id',$request->service_id)->first();
 
@@ -1058,6 +1061,16 @@ public function serviceBook(Request $request){
 
           ]);
          //Notification
+
+         //Mail
+        $info=[ 'business_name'=>$owner->name ];
+        $user['to'] = $investor_mail; //'tottenham266@gmail.com'; //
+            Mail::send('services.under_review', $info, function($msg) use ($user){
+             $msg->to($user['to']);
+             $msg->subject('Booking Under Review!');
+         });
+        //Mail
+
     return response()->json(['success' => 'Booking Success! Go to dashboard to see status']);
       } 
 

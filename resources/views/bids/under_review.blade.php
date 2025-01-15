@@ -7,36 +7,10 @@
 
         <div class="email-container" style="width: 80%; margin: 50px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <div class="content" style="padding: 20px;">
-            <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Bid Accepted!</h2>
-            <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 0.5; margin-bottom: 30px;">Hi, &nbsp; Your bid to invest in the {{$business_name}} has been accepted.</p>
+            <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Bid Under Review!</h2>
+            <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 0.5; margin-bottom: 30px;">Hi,&nbsp; Your bid to invest in the {{$business_name}} is under review. You'll get a notification when it's accepted.</p>
             <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">
-            	@if($type == 'Monetary')
-            Proceed to progress with the milestones work?</p>
-            <div class="button-container" style="display: flex; margin-top: 20px;">
-                <a target="_blank" href="<?php echo config('app.api_url');?>agreeToBid/{{$bid_id}}" class="button button-primary" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Ok</a>
-                <a href="#" class="button button-secondary" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #dc3545; border-radius: 6px; transition: background-color 0.3s ease; margin-left: 10px;">Cancel</a>
-            </div>
-             <!-- If you require a project manager, please click here (Please not that investor with assets must have a project manager) <a target="_blank" href="https://test.jitume.com/#/projectManagers/{{$bid_id}}"
-			style="text-decoration:none;color: aliceblue;background:navy;padding:8px;border-radius:5px;">
-			Request a Project Manager </a> -->
 
-			<p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">If you require a project manager, please <a target="_blank" href="<?php echo config('app.app_url');?>projectManagers/{{$bid_id}}">click here</a> (Please note that investors with assets must have a project manager).</p>
-
-			@else
-			Please Request a Project Manager to Proceed with this Investment (Please note that investor with assets must have a project manager) <br>
-			
-			<div style="width:100%;margin: auto; padding-bottom:20px;padding-top:15px;"> 
-			 <a target="_blank" href="<?php echo config('app.app_url');?>projectManagers/{{$bid_id}}"
-			style="text-decoration:none;color: aliceblue;background:navy;padding:8px;border-radius:5px;display: inline;width: 50%;margin: auto;margin-top: 20px;">
-			Request</a>
-
-			<!-- <a href="http://127.0.0.1:5173/projectManagerCancel/{{$bid_id}}"
-			style="text-decoration:none;color:white;background:red;padding:8px;border-radius:5px;display: inline;width: 50%;margin: auto;margin-top: 20px;">
-			Cancel</a> -->
-		        </div>
-
-			@endif
-            
             <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px;">Thanks!<br>Tujitume Admin</p>
         </div>
     </div>

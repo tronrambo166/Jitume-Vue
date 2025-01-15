@@ -23,7 +23,7 @@
 		
 				
 				
-				<p style="font-weight: bold; color:#000000a1; line-height:22px; font-family:arial; padding-top:20px; padding-bottom:20px; text-align:center;" class="py-3 text-center"> Thanks! <br />   Jitume Admin.</p>
+				<p style="font-weight: bold; color:#000000a1; line-height:22px; font-family:arial; padding-top:20px; padding-bottom:20px; text-align:center;" class="py-3 text-center"> Thanks! <br />   Tujitume Admin.</p>
 
 		</div>
 		

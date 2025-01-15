@@ -19,7 +19,7 @@
                 <a target="_blank" href="<?php echo config('app.app_url');?>listing/{{$business_id}}?review_popup=true" class="button continue" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Review</a>
 
             </div>
-            <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px;">Thanks!<br />Jitume Admin.</p>
+            <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px;">Thanks!<br />Tuitume Admin.</p>
         </div>
     </div>
 

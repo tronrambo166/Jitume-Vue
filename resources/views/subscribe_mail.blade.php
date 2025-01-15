@@ -10,14 +10,14 @@
 		 	<h2 style="color: green;font-family: sans-serif;">  
 		 	Subscribe </h2>
 			
-			<p style="text-align: center;">Thanks for subscribing to Jitume. You'll receive updates here.  </p>
+			<p style="text-align: center;">Thanks for subscribing to Tujitume. You'll receive updates here.  </p>
 
 			</div>
 		
 		
 				
 				
-				<p style="font-weight: bold; color:#000000a1; line-height:22px; font-family:arial; padding-top:20px; padding-bottom:20px; text-align:center;" class="py-3 text-center"> Thanks! <br />   Jitume Admin.</p>
+				<p style="font-weight: bold; color:#000000a1; line-height:22px; font-family:arial; padding-top:20px; padding-bottom:20px; text-align:center;" class="py-3 text-center"> Thanks! <br />   Tujitume Admin.</p>
 
 		</div>
 		

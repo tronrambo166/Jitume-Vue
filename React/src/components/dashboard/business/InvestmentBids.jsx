@@ -6,6 +6,7 @@ import { FaCloudDownloadAlt } from "react-icons/fa";
 import { GrDocumentDownload } from "react-icons/gr";
 function InvestmentBids() {
     const [bids, setBids] = useState([]);
+    const [assetBids, setAssetBids] = useState([]);
     const [selectedBids, setSelectedBids] = useState([]);
     const [modalContent, setModalContent] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -243,7 +244,7 @@ function InvestmentBids() {
     };
 
     useEffect(() => {
-        const getMilestones = (id = "all") => {
+        const PendingBids = (id = "all") => {
             axiosClient
                 .get("/business/business_bids")
                 .then(({ data }) => {
@@ -254,7 +255,22 @@ function InvestmentBids() {
                     console.log(err);
                 });
         };
-        getMilestones();
+
+        const AssetBids = () => {
+            axiosClient
+                .get("/business/asset_bids")
+                .then(({ data }) => {
+                    setAssetBids(data.bids);
+                    console.log(data.bids);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+
+        PendingBids();
+        AssetBids();
+        console.log('asset',assetBids)
     }, []);
     const handleSelectAll = () => {
         if (selectAll) {
@@ -388,6 +404,93 @@ function InvestmentBids() {
                     {loadingReject ? "Rejecting..." : "Reject Bids"}
                 </button>
             </div>
+
+
+            {/* Asset Bids*/}
+            <h3 className="text-left text-lg font-semibold mb-6">
+                Ongoing Asset Bids
+            </h3>
+            <div className="overflow-x-auto shadow-md sm:rounded-lg">
+                <table className="min-w-full bg-white">
+                    <thead className="bg-gray-100 border-b">
+                        <tr className="text-gray-600 text-sm">
+                            
+                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                Date
+                            </th>
+                            <th className="text-left py-3 px-8 uppercase font-semibold text-[12px]">
+                                Investor
+                            </th>
+                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                Business
+                            </th>
+                            <th className="py-3 px-8 text-left  uppercase font-semibold text-[12px]">
+                                Type
+                            </th>
+                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                Amount
+                            </th>
+                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                Representation %
+                            </th>
+                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                Status
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {assetBids.map((bid) => (
+                            <tr
+                                key={bid.id}
+                                className="text-gray-500 hover:bg-gray-50 transition-colors"
+                            >
+
+                                <td className="py-3 px-4 border-b text-left">
+                                    {bid.date}
+                                </td>
+
+                                {/* Investor Button */}
+                                <td className="py-3 px-4 border-b text-left">
+                                    <button
+                                        
+                                        className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors"
+                                    >
+                                        {bid.investor}
+                                    </button>
+                                </td>
+
+                                <td className="py-3 px-4 border-b text-left">
+                                    {bid.business}
+                                </td>
+
+                                {/* Type Button */}
+                                <td className="py-3 px-4 border-b text-left">
+                                    <button
+                                        onClick={() => handleTypeDetails(bid)}
+                                        className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors"
+                                    >
+                                        Equipment
+                                    </button>
+                                </td>
+
+                                <td className="py-3 px-4 border-b text-left">
+                                    ${bid.amount.toLocaleString()}
+                                </td>
+
+                                <td className="py-3 px-4 border-b text-left">
+                                    {bid.representation}%
+                                </td>
+                                <td className="px-4 py-2 text-sm">
+                                <p className="text-green-500 font-bold"> {bid.status} </p>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            {/* Asset Bids */}
+
+
             {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">

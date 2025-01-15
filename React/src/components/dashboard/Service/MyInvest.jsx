@@ -21,7 +21,7 @@ const MyInvest = () => {
                         setBusiness(data.business);
                         setService(data.services);
                         setMyInvest(data.results);
-                        console.log("services", data);
+                        console.log("My Invest", data);
                     })
                     .catch((err) => {
                         console.log(err);
@@ -83,7 +83,7 @@ const MyInvest = () => {
                                             My Share
                                         </th>
                                         <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-                                            Image
+                                            Status
                                         </th>
                                         <th className="px-4 py-2 text-center text-xs font-medium uppercase tracking-wider">
                                             Action
@@ -118,11 +118,7 @@ const MyInvest = () => {
                                                 {item.myShare.toFixed()}%
                                             </td>
                                             <td className="px-4 py-2 text-sm">
-                                                <img
-                                                    className="w-10 h-10 rounded-lg"
-                                                    src={"../" + item.image}
-                                                    alt="Service"
-                                                />
+                                                <p className="text-green-500 font-bold"> {item.status} </p>
                                             </td>
                                             <td className="px-4 py-2 text-center text-sm">
                                                 <Link
@@ -130,7 +126,7 @@ const MyInvest = () => {
                                                         btoa(item.id)
                                                     )}`}
                                                 >
-                                                    <button className="text-green-500 border border-green-500 rounded-lg py-1 px-3 text-xs">
+                                                    <button className="text-yellow-500 border border-green-500 rounded-lg py-1 px-3 text-xs">
                                                         View milestones
                                                     </button>
                                                 </Link>

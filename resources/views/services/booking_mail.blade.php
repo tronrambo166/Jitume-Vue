@@ -12,7 +12,7 @@
             <div class="button-container" style="display: flex; margin-top: 20px;"> <!-- https://test.jitume.com -->
              	<a target="_blank" href="<?php echo config('app.app_url');?>service-milestones/{{$s_id}}" class="button button-primary" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Pay Here</a>
             </div>
-            <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px;">Thanks!<br>Jitume Admin</p>
+            <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px;">Thanks!<br>Tujitume Admin</p>
         </div>
     </div>
   

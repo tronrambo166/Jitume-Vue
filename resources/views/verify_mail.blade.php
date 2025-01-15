@@ -10,7 +10,7 @@
 		 	<h2 style="color: green;font-family: sans-serif;">  
 		 	Email Verification </h2>
 			
-			<h3 style="text-align: center;">Your Jitume Verification Code is: {{$code}}
+			<h3 style="text-align: center;">Your Tujitume Verification Code is: {{$code}}
             		<!-- <a style='background:green; padding:15px 10px;color:white;' href="<?php echo config('app.api_url');?>emailVerify?email={{$email}}" > Verify </a> --> </h3>
 
 			</div>
@@ -18,7 +18,7 @@
 		
 				
 				
-				<p style="font-weight: bold; color:#000000a1; line-height:22px; font-family:arial; padding-top:20px; padding-bottom:20px; text-align:center;" class="py-3 text-center"> Thanks! <br />   Jitume Admin.</p>
+				<p style="font-weight: bold; color:#000000a1; line-height:22px; font-family:arial; padding-top:20px; padding-bottom:20px; text-align:center;" class="py-3 text-center"> Thanks! <br />   Tujitume Admin.</p>
 
 		</div>
 		

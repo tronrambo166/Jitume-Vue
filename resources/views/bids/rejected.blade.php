@@ -9,7 +9,7 @@
         <div class="content" style="padding: 20px;">
             <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Bid Rejected!</h2>
             <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">Hi,<br>Your bid to invest in the {{$business_name}} has been rejected. Please bid again with appropriate details.</p>
-            <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px;">Thanks!<br>Jitume Admin</p>
+            <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px;">Thanks!<br>Tuitume Admin</p>
         </div>
     </div>
   

@@ -18,7 +18,7 @@
 		            The Project Manager (Name: <b>{{$manager_name}}</b>, Contact: <b>{{$contact}}</b>) has been assigned to this Process. You can start milestone work.</h4>
 			</div>
 			
-				<p style="font-weight: bold; color:#000000a1; line-height:22px; font-family:arial; padding-top:20px; padding-bottom:20px; text-align:center;" class="py-3 text-center"> Thanks! <br />   Jitume Admin.</p>
+				<p style="font-weight: bold; color:#000000a1; line-height:22px; font-family:arial; padding-top:20px; padding-bottom:20px; text-align:center;" class="py-3 text-center"> Thanks! <br />   Tuitume Admin.</p>
 
 		</div>
 		

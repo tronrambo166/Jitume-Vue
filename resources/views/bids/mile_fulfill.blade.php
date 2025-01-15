@@ -16,7 +16,7 @@
                 </h4>
             </div>
             
-            <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Thanks!<br />Jitume <span style="color:rgb(53, 87, 53); ;">Admin.</span></p>
+            <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Thanks!<br />Tuitume <span style="color:rgb(53, 87, 53); ;">Admin.</span></p>
     
         </div>
     </div>

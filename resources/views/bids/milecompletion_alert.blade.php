@@ -20,7 +20,7 @@
                 <a target="_blank" href="<?php echo config('app.api_url');?>agreeToNextmile/{{$bid_id}}" class="button continue" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Continue</a>
                 <a href="#" class="button cancel" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #dc3545; border-radius: 6px; transition: background-color 0.3s ease; margin-left: 10px;">Cancel</a>
             </div>
-            <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px;">Thanks!<br />Jitume Admin.</p>
+            <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px;">Thanks!<br />Tuitume Admin.</p>
         </div>
     </div>
 

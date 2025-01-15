@@ -62,11 +62,11 @@ public function bidsAccepted(Request $request)
          });
 
          //Refund
-         if($bid->type == 'Monetery' && $bid->paystack_charge_id){
+         if($bid->type == 'Monetary' && $bid->paystack_charge_id){
             //Paystack Refund
          }
 
-         if($bid->type == 'Monetery' && $bid->stripe_charge_id)
+         if($bid->type == 'Monetary' && $bid->stripe_charge_id)
          $this->Client->refunds->create(['charge' => $bid->stripe_charge_id]);
          //Refund
 
@@ -117,7 +117,7 @@ public function bidsAccepted(Request $request)
          $usdToKen = 100*128.5;
 
          //TRANSFERRING FUNDS
-         if($bid->type == 'Monetery' && $bid->paystack_charge_id)
+         if($bid->type == 'Monetary' && $bid->paystack_charge_id)
          {    $bidAmountKen = $bid->amount*$usdToKen;
               $url = "https://api.paystack.co/transfer"; 
               $fields = [
@@ -136,7 +136,7 @@ public function bidsAccepted(Request $request)
               //echo '<pre>'; print_r($result); echo '<pre>';
          }
 
-         if($bid->type == 'Monetery' && $bid->stripe_charge_id)
+         if($bid->type == 'Monetary' && $bid->stripe_charge_id)
          {
                 //Split
                     $curr='USD'; //$request->currency; 
@@ -166,6 +166,7 @@ public function bidsAccepted(Request $request)
               'date' => $bid->date,
               'investor_id' => $bid->investor_id,
               'business_id' => $bid->business_id,
+              'owner_id' => $bid->owner_id,
               'type' => $bid->type,
               'amount' => $bid->amount,
               'representation' => $bid->representation,
@@ -213,11 +214,13 @@ public function bidsAccepted(Request $request)
 public function agreeToBid($bidId)
 {
     try { 
+        $bid = AcceptedBids::where('bid_id',$bidId)->first();
         AcceptedBids::where('bid_id',$bidId)->update([
               'investor_agree' => 1       
         ]);
+        $business_id = base64_encode(base64_encode($bid->business_id));
         Session::put('login_success','Thanks for your review, you will get an email when this milestone completes!');
-       return redirect()->to(config('app.app_url'));
+       return redirect()->to(config('app.app_url').'business-milestones/'.$business_id);
      
        }
         catch(\Exception $e){
@@ -246,10 +249,12 @@ public function CancelAssetBid($bidId)
          });
          AcceptedBids::where('bid_id',$bidId)->delete();
         return response()->json(['success' => 'Thanks for your feedback!']);
+        //return redirect()->to(config('app.app_url'));
      
        }
         catch(\Exception $e){
             return response()->json(['failed' => 'Something went wrong!']);
+            //return redirect()->to(config('app.app_url'));
        }  
 }
 
@@ -328,7 +333,7 @@ public function milestoneCommits($amount,$business_id,$percent){
       }
     }
 
-    $type = 'Monetery';
+    $type = 'Monetary';
     $bids = BusinessBids::create([
       'date' => date('Y-m-d'),
       'investor_id' => $investor_id,
