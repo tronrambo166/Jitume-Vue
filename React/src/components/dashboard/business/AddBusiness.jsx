@@ -454,6 +454,7 @@ const AddBusiness = () => {
                                 name="category"
                                 className="border border-gray-300 dark:border-gray-700 p-2 rounded-lg w-full mt-1 dark:bg-gray-900 dark:text-white text-sm focus:ring focus:ring-dark-green outline-none transition-all duration-200"
                                 onChange={handleInputChange}
+                                value={formData.category} // Controlled input
                                 required
                             >
                                 <option value="" disabled hidden>
@@ -490,7 +491,6 @@ const AddBusiness = () => {
                                     Domestic (Home Help etc)
                                 </option>
                                 <option value="Other">Other</option>
-                                {/* Add more categories as needed */}
                             </select>
                         </div>
 
@@ -559,7 +559,22 @@ const AddBusiness = () => {
                                 <p className="text-xs text-red-500 mt-1">
                                     {fileInput.field === "video"
                                         ? "Max file size: 5MB. If larger, provide a video URL."
-                                        : "Max file size: 2MB.(For best quality the size should be 590px*340px)"}
+                                        : ""}
+                                    {fileInput.field === "image"
+                                        ? "Max file size: 2MB.(For best quality the size should be 590px*340px)"
+                                        : ""}
+                                    {fileInput.field === "pin"
+                                        ? "Max file size: 2MB."
+                                        : ""}
+                                    {fileInput.field === "identification"
+                                        ? "Max file size: 2MB."
+                                        : ""}
+                                    {fileInput.field === "yeary_fin_statement"
+                                        ? "Max file size: 2MB."
+                                        : ""}
+                                    {fileInput.field === "document"
+                                        ? "Max file size: 2MB."
+                                        : ""}
                                 </p>
                             </div>
                         ))}

@@ -104,6 +104,12 @@ const MyBusinesses = () => {
 
         return (
             <div className="relative" ref={dropdownRef}>
+                {/* Pulsating 'Not Active' text */}
+                {!item.active && (
+                    <div className="absolute -top-4 whitespace-nowrap left-1/2 transform -translate-x-1/2 text-xs text-red-500 font-medium animate-pulse">
+                        Not Active
+                    </div>
+                )}
                 <button
                     onClick={toggleDropdown}
                     className="p-2 rounded-full hover:bg-gray-200"
@@ -147,6 +153,7 @@ const MyBusinesses = () => {
             </div>
         );
     };
+
 
     const headers = [
         "Name",

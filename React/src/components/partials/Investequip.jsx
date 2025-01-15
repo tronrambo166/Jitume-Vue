@@ -1,6 +1,6 @@
 import { FaImage } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+// import { useState } from "react";
 import axiosClient from "../../axiosClient";
 import { IoArrowBack } from "react-icons/io5"; // Import React icon
 import { useNavigate } from "react-router-dom";
@@ -8,11 +8,16 @@ import InvestHero from "../Heros/InvestHero";
 import { MdPhoto } from "react-icons/md";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useStateContext } from "../../contexts/contextProvider";
+
 import BackBtn from "./BackBtn";
 import { useAlert } from "./AlertContext";
-
+import Modal from "./Authmodal";
+import React, { useState, useEffect } from "react";
 const Investequip = () => {
     const { amount, id, percent } = useParams();
+    const { token, setUser, setAuth, auth } = useStateContext();
+
     const { showAlert } = useAlert();
     const [formData, setFormData] = useState({
         amount: atob(amount),
@@ -23,12 +28,19 @@ const Investequip = () => {
         serial: "",
         optional_doc: null,
     });
+    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
     const [loading, setLoading] = useState(false);
     const [fileNames, setFileNames] = useState({
         photos: "",
         legal_doc: "",
         optional_doc: "",
     });
+    useEffect(() => {
+        if (!token) {
+            setIsAuthModalOpen(true);
+        }
+    }, [auth]);
 
     const handleFileChange = (e, field) => {
         const file = e.target.files[0];
@@ -118,39 +130,49 @@ const Investequip = () => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Prevent default form submission behavior
 
+        // Create FormData
         const form = new FormData();
         for (const key in formData) {
-            form.append(key, formData[key]); // Append the file or data to FormData
+            form.append(key, formData[key]); // Append each key-value pair to FormData
         }
 
-        const formDataObject = {};
-        form.forEach((value, key) => {
-            formDataObject[key] = value instanceof File ? value : value;
-        });
-
-        console.log("FormData Object:", formDataObject);
+        console.log("FormData Object:", Object.fromEntries(form.entries())); // Log FormData for debugging
 
         try {
-            setLoading(true);
+            setLoading(true); // Show loader
 
+            // Send form data to the server
             const response = await axiosClient.post("bidCommitsEQP", form, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
+
             console.log(response);
-            if (response.data.status == 200) {
-                    showAlert("success", response.data.message);
+
+            // Handle server response
+            if (response.data.status === 200) {
+                showAlert("success", response.data.message); // Show success alert
+            } else {
+                showAlert("failed", response.data.message); // Show failure alert
             }
-            else showAlert("failed", response.data.message);
         } catch (error) {
             console.error("Error submitting the form:", error);
-            showAlert("error", "An error occurred while submitting the form.");
+            showAlert("error", "An error occurred while submitting the form."); // Show error alert
         } finally {
-            setLoading(false);
-            setFormData({});
+            setLoading(false); // Hide loader
+
+            // Reset only certain fields in the formData
+            setFormData((prevData) => ({
+                ...prevData,
+                photos: null,
+                legal_doc: null,
+                serial: "",
+                optional_doc: null,
+            }));
         }
     };
+
 
     const isFormValid = () => {
         return (
@@ -194,7 +216,7 @@ const Investequip = () => {
                                             <>
                                                 Upload good quality photos of
                                                 the assets
-                                                <span className="text-red-500 ml-1"></span>
+                                                <span className="text-red-500 ml-1">Should be in Image format</span>
                                             </>
                                         ) : docType === "legal_doc" ? (
                                             <>
@@ -202,11 +224,12 @@ const Investequip = () => {
                                                 as evidence of the ownership of
                                                 the assets (original purchase
                                                 receipt/title/certificate etc)
-                                                <span className="text-red-500 ml-1"></span>
+                                                <span className="text-red-500 ml-1">Should be in Document format</span>
                                             </>
                                         ) : (
-                                            "Any other assets records (optional)"
+                                            "Any other assets records"
                                         )}
+                                        <span className="text-red-500 ml-1">(optional)</span>
                                     </label>
                                     <div className="flex flex-col sm:flex-row items-start gap-2">
                                         <button
@@ -292,6 +315,10 @@ const Investequip = () => {
                     </form>
                 </div>
             </div>
+            <Modal
+                isOpen={isAuthModalOpen}
+                onClose={() => setIsAuthModalOpen(false)}
+            />
         </>
     );
 };
