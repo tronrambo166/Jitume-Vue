@@ -341,7 +341,7 @@ function InvestmentBids() {
                                         onClick={() => handleTypeDetails(bid)}
                                         className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors"
                                     >
-                                        {bid.type}
+                                        {bid.type =='Asset'?'Equipment':bid.type}
                                     </button>
                                 </td>
 

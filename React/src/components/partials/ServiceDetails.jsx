@@ -365,6 +365,8 @@ const ServiceDetails = () => {
                         },
                     });
                 }
+                setSelectedDate('');
+                setNotes('');
             })
             .catch((err) => {
                 console.log(err);

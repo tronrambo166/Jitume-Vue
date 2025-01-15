@@ -177,11 +177,18 @@ console.log(percent);
                     .post("/bidCommits", payload)
                     .then(({ data }) => {
                         if (data.status == 200) {
-                                showSuccessToast(
-                                "Bid placed, you will be notified if bid is accepted!"
-                            );
-                            // alert('Bid placed, you will be notified if bid is accepted!');
-                            setTimeout(() => { navigate("/"); }, 5000)
+                                $.confirm({
+                                title: "Payment Successful",
+                                content: "Go to Dashboard to see investment status.",
+                                buttons: {
+                                    confirm: function () {
+                                        navigate("/dashboard");
+                                    },
+                                    cancel: function () {
+                                        $.alert("Canceled!");
+                                    },
+                                },
+                            });
                         }
                         if (data.status == 400)
                             // alert(data.message);
@@ -196,6 +203,8 @@ console.log(percent);
                             console.log(response.data.errors);
                             showErrorToast(response.data.errors);
                         }
+                    }).finally(() => {
+                        setLoading(false); // Stop loading spinner
                     });
             } else {
                 const payloadS = {
@@ -208,17 +217,30 @@ console.log(percent);
                     .post("/milestoneService", payloadS)
                     .then(({ data }) => {
                         if (data.status == 200) {
-                            alert("Success!");
-                            navigate("/service-milestones/" + btoa(btao(data.service_id)));
+                            $.confirm({
+                                title: "Payment Successful",
+                                content: "Go to Milestone page to see status.",
+                                buttons: {
+                                    confirm: function () {
+                                        navigate("/service-milestones/"+ data.service_id);
+                                    },
+                                    cancel: function () {
+                                        $.alert("Canceled!");
+                                    },
+                                },
+                            });
                         }
                         if (data.status == 400) alert(data.message);
                     })
                     .catch((err) => {
                         console.log(err);
                         const response = err.response;
+                        showErrorToast(response.data.message);
                         if (response && response.status === 422) {
                             console.log(response.data.errors);
                         }
+                    }).finally(() => {
+                        setLoading(false); // Stop loading spinner
                     });
             }
 
