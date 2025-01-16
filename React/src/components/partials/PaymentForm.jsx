@@ -265,6 +265,7 @@ console.log(percent);
          partiesInfo ='/partiesServiceMile/';
     else partiesInfo ='/partiesInfo/';
     useEffect(() => {
+        $('.card-number').mask("9999 9999 9999 9999");
         axiosClient.get(partiesInfo + atob(listing_id))
             .then(({ data }) => {
                 setUser(data.user);
@@ -304,30 +305,6 @@ console.log(percent);
                         console.log(err);
                     });
 
-                // axiosClient
-                //     .post("/bidCommits", payload)
-                //     .then(({ data }) => {
-                //         if (data.status == 200) {
-                //             showSuccessToast(
-                //                 "Bid placed, you will be notified if bid is accepted!"
-                //             );
-                //             // alert('Bid placed, you will be notified if bid is accepted!');
-                //             navigate("/");
-                //         }
-                //         if (data.status == 400)
-                //             // alert(data.message);
-                //             showErrorToast(data.message);
-                //     })
-                //     .catch((err) => {
-                //         console.log(err);
-                //         setLoading(false); 
-                //         const response = err.response;
-                //         showErrorToast(response.data.message);
-                //         if (response && response.status === 422) {
-                //             console.log(response.data.errors);
-                //             showErrorToast(response.data.errors);
-                //         }
-                //     });
         } 
         else if (purpos === "small_fee"){
               

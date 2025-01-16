@@ -239,6 +239,7 @@ const ListingDetails = ({ onClose }) => {
             setPercentage("");
             setErrorMessage("");
         }
+        console.log(enteredAmount)
     };
 
     const handleEquipmentAmountChange = (e) => {
@@ -265,6 +266,7 @@ const ListingDetails = ({ onClose }) => {
             setEquipmentPercentage("");
             setEquipmentErrorMessage(""); // Clear the error message
         }
+        console.log(enteredAmount)
     };
 
     const [showAuthModal, setShowAuthModal] = useState(false);
@@ -659,7 +661,7 @@ const ListingDetails = ({ onClose }) => {
                                         {(
                                             details.investment_needed || 0
                                         ).toLocaleString()}{" "}
-                                        <span className="text-sm">for 50%</span>
+                                        <span className="text-sm">for {details.share}%</span>
                                     </p>
                                     <p className="text-md text-green"></p>
                                     <div className="flex items-center gap-2 text-sm">
@@ -1146,16 +1148,7 @@ const ListingDetails = ({ onClose }) => {
                                             type="text"
                                             id="investmentAmount"
                                             value={amount}
-                                            onChange={(e) =>
-                                                setAmount(
-                                                    Number(
-                                                        e.target.value.replace(
-                                                            /,/g,
-                                                            ""
-                                                        )
-                                                    ).toLocaleString()
-                                                )
-                                            }
+                                            onChange={handleAmountChange}
                                             className="border border-gray-300 rounded-lg p-3 mb-4 w-full"
                                             placeholder="$"
                                         />
@@ -1218,15 +1211,8 @@ const ListingDetails = ({ onClose }) => {
                                             type="text"
                                             id="equipmentAmount"
                                             value={equipmentAmount}
-                                            onChange={(e) =>
-                                                setEquipmentAmount(
-                                                    Number(
-                                                        e.target.value.replace(
-                                                            /,/g,
-                                                            ""
-                                                        )
-                                                    ).toLocaleString()
-                                                )
+                                            onChange={
+                                                handleEquipmentAmountChange
                                             }
                                             className="border border-gray-300 rounded-lg p-3 mb-4 w-full"
                                             placeholder="$"
