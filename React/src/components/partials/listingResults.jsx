@@ -185,7 +185,6 @@ const ListingResults = () => {
             setTimeout(() => {
                 rangeSliderInitilize();
             }, 300);
-
         }
     }, [maxRange, maxPrice]);
 
@@ -210,23 +209,20 @@ const ListingResults = () => {
             .catch((err) => {
                 console.log(err);
             });
-            if(type == 'R'){
-                max = maxRange;
-                min = 0;
-            }
-            else{
-                max2 = maxPrice;
-                min2 = 0;
-            }
-            console.log('get res 2', min, max);
-
-            
+        if (type == "R") {
+            max = maxRange;
+            min = 0;
+        } else {
+            max2 = maxPrice;
+            min2 = 0;
+        }
+        console.log("get res 2", min, max);
     };
     //RESUTLS 2
 
     //Turnover(Nurul)
     const rangeSliderInitilize = () => {
-        if(maxAfterRangeSet !=0 && maxAfterRangeSet !=1){
+        if (maxAfterRangeSet != 0 && maxAfterRangeSet != 1) {
             min = minAfterRangeSet;
             max = maxAfterRangeSet;
         }
@@ -269,8 +265,10 @@ const ListingResults = () => {
                 max: parseFloat(values[1]),
             };
 
-            const amountRange = slider2.noUiSlider? slider2.noUiSlider.get():[];
-             // Get current amount range
+            const amountRange = slider2.noUiSlider
+                ? slider2.noUiSlider.get()
+                : [];
+            // Get current amount range
             const filteredResults = filterResults(savedResults, turnoverRange, {
                 min: parseFloat(amountRange[0]),
                 max: parseFloat(amountRange[1]),
@@ -283,13 +281,12 @@ const ListingResults = () => {
 
     // Amount(OWEN)
     const amountSliderInitilize = () => {
-    
-        if(maxAfterAmSet !=0 && maxAfterAmSet !=1){
+        if (maxAfterAmSet != 0 && maxAfterAmSet != 1) {
             min2 = minAfterAmSet;
             max2 = maxAfterAmSet;
         }
         setMaxAfterAmSet(0);
-        console.log(min2,max2)
+        console.log(min2, max2);
 
         noUiSlider.create(slider2, {
             start: [0, 1000000],
@@ -325,14 +322,17 @@ const ListingResults = () => {
 
             const preResults = localStorage.getItem("results");
             const savedResults = JSON.parse(preResults);
-            console.log(skipValues[0]);console.log(skipValues[1]);
+            console.log(skipValues[0]);
+            console.log(skipValues[1]);
 
             const amountRange = {
                 min: parseFloat(values[0]),
                 max: parseFloat(values[1]),
             };
             // const turnoverRange = slider.noUiSlider.get(); // Get current turnover range
-            const turnoverRange = slider.noUiSlider ? slider.noUiSlider.get() : [0, max];
+            const turnoverRange = slider.noUiSlider
+                ? slider.noUiSlider.get()
+                : [0, max];
 
             const filteredResults = filterResults(
                 savedResults,
@@ -481,9 +481,9 @@ const ListingResults = () => {
     //Range Function
     const collapse = () => {
         //Updating Slider 1 Values
-        if(maxAfterAmSet!=0){
-        max2 = maxAfterAmSet;
-        min2 = minAfterAmSet;
+        if (maxAfterAmSet != 0) {
+            max2 = maxAfterAmSet;
+            min2 = minAfterAmSet;
         }
         //Updating Slider 1 Values
 
@@ -506,20 +506,19 @@ const ListingResults = () => {
         $("#collapseExample").addClass("hidden");
         $("#price_low").removeClass("hidden");
         $("#price_high").removeClass("hidden");
-        
+
         setMinAfterRangeSet(min);
         setMaxAfterRangeSet(max);
     };
 
     const collapse2 = () => {
-        
         //Updating Slider 1 Values
-        if(maxAfterRangeSet!=0){
+        if (maxAfterRangeSet != 0) {
             max = maxAfterRangeSet;
             min = minAfterRangeSet;
         }
         //Updating Slider 1 Values
-        console.log('On after set slider 1', min, max)
+        console.log("On after set slider 1", min, max);
 
         var slider = document.getElementById("slider2");
 
@@ -601,27 +600,26 @@ const ListingResults = () => {
         setMaxAfterAmSet(0);
     };
 
-//CLEAR FUNCTIONS
+    //CLEAR FUNCTIONS
     const clearRangeSlider = () => {
         setMaxAfterAmSet(max2);
         setMinAfterAmSet(min2);
 
         var slider = document.getElementById("slider");
         var slider2 = document.getElementById("slider2");
-        
+
         if (slider && slider.noUiSlider) {
             slider.noUiSlider.destroy();
         }
         if (slider2 && slider2.noUiSlider) {
             slider2.noUiSlider.destroy();
         }
-        
+
         amountSliderInitilize();
         setMaxAfterRangeSet(1);
-        //console.log('max',maxAfterRangeSet);  
+        //console.log('max',maxAfterRangeSet);
     };
 
-    
     const clearAmountSlider = () => {
         setMaxAfterRangeSet(max);
         setMinAfterRangeSet(min);
@@ -634,29 +632,31 @@ const ListingResults = () => {
         if (slider && slider.noUiSlider) {
             slider.noUiSlider.destroy();
         }
-        
+
         setMaxAfterAmSet(1);
         rangeSliderInitilize();
     };
 
-
     // This runs whenever maxAfterRangeSet changes
-    useEffect(() => { 
+    useEffect(() => {
         var slider = document.getElementById("slider");
         var slider2 = document.getElementById("slider2");
 
-        if(maxAfterRangeSet == 1){ // On Range Clear
+        if (maxAfterRangeSet == 1) {
+            // On Range Clear
             setTimeout(() => {
-            rangeSliderInitilize();
-            }, 200);  
+                rangeSliderInitilize();
+            }, 200);
         }
 
-        if(maxAfterAmSet == 1){ // On Amount Clear
-           setTimeout(() => { amountSliderInitilize();  }, 200);
+        if (maxAfterAmSet == 1) {
+            // On Amount Clear
+            setTimeout(() => {
+                amountSliderInitilize();
+            }, 200);
         }
-        
-    }, [maxAfterRangeSet,maxAfterAmSet]);
-//CLEAR FUNCTIONS
+    }, [maxAfterRangeSet, maxAfterAmSet]);
+    //CLEAR FUNCTIONS
 
     //Range Function
 
@@ -807,7 +807,7 @@ const ListingResults = () => {
                                 <button
                                     className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
                                     onClick={(event) => {
-                                        getResults2('R');
+                                        getResults2("R");
                                         rangeSliderInitilize();
                                         hide();
                                     }}
@@ -820,7 +820,6 @@ const ListingResults = () => {
                     </div>
 
                     {/* Turnover Range Slider */}
-
 
                     {/* Amount Slider Starts */}
 
@@ -843,7 +842,6 @@ const ListingResults = () => {
                                 onClick={(event) => {
                                     clearAmountSlider();
                                     //getResults2();
-                                    
                                 }}
                             >
                                 Clear
@@ -921,7 +919,7 @@ const ListingResults = () => {
                                 <button
                                     className="px-6 py-2  text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-red-100 hover:text-red-900 transition-colors"
                                     onClick={(event) => {
-                                        getResults2('A');
+                                        getResults2("A");
                                         amountSliderInitilize();
                                         hide2();
                                     }}
@@ -1028,6 +1026,10 @@ const ListingResults = () => {
                                                     $
                                                     {row.investment_needed.toLocaleString() ||
                                                         ""}
+                                                    <span className="text-sm">
+                                                        {" "}
+                                                        for 50%
+                                                    </span>
                                                     <span className="text-[#1E293B]">
                                                         {" "}
                                                         / Amount Requested

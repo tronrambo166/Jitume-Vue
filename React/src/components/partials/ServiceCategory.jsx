@@ -54,8 +54,7 @@ const CategoryPage = ({ categoryName }) => {
                         }
                     }
                 })
-                .catch((err) => {
-                })
+                .catch((err) => {})
                 .finally(() => setLoading(false));
         };
 
@@ -178,9 +177,7 @@ const CategoryPage = ({ categoryName }) => {
         return value.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Add commas
     };
 
-    const dontknow = filteredCards.length
-
-    
+    const dontknow = filteredCards.length;
 
     // Handle min amount input change
     const UpdateValuesMin = (value) => {

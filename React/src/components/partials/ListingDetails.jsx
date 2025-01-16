@@ -297,15 +297,15 @@ const ListingDetails = ({ onClose }) => {
                 buttons: {
                     confirm: function () {
                         //window.location.href =
-                            //"/checkout/" +amount +"/" +listing_id +"/" +percent +"/" +purpose;
-                            navigate("/checkout", {
-                                state: {
-                                    amount: amount,
-                                    listing_id: listing_id,
-                                    percent: percent,
-                                    purpose: purpose,
-                                },
-                            });
+                        //"/checkout/" +amount +"/" +listing_id +"/" +percent +"/" +purpose;
+                        navigate("/checkout", {
+                            state: {
+                                amount: amount,
+                                listing_id: listing_id,
+                                percent: percent,
+                                purpose: purpose,
+                            },
+                        });
                     },
                     cancel: function () {
                         $.alert("Canceled!");
@@ -514,14 +514,13 @@ const ListingDetails = ({ onClose }) => {
             buttons: {
                 confirm: function () {
                     navigate("/checkout", {
-                                state: {
-                                    amount: amount,
-                                    listing_id: business_id,
-                                    purpose: purpose,
-                                    percent: '',
-                                    
-                                },
-                            });
+                        state: {
+                            amount: amount,
+                            listing_id: business_id,
+                            purpose: purpose,
+                            percent: "",
+                        },
+                    });
                 },
                 cancel: function () {
                     $.alert("Canceled!");
@@ -651,7 +650,7 @@ const ListingDetails = ({ onClose }) => {
                                     </p>
                                 </div>
 
-                                <div className="flex flex-wrap items-center gap-1 mt-6 ">
+                                <div className="flex flex-wrap whitespace-nowrap items-center gap-1 mt-6 ">
                                     <span className="text-gray-700 font-medium">
                                         Amount Requested:
                                     </span>
@@ -659,8 +658,10 @@ const ListingDetails = ({ onClose }) => {
                                         $
                                         {(
                                             details.investment_needed || 0
-                                        ).toLocaleString()}
+                                        ).toLocaleString()}{" "}
+                                        <span className="text-sm">for 50%</span>
                                     </p>
+                                    <p className="text-md text-green"></p>
                                     <div className="flex items-center gap-2 text-sm">
                                         <span className="text-gray-500">|</span>
                                         <span className="text-green-700">
@@ -1142,13 +1143,23 @@ const ListingDetails = ({ onClose }) => {
                                             Amount:
                                         </label>
                                         <input
-                                            type="number"
+                                            type="text"
                                             id="investmentAmount"
                                             value={amount}
-                                            onChange={handleAmountChange}
+                                            onChange={(e) =>
+                                                setAmount(
+                                                    Number(
+                                                        e.target.value.replace(
+                                                            /,/g,
+                                                            ""
+                                                        )
+                                                    ).toLocaleString()
+                                                )
+                                            }
                                             className="border border-gray-300 rounded-lg p-3 mb-4 w-full"
                                             placeholder="$"
                                         />
+
                                         {/* {amount && (
                                             <p className="text-sm text-[#334155] mb-4">
                                                 Represents:{" "}
@@ -1204,15 +1215,23 @@ const ListingDetails = ({ onClose }) => {
                                             Amount:
                                         </label>
                                         <input
-                                            type="number"
+                                            type="text"
                                             id="equipmentAmount"
                                             value={equipmentAmount}
-                                            onChange={
-                                                handleEquipmentAmountChange
+                                            onChange={(e) =>
+                                                setEquipmentAmount(
+                                                    Number(
+                                                        e.target.value.replace(
+                                                            /,/g,
+                                                            ""
+                                                        )
+                                                    ).toLocaleString()
+                                                )
                                             }
                                             className="border border-gray-300 rounded-lg p-3 mb-4 w-full"
                                             placeholder="$"
                                         />
+
                                         {/* {equipmentAmount && (
                                             <p className="text-sm text-[#334155] mb-4">
                                                 Represents:{" "}

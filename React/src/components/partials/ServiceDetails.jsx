@@ -365,8 +365,6 @@ const ServiceDetails = () => {
                         },
                     });
                 }
-                setSelectedDate('');
-                setNotes('');
             })
             .catch((err) => {
                 console.log(err);
@@ -432,7 +430,7 @@ const ServiceDetails = () => {
             <BackBtn />
 
             <div className="w-full flex flex-col md:flex-row justify-center md:justify-end items-center py-2 lg:py-4 mt-3">
-                <div className="flex flex-col mx-auto w-full gap-4 px-4 md:flex-row md:gap-8 md:px-10 lg:gap-14">
+                <div className="flex  flex-col mx-auto w-full gap-4 px-4 md:flex-row md:gap-8 md:px-10 lg:gap-14">
                     {/* Added horizontal padding */}
                     {/* IMAGE SECTION ON THE LEFT */}
                     <div className="flex-grow max-w-full md:max-w-[70%] rounded-lg overflow-hidden opacity-100">
@@ -507,7 +505,10 @@ const ServiceDetails = () => {
                                             Service Fee:
                                         </p>
                                         <span className="font-semibold text-[20px] text-green-700">
-                                            ${details.price}
+                                            ${details.price}{" "}
+                                            <span className="text-sm">
+                                                for 50%
+                                            </span>
                                         </span>
                                     </div>
                                 </p>
@@ -670,75 +671,73 @@ const ServiceDetails = () => {
                     {/* DESIRED START DATE AND NOTES SECTION ON THE RIGHT */}
                     <div>
                         <div className="flex justify-center md:justify-end">
-                            
-                            
-                            {booked?(
-                                <p className="text-center text-white border bg-green-700 p-3 rounded"> You booked this service! </p>
-                                )
-                            :(
+                            {booked ? (
+                                <p className="text-center text-white border bg-green-700 p-3 rounded">
+                                    {" "}
+                                    You booked this service!{" "}
+                                </p>
+                            ) : (
+                                <div className="w-full md:w-[330px] max-w-lg p-4 border rounded-lg">
+                                    {/* Desired Start Date Section */}
+                                    <div className="mb-4">
+                                        <label className="block text-sm font-semibold mb-3">
+                                            Desired Start Date:
+                                        </label>
 
-                            <div className="w-full md:w-[330px] max-w-lg p-4 border rounded-lg">
-                                {/* Desired Start Date Section */}
-                                <div className="mb-4">
-                                    <label className="block text-sm font-semibold mb-3">
-                                        Desired Start Date:
-                                    </label>
+                                        {/* Calendar stays visible */}
+                                        <div className="w-full">
+                                            <Calendar
+                                                onDateSelect={handleDateSelect}
+                                                className="w-full" // Ensure the calendar expands fully within the container
+                                            />
+                                        </div>
 
-                                    {/* Calendar stays visible */}
-                                    <div className="w-full">
-                                        <Calendar
-                                            onDateSelect={handleDateSelect}
-                                            className="w-full" // Ensure the calendar expands fully within the container
+                                        {/* Hidden input to store the selected date */}
+                                        <input
+                                            type="hidden"
+                                            id="date"
+                                            name="date"
+                                            value={selectedDate}
                                         />
                                     </div>
 
-                                    {/* Hidden input to store the selected date */}
-                                    <input
-                                        type="hidden"
-                                        id="date"
-                                        name="date"
-                                        value={selectedDate}
-                                    />
-                                </div>
+                                    {/* Notes Section */}
+                                    <div>
+                                        <label className="block text-sm font-semibold mb-1">
+                                            Enter additional notes
+                                        </label>
+                                        <textarea
+                                            value={notes}
+                                            placeholder="Type here..."
+                                            onChange={(e) =>
+                                                setNotes(e.target.value)
+                                            }
+                                            className="w-full border-gray-300 border rounded-lg p-2"
+                                            rows="4"
+                                        />
+                                    </div>
 
-                                {/* Notes Section */}
-                                <div>
-                                    <label className="block text-sm font-semibold mb-1">
-                                        Enter additional notes
-                                    </label>
-                                    <textarea
-                                        value={notes}
-                                        placeholder="Type here..."
-                                        onChange={(e) =>
-                                            setNotes(e.target.value)
-                                        }
-                                        className="w-full border-gray-300 border rounded-lg p-2"
-                                        rows="4"
-                                    />
+                                    {/* Book Now Button */}
+                                    <div>
+                                        {!token ? (
+                                            <button
+                                                onClick={handleAuthModalOpen}
+                                                className="btn-primary w-full py-3 mt-3 rounded-xl" // Made button full width
+                                            >
+                                                Book Now
+                                            </button>
+                                        ) : (
+                                            <button
+                                                onClick={book}
+                                                className="btn-primary font-semibold w-full py-3  h-12 mt-3 whitespace-nowrap rounded-md"
+                                            >
+                                                Book Now
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
-
-                                {/* Book Now Button */}
-                                <div>
-                                    {!token ? (
-                                        <button
-                                            onClick={handleAuthModalOpen}
-                                            className="btn-primary w-full py-3 mt-3 rounded-xl" // Made button full width
-                                        >
-                                            Book Now
-                                        </button>
-                                    ) : (
-                                        <button
-                                            onClick={book}
-                                            className="btn-primary font-semibold w-full py-3  h-12 mt-3 whitespace-nowrap rounded-md"
-                                        >
-                                            Book Now
-                                        </button>
-                                    )}
-                                </div>
-                            </div>
                             )}
                             {/*book form*/}
-
                         </div>
 
                         {token && allowToReview && (

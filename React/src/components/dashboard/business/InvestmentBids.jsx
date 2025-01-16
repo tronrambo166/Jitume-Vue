@@ -68,7 +68,6 @@ function InvestmentBids() {
                 }
             });
     };
-    
 
     const handleCheckboxChange = (id) => {
         setSelectedBids((prevSelected) => {
@@ -85,7 +84,7 @@ function InvestmentBids() {
         setIsModalOpen(true);
     };
 
-        //DOWNLOAD
+    //DOWNLOAD
     const download = (doc) => (e) => {
         axiosClient({
             url: "download_bids_doc/" + btoa(doc), //your url
@@ -115,19 +114,13 @@ function InvestmentBids() {
                 const type = data.data.type;
 
                 if (type.includes("image"))
-                    link.setAttribute(
-                        "download",
-                        "image.jpg"
-                    );
-
+                    link.setAttribute("download", "image.jpg");
                 else if (
                     data.data.type ==
                     "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 )
-                    link.setAttribute(
-                        "download",
-                        "document.docx"
-                    ); //or any other extension
+                    link.setAttribute("download", "document.docx");
+                //or any other extension
                 else link.setAttribute("download", "document.pdf");
 
                 document.body.appendChild(link);
@@ -270,7 +263,7 @@ function InvestmentBids() {
 
         PendingBids();
         AssetBids();
-        console.log('asset',assetBids)
+        console.log("asset", assetBids);
     }, []);
     const handleSelectAll = () => {
         if (selectAll) {
@@ -281,216 +274,260 @@ function InvestmentBids() {
         setSelectAll(!selectAll);
     };
 
+    // Togle switch event here
+    const [showInvestmentBids, setShowInvestmentBids] = useState(true);
+
+    const toggleBids = () => {
+        setShowInvestmentBids(!showInvestmentBids);
+    };
+
     return (
         <div className="container mx-auto p-0 sm:p-6 mt-12 sm:mt-0">
             {" "}
-            <h3 className="text-left text-lg font-semibold mb-6">
+            {/* <h3 className="text-left text-lg font-semibold mb-6">
                 Investment Bids
-            </h3>
-            <div className="overflow-x-auto shadow-md sm:rounded-lg">
-                <table className="min-w-full bg-white">
-                    <thead className="bg-gray-100 border-b">
-                        <tr className="text-gray-600 text-sm">
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
-                                Check
-                            </th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
-                                Date
-                            </th>
-                            <th className="text-left py-3 px-8 uppercase font-semibold text-[12px]">
-                                Investor
-                            </th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
-                                Business
-                            </th>
-                            <th className="py-3 px-8 text-left  uppercase font-semibold text-[12px]">
-                                Type
-                            </th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
-                                Amount
-                            </th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
-                                Representation %
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {bids.map((bid) => (
-                            <tr
-                                key={bid.id}
-                                className="text-gray-500 hover:bg-gray-50 transition-colors"
-                            >
-                                <td className="py-3 px-4 border-b text-left">
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedBids.includes(bid.id)}
-                                        onChange={() =>
-                                            handleCheckboxChange(bid.id)
-                                        }
-                                        className="form-checkbox h-4 w-4 text-green"
-                                    />
-                                </td>
-
-                                <td className="py-3 px-4 border-b text-left">
-                                    {bid.date}
-                                </td>
-
-                                {/* Investor Button */}
-                                <td className="py-3 px-4 border-b text-left">
-                                    <button
-                                        onClick={() =>
-                                            handleInvestorDetails(bid)
-                                        }
-                                        className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors"
-                                    >
-                                        {bid.investor}
-                                    </button>
-                                </td>
-
-                                <td className="py-3 px-4 border-b text-left">
-                                    {bid.business}
-                                </td>
-
-                                {/* Type Button */}
-                                <td className="py-3 px-4 border-b text-left">
-                                    <button
-                                        onClick={() => handleTypeDetails(bid)}
-                                        className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors"
-                                    >
-                                        {bid.type =='Asset'?'Equipment':bid.type}
-                                    </button>
-                                </td>
-
-                                <td className="py-3 px-4 border-b text-left">
-                                    ${bid.amount.toLocaleString()}
-                                </td>
-
-                                <td className="py-3 px-4 border-b text-left">
-                                    {bid.representation}%
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-            <div className="flex gap-2 pt-3 items-center justify-end">
-                <button
-                    onClick={AcceptBids(0)}
-                    disabled={selectedBids.length === 0 || loadingAccept}
-                    className={`py-2 px-4 rounded-lg text-white focus:outline-none focus:ring-2 transition-colors ${
-                        selectedBids.length === 0 || loadingAccept
-                            ? "bg-gray-300 cursor-not-allowed"
-                            : "btn-primary hover:bg-green-600 focus:ring-green-300"
-                    }`}
+            </h3> */}
+            <div className="flex justify-start gap-6 items-center mb-6">
+                <h3
+                    onClick={toggleBids}
+                    className={`text-lg font-semibold cursor-pointer border-b-2 ${
+                        showInvestmentBids
+                            ? "text-green border-green"
+                            : "text-gray-500 border-transparent"
+                    } transition-all`}
                 >
-                    {loadingAccept ? (
-                        <AiOutlineLoading3Quarters className="animate-spin inline-block mr-2" />
-                    ) : null}
-                    {loadingAccept ? "Accepting..." : "Accept Bids"}
-                </button>
+                    Investment Bids
+                </h3>
 
-                <button
-                    onClick={AcceptBids(1)} // Ensure this calls the correct reject handler
-                    disabled={selectedBids.length === 0 || loadingReject} // Disable if no bids are selected
-                    className={`py-2 px-4 rounded-lg text-white focus:outline-none focus:ring-2 transition-colors ${
-                        selectedBids.length === 0
-                            ? "bg-gray-300 cursor-not-allowed" // Gray when no bids selected
-                            : "bg-red-500 hover:bg-red-600 focus:ring-red-300" // Red when bids selected
-                    }`}
+                <h3
+                    onClick={toggleBids}
+                    className={`text-lg font-semibold cursor-pointer border-b-2 ${
+                        !showInvestmentBids
+                            ? "text-green border-green"
+                            : "text-gray-500 border-transparent"
+                    } transition-all`}
                 >
-                    {loadingReject ? (
-                        <AiOutlineLoading3Quarters className="animate-spin inline-block mr-2" />
-                    ) : null}
-                    {loadingReject ? "Rejecting..." : "Reject Bids"}
-                </button>
+                    Ongoing Asset Bids
+                </h3>
             </div>
-
-
-            {/* Asset Bids*/}
-            <h3 className="text-left text-lg font-semibold mb-6">
-                Ongoing Asset Bids
-            </h3>
-            <div className="overflow-x-auto shadow-md sm:rounded-lg">
-                <table className="min-w-full bg-white">
-                    <thead className="bg-gray-100 border-b">
-                        <tr className="text-gray-600 text-sm">
-                            
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
-                                Date
-                            </th>
-                            <th className="text-left py-3 px-8 uppercase font-semibold text-[12px]">
-                                Investor
-                            </th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
-                                Business
-                            </th>
-                            <th className="py-3 px-8 text-left  uppercase font-semibold text-[12px]">
-                                Type
-                            </th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
-                                Amount
-                            </th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
-                                Representation %
-                            </th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
-                                Status
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {assetBids.map((bid) => (
-                            <tr
-                                key={bid.id}
-                                className="text-gray-500 hover:bg-gray-50 transition-colors"
-                            >
-
-                                <td className="py-3 px-4 border-b text-left">
-                                    {bid.date}
-                                </td>
-
-                                {/* Investor Button */}
-                                <td className="py-3 px-4 border-b text-left">
-                                    <button
-                                        
-                                        className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors"
+            {showInvestmentBids ? (
+                <div>
+                    <div className="overflow-x-auto shadow-md sm:rounded-lg">
+                        <table className="min-w-full bg-white">
+                            <thead className="bg-gray-100 border-b">
+                                <tr className="text-gray-600 text-sm">
+                                    <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                        Check
+                                    </th>
+                                    <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                        Date
+                                    </th>
+                                    <th className="text-left py-3 px-8 uppercase font-semibold text-[12px]">
+                                        Investor
+                                    </th>
+                                    <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                        Business
+                                    </th>
+                                    <th className="py-3 px-8 text-left  uppercase font-semibold text-[12px]">
+                                        Type
+                                    </th>
+                                    <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                        Amount
+                                    </th>
+                                    <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                        Representation %
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {bids.map((bid) => (
+                                    <tr
+                                        key={bid.id}
+                                        className="text-gray-500 hover:bg-gray-50 transition-colors"
                                     >
-                                        {bid.investor}
-                                    </button>
-                                </td>
+                                        <td className="py-3 px-4 border-b text-left">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedBids.includes(
+                                                    bid.id
+                                                )}
+                                                onChange={() =>
+                                                    handleCheckboxChange(bid.id)
+                                                }
+                                                className="form-checkbox h-4 w-4 text-green"
+                                            />
+                                        </td>
 
-                                <td className="py-3 px-4 border-b text-left">
-                                    {bid.business}
-                                </td>
+                                        <td className="py-3 px-4 border-b text-left">
+                                            {bid.date}
+                                        </td>
 
-                                {/* Type Button */}
-                                <td className="py-3 px-4 border-b text-left">
-                                    <button
-                                        onClick={() => handleTypeDetails(bid)}
-                                        className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors"
+                                        {/* Investor Button */}
+                                        <td className="py-3 px-4 border-b text-left">
+                                            <button
+                                                onClick={() =>
+                                                    handleInvestorDetails(bid)
+                                                }
+                                                className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors"
+                                            >
+                                                {bid.investor}
+                                            </button>
+                                        </td>
+
+                                        <td className="py-3 px-4 border-b text-left">
+                                            {bid.business}
+                                        </td>
+
+                                        {/* Type Button */}
+                                        <td className="py-3 px-4 border-b text-left">
+                                            <button
+                                                onClick={() =>
+                                                    handleTypeDetails(bid)
+                                                }
+                                                className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors"
+                                            >
+                                                {bid.type == "Asset"
+                                                    ? "Equipment"
+                                                    : bid.type}
+                                            </button>
+                                        </td>
+
+                                        <td className="py-3 px-4 border-b text-left">
+                                            ${bid.amount.toLocaleString()}
+                                        </td>
+
+                                        <td className="py-3 px-4 border-b text-left">
+                                            {bid.representation}%
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="flex gap-2 pt-3 items-center justify-end">
+                        <button
+                            onClick={AcceptBids(0)}
+                            disabled={
+                                selectedBids.length === 0 || loadingAccept
+                            }
+                            className={`py-2 px-4 rounded-lg text-white focus:outline-none focus:ring-2 transition-colors ${
+                                selectedBids.length === 0 || loadingAccept
+                                    ? "bg-gray-300 cursor-not-allowed"
+                                    : "btn-primary hover:bg-green-600 focus:ring-green-300"
+                            }`}
+                        >
+                            {loadingAccept ? (
+                                <AiOutlineLoading3Quarters className="animate-spin inline-block mr-2" />
+                            ) : null}
+                            {loadingAccept ? "Accepting..." : "Accept Bids"}
+                        </button>
+
+                        <button
+                            onClick={AcceptBids(1)} // Ensure this calls the correct reject handler
+                            disabled={
+                                selectedBids.length === 0 || loadingReject
+                            } // Disable if no bids are selected
+                            className={`py-2 px-4 rounded-lg text-white focus:outline-none focus:ring-2 transition-colors ${
+                                selectedBids.length === 0
+                                    ? "bg-gray-300 cursor-not-allowed" // Gray when no bids selected
+                                    : "bg-red-500 hover:bg-red-600 focus:ring-red-300" // Red when bids selected
+                            }`}
+                        >
+                            {loadingReject ? (
+                                <AiOutlineLoading3Quarters className="animate-spin inline-block mr-2" />
+                            ) : null}
+                            {loadingReject ? "Rejecting..." : "Reject Bids"}
+                        </button>
+                    </div>
+                </div>
+            ) : (
+                <div>
+                    {" "}
+                    {/* Asset Bids*/}
+                    {/* <h3 className="text-left text-lg font-semibold mb-6">
+                        Ongoing Asset Bids
+                    </h3> */}
+                    <div className="overflow-x-auto shadow-md sm:rounded-lg">
+                        <table className="min-w-full bg-white">
+                            <thead className="bg-gray-100 border-b">
+                                <tr className="text-gray-600 text-sm">
+                                    <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                        Date
+                                    </th>
+                                    <th className="text-left py-3 px-8 uppercase font-semibold text-[12px]">
+                                        Investor
+                                    </th>
+                                    <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                        Business
+                                    </th>
+                                    <th className="py-3 px-8 text-left  uppercase font-semibold text-[12px]">
+                                        Type
+                                    </th>
+                                    <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                        Amount
+                                    </th>
+                                    <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                        Representation %
+                                    </th>
+                                    <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                        Status
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {assetBids.map((bid) => (
+                                    <tr
+                                        key={bid.id}
+                                        className="text-gray-500 hover:bg-gray-50 transition-colors"
                                     >
-                                        Equipment
-                                    </button>
-                                </td>
+                                        <td className="py-3 px-4 border-b text-left">
+                                            {bid.date}
+                                        </td>
 
-                                <td className="py-3 px-4 border-b text-left">
-                                    ${bid.amount.toLocaleString()}
-                                </td>
+                                        {/* Investor Button */}
+                                        <td className="py-3 px-4 border-b text-left">
+                                            <button className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors">
+                                                {bid.investor}
+                                            </button>
+                                        </td>
 
-                                <td className="py-3 px-4 border-b text-left">
-                                    {bid.representation}%
-                                </td>
-                                <td className="px-4 py-2 text-sm">
-                                <p className="text-green-500 font-bold"> {bid.status} </p>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                                        <td className="py-3 px-4 border-b text-left">
+                                            {bid.business}
+                                        </td>
+
+                                        {/* Type Button */}
+                                        <td className="py-3 px-4 border-b text-left">
+                                            <button
+                                                onClick={() =>
+                                                    handleTypeDetails(bid)
+                                                }
+                                                className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors"
+                                            >
+                                                Equipment
+                                            </button>
+                                        </td>
+
+                                        <td className="py-3 px-4 border-b text-left">
+                                            ${bid.amount.toLocaleString()}
+                                        </td>
+
+                                        <td className="py-3 px-4 border-b text-left">
+                                            {bid.representation}%
+                                        </td>
+                                        <td className="px-4 py-2 text-sm">
+                                            <p className="text-green-500 font-bold">
+                                                {" "}
+                                                {bid.status}{" "}
+                                            </p>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
             {/* Asset Bids */}
-
-
             {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
