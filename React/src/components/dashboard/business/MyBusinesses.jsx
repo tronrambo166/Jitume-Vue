@@ -5,6 +5,8 @@ import axiosClient from "../../../axiosClient";
 import EditModal from "./EditModal";
 import { useAlert } from "../../partials/AlertContext";
 import ReusableTable from "./ReusableTable";
+import { AiOutlineFileAdd } from "react-icons/ai"; // Import the icon
+import { Link } from "react-router-dom";
 
 const MyBusinesses = () => {
     const navigate = useNavigate();
@@ -154,7 +156,6 @@ const MyBusinesses = () => {
         );
     };
 
-
     const headers = [
         "Name",
         "Category",
@@ -193,18 +194,43 @@ const MyBusinesses = () => {
     return (
         <div className="py-6 mt-6 lg:mt-0 px-0  sm:px-[21px] space-y-6">
             {/* Adjusted padding and added vertical spacing */}
-            <section className="bg-white border border-gray-300 rounded-xl w-full">
-                {/* Added padding, border and rounded corners for all edges */}
-                <h1 className="text-[#2D3748] font-semibold text-xl ml-6 mt-6 sm:text-2xl mb-4">
-                    My Businesses
-                </h1>
-                <ReusableTable
-                    headers={headers}
-                    data={tableData}
-                    rowsPerPage={5}
-                    tableId="businessTable" // Pass unique table ID
-                />
-            </section>
+            {business.length > 0 ? (
+                <section className="bg-white border border-gray-300 rounded-xl w-full">
+                    {/* Added padding, border and rounded corners for all edges */}
+                    <h1 className="text-[#2D3748] font-semibold text-xl ml-6 mt-6 sm:text-2xl mb-4">
+                        My Businesses
+                    </h1>
+                    <ReusableTable
+                        headers={headers}
+                        data={tableData}
+                        rowsPerPage={5}
+                        tableId="businessTable" // Pass unique table ID
+                    />
+                </section>
+            ) : (
+                <section className="bg-white border border-gray-300 rounded-xl w-full py-6 px-6">
+                    <div className="flex flex-col items-center">
+                        {/* Icon */}
+                        <AiOutlineFileAdd
+                            size={30}
+                            className="text-gray-500 mb-4"
+                        />
+                        <h1 className="text-[#2D3748] font-semibold text-xl sm:text-l mb-4">
+                            No Businesses Found
+                        </h1>
+                        <p className="text-gray-600 text-center">
+                            You don't have any businesses listed yet. Please add
+                            one to get started.
+                            <Link to="/dashboard/addbusiness">
+                                <span className="text-green font-bold hover:underline">
+                                    {" "}
+                                    Add A Business
+                                </span>
+                            </Link>
+                        </p>
+                    </div>
+                </section>
+            )}
 
             {/* Edit Modal */}
             {showModal && (

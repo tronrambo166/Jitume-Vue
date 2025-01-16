@@ -5,6 +5,7 @@ import ServEditModal from "./ServEditModal";
 import { useAlert } from "../../partials/AlertContext";
 import ReusableTable from "../business/ReusableTable";
 import { BsThreeDots } from "react-icons/bs";
+import { FaCogs } from 'react-icons/fa'; // Gears icon, symbolizing a service being done
 
 const ServiceTable = () => {
     const [business, setBusiness] = useState([]);
@@ -161,18 +162,39 @@ const ServiceTable = () => {
     return (
         <div className="py-4 mt-8 lg:mt-0 px-0 sm:px-[21px]">
             {/* My Services Section */}
-            <section className="bg-white border rounded-xl w-full">
-                <h1 className="text-[#2D3748] ml-6 mt-6 font-semibold text-xl sm:text-2xl mb-6">
-                    My Services
-                </h1>
-                <ReusableTable
-                    headers={headers}
-                    data={tableData}
-                    rowsPerPage={5}
-                    tableId="service-table" // Pass unique table ID
-                />
-            </section>
-
+            {service.length > 0 ? (
+                <section className="bg-white border rounded-xl w-full">
+                    <h1 className="text-[#2D3748] ml-6 mt-6 font-semibold text-xl sm:text-2xl mb-6">
+                        My Services
+                    </h1>
+                    <ReusableTable
+                        headers={headers}
+                        data={tableData}
+                        rowsPerPage={5}
+                        tableId="service-table" // Pass unique table ID
+                    />
+                </section>
+            ) : (
+                <section className="bg-white border border-gray-300 rounded-xl w-full py-6 px-6">
+                    <div className="flex flex-col items-center">
+                        {/* Icon */}
+                        <FaCogs size={30} className="text-gray-500 mb-4" />
+                        <h3 className="text-[#2D3748] font-semibold text-xl sm:text-l mb-4">
+                            No Services Found
+                        </h3>
+                        <p className="text-gray-600 text-center">
+                            You don't have any services listed yet. Please add
+                            one to get started.
+                            <Link to="/dashboard/add-service">
+                                <span className="text-green font-bold hover:underline">
+                                    {" "}
+                                    Add Service
+                                </span>
+                            </Link>
+                        </p>
+                    </div>
+                </section>
+            )}
             {isEditModalOpen && (
                 <ServEditModal
                     isOpen={isEditModalOpen}

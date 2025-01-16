@@ -30,7 +30,6 @@ const EquipmentRelease = () => {
             );
             return; // Prevent further execution
 
-            // navigate("/");
         }
 
         if (b_owner_id && manager_id) {
@@ -41,8 +40,27 @@ const EquipmentRelease = () => {
                 .then((data) => {
                     console.log(data);
                     if (data.status == 200) {
-                        showAlert("success", "The process has begun");
-                        // navigate("/");
+                        const content = "The process has began between the parties below... </br> <b>Business:</b> "+data.business+
+                        "</br> <b>Business Owner:</b> "+data.owner+"</br> <b>Project Manger:</b> "+data.manager+
+                        "</br> <b>Investor:</b> "+data.investor+ "</br> Goto dashboard to see status ";
+                        $.confirm({
+                                title: "Equipment Released!",
+                                content: content,
+                                buttons: {
+                                    ok: function () {
+                                        navigate("/dashboard");
+                                    },
+                                    home: function () {
+                                        navigate("/");
+                                    },
+                                    cancel: function () {
+                                        $.alert("Canceled!");
+                                    },
+                                },
+                            });
+                    }
+                    else{
+                        showAlert("error", data.message);
                     }
                 })
                 .catch((error) => {
@@ -88,8 +106,8 @@ const EquipmentRelease = () => {
         //     </div>
 
         //     </div>
-        <div className="min-h-screen flex justify-center items-center p-6">
-            <div className="card py-5 mx-auto w-full sm:w-1/2" id="cancel">
+        <div className="border min-h-screen flex justify-center items-center p-6">
+            <div className="border card py-5 mx-auto w-full sm:w-1/2" id="cancel">
                 <div className="text-center mb-6">
                     <h5 className="text-xl font-semibold">
                         Do you want to release equipment now?
@@ -98,7 +116,7 @@ const EquipmentRelease = () => {
                 <div className="card-body py-5 mb-5">
                     <div className="w-3/4 mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <button
-                            className={`w-full py-3 bg-green-700 rounded-lg text-white font-semibold flex justify-center items-center ${
+                            className={`w-full py-2 px-3 bg-green-500 rounded-lg text-white font-semibold flex justify-center items-center ${
                                 loading ? "opacity-50" : ""
                             }`}
                             onClick={releaseEquipment("yes")} // No need for an additional wrapper
@@ -107,12 +125,12 @@ const EquipmentRelease = () => {
                             {loading ? (
                                 <AiOutlineLoading3Quarters className="mr-2 animate-spin" />
                             ) : (
-                                <small>OK</small>
+                                <small>YES</small>
                             )}
                         </button>
 
                         <button
-                            className="w-full py-3 bg-red-700 rounded-lg text-white text-center font-semibold"
+                            className="w-full py-2 px-3 bg-red-500 rounded-lg text-white text-center font-semibold"
                             onClick={releaseEquipment("no")} // No need for an additional wrapper
                         >
                             <small>Cancel</small>
