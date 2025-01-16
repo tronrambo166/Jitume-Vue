@@ -1113,24 +1113,27 @@ return response()->json(['bids' => $bids]);
  }
 }
 
-public function asset_bids(){
+public function asset_bids()
+{
   if(Auth::check())
-      $investor = User::where('id', Auth::id())->first();
+        $investor = User::where('id', Auth::id())->first();
 
-$res = AcceptedBids::where('owner_id', Auth::id())->latest()->get();
-$bids = array();
-try{
-foreach($res as $r){
-  $inv = User::where('id',$r->investor_id)->first();
-  $business = listing::where('id',$r->business_id)->first();
+  $res = AcceptedBids::where('owner_id', Auth::id())
+  ->where('type', 'Asset')->latest()->get();
 
-  if($business && $inv){
-  $r->investor = $inv->fname.' '.$inv->lname;
-  $r->business = $business->name;
-  $r->email = $inv->email;
-  $bids[] = $r;
-  }
-} 
+  $bids = array();
+  try{
+  foreach($res as $r){
+    $inv = User::where('id',$r->investor_id)->first();
+    $business = listing::where('id',$r->business_id)->first();
+
+    if($business && $inv){
+    $r->investor = $inv->fname.' '.$inv->lname;
+    $r->business = $business->name;
+    $r->email = $inv->email;
+    $bids[] = $r;
+    }
+  } 
 
 return response()->json(['status'=>200, 'bids' => $bids]);
 }

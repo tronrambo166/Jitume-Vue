@@ -216,15 +216,21 @@ const ListingDetails = ({ onClose }) => {
         }
         return stars;
     };
+    const [formattedAmount, setFormattedAmount] = useState("");
 
     const handleAmountChange = (e) => {
-        const enteredAmount = e.target.value;
-        setAmount(enteredAmount);
+        const enteredAmount = e.target.value.replace(/,/g, ""); // Remove commas for parsing
+        setFormattedAmount(
+            enteredAmount ? parseFloat(enteredAmount).toLocaleString() : ""
+        ); // Format the amount with commas
+
+        setAmount(enteredAmount); // Store the raw value without commas
 
         if (enteredAmount && amount_r > 0) {
             const amount = parseFloat(enteredAmount);
             if (amount > amount_r) {
-                setAmount("");
+                setAmount(""); // Clear raw amount
+                setFormattedAmount(""); // Clear formatted amount
                 setPercentage(0);
                 setErrorMessage("Amount exceeds the investment needed!");
             } else {
@@ -239,35 +245,79 @@ const ListingDetails = ({ onClose }) => {
             setPercentage("");
             setErrorMessage("");
         }
-        console.log(enteredAmount)
     };
 
-    const handleEquipmentAmountChange = (e) => {
-        const enteredAmount = e.target.value;
-        setEquipmentAmount(enteredAmount);
+    console.log(formattedAmount);
 
-        if (enteredAmount && amount_r > 0) {
-            const amount = parseFloat(enteredAmount);
-            if (amount > amount_r) {
-                setEquipmentAmount("");
-                setEquipmentPercentage(0);
-                setEquipmentErrorMessage(
-                    "Amount exceeds the investment required!"
-                );
-            } else {
-                const calculatedPercentage = (
-                    (amount / details.investment_needed) *
-                    100
-                ).toFixed(2);
-                setEquipmentPercentage(calculatedPercentage);
-                setEquipmentErrorMessage(""); // Clear the error message
-            }
-        } else {
-            setEquipmentPercentage("");
-            setEquipmentErrorMessage(""); // Clear the error message
-        }
-        console.log(enteredAmount)
-    };
+
+    const sintamei = amount
+    // alert(sintamei);
+
+    const lemein = equipmentAmount;
+    // alert(lemein);
+  const handleEquipmentAmountChange = (e) => {
+      let enteredAmount = e.target.value.replace(/,/g, ""); // Remove commas for calculations
+      let formattedAmount = enteredAmount
+          ? parseFloat(enteredAmount).toLocaleString() // Add commas for display
+          : "";
+
+      setEquipmentAmount(formattedAmount); // Set formatted amount with commas
+
+      let rawAmount = parseFloat(enteredAmount); // Raw value for calculations
+
+      if (enteredAmount && amount_r > 0) {
+          if (rawAmount > amount_r) {
+              setEquipmentAmount(""); // Clear formatted amount
+              setEquipmentPercentage(0);
+              setEquipmentErrorMessage(
+                  "Amount exceeds the investment required!"
+              );
+          } else {
+              const calculatedPercentage = (
+                  (rawAmount / details.investment_needed) *
+                  100
+              ).toFixed(2);
+              setEquipmentPercentage(calculatedPercentage);
+              setEquipmentErrorMessage(""); // Clear the error message
+          }
+      } else {
+          setEquipmentPercentage("");
+          setEquipmentErrorMessage(""); // Clear the error message
+      }
+  };
+
+  const handleEquipmentInvest = () => {
+      // Remove commas before encoding
+      var amountWithoutCommas = equipmentAmount.replace(/,/g, ""); // Strip commas
+      var encodedAmount = btoa(amountWithoutCommas); // Encode the raw value without commas
+
+      var percent = btoa(equipmentPercentage); // Encode percentage
+      var id = btoa(form.listing_id); // Encode listing ID
+
+      if (amountWithoutCommas == "" || amountWithoutCommas == 0)
+          $.alert({
+              title: "Alert!",
+              content: "Please enter a bid to invest!",
+          });
+      else {
+          let t = this;
+          $.confirm({
+              title: "Are you sure?",
+              content: "Are you sure to bid?",
+              buttons: {
+                  confirm: function () {
+                      navigate(
+                          `/investEquip/${encodedAmount}/${id}/${percent}`
+                      );
+                  },
+                  cancel: function () {
+                      $.alert("Canceled!");
+                  },
+              },
+          });
+      }
+  };
+
 
     const [showAuthModal, setShowAuthModal] = useState(false);
 
@@ -278,7 +328,8 @@ const ListingDetails = ({ onClose }) => {
     const closePopup = () => setIsPopupOpen(false);
 
     const handleInvestClick = () => {
-        var amount = $("#investmentAmount").val();
+        // var amount = $("#investmentAmount").val();
+        var amount = $("#investmentAmount").val().replace(/,/g, "");
         var percent = document.getElementById("percent").innerHTML;
 
         if (amount == "" || amount == 0)
@@ -479,32 +530,7 @@ const ListingDetails = ({ onClose }) => {
         });
     };
 
-    const handleEquipmentInvest = () => {
-        var amount = btoa(equipmentAmount);
-        var percent = btoa(equipmentPercentage);
-        var id = btoa(form.listing_id);
-
-        if (amount == "" || amount == 0)
-            $.alert({
-                title: "Alert!",
-                content: "Please enter a bid to invest!",
-            });
-        else {
-            let t = this;
-            $.confirm({
-                title: "Are you sure?",
-                content: "Are you sure to bid?",
-                buttons: {
-                    confirm: function () {
-                        navigate(`/investEquip/${amount}/${id}/${percent}`);
-                    },
-                    cancel: function () {
-                        $.alert("Canceled!");
-                    },
-                },
-            });
-        }
-    };
+   
 
     const stripeSmallFee = (business_id, amount) => {
         var amount = btoa(amount);
@@ -652,7 +678,7 @@ const ListingDetails = ({ onClose }) => {
                                     </p>
                                 </div>
 
-                                <div className="flex flex-wrap whitespace-nowrap items-center gap-1 mt-6 ">
+                                <div className="flex flex-wrap items-center gap-1 mt-6 ">
                                     <span className="text-gray-700 font-medium">
                                         Amount Requested:
                                     </span>
@@ -660,10 +686,9 @@ const ListingDetails = ({ onClose }) => {
                                         $
                                         {(
                                             details.investment_needed || 0
-                                        ).toLocaleString()}{" "}
-                                        <span className="text-sm">for {details.share}%</span>
+                                        ).toLocaleString()}
+                                        <span className="text-sm"> / for {details.share}%</span>
                                     </p>
-                                    <p className="text-md text-green"></p>
                                     <div className="flex items-center gap-2 text-sm">
                                         <span className="text-gray-500">|</span>
                                         <span className="text-green-700">
@@ -1147,12 +1172,11 @@ const ListingDetails = ({ onClose }) => {
                                         <input
                                             type="text"
                                             id="investmentAmount"
-                                            value={amount}
+                                            value={formattedAmount}
                                             onChange={handleAmountChange}
                                             className="border border-gray-300 rounded-lg p-3 mb-4 w-full"
                                             placeholder="$"
                                         />
-
                                         {/* {amount && (
                                             <p className="text-sm text-[#334155] mb-4">
                                                 Represents:{" "}
@@ -1217,7 +1241,6 @@ const ListingDetails = ({ onClose }) => {
                                             className="border border-gray-300 rounded-lg p-3 mb-4 w-full"
                                             placeholder="$"
                                         />
-
                                         {/* {equipmentAmount && (
                                             <p className="text-sm text-[#334155] mb-4">
                                                 Represents:{" "}
