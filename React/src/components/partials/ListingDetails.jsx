@@ -321,9 +321,9 @@ const ListingDetails = ({ onClose }) => {
 
     const [showAuthModal, setShowAuthModal] = useState(false);
 
-    const handleUnlockClick = () => {
-        setShowAuthModal(true);
-    };
+    // const handleUnlockClick = () => {
+    //     setShowAuthModal(true);
+    // };
     const openPopup = () => setIsPopupOpen(true);
     const closePopup = () => setIsPopupOpen(false);
 
@@ -623,6 +623,21 @@ const ListingDetails = ({ onClose }) => {
             </div>
         );
     };
+   
+
+    // Unlock Logic below 
+        useEffect(() => {
+            const shouldOpenModal = localStorage.getItem("unlockToInvest");
+            if (shouldOpenModal === "1") {
+                localStorage.removeItem("unlockToInvest"); // Remove the flag to prevent reopening
+
+                handleOpen(); // Call the handleOpen function
+            }
+        }, []);
+        const handleUnlockClick = () => {
+            localStorage.setItem("unlockToInvest", "1"); // Set the flag in local storage
+            setIsModalOpen(true); // Open the modal
+        };
 
     return (
         <>
@@ -687,7 +702,10 @@ const ListingDetails = ({ onClose }) => {
                                         {(
                                             details.investment_needed || 0
                                         ).toLocaleString()}
-                                        <span className="text-sm"> / for {details.share}%</span>
+                                        <span className="text-sm">
+                                            {" "}
+                                            / for {details.share}%
+                                        </span>
                                     </p>
                                     <div className="flex items-center gap-2 text-sm">
                                         <span className="text-gray-500">|</span>
@@ -738,9 +756,10 @@ const ListingDetails = ({ onClose }) => {
                                             </p>
                                         ) : (
                                             <a
-                                                onClick={() =>
-                                                    setIsModalOpen(true)
-                                                }
+                                                // onClick={() =>
+                                                //     setIsModalOpen(true)
+                                                // }
+                                                onClick={handleUnlockClick}
                                                 className="bg-black hover:bg-gray-700 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
                                             >
                                                 <FontAwesomeIcon
