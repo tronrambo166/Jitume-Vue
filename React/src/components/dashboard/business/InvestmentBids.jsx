@@ -278,7 +278,7 @@ function InvestmentBids() {
 
     // Togle switch event here
     const [showInvestmentBids, setShowInvestmentBids] = useState(true);
-    const [showActiveBids, setShowActiveBids] = useState(true);
+    const [showActiveBids, setShowActiveBids] = useState(false);
     //const [showReviewBids, setShowReviewBids] = useState(true);
     const [showUnderVerification, setShowUnderVerification] = useState(false);
     // const toggleBids = () => {
