@@ -712,13 +712,26 @@ const ListingDetails = ({ onClose }) => {
                                         id="unlockButton"
                                     >
                                         {token && !conv ? (
-                                            <a
+                                            details.investment_needed 
+                                            == details.amount_collected?
+                                            (
+                                                <div className="w-full text-center p-4">
+                                                    <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
+                                                        Business Is Fully Invested
+                                                        In.
+                                                    </p>
+                                                </div>
+                                            ):(
+                                                <a
                                                 onClick={handleOpen}
                                                 className="bg-green hover:bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
-                                            >
+                                                >
                                                 <FaLock className="mr-2" />
                                                 Unlock To Invest
-                                            </a>
+                                                </a>
+                                            )
+ 
+
                                         ) : token && conv ? (
                                             <p className="text-dark bg-gray-100 mt-3 text-gray-700 px-5 rounded-lg shadow-md py-2 md:py-3">
                                                 Business Is Unlocked
@@ -960,6 +973,10 @@ const ListingDetails = ({ onClose }) => {
                 </div>
             </div>
 
+
+
+            {/*Small_fee POPUP*/}
+
             <div
                 className={`fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50 ${
                     !isVisible ? "hidden" : ""
@@ -1106,6 +1123,7 @@ const ListingDetails = ({ onClose }) => {
             </div>
 
             {/*Small_fee POPUP*/}
+
 
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
             <Popup isOpen={isPopupOpen} onClose={closePopup} />

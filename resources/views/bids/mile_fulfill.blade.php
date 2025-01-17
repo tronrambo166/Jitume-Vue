@@ -12,7 +12,7 @@
             <div class="content" style="padding: 30px 0px;">
                 <h4 style="font-size: 13px; line-height: 1.8; font-weight: 500; color: #000000a1; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: left;">
                     Hi,<br>
-                    A milestone for your business {{$business_name}} can now be fulfilled. You can start reviewing other bids as well.
+                    A milestone for your business {{$business_name}} can now be fulfilled. You can start reviewing/accepting bids as well.
                 </h4>
             </div>
             

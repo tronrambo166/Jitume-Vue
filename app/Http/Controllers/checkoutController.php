@@ -832,8 +832,10 @@ public function bidCommits(Request $request){
 
         if($mile1)
         if($total_bid_amount >= $mile1->amount){
-            $list = listing::where('id',$business_id)->first();
-            $owner = User::where('id',$list->user_id)->first();
+            listing::where('id',$business_id)->update(['threshold_met' => 1]);
+
+            $list = listing::select('id','user_id','name')->where('id',$business_id)->first();
+            $owner = User::select('id','email')->where('id',$list->user_id)->first();
             $info=[ 'business_name'=>$list->name ];
             $user['to'] = $owner->email; //'tottenham266@gmail.com'; //
              Mail::send('bids.mile_fulfill', $info, function($msg) use ($user){

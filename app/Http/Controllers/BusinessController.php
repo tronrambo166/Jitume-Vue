@@ -1089,6 +1089,7 @@ foreach($res as $r){
   if($business && $inv){
   $r->investor = $inv->fname.' '.$inv->lname;
   $r->business = $business->name;
+  $r->threshold = $business->threshold_met;
 
   //Investor details
   $r->investor_name = $inv->fname.' '.$inv->mname.' '.$inv->lname;
@@ -1097,6 +1098,7 @@ foreach($res as $r){
   $r->past_investment = $inv->past_investment;
   $r->website = $inv->website;
   $r->email = $inv->email;
+  $r->status = 'Pending';
   //Investor details
   $r->photos = explode(',',$r->photos);
   $bids[] = $r;
@@ -1113,15 +1115,19 @@ return response()->json(['bids' => $bids]);
  }
 }
 
-public function asset_bids()
+public function confirmed_bids()
 {
   if(Auth::check())
         $investor = User::where('id', Auth::id())->first();
 
   $res = AcceptedBids::where('owner_id', Auth::id())
-  ->where('type', 'Asset')->latest()->get();
+  ->where('status', 'Confirmed')->latest()->get();
+
+  $underVerify = AcceptedBids::where('owner_id', Auth::id())
+  ->where('status', 'under_verify')->latest()->get();
 
   $bids = array();
+  $under_verify = array();
   try{
   foreach($res as $r){
     $inv = User::where('id',$r->investor_id)->first();
@@ -1131,11 +1137,25 @@ public function asset_bids()
     $r->investor = $inv->fname.' '.$inv->lname;
     $r->business = $business->name;
     $r->email = $inv->email;
+    $r->photos = explode(',',$r->photos);
     $bids[] = $r;
     }
   } 
 
-return response()->json(['status'=>200, 'bids' => $bids]);
+  foreach($underVerify as $r){
+    $inv = User::where('id',$r->investor_id)->first();
+    $business = listing::where('id',$r->business_id)->first();
+
+    if($business && $inv){
+    $r->investor = $inv->fname.' '.$inv->lname;
+    $r->business = $business->name;
+    $r->email = $inv->email;
+    $r->photos = explode(',',$r->photos);
+    $under_verify[] = $r;
+    }
+  } 
+
+return response()->json(['status'=>200, 'bids' => $bids, 'underVerify' => $under_verify]);
 }
  catch(\Exception $e){
   Session::put('failed',$e->getMessage());

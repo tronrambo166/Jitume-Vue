@@ -6,7 +6,8 @@ import { FaCloudDownloadAlt } from "react-icons/fa";
 import { GrDocumentDownload } from "react-icons/gr";
 function InvestmentBids() {
     const [bids, setBids] = useState([]);
-    const [assetBids, setAssetBids] = useState([]);
+    const [underReview, setUnderReview] = useState([]);
+    const [activeBids, setActiveBids] = useState([]);
     const [selectedBids, setSelectedBids] = useState([]);
     const [modalContent, setModalContent] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -159,7 +160,7 @@ function InvestmentBids() {
                         </a>
                     </p>
                     <p>
-                        <strong>Email:</strong> viva.malan166@gmail.com
+                        <strong>Email:</strong> {bid.email}
                     </p>
                 </div>
             ),
@@ -249,12 +250,13 @@ function InvestmentBids() {
                 });
         };
 
-        const AssetBids = () => {
+        const ActiveBids = () => {
             axiosClient
-                .get("/business/asset_bids")
+                .get("/business/confirmed_bids")
                 .then(({ data }) => {
-                    setAssetBids(data.bids);
-                    console.log(data.bids);
+                    setActiveBids(data.bids || []);
+                    setUnderReview(data.underVerify || []);
+                    console.log(data);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -262,8 +264,8 @@ function InvestmentBids() {
         };
 
         PendingBids();
-        AssetBids();
-        console.log("asset", assetBids);
+        ActiveBids();
+        //console.log("asset", assetBids);
     }, []);
     const handleSelectAll = () => {
         if (selectAll) {
@@ -276,9 +278,31 @@ function InvestmentBids() {
 
     // Togle switch event here
     const [showInvestmentBids, setShowInvestmentBids] = useState(true);
-
+    const [showActiveBids, setShowActiveBids] = useState(true);
+    //const [showReviewBids, setShowReviewBids] = useState(true);
+    const [showUnderVerification, setShowUnderVerification] = useState(false);
+    // const toggleBids = () => {
+    //     setShowInvestmentBids(!showInvestmentBids);
+    // };
+    // const toggleActiveBids = () => {
+    //     setShowActiveBids(!showActiveBids);
+    // };
     const toggleBids = () => {
-        setShowInvestmentBids(!showInvestmentBids);
+        setShowInvestmentBids(true);
+        setShowActiveBids(false);
+        setShowUnderVerification(false);
+    };
+
+    const toggleActiveBids = () => {
+        setShowInvestmentBids(false);
+        setShowActiveBids(true);
+        setShowUnderVerification(false);
+    };
+
+    const toggleUnderVerification = () => {
+        setShowInvestmentBids(false);
+        setShowActiveBids(false);
+        setShowUnderVerification(true);
     };
 
     return (
@@ -296,21 +320,32 @@ function InvestmentBids() {
                             : "text-gray-500 border-transparent"
                     } transition-all`}
                 >
-                    Investment Bids
+                    Pending Bids
                 </h3>
 
                 <h3
-                    onClick={toggleBids}
+                    onClick={toggleActiveBids}
                     className={`text-lg font-semibold cursor-pointer border-b-2 ${
-                        !showInvestmentBids
+                        showActiveBids
                             ? "text-green border-green"
                             : "text-gray-500 border-transparent"
                     } transition-all`}
                 >
-                    Ongoing Asset Bids
+                    Active Bids
+                </h3>
+
+                <h3
+                    onClick={toggleUnderVerification}
+                    className={`text-lg font-semibold cursor-pointer border-b-2 ${
+                        showUnderVerification
+                            ? "text-green border-green"
+                            : "text-gray-500 border-transparent"
+                    } transition-all`}
+                >
+                    Under Verification
                 </h3>
             </div>
-            {showInvestmentBids ? (
+            {showInvestmentBids &&(
                 <div>
                     <div className="overflow-x-auto shadow-md sm:rounded-lg">
                         <table className="min-w-full bg-white">
@@ -337,6 +372,10 @@ function InvestmentBids() {
                                     <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
                                         Representation %
                                     </th>
+
+                                    <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                        Status
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -346,6 +385,7 @@ function InvestmentBids() {
                                         className="text-gray-500 hover:bg-gray-50 transition-colors"
                                     >
                                         <td className="py-3 px-4 border-b text-left">
+                                        {bid.threshold? ( 
                                             <input
                                                 type="checkbox"
                                                 checked={selectedBids.includes(
@@ -356,6 +396,8 @@ function InvestmentBids() {
                                                 }
                                                 className="form-checkbox h-4 w-4 text-green"
                                             />
+                                        ):(
+                                        <p className="text-pink-500 small"> !threshold</p>)}
                                         </td>
 
                                         <td className="py-3 px-4 border-b text-left">
@@ -399,6 +441,9 @@ function InvestmentBids() {
                                         <td className="py-3 px-4 border-b text-left">
                                             {bid.representation}%
                                         </td>
+                                        <td className="text-yellow-500 py-3 px-4 border-b text-left">
+                                            {bid.status}
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -440,7 +485,8 @@ function InvestmentBids() {
                         </button>
                     </div>
                 </div>
-            ) : (
+            )}
+            {showActiveBids &&  (
                 <div>
                     {" "}
                     {/* Asset Bids*/}
@@ -475,7 +521,7 @@ function InvestmentBids() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {assetBids.map((bid) => (
+                                {activeBids.map((bid) => (
                                     <tr
                                         key={bid.id}
                                         className="text-gray-500 hover:bg-gray-50 transition-colors"
@@ -486,7 +532,10 @@ function InvestmentBids() {
 
                                         {/* Investor Button */}
                                         <td className="py-3 px-4 border-b text-left">
-                                            <button className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors">
+                                            <button onClick={() =>
+                                                    handleInvestorDetails(bid)
+                                                }
+                                                className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors">
                                                 {bid.investor}
                                             </button>
                                         </td>
@@ -525,8 +574,91 @@ function InvestmentBids() {
                             </tbody>
                         </table>
                     </div>
+                </div>)}
+
+           {showUnderVerification &&
+                <div className="overflow-x-auto shadow-md sm:rounded-lg">
+                    <table className="min-w-full bg-white">
+                        <thead className="bg-gray-100 border-b">
+                            <tr className="text-gray-600 text-sm">
+                                <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                    Date
+                                </th>
+                                <th className="text-left py-3 px-8 uppercase font-semibold text-[12px]">
+                                    Investor
+                                </th>
+                                <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                    Business
+                                </th>
+                                <th className="py-3 px-8 text-left  uppercase font-semibold text-[12px]">
+                                    Type
+                                </th>
+                                <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                    Amount
+                                </th>
+                                <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                    Representation %
+                                </th>
+                                <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                    Status
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {underReview.map((bid) => (
+                                <tr
+                                    key={bid.id}
+                                    className="text-gray-500 hover:bg-gray-50 transition-colors"
+                                >
+                                    <td className="py-3 px-4 border-b text-left">
+                                        {bid.date}
+                                    </td>
+
+                                    {/* Investor Button */}
+                                    <td className="py-3 px-4 border-b text-left">
+                                        <button onClick={() =>
+                                                    handleInvestorDetails(bid)
+                                                }
+                                                className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors">
+                                            {bid.investor}
+                                        </button>
+                                    </td>
+
+                                    <td className="py-3 px-4 border-b text-left">
+                                        {bid.business}
+                                    </td>
+
+                                    {/* Type Button */}
+                                    <td className="py-3 px-4 border-b text-left">
+                                        <button
+                                            onClick={() =>
+                                                handleTypeDetails(bid)
+                                            }
+                                            className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors"
+                                        >
+                                            Equipment
+                                        </button>
+                                    </td>
+
+                                    <td className="py-3 px-4 border-b text-left">
+                                        ${bid.amount.toLocaleString()}
+                                    </td>
+
+                                    <td className="py-3 px-4 border-b text-left">
+                                        {bid.representation}%
+                                    </td>
+                                    <td className="px-4 py-2 text-sm">
+                                        <p className="uppercase text-pink-500 font-bold">
+                                            {" "}
+                                            {bid.status}{" "}
+                                        </p>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
-            )}
+            }
             {/* Asset Bids */}
             {/* Modal */}
             {isModalOpen && (
