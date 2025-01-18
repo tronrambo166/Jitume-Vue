@@ -25,21 +25,9 @@ const MyInvest = () => {
         getInvestments();
     }, []);
 
-    const openEditModal = (service) => {
-        setSelectedService(service); // Set the service being edited
-        setIsEditModalOpen(true); // Open the modal
-    };
-
-    const handleDelete = (id) => {
-        axiosClient
-            .get("/business/delete_service/" + id)
-            .then(() => {
-                setMyInvest(myInvest.filter((item) => item.id !== id));
-                showAlert("success", "Investment deleted successfully.");
-            })
-            .catch((err) => {
-                console.error(err);
-            });
+    // Cance logic here 
+    const handleCancel = (id) => {
+        alert("cancel", id);
     };
 
     // Define headers for ReusableTable
@@ -77,11 +65,21 @@ const MyInvest = () => {
             </p>
         ),
         action: (
-            <Link to={`/business-milestones/${btoa(btoa(item.id))}`}>
-                <button className="text-yellow-500 border border-green-500 rounded-lg py-1 px-3 text-xs">
-                    View milestones
+            <div className="flex space-x-2">
+                {/* View Milestones Button */}
+                <Link to={`/business-milestones/${btoa(btoa(item.id))}`}>
+                    <button className="text-yellow-500 border border-green-500 rounded-lg py-1 px-3 text-xs">
+                        View milestones
+                    </button>
+                </Link>
+                {/* Cancel Button */}
+                <button
+                    onClick={() => handleCancel(item.id)} // Replace with your cancel logic
+                    className="text-black border border-red-500 hover:bg-red-100 rounded-lg py-1 px-3 text-xs"
+                >
+                    Cancel
                 </button>
-            </Link>
+            </div>
         ),
     }));
 

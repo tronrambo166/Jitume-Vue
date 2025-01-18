@@ -4,6 +4,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useAlert } from "../../partials/AlertContext";
 import { FaCloudDownloadAlt } from "react-icons/fa";
 import { GrDocumentDownload } from "react-icons/gr";
+import TujitumeLogo from "../../../images/Tujitumelogo.svg";
 function InvestmentBids() {
     const [bids, setBids] = useState([]);
     const [underReview, setUnderReview] = useState([]);
@@ -26,9 +27,37 @@ function InvestmentBids() {
         setSelectedImage(null);
         setIsImageModalOpen(false);
     };
+
     const AcceptBids = (reject) => (e) => {
         e.preventDefault();
 
+        // Show confirmation dialog when rejecting
+        if (reject !== 0) {
+            $.confirm({
+                title: false, // Remove the default title to have full control over placement
+                content: `
+                    <div style="display: flex; align-items: center;">
+                        <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
+                    </div>
+                    <p>Are you sure you want to reject this bid?</p>
+                `,
+                buttons: {
+                    confirm: function () {
+                        handleBidAction(reject); // Proceed to reject if confirmed
+                    },
+                    cancel: function () {
+                        $.alert("You have canceled"); // Alert if canceled
+                    },
+                },
+            });
+
+        } else {
+            handleBidAction(reject); // Directly accept without confirmation
+        }
+    };
+
+    // Helper function to handle bid actions
+    const handleBidAction = (reject) => {
         // Set loading states based on the action
         if (reject === 0) {
             setLoadingAccept(true);
@@ -345,7 +374,7 @@ function InvestmentBids() {
                     Under Verification
                 </h3>
             </div>
-            {showInvestmentBids &&(
+            {showInvestmentBids && (
                 <div>
                     <div className="overflow-x-auto shadow-md sm:rounded-lg">
                         <table className="min-w-full bg-white">
@@ -385,19 +414,25 @@ function InvestmentBids() {
                                         className="text-gray-500 hover:bg-gray-50 transition-colors"
                                     >
                                         <td className="py-3 px-4 border-b text-left">
-                                        {bid.threshold? ( 
-                                            <input
-                                                type="checkbox"
-                                                checked={selectedBids.includes(
-                                                    bid.id
-                                                )}
-                                                onChange={() =>
-                                                    handleCheckboxChange(bid.id)
-                                                }
-                                                className="form-checkbox h-4 w-4 text-green"
-                                            />
-                                        ):(
-                                        <p className="text-pink-500 small"> !threshold</p>)}
+                                            {bid.threshold ? (
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedBids.includes(
+                                                        bid.id
+                                                    )}
+                                                    onChange={() =>
+                                                        handleCheckboxChange(
+                                                            bid.id
+                                                        )
+                                                    }
+                                                    className="form-checkbox h-4 w-4 text-green"
+                                                />
+                                            ) : (
+                                                <p className="text-pink-500 small">
+                                                    {" "}
+                                                    !threshold
+                                                </p>
+                                            )}
                                         </td>
 
                                         <td className="py-3 px-4 border-b text-left">
@@ -486,7 +521,7 @@ function InvestmentBids() {
                     </div>
                 </div>
             )}
-            {showActiveBids &&  (
+            {showActiveBids && (
                 <div>
                     {" "}
                     {/* Asset Bids*/}
@@ -532,10 +567,12 @@ function InvestmentBids() {
 
                                         {/* Investor Button */}
                                         <td className="py-3 px-4 border-b text-left">
-                                            <button onClick={() =>
+                                            <button
+                                                onClick={() =>
                                                     handleInvestorDetails(bid)
                                                 }
-                                                className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors">
+                                                className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors"
+                                            >
                                                 {bid.investor}
                                             </button>
                                         </td>
@@ -552,7 +589,9 @@ function InvestmentBids() {
                                                 }
                                                 className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors"
                                             >
-                                                {bid.type=='Asset'? 'Equipment':bid.type}
+                                                {bid.type == "Asset"
+                                                    ? "Equipment"
+                                                    : bid.type}
                                             </button>
                                         </td>
 
@@ -574,9 +613,9 @@ function InvestmentBids() {
                             </tbody>
                         </table>
                     </div>
-                </div>)}
-
-           {showUnderVerification &&
+                </div>
+            )}
+            {showUnderVerification && (
                 <div className="overflow-x-auto shadow-md sm:rounded-lg">
                     <table className="min-w-full bg-white">
                         <thead className="bg-gray-100 border-b">
@@ -616,10 +655,12 @@ function InvestmentBids() {
 
                                     {/* Investor Button */}
                                     <td className="py-3 px-4 border-b text-left">
-                                        <button onClick={() =>
-                                                    handleInvestorDetails(bid)
-                                                }
-                                                className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors">
+                                        <button
+                                            onClick={() =>
+                                                handleInvestorDetails(bid)
+                                            }
+                                            className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors"
+                                        >
                                             {bid.investor}
                                         </button>
                                     </td>
@@ -658,7 +699,7 @@ function InvestmentBids() {
                         </tbody>
                     </table>
                 </div>
-            }
+            )}
             {/* Asset Bids */}
             {/* Modal */}
             {isModalOpen && (
