@@ -7,9 +7,9 @@ import { ClipLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BackBtn from "./BackBtn";
-import PaystackPop from '@paystack/inline-js'
-import Paystack from '@paystack/inline-js'
-import PaymentHero from '../Heros/PaymentHero';
+import PaystackPop from "@paystack/inline-js";
+import Paystack from "@paystack/inline-js";
+import PaymentHero from "../Heros/PaymentHero";
 import { useStateContext } from "../../contexts/contextProvider";
 import { useLocation } from "react-router-dom";
 
@@ -106,24 +106,39 @@ const PaymentForm = () => {
     });
     //Stripe CARD Method Code
 
+    // Function to get the cancellation date
+    const getCancellationDate = () => {
+        const today = new Date();
+        today.setDate(today.getDate() + 7); // Add 7 days
 
-// GETTING Parameters
-//let { amount } = useParams();
-//let { purpose } = useParams();
-//const { listing_id } = useParams();
-const { amount } = location.state || { amount: 0 };
-const { listing_id } = location.state || { listing_id: 0 };
-const { purpose } = location.state || { purpose: btoa(1) };
-const { percent } = location.state || { percent: btoa(1) };
-console.log(percent);
-    
+        // Format the date as 'DD MMM YYYY'
+        const day = today.getDate().toString().padStart(2, "0"); // Add leading zero for single digits
+        const month = today.toLocaleString("default", { month: "short" }); // Get short month name
+        const year = today.getFullYear();
+
+        return `${day} ${month} ${year}`;
+    };
+
+    const cancellationDate = getCancellationDate();
+    // Function to get the cancellation date
+
+    // GETTING Parameters
+    //let { amount } = useParams();
+    //let { purpose } = useParams();
+    //const { listing_id } = useParams();
+    const { amount } = location.state || { amount: 0 };
+    const { listing_id } = location.state || { listing_id: 0 };
+    const { purpose } = location.state || { purpose: btoa(1) };
+    const { percent } = location.state || { percent: btoa(1) };
+    console.log(percent);
+
     const purpos = base64_decode(purpose);
     var p = "";
     if (purpos === "bids") p = "Investment To Business";
     else if (purpos === "s_mile") p = "Pay Service milestone";
     else p = "Small Fee To Unlock Business";
     const amount_real = base64_decode(amount);
-// GETTING Parameters
+    // GETTING Parameters
 
     const [showModal, setShowModal] = useState(false);
     const [paystackRef, setPaystackRef] = useState(null);
@@ -135,7 +150,7 @@ console.log(percent);
         setTimeout(() => {
             const payload = {
                 listing: atob(listing_id),
-                percent: percent?atob(percent):0,
+                percent: percent ? atob(percent) : 0,
                 package: $("#package").val(),
                 amount: $("#amount").val(),
                 amountOriginal: amount_real,
@@ -177,9 +192,10 @@ console.log(percent);
                     .post("/bidCommits", payload)
                     .then(({ data }) => {
                         if (data.status == 200) {
-                                $.confirm({
+                            $.confirm({
                                 title: "Payment Successful",
-                                content: "Go to Dashboard to see investment status.",
+                                content:
+                                    "Go to Dashboard to see investment status.",
                                 buttons: {
                                     yes: function () {
                                         navigate("/dashboard");
@@ -199,14 +215,15 @@ console.log(percent);
                     })
                     .catch((err) => {
                         console.log(err);
-                        setLoading(false); 
+                        setLoading(false);
                         const response = err.response;
                         showErrorToast(response.data.message);
                         if (response && response.status === 422) {
                             console.log(response.data.errors);
                             showErrorToast(response.data.errors);
                         }
-                    }).finally(() => {
+                    })
+                    .finally(() => {
                         setLoading(false); // Stop loading spinner
                     });
             } else {
@@ -225,7 +242,10 @@ console.log(percent);
                                 content: "Go to Milestone page to see status.",
                                 buttons: {
                                     yes: function () {
-                                        navigate("/service-milestones/"+ data.service_id);
+                                        navigate(
+                                            "/service-milestones/" +
+                                                data.service_id
+                                        );
                                     },
                                     home: function () {
                                         navigate("/");
@@ -245,7 +265,8 @@ console.log(percent);
                         if (response && response.status === 422) {
                             console.log(response.data.errors);
                         }
-                    }).finally(() => {
+                    })
+                    .finally(() => {
                         setLoading(false); // Stop loading spinner
                     });
             }
@@ -255,104 +276,114 @@ console.log(percent);
         //timeout
     };
 
-
     //OTHER PAYMENTS
     let partiesInfo;
     const [user, setUser] = useState({});
     const [owner, setOwner] = useState({});
-    
-    if(purpos == 's_mile')
-         partiesInfo ='/partiesServiceMile/';
-    else partiesInfo ='/partiesInfo/';
-    useEffect(() => {
-        $('.card-number').mask("9999 9999 9999 9999");
-        axiosClient.get(partiesInfo + atob(listing_id))
-            .then(({ data }) => {
-                setUser(data.user);
-                setOwner(data.owner);
-                 //console.log(owner);
-                 //console.log(data);
 
-            });
+    if (purpos == "s_mile") partiesInfo = "/partiesServiceMile/";
+    else partiesInfo = "/partiesInfo/";
+    useEffect(() => {
+        $(".card-number").mask("9999 9999 9999 9999");
+        axiosClient.get(partiesInfo + atob(listing_id)).then(({ data }) => {
+            setUser(data.user);
+            setOwner(data.owner);
+            //console.log(owner);
+            //console.log(data);
+        });
     }, []);
 
-//MPESA
+    //MPESA
     const MpesaInit = () => {
-        const usdToKen = 100*128.5;
+        const usdToKen = 100 * 128.5;
 
-        const business_id= atob(listing_id);
+        const business_id = atob(listing_id);
         //const share= atob(percent);
-        const amountKFront= (parseFloat(price)*usdToKen).toFixed();
-        const amountReal= amount_real;
+        const amountKFront = (parseFloat(price) * usdToKen).toFixed();
+        const amountReal = amount_real;
         const purpose = purpos;
         //const subaccount = owner.paystack_acc_id;//'ACCT_n9mpmg5jdy7nit2';
         //const JitumeAmount  = ((price - parseFloat(amount_real))*usdToKen).toFixed();
         //const packages = $("#package").val();
 
         setTimeout(() => {
-        if (purpos == "bids") {
+            if (purpos == "bids") {
                 axiosClient
                     .get("/mpesaStk")
-                    .then(( data ) => {
+                    .then((data) => {
                         console.log(data);
                         if (data.status == 200) {
                             //navigate("/");
                         }
-                        if (data.status == 400)
-                            showErrorToast(data.message);
+                        if (data.status == 400) showErrorToast(data.message);
                     })
                     .catch((err) => {
                         console.log(err);
                     });
-
-        } 
-        else if (purpos === "small_fee"){
-              
-                
+            } else if (purpos === "small_fee") {
                 axiosClient
-                .get("/paystackVerifySmallFee/"+packages+"/"+business_id+"/"
-                    +amountKFront+"/"+amountReal+"/"+ref)
-                .then(({data}) => {
-                    console.log(data);
-                    if (data.status == 200)
-                    setTimeout(() => {
+                    .get(
+                        "/paystackVerifySmallFee/" +
+                            packages +
+                            "/" +
+                            business_id +
+                            "/" +
+                            amountKFront +
+                            "/" +
+                            amountReal +
+                            "/" +
+                            ref
+                    )
+                    .then(({ data }) => {
+                        console.log(data);
+                        if (data.status == 200)
+                            setTimeout(() => {
                                 navigate("/listing/" + btoa(listing_id));
                             }, 2000);
-                    else
-                    showErrorToast(data.message);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
-
-        else{
-              const true_mile_id = owner.true_mile_id;  
+                        else showErrorToast(data.message);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            } else {
+                const true_mile_id = owner.true_mile_id;
                 axiosClient
-                .get("/paystackVerifyService/"+true_mile_id+"/"+business_id+"/"
-                    +amountKFront+"/"+amountReal+"/"+ref)
-                .then(({data}) => {
-                    console.log(data);                    
-                    if (data.status == 200) {
+                    .get(
+                        "/paystackVerifyService/" +
+                            true_mile_id +
+                            "/" +
+                            business_id +
+                            "/" +
+                            amountKFront +
+                            "/" +
+                            amountReal +
+                            "/" +
+                            ref
+                    )
+                    .then(({ data }) => {
+                        console.log(data);
+                        if (data.status == 200) {
                             showSuccessToast(data.message);
-                            navigate("/service-milestones/" + btoa(btao(data.service_id)));
-                        }
-                    else
-                    showErrorToast(data.message);
-                })
-                .catch((err) => {
-                    console.log (err);
-                });
-        }
-        //Timeout Ends below
-        }, 500)
-
-    }
-//MPESA
+                            navigate(
+                                "/service-milestones/" +
+                                    btoa(btao(data.service_id))
+                            );
+                        } else showErrorToast(data.message);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }
+            //Timeout Ends below
+        }, 500);
+    };
+    //MPESA
 
     const bankSubmit = (event) => {
         event.preventDefault();
-        setLoading(true); alert('bank'); return;
+        setLoading(true);
+        alert("bank");
+        return;
         setTimeout(() => {
             const payload = {
                 listing: atob(listing_id),
@@ -363,20 +394,21 @@ console.log(percent);
                 stripeToken: $("#stripeToken").val(),
             };
             //console.log(payload);
-                axiosClient
-                    .post("/stripe.post.coversation", payload)
-                    .then(({ data }) => {
-                        console.log(data);
-                        if (data.status === 200) { }
-                    });
-                }, 1000); 
+            axiosClient
+                .post("/stripe.post.coversation", payload)
+                .then(({ data }) => {
+                    console.log(data);
+                    if (data.status === 200) {
+                    }
+                });
+        }, 1000);
     };
-
-
 
     const paypalSubmit = (event) => {
         event.preventDefault();
-        setLoading(true); alert('paypal'); return;
+        setLoading(true);
+        alert("paypal");
+        return;
         setTimeout(() => {
             const payload = {
                 listing: atob(listing_id),
@@ -387,14 +419,15 @@ console.log(percent);
                 stripeToken: $("#stripeToken").val(),
             };
             //console.log(payload);
-                axiosClient
-                    .post("/stripe.post.coversation", payload)
-                    .then(({ data }) => {
-                        console.log(data);
-                        if (data.status === 200) { }
-                    });
-                }, 1000); 
-    }
+            axiosClient
+                .post("/stripe.post.coversation", payload)
+                .then(({ data }) => {
+                    console.log(data);
+                    if (data.status === 200) {
+                    }
+                });
+        }, 1000);
+    };
     //OTHER PAYMENTS
 
     const popupClose = () => {
@@ -506,53 +539,65 @@ console.log(percent);
                                     </label>
 
                                     <div className="flex jakarta space-x-4">
-                                        {["card", "paypal"].map(
-                                            (method) => (
-                                                <label
-                                                    key={method}
-                                                    className="flex items-center cursor-pointer"
+                                        {["card", "paypal"].map((method) => (
+                                            <label
+                                                key={method}
+                                                className="flex items-center cursor-pointer"
+                                            >
+                                                <div
+                                                    className={`relative flex items-center justify-center h-5 w-5 border rounded-full ${
+                                                        selectedPayment ===
+                                                        method
+                                                            ? "border-green-500 bg-white border-2"
+                                                            : "border-gray-300"
+                                                    }`}
+                                                    onClick={() =>
+                                                        setSelectedPayment(
+                                                            method
+                                                        )
+                                                    }
                                                 >
-                                                    <div
-                                                        className={`relative flex items-center justify-center h-5 w-5 border rounded-full ${
-                                                            selectedPayment ===
-                                                            method
-                                                                ? "border-green-500 bg-white border-2"
-                                                                : "border-gray-300"
-                                                        }`}
-                                                        onClick={() =>
-                                                            setSelectedPayment(
-                                                                method
-                                                            )
-                                                        }
-                                                    >
-                                                        {selectedPayment ===
-                                                            method && (
-                                                            <div className="h-2 w-2 bg-green-500 rounded-full" />
-                                                        )}
-                                                    </div>
-                                                    <span
-                                                        className={`ml-2 text-[13px] ${
-                                                            selectedPayment ===
-                                                            method
-                                                                ? "text-black"
-                                                                : "text-[#ACACAC]"
-                                                        }`}
-                                                    >
-                                                        {method
-                                                            .charAt(0)
-                                                            .toUpperCase() +
-                                                            method.slice(1)}
-                                                    </span>
-
-                                                    
-                                                </label>
-                                            )
-                                        )} &nbsp;&nbsp; <span className="mt-3">or Pay With &nbsp; </span>
-
-                                        <a onClick={MpesaInit} style={{maxHeight: '45px', cursor:'pointer'}} className="grid grid-rows-3 grid-flow-col gap-2 bg-neutral-300 p-3 rounded text-[#041a31f0] font-bold">
-                                        <img clasName="rounded row-start-1 row" src="../../../../src/images/randomIcons/mpesa.png" />
-                                        <span className="row-start-1 row"> Mpesa </span>   </a>
-
+                                                    {selectedPayment ===
+                                                        method && (
+                                                        <div className="h-2 w-2 bg-green-500 rounded-full" />
+                                                    )}
+                                                </div>
+                                                <span
+                                                    className={`ml-2 text-[13px] ${
+                                                        selectedPayment ===
+                                                        method
+                                                            ? "text-black"
+                                                            : "text-[#ACACAC]"
+                                                    }`}
+                                                >
+                                                    {method
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                        method.slice(1)}
+                                                </span>
+                                            </label>
+                                        ))}{" "}
+                                        &nbsp;&nbsp;{" "}
+                                        <span className="mt-3">
+                                            or Pay With &nbsp;{" "}
+                                        </span>
+                                        <a
+                                            onClick={MpesaInit}
+                                            style={{
+                                                maxHeight: "45px",
+                                                cursor: "pointer",
+                                            }}
+                                            className="grid grid-rows-3 grid-flow-col gap-2 bg-neutral-300 p-3 rounded text-[#041a31f0] font-bold"
+                                        >
+                                            <img
+                                                clasName="rounded row-start-1 row"
+                                                src="../../../../src/images/randomIcons/mpesa.png"
+                                            />
+                                            <span className="row-start-1 row">
+                                                {" "}
+                                                Mpesa{" "}
+                                            </span>{" "}
+                                        </a>
                                     </div>
 
                                     {/* Conditional Rendering for Card Payment */}
@@ -653,11 +698,9 @@ console.log(percent);
 
                                     {/* Conditional Rendering for Paypal Payment */}
                                     {selectedPayment === "paypal" && (
-                                        <div className="space-y-4">
-                                        </div>
+                                        <div className="space-y-4"></div>
                                     )}
 
-                                  
                                     <div className="flex items-center jakarta py-6 text-[#ACACAC]">
                                         <input
                                             type="checkbox"
@@ -683,29 +726,31 @@ console.log(percent);
                                     </div>
 
                                     <div className="mt-6 w-full sm:w-[480px] text-center">
-                                    {selectedPayment === "paypal"? (
-                                        <button type=""
-                                        className="w-full py-2 my-4 text-white btn-primary rounded focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50" >
-                                        <a href="http://127.0.0.1:8000/paypal-payment">Continue to PayPal</a>
-                                        </button>
-
-                                        ):(
-                                        <button
-                                            type="submit"
-                                            className="w-full py-2 my-4 text-white btn-primary rounded focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50"
-                                            disabled={loading}
-                                        >
-                                            {loading ? (
-                                                <ClipLoader
-                                                    color="#ffffff"
-                                                    size={20}
-                                                />
-                                            ) : (
-                                                "Submit Payment"
-                                            )}
-                                        </button>
-                                    )}
-                                        
+                                        {selectedPayment === "paypal" ? (
+                                            <button
+                                                type=""
+                                                className="w-full py-2 my-4 text-white btn-primary rounded focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50"
+                                            >
+                                                <a href="http://127.0.0.1:8000/paypal-payment">
+                                                    Continue to PayPal
+                                                </a>
+                                            </button>
+                                        ) : (
+                                            <button
+                                                type="submit"
+                                                className="w-full py-2 my-4 text-white btn-primary rounded focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50"
+                                                disabled={loading}
+                                            >
+                                                {loading ? (
+                                                    <ClipLoader
+                                                        color="#ffffff"
+                                                        size={20}
+                                                    />
+                                                ) : (
+                                                    "Submit Payment"
+                                                )}
+                                            </button>
+                                        )}
                                     </div>
 
                                     <div>
@@ -723,7 +768,8 @@ console.log(percent);
                             <div className=" px-[100px] border  px-8 py-[70px] flex gap-4 flex-col">
                                 <div className="purpose ">
                                     <h2 className="ml-1 mb-2 text-xl text-[#0A0D13] font-bold mb-1">
-                                        Purpose - <span className="font-light">{p}</span>
+                                        Purpose -{" "}
+                                        <span className="font-light">{p}</span>
                                     </h2>
                                     <div className="bg-[#FFC107] jakarta rounded-lg p-3">
                                         <h2 className="font-bold">
@@ -772,7 +818,8 @@ console.log(percent);
                                             Total:
                                         </h2>
                                         <h3 className="text-gray-400 text-sm">
-                                            After trial ends on 06 Nov, 2024
+                                            After trial ends on{" "}
+                                            {cancellationDate}
                                         </h3>
                                         <input
                                             id="amount"
@@ -817,8 +864,8 @@ console.log(percent);
                                             </span>
                                         </div>
                                         <span className="text-[#334155]">
-                                            Cancel before 06 Nov to avoid
-                                            getting billed
+                                            Cancel before {cancellationDate} to
+                                            avoid getting billed
                                         </span>
                                     </div>
                                     <div class="flex items-center">

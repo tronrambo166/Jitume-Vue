@@ -49,7 +49,7 @@ const MyInvest = () => {
         "Value Needed",
         "Contact",
         "Amount",
-        "Business Share",
+        "Business Share Request",
         "My Share",
         "Total Shares",
         "Status",
@@ -63,7 +63,7 @@ const MyInvest = () => {
         "value needed": item.investment_needed,
         contact: item.contact,
         amount: item.amount,
-        "business share": `${item.share}%`,
+        "business share request": `${item.share}%`,
         "my share": `${item.myShare.toFixed()}%`,
         "total shares": (
             <p className="text-green-500 font-bold text-center">
