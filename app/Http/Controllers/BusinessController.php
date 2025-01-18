@@ -137,6 +137,7 @@ $results = []; $t_share = 0;
         $my_listing->myShare = (float)$share->representation;
         $my_listing->amount =$share->amount;
         $my_listing->status = $share->status;
+        $my_listing->bid_id = $share->id;
         $results[] = $my_listing;
       }
     }
@@ -147,6 +148,7 @@ $results = []; $t_share = 0;
         $my_listing->myShare = (float)$share->representation;
         $my_listing->amount =$share->amount;
         $my_listing->status = 'Pending';
+        $my_listing->bid_id = $share->id;
         $results[] = $my_listing;
       }
     }
@@ -942,140 +944,60 @@ catch(\Exception $e){
 //Milestones::where('id',$next_mile->id)->update(['status' => 'In Progress' ]);
 }
 
-
-public function up_milestone(Request $request){
-$title = $request->title;
-$contact = $request->contact;
-$category = $request->category;
-$details = $request->details;
-$location = $request->location;
-$investment_needed = $request->investment_needed;
-$share = $request->share;
-//$contact_mail = $request->contact_mail;
-$user_id = Auth::id();
-$id = $request->id;
-
- $image=$request->file('image');
- if($image) {
-          $uniqid=hexdec(uniqid());
-          $ext=strtolower($image->getClientOriginalExtension());
-          $create_name=$uniqid.'.'.$ext;
-          $loc='images/listing/';
-          //Move uploaded file
-          $image->move($loc, $create_name);
-          $final_img=$this->api_base_url.$loc.$create_name;
-          Milestones::where('id',$id)->update(['image' => $final_img ]); 
-             }
-
-Milestones::where('id',$id)->update([
-            'name' => $title,
-            'contact' => $contact,
-            'category' => $category,
-            'details' => $details,
-            'location' => $location,
-            'investment_needed' => $investment_needed,
-            'share' => $share     
-           ]);       
-
-        Session::put('success','Business Updated!');
-        return redirect()->back();
-
-}
-
-public function milestoneCommits($amount,$business_id,$percent){
-  try{
-
-   if(Auth::check())
-        $investor_id = Auth::id();
-    else {
-        if(Session::has('investor_email')){   
-        $mail = Session::get('investor_email');
-        $investor = User::where('email',$mail)->first();
-        $investor_id = $investor->id;
-      }
-    }
-
-    $type = 'Monetary';
-    $bids = BusinessBids::create([
-      'date' => date('Y-m-d'),
-      'investor_id' => $investor_id,
-      'business_id' => $business_id,
-      'type' => $type,
-      'amount' => $amount,
-      'representation' => $percent
-    ]);
-
-if($bids)
-  return response()->json(['success' => 'Success!']);
-}
-
-catch(\Exception $e){
-  return response()->json(['failed' =>  $e->getMessage()]);
-}
-
-}
-
-
 //END MILESTONES
+
 public function remove_bids($id){
   $bid = BusinessBids::where('id',$id)->first();
+  $owner = User::select('id','fname','lname','email')->where('id',$bid->owner_id)->first();
+  $investor = User::select('fname','lname')->where('id',$bid->investor_id)->first();
+  $inv_name = $investor->fname.' '.$investor->lname;
 
 try {
   //Refund
+  if($bid->type == 'Monetary')
          $this->Client->refunds->create(['charge' => $bid->stripe_charge_id ]);
+  else{
+    //remove document
+    if($bid->legal_doc) unlink($bid->legal_doc);
+    if($bid->optional_doc) unlink($bid->optional_doc);
+    if($bid->photos) unlink($bid->photos);
+  }
   //Refund
          
-  $bid_remove = BusinessBids::where('id',$id)->delete();       
-  Session::put('success','Removed!');
-  return redirect()->back();
+  $bid_remove = BusinessBids::where('id',$id)->delete();
+  //Notifications
+         $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+         $addNoti = Notifications::create([
+            'date' => $date,
+            'receiver_id' => $owner->id,
+            'customer_id' => $bid->investor_id,
+            'text' => 'A bid to business _name was cancelled by '.$inv_name,
+            'link' => 'investment-bids',
+            'type' => 'business',
+          ]);
+  //Notifications
+
+  //Email
+         $list = listing::select('name')->where('id',$bid->business_id)->first();
+         $info=[ 'business_name'=>$list->name, 'investor' => $inv_name ];
+         $user['to'] = $owner->email; //'tottenham266@gmail.com'; //
+         
+         if($owner)
+            Mail::send('bids.cancelled', $info, function($msg) use ($user){
+             $msg->to($user['to']);
+             $msg->subject('Bid Cancelled!');
+         });
+  //Email
+
+  return response()->json(['status'=>200, 'message' => 'Bid removed & refund initiated!']);
   }
  catch(\Exception $e){
-  Session::put('failed',$e->getMessage());
-  return redirect()->back();
+  return response()->json(['status'=>400, 'message' => $e->getMessage()]);
  }
 
 }
 
-public function my_bids(){
-  if(Auth::check())
-      $investor = User::where('id', Auth::id())->first();
-  else {
-      if(Session::has('investor_email')){   
-      $mail = Session::get('investor_email');
-      $investor = User::where('email',$mail)->first();
-    }
-  }
 
-$res = BusinessBids::where('investor_id',Auth::id())->get();
-$bids = array();
-try{
-foreach($res as $r){
-  $inv = User::where('id',$r->investor_id)->first();
-  $business = listing::where('id',$r->business_id)->first();
-
-  if($business && $inv){
-  $r->investor = $inv->fname.' '.$inv->lname;
-  $r->business = $business->name;
-
-  //Business details
-  $r->category = $business->category;
-  $r->details = $business->details;
-  $r->location = $business->location;
-  $r->share = $business->share;
-  $r->investment_needed = $business->investment_needed;
-  //Business details
-  //$r->photos = explode(',',$r->photos);
-  
-  $bids[] = $r;
-  }
-} 
-return view('business.investor_bids',compact('bids'));
-}
- catch(\Exception $e){
-  Session::put('failed',$e->getMessage());
-  return redirect()->back();
- }
-}
 
 public function business_bids(){
   if(Auth::check())

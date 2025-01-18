@@ -4,6 +4,7 @@ import axiosClient from "../../../axiosClient";
 import { useAlert } from "../../partials/AlertContext";
 import ReusableTable from "../business/ReusableTable";
 import { FaChartLine } from "react-icons/fa";
+import TujitumeLogo from "../../../images/Tujitumelogo.svg";
 
 const MyInvest = () => {
     const [myInvest, setMyInvest] = useState([]);
@@ -27,7 +28,37 @@ const MyInvest = () => {
 
     // Cance logic here 
     const handleCancel = (id) => {
-        alert("cancel", id);
+        $.confirm({
+                title: false, // Remove the default title to have full control over placement
+                content: `
+                    <div style="display: flex; align-items: center;">
+                        <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
+                    </div>
+                    <p>Are you sure you want to cancel this bid?</p>
+                `,
+                buttons: {
+                    confirm: function () {
+                        axiosClient
+                        .get("business/remove_bids/"+ id)
+                        .then(({ data }) => {
+                            console.log(data); // Log response data
+                            if(data.status == 200)
+                                showAlert("success", data.message);
+                            else
+                                showAlert("success", data.message);
+
+                        })
+                        .catch((err) => {
+                            const response = err.response;
+                            console.log(response)
+                        })
+                        ;
+                    },
+                    cancel: function () {
+                        $.alert("You have canceled"); // Alert if canceled
+                    },
+                },
+            });
     };
 
     // Define headers for ReusableTable
@@ -73,12 +104,14 @@ const MyInvest = () => {
                     </button>
                 </Link>
                 {/* Cancel Button */}
+                {item.status =='Pending' &&
                 <button
-                    onClick={() => handleCancel(item.id)} // Replace with your cancel logic
+                    onClick={() => handleCancel(item.bid_id)} // Replace with your cancel logic
                     className="text-black border border-red-500 hover:bg-red-100 rounded-lg py-1 px-3 text-xs"
                 >
                     Cancel
                 </button>
+                }
             </div>
         ),
     }));

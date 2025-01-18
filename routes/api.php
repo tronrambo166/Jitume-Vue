@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->group(function() {
     // --- MIDDLEWARE 
     //Route::group(['middleware'=>['auth']], function(){ 
     // <--milestones-->
-    Route::get('milestoneCommitsEQP/{ids}', [BusinessController::class, 'milestoneCommitsEQP'])->name('milestoneCommitsEQP');
+ 
     Route::get('download_milestoneDoc/{id}/{mile_id}', [BusinessController::class, 'download_milestone_doc'])->name('download_milestoneDoc');
     Route::get('download_milestoneDocS/{id}/{mile_id}', [ServiceController::class, 'download_milestone_doc'])->name('download_milestoneDocS');
     Route::get('download_bids_doc/{id}', [BusinessController::class, 'download_bids_doc'])->name('download_bids_doc');
@@ -121,7 +121,7 @@ Route::get('add_milestones', [BusinessController::class, 'add_milestones'])->nam
 Route::get('activate_milestone/{id}', [BusinessController::class, 'activate_milestone'])->name('activate_milestone');
 Route::get('bBQhdsfE_WWe4Q-_f7ieh7Hdhf7E_-{id}', [BusinessController::class, 'milestones'])->name('milestones');
 Route::post('save_milestone', [BusinessController::class, 'save_milestone'])->name('save_milestone');
-Route::post('up_milestones', [BusinessController::class, 'up_milestone'])->name('up_milestones');
+
 Route::get('delete_milestone/{id}', [BusinessController::class, 'delete_milestone'])->name('delete_milestone');
 Route::get('bBQhdsfE_WWe4Q-_f7ieh7Hdhf_E_', [BusinessController::class, 'applyForShow'])->name('applyForShow');
 Route::post('mile_status', [BusinessController::class, 'mile_status'])->name('mile_status');
