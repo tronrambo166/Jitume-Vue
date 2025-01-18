@@ -459,10 +459,10 @@ public function  bidCommitsEQP(Request $request){
     foreach($this_bids as $b)
     $total_bid_amount = $total_bid_amount+($b->amount);
 
-    if($total_bid_amount >= $mile1->amount){
+    $list = listing::select('id','user_id','name')->where('id',$business_id)->first();
+    if($total_bid_amount >= $mile1->amount && !$list->threshold_met){
         listing::where('id',$business_id)->update(['threshold_met' => 1]);
 
-        $list = listing::select('id','user_id','name')->where('id',$business_id)->first();
         $owner = User::select('id','email')->where('id',$list->user_id)->first();
         $info=[ 'business_name'=>$list->name ];
         $user['to'] = $owner->email; //'tottenham266@gmail.com'; //$owner->email;

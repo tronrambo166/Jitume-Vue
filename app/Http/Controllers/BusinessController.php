@@ -123,15 +123,16 @@ else $investor = false;
 
 $results = []; $t_share = 0;
 //if ($investor_ck->investor == 1) {
-  $convs = Conversation::where('investor_id',Auth::id())->get();
-  foreach($convs as $conv){
+  //$convs = Conversation::where('investor_id',Auth::id())->get();
+  //foreach($convs as $conv){
+
       $pending = BusinessBids::where('investor_id',Auth::id())
-      ->where('business_id',$conv->listing_id)->latest()->get();
+      ->latest()->get();
 
       $miles = AcceptedBids::where('investor_id',Auth::id())
-      ->where('business_id',$conv->listing_id)->latest()->get();
+      ->latest()->get();
       foreach($miles as $share){
-        $my_listing =listing::where('id',$conv->listing_id)->first();
+        $my_listing =listing::where('id',$share->business_id)->first();
         if($my_listing){
         $my_listing->myShare = (float)$share->representation;
         $my_listing->amount =$share->amount;
@@ -141,7 +142,7 @@ $results = []; $t_share = 0;
     }
 
     foreach($pending as $share){
-        $my_listing =listing::where('id',$conv->listing_id)->first();
+        $my_listing =listing::where('id',$share->business_id)->first();
         if($my_listing){
         $my_listing->myShare = (float)$share->representation;
         $my_listing->amount =$share->amount;
@@ -150,7 +151,8 @@ $results = []; $t_share = 0;
       }
     }
   //echo '<pre>'; print_r($results); echo '<pre>';exit;
-  }
+
+  //}
 //}
 
 //Investments
@@ -1136,6 +1138,9 @@ public function confirmed_bids()
     if($business && $inv){
     $r->investor = $inv->fname.' '.$inv->lname;
     $r->business = $business->name;
+    $r->interested_cats = $inv->interested_cats;
+    $r->past_investment = $inv->past_investment;
+    $r->website = $inv->website;
     $r->email = $inv->email;
     $r->photos = explode(',',$r->photos);
     $bids[] = $r;
@@ -1149,6 +1154,9 @@ public function confirmed_bids()
     if($business && $inv){
     $r->investor = $inv->fname.' '.$inv->lname;
     $r->business = $business->name;
+    $r->interested_cats = $inv->interested_cats;
+    $r->past_investment = $inv->past_investment;
+    $r->website = $inv->website;
     $r->email = $inv->email;
     $r->photos = explode(',',$r->photos);
     $under_verify[] = $r;

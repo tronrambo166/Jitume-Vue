@@ -314,7 +314,7 @@ function InvestmentBids() {
             <div className="flex justify-start gap-6 items-center mb-6">
                 <h3
                     onClick={toggleBids}
-                    className={`text-lg font-semibold cursor-pointer border-b-2 ${
+                    className={`text-sm font-light cursor-pointer border-b-2 ${
                         showInvestmentBids
                             ? "text-green border-green"
                             : "text-gray-500 border-transparent"
@@ -325,7 +325,7 @@ function InvestmentBids() {
 
                 <h3
                     onClick={toggleActiveBids}
-                    className={`text-lg font-semibold cursor-pointer border-b-2 ${
+                    className={`text-sm font-light cursor-pointer border-b-2 ${
                         showActiveBids
                             ? "text-green border-green"
                             : "text-gray-500 border-transparent"
@@ -336,7 +336,7 @@ function InvestmentBids() {
 
                 <h3
                     onClick={toggleUnderVerification}
-                    className={`text-lg font-semibold cursor-pointer border-b-2 ${
+                    className={`text-sm font-light cursor-pointer border-b-2 ${
                         showUnderVerification
                             ? "text-green border-green"
                             : "text-gray-500 border-transparent"
@@ -552,7 +552,7 @@ function InvestmentBids() {
                                                 }
                                                 className="bg-white hover:bg-gray-300 text-green-600 font-semibold py-1 px-3 rounded transition-colors"
                                             >
-                                                Equipment
+                                                {bid.type=='Asset'? 'Equipment':bid.type}
                                             </button>
                                         </td>
 
