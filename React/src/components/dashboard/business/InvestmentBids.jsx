@@ -428,10 +428,24 @@ function InvestmentBids() {
                                                     className="form-checkbox h-4 w-4 text-green"
                                                 />
                                             ) : (
-                                                <p className="text-pink-500 small">
-                                                    {" "}
-                                                    !threshold
-                                                </p>
+                                                // <p className="text-pink-500 small">
+                                                //     {" "}
+                                                //     !threshold
+                                                // </p>
+                                                <div
+                                                    onClick={() =>
+                                                        showAlert(
+                                                            "error",
+                                                            "This business hasn't reached the milestone threshold."
+                                                        )
+                                                    }
+                                                    className="h-5 w-5 flex justify-center rounded-sm items-center border-2  cursor-pointer"
+                                                >
+                                                    <span className="text-pink-500 text-sm flex items-center p-2">
+                                                        X
+                                                    </span>
+                                                </div>
+                                                
                                             )}
                                         </td>
 
