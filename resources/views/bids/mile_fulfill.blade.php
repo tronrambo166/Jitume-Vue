@@ -3,11 +3,23 @@
         
 
 <!--Hidden Cart view-->
-
-       <div class="" style="width: 80%; margin: 50px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-        <div class="container w-75 m-auto" style=" background-color: #fff; width: 80%; margin: auto; padding: 20px; border-radius: 8px;">
+<script src="https://cdn.tailwindcss.com"></script>
+    <div
+    class="max-w-4xl mx-auto mt-16 bg-white rounded-lg shadow-lg overflow-hidden relative"
+>
+    <!-- Header with Logo -->
+    <div class="bg-green-900 py-10 text-center text-white relative z-10">
+        <img
+            src="../../../React/src/images/TujitumeLogo.svg"
+            alt="Company Logo"
+            class="h-12 w-auto mx-auto"
+        />
+        <h1 class="text-3xl font-bold mt-4">Fulfills a milestone!</h1>
+    </div>
+       <div >
+        <div style="padding: 20px" >
             
-            <h2 style="font-size: 25px; margin-bottom: 20px; text-align: left; color: rgb(16, 165, 16); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Fulfills a milestone!</h2>
+            <h2 style="font-size: 20px;  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Your milestone has been fulfilled</h2>
             
             <div class="content" style="padding: 30px 0px;">
                 <h4 style="font-size: 13px; line-height: 1.8; font-weight: 500; color: #000000a1; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: left;">
@@ -16,10 +28,17 @@
                 </h4>
             </div>
             
-            <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Thanks!<br />Tuitume <span style="color:rgb(53, 87, 53); ;">Admin.</span></p>
-    
+            <div class="mt-8 text-center text-gray-500 text-sm">
+        <p>Thank you for using <span class="font-semibold">Tujitume</span>!</p>
+        <p class="font-semibold">Best regards,</p>
+
+         <p>The Tujitume Team</p>
+        <!-- <p class="mt-2">© 2025 Tujitume. All rights reserved.</p> -->
+		</div>
         </div>
     </div>
+    </div>
+
     
       
 

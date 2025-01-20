@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axiosClient from "../../../axiosClient";
 import { IoFlashOutline } from "react-icons/io5";
+import TujitumeLogo from "../../../images/Tujitumelogo.svg";
 const MySubscription = () => {
     const [isAutoRenewEnabled, setAutoRenewEnabled] = useState(true);
 
@@ -19,9 +20,9 @@ const MySubscription = () => {
             daysRemaining: subscribeData.expire,
             price: subscribeData.amount,
             endDate: subscribeData.end_date,
-            token_left:subscribeData.token_left,
+            token_left: subscribeData.token_left,
             isActive: true,
-         },
+        },
     ];
 
     // Billing history data (to be replaced with API data later)
@@ -34,18 +35,17 @@ const MySubscription = () => {
         },
     ];
 
-
-    useEffect(() =>{
-            const isSubscribed = () => {
+    useEffect(() => {
+        const isSubscribed = () => {
             axiosClient
                 .get("/isSubscribed/" + 0)
                 .then(({ data }) => {
                     console.log(data.data);
-                    setCount(data.count)
+                    setCount(data.count);
                     if (data.count > 0) {
                         setSubscribeData(data.data);
                         console.log(data);
-                    }    
+                    }
                 })
                 .catch((err) => {
                     console.log(err);
@@ -55,16 +55,24 @@ const MySubscription = () => {
         isSubscribed();
     }, []);
 
-
-        const cancelSubscription = () => {
+    const cancelSubscription = () => {
         try {
             $.confirm({
-                title: "Cancel Subscription?",
-                content: "Are you sure?",
+                title: false, // Remove the default title to have full control over placement
+                content: `
+                    <div style="display: flex; align-items: center;">
+                        <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
+                    </div>
+                    <p>Are you sure you want to cancel your subscription?</p>
+                `,
+
                 buttons: {
                     confirm: function () {
                         axiosClient
-                            .get("business/cancelSubscription/" + subscribeData.stripe_sub_id)
+                            .get(
+                                "business/cancelSubscription/" +
+                                    subscribeData.stripe_sub_id
+                            )
                             .then((data) => {
                                 console.log(data);
                                 if (response.data.status === 200) {
@@ -100,80 +108,88 @@ const MySubscription = () => {
                 </h2>
 
                 {/* Subscription Plans */}
-                {count ?(
-                <div className="flex flex-col lg:flex-row gap-6">
-                    {subscriptions.map((sub, index) => (
-                        <div
-                            key={index}
-                            className={`border-2 ${
-                                sub.isActive
-                                    ? "border-green-500 bg-green-100"
-                                    : "border-transparent bg-white hover:bg-green-100"
-                            } rounded-lg p-6 w-full lg:w-1/2 relative hover:shadow-md transition-shadow`}
-                        >
-                            <div className="bg-transparent w-16 p-1">
-                                <IoFlashOutline
-                                    size={40}
-                                    className="text-black"
-                                />
-                            </div>
-
-                            {sub.isActive && (
-                                <div className="absolute top-4 right-4 bg-green-500 text-white w-6 h-6 flex items-center justify-center rounded-full">
-                                    ✓
-                                </div>
-                            )}
-                            <h3
-                                style={{ textTransform: "capitalize" }}
-                                className="text-lg font-bold text-green-800"
+                {count ? (
+                    <div className="flex flex-col lg:flex-row gap-6">
+                        {subscriptions.map((sub, index) => (
+                            <div
+                                key={index}
+                                className={`border-2 ${
+                                    sub.isActive
+                                        ? "border-green-500 bg-green-100"
+                                        : "border-transparent bg-white hover:bg-green-100"
+                                } rounded-lg p-6 w-full lg:w-1/2 relative hover:shadow-md transition-shadow`}
                             >
-                                {sub.name} {sub.subcribed}
-                            </h3>
-                            {sub.isActive ? (
-                                <p className="text-gray-600">
-                                    {sub.daysRemaining} days remaining
-                                </p>
-                            ) : (
-                                <p className="text-gray-600 italic">
-                                    Upgrade to this plan
-                                </p>
-                            )}
+                                <div className="bg-transparent w-16 p-1">
+                                    <IoFlashOutline
+                                        size={40}
+                                        className="text-black"
+                                    />
+                                </div>
 
-                            <p className="text-gray-600 text-sm">
-                                <strong>End Date:</strong> {sub.endDate}
-                            </p>
-                            <p className="text-gray-600 text-sm">
-                                <strong>Token Left:</strong> {sub.token_left}
-                            </p>
-                            <p className="text-3xl font-semibold mt-4 text-green-800">
-                                ${sub.price} / mo
-                            </p>
-                            <div className="flex justify-center">
-                                <button
-                                    onClick={cancelSubscription}
-                                    className={`mt-6 px-4 py-2 rounded-lg  ${
-                                        sub.isActive
-                                            ? "text-black border border-green-600 hover:bg-green-200 bg-white"
-                                            : "text-white bg-green-600 hover:bg-green-700"
-                                    }`}
+                                {sub.isActive && (
+                                    <div className="absolute top-4 right-4 bg-green-500 text-white w-6 h-6 flex items-center justify-center rounded-full">
+                                        ✓
+                                    </div>
+                                )}
+                                <h3
+                                    style={{ textTransform: "capitalize" }}
+                                    className="text-lg font-bold text-green-800"
                                 >
-                                    Cancel Subscription
-                                </button>
-                            </div>
+                                    {sub.name} {sub.subcribed}
+                                </h3>
+                                {sub.isActive ? (
+                                    <p className="text-gray-600">
+                                        {sub.daysRemaining} days remaining
+                                    </p>
+                                ) : (
+                                    <p className="text-gray-600 italic">
+                                        Upgrade to this plan
+                                    </p>
+                                )}
 
-                            {!sub.isActive && (
-                                <p className="mt-2 text-sm text-green-600 cursor-pointer hover:underline">
-                                    Learn more about this plan
+                                <p className="text-gray-600 text-sm">
+                                    <strong>End Date:</strong> {sub.endDate}
                                 </p>
-                            )}
-                        </div>
-                    ))}
-                </div>
-            ):(
-            <p className="text-center">You don't have any subscriptions, please 
-            <a className="text-green-600" href="../subscribe/TUE9PQ=="> Subscribe </a> </p>
-            )}
+                                <p className="text-gray-600 text-sm">
+                                    <strong>Token Left:</strong>{" "}
+                                    {sub.token_left}
+                                </p>
+                                <p className="text-3xl font-semibold mt-4 text-green-800">
+                                    ${sub.price} / mo
+                                </p>
+                                <div className="flex justify-center">
+                                    <button
+                                        onClick={cancelSubscription}
+                                        className={`mt-6 px-4 py-2 rounded-lg  ${
+                                            sub.isActive
+                                                ? "text-black border border-green-600 hover:bg-green-200 bg-white"
+                                                : "text-white bg-green-600 hover:bg-green-700"
+                                        }`}
+                                    >
+                                        Cancel Subscription
+                                    </button>
+                                </div>
 
+                                {!sub.isActive && (
+                                    <p className="mt-2 text-sm text-green-600 cursor-pointer hover:underline">
+                                        Learn more about this plan
+                                    </p>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-center">
+                        You don't have any subscriptions, please
+                        <a
+                            className="text-green-600"
+                            href="../subscribe/TUE9PQ=="
+                        >
+                            {" "}
+                            Subscribe{" "}
+                        </a>{" "}
+                    </p>
+                )}
 
                 {/* Auto Renew Toggle */}
                 {/*<div className="mt-8 border-t pt-6">

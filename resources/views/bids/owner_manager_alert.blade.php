@@ -2,24 +2,39 @@
 <head>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 </head>
+<script src="https://cdn.tailwindcss.com"></script>
         
 
 <!--Hidden Cart view-->
-
-        <div class="row  w-75 m-auto border shadow text-center bg-light" style=" box-shadow: 3px 3px 7px 7px grey; width:70%; background: #fbfbfb;border: 1px solid black;">
-		<div class="container w-75 m-auto" style="box-shadow: 3px 3px 7px 7px grey; background: #fbfbfb;width:75%; margin:auto; text-align:center">
+<div
+    class="max-w-4xl mx-auto mt-16 bg-white rounded-lg shadow-lg overflow-hidden relative"
+>
+    <div class="bg-green-900 py-10 text-center text-white relative z-10">
+        <img
+            src="../../../React/src/images/TujitumeLogo.svg"
+            alt="Company Logo"
+            class="h-12 w-auto mx-auto"
+        />
+        <h1 class="text-3xl font-bold mt-4">Projet Manger Assigned!</h1>
+    </div>
+        <div >
+		<div style="padding: 20px">
 		
-		 <h2 style="text-align: left;color: black;font-family: sans-serif;">  
-		 	<br> Projet Manger Assigned!</h2>
+		 <h2 class="text-left text-lg  text-black mb-4"> Manger Has Been Assigned!</h2>
 			
-			<div class="" style="width:100%; margin:auto;">
-			<h4 style="line-height: 28px;font-weight:500; color: #000000a1;font-family: sans-serif;text-align:left;"> Hi, for asset investment from <b>{{$investor_name}}</b> to your business: <b>{{$b_name}}</b><br>
+			<div class="" style="width:100%;  margin:auto;">
+			<h4 style="line-height:28px;font-weight:500;  color: #000000a1;font-family: sans-serif;text-align:left;"> Hi, for asset investment from <b>{{$investor_name}}</b> to your business: <b>{{$b_name}}</b><br>
 
 		            The Project Manager (Name: <b>{{$manager_name}}</b>, Contact: <b>{{$contact}}</b>) has been assigned to this Process. You can start milestone work.</h4>
 			</div>
-			
-				<p style="font-weight: bold; color:#000000a1; line-height:22px; font-family:arial; padding-top:20px; padding-bottom:20px; text-align:center;" class="py-3 text-center"> Thanks! <br />   Tuitume Admin.</p>
+		  <div class="mt-8 text-center text-gray-500 text-sm">
+        <p>Thank you for using <span class="font-semibold">Tujitume</span>!</p>
+        <p class="font-semibold">Best regards,</p>
 
+         <p>The Tujitume Team</p>
+        <!-- <p class="mt-2">© 2025 Tujitume. All rights reserved.</p> -->
+		</div>
+        </div>
 		</div>
 		
 		

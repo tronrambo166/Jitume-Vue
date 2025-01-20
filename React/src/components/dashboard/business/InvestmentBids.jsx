@@ -5,6 +5,8 @@ import { useAlert } from "../../partials/AlertContext";
 import { FaCloudDownloadAlt } from "react-icons/fa";
 import { GrDocumentDownload } from "react-icons/gr";
 import TujitumeLogo from "../../../images/Tujitumelogo.svg";
+import LightBoxPopup from "./LightBoxPopup";
+
 function InvestmentBids() {
     const [bids, setBids] = useState([]);
     const [underReview, setUnderReview] = useState([]);
@@ -15,18 +17,6 @@ function InvestmentBids() {
     const [loadingAccept, setLoadingAccept] = useState(false); // Added missing state
     const [loadingReject, setLoadingReject] = useState(false); // Added missing state
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [isImageModalOpen, setIsImageModalOpen] = useState(false);
-
-    const openImageModal = (imageUrl) => {
-        setSelectedImage(imageUrl);
-        setIsImageModalOpen(true);
-    };
-
-    const closeImageModal = () => {
-        setSelectedImage(null);
-        setIsImageModalOpen(false);
-    };
 
     const AcceptBids = (reject) => (e) => {
         e.preventDefault();
@@ -50,7 +40,6 @@ function InvestmentBids() {
                     },
                 },
             });
-
         } else {
             handleBidAction(reject); // Directly accept without confirmation
         }
@@ -196,6 +185,19 @@ function InvestmentBids() {
         });
     };
 
+    // image logic below
+    const [image, setImage] = useState(null);
+    const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+    const openLightbox = (img) => {
+        setImage(img);
+        setIsLightboxOpen(true);
+    };
+
+    const closeLightbox = () => {
+        setIsLightboxOpen(false);
+    };
+
     const handleTypeDetails = (bid) => {
         if (bid.type === "Asset") {
             openModal({
@@ -218,8 +220,11 @@ function InvestmentBids() {
                                 >
                                     <img
                                         src={photo}
+                                        onClick={() => {
+                                            openLightbox(photo); // Open the lightbox with the clicked image
+                                        }}
                                         alt={`Asset ${index + 1}`}
-                                        className="w-32 h-32 object-cover rounded-lg shadow-md"
+                                        className="w-full h-full object-contain hover:cursor-pointer rounded-lg shadow-md"
                                     />
                                     <button
                                         onClick={() => download(photo)()}
@@ -336,7 +341,14 @@ function InvestmentBids() {
 
     return (
         <div className="container mx-auto p-0 sm:p-6 mt-12 sm:mt-0">
-            {" "}
+            <div>
+                {isLightboxOpen && (
+                    <LightBoxPopup
+                        image={image} // Pass the selected image
+                        onClose={closeLightbox} // Pass the close handler
+                    />
+                )}
+            </div>{" "}
             {/* <h3 className="text-left text-lg font-semibold mb-6">
                 Investment Bids
             </h3> */}
@@ -445,7 +457,6 @@ function InvestmentBids() {
                                                         X
                                                     </span>
                                                 </div>
-                                                
                                             )}
                                         </td>
 

@@ -7,7 +7,7 @@ import { useStateContext } from "../../contexts/contextProvider";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import Navbar from "./Navbar";
- import Modal from "./Authmodal";
+import Modal from "./Authmodal";
 import ServiceHero from "../Heros/ServiceHero";
 import BackBtn from "./BackBtn";
 
@@ -25,7 +25,8 @@ const MilestonePage = () => {
     const [isModalOpen, setModalOpen] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const { token } = useStateContext();
-    const { setListing_id,amounts, setAmounts,setPurpose,setPercent } = useStateContext();
+    const { setListing_id, amounts, setAmounts, setPurpose, setPercent } =
+        useStateContext();
     const navigate = useNavigate();
     // const [miles, setMiles] = useState([]);
     const total_steps = miles.length;
@@ -82,17 +83,20 @@ const MilestonePage = () => {
         var mile_id = btoa(mile_id);
         var purpose = btoa("s_mile");
         $.confirm({
-            title: "Please Confirm",
-            content: "Are you sure?",
+            title: false,
+            content: `<img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo"><div>Are you sure?</div>`,
+
             buttons: {
                 confirm: function () {
                     //window.location.href =
                     //"/checkoutS/" +mile_id +"/" +amount +"/" +purpose +"/" +btoa("null");
-                    navigate("/checkout", { state: {
-                     amount: amount,
-                     listing_id: mile_id,
-                     purpose: purpose
-                    } });
+                    navigate("/checkout", {
+                        state: {
+                            amount: amount,
+                            listing_id: mile_id,
+                            purpose: purpose,
+                        },
+                    });
                 },
                 cancel: function () {
                     $.alert("Canceled!");
@@ -133,10 +137,8 @@ const MilestonePage = () => {
                     data.data.type ==
                     "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 )
-                    link.setAttribute(
-                        "download",
-                        "milestone.docx"
-                    ); //or any other extension
+                    link.setAttribute("download", "milestone.docx");
+                //or any other extension
                 else link.setAttribute("download", "milestone.pdf");
 
                 document.body.appendChild(link);
@@ -369,10 +371,9 @@ const MilestonePage = () => {
                 <ToastContainer />
 
                 <Modal
-                isOpen={isAuthModalOpen}
-                onClose={() => setIsAuthModalOpen(false)}
+                    isOpen={isAuthModalOpen}
+                    onClose={() => setIsAuthModalOpen(false)}
                 />
-
             </div>
         </>
     );

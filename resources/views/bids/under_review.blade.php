@@ -4,16 +4,36 @@
 </head>
         
 
+<script src="https://cdn.tailwindcss.com"></script>
+<div
+    class="max-w-4xl mx-auto mt-16 bg-white rounded-lg shadow-lg overflow-hidden relative"
+>
+    <div class="bg-green-900 py-10 text-center text-white relative z-10">
+        <img
+            src="../../../React/src/images/TujitumeLogo.svg"
+            alt="Company Logo"
+            class="h-12 w-auto mx-auto"
+        />
+        <h1 class="text-3xl font-bold mt-4">Bid Under Review!</h1>
+    </div>
 
-        <div class="email-container" style="width: 80%; margin: 50px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <div >
         <div class="content" style="padding: 20px;">
-            <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Bid Under Review!</h2>
+            <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Yor Bid Is Under Review</h2>
             <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 0.5; margin-bottom: 30px;">Hi,&nbsp; Your bid to invest in the {{$business_name}} is under review. You'll get a notification when it's accepted.</p>
             <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">
 
-            <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px;">Thanks!<br>Tujitume Admin</p>
-        </div>
+           <div class="mt-8 text-center text-gray-500 text-sm">
+        <p>Thank you for using <span class="font-semibold">Tujitume</span>!</p>
+        <p class="font-semibold">Best regards,</p>
+
+         <p>The Tujitume Team</p>
+        <!-- <p class="mt-2">© 2025 Tujitume. All rights reserved.</p> -->
+		</div>
+	   </div>
     </div>
+    </div>
+
 
 <!--Hidden Cart view-->
 

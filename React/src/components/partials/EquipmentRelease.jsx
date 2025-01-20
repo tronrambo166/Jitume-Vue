@@ -6,7 +6,7 @@ import axiosClient from "../../axiosClient";
 import { useStateContext } from "../../contexts/contextProvider";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useAlert } from "../partials/AlertContext";
-
+import TujitumeLogo from "../../images/Tujitumelogo.svg";
 const EquipmentRelease = () => {
     const { token, setUser, setAuth, auth } = useStateContext();
     const { b_owner_id } = useParams();
@@ -40,11 +40,19 @@ const EquipmentRelease = () => {
                 .then((data) => {
                     console.log(data);
                     if (data.status == 200) {
-                        const content = "The process has began between the parties below... </br> <b>Business:</b> "+data.business+
-                        "</br> <b>Business Owner:</b> "+data.owner+"</br> <b>Project Manger:</b> "+data.manager+
-                        "</br> <b>Investor:</b> "+data.investor+ "</br> Goto dashboard to see status ";
+                        const content = `
+                            <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
+                            <div>
+                                The process has begun between the parties below...
+                                <br> <b>Business:</b> ${data.business}
+                                <br> <b>Business Owner:</b> ${data.owner}
+                                <br> <b>Project Manager:</b> ${data.manager}
+                                <br> <b>Investor:</b> ${data.investor}
+                                <br> Go to the dashboard to see status.
+                            </div>
+                        `;
                         $.confirm({
-                                title: "Equipment Released!",
+                                title: false,
                                 content: content,
                                 buttons: {
                                     ok: function () {

@@ -9,7 +9,7 @@ import { MdPhoto } from "react-icons/md";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useStateContext } from "../../contexts/contextProvider";
-
+import TujitumeLogo from "../../images/Tujitumelogo.svg";
 import BackBtn from "./BackBtn";
 import { useAlert } from "./AlertContext";
 import Modal from "./Authmodal";
@@ -153,21 +153,25 @@ const Investequip = () => {
             // Handle server response
             if (response.data.status === 200) {
                 $.confirm({
-                title: "Bid Placed!",
-                content: "Go to Dashboard to see investment status.",
-                buttons: {
-                    yes: function () {
-                        navigate("/dashboard");
-                    },
-                    home: function () {
-                        navigate("/");
-                    },
-                    cancel: function () {
-                        $.alert("Canceled!");
-                    },
+                    title: false,
+                    content: `
+                    <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
+                    <div>
+                        Go to Dashboard to see investment status.
+                    </div>
+                `,
+                    buttons: {
+                        yes: function () {
+                            navigate("/dashboard");
+                        },
+                        home: function () {
+                            navigate("/");
+                        },
+                        cancel: function () {
+                            $.alert("Canceled!");
+                        },
                     },
                 });
-
             } else {
                 showAlert("failed", response.data.message); // Show failure alert
             }
@@ -188,7 +192,6 @@ const Investequip = () => {
             }));
         }
     };
-
 
     const isFormValid = () => {
         return (
@@ -232,7 +235,10 @@ const Investequip = () => {
                                             <>
                                                 Upload good quality photos of
                                                 the assets
-                                                <span className="text-red-500 ml-1">ex: jpg/png/gif etc. (less than 2MB)</span>
+                                                <span className="text-red-500 ml-1">
+                                                    ex: jpg/png/gif etc. (less
+                                                    than 2MB)
+                                                </span>
                                             </>
                                         ) : docType === "legal_doc" ? (
                                             <>
@@ -240,12 +246,13 @@ const Investequip = () => {
                                                 as evidence of the ownership of
                                                 the assets (original purchase
                                                 receipt/title/certificate etc)
-                                                <span className="text-red-500 ml-1">ex: pdf/docx (less than 2MB)</span>
+                                                <span className="text-red-500 ml-1">
+                                                    ex: pdf/docx (less than 2MB)
+                                                </span>
                                             </>
                                         ) : (
                                             "Any other assets records (optinal)"
                                         )}
-                                        
                                     </label>
                                     <div className="flex flex-col sm:flex-row items-start gap-2">
                                         <button

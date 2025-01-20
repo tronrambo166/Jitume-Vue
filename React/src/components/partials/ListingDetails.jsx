@@ -29,6 +29,7 @@ import ScrollToTop from "../pages/ScrollToTop";
 import { useAlert } from "../partials/AlertContext";
 import BackBtn from "./BackBtn";
 import TruncateWithModal from "./TruncateWithModal";
+import TujitumeLogo from "../../images/Tujitumelogo.svg";
 const ListingDetails = ({ onClose }) => {
     const { token, setUser, setAuth, auth } = useStateContext();
     const [loading, setLoading] = useState(false);
@@ -38,6 +39,7 @@ const ListingDetails = ({ onClose }) => {
     const [isVisible, setIsVisible] = useState(false);
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
     const navigate = useNavigate();
+
 
     const handleClose = () => {
         setIsVisible(false);
@@ -302,8 +304,8 @@ const ListingDetails = ({ onClose }) => {
       else {
           let t = this;
           $.confirm({
-              title: "Are you sure?",
-              content: "Are you sure to bid?",
+              title: false,
+              content: `<img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo"><div>Are you sure you want to bid?</div>`,
               buttons: {
                   confirm: function () {
                       navigate(
@@ -345,8 +347,8 @@ const ListingDetails = ({ onClose }) => {
             var listing_id = base64_encode(form.listing_id);
 
             $.confirm({
-                title: "Are you sure?",
-                content: "Are you sure to bid?",
+                title: false,
+                content: `<img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo"><div>Are you sure you want to bid?</div>`,
                 buttons: {
                     confirm: function () {
                         //window.location.href =
@@ -537,8 +539,8 @@ const ListingDetails = ({ onClose }) => {
         var business_id = btoa(business_id);
         var purpose = btoa("small_fee");
         $.confirm({
-            title: "Are you sure?",
-            content: "Are you sure?",
+            title: false,
+            content: `<img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo"><div>Are you sure?</div>`,
             buttons: {
                 confirm: function () {
                     navigate("/checkout", {
