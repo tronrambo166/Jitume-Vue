@@ -102,43 +102,54 @@ public function applyForShow(){
 return view('business.applyForShow');
 }
 
-public function home(){
+public function home($query){
 $user_email = Auth::user()->email;
 $user_name = Auth::user()->fname.' '.Auth::user()->lname;
 
 $investor ='';
-$business = listing::where('user_id',Auth::id())->get();
-$services = Services::where('shop_id',Auth::id())->get();
 $investor_ck = User::where('id',Auth::id())->first();
-
-// if($investor_ck == null){
-// if(Session::has('investor_email')){   
-// $mail = Session::get('investor_email');
 
 if ($investor_ck->investor == 1) $investor = true;
 else $investor = false;
 
+$services = [];
+
+if($query == 'service'){
+    //$business = listing::where('user_id',Auth::id())->get();
+    $services = Services::where('shop_id',Auth::id())->get();
+}
 
 //Investments
 
-$results = []; $t_share = 0;
+$investments = []; $t_share = 0;
 //if ($investor_ck->investor == 1) {
   //$convs = Conversation::where('investor_id',Auth::id())->get();
   //foreach($convs as $conv){
-
+      
       $pending = BusinessBids::where('investor_id',Auth::id())
       ->latest()->get();
-
       $miles = AcceptedBids::where('investor_id',Auth::id())
       ->latest()->get();
+      //return response()->json(['status' => $pending]);
+
+      if($query == 'hasInvestment'){
+         if(count($pending) > 0 || count($miles) > 0)
+         return response()->json(['status' => true]);
+         else 
+         return response()->json(['status' => false]);
+      }
+
+
+      if($query == 'myInvest'){
       foreach($miles as $share){
         $my_listing =listing::where('id',$share->business_id)->first();
         if($my_listing){
         $my_listing->myShare = (float)$share->representation;
         $my_listing->amount =$share->amount;
         $my_listing->status = $share->status;
+        $my_listing->type = $share->type;
         $my_listing->bid_id = $share->id;
-        $results[] = $my_listing;
+        $investments[] = $my_listing;
       }
     }
 
@@ -148,10 +159,12 @@ $results = []; $t_share = 0;
         $my_listing->myShare = (float)$share->representation;
         $my_listing->amount =$share->amount;
         $my_listing->status = 'Pending';
+        $my_listing->type = $share->type;
         $my_listing->bid_id = $share->id;
-        $results[] = $my_listing;
+        $investments[] = $my_listing;
       }
     }
+}
   //echo '<pre>'; print_r($results); echo '<pre>';exit;
 
   //}
@@ -159,7 +172,7 @@ $results = []; $t_share = 0;
 
 //Investments
 
-return response()->json(['business'=>$business,'investor'=>$investor,'results'=>$results,'services'=>$services,'user_email'=>$user_email,'user_name'=>$user_name]);
+return response()->json(['investor'=>$investor,'results'=>$investments,'services'=>$services,'user_email'=>$user_email,'user_name'=>$user_name]);
 }
 
 

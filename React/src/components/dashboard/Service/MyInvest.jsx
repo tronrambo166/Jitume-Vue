@@ -26,10 +26,10 @@ const MyInvest = () => {
         const getInvestments = () => {
             setTimeout(() => {
                 axiosClient
-                    .get("/business/dashhome")
+                    .get("/business/dashhome/"+'myInvest')
                     .then(({ data }) => {
                         setMyInvest(data.results);
-                        // console.log("test data",data);
+                         console.log("test data",data);
                     })
                     .catch((err) => {
                         console.error(err);
@@ -193,20 +193,11 @@ const MyInvest = () => {
                 </button>
                 {showDropdown && (
                     <div
-                        className="absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg w-48 z-10 overflow-hidden"
+                        className="absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg w-55 z-10 overflow-hidden"
                         style={{ bottom: "10px" }} // Adjust the bottom space here
                     >
                         <ul className="text-sm text-gray-700">
-                            <li>
-                                <Link
-                                    to={`/business-milestones/${btoa(
-                                        btoa(item.id)
-                                    )}`}
-                                    className="block px-4 py-2 hover:bg-gray-100 transition duration-150 ease-in-out"
-                                >
-                                    View Milestones
-                                </Link>
-                            </li>
+                            
                             {item.status === "Pending" && (
                                 <li>
                                     <button
@@ -218,6 +209,8 @@ const MyInvest = () => {
                                         Cancel
                                     </button>
                                 </li>
+
+
                             )}
                             {item.status === "Confirmed" &&
                                 item.type === "Asset" && (
@@ -227,18 +220,18 @@ const MyInvest = () => {
                                                 onClick={
                                                     navigateToProjectManager
                                                 }
-                                                className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-green-600 transition duration-150 ease-in-out"
+                                                className="block w-full text-left px-5 py-2 hover:bg-gray-100 text-slate-500 transition duration-150 ease-in-out"
                                             >
-                                                Verify With A Project<br></br>{" "}
+                                                Verify With A Project{" "}
                                                 Manager
                                             </button>
                                         </li>
                                         <li>
                                             <button
                                                 onClick={toggleModal}
-                                                className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-yellow-600 transition duration-150 ease-in-out"
+                                                className="block w-full text-left px-5 py-2 hover:bg-gray-100 text-slate-400 transition duration-150 ease-in-out"
                                             >
-                                                Verify With A Business <br></br>
+                                                Verify With A Business
                                                 Owner
                                             </button>
                                         </li>
@@ -246,14 +239,27 @@ const MyInvest = () => {
                                 )}
                             {item.status === "Confirmed" &&
                                 item.type === "Monetery" && (
+                            <ul>
                                     <li>
                                         <button
                                             onClick={WithdrawInvestment}
-                                            className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-blue-600 transition duration-150 ease-in-out"
+                                            className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-pink-700 transition duration-150 ease-in-out"
                                         >
                                             Withdraw Investment
                                         </button>
                                     </li>
+
+                                <li>
+                                    <Link
+                                        to={`/business-milestones/${btoa(
+                                            btoa(item.id)
+                                        )}`}
+                                        className="block px-4 py-2 hover:bg-gray-100 transition duration-150 ease-in-out"
+                                    >
+                                        View Milestones
+                                    </Link>
+                                </li>
+                            </ul>
                                 )}
                         </ul>
                     </div>

@@ -155,7 +155,7 @@ Route::get('service_messages/{from}', [ServiceController::class, 'service_messag
 Route::get('service_messages_count/{from}', [ServiceController::class, 'service_messages_count']);
 
 
-Route::get('/dashhome', [BusinessController::class, 'home']);
+Route::get('/dashhome/{query}', [BusinessController::class, 'home']);
 Route::get('bBQhdsfE_WWe4Q-_f7ieh7Hdhf8F_', [ServiceController::class, 'listings'])->name('services');
 //Route::post('add_eqp', [ServiceController::class, 'add_eqp'])->name('add_eqp');
 Route::post('up_service', [ServiceController::class, 'up_listing'])->name('up_service');

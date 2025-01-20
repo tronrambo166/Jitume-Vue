@@ -19,11 +19,11 @@ const ServiceTable = () => {
         const getBusinessAndServices = () => {
             setTimeout(() => {
                 axiosClient
-                    .get("/business/dashhome")
+                    .get("/business/dashhome/"+'service')
                     .then(({ data }) => {
-                        setBusiness(data.business);
+                        //setBusiness(data.business);
                         setService(data.services);
-                        setMyInvest(data.results);
+                        //setMyInvest(data.results);
                         console.log("services", data);
                     })
                     .catch((err) => {
