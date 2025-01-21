@@ -115,8 +115,7 @@ const MyInvest = () => {
     // Modal Toggle Logic for Starting a Conversation
     
 const StartConvorsation = () => {
-    const message = `I would like to verify the asset details with you regarding ${Investname}. Could you kindly confirm the accuracy of the information provided?`;
-    // const sender = Nurul; // Example sender name
+    const message = `Could you please confirm the accuracy of the following asset details for ${Investname}:`;  // const sender = Nurul; // Example sender name
     const sender = name;
     const SenderuserId = userId;
 

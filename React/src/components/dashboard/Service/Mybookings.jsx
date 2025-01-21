@@ -78,6 +78,9 @@ const MyBookings = () => {
                             <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                 Status
                             </th>
+                            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                                Action
+                            </th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
@@ -126,6 +129,14 @@ const MyBookings = () => {
 
                                 <td className="px-4 py-4 text-sm">
                                     {item.status}
+                                </td>
+                                <td className="px-4 py-4 text-sm">
+                                    <button
+                                        // onClick={() => handleEdit(item)}
+                                        className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-teal-100 text-teal-800 hover:bg-teal-200 focus:outline-none focus:bg-teal-200 disabled:opacity-50 disabled:pointer-events-none dark:text-teal-500 dark:bg-teal-800/30 dark:hover:bg-teal-800/20 dark:focus:bg-teal-800/20"
+                                    
+                                        > Pay
+                                    </button>
                                 </td>
                             </tr>
                         ))}
