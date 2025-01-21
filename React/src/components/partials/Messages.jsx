@@ -4,6 +4,7 @@ import { FiSend } from "react-icons/fi"; // Send icon
 import axiosClient from "../../axiosClient";
 import SkeletonLoader from "./SkeletonLoader";
 import { FaArrowCircleLeft } from "react-icons/fa";
+import { useMessage } from "../dashboard/Service/msgcontext"; // Import the custom hook
 
 function Messages() {
     const [messages, setMessages] = useState([]);
@@ -14,8 +15,14 @@ function Messages() {
     const [loading, setLoading] = useState(true);
     const [isMobileView, setIsMobileView] = useState(false);
     const chatContainerRef = useRef(null);
+    const [userId, setUserId] = useState(null);
     //const [from, setFrom] = useState(0);
     const [check, setcheck] = useState(0);
+
+    const { dshmsg } = useMessage(); // Use the context to get the current message
+
+    const { dashmsg } = useMessage(); // Correctly access the context value
+
     useEffect(() => {
         let isMounted = true; // Guard for fetch
 
@@ -204,7 +211,32 @@ function Messages() {
                 });
         }
     };
+    //
 
+   useEffect(() => {
+       console.log("Current message:", dashmsg); // Log the message when it changes
+
+       if (dashmsg != null) {
+           // Use regex to extract User ID from dashmsg
+           const userIdMatch = dashmsg.match(/\(User ID: (\d+)\)/);
+
+           if (userIdMatch) {
+               // Extracted userId from the message
+               const user_id = userIdMatch[1];
+               console.log("Extracted User ID:", user_id);
+
+               setUserId(user_id); // Save the extracted User ID separately
+           }
+
+           // Remove User ID from the message
+           const modifiedMessage = dashmsg.replace(/\(User ID: \d+\)/, ""); // Cleaned message
+
+           setNewMessage(modifiedMessage); // Update newMessage with cleaned text
+       }
+   }, [dashmsg]);
+
+    console.log(userId);
+    //
     if (loading) return <SkeletonLoader />;
 
     return (
@@ -268,8 +300,13 @@ function Messages() {
                                         msg.messages[0].new === 1
                                             ? "bg-green-500 bg-opacity-20 text-black font-medium shadow-lg backdrop-blur-md border border-green-300 rounded-lg p-3 pr-16"
                                             : "text-gray-600"
-                                    }truncatee`}
-                                    style={{ maxWidth: "200px" }}
+                                    }`}
+                                    style={{
+                                        maxWidth: "200px",
+                                        whiteSpace: "nowrap",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                    }}
                                 >
                                     {msg.messages &&
                                         msg.messages[0] &&
@@ -387,8 +424,7 @@ function Messages() {
                         {/* Message Input */}
                         <div className="p-4  border-t flex items-center fixed-bottom-0 bg-white z-10 shadow-lg">
                             <textarea
-                                className="flex-1 border rounded-lg p-3 mr-3 focus:ring-2 focus:ring-green-500 resize-none text-gray-800 shadow-sm placeholder-gray-400"
-                                rows="1"
+                                className="flex-1 border rounded-lg p-6 mr-3 focus:ring-2 focus:ring-green-500 resize-y text-gray-800 shadow-sm placeholder-gray-400 align-top"
                                 placeholder="Type a message..."
                                 value={newMessage}
                                 onChange={(e) => setNewMessage(e.target.value)}
@@ -402,6 +438,7 @@ function Messages() {
                                     }
                                 }}
                             ></textarea>
+
                             <button
                                 className="bg-green-700 text-white p-3 rounded-full hover:bg-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-green-400"
                                 onClick={() =>

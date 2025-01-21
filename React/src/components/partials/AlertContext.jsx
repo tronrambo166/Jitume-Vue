@@ -9,15 +9,35 @@ export const AlertProvider = ({ children }) => {
 
     // Function to show an alert
     const showAlert = (type, message) => {
-        const newAlert = { type, message, id: Date.now() }; // Use a unique ID
+        const linkMatch = message.match(/link\s*:\s*(.+?)\{(.+?)\}/);
+
+        let formattedMessage = message;
+        let link = null;
+
+        if (linkMatch) {
+            const [_, text, path] = linkMatch;
+            link = { text, path };
+            formattedMessage = message
+                .replace(/link\s*:\s*.+?\{.+?\}/, "")
+                .trim();
+        }
+
+        const newAlert = {
+            type,
+            message: formattedMessage,
+            link,
+            id: Date.now(),
+        };
+
         setAlerts((prevAlerts) => [...prevAlerts, newAlert]);
 
         setTimeout(() => {
             setAlerts((prevAlerts) =>
                 prevAlerts.filter((alert) => alert.id !== newAlert.id)
             );
-        }, 4000); // Hide alert after 4 seconds
+        }, 6000);
     };
+
 
     // Function to dismiss an alert manually
     const dismissAlert = (id) => {
@@ -40,7 +60,7 @@ export const AlertProvider = ({ children }) => {
 export const useAlert = () => useContext(AlertContext);
 
 // The Alert component to display the message
-const Alert = ({ type, message, id }) => {
+const Alert = ({ type, message, link, id }) => {
     const { dismissAlert } = useAlert();
 
     // Alert configurations for different types
@@ -125,6 +145,14 @@ const Alert = ({ type, message, id }) => {
             <div className="mr-3">{config.icon}</div>
             <div className="flex-grow">
                 <span>{capitalizedMessage}</span>
+                {link && (
+                    <a
+                        href={link.path}
+                        className="ml-2 text-green font-bold  hover:text-green-800"
+                    >
+                        {link.text}
+                    </a>
+                )}
             </div>
             <button
                 onClick={() => dismissAlert(id)}

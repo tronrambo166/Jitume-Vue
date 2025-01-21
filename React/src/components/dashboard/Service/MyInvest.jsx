@@ -7,29 +7,30 @@ import { FaChartLine } from "react-icons/fa";
 import TujitumeLogo from "../../../images/Tujitumelogo.svg";
 import { BsThreeDots } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import {
-    AiOutlineEye,
-    AiOutlineEyeInvisible,
-    AiOutlineLoading3Quarters,
-} from "react-icons/ai";
+import { useMessage } from "./msgcontext"; // Import the custom hook
+
 const MyInvest = () => {
     const [myInvest, setMyInvest] = useState([]);
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
     const navigate = useNavigate(); // Use React Router's navigate hook
     const [inputModal, setInputModal] = useState(false); // Modal state
-
-    const [showpending, setShowpending] = useState(true);
-    const [showConfirm, setShowConfirm] = useState(false);
+    const { setdashmsg } = useMessage(); // Use the context to update the message
+    const [name, setName] = useState("");
     const [activeFilter, setActiveFilter] = useState("pending"); // Default to "pending"
-
+    const [Investname  ,SetInvestname] = useState("");
+    const [userId , setUserId] = useState("");
     useEffect(() => {
         const getInvestments = () => {
             setTimeout(() => {
                 axiosClient
-                    .get("/business/dashhome/"+'myInvest')
+                    .get("/business/dashhome/" + "myInvest")
                     .then(({ data }) => {
                         setMyInvest(data.results);
-                         console.log("test data",data);
+                        console.log("test data", data);
+                        setName(data.user_name);
+                        SetInvestname(data.results[0].name);
+                        setUserId(data.results[0].user_id);
+
                     })
                     .catch((err) => {
                         console.error(err);
@@ -38,6 +39,7 @@ const MyInvest = () => {
         };
         getInvestments();
     }, []);
+
 
     // Cance logic here
     const handleCancel = (id) => {
@@ -111,9 +113,27 @@ const MyInvest = () => {
     };
 
     // Modal Toggle Logic for Starting a Conversation
-    const toggleModal = () => {
-        setInputModal(!inputModal);
-    };
+    
+const StartConvorsation = () => {
+    const message = `I would like to verify the asset details with you regarding ${Investname}. Could you kindly confirm the accuracy of the information provided?`;
+    // const sender = Nurul; // Example sender name
+    const sender = name;
+    const SenderuserId = userId;
+
+    // Set the new message using the context
+
+    const newMsg = `Hello, I'm ${sender}, ${message} (User ID: ${SenderuserId})`; // Optionally include userId in the message
+
+    setdashmsg(newMsg);
+
+    // Navigate to the messages page
+    navigate("/dashboard/messages");
+};
+
+
+
+
+
     // End of Modal Logic
 
     // StartConversation
@@ -197,7 +217,6 @@ const MyInvest = () => {
                         style={{ bottom: "10px" }} // Adjust the bottom space here
                     >
                         <ul className="text-sm text-gray-700">
-                            
                             {item.status === "Pending" && (
                                 <li>
                                     <button
@@ -209,11 +228,9 @@ const MyInvest = () => {
                                         Cancel
                                     </button>
                                 </li>
-
-
                             )}
                             {item.status === "Confirmed" &&
-                                item.type === "Asset" && (
+                                item.type === "Monetery" && (
                                     <ul>
                                         <li>
                                             <button
@@ -222,44 +239,42 @@ const MyInvest = () => {
                                                 }
                                                 className="block w-full text-left px-5 py-2 hover:bg-gray-100 text-slate-500 transition duration-150 ease-in-out"
                                             >
-                                                Verify With A Project{" "}
-                                                Manager
+                                                Verify With A Project Manager
                                             </button>
                                         </li>
                                         <li>
                                             <button
-                                                onClick={toggleModal}
+                                                onClick={StartConvorsation}
                                                 className="block w-full text-left px-5 py-2 hover:bg-gray-100 text-slate-400 transition duration-150 ease-in-out"
                                             >
-                                                Verify With A Business
-                                                Owner
+                                                Verify With A Business Owner
                                             </button>
                                         </li>
                                     </ul>
                                 )}
                             {item.status === "Confirmed" &&
                                 item.type === "Monetery" && (
-                            <ul>
-                                    <li>
-                                        <button
-                                            onClick={WithdrawInvestment}
-                                            className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-pink-700 transition duration-150 ease-in-out"
-                                        >
-                                            Withdraw Investment
-                                        </button>
-                                    </li>
+                                    <ul>
+                                        <li>
+                                            <button
+                                                onClick={WithdrawInvestment}
+                                                className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-pink-700 transition duration-150 ease-in-out"
+                                            >
+                                                Withdraw Investment
+                                            </button>
+                                        </li>
 
-                                <li>
-                                    <Link
-                                        to={`/business-milestones/${btoa(
-                                            btoa(item.id)
-                                        )}`}
-                                        className="block px-4 py-2 hover:bg-gray-100 transition duration-150 ease-in-out"
-                                    >
-                                        View Milestones
-                                    </Link>
-                                </li>
-                            </ul>
+                                        <li>
+                                            <Link
+                                                to={`/business-milestones/${btoa(
+                                                    btoa(item.id)
+                                                )}`}
+                                                className="block px-4 py-2 hover:bg-gray-100 transition duration-150 ease-in-out"
+                                            >
+                                                View Milestones
+                                            </Link>
+                                        </li>
+                                    </ul>
                                 )}
                         </ul>
                     </div>
@@ -408,36 +423,6 @@ const MyInvest = () => {
                     </section>
                 )}
             </section>
-
-            {/* Modal */}
-            {inputModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
-                        <h3 className="text-2xl font-semibold text-gray-800 mb-4">
-                            Start a Conversation
-                        </h3>
-                        <textarea
-                            className="w-full p-4 mt-4 border border-gray-300 rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-green transition duration-200"
-                            placeholder="Type your message here..."
-                            rows="6"
-                        />
-                        <div className="mt-6 flex justify-end gap-4">
-                            <button
-                                className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition duration-200"
-                                onClick={toggleModal}
-                            >
-                                Close
-                            </button>
-                            <button
-                                className="bg-green text-white px-6 py-2 rounded-md btn-primary transition duration-200"
-                                onClick={StartConversation} // Add functionality for starting the conversation here
-                            >
-                                Send
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };

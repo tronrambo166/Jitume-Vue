@@ -2,7 +2,7 @@
 import { useContext, useState, useEffect, createContext } from "react";
 import { useIdleTimer } from "react-idle-timer";
 //import PaymentForm from '../components/partials/PaymentForm';
-
+import { MessageProvider } from "../components/dashboard/Service/msgcontext"
 const StateContext = createContext({
     user: null,
     token: null,
@@ -110,29 +110,31 @@ export const ContextProvider = ({ children }) => {
     });
 
     return (
-        <StateContext.Provider
-            value={{
-                user,
-                token,
-                setUser,
-                setToken,
-                setAuth,
-                auth,
-                cards,
-                setCards,
-                //PAYMENT PAGE
-                listing_id,
-                amounts,
-                purpose,
-                percent,
-                setListing_id,
-                setAmounts,
-                setPurpose,
-                setPercent,
-            }}
-        >
-            {children}
-        </StateContext.Provider>
+        <MessageProvider>
+            <StateContext.Provider
+                value={{
+                    user,
+                    token,
+                    setUser,
+                    setToken,
+                    setAuth,
+                    auth,
+                    cards,
+                    setCards,
+                    //PAYMENT PAGE
+                    listing_id,
+                    amounts,
+                    purpose,
+                    percent,
+                    setListing_id,
+                    setAmounts,
+                    setPurpose,
+                    setPercent,
+                }}
+            >
+                {children}
+            </StateContext.Provider>
+        </MessageProvider>
     );
 };
 
