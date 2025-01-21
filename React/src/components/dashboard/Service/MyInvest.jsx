@@ -230,7 +230,7 @@ const StartConvorsation = () => {
                                 </li>
                             )}
                             {item.status === "Confirmed" &&
-                                item.type === "Monetery" && (
+                                item.type === "Asset" && (
                                     <ul>
                                         <li>
                                             <button
