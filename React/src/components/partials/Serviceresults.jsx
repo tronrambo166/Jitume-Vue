@@ -637,7 +637,7 @@ const ServiceResults = () => {
 
                                         <div className="flex flex-col pt-2 justify-between flex-grow">
                                             <div className="flex flex-wrap gap-2 text-sm font-bold text-[#1E293B] mb-2">
-                                                {row.category
+                                                {row.category !='0'
                                                     ? row.category
                                                           .split(",")
                                                           .map((tag, index) => (
@@ -648,7 +648,7 @@ const ServiceResults = () => {
                                                                   #{tag.trim()}
                                                               </span>
                                                           ))
-                                                    : ["example", "dummy"]}
+                                                    : ['#Project Management']}
                                             </div>
                                         </div>
 
@@ -661,7 +661,7 @@ const ServiceResults = () => {
                                                     "Lorem ipsum dolor sit amet consectetur..."}
                                             </p>
                                             <p className="text-sm text-gray-600 inline-block">
-                                                {row.category}
+                                                {row.category=='0'?'Project-Management':row.category}
                                             </p>
 
                                             <div className="text-sm text-gray-500 flex flex-col gap-1">

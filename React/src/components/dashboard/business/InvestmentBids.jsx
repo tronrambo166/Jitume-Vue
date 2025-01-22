@@ -313,6 +313,37 @@ function InvestmentBids() {
         ActiveBids();
     }, []);
 
+    const MarkVerified = (id) => {
+        $.confirm({
+                title: false, // Remove the default title to have full control over placement
+                content: `
+                    <div style="display: flex; align-items: center;">
+                        <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
+                    </div>
+                    <p>Are you sure you want to reject this bid?</p>
+                `,
+                buttons: {
+                    confirm: function () {
+                        axiosClient
+                        .get("/business/markAsVerified/"+id)
+                        .then(({ data }) => {
+                            if(data.status == 200)
+                            showAlert('success',data.message);
+                            else 
+                            showAlert('success',data.message);
+                        })
+                        .catch((err) => {
+                            console.error(err);
+                        }); // Proceed to reject if confirmed
+                    },
+                    cancel: function () {
+                        $.alert("You have canceled"); // Alert if canceled
+                    },
+                },
+        });
+        
+    };
+
 
     const handleSelectAll = () => {
         if (selectAll) {
@@ -428,9 +459,7 @@ function InvestmentBids() {
                                         <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
                                             Amount
                                         </th>
-                                        <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
-                                            Representation %
-                                        </th>
+                                        
                                         <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
                                             Milestone{" "}
                                         </th>
@@ -518,16 +547,14 @@ function InvestmentBids() {
                                             </td>
 
                                             <td className="py-3 px-4 border-b text-left">
-                                                ${bid.amount.toLocaleString()}
+                                                ${bid.amount.toLocaleString()} 
+                                                &nbsp;<span className="text-black text-sm">({bid.representation}%) </span>
                                             </td>
 
                                             <td className="py-3 px-4 border-b text-left">
-                                                {bid.representation}%
-                                            </td>
-                                            <td className="py-3 px-4 border-b text-left">
                                                 {bid.milestone || 3}
                                             </td>
-                                            <td className="text-yellow-500 py-3 px-4 border-b text-left">
+                                            <td className="text-yellow-500 font-light uppercase py-3 px-4 border-b text-left">
                                                 {bid.status}
                                             </td>
                                         </tr>
@@ -603,9 +630,7 @@ function InvestmentBids() {
                                         <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
                                             Amount
                                         </th>
-                                        <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
-                                            Representation %
-                                        </th>
+
                                         <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
                                             Milestone{" "}
                                         </th>
@@ -658,16 +683,14 @@ function InvestmentBids() {
 
                                             <td className="py-3 px-4 border-b text-left">
                                                 ${bid.amount.toLocaleString()}
+                                                 &nbsp;<span className="text-black text-sm">({bid.representation}%) </span>
                                             </td>
 
-                                            <td className="py-3 px-4 border-b text-left">
-                                                {bid.representation}%
-                                            </td>
                                             <td className="py-3 px-4 border-b text-left">
                                                 {bid.milestone || 3}
                                             </td>
                                             <td className="px-4 py-2 text-sm">
-                                                <p className="text-green-500 font-bold">
+                                                <p className="text-green-800 text-sm uppercase font-light">
                                                     {" "}
                                                     {bid.status}{" "}
                                                 </p>
@@ -704,14 +727,15 @@ function InvestmentBids() {
                                     <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
                                         Amount
                                     </th>
-                                    <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
-                                        Representation %
-                                    </th>
+                                    
                                     <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
                                         Milestone{" "}
                                     </th>
                                     <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
                                         Status
+                                    </th>
+                                    <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
+                                        Action
                                     </th>
                                 </tr>
                             </thead>
@@ -755,11 +779,10 @@ function InvestmentBids() {
 
                                         <td className="py-3 px-4 border-b text-left">
                                             ${bid.amount.toLocaleString()}
+                                             &nbsp;<span className="text-black text-sm">({bid.representation}%) </span>
                                         </td>
 
-                                        <td className="py-3 px-4 border-b text-left">
-                                            {bid.representation}%
-                                        </td>
+                                        
                                         <td className="py-3 px-4 border-b text-left">
                                             {bid.milestone || 3}
                                         </td>
@@ -768,6 +791,16 @@ function InvestmentBids() {
                                                 {" "}
                                                 {bid.status}{" "}
                                             </p>
+                                        </td>
+                                        <td className="px-0 py-2 text-sm">
+                                            <button
+                                                onClick={() =>
+                                                    MarkVerified(bid.id)
+                                                }
+                                                style={{fontSize:"11px"}}className="border-solid border-2 border-grey-600 block ... w-full text-left px-1 py-1 hover:bg-grey-700 rounded text-slate-500 transition duration-150 ease-in-out"
+                                            >
+                                                Mark as verified
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}

@@ -470,6 +470,19 @@ public function  bidCommitsEQP(Request $request){
              $msg->to($user['to']);
              $msg->subject('Fulfills a milestone!');
          });
+
+        //Notifications
+         $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+         $addNoti = Notifications::create([
+            'date' => $date,
+            'receiver_id' => $owner->id,
+            'customer_id' => $investor_id,
+            'text' => 'A milestone for your business '.$Business->name.' can now be fulfilled. You can start reviewing/accepting bids as well.',
+            'link' => 'investment-bids',
+            'type' => 'investor',
+
+          ]);
+        //Notifications
      }
      // Milestone Fulfill check
 

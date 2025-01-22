@@ -65,7 +65,7 @@ const ProjectManagers = () => {
             axiosClient
                 .get("FindProjectManagers/" + bid_id)
                 .then(({ data }) => {
-                    setCards(data.services);
+                    setCards(data.services || []);
                     // for (const [key, value] of Object.entries(data.services)) {
                     //          setS_id(btoa(btoa(value.id) || null)
                     //      }
@@ -88,7 +88,7 @@ const ProjectManagers = () => {
                             className="btn-primary py-2 px-6 rounded-xl mt-3"
                         >
                             {" "}
-                            Login To Pay{" "}
+                            Login To View{" "}
                         </button>
                     </div>
                 </div>

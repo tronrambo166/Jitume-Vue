@@ -144,7 +144,7 @@ const ServiceTable = () => {
                 </div>
             </div>
         ),
-        category: item.category,
+        category: item.category == '0'? 'Project Management': item.category,
         //details: item.details,
         details: (
             <div className="max-w-[170px] truncate overflow-ellipsis">

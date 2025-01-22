@@ -130,7 +130,7 @@ return (
 
                               <div className="mt-3 flex-grow">
                                   <p className="text-sm sm:text-base text-gray-500">
-                                      #{card.category}
+                                      #{card.category=='0'?'Project-Management':card.category}
                                   </p>
                                   <h3 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold">
                                       {card.name}

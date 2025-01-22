@@ -241,7 +241,7 @@ const Search = () => {
                             </option>
                             <option value="IT">IT</option>
                             <option value="Legal">Legal</option>
-                            <option value="Project Management">
+                            <option value="0">
                                 Project Management
                             </option>
                             <option value="Branding and Design">

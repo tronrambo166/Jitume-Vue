@@ -142,7 +142,8 @@ $investments = []; $t_share = 0;
 
       if($query == 'myInvest'){
       foreach($miles as $share){
-        $my_listing =listing::where('id',$share->business_id)->first();
+        $my_listing =listing::select('id','user_id','name','category','investment_needed','share')
+        ->where('id',$share->business_id)->first();
         if($my_listing){
         $my_listing->myShare = (float)$share->representation;
         $my_listing->amount =$share->amount;
@@ -1011,6 +1012,19 @@ try {
 }
 
 
+public function markAsVerified($id)
+{
+    try{
+        AcceptedBids::where('id', $id)
+        ->update(['status' => 'verified']);
+        return response()->json(['status' => 200, 'message' => 'Bid marked as verified!']);
+    }
+    catch(\Exception $e){
+        Session::put('failed',$e->getMessage());
+        return response()->json(['status' => 400, 'message' => $e->getMessage()]);
+    }
+}
+
 
 public function business_bids(){
   if(Auth::check())
@@ -1021,7 +1035,8 @@ $bids = array();
 try{
 foreach($res as $r){
   $inv = User::where('id',$r->investor_id)->first();
-  $business = listing::where('id',$r->business_id)->first();
+  $business = listing::select('name','id','threshold_met')
+  ->where('id',$r->business_id)->first();
 
   if($business && $inv){
   $r->investor = $inv->fname.' '.$inv->lname;
@@ -1048,7 +1063,7 @@ return response()->json(['bids' => $bids]);
 }
  catch(\Exception $e){
   Session::put('failed',$e->getMessage());
-  return response()->json(['status' => 'failed', 'message' => $e->getMessage()]);
+  return response()->json(['status' => 400, 'message' => $e->getMessage()]);
  }
 }
 
@@ -1058,7 +1073,8 @@ public function confirmed_bids()
         $investor = User::where('id', Auth::id())->first();
 
   $res = AcceptedBids::where('owner_id', Auth::id())
-  ->where('status', 'Confirmed')->latest()->get();
+  ->where('status', 'Confirmed')->orWhere('status', 'verified')
+  ->latest()->get();
 
   $underVerify = AcceptedBids::where('owner_id', Auth::id())
   ->where('status', 'under_verify')->latest()->get();
@@ -1068,7 +1084,8 @@ public function confirmed_bids()
   try{
   foreach($res as $r){
     $inv = User::where('id',$r->investor_id)->first();
-    $business = listing::where('id',$r->business_id)->first();
+    $business = listing::select('name','id')
+    ->where('id',$r->business_id)->first();
 
     if($business && $inv){
     $r->investor = $inv->fname.' '.$inv->lname;

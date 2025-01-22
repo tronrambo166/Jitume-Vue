@@ -26,10 +26,10 @@ const MyInvest = () => {
                     .get("/business/dashhome/" + "myInvest")
                     .then(({ data }) => {
                         setMyInvest(data.results);
-                        console.log("test data", data);
-                        setName(data.user_name);
-                        SetInvestname(data.results[0].name);
-                        setUserId(data.results[0].user_id);
+                        console.log("MyINvest", data);
+                        //setName(data.user_name);
+                        //SetInvestname(data.results[0].name);
+                        //setUserId(data.results[0].user_id);
 
                     })
                     .catch((err) => {
@@ -108,13 +108,13 @@ const MyInvest = () => {
     // End of cancel logic
 
     // navigateToProjectManager
-    const navigateToProjectManager = () => {
-        navigate("#"); // Adjust the path to match your route
+    const navigateToProjectManager = (bid_id) => {
+        navigate("/projectManagers/"+bid_id); // Adjust the path to match your route
     };
 
     // Modal Toggle Logic for Starting a Conversation
     
-const StartConvorsation = () => {
+const StartConvorsation = (owner_id) => {
     const message = `Could you please confirm the accuracy of the following asset details for ${Investname}:`;  // const sender = Nurul; // Example sender name
     const sender = name;
     const SenderuserId = userId;
@@ -233,26 +233,35 @@ const StartConvorsation = () => {
                                     <ul>
                                         <li>
                                             <button
-                                                onClick={
-                                                    navigateToProjectManager
+                                                onClick={() =>
+                                                    navigateToProjectManager(item.bid_id)
                                                 }
-                                                className="block w-full text-left px-5 py-2 hover:bg-gray-100 text-slate-500 transition duration-150 ease-in-out"
+                                                className="block w-full text-left px-5 py-2 hover:bg-gray-100  transition text-green-800 duration-150 ease-in-out"
                                             >
                                                 Verify With A Project Manager
                                             </button>
                                         </li>
                                         <li>
                                             <button
-                                                onClick={StartConvorsation}
-                                                className="block w-full text-left px-5 py-2 hover:bg-gray-100 text-slate-400 transition duration-150 ease-in-out"
+                                                onClick={() => StartConvorsation(item.user_id) }
+                                                className="block w-full text-left px-5 py-2 hover:bg-gray-100 text-slate-500  transition duration-150 ease-in-out"
                                             >
                                                 Verify With A Business Owner
+                                            </button>
+                                        </li>
+
+                                        <li>
+                                            <button
+                                                onClick={WithdrawInvestment}
+                                                className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-pink-700 transition duration-150 ease-in-out"
+                                            >
+                                                Withdraw Investment
                                             </button>
                                         </li>
                                     </ul>
                                 )}
                             {item.status === "Confirmed" &&
-                                item.type === "Monetery" && (
+                                item.type === "Monetary" && (
                                     <ul>
                                         <li>
                                             <button
@@ -288,11 +297,11 @@ const StartConvorsation = () => {
         "Name",
         "Category",
         "Value Needed",
-        "Contact",
+        "Type",
         "Amount",
         "Business Share Request",
         "My Share",
-        "Total Shares",
+        // "Total Shares",
         "Status",
         "Action",
     ];
@@ -317,18 +326,18 @@ const StartConvorsation = () => {
         name: item.name,
         category: item.category,
         "value needed": item.investment_needed,
-        contact: item.contact,
+        type: item.type=='Asset'?'Equipment':item.type,
         amount: item.amount,
         "business share request": `${item.share}%`,
-        "my share": `${item.myShare.toFixed()}%`,
-        "total shares": (
-            <p className="text-green-500 font-bold text-center">
-                {item.totalShares || 90}{" "}
-                {/* Replace 90 with actual default value */}
-            </p>
-        ),
+        "my share": `${item.myShare.toFixed(2)}%`,
+        // "total shares": (
+        //     <p className="text-green-500 font-bold text-center">
+        //         {item.share || 90}{" "}
+        //         {/* Replace 90 with actual default value */}
+        //     </p>
+        // ),
         status: (
-            <p className="text-green-500 font-bold text-center">
+            <p className="text-green-700 uppercase text-center">
                 {item.status}
             </p>
         ),

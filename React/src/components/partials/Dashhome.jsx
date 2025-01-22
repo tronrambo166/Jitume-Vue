@@ -26,20 +26,15 @@ const Dashhome = () => {
 
   return (
     <div>
-    {hasInvestment? (
-      <>
-      <MyInvest/>
-      <MyBusinesses/>
-      <ServiceTable/>
-      </>
 
-      ):(
-      <>
+
+      {hasInvestment && <MyInvest/> }
       <MyBusinesses/>
       <ServiceTable/>
-      <MyInvest/>
-      </>
-      )}
+
+
+
+
       
     </div>
   )

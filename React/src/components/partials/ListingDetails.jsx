@@ -238,7 +238,7 @@ const ListingDetails = ({ onClose }) => {
             } else {
                 const calculatedPercentage = (
                     (amount / details.investment_needed) *
-                    100
+                    parseInt(details.share)
                 ).toFixed(2);
                 setPercentage(calculatedPercentage);
                 setErrorMessage("");
@@ -277,7 +277,7 @@ const ListingDetails = ({ onClose }) => {
           } else {
               const calculatedPercentage = (
                   (rawAmount / details.investment_needed) *
-                  100
+                  parseInt(details.share)
               ).toFixed(2);
               setEquipmentPercentage(calculatedPercentage);
               setEquipmentErrorMessage(""); // Clear the error message
