@@ -5,8 +5,10 @@ import axiosClient from "../../axiosClient";
 import SkeletonLoader from "./SkeletonLoader";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { useMessage } from "../dashboard/Service/msgcontext"; // Import the custom hook
+import { useLocation } from "react-router-dom";
 
 function Messages() {
+    const location = useLocation();
     const [messages, setMessages] = useState([]);
     const [selectedMessage, setSelectedMessage] = useState(null);
     const [chatHistory, setChatHistory] = useState([]);
@@ -18,10 +20,12 @@ function Messages() {
     const [userId, setUserId] = useState(null);
     //const [from, setFrom] = useState(0);
     const [check, setcheck] = useState(0);
+    const [customer, setCustomer] = useState(0);
 
     const { dshmsg } = useMessage(); // Use the context to get the current message
 
     const { dashmsg } = useMessage(); // Correctly access the context value
+    const { customer_id } = location.state || { customer_id: 0 }; console.log(customer_id)
 
     useEffect(() => {
         let isMounted = true; // Guard for fetch
@@ -55,6 +59,9 @@ function Messages() {
 
         fetchMessages(0);
 
+        if(customer_id != null || customer_id != 0)
+            fetchUser(customer_id);
+
         const handleResize = () => {
             setIsMobileView(window.innerWidth < 768);
         };
@@ -65,8 +72,28 @@ function Messages() {
             isMounted = false; // Prevent updates on unmounted component
             window.removeEventListener("resize", handleResize);
         };
+
+
     }, []);
 
+
+    const fetchUser = (investor_id) => {
+            axiosClient
+                .get("/business/fetchUser/" + investor_id)
+                .then(({ data }) => {
+                    if (data.status == 200) {
+                        setCustomer(data.user || []);
+                        console.log('New User',data);
+                        setMessages(oldArray => [...oldArray, data.user]);
+                        handleSelectMessage(data.user)
+                    }
+                    else
+                    alert(data.messages)
+                })
+                .catch((err) => {
+                        console.error("Error fetching messages:", err);
+                });
+        };
     // Fetching messages from the server.
     // Setting up a listener for resizing the browser window to determine if the view is mobile.
 
@@ -159,7 +186,7 @@ function Messages() {
                 msg: newMessage,
             })
             .then(({ data }) => {
-                console.log("Message sent successfully:", data);
+                console.log("Success:", data.message);
                 setChatHistory((prev) =>
                     prev.map((msg) =>
                         msg === tempMessage ? { ...msg, status: "Sent" } : msg
@@ -235,7 +262,6 @@ function Messages() {
        }
    }, [dashmsg]);
 
-    console.log(userId);
     //
     if (loading) return <SkeletonLoader />;
 

@@ -1,12 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import { FaBell, FaTimes } from "react-icons/fa";
 import axiosClient from "../../axiosClient";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMessage } from "../dashboard/service/msgcontext";
 
 const NotificationBell = () => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const [notifications, setNotifications] = useState([]);
+    const { setdashmsg } = useMessage();
     const dropdownRef = useRef(null);
+    const navigate = useNavigate();
 
     // Fetch notifications on component mount
     useEffect(() => {
@@ -85,6 +88,19 @@ const NotificationBell = () => {
         setDropdownOpen(false);
     };
 
+    const startConversation = (customer_id) =>{
+        const message = `&quot;Hi, thank you for considering investing in my business. Let me know how to best verify this
+        equipment.&quot;`; // const sender = Nurul; // Example sender name
+
+        // Set the new message using the context
+        setdashmsg(message);
+
+        // Navigate to the messages page
+        navigate("/dashboard/messages", {
+                            state: { customer_id: customer_id },
+        });
+    }
+
     return (
         <div className="relative">
             <div className="flex items-center">
@@ -150,14 +166,34 @@ const NotificationBell = () => {
                                                 {notif.date}
                                             </div>
                                             <div className="mt-2 flex space-x-2">
-                                                <Link
+                                                
+                                                    {notif.link =='verify_request'?(
+                                                    <div>
+                                                    <button onClick={() =>
+                                                        startConversation(notif.customer_id)} className="text-blue-600 text-xs hover:text-blue-800">
+                                                        Agree
+                                                    </button> <br></br>
+                                                    <button className="text-blue-600 text-xs hover:text-blue-800">
+                                                        Verify with Project Manager
+                                                    </button>
+                                                    <br></br>
+
+                                                    <button className="text-blue-600 text-xs hover:text-blue-800">
+                                                       Cancel
+                                                    </button>
+                                                    </div>
+                                                    ):(
+
+                                                    <Link
                                                     to={`./${notif.link}`}
                                                     onClick={closeDropdown}
-                                                >
-                                                    <button className="text-blue-600 text-xs hover:text-blue-800">
+                                                    ><button className="text-blue-600 text-xs hover:text-blue-800">
                                                         View More
                                                     </button>
-                                                </Link>
+                                                    </Link>
+                                                    )}
+
+                                                
                                                 <button
                                                     className="text-red-600 text-xs hover:text-red-800"
                                                     onClick={() =>

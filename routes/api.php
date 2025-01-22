@@ -107,12 +107,13 @@ Route::get('bBQhdsfE_WWe4Q-_f7ieh7Hdhf3E_', [BusinessController::class, 'listing
 Route::post('add_eqp', [BusinessController::class, 'add_eqp'])->name('add_eqp');
 Route::post('up_listing', [BusinessController::class, 'up_listing'])->name('up_listing');
 Route::get('delete_listing/{id}', [BusinessController::class, 'delete_listing'])->name('delete_listing');
-Route::get('markAsVerified/{bid_id}', [BusinessController::class, 'markAsVerified']);
 Route::get('business_bids', [BusinessController::class, 'business_bids'])->name('business_bids');
 Route::get('confirmed_bids', [BusinessController::class, 'confirmed_bids'])->name('confirmed_bids');
 Route::get('bBQhdsfE_WWe4Q-_f7ieh7Hdhf5E_', [BusinessController::class, 'my_bids'])->name('my_bids');
 Route::get('remove_bids/{id}', [BusinessController::class, 'remove_bids'])->name('remove_bids');
 
+Route::get('requestOwnerToVerify/{bid_id}', [BusinessController::class, 'requestOwnerToVerify']);
+Route::get('markAsVerified/{bid_id}', [BusinessController::class, 'markAsVerified']);
 Route::get('assetEquip/download/{id}/{type}', [BusinessController::class, 'assetEquip_download'])->name('assetEquip/download');
 Route::get('account', [BusinessController::class, 'account'])->name('account');
 
@@ -168,6 +169,8 @@ Route::post('embed_service_videos', [ServiceController::class, 'embed_service_vi
 
 Route::get('/getCurrSubscription', [checkoutController::class, 'getCurrSubscription'])->name('getCurrSubscription');
 Route::get('cancelSubscription/{id}', [checkoutController::class, 'cancelSubscription'])->name('cancelSubscription');
+Route::get('fetchUser/{id}', [AuthController::class, 'fetchUser']);
+
 
 });
 

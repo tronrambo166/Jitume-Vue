@@ -93,12 +93,20 @@
                 href="<?php echo config('app.app_url');?>projectManagers/{{$bid_id}}"
                 class="bg-blue-800 text-white px-6 py-3 hover:no-underline rounded-lg transition hover:bg-blue-900"
             >
-                Request</a
+                Request a Project Manager to Verify.</a
             >
 
-            <!-- <a href="http://127.0.0.1:5173/projectManagerCancel/{{$bid_id}}"
+            <a
+                target="_blank"
+                href="<?php echo config('app.app_url');?>requestOwnerToVerify/{{$bid_id}}"
+                class="bg-blue-800 text-white px-6 py-3 hover:no-underline rounded-lg transition hover:bg-blue-900"
+            >
+                Request Business Owner to Verify</a
+            >
+
+            <a href="http://127.0.0.1:5173/projectManagerCancel/{{$bid_id}}"
 			style="text-decoration:none;color:white;background:red;padding:8px;border-radius:5px;display: inline;width: 50%;margin: auto;margin-top: 20px;">
-			Cancel</a> -->
+			Cancel</a>
         </div>
 
         @endif

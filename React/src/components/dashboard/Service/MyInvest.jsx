@@ -131,14 +131,14 @@ const MyInvest = () => {
 
     // StartConversation
     // Function to handle sending the conversation
-    const StartConversation = () => {
+    const verifyRequest = (bid_id) => {
         $.confirm({
             title: false, // Remove the default title to have full control over placement
             content: `
                       <div style="display: flex; align-items: center;">
                             <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
                         </div>
-                      <p>Do you want to send a request to ${name} to verify your asset details regarding ${Investname} ?</p>
+                      <p>Do you want to send a request to verify your asset details ?</p>
                     `,
             buttons: {
                 confirm: {
@@ -146,19 +146,18 @@ const MyInvest = () => {
                     btnClass: "btn-success",
                     action: () => {
                         axiosClient
-                            .get("business/start_conversation")
+                            .get("business/requestOwnerToVerify/"+bid_id)
                             .then(({ data }) => {
                                 console.log(data);
                                 if (data.status === 200) {
                                     showAlert(
                                         "success",
-                                        "Your message was sent successfully!"
+                                        data.message
                                     );
-                                    navigate("/dashboard/conversation");
                                 } else {
                                     showAlert(
                                         "error",
-                                        "Failed to send your message. Please try again."
+                                        data.message
                                     );
                                 }
                             })
@@ -252,8 +251,8 @@ const MyInvest = () => {
                                         <li>
                                             <button
                                                 onClick={() =>
-                                                    StartConversation(
-                                                        item.user_id
+                                                    verifyRequest(
+                                                        item.bid_id
                                                     )
                                                 }
                                                 className="block w-full text-left px-5 py-2 hover:bg-gray-100 text-slate-500  transition duration-150 ease-in-out"

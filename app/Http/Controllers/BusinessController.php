@@ -1012,6 +1012,49 @@ try {
 }
 
 
+public function requestOwnerToVerify($bid_id)
+{   
+    try{
+        $bid = AcceptedBids::select('owner_id','investor_id','business_id')
+        ->where('id',$bid_id)->first();
+
+        $listing = listing::select('name','user_id')
+        ->where('id',$bid->business_id)->first();
+
+        $owner = User::select('email')->where('id',$bid->owner_id)->first();
+        //$inv_name = User::select('fname','lname')->where('id',$bid->business_id)->first();
+
+        //Notifications
+         $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+         $addNoti = Notifications::create([
+            'date' => $date,
+            'receiver_id' => $bid->owner_id,
+            'customer_id' => $bid->investor_id,
+            'text' => 'Investor _name requested you to verify their Equipment regarding a bid to the business '.$listing->name,
+            'link' => 'verify_request',
+            'type' => 'investor',
+          ]);
+        //Notifications
+
+        //Email
+         
+         $info=[ 'business_name'=>$listing->name ];
+         $user['to'] = $owner->email; //'tottenham266@gmail.com'; //
+         
+         if($owner)
+            Mail::send('bids.verify_request', $info, function($msg) use ($user){
+             $msg->to($user['to']);
+             $msg->subject('Equipment Verify request!');
+         });
+        //Email
+        return response()->json(['status' => 200, 'message' => 'Success, please wait for the Business Owner to contact you.']);
+    }
+    catch(\Exception $e){
+        Session::put('failed',$e->getMessage());
+        return response()->json(['status' => 400, 'message' => $e->getMessage()]);
+    }
+}
+
 public function markAsVerified($id)
 {
     try{
@@ -1024,7 +1067,6 @@ public function markAsVerified($id)
         return response()->json(['status' => 400, 'message' => $e->getMessage()]);
     }
 }
-
 
 public function business_bids(){
   if(Auth::check())

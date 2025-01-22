@@ -22,6 +22,22 @@ class AuthController extends Controller
         ]);
     }
 
+    public function fetchUser($id) {
+         $user1 = array();
+
+         $user = User::select('email','id', 'fname', 'lname', 'gender','image')
+         ->where('id', $id)->get();
+         $user[0]->from_id = Auth::id();
+         $user[0]->to_id = $user[0]->id;
+         $user[0]->sender = $user[0]->fname.' '.$user[0]->lname;
+         $user[0]->messages = [];
+         $user[0]->service_id = 0;
+         $user1 = json_decode($user[0], true);;
+         return response()->json([
+            'user' => $user1, 'status' => 200
+        ]);
+    }
+
     public function partiesInfo($listing_id) {
          $listing = listing::select('user_id')->where('id', $listing_id)->first();
          $owner = User::select('paystack_acc_id')

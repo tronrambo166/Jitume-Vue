@@ -1131,20 +1131,21 @@ public function serviceMsg(Request $request){
 
 public function serviceReply(Request $request){ 
 
-  try{
+  try{ 
     //$owner = Services::where('id',$request->service_id)->first();
     $msg = ServiceMessages::where('id',$request->msg_id)->first();
 
-    if($msg->booker_id == Auth::id()){
+    if(isset($msg->booker_id)){
+      if($msg->booker_id == Auth::id()){
       $to_id = $msg->service_owner_id;
       $from_id = $msg->booker_id;
-    }
-    else{
+      }
+      else{
       $to_id = $msg->booker_id;
       $from_id = $msg->service_owner_id;
-    }
+      }
 
-    $message = ServiceMessages::create([
+      $message = ServiceMessages::create([
       'booker_id' => $msg->booker_id,
       'service_id' => $request->service_id,
       'service_owner_id' => $msg->service_owner_id,
@@ -1152,14 +1153,28 @@ public function serviceReply(Request $request){
       'to_id' => $to_id,
       'from_id' => $from_id
     ]); 
+
+    }
+    else{
+      $message = ServiceMessages::create([
+      'booker_id' => null,
+      'service_id' => null,
+      'service_owner_id' => null,
+      'msg' => $request->msg,
+      'to_id' => $request->msg_id,
+      'from_id' => Auth::id()
+    ]); 
+    }
+
+    
     if($message)
-    return response()->json(['success' => 'Message Sent!', 'status'=>200]);
+    return response()->json(['message' => 'Message Sent!', 'status'=>200]);
     else
-    return response()->json(['Error' => 'Message Not Sent!', 'status'=>400]);
+    return response()->json(['message' => 'Message Not Sent!', 'status'=>400]);
     }
 
     catch(\Exception $e){
-      return redirect()->back()->with('failed', $e->getMessage());
+      return response()->json(['status'=>400, 'message' => $e->getMessage()]);
     }
 }
 
