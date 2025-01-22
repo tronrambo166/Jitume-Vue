@@ -7,6 +7,8 @@ import { useAlert } from "../../partials/AlertContext";
 import ReusableTable from "./ReusableTable";
 import { AiOutlineFileAdd } from "react-icons/ai"; // Import the icon
 import { Link } from "react-router-dom";
+import { BarLoader } from "react-spinners";
+
 
 const MyBusinesses = () => {
     const navigate = useNavigate();
@@ -14,16 +16,21 @@ const MyBusinesses = () => {
     const [editItem, setEditItem] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const { showAlert } = useAlert();
+    const [isLoading, setIsLoading] = useState(true);
+
 
     useEffect(() => {
         const getBusinesses = () => {
+            setIsLoading(true);
             axiosClient
                 .get("/business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf3E_")
                 .then(({ data }) => {
                     setBusiness(data.business);
+                    setIsLoading(false);
                 })
                 .catch((err) => {
                     console.log(err);
+                    setIsLoading(false);
                 });
         };
         getBusinesses();
@@ -209,26 +216,35 @@ const MyBusinesses = () => {
                 </section>
             ) : (
                 <section className="bg-white border border-gray-300 rounded-xl w-full py-6 px-6">
-                    <div className="flex flex-col items-center">
-                        {/* Icon */}
-                        <AiOutlineFileAdd
-                            size={30}
-                            className="text-gray-500 mb-4"
-                        />
-                        <h1 className="text-[#2D3748] font-semibold text-xl sm:text-l mb-4">
-                            No Businesses Found
-                        </h1>
-                        <p className="text-gray-600 text-center">
-                            You don't have any businesses listed yet. Please add
-                            one to get started.
-                            <Link to="/dashboard/addbusiness">
-                                <span className="text-green font-bold hover:underline">
-                                    {" "}
-                                    Add A Business
-                                </span>
-                            </Link>
-                        </p>
-                    </div>
+                    {isLoading ? (
+                        <div className="flex flex-col items-center justify-center py-12">
+                            <BarLoader color="#38a169" width={150} />
+                            <p className="text-gray-600 mt-4">
+                                Loading businesses, please wait...
+                            </p>
+                        </div>
+                    ) : (
+                        <div className="flex flex-col items-center">
+                            {/* Icon */}
+                            <AiOutlineFileAdd
+                                size={30}
+                                className="text-gray-500 mb-4"
+                            />
+                            <h1 className="text-[#2D3748] font-semibold text-xl sm:text-l mb-4">
+                                No Businesses Found
+                            </h1>
+                            <p className="text-gray-600 text-center">
+                                You don't have any businesses listed yet. Please
+                                add one to get started.
+                                <Link to="/dashboard/addbusiness">
+                                    <span className="text-green font-bold hover:underline">
+                                        {" "}
+                                        Add A Business
+                                    </span>
+                                </Link>
+                            </p>
+                        </div>
+                    )}
                 </section>
             )}
 

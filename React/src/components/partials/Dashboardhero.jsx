@@ -22,6 +22,7 @@ import Breadcrumb from "./Breadcrumb";
 import { useAlert } from "../partials/AlertContext";
 import DefaultImg from "./Settings/components/DefaultImg";
 import { MdDashboard } from "react-icons/md"; // A clean dashboard icon
+import TujitumeLogo from "../../images/Tujitumelogo.svg";
 
 const Dashboardhero = () => {
     const { token, setToken } = useStateContext();
@@ -113,11 +114,19 @@ const Dashboardhero = () => {
     };
 
     if (loading) {
-        return (
-            <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
-                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-green-600"></div>
-            </div>
-        );
+       return (
+           <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
+               <div className="flex flex-col items-center justify-center space-y-4">
+                   <img
+                       src={TujitumeLogo}
+                       alt="Tujitume Logo"
+                       className="w-32 h-auto"
+                   />
+                   <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-green-600"></div>
+               </div>
+           </div>
+       );
+
     }
     let alertShown = false;
 

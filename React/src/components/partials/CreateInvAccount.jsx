@@ -386,7 +386,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                     <button
                         className={`px-4 py-2 text-sm ${
                             isSignIn
-                                ? "font-semibold text-green-600 border-b-2 border-green-500"
+                                ? "font-semibold text-green-600 underline border-green-500"
                                 : "text-gray-600 hover:text-green-500"
                         }`}
                         onClick={() => setIsSignIn(true)}
@@ -396,7 +396,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                     <button
                         className={`px-4 py-2 text-sm ${
                             !isSignIn
-                                ? "font-semibold text-green-600 border-b-2 border-green-500"
+                                ? "font-semibold text-green-600 underline  border-green-500"
                                 : "text-gray-600 hover:text-green-500"
                         }`}
                         onClick={() => setIsSignIn(false)}

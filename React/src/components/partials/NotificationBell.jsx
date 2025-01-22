@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { FaBell, FaTimes } from "react-icons/fa";
 import axiosClient from "../../axiosClient";
 import { Link, useNavigate } from "react-router-dom";
-import { useMessage } from "../dashboard/service/msgcontext";
+import { useMessage } from "../dashboard/Service/msgcontext";
 
 const NotificationBell = () => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -89,8 +89,7 @@ const NotificationBell = () => {
     };
 
     const startConversation = (customer_id) =>{
-        const message = `&quot;Hi, thank you for considering investing in my business. Let me know how to best verify this
-        equipment.&quot;`; // const sender = Nurul; // Example sender name
+        const message = `Hi, thank you for considering investing in my business. Let me know how to best verify this equipment.`; // const sender = Nurul; // Example sender name
 
         // Set the new message using the context
         setdashmsg(message);

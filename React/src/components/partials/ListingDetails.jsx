@@ -40,7 +40,6 @@ const ListingDetails = ({ onClose }) => {
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
     const navigate = useNavigate();
 
-
     const handleClose = () => {
         setIsVisible(false);
     };
@@ -251,75 +250,73 @@ const ListingDetails = ({ onClose }) => {
 
     console.log(formattedAmount);
 
-
-    const sintamei = amount
+    const sintamei = amount;
     // alert(sintamei);
 
     const lemein = equipmentAmount;
     // alert(lemein);
-  const handleEquipmentAmountChange = (e) => {
-      let enteredAmount = e.target.value.replace(/,/g, ""); // Remove commas for calculations
-      let formattedAmount = enteredAmount
-          ? parseFloat(enteredAmount).toLocaleString() // Add commas for display
-          : "";
+    const handleEquipmentAmountChange = (e) => {
+        let enteredAmount = e.target.value.replace(/,/g, ""); // Remove commas for calculations
+        let formattedAmount = enteredAmount
+            ? parseFloat(enteredAmount).toLocaleString() // Add commas for display
+            : "";
 
-      setEquipmentAmount(formattedAmount); // Set formatted amount with commas
+        setEquipmentAmount(formattedAmount); // Set formatted amount with commas
 
-      let rawAmount = parseFloat(enteredAmount); // Raw value for calculations
+        let rawAmount = parseFloat(enteredAmount); // Raw value for calculations
 
-      if (enteredAmount && amount_r > 0) {
-          if (rawAmount > amount_r) {
-              setEquipmentAmount(""); // Clear formatted amount
-              setEquipmentPercentage(0);
-              setEquipmentErrorMessage(
-                  "Amount exceeds the investment required!"
-              );
-          } else {
-              const calculatedPercentage = (
-                  (rawAmount / details.investment_needed) *
-                  parseInt(details.share)
-              ).toFixed(2);
-              setEquipmentPercentage(calculatedPercentage);
-              setEquipmentErrorMessage(""); // Clear the error message
-          }
-      } else {
-          setEquipmentPercentage("");
-          setEquipmentErrorMessage(""); // Clear the error message
-      }
-  };
+        if (enteredAmount && amount_r > 0) {
+            if (rawAmount > amount_r) {
+                setEquipmentAmount(""); // Clear formatted amount
+                setEquipmentPercentage(0);
+                setEquipmentErrorMessage(
+                    "Amount exceeds the investment required!"
+                );
+            } else {
+                const calculatedPercentage = (
+                    (rawAmount / details.investment_needed) *
+                    parseInt(details.share)
+                ).toFixed(2);
+                setEquipmentPercentage(calculatedPercentage);
+                setEquipmentErrorMessage(""); // Clear the error message
+            }
+        } else {
+            setEquipmentPercentage("");
+            setEquipmentErrorMessage(""); // Clear the error message
+        }
+    };
 
-  const handleEquipmentInvest = () => {
-      // Remove commas before encoding
-      var amountWithoutCommas = equipmentAmount.replace(/,/g, ""); // Strip commas
-      var encodedAmount = btoa(amountWithoutCommas); // Encode the raw value without commas
+    const handleEquipmentInvest = () => {
+        // Remove commas before encoding
+        var amountWithoutCommas = equipmentAmount.replace(/,/g, ""); // Strip commas
+        var encodedAmount = btoa(amountWithoutCommas); // Encode the raw value without commas
 
-      var percent = btoa(equipmentPercentage); // Encode percentage
-      var id = btoa(form.listing_id); // Encode listing ID
+        var percent = btoa(equipmentPercentage); // Encode percentage
+        var id = btoa(form.listing_id); // Encode listing ID
 
-      if (amountWithoutCommas == "" || amountWithoutCommas == 0)
-          $.alert({
-              title: "Alert!",
-              content: "Please enter a bid to invest!",
-          });
-      else {
-          let t = this;
-          $.confirm({
-              title: false,
-              content: `<img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo"><div>Are you sure you want to bid?</div>`,
-              buttons: {
-                  confirm: function () {
-                      navigate(
-                          `/investEquip/${encodedAmount}/${id}/${percent}`
-                      );
-                  },
-                  cancel: function () {
-                      $.alert("Canceled!");
-                  },
-              },
-          });
-      }
-  };
-
+        if (amountWithoutCommas == "" || amountWithoutCommas == 0)
+            $.alert({
+                title: "Alert!",
+                content: "Please enter a bid to invest!",
+            });
+        else {
+            let t = this;
+            $.confirm({
+                title: false,
+                content: `<img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo"><div>Are you sure you want to bid?</div>`,
+                buttons: {
+                    confirm: function () {
+                        navigate(
+                            `/investEquip/${encodedAmount}/${id}/${percent}`
+                        );
+                    },
+                    cancel: function () {
+                        $.alert("Canceled!");
+                    },
+                },
+            });
+        }
+    };
 
     const [showAuthModal, setShowAuthModal] = useState(false);
 
@@ -532,8 +529,6 @@ const ListingDetails = ({ onClose }) => {
         });
     };
 
-   
-
     const stripeSmallFee = (business_id, amount) => {
         var amount = btoa(amount);
         var business_id = btoa(business_id);
@@ -625,21 +620,20 @@ const ListingDetails = ({ onClose }) => {
             </div>
         );
     };
-   
 
-    // Unlock Logic below 
-        useEffect(() => {
-            const shouldOpenModal = localStorage.getItem("unlockToInvest");
-            if (shouldOpenModal === "1") {
-                localStorage.removeItem("unlockToInvest"); // Remove the flag to prevent reopening
+    // Unlock Logic below
+    useEffect(() => {
+        const shouldOpenModal = localStorage.getItem("unlockToInvest");
+        if (shouldOpenModal === "1") {
+            localStorage.removeItem("unlockToInvest"); // Remove the flag to prevent reopening
 
-                handleOpen(); // Call the handleOpen function
-            }
-        }, []);
-        const handleUnlockClick = () => {
-            localStorage.setItem("unlockToInvest", "1"); // Set the flag in local storage
-            setIsModalOpen(true); // Open the modal
-        };
+            handleOpen(); // Call the handleOpen function
+        }
+    }, []);
+    const handleUnlockClick = () => {
+        localStorage.setItem("unlockToInvest", "1"); // Set the flag in local storage
+        setIsModalOpen(true); // Open the modal
+    };
 
     return (
         <>
@@ -695,8 +689,12 @@ const ListingDetails = ({ onClose }) => {
                                     </p>
                                 </div>
 
-                                <div className="flex flex-wrap items-center gap-1 mt-6 ">
-                                    <span className="text-gray-700 font-medium">
+                                <div
+                                    className="flex flex-wrap md:flex-wrap lg:flex-nowrap whitespace-nowrap
+
+                                  items-center gap-1 mt-6 "
+                                >
+                                    <span className="text-gray-700 whitespace-nowrap font-medium">
                                         Amount Requested:
                                     </span>
                                     <p className="text-green-700 text-sm font-bold">
@@ -706,18 +704,19 @@ const ListingDetails = ({ onClose }) => {
                                         ).toLocaleString()}
                                         <span className="text-sm">
                                             {" "}
-                                            / for {details.share}%
+                                            for {details.share}%
                                         </span>
                                     </p>
+
                                     <div className="flex items-center gap-2 text-sm">
                                         <span className="text-gray-500">|</span>
                                         <span className="text-green-700">
-                                            Amount Collected:{" "}
+                                            Amount Collected: ${" "}
                                             {details.amount_collected.toLocaleString()}
                                         </span>
                                         <span className="text-gray-500">|</span>
                                         <span className="text-red-700">
-                                            Amount Needed:{" "}
+                                            Amount Needed: ${" "}
                                             {(
                                                 details.investment_needed -
                                                 details.amount_collected
@@ -725,33 +724,33 @@ const ListingDetails = ({ onClose }) => {
                                         </span>
                                     </div>
                                 </div>
-
+                                <h3 className="py-4 text-gray-800 text-sm">
+                                    Only 25% of the bid amount is required
+                                    upfront as a deposit.
+                                </h3>
                                 <div className="flex gap-4 mt-4">
                                     <div
                                         className="flex items-center gap-10"
                                         id="unlockButton"
                                     >
                                         {token && !conv ? (
-                                            details.investment_needed 
-                                            == details.amount_collected?
-                                            (
+                                            details.investment_needed ==
+                                            details.amount_collected ? (
                                                 <div className="w-full text-center p-4">
                                                     <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
-                                                        Business Is Fully Invested
-                                                        In.
+                                                        Business Is Fully
+                                                        Invested In.
                                                     </p>
                                                 </div>
-                                            ):(
+                                            ) : (
                                                 <a
-                                                onClick={handleOpen}
-                                                className="bg-green hover:bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
+                                                    onClick={handleOpen}
+                                                    className="bg-green hover:bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
                                                 >
-                                                <FaLock className="mr-2" />
-                                                Unlock To Invest
+                                                    <FaLock className="mr-2" />
+                                                    Unlock To Invest
                                                 </a>
                                             )
- 
-
                                         ) : token && conv ? (
                                             <p className="text-dark bg-gray-100 mt-3 text-gray-700 px-5 rounded-lg shadow-md py-2 md:py-3">
                                                 Business Is Unlocked
@@ -994,8 +993,6 @@ const ListingDetails = ({ onClose }) => {
                 </div>
             </div>
 
-
-
             {/*Small_fee POPUP*/}
 
             <div
@@ -1145,7 +1142,6 @@ const ListingDetails = ({ onClose }) => {
 
             {/*Small_fee POPUP*/}
 
-
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
             <Popup isOpen={isPopupOpen} onClose={closePopup} />
             <UnlockPopup
@@ -1191,9 +1187,18 @@ const ListingDetails = ({ onClose }) => {
                             {token && conv && amount_r && running ? (
                                 <>
                                     <div className="w-full md:w-1/3 bg-white border border-gray-300 rounded-lg p-6 flex flex-col justify-between">
-                                        <h2 className="text-xl font-semibold text-[#334155] mb-6">
+                                        <h2 className="text-xl font-semibold text-[#334155] mb-4">
                                             Enter A Bid To Invest
                                         </h2>
+                                        <h3 className="text-sm pb-3 text-gray-800">
+                                            {" "}
+                                            Only 25% of the bid amount is
+                                            required upfront as a deposit.
+                                            However, please enter the full 100%
+                                            of the intended investment amount
+                                            below.”
+                                        </h3>
+
                                         {/* <p className="text-sm text-[#334155] mb-4">
                                             By investing, you're contributing to
                                             a valuable opportunity that supports
@@ -1251,7 +1256,6 @@ const ListingDetails = ({ onClose }) => {
                                             </p>
                                         )}
                                     </div>
-
                                     <div className="w-full md:w-1/3 bg-white border border-gray-300 rounded-lg p-6 flex flex-col justify-between">
                                         <h2 className="text-xl font-semibold   text-[#334155] mb-6">
                                             Enter Equipment Equivalent Bid

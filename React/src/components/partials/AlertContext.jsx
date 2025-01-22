@@ -140,7 +140,7 @@ const Alert = ({ type, message, link, id }) => {
     const capitalizedMessage = capitalizeFirstLetter(message);
     return (
         <div
-            className={`fixed top-5 right-5 flex items-center rounded-lg p-4 border ${config.bg} backdrop-blur-sm transition-all transform animate-slide-in z-50`}
+            className={`fixed top-5 left-5 flex items-center rounded-lg p-4 border ${config.bg} backdrop-blur-sm transition-all transform animate-[slide-in-left-to-right_0.5s_ease-out] z-50`}
         >
             <div className="mr-3">{config.icon}</div>
             <div className="flex-grow">
@@ -148,7 +148,7 @@ const Alert = ({ type, message, link, id }) => {
                 {link && (
                     <a
                         href={link.path}
-                        className="ml-2 text-green font-bold  hover:text-green-800"
+                        className="ml-2 text-green font-bold hover:text-green-800"
                     >
                         {link.text}
                     </a>

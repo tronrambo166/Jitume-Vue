@@ -376,12 +376,15 @@ const AddService = ({ connected, userId }) => {
             ) : (
                 <form
                     onSubmit={handleSubmit}
-                    className="w-full max-w-7xl mx-auto space-y-6"
+                    className="w-full max-w-7xl mx-auto space-y-6 mt-6 sm:mt-0"
                 >
+                    <hr className="border-t border-gray-300 mt-2 sm:hidden"></hr>
+
                     {/* Form Fields */}
                     <h3 className="text-2xl font-bold mb-4 py-4 text-gray-800">
                         Add Service
                     </h3>
+                    <hr className="border-t border-gray-300 sm:hidden"></hr>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -594,7 +597,6 @@ const AddService = ({ connected, userId }) => {
                             </p>
                         </div>
 
-                       
                         <div className="relative">
                             <label className="block mb-1 text-gray-700 text-sm font-semibold">
                                 Upload Pin

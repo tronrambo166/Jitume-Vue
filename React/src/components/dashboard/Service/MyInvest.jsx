@@ -8,7 +8,7 @@ import TujitumeLogo from "../../../images/Tujitumelogo.svg";
 import { BsThreeDots } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useMessage } from "./msgcontext"; // Import the custom hook
-
+import { BarLoader } from "react-spinners";
 const MyInvest = () => {
     const [myInvest, setMyInvest] = useState([]);
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
@@ -19,8 +19,10 @@ const MyInvest = () => {
     const [activeFilter, setActiveFilter] = useState("pending"); // Default to "pending"
     const [Investname, SetInvestname] = useState("");
     const [userId, setUserId] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         const getInvestments = () => {
+            setIsLoading(true);
             setTimeout(() => {
                 axiosClient
                     .get("/business/dashhome/" + "myInvest")
@@ -30,9 +32,11 @@ const MyInvest = () => {
                         setName(data.user_name);
                         SetInvestname(data.results[0].name);
                         //setUserId(data.results[0].user_id);
+                        setIsLoading(false);
                     })
                     .catch((err) => {
                         console.error(err);
+                        setIsLoading(false);
                     });
             }, 500);
         };
@@ -146,19 +150,13 @@ const MyInvest = () => {
                     btnClass: "btn-success",
                     action: () => {
                         axiosClient
-                            .get("business/requestOwnerToVerify/"+bid_id)
+                            .get("business/requestOwnerToVerify/" + bid_id)
                             .then(({ data }) => {
                                 console.log(data);
                                 if (data.status === 200) {
-                                    showAlert(
-                                        "success",
-                                        data.message
-                                    );
+                                    showAlert("success", data.message);
                                 } else {
-                                    showAlert(
-                                        "error",
-                                        data.message
-                                    );
+                                    showAlert("error", data.message);
                                 }
                             })
                             .catch((err) => {
@@ -235,7 +233,22 @@ const MyInvest = () => {
                             )}
                             {item.status === "Confirmed" &&
                                 item.type === "Asset" && (
-                                    <ul>
+                                    <ul className="divide-y divide-gray-200 bg-white shadow rounded-lg">
+                                        <li>
+                                            <button
+                                                onClick={() =>
+                                                    verifyRequest(item.bid_id)
+                                                }
+                                                className="flex items-center w-full text-left px-5 py-3 hover:bg-gray-50 text-slate-600 transition duration-150 ease-in-out"
+                                            >
+                                                <span className="mr-2">
+                                                    <i className="fas fa-user-check text-blue-500"></i>
+                                                </span>
+                                                <span>
+                                                    Verify With A Business Owner
+                                                </span>
+                                            </button>
+                                        </li>
                                         <li>
                                             <button
                                                 onClick={() =>
@@ -243,30 +256,26 @@ const MyInvest = () => {
                                                         item.bid_id
                                                     )
                                                 }
-                                                className="block w-full text-left px-5 py-2 hover:bg-gray-100  transition text-green-800 duration-150 ease-in-out"
+                                                className="flex items-center w-full text-left px-5 py-3 hover:bg-gray-50 text-green-800 transition duration-150 ease-in-out"
                                             >
-                                                Verify With A Project Manager
+                                                <span className="mr-2">
+                                                    <i className="fas fa-briefcase text-green-500"></i>
+                                                </span>
+                                                <span>
+                                                    Verify With A Project
+                                                    Manager
+                                                </span>
                                             </button>
                                         </li>
-                                        <li>
-                                            <button
-                                                onClick={() =>
-                                                    verifyRequest(
-                                                        item.bid_id
-                                                    )
-                                                }
-                                                className="block w-full text-left px-5 py-2 hover:bg-gray-100 text-slate-500  transition duration-150 ease-in-out"
-                                            >
-                                                Verify With A Business Owner
-                                            </button>
-                                        </li>
-
                                         <li>
                                             <button
                                                 onClick={WithdrawInvestment}
-                                                className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-pink-700 transition duration-150 ease-in-out"
+                                                className="flex items-center w-full text-left px-5 py-3 hover:bg-gray-50 text-pink-700 transition duration-150 ease-in-out"
                                             >
-                                                Withdraw Investment
+                                                <span className="mr-2">
+                                                    <i className="fas fa-money-bill-wave text-pink-500"></i>
+                                                </span>
+                                                <span>Withdraw Investment</span>
                                             </button>
                                         </li>
                                     </ul>
@@ -379,67 +388,83 @@ const MyInvest = () => {
     return (
         <div className="py-4 mt-8 lg:mt-0 px-0 sm:px-[21px]">
             <section className="bg-white border rounded-xl w-full">
-                {myInvest.length > 0 ? (
-                    <section>
-                        {/* Section Title */}
-                        <h1 className="text-[#2D3748] ml-6 mt-4 font-semibold text-xl sm:text-2xl">
-                            My Investments
-                        </h1>
-
-                        {/* Filters */}
-                        <div className="flex justify-start ml-6 mt-4 m gap-6 items-center">
-                            <h3
-                                onClick={() => setActiveFilter("pending")}
-                                className={`text-sm font-light cursor-pointer border-b-2 ${
-                                    activeFilter === "pending"
-                                        ? "text-green border-green"
-                                        : "text-gray-500 border-transparent"
-                                } transition-all`}
-                                aria-label="Pending Investments Filter"
-                            >
-                                Pending Investments
-                            </h3>
-                            <h3
-                                onClick={() => setActiveFilter("confirmed")}
-                                className={`text-sm font-light cursor-pointer border-b-2 ${
-                                    activeFilter === "confirmed"
-                                        ? "text-green border-green"
-                                        : "text-gray-500 border-transparent"
-                                } transition-all`}
-                                aria-label="Active Investments Filter"
-                            >
-                                Active Investments
-                            </h3>
-                        </div>
-
-                        {/* Table */}
-                        <div className="whitespace-nowrap justify-center">
-                            <ReusableTable
-                                headers={headers}
-                                data={tableData}
-                                rowsPerPage={5}
-                                tableId="myInvestTable"
-                            />
-                        </div>
-                    </section>
+                {isLoading ? (
+                    <div className="flex flex-col items-center justify-center py-12">
+                        <BarLoader color="#38a169" width={150} />
+                        <p className="text-gray-600 mt-4">
+                            Loading investments, please wait...
+                        </p>
+                    </div>
                 ) : (
-                    /* No Investments Section */
-                    <section className="bg-white border border-gray-300 rounded-xl w-full py-6 px-6">
-                        <div className="flex flex-col items-center">
-                            <FaChartLine
-                                size={30}
-                                className="text-gray-500 mb-4"
-                                aria-hidden="true"
-                            />
-                            <h3 className="text-[#2D3748] font-semibold text-xl sm:text-l mb-4">
-                                No Investments Found
-                            </h3>
-                            <p className="text-gray-600 text-center">
-                                You don't have any investments yet. Please start
-                                investing to see your portfolio grow.
-                            </p>
-                        </div>
-                    </section>
+                    <>
+                        {myInvest.length > 0 ? (
+                            <section>
+                                {/* Section Title */}
+                                <h1 className="text-[#2D3748] ml-6 mt-4 font-semibold text-xl sm:text-2xl">
+                                    My Investments
+                                </h1>
+
+                                {/* Filters */}
+                                <div className="flex justify-start ml-6 mt-4 m gap-6 items-center">
+                                    <h3
+                                        onClick={() =>
+                                            setActiveFilter("pending")
+                                        }
+                                        className={`text-sm font-light cursor-pointer border-b-2 ${
+                                            activeFilter === "pending"
+                                                ? "text-green border-green"
+                                                : "text-gray-500 border-transparent"
+                                        } transition-all`}
+                                        aria-label="Pending Investments Filter"
+                                    >
+                                        Pending Investments
+                                    </h3>
+                                    <h3
+                                        onClick={() =>
+                                            setActiveFilter("confirmed")
+                                        }
+                                        className={`text-sm font-light cursor-pointer border-b-2 ${
+                                            activeFilter === "confirmed"
+                                                ? "text-green border-green"
+                                                : "text-gray-500 border-transparent"
+                                        } transition-all`}
+                                        aria-label="Active Investments Filter"
+                                    >
+                                        Active Investments
+                                    </h3>
+                                </div>
+
+                                {/* Table */}
+                                <div className="whitespace-nowrap justify-center">
+                                    <ReusableTable
+                                        headers={headers}
+                                        data={tableData}
+                                        rowsPerPage={5}
+                                        tableId="myInvestTable"
+                                    />
+                                </div>
+                            </section>
+                        ) : (
+                            /* No Investments Section */
+                            <section className="bg-white border border-gray-300 rounded-xl w-full py-6 px-6">
+                                <div className="flex flex-col items-center">
+                                    <FaChartLine
+                                        size={30}
+                                        className="text-gray-500 mb-4"
+                                        aria-hidden="true"
+                                    />
+                                    <h3 className="text-[#2D3748] font-semibold text-xl sm:text-l mb-4">
+                                        No Investments Found
+                                    </h3>
+                                    <p className="text-gray-600 text-center">
+                                        You don't have any investments yet.
+                                        Please start investing to see your
+                                        portfolio grow.
+                                    </p>
+                                </div>
+                            </section>
+                        )}
+                    </>
                 )}
             </section>
         </div>

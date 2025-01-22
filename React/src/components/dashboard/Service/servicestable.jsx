@@ -5,7 +5,8 @@ import ServEditModal from "./ServEditModal";
 import { useAlert } from "../../partials/AlertContext";
 import ReusableTable from "../business/ReusableTable";
 import { BsThreeDots } from "react-icons/bs";
-import { FaCogs } from 'react-icons/fa'; // Gears icon, symbolizing a service being done
+import { FaCogs } from "react-icons/fa"; // Gears icon, symbolizing a service being done
+import { BarLoader } from "react-spinners";
 
 const ServiceTable = () => {
     const [business, setBusiness] = useState([]);
@@ -14,20 +15,24 @@ const ServiceTable = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedService, setSelectedService] = useState(null); // To track the selected service for editing
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const getBusinessAndServices = () => {
             setTimeout(() => {
+                setIsLoading(true);
                 axiosClient
-                    .get("/business/dashhome/"+'service')
+                    .get("/business/dashhome/" + "service")
                     .then(({ data }) => {
                         //setBusiness(data.business);
                         setService(data.services);
                         //setMyInvest(data.results);
                         console.log("services", data);
+                        setIsLoading(false);
                     })
                     .catch((err) => {
                         console.log(err);
+                        setIsLoading(false);
                     });
             }, 500);
         };
@@ -60,72 +65,70 @@ const ServiceTable = () => {
         setIsEditModalOpen(false);
     };
 
+    const ActionDropdown = ({ item }) => {
+        const [showDropdown, setShowDropdown] = useState(false);
+        const dropdownRef = useRef(null);
 
-   const ActionDropdown = ({ item }) => {
-       const [showDropdown, setShowDropdown] = useState(false);
-       const dropdownRef = useRef(null);
+        const toggleDropdown = () => setShowDropdown((prev) => !prev);
 
-       const toggleDropdown = () => setShowDropdown((prev) => !prev);
+        // Close dropdown when clicking outside
+        useEffect(() => {
+            const handleClickOutside = (event) => {
+                if (
+                    dropdownRef.current &&
+                    !dropdownRef.current.contains(event.target)
+                ) {
+                    setShowDropdown(false);
+                }
+            };
 
-       // Close dropdown when clicking outside
-       useEffect(() => {
-           const handleClickOutside = (event) => {
-               if (
-                   dropdownRef.current &&
-                   !dropdownRef.current.contains(event.target)
-               ) {
-                   setShowDropdown(false);
-               }
-           };
+            document.addEventListener("mousedown", handleClickOutside);
+            return () => {
+                document.removeEventListener("mousedown", handleClickOutside);
+            };
+        }, []);
 
-           document.addEventListener("mousedown", handleClickOutside);
-           return () => {
-               document.removeEventListener("mousedown", handleClickOutside);
-           };
-       }, []);
+        return (
+            <div className="relative" ref={dropdownRef}>
+                {/* Three dots button */}
+                <button
+                    onClick={toggleDropdown}
+                    className="p-2 rounded-full hover:bg-gray-200"
+                >
+                    <BsThreeDots size={20} />
+                </button>
 
-       return (
-           <div className="relative" ref={dropdownRef}>
-               {/* Three dots button */}
-               <button
-                   onClick={toggleDropdown}
-                   className="p-2 rounded-full hover:bg-gray-200"
-               >
-                   <BsThreeDots size={20} />
-               </button>
-
-               {/* Dropdown */}
-               {showDropdown && (
-                   <div className="absolute right-0 top-full z-50 mt-0 -ml-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg">
-                       <Link to={`/service-milestones/${btoa(btoa(item.id))}`}>
-                           <button className="block w-full px-4 py-2 text-left text-green-500 hover:bg-gray-100">
-                               View Milestones
-                           </button>
-                       </Link>
-                       <button
-                           onClick={() => {
-                               openEditModal(item);
-                               setShowDropdown(false);
-                           }}
-                           className="block w-full px-4 py-2 text-left text-gray-900 hover:bg-gray-100"
-                       >
-                           Edit
-                       </button>
-                       <button
-                           onClick={() => {
-                               handleDelete(item.id);
-                               setShowDropdown(false);
-                           }}
-                           className="block w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100"
-                       >
-                           Delete
-                       </button>
-                   </div>
-               )}
-           </div>
-       );
-   };
-
+                {/* Dropdown */}
+                {showDropdown && (
+                    <div className="absolute right-0 top-full z-50 mt-0 -ml-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg">
+                        <Link to={`/service-milestones/${btoa(btoa(item.id))}`}>
+                            <button className="block w-full px-4 py-2 text-left text-green-500 hover:bg-gray-100">
+                                View Milestones
+                            </button>
+                        </Link>
+                        <button
+                            onClick={() => {
+                                openEditModal(item);
+                                setShowDropdown(false);
+                            }}
+                            className="block w-full px-4 py-2 text-left text-gray-900 hover:bg-gray-100"
+                        >
+                            Edit
+                        </button>
+                        <button
+                            onClick={() => {
+                                handleDelete(item.id);
+                                setShowDropdown(false);
+                            }}
+                            className="block w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100"
+                        >
+                            Delete
+                        </button>
+                    </div>
+                )}
+            </div>
+        );
+    };
 
     const headers = ["Name", "Category", "Details", "Service Fee", "Actions"];
 
@@ -144,7 +147,7 @@ const ServiceTable = () => {
                 </div>
             </div>
         ),
-        category: item.category == '0'? 'Project Management': item.category,
+        category: item.category == "0" ? "Project Management" : item.category,
         //details: item.details,
         details: (
             <div className="max-w-[170px] truncate overflow-ellipsis">
@@ -176,23 +179,32 @@ const ServiceTable = () => {
                 </section>
             ) : (
                 <section className="bg-white border border-gray-300 rounded-xl w-full py-6 px-6">
-                    <div className="flex flex-col items-center">
-                        {/* Icon */}
-                        <FaCogs size={30} className="text-gray-500 mb-4" />
-                        <h3 className="text-[#2D3748] font-semibold text-xl sm:text-l mb-4">
-                            No Services Found
-                        </h3>
-                        <p className="text-gray-600 text-center">
-                            You don't have any services listed yet. Please add
-                            one to get started.
-                            <Link to="/dashboard/add-service">
-                                <span className="text-green font-bold hover:underline">
-                                    {" "}
-                                    Add Service
-                                </span>
-                            </Link>
-                        </p>
-                    </div>
+                    {isLoading ? (
+                        <div className="flex flex-col items-center justify-center py-12">
+                            <BarLoader color="#38a169" width={150} />
+                            <p className="text-gray-600 mt-4">
+                                Loading services, please wait...
+                            </p>
+                        </div>
+                    ) : (
+                        <div className="flex flex-col items-center">
+                            {/* Icon */}
+                            <FaCogs size={30} className="text-gray-500 mb-4" />
+                            <h3 className="text-[#2D3748] font-semibold text-xl sm:text-l mb-4">
+                                No Services Found
+                            </h3>
+                            <p className="text-gray-600 text-center">
+                                You don't have any services listed yet. Please
+                                add one to get started.
+                                <Link to="/dashboard/add-service">
+                                    <span className="text-green font-bold hover:underline">
+                                        {" "}
+                                        Add Service
+                                    </span>
+                                </Link>
+                            </p>
+                        </div>
+                    )}
                 </section>
             )}
             {isEditModalOpen && (

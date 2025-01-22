@@ -273,8 +273,12 @@ function Messages() {
                     isMobileView && selectedMessage ? "hidden" : ""
                 }`}
             >
-                <div className="p-4 border-b bg-white">
-                    <h3 className="text-lg font-bold">Conversations</h3>
+                <div className="p-4 border-b bg-white mt-6 sm:mt-0">
+                    <hr className="border-t border-gray-300 mb-4 sm:hidden"></hr>
+
+                    <h3 className="text-lg mb-[13px] font-bold">
+                        Conversations
+                    </h3>
                 </div>
                 {messages
                     .sort((a, b) => {
@@ -386,74 +390,85 @@ function Messages() {
                         {/* Chat History */}
                         <div
                             className="flex-1 p-4 overflow-y-auto"
+                            ref={chatContainerRef}
                             style={{
                                 flexGrow: 1,
                                 overflowY: "auto",
                             }}
-                            ref={chatContainerRef}
                         >
-                            {chatHistory
-                                .slice() // Create a shallow copy
-                                .reverse() // Reverse the array
-                                .map((chat, index) => (
-                                    <div
-                                        key={index}
-                                        className={`flex ${
-                                            chat.sender === "me"
-                                                ? "justify-end"
-                                                : "justify-start"
-                                        } mt-4`}
-                                    >
+                            {messages.length > 0 ? (
+                                chatHistory
+                                    .slice()
+                                    .reverse()
+                                    .map((chat, index) => (
                                         <div
-                                            className={`relative p-4 rounded-lg max-w-xs ${
+                                            key={index}
+                                            className={`flex ${
                                                 chat.sender === "me"
-                                                    ? "bg-yellow-400 text-black"
-                                                    : //
-                                                    chat.new === 1
-                                                    ? "bg-green-500 bg-opacity-20 text-black font-medium shadow-lg backdrop-blur-md border border-green-300 rounded-lg p-3 pr-16"
-                                                    : //
-                                                      "bg-white"
-                                            } shadow-md`}
-                                            style={{
-                                                wordWrap: "break-word",
-                                                overflowWrap: "break-word",
-                                            }}
+                                                    ? "justify-end"
+                                                    : "justify-start"
+                                            } mt-3`}
                                         >
-                                            <p className="text-sm break-words">
-                                                {chat.msg}
-                                            </p>
-                                            <small className="text-gray-500 text-xs mt-2">
-                                                {new Date(
-                                                    chat.created_at
-                                                ).toLocaleString()}
-                                            </small>
-                                            {chat.sender === "me" &&
-                                                chat.status ===
-                                                    "Failed to send" && (
-                                                    <button
-                                                        className="text-blue-500 text-xs flex items-center space-x-1"
-                                                        onClick={() =>
-                                                            handleRetryMessage(
-                                                                index
-                                                            )
-                                                        }
-                                                    >
-                                                        <AiOutlineReload className="w-4 h-4" />
-                                                        <span>Resend</span>
-                                                    </button>
-                                                )}
+                                            <div
+                                                className={`relative p-3 rounded-2xl max-w-[80%] md:max-w-md ${
+                                                    chat.sender === "me"
+                                                        ? "bg-yellow-400 text-black self-end"
+                                                        : chat.new === 1
+                                                        ? "bg-green-100 text-black shadow-lg"
+                                                        : "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200"
+                                                } shadow-md`}
+                                                style={{
+                                                    wordWrap: "break-word",
+                                                    overflowWrap: "break-word",
+                                                    wordBreak: "break-word",
+                                                    overflow: "hidden",
+                                                }}
+                                            >
+                                                <p className="text-sm leading-relaxed">
+                                                    {chat.msg}
+                                                </p>
+                                                <small className="text-gray-500 dark:text-gray-400 text-xs mt-2 block">
+                                                    {new Date(
+                                                        chat.created_at
+                                                    ).toLocaleString()}
+                                                </small>
+                                                {chat.sender === "me" &&
+                                                    chat.status ===
+                                                        "Failed to send" && (
+                                                        <button
+                                                            className="text-blue-500 text-xs flex items-center space-x-1 mt-2"
+                                                            onClick={() =>
+                                                                handleRetryMessage(
+                                                                    index
+                                                                )
+                                                            }
+                                                        >
+                                                            <AiOutlineReload className="w-4 h-4" />
+                                                            <span>Resend</span>
+                                                        </button>
+                                                    )}
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))
+                            ) : (
+                                <div className="text-center text-gray-400 mt-4">
+                                    No messages yet. Say hello!
+                                </div>
+                            )}
                         </div>
 
                         {/* Message Input */}
                         <div className="p-4  border-t flex items-center fixed-bottom-0 bg-white z-10 shadow-lg">
                             <textarea
-                                className="flex-1 border rounded-lg p-6 mr-3 focus:ring-2 focus:ring-green-500 resize-y text-gray-800 shadow-sm placeholder-gray-400 align-top"
+                                className="flex-1 border rounded-lg p-1 sm:p-2 mr-2 sm:mr-3 focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-gray-200 shadow-sm placeholder-gray-400 resize-none text-sm sm:text-base align-top transition-all duration-200 ease-in-out"
                                 placeholder="Type a message..."
                                 value={newMessage}
                                 onChange={(e) => setNewMessage(e.target.value)}
+                                style={{
+                                    minHeight: "48px", // Smaller height for mobile
+                                    maxHeight: "120px", // Limit resizing height
+                                    overflowY: "auto", // Allow scrolling for long text
+                                }}
                                 onKeyDown={(e) => {
                                     if (e.key === "Enter" && !e.shiftKey) {
                                         e.preventDefault(); // Prevent newline
@@ -479,7 +494,7 @@ function Messages() {
                         </div>
                     </>
                 ) : (
-                    <div className="flex-1 flex items-center justify-center text-gray-500">
+                    <div className="flex-1 hidden md:flex items-center justify-center text-gray-500">
                         Select a conversation to start chatting
                     </div>
                 )}
