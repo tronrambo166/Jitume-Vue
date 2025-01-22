@@ -485,15 +485,15 @@ const ServiceDetails = () => {
                         </div>
                         {/* BUSINESS INFORMATION SECTION BELOW THE IMAGE */}
                         <div className="w-full py-3 flex  flex-col">
-                            <div className="flex items-center  justify-start mb-2">
-                                {/* <span className="text-yellow-400">
+                            <div className="flex items-center  justify-end mb-2">
+                                <span className="text-yellow-400">
                                 {renderStars(details.rating)}{" "}
-                            </span> */}
-                                {/* <span className="ml-2">({details.rating})</span> */}
+                            </span>
+                                <span className="ml-2">({details.rating})</span>
                             </div>
-                            {/* <div className="text-gray-500 text-sm">
-                            {details.rating_count} Ratings
-                        </div> */}
+                            <div className="text-gray-500 text-sm">
+                            {/* {details.rating_count} Ratings */}
+                        </div>
 
                             {/* <h2 className="text-black text-sm sm:text-xs md:text-sm lg:text-base font-bold">
                             More business information

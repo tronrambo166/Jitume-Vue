@@ -1478,7 +1478,7 @@ const ListingDetails = ({ onClose }) => {
                         {/* Review Summary - Left */}
                         <div className="w-full sm:w-2/3 md:w-1/2 lg:w-1/3   ">
                             <div className="mt-4">
-                                <ReviewSummary />
+                                <ReviewSummary reviews={reviews} />
                             </div>
                         </div>
 

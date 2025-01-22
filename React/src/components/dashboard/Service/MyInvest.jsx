@@ -17,8 +17,8 @@ const MyInvest = () => {
     const { setdashmsg } = useMessage(); // Use the context to update the message
     const [name, setName] = useState("");
     const [activeFilter, setActiveFilter] = useState("pending"); // Default to "pending"
-    const [Investname  ,SetInvestname] = useState("");
-    const [userId , setUserId] = useState("");
+    const [Investname, SetInvestname] = useState("");
+    const [userId, setUserId] = useState("");
     useEffect(() => {
         const getInvestments = () => {
             setTimeout(() => {
@@ -27,10 +27,9 @@ const MyInvest = () => {
                     .then(({ data }) => {
                         setMyInvest(data.results);
                         console.log("MyINvest", data);
-                        //setName(data.user_name);
-                        //SetInvestname(data.results[0].name);
+                        setName(data.user_name);
+                        SetInvestname(data.results[0].name);
                         //setUserId(data.results[0].user_id);
-
                     })
                     .catch((err) => {
                         console.error(err);
@@ -39,7 +38,6 @@ const MyInvest = () => {
         };
         getInvestments();
     }, []);
-
 
     // Cance logic here
     const handleCancel = (id) => {
@@ -109,70 +107,78 @@ const MyInvest = () => {
 
     // navigateToProjectManager
     const navigateToProjectManager = (bid_id) => {
-        navigate("/projectManagers/"+bid_id); // Adjust the path to match your route
+        navigate("/projectManagers/" + bid_id); // Adjust the path to match your route
     };
 
     // Modal Toggle Logic for Starting a Conversation
-    
-const StartConvorsation = (owner_id) => {
-    const message = `Could you please confirm the accuracy of the following asset details for ${Investname}:`;  // const sender = Nurul; // Example sender name
-    const sender = name;
-    const SenderuserId = userId;
 
-    // Set the new message using the context
+    const StartConvorsation = (owner_id) => {
+        const message = `Could you please confirm the accuracy of the following asset details for ${Investname}:`; // const sender = Nurul; // Example sender name
+        const sender = name;
+        const SenderuserId = userId;
 
-    const newMsg = `Hello, I'm ${sender}, ${message} (User ID: ${SenderuserId})`; // Optionally include userId in the message
+        // Set the new message using the context
 
-    setdashmsg(newMsg);
+        const newMsg = `Hello, I'm ${sender}, ${message} (User ID: ${SenderuserId})`; // Optionally include userId in the message
 
-    // Navigate to the messages page
-    navigate("/dashboard/messages");
-};
+        setdashmsg(newMsg);
 
-
-
-
+        // Navigate to the messages page
+        navigate("/dashboard/messages");
+    };
 
     // End of Modal Logic
 
     // StartConversation
     // Function to handle sending the conversation
     const StartConversation = () => {
-        axiosClient
-            .get("business/start_conversation") // This is your API request
-            .then(({ data }) => {
-                console.log(data); // Log the response data
-                if (data.status === 200) {
-                    showAlert("success", "Your message was sent successfully!"); // Show success alert
-                    $.confirm({
-                        title: false, // Remove the default title to have full control over placement
-                        content: `
-                        <div style="display: flex; align-items: center;">
+        $.confirm({
+            title: false, // Remove the default title to have full control over placement
+            content: `
+                      <div style="display: flex; align-items: center;">
                             <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
                         </div>
-                        <p>Do you want to start a new conversation?</p>
+                      <p>Do you want to send a request to ${name} to verify your asset details regarding ${Investname} ?</p>
                     `,
-                        buttons: {
-                            confirm: function () {
-                                navigate("/dashboard/conversation"); // Navigate to the messages page
-                            },
-                            cancel: function () {
-                                toggleModal(); // Close the modal if the user cancels
-                            },
-                        },
-                    });
-                } else {
-                    showAlert(
-                        "error",
-                        "Failed to send your message. Please try again."
-                    );
-                }
-            })
-            .catch((err) => {
-                const response = err.response;
-                console.log(response); // Log the error response
-                showAlert("error", "An error occurred. Please try again.");
-            });
+            buttons: {
+                confirm: {
+                    text: "Yes",
+                    btnClass: "btn-success",
+                    action: () => {
+                        axiosClient
+                            .get("business/start_conversation")
+                            .then(({ data }) => {
+                                console.log(data);
+                                if (data.status === 200) {
+                                    showAlert(
+                                        "success",
+                                        "Your message was sent successfully!"
+                                    );
+                                    navigate("/dashboard/conversation");
+                                } else {
+                                    showAlert(
+                                        "error",
+                                        "Failed to send your message. Please try again."
+                                    );
+                                }
+                            })
+                            .catch((err) => {
+                                const response = err.response;
+                                console.log(response);
+                                showAlert(
+                                    "error",
+                                    "An error occurred. Please try again."
+                                );
+                            });
+                    },
+                },
+                cancel: {
+                    text: "No",
+                    btnClass: "btn-danger",
+                    action: () => {},
+                },
+            },
+        });
     };
 
     // End of conversation Logic
@@ -234,7 +240,9 @@ const StartConvorsation = (owner_id) => {
                                         <li>
                                             <button
                                                 onClick={() =>
-                                                    navigateToProjectManager(item.bid_id)
+                                                    navigateToProjectManager(
+                                                        item.bid_id
+                                                    )
                                                 }
                                                 className="block w-full text-left px-5 py-2 hover:bg-gray-100  transition text-green-800 duration-150 ease-in-out"
                                             >
@@ -243,7 +251,11 @@ const StartConvorsation = (owner_id) => {
                                         </li>
                                         <li>
                                             <button
-                                                onClick={() => StartConvorsation(item.user_id) }
+                                                onClick={() =>
+                                                    StartConversation(
+                                                        item.user_id
+                                                    )
+                                                }
                                                 className="block w-full text-left px-5 py-2 hover:bg-gray-100 text-slate-500  transition duration-150 ease-in-out"
                                             >
                                                 Verify With A Business Owner
@@ -326,7 +338,7 @@ const StartConvorsation = (owner_id) => {
         name: item.name,
         category: item.category,
         "value needed": item.investment_needed,
-        type: item.type=='Asset'?'Equipment':item.type,
+        type: item.type == "Asset" ? "Equipment" : item.type,
         amount: item.amount,
         "business share request": `${item.share}%`,
         "my share": `${item.myShare.toFixed(2)}%`,
