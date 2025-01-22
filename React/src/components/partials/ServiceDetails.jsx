@@ -232,6 +232,7 @@ const ServiceDetails = () => {
                     setallowToReview(data.allow);
                     setBooked(data.booked);
                     setReviewData(data.reviews);
+                    console.log("daraa",data.reviews);
                     //console.log(milestonesRes.length);
                     console.log(data);
                 })
@@ -406,7 +407,7 @@ const ServiceDetails = () => {
         setShowPopup(false); // Close the popup after submitting
 
         if (rating == 0) {
-            alert("A rating cannot be 0!");
+            showAlert("info","A rating cannot be 0!");
         } else {
             axiosClient
                 .get(
@@ -418,7 +419,7 @@ const ServiceDetails = () => {
                         review
                 )
                 .then((data) => {
-                    alert("Rating submitted successfully!");
+                    showAlert("success","Rating submitted successfully!");
                     location.reload();
                 });
         }
@@ -774,7 +775,7 @@ const ServiceDetails = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
                             {/* On mobile, ReviewSummary takes up full width, on larger screens it takes 1/3 */}
                             <div className="sm:col-span-1">
-                                <ReviewSummary />
+                                <ReviewSummary reviews={reviews} />
                             </div>
                             {/* On mobile, ReviewList takes up full width, on larger screens it takes 2/3 */}
                             <div className="sm:col-span-2">
