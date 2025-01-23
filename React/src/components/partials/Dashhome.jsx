@@ -25,19 +25,15 @@ const Dashhome = () => {
     }, []);
 
   return (
-    <div>
+      <div>
+          <div className="">
+              {hasInvestment && <MyInvest />}
+          </div>
 
-
-      {hasInvestment && <MyInvest/> }
-      <MyBusinesses/>
-      <ServiceTable/>
-
-
-
-
-      
-    </div>
-  )
+          <MyBusinesses />
+          <ServiceTable />
+      </div>
+  );
 }
 
 export default Dashhome
