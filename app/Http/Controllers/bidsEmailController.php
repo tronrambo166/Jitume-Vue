@@ -233,10 +233,10 @@ public function withdraw_investment($bidId)
         if($bid->type == 'Asset'){
             $info=[ 'inv_name'=>$inv_name, 'asset_name'=>$bid->serial ];
             $user['to'] = $owner->email; //'tottenham266@gmail.com';
-             Mail::send('bids.bid_cancel', $info, function($msg) use ($user){
+            Mail::send('bids.bid_cancel', $info, function($msg) use ($user){
                  $msg->to($user['to']);
                  $msg->subject('Milestone Cancel!');
-             });
+            });
         }
 
         else{
