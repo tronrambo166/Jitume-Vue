@@ -6,10 +6,13 @@ import ReusableTable from "../business/ReusableTable";
 import { FaChartLine } from "react-icons/fa";
 import TujitumeLogo from "../../../images/Tujitumelogo.svg";
 import { BsThreeDots } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, useParams, useSearchParams } from "react-router-dom";
 import { useMessage } from "./msgcontext"; // Import the custom hook
 import { BarLoader } from "react-spinners";
+import { decode as base64_decode, encode as base64_encode } from "base-64";
+
 const MyInvest = () => {
+    const locationUrl = useLocation();
     const [myInvest, setMyInvest] = useState([]);
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
     const navigate = useNavigate(); // Use React Router's navigate hook
@@ -20,7 +23,23 @@ const MyInvest = () => {
     const [Investname, SetInvestname] = useState("");
     const [userId, setUserId] = useState("");
     const [isLoading, setIsLoading] = useState(true);
+
+    const [searchParams] = useSearchParams();
+
+    
+
+    
     useEffect(() => {
+        const b_idToVWPM = searchParams.get('b_idToVWPM');
+        const b_idToVWBO = searchParams.get('b_idToVWBO');
+
+        if(b_idToVWPM != null){
+            navigateToProjectManager(base64_decode(b_idToVWPM))
+        }
+        else if(b_idToVWBO != null){
+            verifyRequest(base64_decode(b_idToVWBO))
+        }
+
         const getInvestments = () => {
             setIsLoading(true);
             setTimeout(() => {
@@ -89,12 +108,12 @@ const MyInvest = () => {
             buttons: {
                 confirm: function () {
                     axiosClient
-                        .get("business/withdraw_bids") //This is a test api it doesnt work
+                        .get("business/withdraw_investment") //This is a test api it doesnt work
                         .then(({ data }) => {
-                            console.log(data); // Log response data
                             if (data.status == 200)
                                 showAlert("success", data.message);
                             else showAlert("success", data.message);
+                            console.log(data); // Log response data
                         })
                         .catch((err) => {
                             const response = err.response;
@@ -111,7 +130,33 @@ const MyInvest = () => {
 
     // navigateToProjectManager
     const navigateToProjectManager = (bid_id) => {
-        navigate("/projectManagers/" + bid_id); // Adjust the path to match your route
+            let ids = "";
+            axiosClient
+            .get("FindProjectManagers/" + bid_id)
+            .then(({ data }) => {
+                if(data.status == 200){
+                    Object.entries(data.results).forEach((entry) => {
+                    const [index, row] = entry;
+                    ids = ids + row.id + ",";
+                    });
+                    console.log(data.results);
+                    if (!ids) ids = 0;
+
+                    sessionStorage.setItem("queryLat", data.lat);
+                    sessionStorage.setItem("queryLng", data.lng);
+
+                    navigate(
+                    "/serviceResults/" + base64_encode(ids) + "/" + data.loc
+                    );
+                    if (locationUrl.pathname.includes("serviceResults"))
+                        window.scrollTo(0, 0);
+                }
+                else
+                console.log(data)
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     // Modal Toggle Logic for Starting a Conversation
@@ -237,21 +282,6 @@ const MyInvest = () => {
                                         <li>
                                             <button
                                                 onClick={() =>
-                                                    verifyRequest(item.bid_id)
-                                                }
-                                                className="flex items-center w-full text-left px-5 py-3 hover:bg-gray-50 text-slate-600 transition duration-150 ease-in-out"
-                                            >
-                                                <span className="mr-2">
-                                                    <i className="fas fa-user-check text-blue-500"></i>
-                                                </span>
-                                                <span>
-                                                    Verify With A Business Owner
-                                                </span>
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button
-                                                onClick={() =>
                                                     navigateToProjectManager(
                                                         item.bid_id
                                                     )
@@ -267,6 +297,23 @@ const MyInvest = () => {
                                                 </span>
                                             </button>
                                         </li>
+
+                                        <li>
+                                            <button
+                                                onClick={() =>
+                                                    verifyRequest(item.bid_id)
+                                                }
+                                                className="flex items-center w-full text-left px-5 py-3 hover:bg-gray-50 text-slate-600 transition duration-150 ease-in-out"
+                                            >
+                                                <span className="mr-2">
+                                                    <i className="fas fa-user-check text-blue-500"></i>
+                                                </span>
+                                                <span>
+                                                    Verify With A Business Owner
+                                                </span>
+                                            </button>
+                                        </li>
+                                        
                                         <li>
                                             <button
                                                 onClick={WithdrawInvestment}

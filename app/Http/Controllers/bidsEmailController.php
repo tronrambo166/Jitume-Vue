@@ -99,17 +99,6 @@ public function bidsAccepted(Request $request)
         $bid = BusinessBids::where('id',$id)->first();
         $investor = User::where('id',$bid->investor_id)->first();
         $investor_mail = $investor->email;
-        
-
-         //remove
-        // if($bid->legal_doc !=null)
-        //     unlink($bid->legal_doc);
-        // if($bid->optional_doc !=null)
-        //     unlink($bid->legal_doc);
-        // if($bid->photos !=null){
-        //     $photos = explode(',',$bid->photos);
-        //     foreach($photos as $p) if($p !='')  unlink($p);
-        //     }
 
          $list = listing::where('id',$bid->business_id)->first();
          $owner = User::where('id',$list->user_id)->first();
@@ -151,17 +140,7 @@ public function bidsAccepted(Request $request)
          }
          //TRANSFERRING FUNDS
 
-        //Mail
-        $info=[ 'business_name'=>$list->name, 'bid_id'=>$id, 'type' => $bid->type ];
-        $user['to'] = $investor_mail; //'tottenham266@gmail.com'; //
-         if($investor)
-            Mail::send('bids.accepted', $info, function($msg) use ($user){
-             $msg->to($user['to']);
-             $msg->subject('Bid accepted!');
-         });
-        
-        //Mail
-              AcceptedBids::create([
+              $accepted =  AcceptedBids::create([
               'bid_id' => $id,
               'date' => $bid->date,
               'investor_id' => $bid->investor_id,
@@ -184,8 +163,17 @@ public function bidsAccepted(Request $request)
                 'invest_count' => $invest_count
               ]);
 
-         $bid_remove = BusinessBids::where('id',$id)->delete();
-         //remove
+              //Mail
+                $info=[ 'business_name'=>$list->name, 'bid_id'=>
+                base64_encode($accepted->id), 'type' => $bid->type ];
+                $user['to'] = $investor_mail; //'tottenham266@gmail.com'; //
+                 if($investor)
+                    Mail::send('bids.accepted', $info, function($msg) use ($user){
+                     $msg->to($user['to']);
+                     $msg->subject('Bid accepted!');
+                 });
+                
+                //Mail
 
          //Notifications
          $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
@@ -198,6 +186,8 @@ public function bidsAccepted(Request $request)
             'type' => 'business',
           ]);
          //Notifications
+          $bid_remove = BusinessBids::where('id',$id)->delete();
+         //remove
 
          }
        }
@@ -226,6 +216,40 @@ public function agreeToBid($bidId)
         catch(\Exception $e){
             Session::put('failed',$e->getMessage());
             return redirect()->to(config('app.app_url'));
+       }  
+}
+
+
+public function withdraw_investment($bidId)
+{
+    try { 
+        $bid = AcceptedBids::where('bid_id',$bidId)->first();
+        $investor = User::where('id',$bid->investor_id)->first();
+        $inv_name = $investor->fname.' '.$investor->lname;
+
+        $business = Listing::where('id',$bid->business_id)->first();
+        $owner = User::where('id',$business->user_id)->first();
+
+        if($bid->type == 'Asset'){
+            $info=[ 'inv_name'=>$inv_name, 'asset_name'=>$bid->serial ];
+            $user['to'] = $owner->email; //'tottenham266@gmail.com';
+             Mail::send('bids.bid_cancel', $info, function($msg) use ($user){
+                 $msg->to($user['to']);
+                 $msg->subject('Milestone Cancel!');
+             });
+        }
+
+        else{
+
+        }
+
+        
+         AcceptedBids::where('bid_id',$bidId)->delete();
+         return response()->json(['status'=>200, 'message' => 'Thanks for your feedback!']);
+     
+       }
+        catch(\Exception $e){
+            return response()->json(['status'=>400, 'message' => $e->getMessage()]);
        }  
 }
 

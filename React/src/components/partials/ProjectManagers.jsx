@@ -46,14 +46,6 @@ const ProjectManagers = () => {
             }
         }, 1000); // Simulate network delay
 
-        //Check Token
-        // axiosClient
-        //     .get("/checkAuth")
-        //     .then(({ data }) => {
-        //         setUser(data.user);
-        //         setId(data.user.id);
-        //     })
-        //     .catch(console.error);
     }, []);
 
     const handleCloseNotification = () => {

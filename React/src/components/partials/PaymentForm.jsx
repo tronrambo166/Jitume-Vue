@@ -123,9 +123,6 @@ const PaymentForm = () => {
     // Function to get the cancellation date
 
     // GETTING Parameters
-    //let { amount } = useParams();
-    //let { purpose } = useParams();
-    //const { listing_id } = useParams();
     const { amount } = location.state || { amount: 0 };
     const { listing_id } = location.state || { listing_id: 0 };
     const { purpose } = location.state || { purpose: btoa(1) };
@@ -134,10 +131,10 @@ const PaymentForm = () => {
 
     const purpos = base64_decode(purpose);
     var p = "";
-    if (purpos === "bids") p = "Investment To Business";
+    if (purpos === "bids") p = "Investment To Business (25%)";
     else if (purpos === "s_mile") p = "Pay Service milestone";
     else p = "Small Fee To Unlock Business";
-    const amount_real = base64_decode(amount);
+    const amount_real = base64_decode(amount)*0.25;
     // GETTING Parameters
 
     const [showModal, setShowModal] = useState(false);

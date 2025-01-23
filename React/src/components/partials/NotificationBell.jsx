@@ -169,15 +169,15 @@ const NotificationBell = () => {
                                                     {notif.link =='verify_request'?(
                                                     <div>
                                                     <button onClick={() =>
-                                                        startConversation(notif.customer_id)} className="text-blue-600 text-xs hover:text-blue-800">
+                                                        startConversation(notif.customer_id)} className="text-green-700 text-xs hover:text-blue-800">
                                                         Agree
                                                     </button> <br></br>
-                                                    <button className="text-blue-600 text-xs hover:text-blue-800">
-                                                        Verify with Project Manager
+                                                    <button style={{fontSize: '11px'}} className="text-green-700 text-xs hover:text-blue-800">
+                                                        Ask investor to verify with project manager
                                                     </button>
                                                     <br></br>
 
-                                                    <button className="text-blue-600 text-xs hover:text-blue-800">
+                                                     <button className="text-pink-600 text-xs hover:text-blue-800">
                                                        Cancel
                                                     </button>
                                                     </div>
@@ -188,12 +188,8 @@ const NotificationBell = () => {
                                                     onClick={closeDropdown}
                                                     ><button className="text-blue-600 text-xs hover:text-blue-800">
                                                         View More
-                                                    </button>
-                                                    </Link>
-                                                    )}
-
-                                                
-                                                <button
+                                                    </button> &nbsp;
+                                                    <button
                                                     className="text-red-600 text-xs hover:text-red-800"
                                                     onClick={() =>
                                                         removeNotification(
@@ -203,6 +199,12 @@ const NotificationBell = () => {
                                                 >
                                                     Remove
                                                 </button>
+
+                                                    </Link>
+                                                    )}
+
+                                                
+                                                
                                             </div>
                                         </div>
                                     </li>

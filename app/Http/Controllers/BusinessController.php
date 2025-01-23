@@ -144,12 +144,21 @@ $investments = []; $t_share = 0;
       foreach($miles as $share){
         $my_listing =listing::select('id','user_id','name','category','investment_needed','share')
         ->where('id',$share->business_id)->first();
+
+        $activeMilestone = Milestones::select('title')
+        ->where('listing_id',$my_listing->id)
+        ->where('status','In Progress')->first();
+        if($activeMilestone)
+        $Milestone = $activeMilestone->title;
+        else $Milestone='';
+
         if($my_listing){
         $my_listing->myShare = (float)$share->representation;
         $my_listing->amount =$share->amount;
         $my_listing->status = $share->status;
         $my_listing->type = $share->type;
         $my_listing->bid_id = $share->id;
+        $my_listing->activeMilestone = $Milestone;
         $investments[] = $my_listing;
       }
     }
@@ -1047,6 +1056,9 @@ public function requestOwnerToVerify($bid_id)
              $msg->subject('Equipment Verify request!');
          });
         //Email
+
+        $status = AcceptedBids::where('id',$bid_id)->update(['status' => 'under_verify']);
+
         return response()->json(['status' => 200, 'message' => 'Success, please wait for the Business Owner to contact you.']);
     }
     catch(\Exception $e){
@@ -1080,6 +1092,13 @@ foreach($res as $r){
   $business = listing::select('name','id','threshold_met')
   ->where('id',$r->business_id)->first();
 
+  $activeMilestone = Milestones::select('title')
+    ->where('listing_id',$business->id)
+    ->where('status','In Progress')->first();
+    if($activeMilestone)
+        $Milestone = $activeMilestone->title;
+    else $Milestone='';
+
   if($business && $inv){
   $r->investor = $inv->fname.' '.$inv->lname;
   $r->business = $business->name;
@@ -1093,6 +1112,7 @@ foreach($res as $r){
   $r->website = $inv->website;
   $r->email = $inv->email;
   $r->status = 'Pending';
+  $r->milestone = $Milestone;
   //Investor details
   $r->photos = explode(',',$r->photos);
   $bids[] = $r;
@@ -1129,6 +1149,14 @@ public function confirmed_bids()
     $business = listing::select('name','id')
     ->where('id',$r->business_id)->first();
 
+    $activeMilestone = Milestones::select('title')
+    ->where('listing_id',$business->id)
+    ->where('status','In Progress')->first();
+
+    if($activeMilestone)
+        $Milestone = $activeMilestone->title;
+    else $Milestone='';
+
     if($business && $inv){
     $r->investor = $inv->fname.' '.$inv->lname;
     $r->business = $business->name;
@@ -1136,6 +1164,7 @@ public function confirmed_bids()
     $r->past_investment = $inv->past_investment;
     $r->website = $inv->website;
     $r->email = $inv->email;
+    $r->milestone = $Milestone;
     $r->photos = explode(',',$r->photos);
     $bids[] = $r;
     }
@@ -1145,6 +1174,14 @@ public function confirmed_bids()
     $inv = User::where('id',$r->investor_id)->first();
     $business = listing::where('id',$r->business_id)->first();
 
+    $activeMilestone = Milestones::select('title')
+    ->where('listing_id',$business->id)
+    ->where('status','In Progress')->first();
+
+    if($activeMilestone)
+        $Milestone = $activeMilestone->title;
+    else $Milestone='';
+
     if($business && $inv){
     $r->investor = $inv->fname.' '.$inv->lname;
     $r->business = $business->name;
@@ -1152,6 +1189,7 @@ public function confirmed_bids()
     $r->past_investment = $inv->past_investment;
     $r->website = $inv->website;
     $r->email = $inv->email;
+    $r->milestone = $Milestone;
     $r->photos = explode(',',$r->photos);
     $under_verify[] = $r;
     }
@@ -1462,8 +1500,9 @@ else{
 
 public function FindProjectManagers($bid_id){
 $results = array();
-$this_bid = AcceptedBids::where('bid_id',$bid_id)->first();
-if(!$this_bid) return response()->json(['data'=>false, 'error:'=>'Bid does not exist!']);
+$this_bid = AcceptedBids::where('id',$bid_id)->first();
+if(!$this_bid) 
+  return response()->json(['status'=>400, 'data'=>false, 'message'=>'Bid does not exist!']);
 $this_business = Listing::where('id',$this_bid->business_id)->first();
 
 if($this_business){
@@ -1472,9 +1511,10 @@ $business_loc = $this_business->location;
 $lat = (float)$this_business->lat;
 $lng = (float)$this_business->lng;
 $services = $this->findNearestServices($lat,$lng,100);
-return response()->json(['services' => $services, 'count'=> $services->count()]);
+return response()->json(['status'=>200, 'results' => $services, 'loc'=>'true',
+'lat'=>$lat, 'lng'=>$lng]);
 }
-else return response()->json(['data'=>false, 'error:'=>'Business does not exist!']);
+else return response()->json(['status'=>400, 'data'=>false, 'message'=>'Business does not exist!']);
 
 }
 

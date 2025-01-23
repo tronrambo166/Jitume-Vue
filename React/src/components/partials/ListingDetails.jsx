@@ -1196,7 +1196,7 @@ const ListingDetails = ({ onClose }) => {
                                             required upfront as a deposit.
                                             However, please enter the full 100%
                                             of the intended investment amount
-                                            below.”
+                                            below.
                                         </h3>
 
                                         {/* <p className="text-sm text-[#334155] mb-4">

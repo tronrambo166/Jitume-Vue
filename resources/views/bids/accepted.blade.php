@@ -90,7 +90,7 @@
         <div class="w-full mx-auto mt-4 py-4 text-center">
             <a
                 target="_blank"
-                href="<?php echo config('app.app_url');?>projectManagers/{{$bid_id}}"
+                href="<?php echo config('app.app_url');?>dashboard?b_idToVWPM={{$bid_id}}"
                 class="bg-blue-800 text-white px-6 py-3 hover:no-underline rounded-lg transition hover:bg-blue-900"
             >
                 Request a Project Manager to Verify.</a
@@ -98,7 +98,7 @@
 
             <a
                 target="_blank"
-                href="<?php echo config('app.app_url');?>requestOwnerToVerify/{{$bid_id}}"
+                href="<?php echo config('app.app_url');?>dashboard?b_idToVWBO={{$bid_id}}"
                 class="bg-blue-800 text-white px-6 py-3 hover:no-underline rounded-lg transition hover:bg-blue-900"
             >
                 Request Business Owner to Verify</a

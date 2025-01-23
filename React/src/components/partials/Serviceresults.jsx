@@ -274,7 +274,7 @@ const ServiceResults = () => {
 
     const addMarker = (coords, map, contentString) => {
         let customIcon = {
-            iconUrl: "../../images/map/other_business.png",
+            iconUrl: "../../src/images/map/other_business.png",
             iconSize: [32, 32],
         };
         let myIcon = L.icon(customIcon);
@@ -292,7 +292,7 @@ const ServiceResults = () => {
 
     const addMarkerHome = (coords, map) => {
         let customIcon = {
-            iconUrl: "../../images/map/myloc.png",
+            iconUrl: "../../src/images/map/myloc.png",
             iconSize: [32, 32],
         };
         let myIcon = L.icon(customIcon);
