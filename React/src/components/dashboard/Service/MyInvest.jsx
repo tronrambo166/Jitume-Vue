@@ -433,8 +433,9 @@ const MyInvest = () => {
     // End
 
     return (
-        <div className="py-4 mt-8 lg:mt-0 px-0 sm:px-[21px]">
-            <section className="bg-white border rounded-xl w-full">
+        <div className="py-4 mt-8 lg:mt-0 px-0 sm:px-[21px] overflow-x-auto  dynamic-max-width">
+            {" "}
+            <section className="bg-white border  pb-2 pl-1 pr-2 rounded-xl  w-full">
                 {isLoading ? (
                     <div className="flex flex-col items-center justify-center py-12">
                         <BarLoader color="#38a169" width={150} />
@@ -482,7 +483,7 @@ const MyInvest = () => {
                                 </div>
 
                                 {/* Table */}
-                                <div className="whitespace-nowrap justify-center">
+                                <div className="whitespace-nowrap scroll-thin overflow-x-auto max-w-full">
                                     <ReusableTable
                                         headers={headers}
                                         data={tableData}

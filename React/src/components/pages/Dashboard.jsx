@@ -3,13 +3,20 @@ import Sidebar from "../partials/Sidebar";
 import btmicon from "../../images/btmicon.png";
 import DashboardHero from "../partials/Dashboardhero";
 import Footer from "../Landing-page/global/Footer2";
+import { useState } from "react";
 
 const Dashboard = () => {
+      const [isShrunk, setIsShrunk] = useState(false);
+
+    const handleSidebarToggle = (shrunk) => {
+        setIsShrunk(shrunk);
+    };
+
     return (
         <div className="flex flex-col md:flex-row w-full h-screen">
             {/* Sidebar */}
             <div className="relative md:w-64">
-                <Sidebar />
+                <Sidebar onToggle={handleSidebarToggle} />
                 {/* Help Section */}
                 {/* <div className="fixed right-4 bottom-4 p-4 mx-auto w-[250px] h-[220px] rounded-xl bg-white z-50 md:hidden">
           <img src={btmicon} alt="Help" />
@@ -24,7 +31,11 @@ const Dashboard = () => {
             </div>
 
             {/* Main Content Area */}
-            <div className="flex-1 flex flex-col">
+            <div
+                className={`flex-1 flex flex-col transition-all duration-500 ${
+                    isShrunk ? "ml-[-220px]" : ""
+                }`}
+            >
                 {/* Hero Section */}
                 <div className="flex-none">
                     <DashboardHero />

@@ -25,7 +25,7 @@ import { AiOutlineBarChart, AiOutlineCalendar } from "react-icons/ai";
 import { BiCreditCard } from "react-icons/bi";
   import { FiChevronRight, FiChevronLeft } from "react-icons/fi"; // Import icons
 
-const Sidebar = () => {
+const Sidebar = ({ onToggle }) => {
     const [isOpen, setIsOpen] = useState(false);
     const sidebarRef = useRef(null);
     const [subId, setSubId] = useState(null);
@@ -75,43 +75,48 @@ const Sidebar = () => {
 
         return () => window.removeEventListener("resize", handleResize);
     }, []);
-  
+    
+    const toggleSidebar2 = () => {
+        setIsShrunk((prev) => {
+            const newShrunk = !prev;
+            onToggle(newShrunk); // Notify parent
+            return newShrunk;
+        });
+    };
+
     return (
-        <>
+        <div>
             {/* FaBars Icon */}
             {!isOpen && <BarIcon toggleSidebar={toggleSidebar} />}
 
             {/* Sidebar */}
             <div
                 ref={sidebarRef}
-                className={`scroll-container fixed top-0 left-0 h-screen ${
+                className={`scroll-container  top-0 left-0 h-screen ${
                     isMobile
                         ? `w-64 bg-white border flex flex-col transition-transform duration-500 ease-in-out z-40 overflow-y-auto ${
                               isOpen ? "translate-x-0" : "-translate-x-full"
                           }`
                         : `bg-white border flex flex-col transition-all duration-500 ease-in-out z-40 overflow-y-auto ${
-                              isShrunk ? "w-16" : "w-64"
+                              isShrunk ? "w-16" : "w-[250px]"
                           }`
                 }`}
             >
                 <div className="flex items-center justify-end">
                     {!isMobile && (
-                        <button
-                            onClick={() => setIsShrunk(!isShrunk)}
-                            className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300  transition-all"
-                        >
-                            {isShrunk ? (
-                                <FiChevronRight
-                                    size={18}
-                                    className="text-gray-600"
-                                />
-                            ) : (
-                                <FiChevronLeft
-                                    size={18}
-                                    className="text-gray-600"
-                                />
-                            )}
-                        </button>
+                        <>
+                            {" "}
+                            <button
+                                onClick={toggleSidebar2}
+                                className="p-2 bg-gray-200 hover:bg-gray-300 rounded-full"
+                            >
+                                {isShrunk ? (
+                                    <FiChevronRight />
+                                ) : (
+                                    <FiChevronLeft />
+                                )}
+                            </button>
+                        </>
                     )}
                 </div>
                 {/* Logo */}
@@ -473,6 +478,7 @@ const Sidebar = () => {
                                     )}
                                 </NavLink>
                             </li>
+                            <hr />
 
                             {1 && (
                                 <li className="nav-item mb-6 rounded-xl py-2">
@@ -482,7 +488,7 @@ const Sidebar = () => {
                                             `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
                                                 isActive
                                                     ? "bg-green-800 text-white"
-                                                    : "hover:bg-gray-200 text-gray-400"
+                                                    : "hover:bg-gray-200 bg-green-500 bg-opacity-20   border-green-300"
                                             }`
                                         }
                                         to="/dashboard/my-subscription"
@@ -535,7 +541,7 @@ const Sidebar = () => {
                     </ul>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

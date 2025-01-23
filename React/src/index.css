@@ -641,3 +641,36 @@ select::-ms-expand {
 .scroll-container.expanded {
   width: 16rem; /* Expanded width */
 }
+
+
+
+/* Default styling (100% zoom) */
+.dynamic-max-width {
+    max-width: none;
+}
+
+/* Apply max-w-[1010px] at 150% zoom (DPR 1.5) */
+@media screen and (min-resolution: 144dpi), /* For Windows browsers */
+    screen and (min-resolution: 1.5dppx) {  /* For macOS and others */
+    .dynamic-max-width {
+        max-width: 1000px;
+    }
+}
+
+/* Apply max-w-[1010px] at 130% zoom (DPR 1.3) */
+@media screen and (min-resolution: 123dpi), /* For Windows browsers */
+    screen and (min-resolution: 1.3dppx) {  /* For macOS and others */
+    .dynamic-max-width {
+        max-width: 1000px;
+    }
+}
+
+/* Apply max-w-[1010px] at 140% zoom (DPR 1.4) */
+@media screen and (min-resolution: 132dpi), /* For Windows browsers */
+    screen and (min-resolution: 1.4dppx) {  /* For macOS and others */
+    .dynamic-max-width {
+        max-width: 1000px;
+    }
+}
+/* Target the specific scrollbar within the component */
+
