@@ -625,3 +625,19 @@ select::-ms-expand {
     opacity: 1;
   }
 }
+
+/* Sidebar transition when shrinking */
+.scroll-container {
+  transition: width 0.5s ease-in-out; /* Transition takes 0.5 seconds */
+}
+
+
+/* Shrunk state: when sidebar is in the shrunk state */
+.scroll-container.shrunk {
+  width: 4rem; /* Shrunk width */
+}
+
+/* Expanded state: when sidebar is in the expanded state */
+.scroll-container.expanded {
+  width: 16rem; /* Expanded width */
+}

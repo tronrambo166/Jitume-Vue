@@ -23,6 +23,7 @@ import BarIcon from "./BarIcon";
 import axiosClient from "../../axiosClient";
 import { AiOutlineBarChart, AiOutlineCalendar } from "react-icons/ai";
 import { BiCreditCard } from "react-icons/bi";
+  import { FiChevronRight, FiChevronLeft } from "react-icons/fi"; // Import icons
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -62,8 +63,19 @@ const Sidebar = () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
+    const [isShrunk, setIsShrunk] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768); // Mobile threshold
+        };
 
+        handleResize(); // Check on initial load
+        window.addEventListener("resize", handleResize); // Update on resize
 
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+  
     return (
         <>
             {/* FaBars Icon */}
@@ -72,11 +84,36 @@ const Sidebar = () => {
             {/* Sidebar */}
             <div
                 ref={sidebarRef}
-                className={`scroll-container fixed top-0 left-0 h-screen w-64 bg-white border flex flex-col transition-transform duration-300 z-40 overflow-y-auto
-                    ${
-                        isOpen ? "translate-x-0" : "-translate-x-full"
-                    } md:translate-x-0`}
+                className={`scroll-container fixed top-0 left-0 h-screen ${
+                    isMobile
+                        ? `w-64 bg-white border flex flex-col transition-transform duration-500 ease-in-out z-40 overflow-y-auto ${
+                              isOpen ? "translate-x-0" : "-translate-x-full"
+                          }`
+                        : `bg-white border flex flex-col transition-all duration-500 ease-in-out z-40 overflow-y-auto ${
+                              isShrunk ? "w-16" : "w-64"
+                          }`
+                }`}
             >
+                <div className="flex items-center justify-end">
+                    {!isMobile && (
+                        <button
+                            onClick={() => setIsShrunk(!isShrunk)}
+                            className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300  transition-all"
+                        >
+                            {isShrunk ? (
+                                <FiChevronRight
+                                    size={18}
+                                    className="text-gray-600"
+                                />
+                            ) : (
+                                <FiChevronLeft
+                                    size={18}
+                                    className="text-gray-600"
+                                />
+                            )}
+                        </button>
+                    )}
+                </div>
                 {/* Logo */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-200">
                     <Link className="flex items-center" to="/">
@@ -113,7 +150,8 @@ const Sidebar = () => {
                                                     : "text-green"
                                             }`}
                                         />
-                                        <span>Dashboard</span>
+                                        {!isShrunk && <span>Dashboard</span>}{" "}
+                                        {/* Conditionally render text */}
                                     </>
                                 )}
                             </NavLink>
@@ -141,7 +179,10 @@ const Sidebar = () => {
                                                     : "text-green"
                                             }`}
                                         />
-                                        <span>My Businesses</span>
+                                        {!isShrunk && (
+                                            <span>My Businesses</span>
+                                        )}{" "}
+                                        {/* Conditionally render text */}
                                     </>
                                 )}
                             </NavLink>
@@ -157,7 +198,7 @@ const Sidebar = () => {
                                     }`
                                 }
                                 to="/dashboard/milestones"
-                                end // Ensures exact match
+                                end
                                 onClick={() => setIsOpen(false)}
                             >
                                 {({ isActive }) => (
@@ -169,7 +210,10 @@ const Sidebar = () => {
                                                     : "text-green"
                                             }`}
                                         />
-                                        <span>Business Milestones</span>
+                                        {!isShrunk && (
+                                            <span>Business Milestones</span>
+                                        )}{" "}
+                                        {/* Conditionally render text */}
                                     </>
                                 )}
                             </NavLink>
@@ -185,7 +229,7 @@ const Sidebar = () => {
                                     }`
                                 }
                                 to="/dashboard/add-milestone"
-                                end // Ensures exact match
+                                end
                                 onClick={() => setIsOpen(false)}
                             >
                                 {({ isActive }) => (
@@ -197,7 +241,10 @@ const Sidebar = () => {
                                                     : "text-green"
                                             }`}
                                         />
-                                        <span>Add Business Milestone</span>
+                                        {!isShrunk && (
+                                            <span>Add Business Milestone</span>
+                                        )}{" "}
+                                        {/* Conditionally render text */}
                                     </>
                                 )}
                             </NavLink>
@@ -213,7 +260,7 @@ const Sidebar = () => {
                                     }`
                                 }
                                 to="/dashboard/investment-bids"
-                                end // Ensures exact match
+                                end
                                 onClick={() => setIsOpen(false)}
                             >
                                 {({ isActive }) => (
@@ -225,7 +272,10 @@ const Sidebar = () => {
                                                     : "text-green"
                                             }`}
                                         />
-                                        <span>Business Bids</span>
+                                        {!isShrunk && (
+                                            <span>Business Bids</span>
+                                        )}{" "}
+                                        {/* Conditionally render text */}
                                     </>
                                 )}
                             </NavLink>
@@ -245,7 +295,7 @@ const Sidebar = () => {
                                         }`
                                     }
                                     to="/dashboard/services-table"
-                                    end // Ensures exact match
+                                    end
                                     onClick={() => setIsOpen(false)}
                                 >
                                     {({ isActive }) => (
@@ -257,7 +307,10 @@ const Sidebar = () => {
                                                         : "text-green"
                                                 }`}
                                             />
-                                            <span>My Services</span>
+                                            {!isShrunk && (
+                                                <span>My Services</span>
+                                            )}{" "}
+                                            {/* Conditionally render text */}
                                         </>
                                     )}
                                 </NavLink>
@@ -273,7 +326,7 @@ const Sidebar = () => {
                                         }`
                                     }
                                     to="/dashboard/add-service"
-                                    end // Ensures exact match
+                                    end
                                     onClick={() => setIsOpen(false)}
                                 >
                                     {({ isActive }) => (
@@ -285,7 +338,10 @@ const Sidebar = () => {
                                                         : "text-green"
                                                 }`}
                                             />
-                                            <span>Add Service</span>
+                                            {!isShrunk && (
+                                                <span>Add Service</span>
+                                            )}{" "}
+                                            {/* Conditionally render text */}
                                         </>
                                     )}
                                 </NavLink>
@@ -301,7 +357,7 @@ const Sidebar = () => {
                                         }`
                                     }
                                     to="/dashboard/service-milestone"
-                                    end // Ensures exact match
+                                    end
                                     onClick={() => setIsOpen(false)}
                                 >
                                     {({ isActive }) => (
@@ -313,7 +369,10 @@ const Sidebar = () => {
                                                         : "text-green"
                                                 }`}
                                             />
-                                            <span>Service Milestones</span>
+                                            {!isShrunk && (
+                                                <span>Service Milestones</span>
+                                            )}{" "}
+                                            {/* Conditionally render text */}
                                         </>
                                     )}
                                 </NavLink>
@@ -329,7 +388,7 @@ const Sidebar = () => {
                                         }`
                                     }
                                     to="/dashboard/addservicemilestone"
-                                    end // Ensures exact match
+                                    end
                                     onClick={() => setIsOpen(false)}
                                 >
                                     {({ isActive }) => (
@@ -341,7 +400,12 @@ const Sidebar = () => {
                                                         : "text-green"
                                                 }`}
                                             />
-                                            <span>Add Service Milestone</span>
+                                            {!isShrunk && (
+                                                <span>
+                                                    Add Service Milestone
+                                                </span>
+                                            )}{" "}
+                                            {/* Conditionally render text */}
                                         </>
                                     )}
                                 </NavLink>
@@ -357,7 +421,7 @@ const Sidebar = () => {
                                         }`
                                     }
                                     to="/dashboard/service-bookings"
-                                    end // Ensures exact match
+                                    end
                                     onClick={() => setIsOpen(false)}
                                 >
                                     {({ isActive }) => (
@@ -369,7 +433,10 @@ const Sidebar = () => {
                                                         : "text-green"
                                                 }`}
                                             />
-                                            <span>Service Booking</span>
+                                            {!isShrunk && (
+                                                <span>Service Booking</span>
+                                            )}{" "}
+                                            {/* Conditionally render text */}
                                         </>
                                     )}
                                 </NavLink>
@@ -386,7 +453,7 @@ const Sidebar = () => {
                                         }`
                                     }
                                     to="/dashboard/mybookings"
-                                    end // Ensures exact match
+                                    end
                                     onClick={() => setIsOpen(false)}
                                 >
                                     {({ isActive }) => (
@@ -398,41 +465,50 @@ const Sidebar = () => {
                                                         : "text-green"
                                                 }`}
                                             />
-                                            <span>My Bookings</span>
+                                            {!isShrunk && (
+                                                <span>My Bookings</span>
+                                            )}{" "}
+                                            {/* Conditionally render text */}
                                         </>
                                     )}
                                 </NavLink>
                             </li>
 
-                            {1 && <li className="nav-item mb-6 rounded-xl py-2">
-                                {/* Added margin-bottom (mb-6) to move it up from the bottom */}
-                                <NavLink
-                                    className={({ isActive }) =>
-                                        `navLink flex items-center gap-4 py-2 px-4  rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
-                                            isActive
-                                                ? "bg-green-800 text-white"
-                                                : "hover:bg-gray-200 text-gray-400"
-                                        }`
-                                    }
-                                    to="/dashboard/my-subscription"
-                                    end // Ensures exact match
-                                    onClick={() => setIsOpen(false)}
-                                >
-                                    {({ isActive }) => (
-                                        <>
-                                            <BiCreditCard
-                                                className={`text-[18px] ${
-                                                    isActive
-                                                        ? "text-white"
-                                                        : "text-green"
-                                                }`}
-                                            />
-                                            <span>My Subscriptions</span>
-                                        </>
-                                    )}
-                                </NavLink>
-                            </li>
-                        }
+                            {1 && (
+                                <li className="nav-item mb-6 rounded-xl py-2">
+                                    {/* Added margin-bottom (mb-6) to move it up from the bottom */}
+                                    <NavLink
+                                        className={({ isActive }) =>
+                                            `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
+                                                isActive
+                                                    ? "bg-green-800 text-white"
+                                                    : "hover:bg-gray-200 text-gray-400"
+                                            }`
+                                        }
+                                        to="/dashboard/my-subscription"
+                                        end
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        {({ isActive }) => (
+                                            <>
+                                                <BiCreditCard
+                                                    className={`text-[18px] ${
+                                                        isActive
+                                                            ? "text-white"
+                                                            : "text-green"
+                                                    }`}
+                                                />
+                                                {!isShrunk && (
+                                                    <span>
+                                                        My Subscriptions
+                                                    </span>
+                                                )}{" "}
+                                                {/* Conditionally render text */}
+                                            </>
+                                        )}
+                                    </NavLink>
+                                </li>
+                            )}
 
                             {/*Don't remove it*/}
                             {subId && (
