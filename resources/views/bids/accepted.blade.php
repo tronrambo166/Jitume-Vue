@@ -7,16 +7,39 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <div
-    class="max-w-4xl mx-auto mt-16 bg-white rounded-lg shadow-lg overflow-hidden relative"
+    style="
+        max-width: 1024px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 4rem;
+        background-color: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        position: relative;
+    "
 >
     <!-- Header with Logo -->
-    <div class="bg-green-900 py-10 text-center text-white relative z-10">
+      <div
+        style="
+            background-color: #14532d;
+            padding: 2.5rem 0;
+            text-align: center;
+            color: #ffffff;
+            position: relative;
+            z-index: 10;
+        "
+    >
         <img
             src="../../../React/src/images/TujitumeLogo.svg"
             alt="Company Logo"
-            class="h-12 w-auto mx-auto"
+            style="height: 3rem; width: auto; margin: 0 auto"
         />
-        <h1 class="text-3xl font-bold mt-4">Bid Accepted!</h1>
+        <h1
+            style="font-size: 2rem; font-weight: 700; margin-top: 1rem"
+        >
+            Bid Accepted!
+        </h1>
     </div>
 
     <div class="email-container" >
@@ -52,8 +75,23 @@
             <a
                 target="_blank"
                 href="<?php echo config('app.api_url');?>agreeToBid/{{$bid_id}}"
-                class="text-green-700 hover:text-white border hover:no-underline border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-900 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
-                >Ok</a
+                 style="
+                        color: #2f9f1f;
+                        border: 1px solid #2f9f1f;
+                        padding: 0.625rem 1.25rem;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        border-radius: 0.5rem;
+                        text-align: center;
+                        margin-right: 0.5rem;
+                        margin-bottom: 0.5rem;
+                        text-decoration: none;
+                    "
+                    onmouseover="this.style.backgroundColor='#388e3c'; this.style.color='white'; this.style.textDecoration='none';"
+                    onmouseout="this.style.backgroundColor=''; this.style.color='#2f9f1f';"
+                    onfocus="this.style.boxShadow='0 0 0 4px rgba(72, 187, 120, 0.5)';"
+                    onblur="this.style.boxShadow='';"
+                    >Ok</a
             >
             <!-- <a
                 href="#"
@@ -85,38 +123,60 @@
         (Please note that investor with assets must have a project manager)
         <br />
         <div class="w-full mx-auto mt-4 py-4 text-center">
-            <a  style="text-decoration:none;color:white;background:green;padding:8px;border-radius:5px;display: inline;width: 50%;margin: auto;margin-top: 20px;"
-                target="_blank"
+            <a  style="background-color: #14532d; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; font-weight: 500; font-size: 1rem; transition: background-color 0.3s ease-in-out;"
+    onmouseover="this.style.backgroundColor='#139647';"
+    onmouseout="this.style.backgroundColor='#14532d';" target="_blank"
                 href="<?php echo config('app.app_url');?>dashboard?b_idToVWPM={{$bid_id}}"
-                class="bg-blue-800 text-white px-6 py-3 hover:no-underline rounded-lg transition hover:bg-blue-900"
             >
                 Request a Project Manager to Verify.</a
             >
 
-            <a  style="text-decoration:none;color:white;background:green;padding:8px;border-radius:5px;display: inline;width: 50%;margin: auto;margin-top: 20px;"
-                target="_blank"
+            <a  
+            style="background-color: #0d3a1f; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; font-weight: 500; font-size: 1rem; transition: background-color 0.3s ease-in-out;"
+    onmouseover="this.style.backgroundColor='#139647';"
+    onmouseout="this.style.backgroundColor='#14532d';"target="_blank"
                 href="<?php echo config('app.app_url');?>dashboard?b_idToVWBO={{$bid_id}}"
-                class="bg-blue-800 text-white px-6 py-3 hover:no-underline rounded-lg transition hover:bg-blue-900"
             >
                 Request Business Owner to Verify</a
             >
 
             <a href="<?php echo config('app.api_url');?>CancelAssetBid/{{$bid_id}}/confirm" 
-			style="text-decoration:none;color:white;background:red;padding:8px;border-radius:5px;display: inline;width: 50%;margin: auto;margin-top: 20px;">
-			Cancel</a>
+			 style="
+                        color: #e11d48;
+                        border: 1px solid #e11d48;
+                        padding: 0.625rem 1.25rem;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        border-radius: 0.5rem;
+                        text-align: center;
+                        margin-right: 0.5rem;
+                        margin-bottom: 0.5rem;
+                        text-decoration: none;
+                    "
+                    onmouseover="this.style.backgroundColor='#9f1239'; this.style.color='white'; this.style.textDecoration='none';"
+                    onmouseout="this.style.backgroundColor=''; this.style.color='#e11d48';"
+                    onfocus="this.style.boxShadow='0 0 0 4px rgba(248, 113, 113, 0.5)';"
+                    onblur="this.style.boxShadow='';">Cancel</a>
         </div>
 
         @endif
 
-        <div class="mt-8 text-center text-gray-500 text-sm">
-            <p>
-                Thank you for using <span class="font-semibold">Tujitume</span>!
-            </p>
-            <p class="font-semibold">Best regards,</p>
-
-            <p>The Tujitume Team</p>
-            <!-- <p class="mt-2">© 2025 Tujitume. All rights reserved.</p> -->
-        </div>
+         <div
+                class="footer"
+                style="
+                    margin-top: 2rem;
+                    text-align: center;
+                    color: gray;
+                    font-size: 12px;
+                "
+            >
+                <p>
+                    Thank you for using
+                    <span style="font-weight: 600">Tujitume</span>!
+                </p>
+                <p style="font-weight: 600">Best regards,</p>
+                <p>The Tujitume Team</p>
+            </div>
     </div>
 </div>
 
@@ -246,4 +306,3 @@ window.onclick = function(event) {
 </script> -->
 
 <!--POP UP MODAL-->
-
