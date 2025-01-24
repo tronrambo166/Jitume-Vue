@@ -7,33 +7,68 @@
 
 <!--Hidden Cart view-->
 <div
-    class="max-w-4xl mx-auto mt-16 bg-white rounded-lg shadow-lg overflow-hidden relative"
+    style="
+        max-width: 1024px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 4rem;
+        background-color: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        position: relative;
+    "
 >
-    <div class="bg-green-900 py-10 text-center text-white relative z-10">
+  <div
+        class="bg-green-900 py-10 text-center text-white relative z-10"
+        style="
+            background-color: #14532d;
+            padding: 2.5rem 0;
+            text-align: center;
+            color: #ffffff;
+            position: relative;
+            z-index: 10;
+        "
+    >
         <img
             src="../../../React/src/images/TujitumeLogo.svg"
             alt="Company Logo"
             class="h-12 w-auto mx-auto"
+            style="height: 3rem; width: auto; margin: 0 auto"
         />
-        <h1 class="text-3xl font-bold mt-4">Projet Manger Assigned!</h1>
+        <h1
+            class="text-3xl font-bold mt-4"
+            style="font-size: 2rem; font-weight: 700; margin-top: 1rem"
+        >
+            Projet Manger Assigned!
+        </h1>
     </div>
         <div >
 		<div style="padding: 20px">
 		
-		 <h2 class="text-left text-lg  text-black mb-4"> Manger Has Been Assigned!</h2>
+		 <h2 class="text-left text-lg  text-black mb-4"> Project Manger Has Been Assigned!</h2>
 			
 			<div class="" style="width:100%;  margin:auto;">
 			<h4 style="line-height:28px;font-weight:500;  color: #000000a1;font-family: sans-serif;text-align:left;"> Hi, for asset investment from <b>{{$investor_name}}</b> to your business: <b>{{$b_name}}</b><br>
 
 		            The Project Manager (Name: <b>{{$manager_name}}</b>, Contact: <b>{{$contact}}</b>) has been assigned to this Process. You can start milestone work.</h4>
 			</div>
-		  <div class="mt-8 text-center text-gray-500 text-sm">
-        <p>Thank you for using <span class="font-semibold">Tujitume</span>!</p>
-        <p class="font-semibold">Best regards,</p>
-
-         <p>The Tujitume Team</p>
-        <!-- <p class="mt-2">© 2025 Tujitume. All rights reserved.</p> -->
-		</div>
+		 <div
+                class="footer"
+                style="
+                    margin-top: 2rem;
+                    text-align: center;
+                    color: gray;
+                    font-size: 12px;
+                "
+            >
+                <p>
+                    Thank you for using
+                    <span style="font-weight: 600">Tujitume</span>!
+                </p>
+                <p style="font-weight: 600">Best regards,</p>
+                <p>The Tujitume Team</p>
+            </div>
         </div>
 		</div>
 		

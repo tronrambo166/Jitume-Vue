@@ -1,7 +1,7 @@
 import React from "react";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 
-const ReviewServdetailSummary = ({ reviews }) => {
+const ReviewServdetailSummary = ({ reviews, rating_count }) => {
     // Calculate the rating distribution from reviews data
     const ratingDistribution = [0, 0, 0, 0, 0]; // For 5 star, 4 star, 3 star, 2 star, and 1 star
     reviews.forEach((review) => {
@@ -13,20 +13,35 @@ const ReviewServdetailSummary = ({ reviews }) => {
         else ratingDistribution[4] += 1;
     });
 
-    const totalReviews = reviews.length || 1; // Avoid division by 0
-    const percentage = ratingDistribution.map(
-        (count) => (count / totalReviews) * 100
-    );
+    const totalReviews2 = rating_count || 0;
+
+    console.log("totalReviews2", totalReviews2);
+
+   const totalReviews = reviews.length || 0; // Avoid division by 0
+   const percentage = ratingDistribution.map(
+       (count) => (totalReviews > 0 ? (count / totalReviews) * 100 : 0) // Avoid NaN by checking totalReviews
+   );
+
 
     // Find the most common rating by checking the highest percentage
-    const highestPercentage = Math.max(...percentage);
-    const mostCommonRatings = percentage
-        .map((perc, index) => (perc === highestPercentage ? 5 - index : null))
-        .filter((rating) => rating !== null);
+    const renderStars = (rating) => {
+        const fullStars = Math.floor(rating); // Number of full stars
+        const hasHalfStar = rating % 1 >= 0.5; // Check if there is a half star
+        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0); // Remaining stars are empty
 
+        return (
+            <>
+                {[...Array(fullStars)].map((_, idx) => (
+                    <FaStar key={`full-${idx}`} className="text-yellow-400" />
+                ))}
+                {hasHalfStar && <FaStarHalfAlt className="text-yellow-400" />}
+                {[...Array(emptyStars)].map((_, idx) => (
+                    <FaRegStar key={`empty-${idx}`} className="text-gray-300" />
+                ))}
+            </>
+        );
+    };
     // Handle the case where we have a tie (draw)
-    const mostCommonRating =
-        mostCommonRatings.length === 1 ? mostCommonRatings[0] : null; // You can handle this case with special logic if needed
 
     // the logic is here below
     // 3 star | ████████ | 1 (100%)
@@ -44,9 +59,8 @@ const ReviewServdetailSummary = ({ reviews }) => {
             {/* Display Most Common Rating */}
             <div className="flex items-center mb-2">
                 {/* Render Stars for the Most Common Rating */}
-                {[...Array(mostCommonRating)].map((_, idx) => (
-                    <FaStar key={idx} className="text-yellow-400" />
-                ))}
+                <div className="flex">{renderStars(totalReviews2)}</div>
+
                 <span className="ml-2 text-gray-600">
                     {totalReviews} Reviews
                 </span>

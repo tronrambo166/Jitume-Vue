@@ -13,24 +13,45 @@
         "
     >
         <div
-            class="max-w-4xl mx-auto mt-16 bg-white rounded-lg shadow-lg overflow-hidden relative"
+            style="
+                max-width: 1024px;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 4rem;
+                background-color: white;
+                border-radius: 0.5rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+                position: relative;
+            "
         >
             <!-- Header with Logo -->
             <div
                 class="bg-green-900 py-10 text-center text-white relative z-10"
+                style="
+                    background-color: #14532d;
+                    padding: 2.5rem 0;
+                    text-align: center;
+                    color: #ffffff;
+                    position: relative;
+                    z-index: 10;
+                "
             >
                 <img
                     src="../../../React/src/images/TujitumeLogo.svg"
                     alt="Company Logo"
                     class="h-12 w-auto mx-auto"
+                    style="height: 3rem; width: auto; margin: 0 auto"
                 />
-                <h1 class="text-3xl font-bold mt-4">Milestone Completed!</h1>
+                <h1
+                    class="text-3xl font-bold mt-4"
+                    style="font-size: 2rem; font-weight: 700; margin-top: 1rem"
+                >
+                    Milestone Completion
+                </h1>
             </div>
             <!-- milestone section -->
-            <div
-                class="email-container"
-               
-            >
+            <div class="email-container">
                 <div class="content" style="padding: 20px">
                     <h2 style="font-size: 20px; margin-bottom: 20px">
                         Completion of Milestone!
@@ -56,24 +77,65 @@
                         <a
                             target="_blank"
                             href="<?php echo config('app.api_url');?>agreeToNextmile/{{$bid_id}}"
-                           class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-900 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
+                            style="
+                                color: #2f8555;
+                                border: 1px solid #2f8555;
+                                padding: 0.625rem 1.25rem;
+                                font-size: 0.875rem;
+                                font-weight: 500;
+                                border-radius: 0.5rem;
+                                text-align: center;
+                                margin-right: 0.5rem;
+                                margin-bottom: 0.5rem;
+                                text-decoration: none;
+                                transition: background-color 0.3s, color 0.3s;
+                                outline: none;
+                            "
+                            onmouseover="this.style.backgroundColor='#38a169'; this.style.color='white';"
+                            onmouseout="this.style.backgroundColor=''; this.style.color='#2f8555';"
+                            onfocus="this.style.boxShadow='0 0 0 4px rgba(72, 187, 120, 0.5)';"
+                            onblur="this.style.boxShadow='';"
                             >Continue</a
                         >
                         <a
                             href="#"
-                            class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-900 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-800"
+                            style="
+                                color: #e11d48;
+                                border: 1px solid #e11d48;
+                                padding: 0.625rem 1.25rem;
+                                font-size: 0.875rem;
+                                font-weight: 500;
+                                border-radius: 0.5rem;
+                                text-align: center;
+                                margin-right: 0.5rem;
+                                margin-bottom: 0.5rem;
+                                text-decoration: none;
+                                transition: background-color 0.3s, color 0.3s;
+                                outline: none;
+                            "
+                            onmouseover="this.style.backgroundColor='#9f1239'; this.style.color='white';"
+                            onmouseout="this.style.backgroundColor=''; this.style.color='#e11d48';"
+                            onfocus="this.style.boxShadow='0 0 0 4px rgba(248, 113, 113, 0.5)';"
+                            onblur="this.style.boxShadow='';"
                             >Cancel</a
                         >
                     </div>
-                     <div class="mt-8 text-center text-gray-500 text-sm">
-            <p>
-                Thank you for using <span class="font-semibold">Tujitume</span>!
-            </p>
-            <p class="font-semibold">Best regards,</p>
-
-            <p>The Tujitume Team</p>
-            <!-- <p class="mt-2">© 2025 Tujitume. All rights reserved.</p> -->
-        </div>
+                    <div
+                        class="footer"
+                        style="
+                            margin-top: 2rem;
+                            text-align: center;
+                            color: gray;
+                            font-size: 12px;
+                        "
+                    >
+                        <p>
+                            Thank you for using
+                            <span style="font-weight: 600">Tujitume</span>!
+                        </p>
+                        <p style="font-weight: 600">Best regards,</p>
+                        <p>The Tujitume Team</p>
+                    </div>
                 </div>
             </div>
         </div>

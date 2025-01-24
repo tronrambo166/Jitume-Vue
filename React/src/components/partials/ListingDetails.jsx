@@ -772,7 +772,7 @@ const ListingDetails = ({ onClose }) => {
                                         )}
                                     </div>
 
-                                    {token && !conv && (
+                                    {token && !conv && amount_r && (
                                         <div>
                                             <p className="flex gap-2 whitespace-nowrap items-center py-2 px-1 mr-8 text-[#1E293B] text-[14px] md:text-[16px]">
                                                 Unlock this business to learn{" "}
@@ -995,150 +995,155 @@ const ListingDetails = ({ onClose }) => {
 
             {/*Small_fee POPUP*/}
 
-            <div
-                className={`fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50 ${
-                    !isVisible ? "hidden" : ""
-                }`}
-            >
-                <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
-                    {/* Conditionally render content */}
-                    {!conv && (
-                        <div className="flex gap-6 justify-center">
-                            <button
-                                onClick={handleUnlockFee}
-                                className="btn-primary rounded-md py-2 px-6 text-lg font-semibold mb-4"
-                            >
-                                Unlock Fee
-                            </button>
-                            <button
-                                onClick={handleSubscribe}
-                                className="text-lg border hover:border-green hover:text-green rounded-md border-black  py-2 px-6 font-semibold mb-4"
-                            >
-                                {subscribeData.subscribed
-                                    ? "Subscription"
-                                    : "Subscribe"}
-                            </button>
-                        </div>
-                    )}
-
-                    {!conv && !showSubs && (
-                        <>
-                            <p className="text-gray-700 mb-6">
-                                This business requests a small unlock fee of{" "}
-                                <b>${details.investors_fee}</b> to view their
-                                full business information.
-                            </p>
-                            <p className="text-gray-700 mb-6">
-                                Do you want to pay now?
-                            </p>
-                            <div className="flex justify-center space-x-4">
+            {!conv && (
+                <div
+                    className={`fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50 ${
+                        !isVisible ? "hidden" : ""
+                    }`}
+                >
+                    <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
+                        {/* Conditionally render content */}
+                        {!conv && (
+                            <div className="flex gap-6 justify-center">
                                 <button
-                                    onClick={() => {
-                                        stripeSmallFee(
-                                            form.listing_id,
-                                            details.investors_fee
-                                        );
-                                        handleClose();
-                                    }}
-                                    className="btn-primary text-white py-2 px-6 rounded  transition"
+                                    onClick={handleUnlockFee}
+                                    className="btn-primary rounded-md py-2 px-6 text-lg font-semibold mb-4"
                                 >
-                                    Ok
+                                    Unlock Fee
                                 </button>
                                 <button
-                                    onClick={handleClose}
-                                    className="bg-green text-white py-2 px-4 rounded btn-primary transition"
+                                    onClick={handleSubscribe}
+                                    className="text-lg border hover:border-green hover:text-green rounded-md border-black  py-2 px-6 font-semibold mb-4"
                                 >
-                                    Cancel
+                                    {subscribeData.subscribed
+                                        ? "Subscription"
+                                        : "Subscribe"}
                                 </button>
                             </div>
-                        </>
-                    )}
+                        )}
 
-                    {showSubs && (
-                        <div>
-                            {subscribeData.token_left > 0 &&
-                                subscribeData.plan != "platinum" && (
-                                    <p className="text-warning mb-3 text-center">
-                                        Your <span>{subscribeData.plan} </span>
-                                        {subscribeData.plan ==
-                                            "silver-trial" && (
-                                            <b> ($9.99/mo after trial ends) </b>
-                                        )}
-                                        {subscribeData.plan == "gold-trial" && (
-                                            <b>
-                                                {" "}
-                                                ($29.99/mo after trial ends){" "}
-                                            </b>
-                                        )}
-                                        {subscribeData.plan ==
-                                            "platinum-trial" && (
-                                            <b>
-                                                {" "}
-                                                ($69.99/mo after trial ends){" "}
-                                            </b>
-                                        )}
-                                        expires in <b>
-                                            {subscribeData.expire}
-                                        </b>{" "}
-                                        days.
-                                        <span className="text-dark small d-block">
-                                            {" "}
-                                            Are you sure you want to <br></br>{" "}
-                                            use one of your{" "}
-                                            {subscribeData.tokenLeft} business
-                                            information tokens?
-                                        </span>
-                                    </p>
-                                )}
-
-                            {subscribeData.token_left <= 0 ? (
-                                <p className="text-dark mb-3 text-center">
-                                    Please use <b>'Small fee'</b> option to
-                                    unlock
-                                    <br></br>( {subscribeData.token_left} token
-                                    left)
+                        {!conv && !showSubs && (
+                            <>
+                                <p className="text-gray-700 mb-6">
+                                    This business requests a small unlock fee of{" "}
+                                    <b>${details.investors_fee}</b> to view
+                                    their full business information.
                                 </p>
-                            ) : (
-                                <div className="flex flex-wrap gap-4 justify-center">
-                                    {[
-                                        "silver",
-                                        "silver-trial",
-                                        "gold",
-                                        "gold-trial",
-                                        "platinum",
-                                        "platinum-trial",
-                                    ].includes(subscribeData.plan) && (
-                                        <button
-                                            onClick={() =>
-                                                unlockBySubs(
-                                                    form.listing_id,
-                                                    subscribeData.sub_id,
-                                                    "token"
-                                                )
-                                            }
-                                            className="btn-primary text-white py-2 px-6 rounded hover:bg-blue-600 transition"
-                                        >
-                                            Use token{" "}
-                                            <small>
-                                                ({subscribeData.token_left}{" "}
-                                                left)
-                                            </small>
-                                        </button>
-                                    )}
+                                <p className="text-gray-700 mb-6">
+                                    Do you want to pay now?
+                                </p>
+                                <div className="flex justify-center space-x-4">
+                                    <button
+                                        onClick={() => {
+                                            stripeSmallFee(
+                                                form.listing_id,
+                                                details.investors_fee
+                                            );
+                                            handleClose();
+                                        }}
+                                        className="btn-primary text-white py-2 px-6 rounded  transition"
+                                    >
+                                        Ok
+                                    </button>
                                     <button
                                         onClick={handleClose}
-                                        className="bg-gray-300 text-gray-700 py-2 px-4 rounded hover:bg-gray-400 transition"
+                                        className="bg-green text-white py-2 px-4 rounded btn-primary transition"
                                     >
-                                        No
+                                        Cancel
                                     </button>
                                 </div>
-                            )}
+                            </>
+                        )}
 
-                            {/*<p className="text-danger text-center">The business is not in your range!</p>*/}
-                        </div>
-                    )}
+                        {showSubs && (
+                            <div>
+                                {subscribeData.token_left > 0 &&
+                                    subscribeData.plan != "platinum" && (
+                                        <p className="text-warning mb-3 text-center">
+                                            Your{" "}
+                                            <span>{subscribeData.plan} </span>
+                                            {subscribeData.plan ==
+                                                "silver-trial" && (
+                                                <b>
+                                                    {" "}
+                                                    ($9.99/mo after trial ends){" "}
+                                                </b>
+                                            )}
+                                            {subscribeData.plan ==
+                                                "gold-trial" && (
+                                                <b>
+                                                    {" "}
+                                                    ($29.99/mo after trial ends){" "}
+                                                </b>
+                                            )}
+                                            {subscribeData.plan ==
+                                                "platinum-trial" && (
+                                                <b>
+                                                    {" "}
+                                                    ($69.99/mo after trial ends){" "}
+                                                </b>
+                                            )}
+                                            expires in{" "}
+                                            <b>{subscribeData.expire}</b> days.
+                                            <span className="text-dark small d-block">
+                                                {" "}
+                                                Are you sure you want to{" "}
+                                                <br></br> use one of your{" "}
+                                                {subscribeData.tokenLeft}{" "}
+                                                business information tokens?
+                                            </span>
+                                        </p>
+                                    )}
+
+                                {subscribeData.token_left <= 0 ? (
+                                    <p className="text-dark mb-3 text-center">
+                                        Please use <b>'Small fee'</b> option to
+                                        unlock
+                                        <br></br>( {subscribeData.token_left}{" "}
+                                        token left)
+                                    </p>
+                                ) : (
+                                    <div className="flex flex-wrap gap-4 justify-center">
+                                        {[
+                                            "silver",
+                                            "silver-trial",
+                                            "gold",
+                                            "gold-trial",
+                                            "platinum",
+                                            "platinum-trial",
+                                        ].includes(subscribeData.plan) && (
+                                            <button
+                                                onClick={() =>
+                                                    unlockBySubs(
+                                                        form.listing_id,
+                                                        subscribeData.sub_id,
+                                                        "token"
+                                                    )
+                                                }
+                                                className="btn-primary text-white py-2 px-6 rounded hover:bg-blue-600 transition"
+                                            >
+                                                Use token{" "}
+                                                <small>
+                                                    ({subscribeData.token_left}{" "}
+                                                    left)
+                                                </small>
+                                            </button>
+                                        )}
+                                        <button
+                                            onClick={handleClose}
+                                            className="bg-gray-300 text-gray-700 py-2 px-4 rounded hover:bg-gray-400 transition"
+                                        >
+                                            No
+                                        </button>
+                                    </div>
+                                )}
+
+                                {/*<p className="text-danger text-center">The business is not in your range!</p>*/}
+                            </div>
+                        )}
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/*Small_fee POPUP*/}
 
@@ -1482,7 +1487,10 @@ const ListingDetails = ({ onClose }) => {
                         {/* Review Summary - Left */}
                         <div className="w-full sm:w-2/3 md:w-1/2 lg:w-1/3   ">
                             <div className="mt-4">
-                                <ReviewSummary reviews={reviews} />
+                                <ReviewSummary
+                                    reviews={reviews}
+                                    rating_count={details.rating}
+                                />
                             </div>
                         </div>
 

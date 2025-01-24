@@ -4,17 +4,41 @@
 
 <!-- Header with Logo -->
 <div
-    class="max-w-4xl mx-auto mt-16 bg-white rounded-lg shadow-lg overflow-hidden relative"
+    style="
+        max-width: 1024px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 4rem;
+        background-color: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        position: relative;
+    "
 >
     <div>
-        <div class="bg-green-900 py-10 text-center text-white relative z-10">
-            <img
-                src="../../../React/src/images/TujitumeLogo.svg"
-                alt="Company Logo"
-                class="h-12 w-auto mx-auto"
-            />
-            <h1 class="text-3xl font-bold mt-4">Bid Cancelled!</h1>
-        </div>
+        <div
+        style="
+            background-color: #14532d;
+            padding: 2.5rem 0;
+            text-align: center;
+            color: #ffffff;
+            position: relative;
+            z-index: 10;
+        "
+    >
+        <img
+            src="../../../React/src/images/TujitumeLogo.svg"
+            alt="Company Logo"
+            style="height: 3rem; width: auto; margin: 0 auto"
+        />
+        <h1
+            class="text-3xl font-bold mt-4"
+            style="font-size: 2rem; font-weight: 700; margin-top: 1rem"
+        >
+            Bid Cancelled!
+        </h1>
+    </div>
     </div>
     <!-- Bid Rejected -->
     <div class="email-container">
@@ -32,15 +56,21 @@
                 Hi,<br />The Investor {{$investor}} has decided to rescind their
                 commitment from Investment to business {{$business_name}}.
             </p>
-            <div class="mt-8 text-center text-gray-500 text-sm">
+           <div
+                class="footer"
+                style="
+                    margin-top: 2rem;
+                    text-align: center;
+                    color: gray;
+                    font-size: 12px;
+                "
+            >
                 <p>
                     Thank you for using
-                    <span class="font-semibold">Tujitume</span>!
+                    <span style="font-weight: 600">Tujitume</span>!
                 </p>
-                <p class="font-semibold">Best regards,</p>
-
+                <p style="font-weight: 600">Best regards,</p>
                 <p>The Tujitume Team</p>
-                <!-- <p class="mt-2">© 2025 Tujitume. All rights reserved.</p> -->
             </div>
         </div>
     </div>

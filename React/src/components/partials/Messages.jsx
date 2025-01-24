@@ -6,6 +6,8 @@ import SkeletonLoader from "./SkeletonLoader";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { useMessage } from "../dashboard/Service/msgcontext"; // Import the custom hook
 import { useLocation } from "react-router-dom";
+import MessageProtection from "./MessageProtection";
+import { useAlert } from "../partials/AlertContext";
 
 function Messages() {
     const location = useLocation();
@@ -21,11 +23,13 @@ function Messages() {
     //const [from, setFrom] = useState(0);
     const [check, setcheck] = useState(0);
     const [customer, setCustomer] = useState(0);
+    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
 
     const { dshmsg } = useMessage(); // Use the context to get the current message
 
     const { dashmsg } = useMessage(); // Correctly access the context value
-    const { customer_id } = location.state || { customer_id: 0 }; console.log(customer_id)
+    const { customer_id } = location.state || { customer_id: 0 };
+    console.log(customer_id);
 
     useEffect(() => {
         let isMounted = true; // Guard for fetch
@@ -59,8 +63,7 @@ function Messages() {
 
         fetchMessages(0);
 
-        if(customer_id != null || customer_id != 0)
-            fetchUser(customer_id);
+        if (customer_id != null || customer_id != 0) fetchUser(customer_id);
 
         const handleResize = () => {
             setIsMobileView(window.innerWidth < 768);
@@ -72,28 +75,23 @@ function Messages() {
             isMounted = false; // Prevent updates on unmounted component
             window.removeEventListener("resize", handleResize);
         };
-
-
     }, []);
 
-
     const fetchUser = (investor_id) => {
-            axiosClient
-                .get("/business/fetchUser/" + investor_id)
-                .then(({ data }) => {
-                    if (data.status == 200) {
-                        setCustomer(data.user || []);
-                        console.log('New User',data);
-                        setMessages(oldArray => [...oldArray, data.user]);
-                        handleSelectMessage(data.user)
-                    }
-                    else
-                    alert(data.messages)
-                })
-                .catch((err) => {
-                        console.error("Error fetching messages:", err);
-                });
-        };
+        axiosClient
+            .get("/business/fetchUser/" + investor_id)
+            .then(({ data }) => {
+                if (data.status == 200) {
+                    setCustomer(data.user || []);
+                    console.log("New User", data);
+                    setMessages((oldArray) => [...oldArray, data.user]);
+                    handleSelectMessage(data.user);
+                } else alert(data.messages);
+            })
+            .catch((err) => {
+                console.error("Error fetching messages:", err);
+            });
+    };
     // Fetching messages from the server.
     // Setting up a listener for resizing the browser window to determine if the view is mobile.
 
@@ -162,64 +160,82 @@ function Messages() {
         }
     };
 
-    const handleSendMessage = (id, service_id) => {
-        if (!newMessage.trim()) return;
+   const handleSendMessage = (id, service_id) => {
+       if (!newMessage.trim()) return;
 
-        // Add a temporary timestamp when the message is sent
-        const tempMessage = {
-            sender: "me", // Indicate the sender is the current user
-            msg: newMessage,
-            id,
-            service_id,
-            status: "Sending...", // Temporary status
-            created_at: new Date().toISOString(), // Temporary timestamp
-        };
+       // Protect or encrypt the message using MessageProtection
+       const protectedMessage = MessageProtection(newMessage);
 
-        console.log("Sending message:", tempMessage);
+       // Check if the protected message is different from the original message
+       if (protectedMessage !== newMessage) {
+           // If the message was altered by the protection (e.g., email or phone masked)
+           showAlert(
+               "info",
+               "Your message contains sensitive information ."
+           );
+       }
 
-        setChatHistory((prev) => [...prev, tempMessage]);
+       // Add a temporary timestamp when the message is sent
+       const tempMessage = {
+           sender: "me", // Indicate the sender is the current user
+           msg: protectedMessage, // Use the protected message
+           id,
+           service_id,
+           status: "Sending...", // Temporary status
+           created_at: new Date().toISOString(), // Temporary timestamp
+       };
 
-        axiosClient
-            .post("/serviceReply", {
-                msg_id: id,
-                service_id,
-                msg: newMessage,
-            })
-            .then(({ data }) => {
-                console.log("Success:", data.message);
-                setChatHistory((prev) =>
-                    prev.map((msg) =>
-                        msg === tempMessage ? { ...msg, status: "Sent" } : msg
-                    )
-                );
-            })
-            .catch((err) => {
-                console.error("Error sending message:", err);
-                setChatHistory((prev) =>
-                    prev.map((msg) =>
-                        msg === tempMessage
-                            ? { ...msg, status: "Failed to send" }
-                            : msg
-                    )
-                );
-            });
+       console.log("Sending message:", tempMessage);
 
-        setNewMessage("");
-    };
+       setChatHistory((prev) => [...prev, tempMessage]);
+
+       axiosClient
+           .post("/serviceReply", {
+               msg_id: id,
+               service_id,
+               msg: protectedMessage, // Send the protected message to the backend
+           })
+           .then(({ data }) => {
+               console.log("Success:", data.message);
+               setChatHistory((prev) =>
+                   prev.map((msg) =>
+                       msg === tempMessage ? { ...msg, status: "Sent" } : msg
+                   )
+               );
+           })
+           .catch((err) => {
+               showAlert(`error`, `Failed to send message: ${err}`);
+               setChatHistory((prev) =>
+                   prev.map((msg) =>
+                       msg === tempMessage
+                           ? { ...msg, status: "Failed to send" }
+                           : msg
+                   )
+               );
+           });
+
+       setNewMessage("");
+   };
+
 
     const handleRetryMessage = (index) => {
         const message = chatHistory[index];
         if (message.status === "Failed to send") {
-            console.log("Retrying message:", message);
+            showAlert("info", `Retrying message: ${message}`);
+
+            // Protect or encrypt the message before retrying
+            const protectedMessage = MessageProtection(message.msg);
+
             setChatHistory((prev) =>
                 prev.map((msg, idx) =>
                     idx === index ? { ...msg, status: "Sending..." } : msg
                 )
             );
+
             axiosClient
-                .post("/serviceReply", { msg: message.msg })
+                .post("/serviceReply", { msg: protectedMessage }) // Send the protected message
                 .then(() => {
-                    console.log("Message resent successfully");
+                    showAlert("success", "Message sent successfully");
                     setChatHistory((prev) =>
                         prev.map((msg, idx) =>
                             idx === index ? { ...msg, status: "Sent" } : msg
@@ -227,7 +243,7 @@ function Messages() {
                     );
                 })
                 .catch((err) => {
-                    console.error("Error retrying message:", err);
+                    showAlert("error", `Failed to resend message: ${err}`);
                     setChatHistory((prev) =>
                         prev.map((msg, idx) =>
                             idx === index
@@ -238,29 +254,30 @@ function Messages() {
                 });
         }
     };
+
     //
 
-   useEffect(() => {
-       console.log("Current message:", dashmsg); // Log the message when it changes
+    useEffect(() => {
+        console.log("Current message:", dashmsg); // Log the message when it changes
 
-       if (dashmsg != null) {
-           // Use regex to extract User ID from dashmsg
-           const userIdMatch = dashmsg.match(/\(User ID: (\d+)\)/);
+        if (dashmsg != null) {
+            // Use regex to extract User ID from dashmsg
+            const userIdMatch = dashmsg.match(/\(User ID: (\d+)\)/);
 
-           if (userIdMatch) {
-               // Extracted userId from the message
-               const user_id = userIdMatch[1];
-               console.log("Extracted User ID:", user_id);
+            if (userIdMatch) {
+                // Extracted userId from the message
+                const user_id = userIdMatch[1];
+                console.log("Extracted User ID:", user_id);
 
-               setUserId(user_id); // Save the extracted User ID separately
-           }
+                setUserId(user_id); // Save the extracted User ID separately
+            }
 
-           // Remove User ID from the message
-           const modifiedMessage = dashmsg.replace(/\(User ID: \d+\)/, ""); // Cleaned message
+            // Remove User ID from the message
+            const modifiedMessage = dashmsg.replace(/\(User ID: \d+\)/, ""); // Cleaned message
 
-           setNewMessage(modifiedMessage); // Update newMessage with cleaned text
-       }
-   }, [dashmsg]);
+            setNewMessage(modifiedMessage); // Update newMessage with cleaned text
+        }
+    }, [dashmsg]);
 
     //
     if (loading) return <SkeletonLoader />;
@@ -441,7 +458,7 @@ function Messages() {
                                                                 handleRetryMessage(
                                                                     index
                                                                 )
-                                                            }
+                                                            } // Pass the correct index to the function
                                                         >
                                                             <AiOutlineReload className="w-4 h-4" />
                                                             <span>Resend</span>

@@ -8,24 +8,52 @@
 
 <!--Hidden Cart view-->
 <div
-    class="max-w-4xl mx-auto mt-16 bg-white rounded-lg shadow-lg overflow-hidden relative"
+    style="
+        max-width: 1024px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 4rem;
+        background-color: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        position: relative;
+    "
 >
-    <div class="bg-green-900 py-10 text-center text-white relative z-10">
+    <div
+        class="bg-green-900 py-10 text-center text-white relative z-10"
+        style="
+            background-color: #14532d;
+            padding: 2.5rem 0;
+            text-align: center;
+            color: #ffffff;
+            position: relative;
+            z-index: 10;
+        "
+    >
         <img
             src="../../../React/src/images/TujitumeLogo.svg"
             alt="Company Logo"
             class="h-12 w-auto mx-auto"
+            style="height: 3rem; width: auto; margin: 0 auto"
         />
-        <h1 class="text-3xl font-bold mt-4">Projet Manger Assigned!</h1>
+        <h1
+            class="text-3xl font-bold mt-4"
+            style="font-size: 2rem; font-weight: 700; margin-top: 1rem"
+        >
+            Projet Manger Assigned!
+        </h1>
     </div>
 
     <div>
         <div style="padding: 20px">
-            <h2 class="text-left text-lg  text-black mb-4">
-                A Dedicated Manager Has Been Assigned to Oversee Your Project!
-            </h2>
+            <h2
+    style="text-align: left; font-size: 1.125rem; color: black; margin-bottom: 1rem;">
+    A Dedicated Manager Has Been Assigned to Oversee Your Project!
+</h2>
 
-            <div class="" style="width: 100%; margin: auto">
+
+            <div  style="width: 100%; margin: auto">
                 <h4
                     style="
                         line-height: 28px;
@@ -40,24 +68,33 @@
                     <b>{{$b_name}}</b> has begun, the contact information of the
                     parties involved is below, Thank you!
 
-                    <p class=" mt-4">
+                    <p style="margin-top: 10px">
                         The Business Owner - (Name: <b>{{$b_owner_name}}</b>,
                         Contact: <b>{{$contact2}}</b>)
                     </p>
-                    <p class="  mt-4">
+                    <p style="margin-top: 10px">
                         The Investor - (Name: <b>{{$investor_name}}</b>,
                         Contact: <b>{{$contact}}</b>)
                     </p>
                 </h4>
             </div>
 
-           <div class="mt-8 text-center text-gray-500 text-sm">
-        <p>Thank you for using <span class="font-semibold">Tujitume</span>!</p>
-        <p class="font-semibold">Best regards,</p>
-
-         <p>The Tujitume Team</p>
-        <!-- <p class="mt-2">© 2025 Tujitume. All rights reserved.</p> -->
-		</div>
+            <div
+                class="footer"
+                style="
+                    margin-top: 2rem;
+                    text-align: center;
+                    color: gray;
+                    font-size: 12px;
+                "
+            >
+                <p>
+                    Thank you for using
+                    <span style="font-weight: 600">Tujitume</span>!
+                </p>
+                <p style="font-weight: 600">Best regards,</p>
+                <p>The Tujitume Team</p>
+            </div>
         </div>
     </div>
 </div>
