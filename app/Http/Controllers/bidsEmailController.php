@@ -152,7 +152,8 @@ public function bidsAccepted(Request $request)
               'serial' => $bid->serial,
               'legal_doc' => $bid->legal_doc,
               'optional_doc' => $bid->optional_doc,
-              'photos' => $bid->photos
+              'photos' => $bid->photos,
+              'stripe_charge_id' => $bid->stripe_charge_id
             ]);
             
             //After Bid is Accepted
@@ -254,31 +255,68 @@ public function withdraw_investment($bidId)
 }
 
 
-public function CancelAssetBid($bidId)
-{
+public function CancelAssetBid($bidId, $action)
+{   
+    $bidId = base64_decode($bidId); 
     try { 
-        $bid = AcceptedBids::where('bid_id',$bidId)->first();
-        $investor = User::where('id',$bid->investor_id)->first();
-        $inv_name = $investor->fname.' '.$investor->lname;
+        $bid = AcceptedBids::where('id',$bidId)->first();
+        $investor = User::select('fname','fname','email')->where('id',$bid->investor_id)->first();
+        $inv_name = $investor->fname.' '.$investor->fname;
+        $business = Listing::select('name','user_id','id')->where('id',$bid->business_id)->first();
+        $owner = User::select('email','id')->where('id',$business->user_id)->first();
 
-        $business = Listing::where('id',$bid->business_id)->first();
-        $owner = User::where('id',$business->user_id)->first();
-
-        $info=[ 'inv_name'=>$inv_name, 'asset_name'=>$bid->serial ];
-        $user['to'] = $owner->email; //'tottenham266@gmail.com'; //$owner->email;
-
-         Mail::send('bids.bid_cancel', $info, function($msg) use ($user){
-             $msg->to($user['to']);
-             $msg->subject('Milestone Cancel!');
+        if($action == 'confirm')
+        {
+            $info=['inv_name'=>$inv_name,'type'=>$bid->type,'bid_id'=>base64_encode($bidId),'asset_name'=>$bid->serial,'business_name'=>$business->name];
+            
+            $user['to'] = $investor->email;
+            Mail::send('bids.cancel_confirm', $info, function($msg) use ($user){
+                $msg->to($user['to']);
+                $msg->subject('Bid Cancel Confirmation!');
          });
-         AcceptedBids::where('bid_id',$bidId)->delete();
-        return response()->json(['success' => 'Thanks for your feedback!']);
-        //return redirect()->to(config('app.app_url'));
+
+            //Notifications
+             $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+             $addNoti = Notifications::create([
+                'date' => $date,
+                'receiver_id' => $bid->investor_id,
+                'customer_id' => $owner->id,
+                'bid_id' => $bidId,
+                'text' => 'Your bid to business '.$business->name.' will be cancelled.',
+                'link' => 'bid_cancel_confirm',
+                'type' => 'business',
+              ]);
+          //Notifications
+        }
+        else
+        {
+            $info=['investor'=>$inv_name,'type'=>$bid->type,'business_name'=>$business->name];
+            $user['to'] = $owner->email; //'tottenham266@gmail.com';
+             Mail::send('bids.cancelled', $info, function($msg) use ($user){
+                 $msg->to($user['to']);
+                 $msg->subject('Bid Cancel!');
+             });
+
+            //Notifications
+             $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+             $addNoti = Notifications::create([
+                'date' => $date,
+                'receiver_id' => $owner->id,
+                'customer_id' => $bid->investor_id,
+                'text' => 'A bid to business '.$business->name.' was cancelled by '.$inv_name,
+                'link' => 'investment-bids',
+                'type' => 'business',
+              ]);
+            //Notifications
+              AcceptedBids::where('id',$bidId)->delete();
+        }
+         
+         return redirect()->to(config('app.app_url/dashboard'));
      
        }
         catch(\Exception $e){
-            return response()->json(['failed' => 'Something went wrong!']);
-            //return redirect()->to(config('app.app_url'));
+            //return $e->getMessage();
+            return redirect()->to(config('app.app_url/dashboard'));
        }  
 }
 

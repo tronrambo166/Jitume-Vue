@@ -9,7 +9,7 @@ export default defineConfig({
     //port:81,
   },
   plugins: [react()],
-  build: {
-    chunkSizeWarningLimit: 1600,
-  },
+  // build: {
+  //   chunkSizeWarningLimit: 1500,
+  // },
 })

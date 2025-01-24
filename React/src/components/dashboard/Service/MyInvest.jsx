@@ -37,7 +37,7 @@ const MyInvest = () => {
             navigateToProjectManager(base64_decode(b_idToVWPM))
         }
         else if(b_idToVWBO != null){
-            verifyRequest(base64_decode(b_idToVWBO))
+            verifyRequestBO(base64_decode(b_idToVWBO))
         }
 
         const getInvestments = () => {
@@ -180,7 +180,7 @@ const MyInvest = () => {
 
     // StartConversation
     // Function to handle sending the conversation
-    const verifyRequest = (bid_id) => {
+    const verifyRequestBO = (bid_id) => {
         $.confirm({
             title: false, // Remove the default title to have full control over placement
             content: `
@@ -301,7 +301,7 @@ const MyInvest = () => {
                                         <li>
                                             <button
                                                 onClick={() =>
-                                                    verifyRequest(item.bid_id)
+                                                    verifyRequestBO(item.bid_id)
                                                 }
                                                 className="flex items-center w-full text-left px-5 py-3 hover:bg-gray-50 text-slate-600 transition duration-150 ease-in-out"
                                             >

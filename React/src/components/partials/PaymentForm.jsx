@@ -281,7 +281,7 @@ const PaymentForm = () => {
     if (purpos == "s_mile") partiesInfo = "/partiesServiceMile/";
     else partiesInfo = "/partiesInfo/";
     useEffect(() => {
-        $(".card-number").mask("9999 9999 9999 9999");
+        //$(".card-number").mask("9999 9999 9999 9999");
         axiosClient.get(partiesInfo + atob(listing_id)).then(({ data }) => {
             setUser(data.user);
             setOwner(data.owner);

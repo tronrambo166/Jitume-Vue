@@ -971,6 +971,11 @@ catch(\Exception $e){
 
 public function remove_bids($id){
   $bid = BusinessBids::where('id',$id)->first();
+  if(!$bid)
+  {
+    return response()->json(['status' => 400, 'message' => 'Bid does not exist!']);
+  }
+
   $owner = User::select('id','fname','lname','email')->where('id',$bid->owner_id)->first();
   $investor = User::select('fname','lname')->where('id',$bid->investor_id)->first();
   $inv_name = $investor->fname.' '.$investor->lname;
@@ -988,20 +993,22 @@ try {
   //Refund
          
   $bid_remove = BusinessBids::where('id',$id)->delete();
+
+  $list = listing::select('name')->where('id',$bid->business_id)->first();
   //Notifications
          $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
          $addNoti = Notifications::create([
             'date' => $date,
             'receiver_id' => $owner->id,
             'customer_id' => $bid->investor_id,
-            'text' => 'A bid to business _name was cancelled by '.$inv_name,
+            'text' => 'A bid to business '.$list->name.' was cancelled by '.$inv_name,
             'link' => 'investment-bids',
             'type' => 'business',
           ]);
   //Notifications
 
   //Email
-         $list = listing::select('name')->where('id',$bid->business_id)->first();
+         
          $info=[ 'business_name'=>$list->name, 'investor' => $inv_name ];
          $user['to'] = $owner->email; //'tottenham266@gmail.com'; //
          
@@ -1021,11 +1028,104 @@ try {
 }
 
 
+public function remove_active_bids($id){
+  $bid = AcceptedBids::where('id',$id)->first();
+  if(!$bid)
+  {
+    return response()->json(['status' => 400, 'message' => 'Bid does not exist!']);
+  }
+
+  $owner = User::select('id','fname','lname','email')->where('id',$bid->owner_id)->first();
+  $investor = User::select('fname','lname')->where('id',$bid->investor_id)->first();
+  $inv_name = $investor->fname.' '.$investor->lname;
+
+try {
+  //Refund
+  if($bid->type == 'Monetary')
+         $this->Client->refunds->create(['charge' => $bid->stripe_charge_id ]);
+  else{
+    //remove document
+    //if($bid->legal_doc) unlink($bid->legal_doc);
+    //if($bid->optional_doc) unlink($bid->optional_doc);
+    //if($bid->photos) unlink($bid->photos);
+  }
+  //Refund
+   
+   $list = listing::select('name')->where('id',$bid->business_id)->first();      
+  //Notifications
+         $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+         $addNoti = Notifications::create([
+            'date' => $date,
+            'receiver_id' => $owner->id,
+            'customer_id' => $bid->investor_id,
+            'text' => 'A bid to business '.$list->name.' was cancelled by '.$inv_name,
+            'link' => 'investment-bids',
+            'type' => 'business',
+          ]);
+  //Notifications
+
+  //Email
+         
+         $info=[ 'business_name'=>$list->name, 'investor' => $inv_name ];
+         $user['to'] = $owner->email; //'tottenham266@gmail.com'; //
+         
+         if($owner)
+            Mail::send('bids.cancelled', $info, function($msg) use ($user){
+             $msg->to($user['to']);
+             $msg->subject('Bid Cancelled!');
+         });
+  //Email
+          $bid_remove = AcceptedBids::where('id',$id)->delete();
+
+  return response()->json(['status'=>200, 'message' => 'Bid removed & refund initiated!']);
+  }
+ catch(\Exception $e){
+  return response()->json(['status'=>400, 'message' => $e->getMessage()]);
+ }
+
+}
+
+
+public function askInvestorToVerify($id)
+{
+    try{
+        $bid = AcceptedBids::where('id', $id)->first();
+        if(!$bid)
+        {
+        return response()->json(['status' => 400,'message'=>'Bid does not exist!']);
+        }
+
+        $investor = User::select('email')->where('id',$bid->investor_id)->first();
+        $list = listing::select('name')->where('id',$bid->business_id)->first(); 
+        
+        //Email
+         $info=[ 'business_name'=>$list->name, 'bid_id' => base64_encode($id) ];
+         $user['to'] = $investor->email; //'tottenham266@gmail.com'; //
+         
+         if($investor)
+            Mail::send('bids.askInvestorToVerify', $info, function($msg) use ($user){
+             $msg->to($user['to']);
+             $msg->subject('Investor To Verify!');
+            });
+        //Email
+
+        return response()->json(['status' => 200, 'message' => 'An email with a request sent to the investor!']);
+    }
+    catch(\Exception $e){
+        Session::put('failed',$e->getMessage());
+        return response()->json(['status' => 400, 'message' => $e->getMessage()]);
+    }
+}
+
 public function requestOwnerToVerify($bid_id)
 {   
     try{
         $bid = AcceptedBids::select('owner_id','investor_id','business_id')
         ->where('id',$bid_id)->first();
+
+        if(!$bid){
+          return response()->json(['status' => 400, 'message' => 'Bid does not exist!']);
+        }
 
         $listing = listing::select('name','user_id')
         ->where('id',$bid->business_id)->first();
@@ -1039,6 +1139,7 @@ public function requestOwnerToVerify($bid_id)
             'date' => $date,
             'receiver_id' => $bid->owner_id,
             'customer_id' => $bid->investor_id,
+            'bid_id' => $bid_id,
             'text' => 'Investor _name requested you to verify their Equipment regarding a bid to the business '.$listing->name,
             'link' => 'verify_request',
             'type' => 'investor',

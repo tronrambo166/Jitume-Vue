@@ -3,6 +3,8 @@ import { FaBell, FaTimes } from "react-icons/fa";
 import axiosClient from "../../axiosClient";
 import { Link, useNavigate } from "react-router-dom";
 import { useMessage } from "../dashboard/Service/msgcontext";
+import TujitumeLogo from "../../images/Tujitumelogo.svg";
+import { useAlert } from "./AlertContext";
 
 const NotificationBell = () => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -10,6 +12,7 @@ const NotificationBell = () => {
     const { setdashmsg } = useMessage();
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
+    const { showAlert } = useAlert();
 
     // Fetch notifications on component mount
     useEffect(() => {
@@ -100,6 +103,151 @@ const NotificationBell = () => {
         });
     }
 
+//Request Project M./Owner Func.
+        const verifyRequestBO = (bid_id) => {
+        $.confirm({
+            title: false, // Remove the default title to have full control over placement
+            content: `
+                      <div style="display: flex; align-items: center;">
+                            <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
+                        </div>
+                      <p>Do you want to send a request to verify your asset details ?</p>
+                    `,
+            buttons: {
+                confirm: {
+                    text: "Yes",
+                    btnClass: "btn-success",
+                    action: () => {
+                        axiosClient
+                            .get("business/requestOwnerToVerify/" + bid_id)
+                            .then(({ data }) => {
+                                console.log(data);
+                                if (data.status === 200) {
+                                    showAlert("success", data.message);
+                                } else {
+                                    showAlert("error", data.message);
+                                }
+                            })
+                            .catch((err) => {
+                                const response = err.response;
+                                console.log(response);
+                                showAlert(
+                                    "error",
+                                    "An error occurred. Please try again."
+                                );
+                            });
+                    },
+                },
+                cancel: {
+                    text: "No",
+                    btnClass: "btn-danger",
+                    action: () => {},
+                },
+            },
+        });
+    };
+
+        // navigateToProjectManager
+    const navigateToProjectManager = (bid_id) => {
+            let ids = "";
+            axiosClient
+            .get("FindProjectManagers/" + bid_id)
+            .then(({ data }) => {
+                if(data.status == 200){
+                    Object.entries(data.results).forEach((entry) => {
+                    const [index, row] = entry;
+                    ids = ids + row.id + ",";
+                    });
+                    console.log(data.results);
+                    if (!ids) ids = 0;
+
+                    sessionStorage.setItem("queryLat", data.lat);
+                    sessionStorage.setItem("queryLng", data.lng);
+
+                    navigate(
+                    "/serviceResults/" + base64_encode(ids) + "/" + data.loc
+                    );
+                    if (locationUrl.pathname.includes("serviceResults"))
+                        window.scrollTo(0, 0);
+                }
+                else{
+                    console.log(data)
+                    showAlert( "error", data.message);
+                }
+                
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+        // Cance logic here
+    const CancelBid = (id) => {
+        $.confirm({
+            title: false, // Remove the default title to have full control over placement
+            content: `
+                    <div style="display: flex; align-items: center;">
+                        <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
+                    </div>
+                    <p>Are you sure you want to cancel this bid?</p>
+                `,
+            buttons: {
+                confirm: function () {
+                    axiosClient
+                        .get("business/remove_active_bids/" + id)
+                        .then(({ data }) => {
+                            console.log(data); // Log response data
+                            if (data.status == 200)
+                                showAlert("success", data.message);
+                            else showAlert("error", data.message);
+                        })
+                        .catch((err) => {
+                            const response = err.response;
+                            console.log(response);
+                        });
+                },
+                cancel: function () {
+                    $.alert("You have canceled"); // Alert if canceled
+                },
+            },
+        });
+    };
+
+
+    const AskInvestorToVerify = (bid_id) => {
+        $.confirm({
+            title: false, // Remove the default title to have full control over placement
+            content: `<div style="display: flex; align-items: center;">
+                        <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
+                    </div>
+                    <p>Are you sure you want to ask investor to verify instead?</p>`,
+            buttons: {
+                confirm: function () {
+                    axiosClient
+                        .get("business/askInvestorToVerify/" + bid_id)
+                        .then(({ data }) => {
+                            console.log(data); // Log response data
+                            if (data.status == 200)
+                                showAlert("success", data.message);
+                            else showAlert("error", data.message);
+                        })
+                        .catch((err) => {
+                            const response = err.response;
+                            console.log(response);
+                        });
+                },
+                cancel: function () {
+                    $.alert("You have canceled"); // Alert if canceled
+                },
+            },
+        });
+    };
+
+    
+//Request Project M./Owner Func.
+
+    
+
     return (
         <div className="relative">
             <div className="flex items-center">
@@ -172,14 +320,30 @@ const NotificationBell = () => {
                                                         startConversation(notif.customer_id)} className="text-green-700 text-xs hover:text-blue-800">
                                                         Agree
                                                     </button> <br></br>
-                                                    <button style={{fontSize: '11px'}} className="text-green-700 text-xs hover:text-blue-800">
-                                                        Ask investor to verify with project manager
+                                                    <button onClick={() =>
+                                                         AskInvestorToVerify(notif.bid_id)} style={{fontSize: '11px'}} className="text-green-700 text-xs hover:text-blue-800">
+                                                        Ask Investor To Verify With Project Manager
                                                     </button>
                                                     <br></br>
 
-                                                     <button className="text-pink-600 text-xs hover:text-blue-800">
-                                                       Cancel
+                                                    </div>
+                                                    ):notif.link =='bid_cancel_confirm'?(
+                                                    <div>
+                                                    <button onClick={() =>
+                                                        CancelBid(notif.bid_id)} className="text-green-700 text-xs hover:text-blue-800">
+                                                        OK
+                                                    </button> <br></br>
+                                                    <button onClick={() =>
+                                                        navigateToProjectManager(notif.bid_id)} style={{fontSize: '11px'}} className="text-green-700 text-xs hover:text-blue-800">
+                                                         Request Project Manager
+                                                   to Verify
                                                     </button>
+
+                                                    <button onClick={() =>
+                                                        verifyRequestBO(notif.bid_id)} style={{fontSize: '11px'}} className="text-green-700 text-xs hover:text-blue-800">
+                                                         Request Business Owner to Verify
+                                                    </button>
+                                                
                                                     </div>
                                                     ):(
 

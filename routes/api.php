@@ -86,7 +86,7 @@ Route::middleware('auth:sanctum')->group(function() {
     // Route::get('milestoneInvestEQP/{listing_id}/{mile_id}/{investor_id}/{owner_id}', [checkoutController::class, 'milestoneInvestEQP'])->name('milestoneInvestEQP');
 
     Route::get('withdraw_investment/{id}', [bidsEmailController::class, 'withdraw_investment']);
-    Route::get('CancelAssetBid/{id}', [bidsEmailController::class, 'CancelAssetBid'])->name('CancelAssetBid');
+   
     Route::post('bidsAccepted', [bidsEmailController::class, 'bidsAccepted'])->name('bidsAccepted');
 
     // Payment Routes
@@ -112,7 +112,9 @@ Route::get('business_bids', [BusinessController::class, 'business_bids'])->name(
 Route::get('confirmed_bids', [BusinessController::class, 'confirmed_bids'])->name('confirmed_bids');
 Route::get('bBQhdsfE_WWe4Q-_f7ieh7Hdhf5E_', [BusinessController::class, 'my_bids'])->name('my_bids');
 Route::get('remove_bids/{id}', [BusinessController::class, 'remove_bids'])->name('remove_bids');
+Route::get('remove_active_bids/{id}', [BusinessController::class, 'remove_active_bids'])->name('remove_active_bids');
 
+Route::get('askInvestorToVerify/{bid_id}', [BusinessController::class, 'askInvestorToVerify']);
 Route::get('requestOwnerToVerify/{bid_id}', [BusinessController::class, 'requestOwnerToVerify']);
 Route::get('markAsVerified/{bid_id}', [BusinessController::class, 'markAsVerified']);
 Route::get('assetEquip/download/{id}/{type}', [BusinessController::class, 'assetEquip_download'])->name('assetEquip/download');
@@ -186,6 +188,7 @@ Route::get('checkDispute/{id}', [BusinessController::class ,'checkDispute']);
 //P R O T E C T E D    R O U T E S   ENDS
 
 Route::get('JitumeSubscribeEmail/{email}', [PagesController::class, 'JitumeSubscribeEmail']);
+ Route::get('CancelAssetBid/{id}/{action}',[bidsEmailController::class,'CancelAssetBid']);
 
 
 
