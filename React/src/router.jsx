@@ -27,7 +27,7 @@ import Mile from "./components/partials/mile";
 import Invest from "./components/partials/Investequip";
 import ServiceTable from "./components/dashboard/Service/servicestable";
 import CategoryPage from "./components/partials/Categorypage";
-import ProjectManagers from "./components/partials/ProjectManagers";
+import ProjectManagers from "./components/partials/ProjectResults";
 import EquipmentRelease from "./components/partials/EquipmentRelease";
 import Addservicemilestone from "./components/dashboard/Service/Addservicemilestone";
 import MyBookings from "./components/dashboard/Service/Mybookings";
@@ -80,7 +80,7 @@ const router = createBrowserRouter([
                 name: "serviceresults",
                 element: <ServiceResults />,
             },
-            { path: "/projectManagers/:bid_id", element: <ProjectManagers /> },
+            { path: "/projectManagers/:resIds/:loc/:bid_id", element: <ProjectManagers /> },
             {
                 path: "/equipmentRelease/:b_owner_id/:manager_id",
                 element: <EquipmentRelease />,

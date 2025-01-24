@@ -1005,6 +1005,15 @@ try {
             'link' => 'investment-bids',
             'type' => 'business',
           ]);
+
+         $addNoti2 = Notifications::create([
+            'date' => $date,
+            'receiver_id' => $bid->investor_id,
+            'customer_id' => $owner->id,
+            'text' => 'Your bid to business '.$list->name.' was cancelled.',
+            'link' => 'investment-bids',
+            'type' => 'business',
+          ]);
   //Notifications
 
   //Email
@@ -1158,7 +1167,7 @@ public function requestOwnerToVerify($bid_id)
          });
         //Email
 
-        $status = AcceptedBids::where('id',$bid_id)->update(['status' => 'under_verify']);
+        $status = AcceptedBids::where('id',$bid_id)->update(['status' => 'under_verification']);
 
         return response()->json(['status' => 200, 'message' => 'Success, please wait for the Business Owner to contact you.']);
     }
@@ -1240,7 +1249,7 @@ public function confirmed_bids()
   ->latest()->get();
 
   $underVerify = AcceptedBids::where('owner_id', Auth::id())
-  ->where('status', 'under_verify')->latest()->get();
+  ->where('status', 'under_verification')->latest()->get();
 
   $bids = array();
   $under_verify = array();

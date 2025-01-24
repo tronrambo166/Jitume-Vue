@@ -320,7 +320,7 @@ function InvestmentBids() {
                     <div style="display: flex; align-items: center;">
                         <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
                     </div>
-                    <p>Are you sure you want to reject this bid?</p>
+                    <p>Are you sure to mark this as verified?</p>
                 `,
                 buttons: {
                     confirm: function () {
@@ -797,7 +797,7 @@ function InvestmentBids() {
                                                 onClick={() =>
                                                     MarkVerified(bid.id)
                                                 }
-                                                style={{fontSize:"11px"}}className="border-solid border-2 border-grey-600 block ... w-full text-left px-1 py-1 hover:bg-grey-700 rounded text-slate-500 transition duration-150 ease-in-out"
+                                                style={{fontSize:"11px"}}className="border-solid border-2 border-grey-700 block ... w-full text-left px-1 py-1 hover:bg-grey-700 rounded text-slate-500 transition duration-150 ease-in-out"
                                             >
                                                 Mark as verified
                                             </button>

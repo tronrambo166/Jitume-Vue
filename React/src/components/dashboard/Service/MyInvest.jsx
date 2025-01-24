@@ -150,7 +150,8 @@ const MyInvest = () => {
                     sessionStorage.setItem("queryLng", data.lng);
 
                     navigate(
-                        "/serviceResults/" + base64_encode(ids) + "/" + data.loc
+                        "/projectManagers/" + base64_encode(ids) + "/" + data.loc 
+                        + "/" + bid_id
                     );
                     if (locationUrl.pathname.includes("serviceResults"))
                         window.scrollTo(0, 0);

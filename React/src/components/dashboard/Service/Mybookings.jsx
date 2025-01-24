@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axiosClient from "../../../axiosClient";
+import {
+    useNavigate,
+    useParams
+} from "react-router-dom";
 
 const MyBookings = () => {
     const [bookings, setBookings] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getBookings = () => {
@@ -46,6 +51,12 @@ const MyBookings = () => {
         );
         setShowModal(false);
     };
+
+    const gotoMilestone = (service_id) => {
+        const id = btoa(btoa(service_id));
+        navigate("/service-milestones/"+id);
+    };
+
 
     return (
         <div className="bg-white shadow-md mt-12 p-12 sm:mt-0 rounded-xl w-full px-0 sm:px-4">
@@ -131,12 +142,21 @@ const MyBookings = () => {
                                     {item.status}
                                 </td>
                                 <td className="px-4 py-4 text-sm">
-                                    <button
-                                        // onClick={() => handleEdit(item)}
-                                        className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-teal-100 text-teal-800 hover:bg-teal-200 focus:outline-none focus:bg-teal-200 disabled:opacity-50 disabled:pointer-events-none dark:text-teal-500 dark:bg-teal-800/30 dark:hover:bg-teal-800/20 dark:focus:bg-teal-800/20"
+                                    {item.status=='Confirmed'?(
+                                        <button
+                                        onClick={() => gotoMilestone(item.service_id)}
+                                        className="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-teal-400 text-teal-800 hover:bg-teal-200 focus:outline-none focus:bg-teal-200 disabled:opacity-50 disabled:pointer-events-none dark:text-teal-500 dark:bg-teal-800/30 dark:hover:bg-teal-800/20 dark:focus:bg-teal-800/20"
                                     
                                         > Pay
-                                    </button>
+                                        </button>
+                                    ):(
+                                    <button
+                                        
+                                        className="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-teal-400 text-teal-800 hover:bg-teal-200 focus:outline-none focus:bg-teal-200 disabled:opacity-50 disabled:pointer-events-none dark:text-teal-500 dark:bg-teal-800/30 dark:hover:bg-teal-800/20 dark:focus:bg-teal-800/20"
+                                    
+                                        > -
+                                        </button>
+                                    )}
                                 </td>
                             </tr>
                         ))}

@@ -131,10 +131,18 @@ const PaymentForm = () => {
 
     const purpos = base64_decode(purpose);
     var p = "";
-    if (purpos === "bids") p = "Investment To Business (25%)";
-    else if (purpos === "s_mile") p = "Pay Service milestone";
-    else p = "Small Fee To Unlock Business";
-    const amount_real = base64_decode(amount)*0.25;
+    var amount_real = base64_decode(amount);
+    if (purpos === "bids"){
+        p = "Investment To Business (25%)";
+        amount_real = base64_decode(amount)*0.25;
+    } 
+    else if (purpos === "s_mile"){
+        p = "Pay Service milestone";
+
+    } 
+    else {
+        p = "Small Fee To Unlock Business";
+    } 
     // GETTING Parameters
 
     const [showModal, setShowModal] = useState(false);

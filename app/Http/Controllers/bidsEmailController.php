@@ -106,25 +106,6 @@ public function bidsAccepted(Request $request)
          $usdToKen = 100*128.5;
 
          //TRANSFERRING FUNDS
-         if($bid->type == 'Monetary' && $bid->paystack_charge_id)
-         {    $bidAmountKen = $bid->amount*$usdToKen;
-              $url = "https://api.paystack.co/transfer"; 
-              $fields = [
-                "source" => "balance", "reason" => "Calm down", 
-                "amount" => $bidAmountKen, "recipient" => $recipient];
-              $fields_string = http_build_query($fields);$ch = curl_init();
-              curl_setopt($ch,CURLOPT_URL, $url);
-              curl_setopt($ch,CURLOPT_POST, true);
-              curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
-              curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                "Authorization: Bearer sk_test_fb3bf64f0b4da439f52bf6b482fa7395a5b4511b",
-                "Cache-Control: no-cache",
-              ));
-              curl_setopt($ch,CURLOPT_RETURNTRANSFER, true); 
-              $result = curl_exec($ch);
-              //echo '<pre>'; print_r($result); echo '<pre>';
-         }
-
          if($bid->type == 'Monetary' && $bid->stripe_charge_id)
          {
                 //Split
@@ -139,7 +120,6 @@ public function bidsAccepted(Request $request)
                 //Stripe
          }
          //TRANSFERRING FUNDS
-
               $accepted =  AcceptedBids::create([
               'bid_id' => $id,
               'date' => $bid->date,
@@ -153,7 +133,8 @@ public function bidsAccepted(Request $request)
               'legal_doc' => $bid->legal_doc,
               'optional_doc' => $bid->optional_doc,
               'photos' => $bid->photos,
-              'stripe_charge_id' => $bid->stripe_charge_id
+              'stripe_charge_id' => $bid->stripe_charge_id,
+              'status' => 'under_verification',
             ]);
             
             //After Bid is Accepted
@@ -164,7 +145,7 @@ public function bidsAccepted(Request $request)
                 'invest_count' => $invest_count
               ]);
 
-              //Mail
+            //Mail
                 $info=[ 'business_name'=>$list->name, 'bid_id'=>
                 base64_encode($accepted->id), 'type' => $bid->type ];
                 $user['to'] = $investor_mail; //'tottenham266@gmail.com'; //
@@ -173,8 +154,7 @@ public function bidsAccepted(Request $request)
                      $msg->to($user['to']);
                      $msg->subject('Bid accepted!');
                  });
-                
-                //Mail
+            //Mail
 
          //Notifications
          $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
@@ -304,6 +284,15 @@ public function CancelAssetBid($bidId, $action)
                 'receiver_id' => $owner->id,
                 'customer_id' => $bid->investor_id,
                 'text' => 'A bid to business '.$business->name.' was cancelled by '.$inv_name,
+                'link' => 'investment-bids',
+                'type' => 'business',
+              ]);
+
+             $addNoti2 = Notifications::create([
+                'date' => $date,
+                'receiver_id' => $bid->investor_id,
+                'customer_id' => $owner->id,
+                'text' => 'Your bid to business '.$list->name.' was cancelled.',
                 'link' => 'investment-bids',
                 'type' => 'business',
               ]);
@@ -522,7 +511,7 @@ public function  bidCommitsEQP(Request $request){
     $total_bid_amount = $total_bid_amount+($b->amount);
 
     $list = listing::select('id','user_id','name')->where('id',$business_id)->first();
-    if($total_bid_amount >= $mile1->amount && !$list->threshold_met){
+    if($total_bid_amount >= $mile1->amount && $list->threshold_met == null){
         listing::where('id',$business_id)->update(['threshold_met' => 1]);
 
         $owner = User::select('id','email')->where('id',$list->user_id)->first();

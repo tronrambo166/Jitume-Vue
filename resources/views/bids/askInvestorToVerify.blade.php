@@ -28,7 +28,7 @@
         "
     >
         <img
-            src="../../../React/src/images/TujitumeLogo.svg"
+            src="http://127.0.0.1:8000/images/Tujitumelogo.svg"
             alt="Company Logo"
             style="height: 3rem; width: auto; margin: 0 auto"
         />
@@ -54,6 +54,7 @@ Manager To Verify; or Cancel altogether.
             <div class="w-full mx-auto mt-4 py-4 text-center">
 
             <a   target="_blank"
+            href="<?php echo config('app.app_url');?>dashboard?b_idToVWPM={{$bid_id}}"
                  style="background-color: #14532d; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; font-weight: 500; font-size: 1rem; transition: background-color 0.3s ease-in-out;"
     onmouseover="this.style.backgroundColor='#139647';"
     onmouseout="this.style.backgroundColor='#14532d';"target="_blank"

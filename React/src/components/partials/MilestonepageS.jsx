@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Modal from "./Authmodal";
 import ServiceHero from "../Heros/ServiceHero";
 import BackBtn from "./BackBtn";
+import TujitumeLogo from "../../images/Tujitumelogo.svg";
 
 const MilestonePage = () => {
     const { id } = useParams();
