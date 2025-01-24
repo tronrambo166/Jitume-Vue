@@ -6,11 +6,16 @@ import ReusableTable from "../business/ReusableTable";
 import { FaChartLine } from "react-icons/fa";
 import TujitumeLogo from "../../../images/Tujitumelogo.svg";
 import { BsThreeDots } from "react-icons/bs";
-import { useNavigate, useLocation, useParams, useSearchParams } from "react-router-dom";
+import {
+    useNavigate,
+    useLocation,
+    useParams,
+    useSearchParams,
+} from "react-router-dom";
 import { useMessage } from "./msgcontext"; // Import the custom hook
 import { BarLoader } from "react-spinners";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
-
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 const MyInvest = () => {
     const locationUrl = useLocation();
     const [myInvest, setMyInvest] = useState([]);
@@ -23,21 +28,17 @@ const MyInvest = () => {
     const [Investname, SetInvestname] = useState("");
     const [userId, setUserId] = useState("");
     const [isLoading, setIsLoading] = useState(true);
-
+    const [loading, setLoading] = useState(false);
     const [searchParams] = useSearchParams();
 
-    
-
-    
     useEffect(() => {
-        const b_idToVWPM = searchParams.get('b_idToVWPM');
-        const b_idToVWBO = searchParams.get('b_idToVWBO');
+        const b_idToVWPM = searchParams.get("b_idToVWPM");
+        const b_idToVWBO = searchParams.get("b_idToVWBO");
 
-        if(b_idToVWPM != null){
-            navigateToProjectManager(base64_decode(b_idToVWPM))
-        }
-        else if(b_idToVWBO != null){
-            verifyRequestBO(base64_decode(b_idToVWBO))
+        if (b_idToVWPM != null) {
+            navigateToProjectManager(base64_decode(b_idToVWPM));
+        } else if (b_idToVWBO != null) {
+            verifyRequestBO(base64_decode(b_idToVWBO));
         }
 
         const getInvestments = () => {
@@ -74,15 +75,18 @@ const MyInvest = () => {
                 `,
             buttons: {
                 confirm: function () {
+                    setLoading(true);
                     axiosClient
                         .get("business/remove_bids/" + id)
                         .then(({ data }) => {
+                             setLoading(false);
                             console.log(data); // Log response data
                             if (data.status == 200)
                                 showAlert("success", data.message);
                             else showAlert("success", data.message);
                         })
                         .catch((err) => {
+                             setLoading(false);
                             const response = err.response;
                             console.log(response);
                         });
@@ -130,14 +134,14 @@ const MyInvest = () => {
 
     // navigateToProjectManager
     const navigateToProjectManager = (bid_id) => {
-            let ids = "";
-            axiosClient
+        let ids = "";
+        axiosClient
             .get("FindProjectManagers/" + bid_id)
             .then(({ data }) => {
-                if(data.status == 200){
+                if (data.status == 200) {
                     Object.entries(data.results).forEach((entry) => {
-                    const [index, row] = entry;
-                    ids = ids + row.id + ",";
+                        const [index, row] = entry;
+                        ids = ids + row.id + ",";
                     });
                     console.log(data.results);
                     if (!ids) ids = 0;
@@ -146,13 +150,11 @@ const MyInvest = () => {
                     sessionStorage.setItem("queryLng", data.lng);
 
                     navigate(
-                    "/serviceResults/" + base64_encode(ids) + "/" + data.loc
+                        "/serviceResults/" + base64_encode(ids) + "/" + data.loc
                     );
                     if (locationUrl.pathname.includes("serviceResults"))
                         window.scrollTo(0, 0);
-                }
-                else
-                console.log(data)
+                } else console.log(data);
             })
             .catch((err) => {
                 console.log(err);
@@ -252,11 +254,18 @@ const MyInvest = () => {
             <div className="relative" ref={dropdownRef}>
                 <button
                     onClick={toggleDropdown}
-                    className="text-gray-600 hover:text-gray-800 focus:outline-none transition duration-200 ease-in-out"
+                    className="text-gray-600 hover:text-gray-800 focus:outline-none transition duration-200 ease-in-out flex items-center gap-2"
                     aria-expanded={showDropdown}
                     aria-label="Toggle Actions"
                 >
-                    <BsThreeDots size={20} />
+                    {loading ? (
+                        <AiOutlineLoading3Quarters
+                            className="animate-spin text-gray-600"
+                            size={20}
+                        />
+                    ) : (
+                        <BsThreeDots size={20} />
+                    )}
                 </button>
                 {showDropdown && (
                     <div
@@ -313,7 +322,7 @@ const MyInvest = () => {
                                                 </span>
                                             </button>
                                         </li>
-                                        
+
                                         <li>
                                             <button
                                                 onClick={WithdrawInvestment}
