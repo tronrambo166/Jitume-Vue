@@ -487,13 +487,13 @@ const ServiceDetails = () => {
                         <div className="w-full py-3 flex  flex-col">
                             <div className="flex items-center  justify-end mb-2">
                                 <span className="text-yellow-400">
-                                {renderStars(details.rating)}{" "}
-                            </span>
+                                    {renderStars(details.rating)}{" "}
+                                </span>
                                 <span className="ml-2">({details.rating})</span>
                             </div>
                             <div className="text-gray-500 text-sm">
-                            {/* {details.rating_count} Ratings */}
-                        </div>
+                                {/* {details.rating_count} Ratings */}
+                            </div>
 
                             {/* <h2 className="text-black text-sm sm:text-xs md:text-sm lg:text-base font-bold">
                             More business information
@@ -775,7 +775,10 @@ const ServiceDetails = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
                             {/* On mobile, ReviewSummary takes up full width, on larger screens it takes 1/3 */}
                             <div className="sm:col-span-1">
-                                <ReviewSummary reviews={reviews} />
+                                <ReviewSummary
+                                    reviews={reviews}
+                                    rating_count={details.rating}
+                                />
                             </div>
                             {/* On mobile, ReviewList takes up full width, on larger screens it takes 2/3 */}
                             <div className="sm:col-span-2">
