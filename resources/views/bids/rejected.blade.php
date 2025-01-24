@@ -39,7 +39,7 @@
             class="text-3xl font-bold mt-4"
             style="font-size: 2rem; font-weight: 700; margin-top: 1rem"
         >
-            Bid Rejected! ooh!
+            Bid Rejected!
         </h1>
     </div>
        <!-- Bid Rejected -->
