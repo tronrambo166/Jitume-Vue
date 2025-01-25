@@ -13,6 +13,8 @@ import PaymentHero from "../Heros/PaymentHero";
 import { useStateContext } from "../../contexts/contextProvider";
 import { useLocation } from "react-router-dom";
 
+//import { mask } from "../../js/jquery.maskedinput";
+
 const PaymentForm = () => {
     const location = useLocation();
     const [selectedPayment, setSelectedPayment] = useState("card");
@@ -127,7 +129,7 @@ const PaymentForm = () => {
     const { listing_id } = location.state || { listing_id: 0 };
     const { purpose } = location.state || { purpose: btoa(1) };
     const { percent } = location.state || { percent: btoa(1) };
-    console.log(percent);
+    //console.log(percent);
 
     const purpos = base64_decode(purpose);
     var p = "";
@@ -261,7 +263,10 @@ const PaymentForm = () => {
                                 },
                             });
                         }
-                        if (data.status == 400) alert(data.message);
+                        if (data.status == 400){
+                           //alert(data.message);
+                           console.log(data); 
+                        } console.log(data);
                     })
                     .catch((err) => {
                         console.log(err);

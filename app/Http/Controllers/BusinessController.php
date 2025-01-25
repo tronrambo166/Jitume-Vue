@@ -1006,7 +1006,7 @@ try {
             'type' => 'business',
           ]);
 
-         $addNoti2 = Notifications::create([
+          $addNoti2 = Notifications::create([
             'date' => $date,
             'receiver_id' => $bid->investor_id,
             'customer_id' => $owner->id,
@@ -1180,8 +1180,33 @@ public function requestOwnerToVerify($bid_id)
 public function markAsVerified($id)
 {
     try{
-        AcceptedBids::where('id', $id)
-        ->update(['status' => 'verified']);
+        AcceptedBids::where('id', $id)->update(['status' => 'verified']);
+        $bid = AcceptedBids::where('id', $id)->first();
+        $investor =User::select('email','id')->where('id',$bid->investor_id)
+        ->first();
+
+            //Notifications
+              //EQP RELEASE
+                $info=[ 'business_owner'=>$bid->business_id, 'manager'=>$bid->project_manager, 'bid_id'=> base64_encode($id)];
+                $user['to'] = $investor->email;
+                 Mail::send('services.equip_release_request', $info, function($msg) use ($user){
+                    $msg->to($user['to']);
+                    $msg->subject('Equipment release request!');
+                 });
+              //EQP RELEASE
+            
+             // $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+             // $addNoti = Notifications::create([
+             //    'date' => $date,
+             //    'receiver_id' => $bid->investor_id,
+             //    'customer_id' => $owner->id,
+             //    'bid_id' => $bidId,
+             //    'text' => 'Your bid to business '.$business->name.' will be cancelled.',
+             //    'link' => 'bid_cancel_confirm',
+             //    'type' => 'business',
+             //  ]);
+            //Notifications
+
         return response()->json(['status' => 200, 'message' => 'Bid marked as verified!']);
     }
     catch(\Exception $e){
@@ -1249,7 +1274,9 @@ public function confirmed_bids()
   ->latest()->get();
 
   $underVerify = AcceptedBids::where('owner_id', Auth::id())
-  ->where('status', 'under_verification')->latest()->get();
+  ->where('status', 'under_verification')
+  ->orWhere('status', 'manager_assigned')
+  ->orWhere('status', 'equipment_released')->latest()->get();
 
   $bids = array();
   $under_verify = array();
@@ -1642,15 +1669,20 @@ public function releaseEquipment($business_id, $manager_id){
     $investor_name = $investor->fname.' '.$investor->lname;
 
   try
-  {     
+  {  
+
+    //VOTE & RELEASE PAYMENT 
+
+    //VOTE & RELEASE PAYMENT
+    
     //Mail to B Owner
-    $info=['manager_name'=>$manager_name, 'contact'=>$manager->email,
-    'b_name' => $b_name, 'investor_name' => $investor_name];
+          $info=['manager_name'=>$manager_name, 'contact'=>$manager->email,
+          'b_name' => $b_name, 'investor_name' => $investor_name];
             $user['to'] = $b_owner->email;
             $mail1 = Mail::send('bids.owner_manager_alert', $info, function($msg) use ($user){
                  $msg->to($user['to']);
                  $msg->subject('Project Manger Assigned!');
-             });
+            });
 
     //Mail to Project Manger
     $info=['investor_name'=>$investor_name, 'contact'=>$investor->email,

@@ -104,7 +104,7 @@ const MyBookings = () => {
                                     {item.service}
                                 </td>
                                 <td className="px-4 py-4 text-sm">
-                                    {item.category}
+                                    {item.category == '0'?'Project Management':item.category}
                                 </td>
                                 <td className="px-4 py-4 text-sm">
                                     {item.note}

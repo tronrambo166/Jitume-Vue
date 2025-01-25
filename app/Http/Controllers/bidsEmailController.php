@@ -38,6 +38,22 @@ public function __construct(StripeClient $client)
         $this->api_base_url = env('API_BASE_URL');
     }
 
+public function bid_info($id)
+{
+    try{
+        $bid = AcceptedBids::where('id', $id)->first();
+        $investor = User::select('fname')->where('id', $bid->investor_id)->first()
+        ->fname;
+        return response()->json(['status' => 200, 'data' => $bid, 'investor'=>
+        $investor]);
+    }
+    catch(\Exception $e){
+        Session::put('failed',$e->getMessage());
+        return response()->json(['status' => 400, 'message' => $e->getMessage()]);
+    }
+}
+
+
 public function bidsAccepted(Request $request)
 {
     //return $request->all();
@@ -241,7 +257,7 @@ public function CancelAssetBid($bidId, $action)
     try { 
         $bid = AcceptedBids::where('id',$bidId)->first();
         $investor = User::select('fname','fname','email')->where('id',$bid->investor_id)->first();
-        $inv_name = $investor->fname.' '.$investor->fname;
+        $inv_name = $investor->fname.' '.$investor->lname;
         $business = Listing::select('name','user_id','id')->where('id',$bid->business_id)->first();
         $owner = User::select('email','id')->where('id',$business->user_id)->first();
 
@@ -292,7 +308,7 @@ public function CancelAssetBid($bidId, $action)
                 'date' => $date,
                 'receiver_id' => $bid->investor_id,
                 'customer_id' => $owner->id,
-                'text' => 'Your bid to business '.$list->name.' was cancelled.',
+                'text' => 'Your bid to business '.$business->name.' was cancelled.',
                 'link' => 'investment-bids',
                 'type' => 'business',
               ]);
@@ -300,15 +316,89 @@ public function CancelAssetBid($bidId, $action)
               AcceptedBids::where('id',$bidId)->delete();
         }
          
-         return redirect()->to(config('app.app_url/dashboard'));
+         return redirect()->to(config('app.app_url').'dashboard')->send();
      
        }
         catch(\Exception $e){
             //return $e->getMessage();
-            return redirect()->to(config('app.app_url/dashboard'));
+            return redirect()->to(config('app.app_url').'dashboard')->send();
        }  
 }
 
+
+public function CancelEquipmentRelease($bidId, $action)
+{   
+    $bidId = base64_decode($bidId); 
+    try { 
+        $bid = AcceptedBids::where('id',$bidId)->first();
+        $investor = User::select('fname','fname','email')->where('id',$bid->investor_id)->first();
+        $inv_name = $investor->fname.' '.$investor->fname;
+        $business = Listing::select('name','user_id','id')->where('id',$bid->business_id)->first();
+        $owner = User::select('email','id')->where('id',$business->user_id)->first();
+
+        if($action == 'confirm')
+        {
+            $info=[ 'business_name'=>$business->name, 'business_owner'=>$bid->business_id, 'manager'=>$bid->project_manager, 'bid_id'=> base64_encode($bidId)];
+            
+            $user['to'] = $investor->email;
+            Mail::send('bids.eqp_cancel_confirm', $info, function($msg) use ($user){
+                $msg->to($user['to']);
+                $msg->subject('Equipment Cancel Confirmation!');
+            });
+
+            //Notifications
+             $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+             $addNoti = Notifications::create([
+                'date' => $date,
+                'receiver_id' => $bid->investor_id,
+                'customer_id' => $owner->id,
+                'bid_id' => $bidId,
+                'text' => 'Your bid to business '.$business->name.' will be cancelled.',
+                'link' => 'eqp_cancel_confirm',
+                'type' => 'business',
+              ]);
+          //Notifications
+        }
+        else
+        {
+            $info=['investor'=>$inv_name,'type'=>$bid->type,'business_name'=>$business->name];
+            $user['to'] = $owner->email; //'tottenham266@gmail.com';
+             Mail::send('bids.cancelled', $info, function($msg) use ($user){
+                 $msg->to($user['to']);
+                 $msg->subject('Bid Cancel!');
+             });
+
+            //Notifications
+             $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+             $addNoti = Notifications::create([
+                'date' => $date,
+                'receiver_id' => $owner->id,
+                'customer_id' => $bid->investor_id,
+                'text' => 'A bid to business '.$business->name.' was cancelled by '.$inv_name,
+                'link' => 'investment-bids',
+                'type' => 'business',
+              ]);
+
+             $addNoti2 = Notifications::create([
+                'date' => $date,
+                'receiver_id' => $bid->investor_id,
+                'customer_id' => $owner->id,
+                'text' => 'Your bid to business '.$list->name.' was cancelled.',
+                'link' => 'investment-bids',
+                'type' => 'business',
+              ]);
+            //Notifications
+              AcceptedBids::where('id',$bidId)->delete();
+        }
+
+         return redirect()->to(config('app.app_url').'dashboard')->send();
+     
+       }
+        catch(\Exception $e){
+            //return $e->getMessage().config('app.app_url/dashboard');
+            return redirect()->to(config('app.app_url').'dashboard')->send();
+       }  
+}
 
 
 public function agreeToMileS($s_id,$booker_id)
@@ -340,8 +430,9 @@ public function agreeToNextmile($bidId)
         foreach($nextMileAgree as $agree)
         {   $next_vote = ($agree->representation)/$share;
             $next_vote = round($next_vote*10,1);
-            if($agree->project_manager == 1)
-                $next_vote = $next_vote+1;
+            if($agree->project_manager != null)
+            $next_vote = $next_vote+1;
+
             $total_vote = $total_vote+$next_vote;
         } 
         //Vote

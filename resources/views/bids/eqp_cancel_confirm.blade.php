@@ -34,7 +34,7 @@
                     style="height: 3rem; width: auto; margin: 0 auto"
                 />
                 <h1 style="font-size: 2rem; font-weight: 700; margin-top: 1rem">
-                    Bid Cancel Confirmation!
+                    Equipment Release Cancel Confirmation!
                 </h1>
             </div>
         </div>
@@ -49,7 +49,7 @@
                         margin-bottom: 30px;
                     "
                 >
-                    Hi,<br />Are you sure about cancelling this bid? With 'Ok',
+                    Hi,<br />Are you sure about cancelling this equipment release? With 'Ok',
                     your commitment from Investment to business
                     {{$business_name}} will be canceled & you'll be redirected
                     to Tujitume.
@@ -78,9 +78,9 @@
                         OK</a
                     >
 
-                    <a
+                    &nbsp;<a
                         target="_blank"
-                        href="<?php echo config('app.app_url');?>dashboard?b_idToVWPM={{$bid_id}}"
+                        href="<?php echo config('app.app_url');?>equipmentRelease/{{$business_owner}}/{{$manager}}"
                         style="
                             background-color: #14532d;
                             color: white;
@@ -95,28 +95,10 @@
                         onmouseout="this.style.backgroundColor='#14532d';"
                         target="_blank"
                     >
-                        Request a Project Manager to Verify.</a
+                        Release Equipment.</a
                     >
 
-                    <a
-                        target="_blank"
-                        href="<?php echo config('app.app_url');?>dashboard?b_idToVWBO={{$bid_id}}"
-                        style="
-                            background-color: #0d3a1f;
-                            color: white;
-                            padding: 0.75rem 1.5rem;
-                            border-radius: 0.5rem;
-                            text-decoration: none;
-                            font-weight: 500;
-                            font-size: 1rem;
-                            transition: background-color 0.3s ease-in-out;
-                        "
-                        onmouseover="this.style.backgroundColor='#139647';"
-                        onmouseout="this.style.backgroundColor='#14532d';"
-                        target="_blank"
-                    >
-                        Request Business Owner to Verify</a
-                    >
+                    
                 </div>
 
                 <div

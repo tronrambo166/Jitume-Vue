@@ -13,7 +13,7 @@
 			<div class="" style="width:50%; margin:auto;">
 			<h4 style="font-weight:500; color: #000000a1;font-family:  sans-serif;text-align:left;"> Milestone Name: {{$name}} </h4>
 			<h4 style="font-weight:500; color: #000000a1;font-family: sans-serif;text-align:left;"> Amount: {{$amount}} </h4>
-			<h4 style="font-weight:500; color: #000000a1;font-family: sans-serif;text-align:left;"> Business Name: {{$business}} </h4>
+			<h4 style="font-weight:500; color: #000000a1;font-family: sans-serif;text-align:left;"> Service Name: {{$business}} </h4>
 			</div>
 		
 		

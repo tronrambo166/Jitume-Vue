@@ -48,11 +48,21 @@
 		
 		 <h2 class="text-left text-lg  text-black mb-4"> Project Manger Has Been Assigned!</h2>
 			
-			<div class="" style="width:100%;  margin:auto;">
-			<h4 style="line-height:28px;font-weight:500;  color: #000000a1;font-family: sans-serif;text-align:left;"> Hi, for asset investment from <b>{{$investor_name}}</b> to your business: <b>{{$b_name}}</b><br>
+			@if($mail_to == 'owner')
+            <div class="" style="width:100%;  margin:auto;">
+			<h4 style="line-height:28px;font-weight:500;  color: #000000a1;font-family: sans-serif;text-align:left;"> Hi, Project
+            Manager {{$manager_name}} has been assigned to help verify the equipment from the investor {{$investor_name}} <br>
 
-		            The Project Manager (Name: <b>{{$manager_name}}</b>, Contact: <b>{{$contact}}</b>) has been assigned to this Process. You can start milestone work.</h4>
+		            The Project Manager (Name: <b>{{$manager_name}}</b>, Contact: <b>{{$contact}}</b>), You can start milestone work.</h4>
 			</div>
+
+            @else
+            <div class="" style="width:100%;  margin:auto;">
+            <h4 style="line-height:28px;font-weight:500;  color: #000000a1;font-family: sans-serif;text-align:left;"> Hi, you have been assigned to help verify the equipment from the investor {{$investor_name}}. Please verify this alognside with Business Owner from the Tujitume dashboard or Contact: <b>{{$contact}}</b>) <br>
+
+            </div>
+            @endif
+
 		 <div
                 class="footer"
                 style="

@@ -9,6 +9,8 @@ import { useAlert } from "./AlertContext";
 const NotificationBell = () => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const [notifications, setNotifications] = useState([]);
+    const [investor, setInvestor] = useState(null);
+    const [serial, setSerial] = useState(null);
     const { setdashmsg } = useMessage();
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
@@ -93,7 +95,7 @@ const NotificationBell = () => {
 
     const startConversation = (customer_id) =>{
         const message = `Hi, thank you for considering investing in my business. Let me know how to best verify this equipment.`; // const sender = Nurul; // Example sender name
-
+        const message2 = `Hi, please let me know how best to verify this “investor” “equipment” `;
         // Set the new message using the context
         setdashmsg(message);
 
@@ -102,6 +104,24 @@ const NotificationBell = () => {
                             state: { customer_id: customer_id },
         });
     }
+
+    const startConversationBO_PM = (customer_id, bid_id) =>{
+        axiosClient.get("business/bidInfo/"+bid_id).then(({ data }) => {
+            if(data.status== 200){
+                setInvestor(data.investor);
+                setSerial(data.data.serial);
+            //console.log(data); 
+            }
+        })
+        .catch((err) => { console.log(err); });
+        const message = `Hi, please let me know how best to verify investor `+investor+`'s equipment (`+serial+`) `;
+        // Set the new message using the context
+        setdashmsg(message); 
+        navigate("/dashboard/messages", {
+            state: { customer_id: customer_id },
+        });
+    }
+  
 
 //Request Project M./Owner Func.
         const verifyRequestBO = (bid_id) => {
@@ -243,6 +263,19 @@ const NotificationBell = () => {
         });
     };
 
+
+    const ReleaseEquipment = (bid_id) =>{
+        axiosClient.get("business/bidInfo/"+bid_id).then(({ data }) => {
+            if(data.status== 200){
+                navigate("/equipmentRelease/"+data.data.business_id+"/"+data.data.project_manager); 
+            }
+            else{
+                alert(data.message);
+            }
+        })
+        .catch((err) => { console.log(err); });
+    }
+
     
 //Request Project M./Owner Func.
 
@@ -317,31 +350,50 @@ const NotificationBell = () => {
                                                     {notif.link =='verify_request'?(
                                                     <div>
                                                     <button onClick={() =>
-                                                        startConversation(notif.customer_id)} className="text-green-700 text-xs hover:text-blue-800">
+                                                        startConversation(notif.customer_id)} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
                                                         Agree
                                                     </button> <br></br>
                                                     <button onClick={() =>
-                                                         AskInvestorToVerify(notif.bid_id)} style={{fontSize: '11px'}} className="text-green-700 text-xs hover:text-blue-800">
+                                                         AskInvestorToVerify(notif.bid_id)} style={{fontSize: '11px'}} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
                                                         Ask Investor To Verify With Project Manager
                                                     </button>
                                                     <br></br>
 
                                                     </div>
+                                                    ):notif.link =='verify_request_manager'?(
+                                                    <div>
+                                                    <button onClick={() =>
+                                                        startConversationBO_PM(notif.customer_id, notif.bid_id)} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
+                                                        Start Conversation
+                                                    </button>
+                                                    </div>
                                                     ):notif.link =='bid_cancel_confirm'?(
                                                     <div>
                                                     <button onClick={() =>
-                                                        CancelBid(notif.bid_id)} className="text-green-700 text-xs hover:text-blue-800">
+                                                        CancelBid(notif.bid_id)} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
                                                         OK
                                                     </button> <br></br>
                                                     <button onClick={() =>
-                                                        navigateToProjectManager(notif.bid_id)} style={{fontSize: '11px'}} className="text-green-700 text-xs hover:text-blue-800">
+                                                        navigateToProjectManager(notif.bid_id)} style={{fontSize: '11px'}} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
                                                          Request Project Manager
                                                    to Verify
                                                     </button>
 
                                                     <button onClick={() =>
-                                                        verifyRequestBO(notif.bid_id)} style={{fontSize: '11px'}} className="text-green-700 text-xs hover:text-blue-800">
+                                                        verifyRequestBO(notif.bid_id)} style={{fontSize: '11px'}} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
                                                          Request Business Owner to Verify
+                                                    </button>
+                                                
+                                                    </div>
+                                                    ):notif.link =='eqp_cancel_confirm'?(
+                                                    <div>
+                                                    <button onClick={() =>
+                                                        CancelBid(notif.bid_id)} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
+                                                        OK
+                                                    </button> <br></br>
+                                                    <button onClick={() =>
+                                                        ReleaseEquipment(notif.bid_id)} style={{fontSize: '11px'}} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
+                                                         Release Equipment
                                                     </button>
                                                 
                                                     </div>
@@ -350,7 +402,7 @@ const NotificationBell = () => {
                                                     <Link
                                                     to={`./${notif.link}`}
                                                     onClick={closeDropdown}
-                                                    ><button className="text-blue-600 text-xs hover:text-blue-800">
+                                                    ><button className="text-blue-600 text-xs hover:text-black">
                                                         View More
                                                     </button> &nbsp;
                                                     <button

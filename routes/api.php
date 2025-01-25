@@ -173,6 +173,7 @@ Route::post('embed_service_videos', [ServiceController::class, 'embed_service_vi
 Route::get('/getCurrSubscription', [checkoutController::class, 'getCurrSubscription'])->name('getCurrSubscription');
 Route::get('cancelSubscription/{id}', [checkoutController::class, 'cancelSubscription'])->name('cancelSubscription');
 Route::get('fetchUser/{id}', [AuthController::class, 'fetchUser']);
+Route::get('bidInfo/{id}', [bidsEmailController::class, 'bid_info']);
 
 
 });
@@ -189,6 +190,7 @@ Route::get('checkDispute/{id}', [BusinessController::class ,'checkDispute']);
 
 Route::get('JitumeSubscribeEmail/{email}', [PagesController::class, 'JitumeSubscribeEmail']);
  Route::get('CancelAssetBid/{id}/{action}',[bidsEmailController::class,'CancelAssetBid']);
+ Route::get('CancelEquipmentRelease/{id}/{action}',[bidsEmailController::class,'CancelEquipmentRelease']);
 
 
 

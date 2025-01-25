@@ -576,25 +576,20 @@ catch(\Exception $e){
     }
 
     $rep_id = $request->milestone_id; //For Replica table
-    $mileRep = ServiceMileStatus::where('id',$rep_id)->first();
+    $mileRep = ServiceMileStatus::select('id','mile_id')
+    ->where('id',$rep_id)->first();
 
     $id = $mileRep->mile_id; 
-
     $mile = Smilestones::where('id',$id)->first();    
     $tax = taxes::where('id',1)->first();$tax = $tax->tax+$tax->vat;
 
-        $amount= $request->amount; 
-        $transferAmount= round($amount-($amount*.05),2);
-        $amountReal= $request->amountOriginal; //$request->amountReal;
-        $transferAmount=round($amountReal,2);
-
-        // $amount= Session::get('service_part_amount');//$request->price; 
-        // $amountReal= Session::get('service_part_amount_real');
-
+    $amount= $request->amount; 
+    $transferAmount= round($amount-($amount*.05),2);
+    $amountReal= $request->amountOriginal; //$request->amountReal;
+    $transferAmount=round($amountReal,2);
 
     $user_id = $mile->user_id;
     $business_id = $mile->listing_id;
-
 
     //Stripe
     try{ 
@@ -613,103 +608,115 @@ catch(\Exception $e){
                 "source" => $request->stripeToken,
                 "description" => "This payment is test purpose only!"
         ]);
-        }
-      catch(\Exception $e){
-      return response()->json(['message' =>  $e->getMessage(),'status' => 400 ]);
     }
-
+    catch(\Exception $e){
+      return response()->json(['error' => $e,'message' =>  $e->getMessage(),'status' => 400 ]);
+    }
     //return $request->all();
 
-    
-    $Business = Services::where('id',$business_id)->first();
-    $owner = User::where('id', $Business->shop_id)->first();
+    $Business = Services::select('shop_id','category')->where('id',$business_id)
+    ->first();
+    $ownerS = User::select('fname','lname','id','email','connect_id')->where('id', $Business->shop_id)
+    ->first();
 
-//Split
- try{
-
+    //Split
+    try{
         $curr='USD'; //$request->currency; 
         $tranfer = $this->Client->transfers->create ([ 
                 //"billing_address_collection": null,
                 "amount" => $transferAmount*100, //100 * 100,
                 "currency" => $curr,
                 "source_transaction" => $charge->id,
-                'destination' => $owner->connect_id
+                'destination' => $ownerS->connect_id
         ]);
         ServiceMileStatus::where('id',$rep_id)->update([ 'status' => 'In Progress']);
         
         //Asset-related
+        $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
         if ($Business->category == '0') 
         {
-        $investor = User::where('id',$investor_id)->first();
-        $booking = serviceBook::where('service_id',$business_id)
-        ->where('booker_id',$investor_id)->first();
-        $accepted_bids = AcceptedBids::where('bid_id',$booking->business_bid_id)
-        ->first();
-        //$realBusiness = listing::where('id',$accepted_bids->business_id)->first();
+            $investor = User::select('fname','lname','id','email')->where('id',$investor_id)->first();
+            $booking = serviceBook::where('service_id',$business_id)
+            ->where('booker_id',$investor_id)->first();
+            $accepted_bids = AcceptedBids::select('business_id','owner_id','id')
+            ->where('id',$booking->business_bid_id)->first();
+            $ownerB = User::select('id','email')
+            ->where('id',$accepted_bids->owner_id)->first();
 
-        $info=[ 'business_owner'=>$accepted_bids->business_id, 'manager'=>$owner->id];
-        $user['to'] = $investor->email;
-         Mail::send('services.equip_release_request', $info, function($msg) use ($user){
-             $msg->to($user['to']);
-             $msg->subject('Equipment release request!');
-         });
+            AcceptedBids::where('id',$booking->business_bid_id)->update([
+                'status' => 'manager_assigned', 'project_manager'=>$ownerS->id ]);
 
-         //Update Status
-         AcceptedBids::where('bid_id',$booking->business_bid_id)->update([
-            'status' => 'Manager Assigned']);
-         //Update Status
+            //M. Assigned Alert, BOwner
+                $investor_name = $investor->fname. ' '.$investor->lname;
+                $manager = $ownerS->fname. ' '.$ownerS->lname;
+
+                $info=['mail_to'=>'owner','manager_name'=>$manager, 'contact'=>$ownerS->email, 'investor_name' => $investor_name]; 
+                $user['to'] = $ownerB->email; 
+                $mail1 = Mail::send('bids.owner_manager_alert', $info, function($msg) use ($user){
+                $msg->to($user['to']);
+                $msg->subject('Project Manger Assigned!');
+            }); 
+             
+            //Notifications
+                $addNoti = Notifications::create([
+                'date' => $date,
+                'receiver_id' => $ownerB->id,
+                'customer_id' => $ownerS->id,
+                'text' => 'Project Manager '.$manager.' has been assigned to help verify the equipment from the investor '.$investor_name,
+                'link' => 'verify_request_manager',
+                'bid_id' => $accepted_bids->id,
+                'type' => 'business',
+                ]);
+            //M. Assigned Alert, Owner
+
+            //**MANAGER, Assigned Alert
+                $investor_name = $investor->fname. ' '.$investor->lname;
+                $manager = $ownerS->fname. ' '.$ownerS->lname;
+
+                $info=['mail_to'=>'manager', 'contact'=>$ownerB->email, 'investor_name' => $investor_name];
+                $user['to'] = $ownerS->email;
+                $mail1 = Mail::send('bids.owner_manager_alert', $info, function($msg) use ($user){
+                $msg->to($user['to']);
+                $msg->subject('Project Manger Assigned!');
+            });
+             
+            //Notifications
+                $addNoti = Notifications::create([
+                'date' => $date,
+                'receiver_id' => $ownerS->id,
+                'customer_id' => $ownerB->id,
+                'text' => 'You been assigned to help verify the equipment from the investor '.$investor_name,
+                'link' => 'verify_request_manager',
+                'bid_id' => $accepted_bids->id,
+                'type' => 'business',
+                ]);
+            //**MANAGER, Assigned Alert
         }
         //Asset-related
 
-        }
-
-  catch(\Exception $e){
-      return response()->json(['message' =>  $e->getMessage(),'status' => 400 ]);
-    }
-
- //Stripe
-   
-
-
-   //MAIL
+        //MAIL
         $business = Services::where('id',$mile->listing_id)->first();
         $customer = User::where('id',Auth::id())->first();
-
         $info=[  'name'=>$mile->title,  'amount'=>$mile->amount, 'business'=>$business->name, 's_id' => $business_id, 'customer'=>$customer->fname. ' '.$customer->lname ]; 
-        $user['to'] = $owner->email;//'sohaankane@gmail.com';
+        $user['to'] = $ownerS->email;//'sohaankane@gmail.com';
 
          Mail::send('milestoneS.milestone_mail', $info, function($msg) use ($user){
              $msg->to($user['to']);
              $msg->subject('Milestone Paid!');
-         });  
+         });
+        //MAIL 
 
-
-//DB INSERT
-    //$mileLat = Smilestones::where('listing_id',$business_id)->where('status','On Hold')->first();
-
-// if($mileLat == null) 
-// {
-//     try{
-//         $total = 0;
-//         $all_milestone = Smilestones::where('listing_id',$mile->listing_id)->get();
-//         foreach($all_milestone as $all_m){
-//             $total = $total+$all_m->amount;
-//         }
-//         orders::create([
-//             'user_id' => $mile->user_id,
-//             'service_id' => $mile->listing_id,
-//             'price' => $total
-//         ]);
-//     }
-//     catch(\Exception $e){
-//     Session::put('Stripe_pay', $e->getMessage());
-//     return redirect("/");
-// }
-// }
-       $s_id = base64_encode(base64_encode($business->id));
-       return response()->json(['message' =>  'Success', 
+        $s_id = base64_encode(base64_encode($business->id));
+        return response()->json(['message' =>  'Success', 
                         'service_id' => $s_id, 'status' => 200]);
+
+        }
+
+    catch(\Exception $e){
+        return response()->json(['error' => $e,'message' =>  $e->getMessage(),'status' => 400 ]);
     }
+   
+  }
 
 
      public function milestoneInvestEQP($listing_id,$mile_id,$investor_id,$owner_id)

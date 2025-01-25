@@ -11,11 +11,15 @@
     <div class="email-container" style="width: 80%; margin: 50px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <div class="content" style="padding: 20px;">
             <h2 style="font-size: 20px; margin-bottom: 20px;">Project Manager Assigned!</h2>
-            <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">Hi, thank you for assigning a Project Manager to facilitate the Asset Transaction, you can now Proceed to release the equipment.</p>
+            <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">Hi, Your bid is now verified, you can now Proceed to release the equipment.</p>
             <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">Please be on alert of completion milestone emails as progress of their investment depends on your review.</p>
+
             <div class="button-container" style="display: flex; margin-top: 20px;">
-                <a target="_blank" href="<?php echo config('app.app_url');?>equipmentRelease/{{$business_owner}}/{{$manager}}" class="button" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Proceed</a>
+                <a target="_blank" href="<?php echo config('app.app_url');?>equipmentRelease/{{$business_owner}}/{{$manager}}" class="button" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Proceed to Release Equipment.</a>
+
+                &nbsp; <a target="_blank" href="<?php echo config('app.api_url');?>CancelEquipmentRelease/{{$bid_id}}/confirm" class="button" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: black; border-radius: 6px; transition: background-color 0.3s ease; background-color: yellow;">Cancel.</a>
             </div>
+
             <p class="thanks" style="text-align: center; color: rgb(13, 14, 13); margin-top: 20px; font-size: 14px;">Thanks!<br>Tujitume Admin</p>
         </div>
     </div>
