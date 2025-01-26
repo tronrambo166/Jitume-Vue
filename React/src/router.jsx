@@ -82,7 +82,7 @@ const router = createBrowserRouter([
             },
             { path: "/projectManagers/:resIds/:loc/:bid_id", element: <ProjectManagers /> },
             {
-                path: "/equipmentRelease/:b_owner_id/:manager_id",
+                path: "/equipmentRelease/:b_owner_id/:manager_id/:bid_id",
                 element: <EquipmentRelease />,
             },
             { path: "/subscribe/:id", element: <Subscribepage /> },

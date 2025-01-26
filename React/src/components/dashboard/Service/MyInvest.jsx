@@ -19,6 +19,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 const MyInvest = () => {
     const locationUrl = useLocation();
     const [myInvest, setMyInvest] = useState([]);
+    const [activeInvest, setActiveInvest] = useState([]);
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
     const navigate = useNavigate(); // Use React Router's navigate hook
     const [inputModal, setInputModal] = useState(false); // Modal state
@@ -34,6 +35,14 @@ const MyInvest = () => {
     useEffect(() => {
         const b_idToVWPM = searchParams.get("b_idToVWPM");
         const b_idToVWBO = searchParams.get("b_idToVWBO");
+        const agreetobid = searchParams.get("agreetobid");
+
+        if (agreetobid != null ) {
+            if(agreetobid == 'yes')
+            showAlert("success", 'Your vote succesfully collected');
+            if(agreetobid == 'equipment_released')
+            showAlert("success", 'Equipment Released Succesfully!');
+        }
 
         if (b_idToVWPM != null) {
             navigateToProjectManager(base64_decode(b_idToVWPM));
@@ -47,10 +56,11 @@ const MyInvest = () => {
                 axiosClient
                     .get("/business/dashhome/" + "myInvest")
                     .then(({ data }) => {
-                        setMyInvest(data.results);
+                        setMyInvest(data.pending);
+                        setActiveInvest(data.active)
                         console.log("MyINvest", data);
-                        setName(data.user_name);
-                        SetInvestname(data.results[0].name);
+                        //setName(data.user_name);
+                        //SetInvestname(data.results[0].name);
                         //setUserId(data.results[0].user_id);
                         setIsLoading(false);
                     })

@@ -86,7 +86,7 @@ function Messages() {
                     console.log("New User", data);
                     setMessages((oldArray) => [...oldArray, data.user]);
                     handleSelectMessage(data.user);
-                } else alert(data.messages);
+                } else console.log(data.messages);
             })
             .catch((err) => {
                 console.error("Error fetching messages:", err);

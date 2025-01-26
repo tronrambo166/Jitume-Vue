@@ -74,7 +74,7 @@
         <div class="flex gap-3">
             <a
                 target="_blank"
-                href="<?php echo config('app.api_url');?>agreeToBid/{{$bid_id}}"
+                href="<?php echo config('app.api_url');?>agreeToProgressWithMilestone/{{$bid_id}}"
                  style="
                         color: #2f9f1f;
                         border: 1px solid #2f9f1f;

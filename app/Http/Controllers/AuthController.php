@@ -23,8 +23,8 @@ class AuthController extends Controller
     }
 
     public function fetchUser($id) {
+         if($id == 0) return false;
          $user1 = array();
-
          $user = User::select('email','id', 'fname', 'lname', 'gender','image')
          ->where('id', $id)->get();
          $user[0]->from_id = Auth::id();

@@ -46,7 +46,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('bookingAccepted', [bidsEmailController::class, 'bookingAccepted'])->name('bookingAccepted');
     
     Route::get('FindProjectManagers/{bid_id}', [BusinessController::class, 'FindProjectManagers'])->name('FindProjectManagers');
-    Route::get('releaseEquipment/{b_owner_id}/{manager_id}', [BusinessController::class, 'releaseEquipment'])->name('releaseEquipment');
+    Route::get('releaseEquipment/{b_owner_id}/{manager_id}/{bid_id}', [bidsEmailController::class, 'releaseEquipment'])->name('releaseEquipment');
     Route::post('raise-dispute', [BusinessController::class, 'raiseDispute']);
     
     //});
@@ -197,7 +197,7 @@ Route::get('JitumeSubscribeEmail/{email}', [PagesController::class, 'JitumeSubsc
 //Email Click Routes
 Route::get('emailVerify/{email}/{code}',[AuthController::class,'emailVerify']);
 Route::get('agreeToMileS/{s_id}/{booker_id}', [bidsEmailController::class, 'agreeToMileS'])->name('agreeToMileS');
-Route::get('agreeToBid/{bidId}', [bidsEmailController::class, 'agreeToBid'])->name('agreeToBid');
+Route::get('agreeToProgressWithMilestone/{bidId}', [bidsEmailController::class, 'agreeToProgressWithMilestone']);
 Route::get('agreeToNextmile/{bidId}', [bidsEmailController::class, 'agreeToNextmile'])->name('agreeToNextmile');
 Route::get('emailExists/{email}',[AuthController::class,'emailExists']);
 

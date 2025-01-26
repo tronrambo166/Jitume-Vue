@@ -116,6 +116,8 @@ public function bidsAccepted(Request $request)
         $investor = User::where('id',$bid->investor_id)->first();
         $investor_mail = $investor->email;
 
+         $ms_id = Milestones::select('id')->where('listing_id',$bid->business_id)
+         ->where('status','In Progress')->first()->id;
          $list = listing::where('id',$bid->business_id)->first();
          $owner = User::where('id',$list->user_id)->first();
          $recipient = $owner->paystack_acc_id;
@@ -125,19 +127,22 @@ public function bidsAccepted(Request $request)
          if($bid->type == 'Monetary' && $bid->stripe_charge_id)
          {
                 //Split
-                    $curr='USD'; //$request->currency; 
-                    $tranfer = $this->Client->transfers->create ([ 
-                            //"billing_address_collection": null,
-                            "amount" => $bid->amount*100, //100 * 100,
-                            "currency" => $curr,
-                            "source_transaction" => $bid->stripe_charge_id,
-                            'destination' => $owner->connect_id
-                    ]);
+                    // $curr='USD'; //$request->currency; 
+                    // $tranfer = $this->Client->transfers->create ([ 
+                    //         //"billing_address_collection": null,
+                    //         "amount" => $bid->amount*100, //100 * 100,
+                    //         "currency" => $curr,
+                    //         "source_transaction" => $bid->stripe_charge_id,
+                    //         'destination' => $owner->connect_id
+                    // ]);
                 //Stripe
          }
          //TRANSFERRING FUNDS
+            if($bid->type == 'Monetary') 
+              $status ='Confirmed'; else $status ='under_verification';
               $accepted =  AcceptedBids::create([
               'bid_id' => $id,
+              'ms_id' => $ms_id,
               'date' => $bid->date,
               'investor_id' => $bid->investor_id,
               'business_id' => $bid->business_id,
@@ -198,20 +203,97 @@ public function bidsAccepted(Request $request)
    }
 
 
-public function agreeToBid($bidId)
-{
+public function agreeToProgressWithMilestone($bidId)
+{   
+    $bidId = base64_decode($bidId);
     try { 
-        $bid = AcceptedBids::where('bid_id',$bidId)->first();
-        AcceptedBids::where('bid_id',$bidId)->update([
-              'investor_agree' => 1       
-        ]);
-        $business_id = base64_encode(base64_encode($bid->business_id));
-        Session::put('login_success','Thanks for your review, you will get an email when this milestone completes!');
-       return redirect()->to(config('app.app_url').'business-milestones/'.$business_id);
+        $bid = AcceptedBids::select('ms_id','business_id','owner_id','investor_id')
+        ->where('id',$bidId)->first();
+        $agreeVote = AcceptedBids::where('bid_id',$bidId)
+        ->where('ms_id',$bid->ms_id)->update([
+            'investor_agree' => 1       
+        ]);//$business_id = base64_encode(base64_encode($bid->business_id));
+
+        //Release Payment - VOTE COUNT
+        $t_mo_amount=0; $t_rating=0; $release = array();$i=0;
+        $listing = listing::select('id','name','user_id','share','investment_needed')
+        ->where('id',$bid->business_id)->first();
+        $share = $listing->share; //50%
+        $needed = $listing->investment_needed; // 1000
+
+        $investor_agree = AcceptedBids::where('business_id',$bid->business_id)
+        ->where('ms_id',$bid->ms_id)->where('investor_agree',1)->get();
+        
+        $owner = User::select('connect_id','email')->where('id',$listing->user_id)
+        ->first();
+
+        foreach($investor_agree as $Iagree)
+        {   $bid_amount = ($Iagree->amount);
+            $rating = round(($bid_amount/$needed)*10, 2);
+            if($Iagree->project_manager != null)
+            $rating = $rating+1;
+
+            $t_rating = $t_rating+$rating;
+            $release[$i]['amount'] = $bid_amount;
+            $release[$i]['type'] = $Iagree->type;
+            $release[$i]['stripe_charge_id'] = $Iagree->stripe_charge_id; $i++;
+            //echo '('.$bid_amount.'/'.$needed.'\n';echo $rating.' ),';
+
+            if($Iagree->type == 'Monetary')
+                $t_mo_amount = $t_mo_amount+$bid_amount;
+
+        }  
+        
+        if($t_rating >= 5.10)
+        {   
+            //Release
+            foreach ($release as $releasing) {
+                if($releasing['type'] == 'Monetary'){
+                $curr='USD'; //$request->currency; 
+                $tranfer = $this->Client->transfers->create ([ 
+                        //"billing_address_collection": null,
+                        "amount" => $releasing['amount']*100, //100*100,
+                        "currency" => $curr,
+                        //"source_transaction" => $releasing['stripe_charge_id'],
+                        'destination' => $owner->connect_id
+                ]);
+                }
+                
+            }
+
+             //Notifications
+             $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+             $milestone = Milestones::select('title')->where('id',$bid->ms_id)
+             ->first()->title;
+             $addNoti = Notifications::create([
+                'date' => $date,
+                'receiver_id' => $bid->owner_id,
+                'customer_id' => $bid->investor_id,
+                'bid_id' => $bidId,
+                'text' => 'All payments for Milestone '.$milestone.' of Business '
+                .$listing->name.' are now released!',
+                'link' => '/',
+                'type' => 'investor',
+              ]);
+            
+             // //Email
+             // $info=[ 'business_name'=>$listing->name ];
+             // $user['to'] = $owner->email; //'tottenham266@gmail.com'; //
+             // if($owner)
+             //    Mail::send('bids.verify_request', $info, function($msg) use ($user){
+             //     $msg->to($user['to']);
+             //     $msg->subject('Equipment Verify request!');
+             // });
+             //Notifications
+            //Release
+        }
+        //Release Payment - VOTE COUNT
+       if($addNoti)
+       return redirect()->to(config('app.app_url').'dashboard?agreetobid=yes');
      
        }
         catch(\Exception $e){
-            Session::put('failed',$e->getMessage());
+            return $e->getMessage();
             return redirect()->to(config('app.app_url'));
        }  
 }
@@ -401,6 +483,58 @@ public function CancelEquipmentRelease($bidId, $action)
 }
 
 
+public function releaseEquipment($business_id, $manager_id, $bid_id){
+//if(!$this_bid) return response()->json(['error:'=>'Bid does not exist!']);
+    $b = Listing::select('name','user_id')->where('id',$business_id)->first();
+    $b_name = $b->name;
+    $b_owner = User::select('fname','lname','email')->where('id',$b->user_id)
+    ->first();
+    $manager = User::select('fname','lname','email')->where('id',$manager_id)
+    ->first();
+    $investor = User::select('fname','lname','email')->where('id',Auth::id())
+    ->first();
+
+    $b_owner_name = $b_owner->fname.' '.$b_owner->lname;
+    $manager_name = $manager->fname.' '.$manager->lname;
+    $investor_name = $investor->fname.' '.$investor->lname;
+
+  try
+  {  
+    
+    //Mail to B Owner
+          $info=['manager_name'=>$manager_name, 'contact'=>$manager->email,
+          'b_name' => $b_name, 'investor_name' => $investor_name];
+            $user['to'] = $b_owner->email;
+            $mail1 = Mail::send('bids.owner_manager_alert', $info, function($msg) use ($user){
+                 $msg->to($user['to']);
+                 $msg->subject('Project Manger Assigned!');
+            });
+
+    //Mail to Project Manger
+    $info=['investor_name'=>$investor_name, 'contact'=>$investor->email,
+    'b_owner_name'=>$b_owner_name,'contact2'=>$b_owner->email,'b_name' => $b_name];
+            $user['to'] = $manager->email;
+          $mail2 =  Mail::send('bids.manager_eqp_alert', $info, function($msg) use ($user){
+                 $msg->to($user['to']);
+                 $msg->subject('Equipment released!');
+             });
+
+          //Update Status
+             AcceptedBids::where('id',base64_decode($bid_id))->update([
+              'status' => 'equipment_released']);
+
+        //Voting
+          $this->agreeToProgressWithReleaseEqp($bid_id)
+
+    //return response()->json(['status' => 200, 'business' => $b_name,'manager' => $manager_name,'owner' => $b_owner_name,'investor' => $investor_name, 'message' =>'Success' ]);
+  }
+  catch(\Exception $e){
+    return response()->json(['status' => 400, 'message' =>$e->getMessage ]);
+  }
+    
+}
+
+
 public function agreeToMileS($s_id,$booker_id)
 {
     $mileLat = ServiceMileStatus::where('service_id',$s_id)->where('booker_id',$booker_id)->where('status','To Do')->first();
@@ -420,7 +554,7 @@ public function agreeToNextmile($bidId)
               'next_mile_agree' => 1       
         ]);
 
-        //Vote
+        //VOTE COUNT
         $total_vote = 0;
         $bid = AcceptedBids::where('id',$bidId)->first();
         $listing = listing::where('id',$bid->business_id)->first();
@@ -435,7 +569,7 @@ public function agreeToNextmile($bidId)
 
             $total_vote = $total_vote+$next_vote;
         } 
-        //Vote
+        
         if($total_vote >= 5.1)
         {   
             try{
@@ -443,14 +577,14 @@ public function agreeToNextmile($bidId)
             ->where('status','To Do')->first();
             Milestones::where('id',$milestone->id)
             ->update(['status' => 'In Progress']);
+            }
+            catch(\Exception $e){
+                Session::put('failed',$e->getMessage());
+                return redirect()->to(config('app.app_url'));
+            } 
         }
-        catch(\Exception $e){
-            Session::put('failed',$e->getMessage());
-            return redirect()->to(config('app.app_url'));
-       } 
-        }
+        //VOTE COUNT
 
-        Session::put('login_success','Thanks for your review, you will get an email when this milestone completes!');
         return redirect()->to(config('app.app_url'));
         //return redirect('/');
      
@@ -725,6 +859,102 @@ public function bookingAccepted(Request $request)
        }  
 
    }
+
+
+   public function agreeToProgressWithReleaseEqp($bidId)
+{   
+    $bidId = base64_decode($bidId);
+    try { 
+        $bid = AcceptedBids::select('ms_id','business_id','owner_id','investor_id')
+        ->where('id',$bidId)->first();
+        $agreeVote = AcceptedBids::where('bid_id',$bidId)
+        ->where('ms_id',$bid->ms_id)->update([
+            'investor_agree' => 1       
+        ]);//$business_id = base64_encode(base64_encode($bid->business_id));
+
+        //Release Payment - VOTE COUNT
+        $t_mo_amount=0; $t_rating=0; $release = array();$i=0;
+        $listing = listing::select('id','name','user_id','share','investment_needed')
+        ->where('id',$bid->business_id)->first();
+        $share = $listing->share; //50%
+        $needed = $listing->investment_needed; // 1000
+
+        $investor_agree = AcceptedBids::where('business_id',$bid->business_id)
+        ->where('ms_id',$bid->ms_id)->where('investor_agree',1)->get();
+        
+        $owner = User::select('connect_id','email')->where('id',$listing->user_id)
+        ->first();
+
+        foreach($investor_agree as $Iagree)
+        {   $bid_amount = ($Iagree->amount);
+            $rating = round(($bid_amount/$needed)*10, 2);
+            if($Iagree->project_manager != null)
+            $rating = $rating+1;
+
+            $t_rating = $t_rating+$rating;
+            $release[$i]['amount'] = $bid_amount;
+            $release[$i]['type'] = $Iagree->type;
+            $release[$i]['stripe_charge_id'] = $Iagree->stripe_charge_id; $i++;
+            //echo '('.$bid_amount.'/'.$needed.'\n';echo $rating.' ),';
+
+            if($Iagree->type == 'Monetary')
+                $t_mo_amount = $t_mo_amount+$bid_amount;
+
+        }  
+        
+        if($t_rating >= 5.10)
+        {   
+            //Release
+            foreach ($release as $releasing) {
+                if($releasing['type'] == 'Monetary'){
+                $curr='USD'; //$request->currency; 
+                $tranfer = $this->Client->transfers->create ([ 
+                        //"billing_address_collection": null,
+                        "amount" => $releasing['amount']*100, //100*100,
+                        "currency" => $curr,
+                        //"source_transaction" => $releasing['stripe_charge_id'],
+                        'destination' => $owner->connect_id
+                ]);
+                }
+                
+            }
+
+             //Notifications
+             $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+             $milestone = Milestones::select('title')->where('id',$bid->ms_id)
+             ->first()->title;
+             $addNoti = Notifications::create([
+                'date' => $date,
+                'receiver_id' => $bid->owner_id,
+                'customer_id' => $bid->investor_id,
+                'bid_id' => $bidId,
+                'text' => 'All payments for Milestone '.$milestone.' of Business '
+                .$listing->name.' are now released!',
+                'link' => '/',
+                'type' => 'investor',
+              ]);
+            
+             // //Email
+             // $info=[ 'business_name'=>$listing->name ];
+             // $user['to'] = $owner->email; //'tottenham266@gmail.com'; //
+             // if($owner)
+             //    Mail::send('bids.verify_request', $info, function($msg) use ($user){
+             //     $msg->to($user['to']);
+             //     $msg->subject('Equipment Verify request!');
+             // });
+             //Notifications
+            //Release
+        }
+        //Release Payment - VOTE COUNT
+       if($addNoti)
+       return redirect()->to(config('app.app_url').'dashboard?agreetobid=equipment_released');
+     
+       }
+        catch(\Exception $e){
+            return $e->getMessage();
+            return redirect()->to(config('app.app_url'));
+       }  
+}
 
 
 

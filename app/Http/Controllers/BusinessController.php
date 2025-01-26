@@ -121,7 +121,7 @@ if($query == 'service'){
 
 //Investments
 
-$investments = []; $t_share = 0;
+$investments = []; $active = []; $t_share = 0;
 //if ($investor_ck->investor == 1) {
   //$convs = Conversation::where('investor_id',Auth::id())->get();
   //foreach($convs as $conv){
@@ -159,7 +159,7 @@ $investments = []; $t_share = 0;
         $my_listing->type = $share->type;
         $my_listing->bid_id = $share->id;
         $my_listing->activeMilestone = $Milestone;
-        $investments[] = $my_listing;
+        $active[] = $my_listing;
       }
     }
 
@@ -174,6 +174,7 @@ $investments = []; $t_share = 0;
         $investments[] = $my_listing;
       }
     }
+    return response()->json(['pending'=>$investments, 'active'=>$active]);
 }
   //echo '<pre>'; print_r($results); echo '<pre>';exit;
 
@@ -182,7 +183,7 @@ $investments = []; $t_share = 0;
 
 //Investments
 
-return response()->json(['investor'=>$investor,'results'=>$investments,'services'=>$services,'user_email'=>$user_email,'user_name'=>$user_name]);
+return response()->json(['investor'=>$investor,'services'=>$services,'user_email'=>$user_email,'user_name'=>$user_name]);
 }
 
 
@@ -1653,58 +1654,6 @@ return response()->json(['status'=>200, 'results' => $services, 'loc'=>'true',
 }
 else return response()->json(['status'=>400, 'data'=>false, 'message'=>'Business does not exist!']);
 
-}
-
-
-public function releaseEquipment($business_id, $manager_id){
-//if(!$this_bid) return response()->json(['error:'=>'Bid does not exist!']);
-    $b = Listing::where('id',$business_id)->first();
-    $b_name = $b->name;
-    $b_owner = User::where('id',$b->user_id)->first();
-    $manager = User::where('id',$manager_id)->first();
-    $investor = User::where('id',Auth::id())->first();
-
-    $b_owner_name = $b_owner->fname.' '.$b_owner->lname;
-    $manager_name = $manager->fname.' '.$manager->lname;
-    $investor_name = $investor->fname.' '.$investor->lname;
-
-  try
-  {  
-
-    //VOTE & RELEASE PAYMENT 
-
-    //VOTE & RELEASE PAYMENT
-    
-    //Mail to B Owner
-          $info=['manager_name'=>$manager_name, 'contact'=>$manager->email,
-          'b_name' => $b_name, 'investor_name' => $investor_name];
-            $user['to'] = $b_owner->email;
-            $mail1 = Mail::send('bids.owner_manager_alert', $info, function($msg) use ($user){
-                 $msg->to($user['to']);
-                 $msg->subject('Project Manger Assigned!');
-            });
-
-    //Mail to Project Manger
-    $info=['investor_name'=>$investor_name, 'contact'=>$investor->email,
-    'b_owner_name'=>$b_owner_name,'contact2'=>$b_owner->email,'b_name' => $b_name];
-            $user['to'] = $manager->email;
-          $mail2 =  Mail::send('bids.manager_eqp_alert', $info, function($msg) use ($user){
-                 $msg->to($user['to']);
-                 $msg->subject('Equipment release!');
-             });
-
-          // //Update Status
-          //    AcceptedBids::where('bid_id',$booking->business_bid_id)->update([
-          //       'status' => 'Manager Assigned']);
-          // //Update Status
-
-
-    return response()->json(['status' => 200, 'business' => $b_name,'manager' => $manager_name,'owner' => $b_owner_name,'investor' => $investor_name, 'message' =>'Success' ]);
-  }
-  catch(\Exception $e){
-    return response()->json(['status' => 400, 'message' =>$e->getMessage ]);
-  }
-    
 }
 
 

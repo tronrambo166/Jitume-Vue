@@ -11,6 +11,7 @@ const EquipmentRelease = () => {
     const { token, setUser, setAuth, auth } = useStateContext();
     const { b_owner_id } = useParams();
     const { manager_id } = useParams();
+    const { bid_id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
@@ -26,7 +27,7 @@ const EquipmentRelease = () => {
         if (status == "no") {
             showAlert(
                 "info",
-                "You have cancelled the process ,You can always go back to inbox and choose to proceed."
+                "You have cancelled the process ,You can again go back to inbox and choose to proceed."
             );
             return; // Prevent further execution
 
@@ -36,7 +37,7 @@ const EquipmentRelease = () => {
             setLoading(true);
 
             axiosClient
-                .get("releaseEquipment/" + b_owner_id + "/" + manager_id)
+                .get("releaseEquipment/" + b_owner_id + "/" + manager_id + "/"+ bid_id)
                 .then((data) => {
                     console.log(data);
                     if (data.status == 200) {

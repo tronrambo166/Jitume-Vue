@@ -15,7 +15,7 @@
             <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">Please be on alert of completion milestone emails as progress of their investment depends on your review.</p>
 
             <div class="button-container" style="display: flex; margin-top: 20px;">
-                <a target="_blank" href="<?php echo config('app.app_url');?>equipmentRelease/{{$business_owner}}/{{$manager}}" class="button" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Proceed to Release Equipment.</a>
+                <a target="_blank" href="<?php echo config('app.app_url');?>equipmentRelease/{{$business_owner}}/{{$manager}}/{{$bid_id}}" class="button" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Proceed to Release Equipment.</a>
 
                 &nbsp; <a target="_blank" href="<?php echo config('app.api_url');?>CancelEquipmentRelease/{{$bid_id}}/confirm" class="button" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: black; border-radius: 6px; transition: background-color 0.3s ease; background-color: yellow;">Cancel.</a>
             </div>

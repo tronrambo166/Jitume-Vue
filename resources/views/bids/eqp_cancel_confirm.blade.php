@@ -80,7 +80,7 @@
 
                     &nbsp;<a
                         target="_blank"
-                        href="<?php echo config('app.app_url');?>equipmentRelease/{{$business_owner}}/{{$manager}}"
+                        href="<?php echo config('app.app_url');?>equipmentRelease/{{$business_owner}}/{{$manager}}/{{$bid_id}}"
                         style="
                             background-color: #14532d;
                             color: white;
