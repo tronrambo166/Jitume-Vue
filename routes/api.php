@@ -85,7 +85,6 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('milestoneService', [checkoutController::class, 'milestoneStripePostS'])->name('milestoneService.post');
     // Route::get('milestoneInvestEQP/{listing_id}/{mile_id}/{investor_id}/{owner_id}', [checkoutController::class, 'milestoneInvestEQP'])->name('milestoneInvestEQP');
 
-    Route::get('withdraw_investment/{id}', [bidsEmailController::class, 'withdraw_investment']);
    
     Route::post('bidsAccepted', [bidsEmailController::class, 'bidsAccepted'])->name('bidsAccepted');
 
@@ -174,7 +173,7 @@ Route::get('/getCurrSubscription', [checkoutController::class, 'getCurrSubscript
 Route::get('cancelSubscription/{id}', [checkoutController::class, 'cancelSubscription'])->name('cancelSubscription');
 Route::get('fetchUser/{id}', [AuthController::class, 'fetchUser']);
 Route::get('bidInfo/{id}', [bidsEmailController::class, 'bid_info']);
-
+Route::get('withdraw_investment/{id}', [bidsEmailController::class, 'withdraw_investment']);
 
 });
 

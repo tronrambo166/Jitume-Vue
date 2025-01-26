@@ -302,34 +302,39 @@ public function agreeToProgressWithMilestone($bidId)
 public function withdraw_investment($bidId)
 {
     try { 
-        $bid = AcceptedBids::where('bid_id',$bidId)->first();
+        $bid = AcceptedBids::where('id',$bidId)->first();
         $investor = User::where('id',$bid->investor_id)->first();
         $inv_name = $investor->fname.' '.$investor->lname;
+        $bid_percentage = $bid->representation;
 
         $business = Listing::where('id',$bid->business_id)->first();
         $owner = User::where('id',$business->user_id)->first();
 
+        //Financial Reallocation:
         if($bid->type == 'Asset'){
+            $investors = AcceptedBids::where('business_id',$bid->business_id)
+            ->where('ms_id',$bid->ms_id)->get();
+            $count = count($investors);
+        }
+        
+        //Notification and Transparency:
+
             $info=[ 'inv_name'=>$inv_name, 'asset_name'=>$bid->serial ];
             $user['to'] = $owner->email; //'tottenham266@gmail.com';
             Mail::send('bids.bid_cancel', $info, function($msg) use ($user){
                  $msg->to($user['to']);
                  $msg->subject('Milestone Cancel!');
             });
-        }
-
-        else{
-
-        }
 
         
-         AcceptedBids::where('bid_id',$bidId)->delete();
-         return response()->json(['status'=>200, 'message' => 'Thanks for your feedback!']);
+            AcceptedBids::where('bid_id',$bidId)->delete();
+            return response()->json(['status'=>200, 'message' =>
+            'Thanks for your feedback!']);
      
-       }
-        catch(\Exception $e){
-            return response()->json(['status'=>400, 'message' => $e->getMessage()]);
-       }  
+   }
+    catch(\Exception $e){
+        return response()->json(['status'=>400, 'message' => $e->getMessage()]);
+   }  
 }
 
 
@@ -524,7 +529,7 @@ public function releaseEquipment($business_id, $manager_id, $bid_id){
               'status' => 'equipment_released']);
 
         //Voting
-          $this->agreeToProgressWithReleaseEqp($bid_id)
+          $this->agreeToProgressWithReleaseEqp($bid_id);
 
     //return response()->json(['status' => 200, 'business' => $b_name,'manager' => $manager_name,'owner' => $b_owner_name,'investor' => $investor_name, 'message' =>'Success' ]);
   }

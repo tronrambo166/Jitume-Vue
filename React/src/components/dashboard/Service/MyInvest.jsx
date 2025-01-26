@@ -56,7 +56,7 @@ const MyInvest = () => {
                 axiosClient
                     .get("/business/dashhome/" + "myInvest")
                     .then(({ data }) => {
-                        setMyInvest(data.pending);
+                        setMyInvest(data.active);
                         setActiveInvest(data.active)
                         console.log("MyINvest", data);
                         //setName(data.user_name);
@@ -110,7 +110,7 @@ const MyInvest = () => {
     // End of cancel logic
 
     // WithdrawInvestment logic here
-    const WithdrawInvestment = () => {
+    const WithdrawInvestment = (bid_id) => {
         $.confirm({
             title: false, // Remove the default title to have full control over placement
             content: `
@@ -122,16 +122,16 @@ const MyInvest = () => {
             buttons: {
                 confirm: function () {
                     axiosClient
-                        .get("business/withdraw_investment") //This is a test api it doesnt work
+                        .get("business/withdraw_investment/"+bid_id) //This is a test api it doesnt work
                         .then(({ data }) => {
                             if (data.status == 200)
-                                showAlert("success", data.message);
+                                console.log(data.message);
                             else showAlert("success", data.message);
                             console.log(data); // Log response data
                         })
                         .catch((err) => {
                             const response = err.response;
-                            console.log(response);
+                            console.log(err);
                         });
                 },
                 cancel: function () {
@@ -336,7 +336,7 @@ const MyInvest = () => {
 
                                         <li>
                                             <button
-                                                onClick={WithdrawInvestment}
+                                                onClick={() =>WithdrawInvestment(item.bid_id)}
                                                 className="flex items-center w-full text-left px-5 py-3 hover:bg-gray-50 text-pink-700 transition duration-150 ease-in-out"
                                             >
                                                 <span className="mr-2">
