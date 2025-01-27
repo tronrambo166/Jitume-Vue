@@ -20,7 +20,7 @@
         <div
         style="
             background-color: #14532d;
-            padding: 2.5rem 0;
+            padding: 0.9rem 0;
             text-align: center;
             color: #ffffff;
             position: relative;
@@ -60,7 +60,7 @@
                 class="footer"
                 style="
                     margin-top: 2rem;
-                    text-align: center;
+                    text-align :start;
                     color: gray;
                     font-size: 12px;
                 "
