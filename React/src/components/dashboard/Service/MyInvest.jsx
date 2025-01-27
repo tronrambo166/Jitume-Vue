@@ -37,11 +37,11 @@ const MyInvest = () => {
         const b_idToVWBO = searchParams.get("b_idToVWBO");
         const agreetobid = searchParams.get("agreetobid");
 
-        if (agreetobid != null ) {
-            if(agreetobid == 'yes')
-            showAlert("success", 'Your vote succesfully collected');
-            if(agreetobid == 'equipment_released')
-            showAlert("success", 'Equipment Released Succesfully!');
+        if (agreetobid != null) {
+            if (agreetobid == "yes")
+                showAlert("success", "Your vote succesfully collected");
+            if (agreetobid == "equipment_released")
+                showAlert("success", "Equipment Released Succesfully!");
         }
 
         if (b_idToVWPM != null) {
@@ -57,7 +57,7 @@ const MyInvest = () => {
                     .get("/business/dashhome/" + "myInvest")
                     .then(({ data }) => {
                         setMyInvest(data.active);
-                        setActiveInvest(data.active)
+                        setActiveInvest(data.active);
                         console.log("MyINvest", data);
                         //setName(data.user_name);
                         //SetInvestname(data.results[0].name);
@@ -89,14 +89,14 @@ const MyInvest = () => {
                     axiosClient
                         .get("business/remove_bids/" + id)
                         .then(({ data }) => {
-                             setLoading(false);
+                            setLoading(false);
                             console.log(data); // Log response data
                             if (data.status == 200)
                                 showAlert("success", data.message);
                             else showAlert("success", data.message);
                         })
                         .catch((err) => {
-                             setLoading(false);
+                            setLoading(false);
                             const response = err.response;
                             console.log(response);
                         });
@@ -122,10 +122,9 @@ const MyInvest = () => {
             buttons: {
                 confirm: function () {
                     axiosClient
-                        .get("business/withdraw_investment/"+bid_id) //This is a test api it doesnt work
+                        .get("business/withdraw_investment/" + bid_id) //This is a test api it doesnt work
                         .then(({ data }) => {
-                            if (data.status == 200)
-                                console.log(data.message);
+                            if (data.status == 200) console.log(data.message);
                             else showAlert("success", data.message);
                             console.log(data); // Log response data
                         })
@@ -160,8 +159,12 @@ const MyInvest = () => {
                     sessionStorage.setItem("queryLng", data.lng);
 
                     navigate(
-                        "/projectManagers/" + base64_encode(ids) + "/" + data.loc 
-                        + "/" + bid_id
+                        "/projectManagers/" +
+                            base64_encode(ids) +
+                            "/" +
+                            data.loc +
+                            "/" +
+                            bid_id
                     );
                     if (locationUrl.pathname.includes("serviceResults"))
                         window.scrollTo(0, 0);
@@ -336,7 +339,11 @@ const MyInvest = () => {
 
                                         <li>
                                             <button
-                                                onClick={() =>WithdrawInvestment(item.bid_id)}
+                                                onClick={() =>
+                                                    WithdrawInvestment(
+                                                        item.bid_id
+                                                    )
+                                                }
                                                 className="flex items-center w-full text-left px-5 py-3 hover:bg-gray-50 text-pink-700 transition duration-150 ease-in-out"
                                             >
                                                 <span className="mr-2">
@@ -396,15 +403,18 @@ const MyInvest = () => {
     // switch logic
 
     // Filter the investments based on the selected status
-    const filteredInvestments = myInvest.filter((investment) => {
-        const status = investment.status.toLowerCase();
-        if (activeFilter === "pending") {
-            return status === "pending";
-        } else if (activeFilter === "confirmed") {
-            return status === "confirmed";
-        }
-        return true; // Default case (if needed)
-    });
+   const filteredInvestments = myInvest.filter((investment) => {
+       const status = investment.status.toLowerCase();
+
+       if (activeFilter === "pending") {
+           return status === "pending";
+       } else if (activeFilter === "confirmed") {
+           return status === "confirmed";
+       } else if (activeFilter === "under_review") {
+           return status === "confirmed";
+       }
+       return true; // Default case (if no filter is applied)
+   });
 
     console.log(filteredInvestments);
 

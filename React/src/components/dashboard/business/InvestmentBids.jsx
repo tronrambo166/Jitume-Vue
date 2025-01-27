@@ -299,7 +299,8 @@ function InvestmentBids() {
                 .then(({ data }) => {
                     setActiveBids(data.bids || []);
                     setUnderReview(data.underVerify || []);
-                    console.log(data);
+
+                    console.log("daraa",data);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -315,35 +316,32 @@ function InvestmentBids() {
 
     const MarkVerified = (id) => {
         $.confirm({
-                title: false, // Remove the default title to have full control over placement
-                content: `
+            title: false, // Remove the default title to have full control over placement
+            content: `
                     <div style="display: flex; align-items: center;">
                         <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
                     </div>
                     <p>Are you sure to mark this as verified?</p>
                 `,
-                buttons: {
-                    confirm: function () {
-                        axiosClient
-                        .get("/business/markAsVerified/"+id)
+            buttons: {
+                confirm: function () {
+                    axiosClient
+                        .get("/business/markAsVerified/" + id)
                         .then(({ data }) => {
-                            if(data.status == 200)
-                            showAlert('success',data.message);
-                            else 
-                            showAlert('success',data.message);
+                            if (data.status == 200)
+                                showAlert("success", data.message);
+                            else showAlert("success", data.message);
                         })
                         .catch((err) => {
                             console.error(err);
                         }); // Proceed to reject if confirmed
-                    },
-                    cancel: function () {
-                        $.alert("You have canceled"); // Alert if canceled
-                    },
                 },
+                cancel: function () {
+                    $.alert("You have canceled"); // Alert if canceled
+                },
+            },
         });
-        
     };
-
 
     const handleSelectAll = () => {
         if (selectAll) {
@@ -459,7 +457,7 @@ function InvestmentBids() {
                                         <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
                                             Amount
                                         </th>
-                                        
+
                                         <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
                                             Milestone{" "}
                                         </th>
@@ -547,8 +545,11 @@ function InvestmentBids() {
                                             </td>
 
                                             <td className="py-3 px-4 border-b text-left">
-                                                ${bid.amount.toLocaleString()} 
-                                                &nbsp;<span className="text-black text-sm">({bid.representation}%) </span>
+                                                ${bid.amount.toLocaleString()}
+                                                &nbsp;
+                                                <span className="text-black text-sm">
+                                                    ({bid.representation}%){" "}
+                                                </span>
                                             </td>
 
                                             <td className="py-3 px-4 border-b text-left">
@@ -683,7 +684,10 @@ function InvestmentBids() {
 
                                             <td className="py-3 px-4 border-b text-left">
                                                 ${bid.amount.toLocaleString()}
-                                                 &nbsp;<span className="text-black text-sm">({bid.representation}%) </span>
+                                                &nbsp;
+                                                <span className="text-black text-sm">
+                                                    ({bid.representation}%){" "}
+                                                </span>
                                             </td>
 
                                             <td className="py-3 px-4 border-b text-left">
@@ -727,7 +731,7 @@ function InvestmentBids() {
                                     <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
                                         Amount
                                     </th>
-                                    
+
                                     <th className="text-left py-3 px-4 uppercase font-semibold text-[12px]">
                                         Milestone{" "}
                                     </th>
@@ -779,10 +783,12 @@ function InvestmentBids() {
 
                                         <td className="py-3 px-4 border-b text-left">
                                             ${bid.amount.toLocaleString()}
-                                             &nbsp;<span className="text-black text-sm">({bid.representation}%) </span>
+                                            &nbsp;
+                                            <span className="text-black text-sm">
+                                                ({bid.representation}%){" "}
+                                            </span>
                                         </td>
 
-                                        
                                         <td className="py-3 px-4 border-b text-left">
                                             {bid.milestone || 3}
                                         </td>
@@ -797,7 +803,8 @@ function InvestmentBids() {
                                                 onClick={() =>
                                                     MarkVerified(bid.id)
                                                 }
-                                                style={{fontSize:"11px"}}className="border-solid border-2 border-green-500 block ... w-full text-left px-1 py-1 hover:text-black text-center rounded text-slate-700 transition duration-150 ease-in-out"
+                                                style={{ fontSize: "11px" }}
+                                                className="border-solid border-2 border-green-500 block ... w-full text-left px-1 py-1 hover:text-black text-center rounded text-slate-700 transition duration-150 ease-in-out"
                                             >
                                                 Mark as verified
                                             </button>
