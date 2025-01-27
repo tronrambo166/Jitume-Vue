@@ -40,9 +40,10 @@ const Dashboardhero = () => {
                 const { data } = await axiosClient.get("/checkAuth");
                 setUser(data.user);
                 setId(data.user.id);
-            } catch {
+            } catch(error) {
                 showAlert("error", "Failed to load user data. Redirecting...");
                 navigate("/");
+                console.log(error);
             } finally {
                 setLoading(false);
             }

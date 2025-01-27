@@ -53,7 +53,7 @@ export const ContextProvider = ({ children }) => {
         // Check if 20 seconds have elapsed since last tab close
         const checkTokenExpiry = () => {
             const logoutTime = localStorage.getItem("LOGOUT_TIME");
-            const fiveMinutes = 5 * 60 * 1000; // 5 minutes in milliseconds
+            const fiveMinutes = 8 * 60 * 1000; // 8 minutes in milliseconds
 
             if (logoutTime) {
                 const elapsed = Date.now() - parseInt(logoutTime, 10);

@@ -41,7 +41,7 @@
             class="text-3xl font-bold mt-4"
             style="font-size: 2rem; font-weight: 700; margin-top: 1rem"
         >
-            Projet Manger Assigned!
+            Equipment Ready To Release
         </h1>
     </div>
 
@@ -49,7 +49,7 @@
         <div style="padding: 20px">
             <h2
     style="text-align: left; font-size: 1.125rem; color: black; margin-bottom: 1rem;">
-    A Dedicated Manager Has Been Assigned to Oversee Your Project!
+    Equipment from {{$investor_name}} for business {{$b_name}} is ready to release.
 </h2>
 
 
@@ -69,8 +69,13 @@
                     parties involved is below, Thank you!
 
                     <p style="margin-top: 10px">
-                        The Business Owner - (Name: <b>{{$b_owner_name}}</b>,
+                        @if($to == 'BO')
+                        The Business Owner - (Name: <b>{{$owner_name}}</b>,
                         Contact: <b>{{$contact2}}</b>)
+                        @else
+                        Project Manager - (Name: <b>{{$owner_name}}</b>,
+                        Contact: <b>{{$contact2}}</b>)
+                        @endif
                     </p>
                     <p style="margin-top: 10px">
                         The Investor - (Name: <b>{{$investor_name}}</b>,

@@ -36,12 +36,17 @@ const MyInvest = () => {
         const b_idToVWPM = searchParams.get("b_idToVWPM");
         const b_idToVWBO = searchParams.get("b_idToVWBO");
         const agreetobid = searchParams.get("agreetobid");
+        const agreetonext = searchParams.get("agreetonext");
 
         if (agreetobid != null) {
             if (agreetobid == "yes")
                 showAlert("success", "Your vote succesfully collected");
             if (agreetobid == "equipment_released")
                 showAlert("success", "Equipment Released Succesfully!");
+        }
+
+        if (agreetonext != null && agreetonext == "yes") {
+                showAlert("success", "Your vote succesfully collected");
         }
 
         if (b_idToVWPM != null) {
@@ -299,7 +304,7 @@ const MyInvest = () => {
                                     </button>
                                 </li>
                             )}
-                            {item.status === "Confirmed" &&
+                            {item.status === "under_verification" &&
                                 item.type === "Asset" && (
                                     <ul className="divide-y divide-gray-200 bg-white shadow rounded-lg">
                                         <li>
@@ -406,8 +411,8 @@ const MyInvest = () => {
    const filteredInvestments = myInvest.filter((investment) => {
        const status = investment.status.toLowerCase();
 
-       if (activeFilter === "pending") {
-           return status === "pending";
+       if (activeFilter === "under_verification") {
+           return status === "under_verification";
        } else if (activeFilter === "confirmed") {
            return status === "confirmed";
        } else if (activeFilter === "under_review") {
@@ -486,16 +491,16 @@ const MyInvest = () => {
                                 <div className="flex justify-start ml-6 mt-4 m gap-6 items-center">
                                     <h3
                                         onClick={() =>
-                                            setActiveFilter("pending")
+                                            setActiveFilter("under_verification")
                                         }
                                         className={`text-sm font-light cursor-pointer border-b-2 ${
-                                            activeFilter === "pending"
+                                            activeFilter === "under_verification"
                                                 ? "text-green border-green"
                                                 : "text-gray-500 border-transparent"
                                         } transition-all`}
                                         aria-label="Pending Investments Filter"
                                     >
-                                        Pending Investments
+                                        Under Verification
                                     </h3>
                                     <h3
                                         onClick={() =>

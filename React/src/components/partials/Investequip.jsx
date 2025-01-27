@@ -233,7 +233,7 @@ const Investequip = () => {
                                     <label className="text-gray-600 font-medium text-sm mb-2 sm:mb-0 flex items-start">
                                         {docType === "photos" ? (
                                             <>
-                                                Upload good quality photos of
+                                                Upload good quality photo of
                                                 the assets
                                                 <span className="text-red-500 ml-1">
                                                     ex: jpg/png/gif etc. (less

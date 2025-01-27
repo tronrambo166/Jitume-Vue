@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMessage } from "../dashboard/Service/msgcontext";
 import TujitumeLogo from "../../images/Tujitumelogo.svg";
 import { useAlert } from "./AlertContext";
+import { decode as base64_decode, encode as base64_encode } from "base-64";
 
 const NotificationBell = () => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -108,18 +109,18 @@ const NotificationBell = () => {
     const startConversationBO_PM = (customer_id, bid_id) =>{
         axiosClient.get("business/bidInfo/"+bid_id).then(({ data }) => {
             if(data.status== 200){
-                setInvestor(data.investor);
-                setSerial(data.data.serial);
-            //console.log(data); 
+                //setInvestor(data.investor);
+                //setSerial(data.data.serial);
+                const message = `Hi, please let me know how best to verify investor `+data.investor+`'s equipment (`+data.data.serial+`) `;
+                setdashmsg(message); 
+                navigate("/dashboard/messages", {
+                    state: { customer_id: customer_id },
+                });
+            console.log(data); 
             }
         })
         .catch((err) => { console.log(err); });
-        const message = `Hi, please let me know how best to verify investor `+investor+`'s equipment (`+serial+`) `;
         // Set the new message using the context
-        setdashmsg(message); 
-        navigate("/dashboard/messages", {
-            state: { customer_id: customer_id },
-        });
     }
   
 
@@ -267,7 +268,8 @@ const NotificationBell = () => {
     const ReleaseEquipment = (bid_id) =>{
         axiosClient.get("business/bidInfo/"+bid_id).then(({ data }) => {
             if(data.status== 200){
-                navigate("/equipmentRelease/"+data.data.business_id+"/"+data.data.project_manager); 
+                navigate("/equipmentRelease/"+data.data.business_id+"/"+data.data.project_manager
+                +"/"+base64_encode(bid_id)); 
             }
             else{
                 alert(data.message);
@@ -396,6 +398,20 @@ const NotificationBell = () => {
                                                          Release Equipment
                                                     </button>
                                                 
+                                                    </div>
+                                                    ):notif.link =='next_mile_agree'?(
+                                                    <div>
+                                                    <button onClick={() =>
+                                                        nextMileAgree(notif.bid_id)} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
+                                                        Yes
+                                                    </button> <br></br>
+                                                    </div>
+                                                    ):notif.link =='business_review'?(
+                                                    <div>
+                                                    <button onClick={() =>
+                                                        businessReview(notif.business_id)} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
+                                                        ok
+                                                    </button> <br></br>
                                                     </div>
                                                     ):(
 

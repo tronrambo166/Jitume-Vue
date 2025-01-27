@@ -134,9 +134,13 @@ const PaymentForm = () => {
     const purpos = base64_decode(purpose);
     var p = "";
     var amount_real = base64_decode(amount);
+    var temp_price_total = 0; var temp_price = 0;
+
     if (purpos === "bids"){
         p = "Investment To Business (25%)";
-        amount_real = base64_decode(amount)*0.25;
+        //amount_real = base64_decode(amount)*0.25;
+        temp_price = amount_real*0.25;
+        temp_price_total = parseFloat(temp_price) + parseFloat(0.05 * temp_price); // Fixed price value
     } 
     else if (purpos === "s_mile"){
         p = "Pay Service milestone";
@@ -150,6 +154,8 @@ const PaymentForm = () => {
     const [showModal, setShowModal] = useState(false);
     const [paystackRef, setPaystackRef] = useState(null);
     const price = parseFloat(amount_real) + parseFloat(0.05 * amount_real); // Fixed price value
+    
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -158,9 +164,10 @@ const PaymentForm = () => {
             const payload = {
                 listing: atob(listing_id),
                 percent: percent ? atob(percent) : 0,
-                package: $("#package").val(),
-                amount: $("#amount").val(),
+                package: null,
+                amount: price,
                 amountOriginal: amount_real,
+                partialAmount: temp_price_total,
                 stripeToken: $("#stripeToken").val(),
                 //stripeToken: event.target.stripeToken.value
             };
@@ -236,7 +243,7 @@ const PaymentForm = () => {
             } else {
                 const payloadS = {
                     milestone_id: atob(listing_id),
-                    amount: $("#amount").val(),
+                    amount: price,
                     amountOriginal: amount_real,
                     stripeToken: $("#stripeToken").val(),
                 };
@@ -399,7 +406,7 @@ const PaymentForm = () => {
                 listing: atob(listing_id),
                 //percent: atob(percent),
                 package: $("#package").val(),
-                amount: $("#amount").val(),
+                amount: price,
                 amountOriginal: amount_real,
                 stripeToken: $("#stripeToken").val(),
             };
@@ -424,7 +431,7 @@ const PaymentForm = () => {
                 listing: atob(listing_id),
                 //percent: atob(percent),
                 package: $("#package").val(),
-                amount: $("#amount").val(),
+                amount: price,
                 amountOriginal: amount_real,
                 stripeToken: $("#stripeToken").val(),
             };
@@ -798,7 +805,7 @@ const PaymentForm = () => {
                                         <h2 className="text-gray-500">
                                             Subtotal
                                         </h2>
-                                        <h3>${amount_real}</h3>
+                                        <h3>${purpos === "bids"?temp_price:amount_real}</h3>
                                     </div>
 
                                     <div className="flex justify-between">
@@ -807,7 +814,7 @@ const PaymentForm = () => {
                                             Tax (5%){" "}
                                         </h3>
                                         <h3>
-                                            ${(amount_real * 0.05).toFixed()}{" "}
+                                            ${((purpos === "bids"?temp_price:amount_real) * 0.05).toFixed()}{" "}
                                         </h3>
                                     </div>
                                     {/* <label className="block text-sm font-semibold">
@@ -827,14 +834,14 @@ const PaymentForm = () => {
                                         <h2 className=" text-2xl text-[#0A0D13] font-semibold">
                                             Total:
                                         </h2>
-                                        <h3 className="text-gray-400 text-sm">
+                                        {/*<h3 className="text-gray-400 text-sm">
                                             After trial ends on{" "}
                                             {cancellationDate}
-                                        </h3>
+                                        </h3>*/}
                                         <input
                                             id="amount"
                                             hidden
-                                            value={price}
+                                            value={purpos === "bids"?temp_price_total:price}
                                         />
                                         <input
                                             hidden
@@ -846,7 +853,7 @@ const PaymentForm = () => {
                                         />
                                     </div>
 
-                                    <h2> ${price}</h2>
+                                    <h2> ${purpos === "bids"?temp_price_total:price}</h2>
                                 </div>
 
                                 <div>
@@ -1089,7 +1096,7 @@ export default PaymentForm;
 //         const payload = {
 //                 listing: atob(listing_id),
 //                 percent: atob(percent),
-//                 amount: $("#amount").val(),
+//                 amount: price,
 //                 amountOriginal: amount_real,
 //             };
 

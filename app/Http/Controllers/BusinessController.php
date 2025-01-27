@@ -906,7 +906,8 @@ try{
     $q->where('status','To Do')->orWhere('status','In Progress'); })->first();
 
     if(!$next_mile){
-        $bids = AcceptedBids::where('business_id',$listing_id)->get();
+        $bids = AcceptedBids::where('business_id',$listing_id)
+        ->where('ms_id',$mile_id)->get();
         foreach($bids as $bid){
         $investor = User::where('id',$bid->investor_id)->first();
         if($investor)
@@ -921,6 +922,11 @@ try{
              $msg->to($user['to']);
              $msg->subject('Investment completion alert!');
          });
+
+        $text = 'All milestones of business '.$list->name.'
+                is done.<br />You can now review the business?';
+        $this->createNotification($investor->id,$bid->owner_id,$text
+                ,'business_review',' business');
         }
         //Email
 
@@ -928,9 +934,10 @@ try{
     }
     //Last Milestone Check
 
-    $bids = AcceptedBids::where('business_id',$listing_id)->get();
-    $nextMileAgree = AcceptedBids::where('business_id',$listing_id)
-    ->where('next_mile_agree',1)->update(['next_mile_agree' => 0]);
+    $bids = AcceptedBids::where('business_id',$listing_id)
+    ->where('ms_id',$mile_id)->get();
+    //$nextMileAgree = AcceptedBids::where('business_id',$listing_id)
+    //->where('next_mile_agree',1)->update(['next_mile_agree' => 0]);
 
     foreach($bids as $bid){
         $investor = User::where('id',$bid->investor_id)->first();
@@ -948,6 +955,11 @@ try{
              $msg->to($user['to']);
              $msg->subject('Milestone completion alert!');
          });
+
+        $text = 'Milestone '.$thisMile->title.' of business '.$list->name.'
+                is done.<br />Do you want to Continue to the Next Milestone?';
+        $this->createNotification($investor->id,$bid->owner_id,$text
+                ,'next_mile_agree',' business');
       //Email
          
     }
@@ -960,12 +972,9 @@ try{
   }
 }
 catch(\Exception $e){ 
-  return response()->json($e->getMessage());
+  return response()->json(['status' => 400,'message' => $e->getMessage()]);
  }
 
-//$next_mile = Milestones::where('listing_id',$thisMile->listing_id)->where('status','To Do')->first();
-//if($next_mile && $next_mile->id > $request->id)
-//Milestones::where('id',$next_mile->id)->update(['status' => 'In Progress' ]);
 }
 
 //END MILESTONES

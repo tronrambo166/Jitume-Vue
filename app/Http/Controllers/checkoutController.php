@@ -782,6 +782,7 @@ public function bidCommits(Request $request){
 
  try{
     //Stripe
+        $partialAmount = round($request->partialAmount,2);
         $curr='USD'; //$request->currency;
         $amount= $request->amount; 
         $amountReal= $request->amountOriginal; //$request->amountReal;
@@ -794,7 +795,7 @@ public function bidCommits(Request $request){
         ]);
         $charge = $this->Client->charges->create ([ 
                 //"billing_address_collection": null,
-                "amount" => $amount*100, //100 * 100,
+                "amount" => $partialAmount*100, //100 * 100,
                 "currency" => $curr,
                 "source" => $request->stripeToken,
                 "description" => "This payment is test purpose only!"

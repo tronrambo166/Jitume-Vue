@@ -29,7 +29,9 @@ const EquipmentRelease = () => {
                 "info",
                 "You have cancelled the process ,You can again go back to inbox and choose to proceed."
             );
-            return; // Prevent further execution
+            setTimeout(() => {
+                                navigate("/");
+                            }, 3000);// Prevent further execution
 
         }
 
@@ -41,6 +43,11 @@ const EquipmentRelease = () => {
                 .then((data) => {
                     console.log(data);
                     if (data.status == 200) {
+                        showAlert(
+                        "info",
+                        "Equipment Released."
+                    );
+                        setTimeout(() => { navigate('/dashboard'); }, 2000);
                         const content = `
                             <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
                             <div>
@@ -52,28 +59,28 @@ const EquipmentRelease = () => {
                                 <br> Go to the dashboard to see status.
                             </div>
                         `;
-                        $.confirm({
-                                title: false,
-                                content: content,
-                                buttons: {
-                                    ok: function () {
-                                        navigate("/dashboard");
-                                    },
-                                    home: function () {
-                                        navigate("/");
-                                    },
-                                    cancel: function () {
-                                        $.alert("Canceled!");
-                                    },
-                                },
-                            });
+                        // $.confirm({
+                        //         title: false,
+                        //         content: content,
+                        //         buttons: {
+                        //             ok: function () {
+                        //                 navigate("/dashboard");
+                        //             },
+                        //             home: function () {
+                        //                 navigate("/");
+                        //             },
+                        //             cancel: function () {
+                        //                 $.alert("Canceled!");
+                        //             },
+                        //         },
+                        //     });
                     }
                     else{
                         showAlert("error", data.message);
                     }
                 })
                 .catch((error) => {
-                    console.error(error);
+                    console.log(error);
                     alert("Something went wrong!");
                 })
                 .finally(() => {

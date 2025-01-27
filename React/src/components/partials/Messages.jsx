@@ -28,7 +28,7 @@ function Messages() {
     const { dshmsg } = useMessage(); // Use the context to get the current message
 
     const { dashmsg } = useMessage(); // Correctly access the context value
-    const { customer_id } = location.state || { customer_id: 0 };
+    const { customer_id }  = location.state || { customer_id: 0 };
     console.log(customer_id);
 
     useEffect(() => {
@@ -158,9 +158,10 @@ function Messages() {
         if (msg.sent && msg.sent.length > 0) {
             setChatHistorySent([...msg.sent]);
         }
+        
     };
 
-   const handleSendMessage = (id, service_id) => {
+   const handleSendMessage = (id, service_id,from_id) => {
        if (!newMessage.trim()) return;
 
        // Protect or encrypt the message using MessageProtection
@@ -181,9 +182,10 @@ function Messages() {
            msg: protectedMessage, // Use the protected message
            id,
            service_id,
+           from_id,
            status: "Sending...", // Temporary status
            created_at: new Date().toISOString(), // Temporary timestamp
-       };
+       }; 
 
        console.log("Sending message:", tempMessage);
 
@@ -193,7 +195,8 @@ function Messages() {
            .post("/serviceReply", {
                msg_id: id,
                service_id,
-               msg: protectedMessage, // Send the protected message to the backend
+               msg: protectedMessage,
+               from_id:from_id, // Send the protected message to the backend
            })
            .then(({ data }) => {
                console.log("Success:", data.message);
@@ -491,7 +494,8 @@ function Messages() {
                                         e.preventDefault(); // Prevent newline
                                         handleSendMessage(
                                             selectedMessage.id,
-                                            selectedMessage.service_id
+                                            selectedMessage.service_id,
+                                            selectedMessage.from_id
                                         );
                                     }
                                 }}
@@ -502,7 +506,8 @@ function Messages() {
                                 onClick={() =>
                                     handleSendMessage(
                                         selectedMessage.id,
-                                        selectedMessage.service_id
+                                        selectedMessage.service_id,
+                                        selectedMessage.from_id
                                     )
                                 }
                             >

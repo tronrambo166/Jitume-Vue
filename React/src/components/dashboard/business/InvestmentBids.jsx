@@ -85,6 +85,7 @@ function InvestmentBids() {
                 } else {
                     setLoadingReject(false);
                 }
+                PendingBids();
             });
     };
 
