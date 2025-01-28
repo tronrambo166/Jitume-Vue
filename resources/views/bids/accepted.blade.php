@@ -31,7 +31,7 @@
         "
     >
         <img
-            src="../../../React/src/images/TujitumeLogo.svg"
+            src="{{ $message->embed('https://tujitume.com/images/logo.png')}}"
             alt="Company Logo"
             style="height: 3rem; width: auto; margin: 0 auto"
         />
@@ -171,11 +171,14 @@
                 "
             >
                 <p>
-                    Thank you for using
-                    <span style="font-weight: 600">Tujitume</span>!
+                    <img
+            src="{{ $message->embed('https://tujitume.com/images/logo.png')}}"
+            alt="Company Logo"
+            style="height: 3rem; width: auto; margin: 0 auto"
+            />
                 </p>
-                <p style="font-weight: 600">Best regards,</p>
-                <p>The Tujitume Team</p>
+                <p style="font-weight: 600">Best regards, <br> The Tujitume Team</p>
+
             </div>
     </div>
 </div>

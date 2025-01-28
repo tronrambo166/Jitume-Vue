@@ -30,7 +30,7 @@
         "
     >
         <img
-            src="../../../React/src/images/TujitumeLogo.svg"
+            src="{{ $message->embed('https://tujitume.com/images/listing/1820941050066220.png')}}"
             alt="Company Logo"
             class="h-12 w-auto mx-auto"
             style="height: 3rem; width: auto; margin: 0 auto"
