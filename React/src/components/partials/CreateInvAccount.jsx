@@ -94,6 +94,9 @@ function CreateInvestorAccount({ isOpen, onClose }) {
             return false;
         }
     };
+    const handleNext2 = () => {
+        setStep(step + 1);
+    };
 
     const handleNext = async () => {
         const validationErrors = validateStepOne();
@@ -812,6 +815,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                             <button
                                                 type="button"
                                                 onClick={handleNext}
+                                                // onClick={handleNext2}
                                                 className="btn btn-primary px-20 rounded-full"
                                                 disabled={loading} // Disable the button when loading
                                             >
@@ -1073,6 +1077,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                             </button>
                                             <button
                                                 type="submit"
+                                                // onClick={handleNext2}
                                                 className="btn btn-primary whitespace-nowrap rounded-full flex items-center justify-center  sm:w-1/3 sm:ml-auto"
                                                 disabled={loading}
                                             >
@@ -1088,78 +1093,76 @@ function CreateInvestorAccount({ isOpen, onClose }) {
 
                                 {step === 3 && (
                                     <>
-                                        <div className="  text-center mb-4">
-                                            <h1 className="text-lg text-gray-700">
-                                                Registration
-                                            </h1>
-                                            <h2 className="text-md text-gray-700 mr-2">
+                                        <div className="text-center mb-6">
+                                            {/* Header Section */}
+
+                                            <h2 className="text-lg text-gray-600 dark:text-gray-400">
                                                 Step 3 of 3
                                             </h2>
-                                            <div className="text-center mb-4">
-                                                <section className="bg-white text-gray-600 dark:bg-dark p-4 rounded-lg">
-                                                    <form
-                                                        id="otp-form"
-                                                        className="flex gap-2 justify-center mb-4"
-                                                        onPaste={handlePaste}
-                                                    >
-                                                        {otp.map(
-                                                            (digit, index) => (
-                                                                <input
-                                                                    key={index}
-                                                                    type="text"
-                                                                    maxLength={
-                                                                        1
-                                                                    }
-                                                                    value={
-                                                                        digit
-                                                                    }
-                                                                    onChange={(
-                                                                        e
-                                                                    ) =>
-                                                                        handleInput(
-                                                                            e,
-                                                                            index
-                                                                        )
-                                                                    }
-                                                                    onKeyDown={(
-                                                                        e
-                                                                    ) =>
-                                                                        handleKeyDown(
-                                                                            e,
-                                                                            index
-                                                                        )
-                                                                    }
-                                                                    ref={(el) =>
-                                                                        (inputRefs.current[
-                                                                            index
-                                                                        ] = el)
-                                                                    }
-                                                                    className="shadow-xs flex w-[64px] items-center justify-center rounded-lg border border-stroke bg-white p-2 text-center text-2xl font-medium text-gray-900 outline-none dark:border-dark-3 dark:bg-white/5"
-                                                                />
-                                                            )
-                                                        )}
-                                                    </form>
-                                                    <div>
-                                                        <button
-                                                            type="button"
-                                                            onClick={handleBack}
-                                                            className="btn bg-gray-500 hover:bg-gray-600  text-white rounded-full flex items-center justify-center w-1/3"
-                                                        >
-                                                            Back
-                                                        </button>
-                                                        <button
-                                                            type="button"
-                                                            onClick={
-                                                                handleSubmit
+                                            <p className="text-center py-2 text-gray-700 dark:text-gray-200 font-medium">
+                                                A verification code has been
+                                                sent to your &nbsp;
+                                                <strong className="text-green-600 dark:text-green-400">
+                                                    Email
+                                                </strong>
+                                            </p>
+                                        </div>
+
+                                        <div className="text-center">
+                                            {/* OTP Form Section */}
+                                            <section className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300 ">
+                                                <form
+                                                    id="otp-form"
+                                                    className="flex gap-4 justify-center mb-6"
+                                                    onPaste={handlePaste}
+                                                >
+                                                    {otp.map((digit, index) => (
+                                                        <input
+                                                            key={index}
+                                                            type="text"
+                                                            maxLength={1}
+                                                            value={digit}
+                                                            onChange={(e) =>
+                                                                handleInput(
+                                                                    e,
+                                                                    index
+                                                                )
                                                             }
-                                                            className="bg-green-600 hover:bg-green-700 w-full text-white px-4 py-2 rounded-full flex items-center justify-center"
-                                                        >
-                                                            Verify
-                                                            <FaCheck className="ml-2" />
-                                                        </button>
-                                                    </div>
-                                                </section>
-                                            </div>
+                                                            onKeyDown={(e) =>
+                                                                handleKeyDown(
+                                                                    e,
+                                                                    index
+                                                                )
+                                                            }
+                                                            ref={(el) =>
+                                                                (inputRefs.current[
+                                                                    index
+                                                                ] = el)
+                                                            }
+                                                            className="w-14 h-14 rounded-md border border-gray-300 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 text-center text-2xl font-semibold text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 outline-none"
+                                                        />
+                                                    ))}
+                                                </form>
+
+                                                {/* Buttons Section */}
+                                                <div className="flex gap-4 justify-between">
+                                                    <button
+                                                        type="button"
+                                                        onClick={handleBack}
+                                                        className="bg-gray-500 hover:bg-gray-600 text-white rounded-full px-6 py-2 flex items-center justify-center transition duration-200"
+                                                    >
+                                                        Back
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={handleSubmit}
+                                                        className="bg-green-600 hover:bg-green-700 text-white rounded-full px-6 py-2 flex items-center justify-center transition duration-200"
+                                                    >
+                                                        Verify
+                                                        <FaCheck className="ml-2" />
+                                                    </button>
+                                                </div>
+                                            </section>
                                         </div>
                                     </>
                                 )}

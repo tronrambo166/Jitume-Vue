@@ -46,7 +46,7 @@ const MyInvest = () => {
         }
 
         if (agreetonext != null && agreetonext == "yes") {
-                showAlert("success", "Your vote succesfully collected");
+            showAlert("success", "Your vote succesfully collected");
         }
 
         if (b_idToVWPM != null) {
@@ -61,7 +61,7 @@ const MyInvest = () => {
                 axiosClient
                     .get("/business/dashhome/" + "myInvest")
                     .then(({ data }) => {
-                        setMyInvest(data.active);
+                        setMyInvest(data.pending);
                         setActiveInvest(data.active);
                         console.log("MyINvest", data);
                         //setName(data.user_name);
@@ -306,7 +306,7 @@ const MyInvest = () => {
                             )}
                             {item.status === "under_verification" &&
                                 item.type === "Asset" && (
-                                    <ul className="divide-y divide-gray-200 bg-black shadow rounded-lg">
+                                    <ul className="divide-y divide-gray-200  shadow rounded-lg">
                                         <li>
                                             <button
                                                 onClick={() =>
@@ -314,7 +314,7 @@ const MyInvest = () => {
                                                         item.bid_id
                                                     )
                                                 }
-                                                className="flex items-center w-full text-left px-5 py-3 hover:bg-gray-50 text-green-800 transition duration-150 ease-in-out"
+                                                className="flex items-center w-full text-left px-3 py-2 hover:bg-gray-50 text-green-800 transition duration-150 ease-in-out"
                                             >
                                                 <span className="mr-2">
                                                     <i className="fas fa-briefcase text-green-500"></i>
@@ -331,7 +331,7 @@ const MyInvest = () => {
                                                 onClick={() =>
                                                     verifyRequestBO(item.bid_id)
                                                 }
-                                                className="flex items-center w-full text-left px-5 py-3 hover:bg-gray-50 text-slate-600 transition duration-150 ease-in-out"
+                                                className="flex items-center w-full text-left px-3 py-2 hover:bg-gray-50 text-slate-600 transition duration-150 ease-in-out"
                                             >
                                                 <span className="mr-2">
                                                     <i className="fas fa-user-check text-blue-500"></i>
@@ -349,7 +349,7 @@ const MyInvest = () => {
                                                         item.bid_id
                                                     )
                                                 }
-                                                className="flex items-center w-full text-left px-5 py-3 hover:bg-gray-50 text-pink-700 transition duration-150 ease-in-out"
+                                                className="flex items-center w-full text-left px-3 py-2 hover:bg-gray-50 text-pink-700 transition duration-150 ease-in-out"
                                             >
                                                 <span className="mr-2">
                                                     <i className="fas fa-money-bill-wave text-pink-500"></i>
@@ -408,20 +408,40 @@ const MyInvest = () => {
     // switch logic
 
     // Filter the investments based on the selected status
-   const filteredInvestments = myInvest.filter((investment) => {
+    const filteredInvestments = myInvest.filter((investment) => {
+        const status = investment.status.toLowerCase();
+
+        if (activeFilter === "under_verification") {
+            return status === "under_verification";
+        } else if (activeFilter === "confirmed") {
+            return status === "confirmed";
+        } else if (activeFilter === "under_review") {
+            return status === "confirmed";
+        }
+        return true; // Default case (if no filter is applied)
+    });
+
+    
+   const filteredInvestments2 = activeInvest.filter((investment) => {
        const status = investment.status.toLowerCase();
 
        if (activeFilter === "under_verification") {
            return status === "under_verification";
        } else if (activeFilter === "confirmed") {
-           return status === "confirmed";
+           // Include both under_review and under_verification in the confirmed filter
+           return (
+               status === "confirmed" ||
+               status === "under_review" ||
+               status === "under_verification"
+           );
        } else if (activeFilter === "under_review") {
-           return status === "confirmed";
+           return status === "under_review";
        }
        return true; // Default case (if no filter is applied)
    });
 
     console.log(filteredInvestments);
+    console.log("second one", filteredInvestments2);
 
     // Map the filtered investments to the table data format
     const tableData = filteredInvestments.map((item) => ({
@@ -465,12 +485,53 @@ const MyInvest = () => {
         ),
     }));
 
+
+    const tableData2 = filteredInvestments2.map((item) => ({
+        name: item.name,
+        category: item.category,
+        "value needed": item.investment_needed,
+        type: item.type == "Asset" ? "Equipment" : item.type,
+        amount: item.amount,
+        "business share request": `${item.share}%`,
+        "my share": `${item.myShare.toFixed(2)}%`,
+        // "total shares": (
+        //     <p className="text-green-500 font-bold text-center">
+        //         {item.share || 90}{" "}
+        //         {/* Replace 90 with actual default value */}
+        //     </p>
+        // ),
+        status: (
+            <p className="text-green-700 uppercase text-center">
+                {item.status}
+            </p>
+        ),
+        action: (
+            // <div className="flex space-x-2">
+            //     {/* View Milestones Button */}
+            //     <Link to={`/business-milestones/${btoa(btoa(item.id))}`}>
+            //         <button className="text-yellow-500 border border-green-500 rounded-lg py-1 px-3 text-xs">
+            //             View milestones
+            //         </button>
+            //     </Link>
+            //     {/* Cancel Button */}
+            //     {item.status =='Pending' &&
+            //     <button
+            //         onClick={() => handleCancel(item.bid_id)} // Replace with your cancel logic
+            //         className="text-black border border-red-500 hover:bg-red-100 rounded-lg py-1 px-3 text-xs"
+            //     >
+            //         Cancel
+            //     </button>
+            //     }
+            // </div>
+            <ActionDropdown item={item} handleCancel={handleCancel} />
+        ),
+    }));
+
     // End
 
     return (
-        <div className="py-4 mt-8 lg:mt-0 px-0 sm:px-[21px] overflow-x-auto  dynamic-max-width">
-            {" "}
-            <section className="bg-white border  pb-2 pl-1 pr-2 rounded-xl  w-full">
+        <div className="py-4 mt-8 lg:mt-0 px-0 sm:px-[21px] overflow-x-auto dynamic-max-width">
+            <section className="bg-white border pb-2 pl-1 pr-2 rounded-xl w-full">
                 {isLoading ? (
                     <div className="flex flex-col items-center justify-center py-12">
                         <BarLoader color="#38a169" width={150} />
@@ -488,19 +549,19 @@ const MyInvest = () => {
                                 </h1>
 
                                 {/* Filters */}
-                                <div className="flex justify-start ml-6 mt-4 m gap-6 items-center">
+                                <div className="flex justify-start ml-6 mt-4 gap-6 items-center">
                                     <h3
                                         onClick={() =>
-                                            setActiveFilter("under_verification")
+                                            setActiveFilter("pending")
                                         }
                                         className={`text-sm font-light cursor-pointer border-b-2 ${
-                                            activeFilter === "under_verification"
-                                                ? "text-green border-green"
+                                            activeFilter === "pending"
+                                                ? "text-green-600 border-green-600"
                                                 : "text-gray-500 border-transparent"
                                         } transition-all`}
-                                        aria-label="Pending Investments Filter"
+                                        aria-label="Pending Investments Investments Filter"
                                     >
-                                        Under Verification
+                                        Pending Investments
                                     </h3>
                                     <h3
                                         onClick={() =>
@@ -508,7 +569,7 @@ const MyInvest = () => {
                                         }
                                         className={`text-sm font-light cursor-pointer border-b-2 ${
                                             activeFilter === "confirmed"
-                                                ? "text-green border-green"
+                                                ? "text-green-600 border-green-600"
                                                 : "text-gray-500 border-transparent"
                                         } transition-all`}
                                         aria-label="Active Investments Filter"
@@ -521,7 +582,11 @@ const MyInvest = () => {
                                 <div className="whitespace-nowrap scroll-thin overflow-x-auto max-w-full">
                                     <ReusableTable
                                         headers={headers}
-                                        data={tableData}
+                                        data={
+                                            activeFilter === "confirmed"
+                                                ? tableData2
+                                                : tableData
+                                        }
                                         rowsPerPage={5}
                                         tableId="myInvestTable"
                                     />

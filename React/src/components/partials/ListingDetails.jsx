@@ -339,7 +339,8 @@ const ListingDetails = ({ onClose }) => {
         else {
             var percent = parseFloat(percent);
             var amount = base64_encode(amount);
-            var price = parseFloat(0.25 * base64_decode(amount));
+            var showprice = parseFloat(0.25 * base64_decode(amount));
+            var fullAmount = base64_decode(amount);
 
             percent = base64_encode(percent);
             var purpose = base64_encode("bids");
@@ -347,12 +348,14 @@ const ListingDetails = ({ onClose }) => {
 
             $.confirm({
                 title: false,
-               content: `
-                    <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
-                    <div>Are you sure you want to bid? Total amount: <span style="color: green;">$${price}</span></div>
-                `,
+                content: `
+           <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
+    <div>Are you sure you want to bid? </br>Bid amount: <span style="color: green;">$${fullAmount}</span></div>
+    <div>Only 25% of the bid amount is required upfront as a deposit. </div>
+    <div>Deposit amount (25%) of the bid amount = <span style="color: green;">$${showprice}</span></div>
+`,
 
-                    buttons: {
+                buttons: {
                     confirm: function () {
                         //window.location.href =
                         //"/checkout/" +amount +"/" +listing_id +"/" +percent +"/" +purpose;
