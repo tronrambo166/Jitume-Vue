@@ -10,6 +10,8 @@ import flash from "../../images/flash.png";
 import flashblack from "../../images/flashblack.png";
 import userwhite from "../../images/userwhite.png";
 import BackBtn from "./BackBtn";
+import TujitumeLogo from "../../images/Tujitumelogo.svg";
+
 //import { useParams } from 'react-router-dom';
 import ScrollToTop from "../pages/ScrollToTop";
 const Subscribepage = () => {
@@ -105,8 +107,8 @@ const Subscribepage = () => {
                 const inv = u_id;
 
                 $.confirm({
-                    title: "Are you sure?",
-                    content: "Are you sure to pay?",
+                    title: false,
+                    content: `<img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo"><div>Please Confirm Your Subscription By Clicking  Confirm</div> `,
                     buttons: {
                         confirm: function () {
                             window.location.href =
@@ -163,7 +165,7 @@ const Subscribepage = () => {
         <div>
             <BusinessHero />
             <BackBtn />
-            
+
             <div className="flex  py-[70px] justify-center items-center">
                 <div className="flex flex-col  items-center">
                     <h1 className="font-bold text-center  text-[#334155] text-4xl">
@@ -603,19 +605,25 @@ const Subscribepage = () => {
 
             {showAlert && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-8 max-w-md mx-auto shadow-lg">
-                        <h2 className="text-xl font-semibold mb-4">Alert</h2>
-                        <p>Please select a package before proceeding.</p>
-                        <button
-                            className="btn-primary px-6 py-2 rounded-full text-white"
-                            onClick={closeAlert}
-                        >
-                            Close
-                        </button>
+                    <div className="bg-white rounded-lg p-6 max-w-sm sm:max-w-md mx-auto shadow-lg">
+                        <h2 className="text-xl font-semibold mb-4 text-center text-[#334155]">
+                            Alert
+                        </h2>
+                        <p className="text-gray-600 text-center mb-6">
+                            Please select a package before proceeding.
+                        </p>
+                        <div className="flex justify-center">
+                            <button
+                                className="bg-[#198754] px-6 py-2 rounded-full text-white hover:bg-green-700 transition duration-200"
+                                onClick={closeAlert}
+                            >
+                                Close
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
-            <ScrollToTop/>
+            <ScrollToTop />
         </div>
     );
 };

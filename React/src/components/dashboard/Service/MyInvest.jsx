@@ -408,37 +408,24 @@ const MyInvest = () => {
     // switch logic
 
     // Filter the investments based on the selected status
-    const filteredInvestments = myInvest.filter((investment) => {
-        const status = investment.status.toLowerCase();
+    // Filter for pending investments
 
-        if (activeFilter === "under_verification") {
-            return status === "under_verification";
-        } else if (activeFilter === "confirmed") {
-            return status === "confirmed";
-        } else if (activeFilter === "under_review") {
-            return status === "confirmed";
+    // Filter for pending investments
+    // Filter for pending investments
+    const filteredInvestments = myInvest.filter((investment) => {
+        if (activeFilter === "pending") {
+            return investment.status === "Pending"; // Filter only pending investments
         }
-        return true; // Default case (if no filter is applied)
+        return true; // Default: show all investments
     });
 
-    
-   const filteredInvestments2 = activeInvest.filter((investment) => {
-       const status = investment.status.toLowerCase();
-
-       if (activeFilter === "under_verification") {
-           return status === "under_verification";
-       } else if (activeFilter === "confirmed") {
-           // Include both under_review and under_verification in the confirmed filter
-           return (
-               status === "confirmed" ||
-               status === "under_review" ||
-               status === "under_verification"
-           );
-       } else if (activeFilter === "under_review") {
-           return status === "under_review";
-       }
-       return true; // Default case (if no filter is applied)
-   });
+    // Filter for active investments
+    const filteredInvestments2 = activeInvest.filter((investment) => {
+        if (activeFilter === "active") {
+            return investment.status === "Active"; // Filter only active investments
+        }
+        return true; // Default: show all investments
+    });
 
     console.log(filteredInvestments);
     console.log("second one", filteredInvestments2);
@@ -448,83 +435,32 @@ const MyInvest = () => {
         name: item.name,
         category: item.category,
         "value needed": item.investment_needed,
-        type: item.type == "Asset" ? "Equipment" : item.type,
+        type: item.type === "Asset" ? "Equipment" : item.type,
         amount: item.amount,
         "business share request": `${item.share}%`,
         "my share": `${item.myShare.toFixed(2)}%`,
-        // "total shares": (
-        //     <p className="text-green-500 font-bold text-center">
-        //         {item.share || 90}{" "}
-        //         {/* Replace 90 with actual default value */}
-        //     </p>
-        // ),
         status: (
             <p className="text-green-700 uppercase text-center">
                 {item.status}
             </p>
         ),
-        action: (
-            // <div className="flex space-x-2">
-            //     {/* View Milestones Button */}
-            //     <Link to={`/business-milestones/${btoa(btoa(item.id))}`}>
-            //         <button className="text-yellow-500 border border-green-500 rounded-lg py-1 px-3 text-xs">
-            //             View milestones
-            //         </button>
-            //     </Link>
-            //     {/* Cancel Button */}
-            //     {item.status =='Pending' &&
-            //     <button
-            //         onClick={() => handleCancel(item.bid_id)} // Replace with your cancel logic
-            //         className="text-black border border-red-500 hover:bg-red-100 rounded-lg py-1 px-3 text-xs"
-            //     >
-            //         Cancel
-            //     </button>
-            //     }
-            // </div>
-            <ActionDropdown item={item} handleCancel={handleCancel} />
-        ),
+        action: <ActionDropdown item={item} handleCancel={handleCancel} />,
     }));
-
 
     const tableData2 = filteredInvestments2.map((item) => ({
         name: item.name,
         category: item.category,
         "value needed": item.investment_needed,
-        type: item.type == "Asset" ? "Equipment" : item.type,
+        type: item.type === "Asset" ? "Equipment" : item.type,
         amount: item.amount,
         "business share request": `${item.share}%`,
         "my share": `${item.myShare.toFixed(2)}%`,
-        // "total shares": (
-        //     <p className="text-green-500 font-bold text-center">
-        //         {item.share || 90}{" "}
-        //         {/* Replace 90 with actual default value */}
-        //     </p>
-        // ),
         status: (
             <p className="text-green-700 uppercase text-center">
                 {item.status}
             </p>
         ),
-        action: (
-            // <div className="flex space-x-2">
-            //     {/* View Milestones Button */}
-            //     <Link to={`/business-milestones/${btoa(btoa(item.id))}`}>
-            //         <button className="text-yellow-500 border border-green-500 rounded-lg py-1 px-3 text-xs">
-            //             View milestones
-            //         </button>
-            //     </Link>
-            //     {/* Cancel Button */}
-            //     {item.status =='Pending' &&
-            //     <button
-            //         onClick={() => handleCancel(item.bid_id)} // Replace with your cancel logic
-            //         className="text-black border border-red-500 hover:bg-red-100 rounded-lg py-1 px-3 text-xs"
-            //     >
-            //         Cancel
-            //     </button>
-            //     }
-            // </div>
-            <ActionDropdown item={item} handleCancel={handleCancel} />
-        ),
+        action: <ActionDropdown item={item} handleCancel={handleCancel} />,
     }));
 
     // End

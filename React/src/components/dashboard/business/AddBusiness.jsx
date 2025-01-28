@@ -296,9 +296,9 @@ const AddBusiness = () => {
     };
 
     return (
-        <div className="p-4  min-h-screen">
-            <div className="p-6 bg-white dark:bg-gray-800 rounded-lg border mb-8">
-                <h2 className="text-xl font-bold mb-4 flex justify-center dark:text-white">
+        <div className="p-4  ">
+            <div className=" bg-white dark:bg-gray-800 rounded-lg border mb-8">
+                <h2 className="text-xl mt-8  font-bold mb-4 flex justify-center dark:text-white">
                     Add Business
                 </h2>
 
@@ -318,335 +318,349 @@ const AddBusiness = () => {
                         </div>
                     </div>
                 ) : (
-                    <form
-                        className="grid grid-cols-1 md:grid-cols-2 gap-4"
-                        onSubmit={handleSubmit}
-                    >
-                        {/* Business Information Inputs */}
-                        {[
-                            {
-                                label: "Business Title",
-                                name: "title",
-                                placeholder: "Business Title*",
-                                type: "text",
-                            },
-                            {
-                                label: "Contact",
-                                name: "contact",
-                                placeholder: "Contact*",
-                                type: "number",
-                            },
+                    <div>
+                        <form
+                            className="max-w-screen-md mx-auto p-4 sm:p-8 gap-4  sm:grid sm:grid-cols-2"
+                            onSubmit={handleSubmit}
+                        >
+                            {/* Business Information Inputs */}
+                            {[
+                                {
+                                    label: "Business Title",
+                                    name: "title",
+                                    placeholder: "Business Title*",
+                                    type: "text",
+                                },
+                                {
+                                    label: "Contact",
+                                    name: "contact",
+                                    placeholder: "Contact*",
+                                    type: "number",
+                                },
 
-                            {
-                                label: "Email",
-                                name: "contact_mail",
-                                placeholder: "Email (Optional)",
-                                type: "email",
-                            },
+                                {
+                                    label: "Email",
+                                    name: "contact_mail",
+                                    placeholder: "Email (Optional)",
+                                    type: "email",
+                                },
 
-                            {
-                                label: "Director's Passport/ID No.",
-                                name: "id_no",
-                                placeholder: "Director's Passport/ID No.*",
-                                type: "number",
-                            },
-                            {
-                                label: "Share",
-                                name: "share",
-                                placeholder: "Share (<= 100)*",
-                                type: "number",
-                                max: 100,
-                            },
-                            {
-                                label: "Investment Needed",
-                                name: "investment_needed",
-                                placeholder: "Investment Needed",
-                                type: "number",
-                            },
-                            {
-                                label: "Individual/Company Tax PIN",
-                                name: "tax_pin",
-                                placeholder: "Individual/Company Tax PIN*",
-                                type: "number",
-                            },
-                        ].map((input, idx) => (
-                            <div className="flex flex-col" key={idx}>
-                                <label className="text-xs font-medium dark:text-gray-200">
-                                    {input.label}
-                                    <span className="text-red-500">*</span>
+                                {
+                                    label: "Director's Passport/ID No.",
+                                    name: "id_no",
+                                    placeholder: "Director's Passport/ID No.*",
+                                    type: "number",
+                                },
+                                {
+                                    label: "Share",
+                                    name: "share",
+                                    placeholder: "Share (<= 100)*",
+                                    type: "number",
+                                    max: 100,
+                                },
+                                {
+                                    label: "Investment Needed",
+                                    name: "investment_needed",
+                                    placeholder: "Investment Needed",
+                                    type: "number",
+                                },
+                                {
+                                    label: "Individual/Company Tax PIN",
+                                    name: "tax_pin",
+                                    placeholder: "Individual/Company Tax PIN*",
+                                    type: "number",
+                                },
+                            ].map((input, idx) => (
+                                <div className="flex flex-col" key={idx}>
+                                    <label className="text-xs font-medium dark:text-gray-200">
+                                        {input.label}
+                                        <span className="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type={input.type}
+                                        name={input.name}
+                                        placeholder={input.placeholder}
+                                        className="border border-gray-300 dark:border-gray-700 p-2 rounded-lg w-full mt-1 dark:bg-gray-900 dark:text-white text-sm focus:ring focus:ring-dark-green outline-none transition-all duration-200"
+                                        onChange={handleInputChange}
+                                        required={
+                                            input.label !== "Email" &&
+                                            input.label !== "Share" &&
+                                            input.label !== "Investment Needed"
+                                        }
+                                        max={input.max}
+                                    />
+                                </div>
+                            ))}
+
+                            {/* Select Input */}
+                            <div className="search-container relative flex flex-col">
+                                <label className="block mb-2 text-sm font-semibold">
+                                    Location*
                                 </label>
                                 <input
-                                    type={input.type}
-                                    name={input.name}
-                                    placeholder={input.placeholder}
-                                    className="border border-gray-300 dark:border-gray-700 p-2 rounded-lg w-full mt-1 dark:bg-gray-900 dark:text-white text-sm focus:ring focus:ring-dark-green outline-none transition-all duration-200"
+                                    onKeyUp={getPlaces}
+                                    id="searchbox"
+                                    type="text"
+                                    name="location"
+                                    ref={locationInputRef}
                                     onChange={handleInputChange}
-                                    required={
-                                        input.label !== "Email" &&
-                                        input.label !== "Share" &&
-                                        input.label !== "Investment Needed"
-                                    }
-                                    max={input.max}
+                                    required
+                                    className="border border-gray-300 rounded px-3 py-2 w-full"
+                                    placeholder="Enter a location..."
                                 />
+
+                                <ul
+                                    id="suggestion-list"
+                                    className="absolute w-full bg-white border-t-0 rounded-b-md shadow-lg z-10 top-full max-h-[300px] overflow-y-auto hidden"
+                                ></ul>
+
+                                <div
+                                    id="result_list"
+                                    className="absolute w-full bg-white border-gray-300 border-t-0 rounded-b-md shadow-lg z-10 top-full max-h-[300px] overflow-y-auto hidden"
+                                ></div>
                             </div>
-                        ))}
 
-                        {/* Select Input */}
-                        <div className="search-container relative flex flex-col">
-                            <label className="block mb-2 text-sm font-semibold">
-                                Location*
-                            </label>
-                            <input
-                                onKeyUp={getPlaces}
-                                id="searchbox"
-                                type="text"
-                                name="location"
-                                ref={locationInputRef}
-                                onChange={handleInputChange}
-                                required
-                                className="border border-gray-300 rounded px-3 py-2 w-full"
-                                placeholder="Enter a location..."
-                            />
+                            <div className="flex flex-col">
+                                <div className="flex flex-col my-3">
+                                    <label className="text-xs font-medium dark:text-gray-200">
+                                        Yearly Turnover*
+                                    </label>
+                                    <select
+                                        name="y_turnover"
+                                        className="border border-gray-300 dark:border-gray-700 p-2 rounded-lg w-full mt-1 dark:bg-gray-900 dark:text-white text-sm focus:ring focus:ring-dark-green outline-none transition-all duration-200"
+                                        onChange={handleInputChange}
+                                        required
+                                    >
+                                        <option hidden>Yearly Turnover*</option>
+                                        <option value="0-10000">
+                                            $0-$10000
+                                        </option>
+                                        <option value="10000-100000">
+                                            $10000-$100000
+                                        </option>
+                                        <option value="100000-250000">
+                                            $100000-$250000
+                                        </option>
+                                        <option value="250000-500000">
+                                            $250000-$500000
+                                        </option>
+                                        <option value="500000-">
+                                            $500000+
+                                        </option>
+                                        {/* Add more ranges as needed */}
+                                    </select>
+                                              
+                                </div>
 
-                            <ul
-                                id="suggestion-list"
-                                className="absolute w-full bg-white border-t-0 rounded-b-md shadow-lg z-10 top-full max-h-[300px] overflow-y-auto hidden"
-                            ></ul>
-
-                            <div
-                                id="result_list"
-                                className="absolute w-full bg-white border-gray-300 border-t-0 rounded-b-md shadow-lg z-10 top-full max-h-[300px] overflow-y-auto hidden"
-                            ></div>
-                        </div>
-
-                        <div className="flex flex-col">
-                            <div className="flex flex-col my-3">
                                 <label className="text-xs font-medium dark:text-gray-200">
-                                    Yearly Turnover*
+                                    Select Category*
                                 </label>
                                 <select
-                                    name="y_turnover"
+                                    name="category"
+                                    className="border border-gray-300 dark:border-gray-700 p-2 rounded-lg w-full mt-1 dark:bg-gray-900 dark:text-white text-sm focus:ring focus:ring-dark-green outline-none transition-all duration-200"
+                                    onChange={handleInputChange}
+                                    value={formData.category} // Controlled input
+                                    required
+                                >
+                                    <option value="" disabled hidden>
+                                        Select Category*
+                                    </option>
+                                    <option value="Agriculture">
+                                        Agriculture
+                                    </option>
+                                    <option value="Arts/Culture">
+                                        Arts/Culture
+                                    </option>
+                                    <option value="Auto">Auto</option>
+                                    <option value="Sports/Gaming">
+                                        Sports/Gaming
+                                    </option>
+                                    <option value="Real State">
+                                        Real State
+                                    </option>
+                                    <option value="Food">Food</option>
+                                    <option value="Legal">Legal</option>
+                                    <option value="Security">Security</option>
+                                    <option value="Media/Internet">
+                                        Media/Internet
+                                    </option>
+                                    <option value="Fashion">Fashion</option>
+                                    <option value="Technology/Communications">
+                                        Technology/Communications
+                                    </option>
+                                    <option value="Renewable/Energy">
+                                        Renewable Energy
+                                    </option>
+                                    <option value="Retail">Retail</option>
+                                    <option value="Finance/Accounting">
+                                        Finance/Accounting
+                                    </option>
+                                    <option value="Pets">Pets</option>
+                                    <option value="Domestic (Home Help etc)">
+                                        Domestic (Home Help etc)
+                                    </option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+
+                            {/* Textarea Input */}
+                            <div className="flex flex-col">
+                                <label className="text-xs font-medium dark:text-gray-200">
+                                    Details*
+                                </label>
+                                <textarea
+                                    name="details"
+                                    placeholder="Details*"
                                     className="border border-gray-300 dark:border-gray-700 p-2 rounded-lg w-full mt-1 dark:bg-gray-900 dark:text-white text-sm focus:ring focus:ring-dark-green outline-none transition-all duration-200"
                                     onChange={handleInputChange}
                                     required
-                                >
-                                    <option hidden>Yearly Turnover*</option>
-                                    <option value="0-10000">$0-$10000</option>
-                                    <option value="10000-100000">
-                                        $10000-$100000
-                                    </option>
-                                    <option value="100000-250000">
-                                        $100000-$250000
-                                    </option>
-                                    <option value="250000-500000">
-                                        $250000-$500000
-                                    </option>
-                                    <option value="500000-">$500000+</option>
-                                    {/* Add more ranges as needed */}
-                                </select>
-                                          
-                            </div>
-
-                            <label className="text-xs font-medium dark:text-gray-200">
-                                Select Category*
-                            </label>
-                            <select
-                                name="category"
-                                className="border border-gray-300 dark:border-gray-700 p-2 rounded-lg w-full mt-1 dark:bg-gray-900 dark:text-white text-sm focus:ring focus:ring-dark-green outline-none transition-all duration-200"
-                                onChange={handleInputChange}
-                                value={formData.category} // Controlled input
-                                required
-                            >
-                                <option value="" disabled hidden>
-                                    Select Category*
-                                </option>
-                                <option value="Agriculture">Agriculture</option>
-                                <option value="Arts/Culture">
-                                    Arts/Culture
-                                </option>
-                                <option value="Auto">Auto</option>
-                                <option value="Sports/Gaming">
-                                    Sports/Gaming
-                                </option>
-                                <option value="Real State">Real State</option>
-                                <option value="Food">Food</option>
-                                <option value="Legal">Legal</option>
-                                <option value="Security">Security</option>
-                                <option value="Media/Internet">
-                                    Media/Internet
-                                </option>
-                                <option value="Fashion">Fashion</option>
-                                <option value="Technology/Communications">
-                                    Technology/Communications
-                                </option>
-                                <option value="Renewable/Energy">
-                                    Renewable Energy
-                                </option>
-                                <option value="Retail">Retail</option>
-                                <option value="Finance/Accounting">
-                                    Finance/Accounting
-                                </option>
-                                <option value="Pets">Pets</option>
-                                <option value="Domestic (Home Help etc)">
-                                    Domestic (Home Help etc)
-                                </option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-
-                        {/* Textarea Input */}
-                        <div className="flex flex-col">
-                            <label className="text-xs font-medium dark:text-gray-200">
-                                Details*
-                            </label>
-                            <textarea
-                                name="details"
-                                placeholder="Details*"
-                                className="border border-gray-300 dark:border-gray-700 p-2 rounded-lg w-full mt-1 dark:bg-gray-900 dark:text-white text-sm focus:ring focus:ring-dark-green outline-none transition-all duration-200"
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-
-                        {/* File Uploads */}
-                        {[
-                            { label: "Cover", field: "image" },
-                            { label: "PIN Certificate", field: "pin" },
-                            { label: "ID/Passport", field: "identification" },
-                            {
-                                label: "Financial Statements",
-                                field: "yeary_fin_statement",
-                            },
-                            {
-                                label: "Supporting Business Documents",
-                                field: "document",
-                            },
-                            // { label: "Video (if applicable)", field: "video" },
-                        ].map((fileInput, idx) => (
-                            <div className="flex flex-col mb-4" key={idx}>
-                                {/* Label */}
-                                <label className="text-xs font-medium dark:text-gray-200">
-                                    {fileInput.label}
-                                </label>
-
-                                {/* Input Field */}
-                                <div className="border border-gray-300 dark:border-gray-700 p-2 rounded-lg flex items-center justify-between mt-1 dark:bg-gray-900 transition-all duration-200">
-                                    <span className="dark:text-white text-sm">
-                                        {formData[fileInput.field]
-                                            ? formData[fileInput.field].name
-                                            : fileInput.label}
-                                    </span>
-                                    <label
-                                        htmlFor={`upload-${fileInput.field}`}
-                                        className="flex items-center cursor-pointer"
-                                    >
-                                        <FiUpload className="text-lg dark:text-gray-300" />
-                                        <input
-                                            id={`upload-${fileInput.field}`}
-                                            type="file"
-                                            className="hidden"
-                                            onChange={(e) =>
-                                                handleFileChange(
-                                                    e,
-                                                    fileInput.field
-                                                )
-                                            }
-                                        />
-                                    </label>
-                                </div>
-
-                                {/* Informational Text */}
-                                <p className="text-xs text-red-500 mt-1">
-                                    {fileInput.field === "video"
-                                        ? "Max file size: 5MB. If larger, provide a video URL."
-                                        : ""}
-                                    {fileInput.field === "image"
-                                        ? "Max file size: 2MB.(For best quality the size should be 590px*340px)"
-                                        : ""}
-                                    {fileInput.field === "pin"
-                                        ? "Max file size: 2MB."
-                                        : ""}
-                                    {fileInput.field === "identification"
-                                        ? "Max file size: 2MB."
-                                        : ""}
-                                    {fileInput.field === "yeary_fin_statement"
-                                        ? "Max file size: 2MB."
-                                        : ""}
-                                    {fileInput.field === "document"
-                                        ? "Max file size: 2MB."
-                                        : ""}
-                                </p>
-                            </div>
-                        ))}
-
-                        {/* Fee Input */}
-                        <div className="flex flex-col col-span-2">
-                            <label className="text-xs font-medium dark:text-gray-200">
-                                <input
-                                    type="checkbox"
-                                    name="feeCheckbox"
-                                    onChange={handleCheckboxChange}
-                                    className="mr-2"
                                 />
-                                Set fee for investor to view your full business
-                                data?
-                            </label>
-                            {showAmountInput && (
+                            </div>
+
+                            {/* File Uploads */}
+                            {[
+                                { label: "Cover", field: "image" },
+                                { label: "PIN Certificate", field: "pin" },
+                                {
+                                    label: "ID/Passport",
+                                    field: "identification",
+                                },
+                                {
+                                    label: "Financial Statements",
+                                    field: "yeary_fin_statement",
+                                },
+                                {
+                                    label: "Supporting Business Documents",
+                                    field: "document",
+                                },
+                                // { label: "Video (if applicable)", field: "video" },
+                            ].map((fileInput, idx) => (
+                                <div className="flex flex-col mb-4" key={idx}>
+                                    {/* Label */}
+                                    <label className="text-xs font-medium dark:text-gray-200">
+                                        {fileInput.label}
+                                    </label>
+
+                                    {/* Input Field */}
+                                    <div className="border border-gray-300 dark:border-gray-700 p-2 rounded-lg flex items-center justify-between mt-1 dark:bg-gray-900 transition-all duration-200">
+                                        <span className="dark:text-white text-sm">
+                                            {formData[fileInput.field]
+                                                ? formData[fileInput.field].name
+                                                : fileInput.label}
+                                        </span>
+                                        <label
+                                            htmlFor={`upload-${fileInput.field}`}
+                                            className="flex items-center cursor-pointer"
+                                        >
+                                            <FiUpload className="text-lg dark:text-gray-300" />
+                                            <input
+                                                id={`upload-${fileInput.field}`}
+                                                type="file"
+                                                className="hidden"
+                                                onChange={(e) =>
+                                                    handleFileChange(
+                                                        e,
+                                                        fileInput.field
+                                                    )
+                                                }
+                                            />
+                                        </label>
+                                    </div>
+
+                                    {/* Informational Text */}
+                                    <p className="text-xs text-red-500 mt-1">
+                                        {fileInput.field === "video"
+                                            ? "Max file size: 5MB. If larger, provide a video URL."
+                                            : ""}
+                                        {fileInput.field === "image"
+                                            ? "Max file size: 2MB.(For best quality the size should be 590px*340px)"
+                                            : ""}
+                                        {fileInput.field === "pin"
+                                            ? "Max file size: 2MB."
+                                            : ""}
+                                        {fileInput.field === "identification"
+                                            ? "Max file size: 2MB."
+                                            : ""}
+                                        {fileInput.field ===
+                                        "yeary_fin_statement"
+                                            ? "Max file size: 2MB."
+                                            : ""}
+                                        {fileInput.field === "document"
+                                            ? "Max file size: 2MB."
+                                            : ""}
+                                    </p>
+                                </div>
+                            ))}
+
+                            {/* Fee Input */}
+                            <div className="flex flex-col col-span-2">
+                                <label className="text-xs font-medium dark:text-gray-200">
+                                    <input
+                                        type="checkbox"
+                                        name="feeCheckbox"
+                                        onChange={handleCheckboxChange}
+                                        className="mr-2"
+                                    />
+                                    Set fee for investor to view your full
+                                    business data?
+                                </label>
+                                {showAmountInput && (
+                                    <input
+                                        type="number"
+                                        name="investors_fee"
+                                        placeholder="Amount (Optional)"
+                                        className="border border-gray-300 dark:border-gray-700 p-2 rounded-lg w-full mt-1 dark:bg-gray-900 dark:text-white text-sm focus:ring focus:ring-dark-green outline-none transition-all duration-200"
+                                        onChange={handleInputChange}
+                                    />
+                                )}
+                            </div>
+
+                            {/* Video Link */}
+                            <div className="flex flex-col col-span-2">
+                                <label className="text-xs font-medium dark:text-gray-200">
+                                    Video Link (if applicable)
+                                </label>
                                 <input
-                                    type="number"
-                                    name="investors_fee"
-                                    placeholder="Amount (Optional)"
+                                    type="text"
+                                    name="videoLink"
+                                    placeholder="Video Link (if applicable)"
                                     className="border border-gray-300 dark:border-gray-700 p-2 rounded-lg w-full mt-1 dark:bg-gray-900 dark:text-white text-sm focus:ring focus:ring-dark-green outline-none transition-all duration-200"
                                     onChange={handleInputChange}
                                 />
-                            )}
-                        </div>
+                            </div>
 
-                        {/* Video Link */}
-                        <div className="flex flex-col col-span-2">
-                            <label className="text-xs font-medium dark:text-gray-200">
-                                Video Link (if applicable)
-                            </label>
-                            <input
-                                type="text"
-                                name="videoLink"
-                                placeholder="Video Link (if applicable)"
-                                className="border border-gray-300 dark:border-gray-700 p-2 rounded-lg w-full mt-1 dark:bg-gray-900 dark:text-white text-sm focus:ring focus:ring-dark-green outline-none transition-all duration-200"
-                                onChange={handleInputChange}
-                            />
-                        </div>
+                            {/* Reason Input */}
+                            <div className="flex flex-col col-span-2">
+                                <label className="text-xs font-medium dark:text-gray-200">
+                                    Reason for Requesting Investment
+                                </label>
+                                <textarea
+                                    name="reason"
+                                    placeholder="Reason for Requesting Investment (Optional)"
+                                    className="border border-gray-300 dark:border-gray-700 p-2 rounded-lg w-full mt-1 dark:bg-gray-900 dark:text-white text-sm focus:ring focus:ring-dark-green outline-none transition-all duration-200"
+                                    onChange={handleInputChange}
+                                />
+                            </div>
 
-                        {/* Reason Input */}
-                        <div className="flex flex-col col-span-2">
-                            <label className="text-xs font-medium dark:text-gray-200">
-                                Reason for Requesting Investment
-                            </label>
-                            <textarea
-                                name="reason"
-                                placeholder="Reason for Requesting Investment (Optional)"
-                                className="border border-gray-300 dark:border-gray-700 p-2 rounded-lg w-full mt-1 dark:bg-gray-900 dark:text-white text-sm focus:ring focus:ring-dark-green outline-none transition-all duration-200"
-                                onChange={handleInputChange}
-                            />
-                        </div>
-
-                        <div className="col-span-2">
-                            <button
-                                type="submit"
-                                disabled={!isFormValid || loading}
-                                className={`w-48 py-2 mt-4 text-white rounded-lg flex justify-center items-center ${
-                                    isFormValid
-                                        ? "bg-dark-green hover:bg-dark-green-hover"
-                                        : "bg-gray-400 cursor-not-allowed"
-                                }`}
-                            >
-                                {loading ? (
-                                    <AiOutlineLoading3Quarters className="animate-spin text-sm mr-0" />
-                                ) : (
-                                    "Submit"
-                                )}
-                            </button>
-                        </div>
-                    </form>
+                            <div className="col-span-2">
+                                <button
+                                    type="submit"
+                                    disabled={!isFormValid || loading}
+                                    className={`w-48 py-2 mt-4 text-white rounded-lg flex justify-center items-center ${
+                                        isFormValid
+                                            ? "bg-dark-green hover:bg-dark-green-hover"
+                                            : "bg-gray-400 cursor-not-allowed"
+                                    }`}
+                                >
+                                    {loading ? (
+                                        <AiOutlineLoading3Quarters className="animate-spin text-sm mr-0" />
+                                    ) : (
+                                        "Submit"
+                                    )}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 )}
 
                 <input name="lat" id="lat" hidden />

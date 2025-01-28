@@ -12,7 +12,7 @@ import Paystack from "@paystack/inline-js";
 import PaymentHero from "../Heros/PaymentHero";
 import { useStateContext } from "../../contexts/contextProvider";
 import { useLocation } from "react-router-dom";
-
+import Mpesa from "../../images/randomIcons/mpesa.png";
 //import { mask } from "../../js/jquery.maskedinput";
 
 const PaymentForm = () => {
@@ -608,7 +608,7 @@ const PaymentForm = () => {
                                         >
                                             <img
                                                 clasName="rounded row-start-1 row"
-                                                src="../../../../src/images/randomIcons/mpesa.png"
+                                                src={Mpesa}
                                             />
                                             <span className="row-start-1 row">
                                                 {" "}
@@ -856,13 +856,13 @@ const PaymentForm = () => {
                                     <h2> ${purpos === "bids"?temp_price_total:price}</h2>
                                 </div>
 
-                                <div>
+                                {/* <div>
                                     <h1 className="font-semibold text-xl">
                                         Terms
                                     </h1>
-                                </div>
+                                </div> */}
                                 <div className="border border-[#ACACAC]"></div>
-                                <div class="flex flex-col bg-white jakarta  rounded-lg ">
+                                {/* <div class="flex flex-col bg-white jakarta  rounded-lg ">
                                     <div class="flex items-center mb-2 ">
                                         <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center mr-2">
                                             <span class="text-white text-xs">
@@ -896,7 +896,7 @@ const PaymentForm = () => {
                                             trial ends
                                         </span>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 

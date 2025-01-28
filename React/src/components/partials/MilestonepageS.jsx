@@ -11,6 +11,7 @@ import Modal from "./Authmodal";
 import ServiceHero from "../Heros/ServiceHero";
 import BackBtn from "./BackBtn";
 import TujitumeLogo from "../../images/Tujitumelogo.svg";
+import { BarLoader } from "react-spinners";
 
 const MilestonePage = () => {
     const { id } = useParams();
@@ -31,6 +32,8 @@ const MilestonePage = () => {
     const navigate = useNavigate();
     // const [miles, setMiles] = useState([]);
     const total_steps = miles.length;
+    const [loading, setLoading] = useState(true); // Set to true when data is being loaded
+
     //const curr_step = 0;
 
     useEffect(() => {
@@ -42,11 +45,13 @@ const MilestonePage = () => {
         const getMilestones = () => {
             axiosClient
                 .get("/getMilestonesS_Auth/" + listing_id, {
+
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 })
                 .then(({ data }) => {
+                    setLoading(false);
                     if (Array.isArray(data.data)) {
                         console.log(data.data);
                         setMiles(data.data);
@@ -64,6 +69,7 @@ const MilestonePage = () => {
                     setallow(data.allow);
                 })
                 .catch((err) => {
+                    setLoading(false);
                     setMiles([]);
                     console.log(err);
                     toast.error("An error occurred while fetching the data!");
@@ -172,209 +178,220 @@ const MilestonePage = () => {
                         Here keep track of your milestones
                     </p>
                 </div>
-
-                {!token && (
-                    <div class="w-75 h-100 py-5 my-5 my-auto justify-content-center my-2 text-center mx-auto">
-                        <button
-                            onClick={() => setIsAuthModalOpen(true)}
-                            className="btn-primary py-2 px-6 rounded-xl mt-3"
-                        >
-                            {" "}
-                            Login To Pay{" "}
-                        </button>
-                    </div>
-                )}
-
-                {no_mile && (
-                    <div class="w-75 h-100 py-5 my-5 my-auto justify-content-center my-2 text-center mx-auto">
-                        <h5 class="w-75 mx-auto bg-light py-3 my-3 text-secondary">
-                            No Milestones Yet!
+                {loading ? (
+                    <div className="flex flex-col items-center my-10 space-y-4">
+                        <h5 className="w-full max-w-md  text-[#334155] py-3 text-center rounded-lg shadow-lg text-xl font-semibold">
+                            Please wait while we load the milestones...
                         </h5>
+                        <BarLoader width="100%" color="#198754" />
                     </div>
-                )}
-
-                {isDone && (
-                    <div class="w-75 my-5 h-100 text-center mx-auto">
-                        <h5 class="w-75 mx-auto bg-light py-3 my-3 text-secondary">
-                            Milestones completed, Service delivered!
-                        </h5>
-                    </div>
-                )}
-
-                {/* Steps 1-4 */}
-                <div className="flex justify-center  items-center mb-16 px-8 lg:px-96 sm:px-8">
-                    {Array.from({ length: total_steps }, (_, index) => (
-                        <React.Fragment key={index}>
-                            {/* Step Circle and Text */}
-                            <div className="flex items-center space-x-2">
-                                <div
-                                    className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center font-semibold text-sm sm:text-base ${
-                                        index < curr_step
-                                            ? "bg-[#198754] text-white" // Completed steps
-                                            : "bg-white border border-gray-400 text-gray-700" // Inactive steps
-                                    }`}
+                ) : (
+                    <>
+                        {" "}
+                        {!token && (
+                            <div class="w-75 h-100 py-5 my-5 my-auto justify-content-center my-2 text-center mx-auto">
+                                <button
+                                    onClick={() => setIsAuthModalOpen(true)}
+                                    className="btn-primary py-2 px-6 rounded-xl mt-3"
                                 >
-                                    {index + 1}
-                                </div>
-
-                                {/* Step Label */}
-                                <span className="text-sm sm:text-base text-gray-600">
-                                    Step {index + 1}
-                                </span>
+                                    {" "}
+                                    Login To Pay{" "}
+                                </button>
                             </div>
+                        )}
+                        {no_mile && (
+                            <div class="w-75 h-100 py-5 my-5 my-auto justify-content-center my-2 text-center mx-auto">
+                                <h5 class="w-75 mx-auto bg-light py-3 my-3 text-secondary">
+                                    No Milestones Yet!
+                                </h5>
+                            </div>
+                        )}
+                        {isDone && (
+                            <div class="w-75 my-5 h-100 text-center mx-auto">
+                                <h5 class="w-75 mx-auto bg-light py-3 my-3 text-secondary">
+                                    Milestones completed, Service delivered!
+                                </h5>
+                            </div>
+                        )}
+                        {/* Steps 1-4 */}
+                        <div className="flex justify-center  items-center mb-16 px-8 lg:px-96 sm:px-8">
+                            {Array.from({ length: total_steps }, (_, index) => (
+                                <React.Fragment key={index}>
+                                    {/* Step Circle and Text */}
+                                    <div className="flex items-center space-x-2">
+                                        <div
+                                            className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center font-semibold text-sm sm:text-base ${
+                                                index < curr_step
+                                                    ? "bg-[#198754] text-white" // Completed steps
+                                                    : "bg-white border border-gray-400 text-gray-700" // Inactive steps
+                                            }`}
+                                        >
+                                            {index + 1}
+                                        </div>
 
-                            {/* Centered Dashed Line */}
-                            {index < total_steps - 1 && (
-                                <div className="flex-grow h-1 mx-2 sm:mx-4 flex items-center">
-                                    <div className="w-full border-t-2 border-dashed border-gray-400"></div>
-                                </div>
-                            )}
-                        </React.Fragment>
-                    ))}
-                </div>
-                <div className="overflow-x-auto sm:rounded-lg  mx-auto border  border-gray-300 ">
-                    <table className="table-auto w-full border-collapse border border-gray-300">
-                        <thead>
-                            <tr className="bg-[#E5E7EB]">
-                                <th className="border border-gray-300 px-6 py-3 text-left text-xs font-semibold text-[#0F172A] uppercase tracking-wider">
-                                    Milestone Name
-                                </th>
-                                <th className="border border-gray-300 px-6 py-3 text-left text-xs font-semibold text-[#0F172A] uppercase tracking-wider">
-                                    Amount
-                                </th>
-                                <th className="border border-gray-300 px-6 py-3 text-left text-xs font-semibold text-[#0F172A] uppercase tracking-wider">
-                                    Documentation
-                                </th>
-                                <th className="border border-gray-300 px-6 py-3 text-left text-xs font-semibold text-[#0F172A] uppercase tracking-wider">
-                                    Status
-                                </th>
-                                <th className="border border-gray-300 px-6 py-3 text-left text-xs font-semibold text-[#0F172A] uppercase tracking-wider">
-                                    Action
-                                </th>
-                                <th className="border border-gray-300 px-6 py-3 text-left text-xs font-semibold text-[#0F172A] uppercase tracking-wider">
-                                    Time Left
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {miles
-                                .filter(
-                                    (milestone) => milestone.status === "Done"
-                                )
-                                .map((milestone, index) => (
-                                    <tr
-                                        key={index}
-                                        className="hover:bg-gray-100"
-                                    >
-                                        <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
-                                            {milestone.title}
-                                        </td>
-                                        <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
-                                            {milestone.amount}
-                                        </td>
-                                        <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
-                                            <button
-                                                onClick={download_doc(
-                                                    milestone.mile_id
-                                                )}
-                                                className="text-black hover:underline"
-                                            >
-                                                Download Milestone Documentation
-                                            </button>
-                                        </td>
-                                        <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
-                                            <div className="flex space-x-2">
-                                                <button className="px-3 py-1 rounded bg-green-500 text-white">
-                                                    Done
-                                                </button>
-                                            </div>
-                                        </td>
-                                        <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
-                                            {"-"}
-                                        </td>
-                                        <td className="bg-gray-200 text-green-700 border border-gray-300 px-6 py-3 text-[#0F172A]">
-                                            {milestone.time_left}
-                                        </td>
+                                        {/* Step Label */}
+                                        <span className="text-sm sm:text-base text-gray-600">
+                                            Step {index + 1}
+                                        </span>
+                                    </div>
+
+                                    {/* Centered Dashed Line */}
+                                    {index < total_steps - 1 && (
+                                        <div className="flex-grow h-1 mx-2 sm:mx-4 flex items-center">
+                                            <div className="w-full border-t-2 border-dashed border-gray-400"></div>
+                                        </div>
+                                    )}
+                                </React.Fragment>
+                            ))}
+                        </div>
+                        <div className="overflow-x-auto sm:rounded-lg  mx-auto border  border-gray-300 ">
+                            <table className="table-auto w-full border-collapse border border-gray-300">
+                                <thead>
+                                    <tr className="bg-[#E5E7EB]">
+                                        <th className="border border-gray-300 px-6 py-3 text-left text-xs font-semibold text-[#0F172A] uppercase tracking-wider">
+                                            Milestone Name
+                                        </th>
+                                        <th className="border border-gray-300 px-6 py-3 text-left text-xs font-semibold text-[#0F172A] uppercase tracking-wider">
+                                            Amount
+                                        </th>
+                                        <th className="border border-gray-300 px-6 py-3 text-left text-xs font-semibold text-[#0F172A] uppercase tracking-wider">
+                                            Documentation
+                                        </th>
+                                        <th className="border border-gray-300 px-6 py-3 text-left text-xs font-semibold text-[#0F172A] uppercase tracking-wider">
+                                            Status
+                                        </th>
+                                        <th className="border border-gray-300 px-6 py-3 text-left text-xs font-semibold text-[#0F172A] uppercase tracking-wider">
+                                            Action
+                                        </th>
+                                        <th className="border border-gray-300 px-6 py-3 text-left text-xs font-semibold text-[#0F172A] uppercase tracking-wider">
+                                            Time Left
+                                        </th>
                                     </tr>
-                                ))}
-
-                            {miles
-                                .filter(
-                                    (milestone) =>
-                                        milestone.status === "In Progress" ||
-                                        milestone.status === "To Do"
-                                )
-                                .map((milestone, index) => (
-                                    <tr
-                                        key={index}
-                                        className="hover:bg-gray-100"
-                                    >
-                                        <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
-                                            {milestone.title}
-                                        </td>
-                                        <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
-                                            {milestone.amount}
-                                        </td>
-                                        <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
-                                            <button
-                                                onClick={download_doc(
-                                                    milestone.mile_id
-                                                )}
-                                                className="text-black hover:underline"
+                                </thead>
+                                <tbody>
+                                    {miles
+                                        .filter(
+                                            (milestone) =>
+                                                milestone.status === "Done"
+                                        )
+                                        .map((milestone, index) => (
+                                            <tr
+                                                key={index}
+                                                className="hover:bg-gray-100"
                                             >
-                                                Download Milestone Documentation
-                                            </button>
-                                        </td>
-                                        <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
-                                            <div className="flex space-x-2">
-                                                {milestone.status ===
-                                                    "To Do" && (
-                                                    <button className="px-3 py-1 rounded bg-gray-200 text-gray-700">
-                                                        To Do
+                                                <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
+                                                    {milestone.title}
+                                                </td>
+                                                <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
+                                                    {milestone.amount}
+                                                </td>
+                                                <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
+                                                    <button
+                                                        onClick={download_doc(
+                                                            milestone.mile_id
+                                                        )}
+                                                        className="text-black hover:underline"
+                                                    >
+                                                        Download Milestone
+                                                        Documentation
                                                     </button>
-                                                )}
-                                                {milestone.status ===
-                                                    "In Progress" && (
-                                                    <button className="px-3 py-1 rounded bg-yellow-500 text-white">
-                                                        In Progress
-                                                    </button>
-                                                )}
-                                            </div>
-                                        </td>
-                                        {milestone.status === "To Do" &&
-                                        milestone.active ? (
-                                            <td className="border border-gray-300 px-6 py-2 text-[#0F172A]">
-                                                <button
-                                                    onClick={() =>
-                                                        handlePay(
-                                                            milestone.id,
-                                                            milestone.amount
-                                                        )
-                                                    }
-                                                    className="px-3 py-1 rounded bg-green-500 text-white"
-                                                >
-                                                    PAY
-                                                </button>
-                                            </td>
-                                        ) : (
-                                            <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
-                                                {"-"}
-                                            </td>
-                                        )}
-                                        <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
-                                            {milestone.time_left}
-                                        </td>
-                                    </tr>
-                                ))}
-                        </tbody>
-                    </table>
-                </div>
-                <ToastContainer />
+                                                </td>
+                                                <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
+                                                    <div className="flex space-x-2">
+                                                        <button className="px-3 py-1 rounded bg-green-500 text-white">
+                                                            Done
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
+                                                    {"-"}
+                                                </td>
+                                                <td className="bg-gray-200 text-green-700 border border-gray-300 px-6 py-3 text-[#0F172A]">
+                                                    {milestone.time_left}
+                                                </td>
+                                            </tr>
+                                        ))}
 
-                <Modal
-                    isOpen={isAuthModalOpen}
-                    onClose={() => setIsAuthModalOpen(false)}
-                />
+                                    {miles
+                                        .filter(
+                                            (milestone) =>
+                                                milestone.status ===
+                                                    "In Progress" ||
+                                                milestone.status === "To Do"
+                                        )
+                                        .map((milestone, index) => (
+                                            <tr
+                                                key={index}
+                                                className="hover:bg-gray-100"
+                                            >
+                                                <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
+                                                    {milestone.title}
+                                                </td>
+                                                <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
+                                                    {milestone.amount}
+                                                </td>
+                                                <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
+                                                    <button
+                                                        onClick={download_doc(
+                                                            milestone.mile_id
+                                                        )}
+                                                        className="text-black hover:underline"
+                                                    >
+                                                        Download Milestone
+                                                        Documentation
+                                                    </button>
+                                                </td>
+                                                <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
+                                                    <div className="flex space-x-2">
+                                                        {milestone.status ===
+                                                            "To Do" && (
+                                                            <button className="px-3 py-1 rounded bg-gray-200 text-gray-700">
+                                                                To Do
+                                                            </button>
+                                                        )}
+                                                        {milestone.status ===
+                                                            "In Progress" && (
+                                                            <button className="px-3 py-1 rounded bg-yellow-500 text-white">
+                                                                In Progress
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                                {milestone.status === "To Do" &&
+                                                milestone.active ? (
+                                                    <td className="border border-gray-300 px-6 py-2 text-[#0F172A]">
+                                                        <button
+                                                            onClick={() =>
+                                                                handlePay(
+                                                                    milestone.id,
+                                                                    milestone.amount
+                                                                )
+                                                            }
+                                                            className="px-3 py-1 rounded bg-green-500 text-white"
+                                                        >
+                                                            PAY
+                                                        </button>
+                                                    </td>
+                                                ) : (
+                                                    <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
+                                                        {"-"}
+                                                    </td>
+                                                )}
+                                                <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
+                                                    {milestone.time_left}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <ToastContainer />
+                        <Modal
+                            isOpen={isAuthModalOpen}
+                            onClose={() => setIsAuthModalOpen(false)}
+                        />
+                    </>
+                )}
             </div>
         </>
     );

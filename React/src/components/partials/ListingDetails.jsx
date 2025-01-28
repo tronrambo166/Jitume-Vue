@@ -346,14 +346,29 @@ const ListingDetails = ({ onClose }) => {
             var purpose = base64_encode("bids");
             var listing_id = base64_encode(form.listing_id);
 
+            var content = `<div style="padding: 20px;  text-align: left;">
+                            <img 
+                                src="${TujitumeLogo}" 
+                                alt="Tujitume Logo" 
+                                style="max-width: 120px; margin-bottom: 20px; display: block;" 
+                                class="jconfirm-logo" 
+                            />
+                            <div>
+                                <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 10px; color: #333;">Are you sure you want to bid?</h2>
+                                <p style="font-size: 18px; color: #333; margin-bottom: 8px;">
+                                Bid amount: <span style="color: green; font-weight: bold;">$${fullAmount}</span>
+                                </p>
+                                <p style="font-size: 16px; color: #666; margin-bottom: 8px;">
+                                Only 25% of the bid amount is required upfront as a deposit.
+                                </p>
+                                <p style="font-size: 18px;">
+                                Deposit amount (25% of the bid amount): <span style="color: green; font-weight: bold;">$${showprice}</span>
+                                </p>
+                            </div>
+                    `;
             $.confirm({
                 title: false,
-                content: `
-           <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
-    <div>Are you sure you want to bid? </br>Bid amount: <span style="color: green;">$${fullAmount}</span></div>
-    <div>Only 25% of the bid amount is required upfront as a deposit. </div>
-    <div>Deposit amount (25%) of the bid amount = <span style="color: green;">$${showprice}</span></div>
-`,
+                content: content,
 
                 buttons: {
                     confirm: function () {
