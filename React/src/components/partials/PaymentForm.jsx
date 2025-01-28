@@ -529,7 +529,7 @@ const PaymentForm = () => {
                         data-stripe-publishable-key="pk_test_51JFWrpJkjwNxIm6zf1BN9frgMmLdlGWlSjkcdVpgVueYK5fosCf1fAKlMpGrkfGoiXGMb0PpcMEOdINTEVcJoCNa00tJop21w6"
                         id="payment-form"
                     >
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+                        <div className="grid lg:grid-cols-2 grid-cols-1 md:grid-cols-1 gap-0">
                             <div className="pb-[40px] sm:mx-[50px] bg-white flex flex-col">
                                 <h2 className="text-2xl text-[#0F172A] font-bold">
                                     Payment
@@ -782,8 +782,8 @@ const PaymentForm = () => {
                                 </div>
                             </div>
 
-                            <div className=" px-[100px] border  px-8 py-[70px] flex gap-4 flex-col">
-                                <div className="purpose ">
+                            <div className="px-[30px] sm:px-[100px] border py-[70px] flex gap-4 flex-col">
+                            <div className="purpose ">
                                     <h2 className="ml-1 mb-2 text-xl text-[#0A0D13] font-bold mb-1">
                                         Purpose -{" "}
                                         <span className="font-light">{p}</span>
