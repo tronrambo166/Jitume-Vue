@@ -339,14 +339,20 @@ const ListingDetails = ({ onClose }) => {
         else {
             var percent = parseFloat(percent);
             var amount = base64_encode(amount);
+            var price = parseFloat(0.25 * base64_decode(amount));
+
             percent = base64_encode(percent);
             var purpose = base64_encode("bids");
             var listing_id = base64_encode(form.listing_id);
 
             $.confirm({
                 title: false,
-                content: `<img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo"><div>Are you sure you want to bid?</div>`,
-                buttons: {
+               content: `
+                    <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
+                    <div>Are you sure you want to bid? Total amount: <span style="color: green;">$${price}</span></div>
+                `,
+
+                    buttons: {
                     confirm: function () {
                         //window.location.href =
                         //"/checkout/" +amount +"/" +listing_id +"/" +percent +"/" +purpose;
