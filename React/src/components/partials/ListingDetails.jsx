@@ -724,7 +724,7 @@ const ListingDetails = ({ onClose }) => {
                                         </span>
                                     </div>
                                 </div>
-                                <h3 className="py-4 text-gray-800 text-sm">
+                                <h3 className="py-4 text-gray-800 text-[12px]">
                                     Only 25% of the bid amount is required
                                     upfront as a deposit.
                                 </h3>
@@ -1241,7 +1241,7 @@ const ListingDetails = ({ onClose }) => {
                                         <h2 className="text-xl font-semibold text-[#334155] mb-4">
                                             Enter A Bid To Invest
                                         </h2>
-                                        <h3 className="text-sm pb-3 text-gray-800">
+                                        <h3 className="text-[11px] pb-3 text-gray-800">
                                             {" "}
                                             Only 25% of the bid amount is
                                             required upfront as a deposit.
