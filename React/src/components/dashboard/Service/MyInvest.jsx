@@ -306,7 +306,7 @@ const MyInvest = () => {
                             )}
                             {item.status === "under_verification" &&
                                 item.type === "Asset" && (
-                                    <ul className="divide-y divide-gray-200 bg-white shadow rounded-lg">
+                                    <ul className="divide-y divide-gray-200 bg-black shadow rounded-lg">
                                         <li>
                                             <button
                                                 onClick={() =>
