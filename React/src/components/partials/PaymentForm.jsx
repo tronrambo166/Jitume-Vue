@@ -14,7 +14,7 @@ import { useStateContext } from "../../contexts/contextProvider";
 import { useLocation } from "react-router-dom";
 import Mpesa from "../../images/randomIcons/mpesa.png";
 //import { mask } from "../../js/jquery.maskedinput";
-
+import InputMask from "react-input-mask";
 const PaymentForm = () => {
     const location = useLocation();
     const [selectedPayment, setSelectedPayment] = useState("card");
@@ -134,28 +134,25 @@ const PaymentForm = () => {
     const purpos = base64_decode(purpose);
     var p = "";
     var amount_real = base64_decode(amount);
-    var temp_price_total = 0; var temp_price = 0;
+    var temp_price_total = 0;
+    var temp_price = 0;
 
-    if (purpos === "bids"){
+    if (purpos === "bids") {
         p = "Investment To Business (25%)";
         //amount_real = base64_decode(amount)*0.25;
-        temp_price = amount_real*0.25;
-        temp_price_total = parseFloat(temp_price) + parseFloat(0.05 * temp_price); // Fixed price value
-    } 
-    else if (purpos === "s_mile"){
+        temp_price = amount_real * 0.25;
+        temp_price_total =
+            parseFloat(temp_price) + parseFloat(0.05 * temp_price); // Fixed price value
+    } else if (purpos === "s_mile") {
         p = "Pay Service milestone";
-
-    } 
-    else {
+    } else {
         p = "Small Fee To Unlock Business";
-    } 
+    }
     // GETTING Parameters
 
     const [showModal, setShowModal] = useState(false);
     const [paystackRef, setPaystackRef] = useState(null);
     const price = parseFloat(amount_real) + parseFloat(0.05 * amount_real); // Fixed price value
-    
-
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -270,10 +267,11 @@ const PaymentForm = () => {
                                 },
                             });
                         }
-                        if (data.status == 400){
-                           //alert(data.message);
-                           console.log(data); 
-                        } console.log(data);
+                        if (data.status == 400) {
+                            //alert(data.message);
+                            console.log(data);
+                        }
+                        console.log(data);
                     })
                     .catch((err) => {
                         console.log(err);
@@ -625,7 +623,8 @@ const PaymentForm = () => {
                                                     Card Number
                                                 </label>
                                                 <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
-                                                    <input
+                                                    <InputMask
+                                                        mask="9999 9999 9999 9999"
                                                         autocomplete="on"
                                                         size="20"
                                                         className="card-number flex-1 py-2 px-6 border-0 outline-none"
@@ -783,7 +782,7 @@ const PaymentForm = () => {
                             </div>
 
                             <div className="px-[30px] sm:px-[100px] border py-[70px] flex gap-4 flex-col">
-                            <div className="purpose ">
+                                <div className="purpose ">
                                     <h2 className="ml-1 mb-2 text-xl text-[#0A0D13] font-bold mb-1">
                                         Purpose -{" "}
                                         <span className="font-light">{p}</span>
@@ -805,7 +804,12 @@ const PaymentForm = () => {
                                         <h2 className="text-gray-500">
                                             Subtotal
                                         </h2>
-                                        <h3>${purpos === "bids"?temp_price:amount_real}</h3>
+                                        <h3>
+                                            $
+                                            {purpos === "bids"
+                                                ? temp_price
+                                                : amount_real}
+                                        </h3>
                                     </div>
 
                                     <div className="flex justify-between">
@@ -814,7 +818,12 @@ const PaymentForm = () => {
                                             Tax (5%){" "}
                                         </h3>
                                         <h3>
-                                            ${((purpos === "bids"?temp_price:amount_real) * 0.05).toFixed()}{" "}
+                                            $
+                                            {(
+                                                (purpos === "bids"
+                                                    ? temp_price
+                                                    : amount_real) * 0.05
+                                            ).toFixed()}{" "}
                                         </h3>
                                     </div>
                                     {/* <label className="block text-sm font-semibold">
@@ -841,7 +850,11 @@ const PaymentForm = () => {
                                         <input
                                             id="amount"
                                             hidden
-                                            value={purpos === "bids"?temp_price_total:price}
+                                            value={
+                                                purpos === "bids"
+                                                    ? temp_price_total
+                                                    : price
+                                            }
                                         />
                                         <input
                                             hidden
@@ -853,7 +866,13 @@ const PaymentForm = () => {
                                         />
                                     </div>
 
-                                    <h2> ${purpos === "bids"?temp_price_total:price}</h2>
+                                    <h2>
+                                        {" "}
+                                        $
+                                        {purpos === "bids"
+                                            ? temp_price_total
+                                            : price}
+                                    </h2>
                                 </div>
 
                                 {/* <div>
