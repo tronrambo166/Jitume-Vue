@@ -15,6 +15,7 @@ import { useLocation } from "react-router-dom";
 import Mpesa from "../../images/randomIcons/mpesa.png";
 //import { mask } from "../../js/jquery.maskedinput";
 import InputMask from "react-input-mask";
+
 const PaymentForm = () => {
     const location = useLocation();
     const [selectedPayment, setSelectedPayment] = useState("card");
@@ -299,7 +300,7 @@ const PaymentForm = () => {
     if (purpos == "s_mile") partiesInfo = "/partiesServiceMile/";
     else partiesInfo = "/partiesInfo/";
     useEffect(() => {
-        //$(".card-number").mask("9999 9999 9999 9999");
+        // $(".card-number").mask("9999 9999 9999 9999");
         axiosClient.get(partiesInfo + atob(listing_id)).then(({ data }) => {
             setUser(data.user);
             setOwner(data.owner);
@@ -625,7 +626,7 @@ const PaymentForm = () => {
                                                 <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
                                                     <InputMask
                                                         mask="9999 9999 9999 9999"
-                                                        autocomplete="on"
+                                                        autocomplete="cc-number"
                                                         size="20"
                                                         className="card-number flex-1 py-2 px-6 border-0 outline-none"
                                                         type="text"
