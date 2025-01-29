@@ -3,20 +3,20 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  build: {
-    chunkSizeWarningLimit: 2000, // Increase the limit
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-            if (id.includes("node_modules")) {
-              if (id.includes("react")) return "react"; 
-              if (id.includes("lodash")) return "lodash"; // Separate Lodash
-              return "vendor"; // Other libraries
-            }
-        },
-      },
-    },
-  },
+  // build: {
+  //   chunkSizeWarningLimit: 2000, // Increase the limit
+  //   rollupOptions: {
+  //     output: {
+  //       manualChunks(id) {
+  //           if (id.includes("node_modules")) {
+  //             if (id.includes("react")) return "react"; 
+  //             if (id.includes("lodash")) return "lodash"; // Separate Lodash
+  //             return "vendor"; // Other libraries
+  //           }
+  //       },
+  //     },
+  //   },
+  // },
   server:{
   	host:true,
   	port:80,
