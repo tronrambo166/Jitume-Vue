@@ -12,7 +12,7 @@ import {
     useParams,
     useSearchParams,
 } from "react-router-dom";
-import { useMessage } from "./msgcontext"; // Import the custom hook
+import { useMessage } from "../Service/msgcontext"; // Import the custom hook
 import { BarLoader } from "react-spinners";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -31,6 +31,22 @@ const MyInvest = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [loading, setLoading] = useState(false);
     const [searchParams] = useSearchParams();
+    const [colorIndex, setColorIndex] = useState(0);
+    const colors = [
+        "text-red-500",
+        "text-blue-500",
+        "text-yellow-500",
+        "text-green-500",
+    ];
+    useEffect(() => {
+        if (loading) {
+            const interval = setInterval(() => {
+                setColorIndex((prevIndex) => (prevIndex + 1) % colors.length);
+            }, 1000); // Change color every 1 second (after one full rotation)
+
+            return () => clearInterval(interval); // Clean up when unmounting or loading changes
+        }
+    }, [loading]);
 
     useEffect(() => {
         const b_idToVWPM = searchParams.get("b_idToVWPM");
@@ -279,7 +295,7 @@ const MyInvest = () => {
                 >
                     {loading ? (
                         <AiOutlineLoading3Quarters
-                            className="animate-spin text-gray-600"
+                            className={`animate-spin ${colors[colorIndex]}`}
                             size={20}
                         />
                     ) : (

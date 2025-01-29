@@ -626,11 +626,16 @@ const PaymentForm = () => {
                                                 <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
                                                     <InputMask
                                                         mask="9999 9999 9999 9999"
-                                                        autocomplete="cc-number"
+                                                        // maskChar=""
+                                                        name="cc-number"
+                                                        autoComplete="cc-number"
+                                                        inputMode="numeric"
                                                         size="20"
                                                         className="card-number flex-1 py-2 px-6 border-0 outline-none"
                                                         type="text"
                                                         placeholder="1234 5678 9012 3456"
+                                                        aria-label="Credit card number"
+                                                        pattern="\d{4} \d{4} \d{4} \d{4}"
                                                     />
                                                 </div>
                                             </div>

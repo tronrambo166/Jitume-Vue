@@ -1,7 +1,7 @@
 import MyBusinesses from "../dashboard/business/MyBusinesses"
 import ServiceTable from "../dashboard/Service/servicestable"
 import Table from "./Table"
-import MyInvest from "../dashboard/Service/MyInvest"
+import MyInvest from "../dashboard/Myinvestments/MyInvest"
 import { useEffect, useState } from "react";
 import axiosClient from "../../axiosClient";
 const Dashhome = () => {
