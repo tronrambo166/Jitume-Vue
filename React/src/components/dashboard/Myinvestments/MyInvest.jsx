@@ -145,8 +145,10 @@ const MyInvest = () => {
                     axiosClient
                         .get("business/withdraw_investment/" + bid_id) //This is a test api it doesnt work
                         .then(({ data }) => {
-                            if (data.status == 200) console.log(data.message);
-                            else showAlert("success", data.message);
+                            if (data.status == 200) 
+                                showAlert("success", data.message);
+                            else 
+                                showAlert("success", data.message);
                             console.log(data); // Log response data
                         })
                         .catch((err) => {
@@ -380,7 +382,9 @@ const MyInvest = () => {
                                     <ul>
                                         <li>
                                             <button
-                                                onClick={WithdrawInvestment}
+                                                onClick={() =>
+                                                    WithdrawInvestment(item.bid_id)
+                                                }
                                                 className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-pink-700 transition duration-150 ease-in-out"
                                             >
                                                 Withdraw Investment

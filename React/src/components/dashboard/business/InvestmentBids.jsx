@@ -66,17 +66,10 @@ function InvestmentBids() {
                 showAlert("success", data.message); // Show success alert
             })
             .catch((err) => {
-                const response = err.response;
-                if (response && response.status === 422) {
-                    console.log(response.data.errors); // Log validation errors
-                    showAlert("error", response.data.errors.join(", ")); // Show validation errors
-                } else {
-                    console.log(err); // Log general errors
-                    showAlert(
-                        "error",
-                        "An error occurred while processing your request."
-                    ); // Show generic error message
-                }
+                    const response = err.response;
+                    console.log(err); // Log validation errors
+                    showAlert("error", response.data.message); // Show validation errors
+
             })
             .finally(() => {
                 // Reset loading states
@@ -85,7 +78,7 @@ function InvestmentBids() {
                 } else {
                     setLoadingReject(false);
                 }
-                PendingBids();
+                //PendingBids();
             });
     };
 

@@ -123,6 +123,13 @@ public function bidsAccepted(Request $request)
          $recipient = $owner->paystack_acc_id;
          $usdToKen = 100*128.5;
 
+         //Check Amount Requested Exceed
+         $amount_needed = ($list->investment_needed - $list->amount_collected);
+         if($bid->amount > $amount_needed){
+             return response()->json(['message' => 'Selected bid amount exceeds
+             the amount needed for this business'],400);
+         }
+
          //TRANSFERRING FUNDS
          if($bid->type == 'Monetary' && $bid->stripe_charge_id)
          {
@@ -301,35 +308,43 @@ public function agreeToProgressWithMilestone($bidId)
 
 public function withdraw_investment($bidId)
 {
-    try { return;
+    try {
         $bid = AcceptedBids::where('id',$bidId)->first();
-        $investor = User::where('id',$bid->investor_id)->first();
+        $investor = User::select('fname','lname','id','email')
+        ->where('id',$bid->investor_id)->first();
         $inv_name = $investor->fname.' '.$investor->lname;
-        $bid_percentage = $bid->representation;
+        //$bid_percentage = $bid->representation;
 
-        $business = Listing::where('id',$bid->business_id)->first();
-        $owner = User::where('id',$business->user_id)->first();
+        $business = Listing::select('name','user_id','id','amount_collected')
+        ->where('id',$bid->business_id)->first();
+        $owner = User::select('fname','lname','id','email')
+        ->where('id',$business->user_id)->first();
 
-        //Financial Reallocation:
-        if($bid->type == 'Asset'){
-            $investors = AcceptedBids::where('business_id',$bid->business_id)
-            ->where('ms_id',$bid->ms_id)->get();
-            $count = count($investors);
+        //Financial Reallocation: Refund 98%;
+        if($bid->type == 'Monetary'){
+            $actual_paid_amount = ($bid->amount)*0.25;
+            $refund_amount = ($actual_paid_amount)*0.98;
+            $this->Client->refunds->create([
+                'charge' => $bid->stripe_charge_id,
+                'amount' => $refund_amount*100
+                 ]);
+            
+            $new_amount_collected = ($business->amount_collected) - ($bid->amount);
+            Listing::where('id',$bid->business_id)->update([
+                'amount_collected' => $new_amount_collected
+            ]);
         }
         
         //Notification and Transparency:
+        $text = 'A bid to business '.$business->name.' was withdrawn by '.$inv_name;
+        $this->createNotification($owner->id,$investor->id,$text,'/',' business');
 
-            $info=[ 'inv_name'=>$inv_name, 'asset_name'=>$bid->serial ];
-            $user['to'] = $owner->email; //'tottenham266@gmail.com';
-            Mail::send('bids.bid_cancel', $info, function($msg) use ($user){
-                 $msg->to($user['to']);
-                 $msg->subject('Milestone Cancel!');
-            });
+        $text = 'Your bid to business '.$business->name.' was withdrawn, you will get the refund in 7 business days';
+        $this->createNotification($investor->id,$owner->id,$text,'/',' business');
 
         
-            AcceptedBids::where('id',$bidId)->delete();
-            return response()->json(['status'=>200, 'message' =>
-            'Thanks for your feedback!']);
+        AcceptedBids::where('id',$bidId)->delete();
+        return response()->json(['status'=>200, 'message' =>'Bid Withdrawn!']);
      
    }
     catch(\Exception $e){
