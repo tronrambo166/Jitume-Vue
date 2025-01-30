@@ -46,7 +46,7 @@ const EquipmentRelease = () => {
                         showAlert(
                         "info",
                         "Equipment Released."
-                    );
+                    ); //console.log(data);
                         setTimeout(() => { navigate('/dashboard'); }, 2000);
                         const content = `
                             <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
@@ -129,7 +129,21 @@ const EquipmentRelease = () => {
                         Do you want to release equipment now?
                     </h5>
                 </div>
-                <div className="card-body py-5 mb-5">
+
+                {!token ? (
+                <div className="mb-6">
+                    <div className="w-75 h-100 py-5 my-5 my-auto justify-content-center my-2 text-center mx-auto">
+                        <button
+                            // onClick={() => setIsAuthModalOpen(true)}
+                            className=" py-2 px-6 rounded-xl mt-3"
+                        >
+                            {" "}
+                            Sign in To View{" "}
+                        </button>
+                    </div>
+                </div>
+            ):(
+            <div className="card-body py-5 mb-5">
                     <div className="w-3/4 mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <button
                             className={`w-full py-2 px-3 bg-green-500 rounded-lg text-white font-semibold flex justify-center items-center ${
@@ -153,6 +167,8 @@ const EquipmentRelease = () => {
                         </button>
                     </div>
                 </div>
+                )}
+
             </div>
         </div>
     );

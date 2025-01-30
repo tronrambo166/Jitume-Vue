@@ -686,7 +686,7 @@ catch(\Exception $e){
                 'receiver_id' => $ownerS->id,
                 'customer_id' => $ownerB->id,
                 'text' => 'You been assigned to help verify the equipment from the investor '.$investor_name,
-                'link' => 'verify_request_manager',
+                'link' => '/',
                 'bid_id' => $accepted_bids->id,
                 'type' => 'business',
                 ]);

@@ -100,7 +100,7 @@ const ServiceResults = () => {
     }, [resIds]); // Add dependency on resIds to re-fetch when it changes
 
     useEffect(() => {
-        if (maxPrice > 0) {
+        if (maxPrice > 0 && noUiSlider) {
             amountSlider(); // Only call amountSlider when maxPrice is valid
         }
     }, [maxPrice]); // Trigger when maxPrice is updated

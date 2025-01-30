@@ -112,7 +112,7 @@ const Subscribepage = () => {
                     buttons: {
                         confirm: function () {
                             window.location.href =
-                                "https://test.jitume.com/stripeSubscribe/" +
+                                "https://tujitume.com/stripeSubscribe/" +
                                 amount_e +
                                 "/" +
                                 plan_e +
@@ -433,8 +433,8 @@ const Subscribepage = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="bg-slate-100 flex flex-col lg:flex-row w-full max-w-[1040px] mx-auto items-start lg:items-center p-4 relative">
-                        <div className="p-4 mt-8 lg:mt-0 lg:mr-8">
+                    <div className=" flex flex-col lg:flex-row w-full max-w-[1040px] mx-auto items-start lg:items-center p-4 relative">
+                        {/*<div className="p-4 mt-8 lg:mt-0 lg:mr-8">
                             <h1 className="text-xl font-semibold">
                                 Turnover ranges
                             </h1>
@@ -443,8 +443,8 @@ const Subscribepage = () => {
                             <h2 className="mt-2">$100,000-$250,000</h2>
                             <h2 className="mt-2">$250,000-$500,000</h2>
                             <h2 className="mt-2">$500,000+</h2>
-                        </div>
-                        {/* Button container positioned at the bottom right */}
+                        </div>*/}
+
                         <div className="absolute bottom-4 right-4 flex gap-4">
                             <button
                                 className="bg-black px-6 py-2 rounded-lg text-gray-100 border-gray-400"

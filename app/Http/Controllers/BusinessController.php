@@ -1406,6 +1406,10 @@ public function assetEquip_download($id, $type){
     $investor_id = Auth::id();
     $count = 0;
 
+    $isInvest = User::select('investor')->where('id',$investor_id)
+    ->first()->investor;
+    if($isInvest == 1) $isInvestor = true; else $isInvestor = false;
+
     $conv = Conversation::where('investor_id',Auth::id())->
     where('listing_id',$listing_id)->where('active',1)->first();
     if($conv!=null)$conv = true;else $conv=false;
@@ -1436,7 +1440,7 @@ public function assetEquip_download($id, $type){
       $count = 0;
       $results['subscribed'] = 0;
       return response()->json([ 'data' => $results, 'conv'=>$conv, 'fee'=> $thisListing->investors_fee, 'count' => $count, 'reviews' => $reviews, 
-        'error' => $e->getMessage() ] );
+        'error' => $e->getMessage(), 'isInvestor' => $isInvestor ] );
     }
       if($subs->plan == 'platinum' || $subs->plan == 'platinum-trial')
       $conv = true;
@@ -1473,7 +1477,8 @@ public function assetEquip_download($id, $type){
     }
 
 
-    return response()->json([ 'data' => $results, 'fee'=> $thisListing->investors_fee, 'conv'=>$conv, 'count' => $count, 'reviews' => $reviews] );
+    return response()->json([ 'data' => $results, 'fee'=> $thisListing->investors_fee, 'conv'=>$conv, 'count' => $count, 'reviews' => $reviews, 
+      'isInvestor' => $isInvestor] );
 }
 
 

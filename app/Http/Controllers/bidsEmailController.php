@@ -289,7 +289,7 @@ public function agreeToProgressWithMilestone($bidId)
             //Release
         }
         //Release Payment - VOTE COUNT
-       return redirect()->to(config('app.app_url').'dashboard?agreetobid=yes');
+       return redirect()->to(config('app.app_url').'?agreetobid=yes');
      
        }
         catch(\Exception $e){
@@ -506,7 +506,7 @@ public function releaseEquipment($business_id, $manager_id, $bid_id){
   try
   {  
     //Voting
-          $this->agreeToProgressWithReleaseEqp($bid_id);
+          $voting = $this->agreeToProgressWithReleaseEqp($bid_id);
 
     //Notification to B Owner
             $info=['investor_name'=>$investor_name, 'contact'=>$investor->email,
@@ -538,7 +538,7 @@ public function releaseEquipment($business_id, $manager_id, $bid_id){
              AcceptedBids::where('id',base64_decode($bid_id))->update([
               'status' => 'equipment_released']);
              return response()->json(['status' => 200, 'message' 
-                =>'dashboard?agreetobid=equipment_released']);
+                =>'?agreetobid=equipment_released']);
 
 
     //return response()->json(['status' => 200, 'business' => $b_name,'manager' => $manager_name,'owner' => $b_owner_name,'investor' => $investor_name, 'message' =>'Success' ]);
@@ -593,7 +593,7 @@ public function agreeToNextmile($bidId)
             ->update(['status' => 'In Progress']);
         }
         //VOTE COUNT
-        return redirect()->to(config('app.app_url').'dashboard?agreetonext=yes'); 
+        return redirect()->to(config('app.app_url').'?agreetonext=yes'); 
        }
         catch(\Exception $e){
             return redirect()->to(config('app.app_url'));
@@ -872,7 +872,7 @@ public function bookingAccepted(Request $request)
     try { 
         $bid = AcceptedBids::select('ms_id','business_id','owner_id','investor_id')
         ->where('id',$bidId)->first();
-        $agreeVote = AcceptedBids::where('bid_id',$bidId)
+        $agreeVote = AcceptedBids::where('id',$bidId)
         ->where('ms_id',$bid->ms_id)->update([
             'investor_agree' => 1       
         ]);//$business_id = base64_encode(base64_encode($bid->business_id));
@@ -952,7 +952,8 @@ public function bookingAccepted(Request $request)
         }
         //Release Payment - VOTE COUNT
        if($addNoti)
-       return true;
+       return $t_rating;
+        else return $t_rating.'no';
 
        //return redirect()->to(config('app.app_url').'dashboard?agreetobid=equipment_released');
      

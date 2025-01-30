@@ -31,7 +31,7 @@ import BackBtn from "./BackBtn";
 import TruncateWithModal from "./TruncateWithModal";
 import TujitumeLogo from "../../images/Tujitumelogo.svg";
 const ListingDetails = ({ onClose }) => {
-    const { token, setUser, setAuth, auth } = useStateContext();
+    const { token, user, setAuth, auth } = useStateContext();
     const [loading, setLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -91,6 +91,7 @@ const ListingDetails = ({ onClose }) => {
     const plan = "gold";
     const subscrib_id = "123";
 
+    const [isInvestor, setIsInvestor] = useState(false);
     const [conv, setConv] = useState(false);
     const [details, setDetails] = useState("");
     const [allowToReview, setAllow] = useState("");
@@ -440,6 +441,7 @@ const ListingDetails = ({ onClose }) => {
                 .get("/isSubscribed/" + form.listing_id)
                 .then(({ data }) => {
                     console.log(data);
+                    setIsInvestor(data.isInvestor)
 
                     if (data.fee == null) setConv(true);
                     else setConv(data.conv);
@@ -766,13 +768,21 @@ const ListingDetails = ({ onClose }) => {
                                                         Invested In.
                                                     </p>
                                                 </div>
-                                            ) : (
+                                            ) : isInvestor? (
                                                 <a
                                                     onClick={handleOpen}
                                                     className="bg-green hover:bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
                                                 >
                                                     <FaLock className="mr-2" />
                                                     Unlock To Invest
+                                                </a>
+                                            ):(
+                                                <a
+                                                    onClick={handleOpen}
+                                                    className="bg-green hover:bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
+                                                >
+                                                    <FaLock className="mr-2" />
+                                                    Create Investor Account
                                                 </a>
                                             )
                                         ) : token && conv ? (
@@ -1259,7 +1269,7 @@ const ListingDetails = ({ onClose }) => {
                                 </div>
                             ) : null}
 
-                            {token && conv && amount_r && running ? (
+                            {token && conv && amount_r && running && isInvestor ? (
                                 <>
                                     <div className="w-full md:w-1/3 bg-white border border-gray-300 rounded-lg p-6 flex flex-col justify-between">
                                         <h2 className="text-xl font-semibold text-[#334155] mb-4">
@@ -1414,6 +1424,12 @@ const ListingDetails = ({ onClose }) => {
                                                     milestone completion
                                                     process. Please wait until
                                                     the next milestone is open.
+                                                </p>
+                                            </div>
+                                        ) : !isInvestor ? (
+                                            <div className="w-full text-center p-4">
+                                                <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
+                                                    You Need To Create Investor Account To Invest.
                                                 </p>
                                             </div>
                                         ) : (

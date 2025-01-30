@@ -1,11 +1,13 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation,useSearchParams } from "react-router-dom";
 import { useStateContext } from "../contexts/contextProvider";
+import { useEffect } from "react";
 // import axiosClient from "../axiosClient";
 import Topsection from "./Landing-page/Topsection";
 import Footer from "./Landing-page/Footer";
 // import Footer2 from "./Landing-page/global/Footer2";
 // import Navbar from "./Landing-page/Navbar";
 import Nav2 from "./Landing-page/global/Nav2";
+import { useAlert } from "./partials/AlertContext";
 // import BusinessHero from "../components/Businesses/BusinessHero";
 // import NavbarGuest from "./partials/NavbarGuest";
 // import Navbar_old from "./partials/Navbar";
@@ -17,6 +19,8 @@ export default function DefaultLayout() {
     const location = useLocation();
     const isDashboardRoute = location.pathname.startsWith("/dashboard");
     const isHome = location.pathname === "/home";
+    const [searchParams] = useSearchParams();
+    const { showAlert } = useAlert();
 
     // Check if the current path should use Footer or Footer2
     const useFooter = [
@@ -31,6 +35,27 @@ export default function DefaultLayout() {
             location.pathname === path ||
             location.pathname.startsWith(`${path}/`)
     );
+
+    // Email Click params;
+    useEffect(() => {
+    const b_idToVWPM = searchParams.get("b_idToVWPM");
+    const b_idToVWBO = searchParams.get("b_idToVWBO");
+    const agreetobid = searchParams.get("agreetobid");
+    const agreetonext = searchParams.get("agreetonext");
+
+    if (agreetobid != null) {
+        if (agreetobid == "yes")
+            showAlert("success", "Your vote succesfully collected");
+        if (agreetobid == "equipment_released")
+            showAlert("success", "Equipment Released Succesfully!");
+    }
+
+    if (agreetonext != null && agreetonext == "yes") {
+        showAlert("success", "Your vote succesfully collected");
+    }
+    }, []);
+   // Email Click params;
+
     // i know i have writen this code it say ten seconds but its 5 minutes  ten second is 10000
     // const TEN_SECONDS = 300000; // Idle timeout (10 seconds)
     // //const Five = 300000; // Idle timeout (5 Mins)

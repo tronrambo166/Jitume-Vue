@@ -176,13 +176,15 @@ function Messages() {
            );
        }
 
+
+       var to_id = customer_id?id:from_id;
        // Add a temporary timestamp when the message is sent
        const tempMessage = {
            sender: "me", // Indicate the sender is the current user
            msg: protectedMessage, // Use the protected message
            id,
            service_id,
-           from_id,
+           to_id,
            status: "Sending...", // Temporary status
            created_at: new Date().toISOString(), // Temporary timestamp
        }; 
@@ -196,7 +198,7 @@ function Messages() {
                msg_id: id,
                service_id,
                msg: protectedMessage,
-               from_id:from_id, // Send the protected message to the backend
+               to_id:to_id, // Send the protected message to the backend
            })
            .then(({ data }) => {
                console.log("Success:", data.message);

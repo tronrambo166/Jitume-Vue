@@ -1161,7 +1161,7 @@ public function serviceReply(Request $request){
       'service_id' => null,
       'service_owner_id' => null,
       'msg' => $request->msg,
-      'to_id' => $request->from_id,
+      'to_id' => $request->to_id,
       'from_id' => Auth::id()
     ]); 
     }
