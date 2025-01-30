@@ -150,6 +150,7 @@
 .noUi-target {
     height: 8px;
     background: #998787bd !important;
+    height: 10px !important;
 }
 
 .noUi-base {
@@ -170,13 +171,14 @@
 
 .noUi-connect {
     background: #15803d !important;
+     height: 10px !important;
 }
 
 .noUi-horizontal .noUi-handle {
-    width: 14px;
-    height: 16px;
-    right: -12px;
-    top: -6px;
+    width: 14px !important;
+    height: 16px !important;
+    right: -12px !important;
+    top: -4px !important;
     border-radius: 50%;
     background: #15803d;
     box-shadow: none !important;

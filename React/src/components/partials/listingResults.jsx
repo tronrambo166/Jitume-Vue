@@ -16,6 +16,9 @@ import { decode as base64_decode, encode as base64_encode } from "base-64";
 import ListingSearch from "../partials/ListingSearch";
 // import noUiSlider from 'nouislider';
 // import 'nouislider/dist/nouislider.css';
+import noUiSlider from "nouislider";
+import "nouislider/dist/nouislider.css";
+
 import CardsPagination from "./CardsPagination";
 import Search from "../partials/ListingSearch";
 import BackBtn from "./BackBtn";
