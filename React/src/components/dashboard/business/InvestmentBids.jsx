@@ -47,7 +47,6 @@ function InvestmentBids() {
 
     // Helper function to handle bid actions
     const handleBidAction = (reject) => {
-        // Set loading states based on the action
         if (reject === 0) {
             setLoadingAccept(true);
         } else {
@@ -62,25 +61,37 @@ function InvestmentBids() {
         axiosClient
             .post("bidsAccepted", payload)
             .then(({ data }) => {
-                console.log(data); // Log response data
-                showAlert("success", data.message); // Show success alert
+                showAlert("success", data.message);
+
+                // Optimistic update: remove the selected bids from 'bids' or move to 'activeBids'
+                if (reject === 0) {
+                    setBids((prevBids) =>
+                        prevBids.filter((bid) => !selectedBids.includes(bid.id))
+                    );
+                    setActiveBids((prevActiveBids) => [
+                        ...prevActiveBids,
+                        ...bids.filter((bid) => selectedBids.includes(bid.id)),
+                    ]);
+                } else {
+                    setBids((prevBids) =>
+                        prevBids.filter((bid) => !selectedBids.includes(bid.id))
+                    );
+                    setUnderReview((prevUnderReview) => [
+                        ...prevUnderReview,
+                        ...bids.filter((bid) => selectedBids.includes(bid.id)),
+                    ]);
+                }
             })
             .catch((err) => {
-                    const response = err.response;
-                    console.log(err); // Log validation errors
-                    showAlert("error", response.data.message); // Show validation errors
-
+                const response = err.response;
+                showAlert("error", response.data.message);
             })
             .finally(() => {
-                // Reset loading states
-                if (reject === 0) {
-                    setLoadingAccept(false);
-                } else {
-                    setLoadingReject(false);
-                }
-                //PendingBids();
+                setLoadingAccept(false);
+                setLoadingReject(false);
             });
     };
+
 
     const handleCheckboxChange = (id) => {
         setSelectedBids((prevSelected) => {
@@ -376,7 +387,7 @@ function InvestmentBids() {
     };
 
     return (
-        <div className="container mx-auto p-0 sm:p-6 mt-12 sm:mt-0">
+        <div className="bg-white shadow-md mt-12 p-12 sm:mt-0 rounded-xl w-full px-0 sm:px-4">
             <div>
                 {isLightboxOpen && (
                     <LightBoxPopup

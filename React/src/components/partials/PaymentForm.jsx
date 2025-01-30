@@ -626,7 +626,7 @@ const PaymentForm = () => {
                                                 <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
                                                     <InputMask
                                                         mask="9999 9999 9999 9999"
-                                                        // maskChar=""
+                                                        maskChar=""
                                                         name="cc-number"
                                                         autoComplete="cc-number"
                                                         inputMode="numeric"

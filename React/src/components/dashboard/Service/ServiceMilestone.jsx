@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axiosClient from "../../../axiosClient";
 import { ClipLoader } from "react-spinners"; // Spinner from a React library
 import { useAlert } from "../../partials/AlertContext";
+import { BarLoader } from "react-spinners";
 
 function ServiceMilestone() {
     const [milestones, setMilestones] = useState([]);
@@ -13,23 +14,30 @@ function ServiceMilestone() {
     const [bookerName, setbookerName] = useState("");
     const [loading, setLoading] = useState(false); // Spinner state
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
-
+    const [getloading, setGetLoading] = useState(false); // Spinner state
     useEffect(() => {
         const getMilestones = (id = "all") => {
+            setGetLoading(true);
             setLoading(true); // Show spinner
             axiosClient
                 .get(`/business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf4F_-${id}`)
                 .then(({ data }) => {
+            setGetLoading(false);
+
                     setBusiness(data.business);
                     setMilestones([]); // Reset milestones when changing the service
                     setCustomers([]); // Reset customers when switching services
                     setSelectedCustomer("All"); // Reset customer dropdown
                 })
                 .catch((err) => {
+            setGetLoading(false);
+
                     console.log("Error loading data", err);
                     showAlert("error", "Failed to load business data"); // Use showAlert for error message
                 })
                 .finally(() => {
+            setGetLoading(false);
+
                     setLoading(false); // Hide spinner
                 });
         };
@@ -121,136 +129,149 @@ function ServiceMilestone() {
     };
 
     return (
-        <div className="relative container mx-auto p-0 sm:p-6 mt-12 sm:mt-0">
+        <div className="bg-white shadow-md mt-12 p-12 sm:mt-0 rounded-xl w-full px-0 sm:px-4">
             <h3 className="text-left text-2xl font-semibold mb-6">
                 Service Milestones
             </h3>
-            {/* Dropdowns for selecting service and customer */}
-            <div className="mb-4 flex gap-2">
-                <select
-                    value={S_id}
-                    onChange={getBookers}
-                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green"
-                >
-                    <option value="" disabled>
-                        Select Service
-                    </option>
-                    {business.map((business) => (
-                        <option key={business.id} value={business.id}>
-                            {business.name}
-                        </option>
-                    ))}
-                </select>
+            {getloading ? (
+                <div className="flex justify-start mb-4">
+                    <BarLoader color="#38a169" width={150} />
+                </div>
+            ) : (
+                <>
+                    {" "}
+                    {/* Dropdowns for selecting service and customer */}
+                    <div className="mb-4 flex gap-2">
+                        <select
+                            value={S_id}
+                            onChange={getBookers}
+                            className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green"
+                        >
+                            <option value="" disabled>
+                                Select Service
+                            </option>
+                            {business.map((business) => (
+                                <option key={business.id} value={business.id}>
+                                    {business.name}
+                                </option>
+                            ))}
+                        </select>
 
-                <select
-                    value={selectedCustomer}
-                    onChange={handleCustomerChange}
-                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green"
-                    disabled={customers.length === 0} // Disable if no customers to select
-                >
-                    <option value="All">Select Customer</option>
-                    {customers.map((customer) => (
-                        <option key={customer.id} value={customer.id}>
-                            {customer.name}
-                        </option>
-                    ))}
-                </select>
+                        <select
+                            value={selectedCustomer}
+                            onChange={handleCustomerChange}
+                            className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green"
+                            disabled={customers.length === 0} // Disable if no customers to select
+                        >
+                            <option value="All">Select Customer</option>
+                            {customers.map((customer) => (
+                                <option key={customer.id} value={customer.id}>
+                                    {customer.name}
+                                </option>
+                            ))}
+                        </select>
 
-                {/* Find button with a spinner inside */}
-                <button
-                    type="submit"
-                    className="btn-primary py-2 text-white rounded-md px-6 flex items-center"
-                    disabled={loading} // Disable button while loading
-                >
-                    {loading ? (
-                        <ClipLoader
-                            color="#ffffff"
-                            loading={loading}
-                            size={20}
-                        />
-                    ) : (
-                        "Find"
-                    )}
-                </button>
-            </div>
-            <div className="overflow-x-auto shadow-md sm:rounded-lg">
-                <table className="min-w-full bg-white">
-                    <thead className="bg-gray-100 border-b">
-                        <tr className="text-gray-500">
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px] w-2/5">
-                                Milestone Name
-                            </th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px] w-1/5">
-                                Service
-                            </th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px] w-1/5">
-                                Customer
-                            </th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px] w-1/6">
-                                Amount
-                            </th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-[12px] w-1/6">
-                                Status
-                            </th>
-                            <th className="text-center py-3 px-4 uppercase font-semibold text-[12px] w-1/6">
-                                Action
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {milestones.map((milestone) => (
-                            <tr
-                                key={milestone.id}
-                                className="text-gray-600 hover:bg-gray-50 transition-colors"
-                            >
-                                <td className="py-3 px-4 border-b w-2/5">
-                                    {milestone.title}
-                                </td>
-                                <td className="py-3 px-4 border-b w-1/5">
-                                    {S_name}
-                                </td>
-                                <td className="py-3 px-4 border-b w-1/5">
-                                    {bookerName}
-                                </td>
-                                <td className="py-3 px-4 border-b w-1/6">
-                                    ${milestone.amount.toLocaleString()}
-                                </td>
-                                <td className="py-3 px-4 border-b w-1/6">
-                                    <select
-                                        value={milestone.status}
-                                        onChange={(e) =>
-                                            handleSet(
-                                                milestone.id,
-                                                e.target.value
-                                            )
-                                        }
-                                        className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green"
+                        {/* Find button with a spinner inside */}
+                        <button
+                            type="submit"
+                            className="btn-primary py-2 text-white rounded-md px-6 flex items-center"
+                            disabled={loading} // Disable button while loading
+                        >
+                            {loading ? (
+                                <ClipLoader
+                                    color="#ffffff"
+                                    loading={loading}
+                                    size={20}
+                                />
+                            ) : (
+                                "Find"
+                            )}
+                        </button>
+                    </div>
+                    <div className="overflow-x-auto shadow-md sm:rounded-lg">
+                        <table className="min-w-full bg-white">
+                            <thead className="bg-gray-100 border-b">
+                                <tr className="text-gray-500">
+                                    <th className="text-left py-3 px-4 uppercase font-semibold text-[12px] w-2/5">
+                                        Milestone Name
+                                    </th>
+                                    <th className="text-left py-3 px-4 uppercase font-semibold text-[12px] w-1/5">
+                                        Service
+                                    </th>
+                                    <th className="text-left py-3 px-4 uppercase font-semibold text-[12px] w-1/5">
+                                        Customer
+                                    </th>
+                                    <th className="text-left py-3 px-4 uppercase font-semibold text-[12px] w-1/6">
+                                        Amount
+                                    </th>
+                                    <th className="text-left py-3 px-4 uppercase font-semibold text-[12px] w-1/6">
+                                        Status
+                                    </th>
+                                    <th className="text-center py-3 px-4 uppercase font-semibold text-[12px] w-1/6">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {milestones.map((milestone) => (
+                                    <tr
+                                        key={milestone.id}
+                                        className="text-gray-600 hover:bg-gray-50 transition-colors"
                                     >
-                                        <option value="To Do">To Do</option>
-                                        <option value="In Progress">
-                                            In Progress
-                                        </option>
-                                        <option value="Done">Done</option>
-                                    </select>
-                                </td>
-                                <td className="py-3 px-4 border-b text-center w-1/6">
-                                    <button
-                                        onClick={() =>
-                                            handleSet(
-                                                milestone.id,
-                                                milestone.status
-                                            )
-                                        }
-                                        className="border border-black text-black px-4 py-2 rounded-lg"
-                                    >
-                                        Update
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                                        <td className="py-3 px-4 border-b w-2/5">
+                                            {milestone.title}
+                                        </td>
+                                        <td className="py-3 px-4 border-b w-1/5">
+                                            {S_name}
+                                        </td>
+                                        <td className="py-3 px-4 border-b w-1/5">
+                                            {bookerName}
+                                        </td>
+                                        <td className="py-3 px-4 border-b w-1/6">
+                                            ${milestone.amount.toLocaleString()}
+                                        </td>
+                                        <td className="py-3 px-4 border-b w-1/6">
+                                            <select
+                                                value={milestone.status}
+                                                onChange={(e) =>
+                                                    handleSet(
+                                                        milestone.id,
+                                                        e.target.value
+                                                    )
+                                                }
+                                                className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green"
+                                            >
+                                                <option value="To Do">
+                                                    To Do
+                                                </option>
+                                                <option value="In Progress">
+                                                    In Progress
+                                                </option>
+                                                <option value="Done">
+                                                    Done
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td className="py-3 px-4 border-b text-center w-1/6">
+                                            <button
+                                                onClick={() =>
+                                                    handleSet(
+                                                        milestone.id,
+                                                        milestone.status
+                                                    )
+                                                }
+                                                className="border border-black text-black px-4 py-2 rounded-lg"
+                                            >
+                                                Update
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </>
+            )}
         </div>
     );
 }

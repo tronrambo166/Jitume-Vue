@@ -79,7 +79,7 @@ const MyInvest = () => {
                     .then(({ data }) => {
                         setMyInvest(data.pending);
                         setActiveInvest(data.active);
-                        console.log("MyINvest", data);
+                        console.log("myInvestmen both active and pending", data);
                         //setName(data.user_name);
                         //SetInvestname(data.results[0].name);
                         //setUserId(data.results[0].user_id);
@@ -93,6 +93,7 @@ const MyInvest = () => {
         };
         getInvestments();
     }, []);
+    
 
     // Cance logic here
     const handleCancel = (id) => {
@@ -142,9 +143,12 @@ const MyInvest = () => {
                 `,
             buttons: {
                 confirm: function () {
+                    setLoading(true);
+
                     axiosClient
                         .get("business/withdraw_investment/" + bid_id) //This is a test api it doesnt work
                         .then(({ data }) => {
+                            setLoading(false);
                             if (data.status == 200) 
                                 showAlert("success", data.message);
                             else 
@@ -152,6 +156,7 @@ const MyInvest = () => {
                             console.log(data); // Log response data
                         })
                         .catch((err) => {
+                            setLoading(false);
                             const response = err.response;
                             console.log(err);
                         });
@@ -447,8 +452,10 @@ const MyInvest = () => {
         return true; // Default: show all investments
     });
 
-    console.log(filteredInvestments);
-    console.log("second one", filteredInvestments2);
+    console.log("pending we have :", filteredInvestments);
+
+    console.log("active we have :", filteredInvestments2);
+
 
     // Map the filtered investments to the table data format
     const tableData = filteredInvestments.map((item) => ({

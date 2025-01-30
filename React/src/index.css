@@ -650,29 +650,12 @@ select::-ms-expand {
 .dynamic-max-width {
     max-width: none;
 }
+/* Apply max-w-[1010px] at zoom levels between 130% and 180% */
 
-/* Apply max-w-[1010px] at 150% zoom (DPR 1.5) */
-@media screen and (min-resolution: 144dpi), /* For Windows browsers */
-    screen and (min-resolution: 1.5dppx) {  /* For macOS and others */
+/* For 130% to 180% zoom on Windows and macOS */
+@media screen and (min-resolution: 123dpi) and (max-resolution: 172dpi), /* For Windows browsers */
+    screen and (min-resolution: 1.3dppx) and (max-resolution: 1.8dppx) {  /* For macOS and others */
     .dynamic-max-width {
         max-width: 1000px;
     }
 }
-
-/* Apply max-w-[1010px] at 130% zoom (DPR 1.3) */
-@media screen and (min-resolution: 123dpi), /* For Windows browsers */
-    screen and (min-resolution: 1.3dppx) {  /* For macOS and others */
-    .dynamic-max-width {
-        max-width: 1000px;
-    }
-}
-
-/* Apply max-w-[1010px] at 140% zoom (DPR 1.4) */
-@media screen and (min-resolution: 132dpi), /* For Windows browsers */
-    screen and (min-resolution: 1.4dppx) {  /* For macOS and others */
-    .dynamic-max-width {
-        max-width: 1000px;
-    }
-}
-/* Target the specific scrollbar within the component */
-

@@ -49,6 +49,32 @@ const Subscribepage = () => {
         },
     };
 
+
+
+    // console.log("ziiamount", amount);    
+    console.log("ziiplan", plan);
+
+    useEffect(() => {
+        // Ensure the default selection is Gold Monthly when the page loads or when user get to the page so Manu below here i created a use effect to set the default selection
+        setSelectedPackage("29.99");
+        setPlan("gold");
+        setDays(30);
+        setAmount("29.99");
+    }, []);
+
+    useEffect(() => {
+        if (plan && days === 7 && amount === 0) {
+            Checkout();
+        }
+    }, [plan, days, amount]); // This ensures Checkout() is called once the states are updated.
+    // This function handles the package selection
+
+
+
+
+
+
+
     const handlePackageSelect = (pkg) => {
         setSelectedPackage(pkg);
         setAmount(pkg);
@@ -78,15 +104,15 @@ const Subscribepage = () => {
             setDays(365);
         }
 
-        if (
-            pkg == "platinum-trial" ||
-            pkg == "gold-trial" ||
-            pkg == "silver-trial"
-        ) {
-            setPlan(pkg);
-            setDays(7);
-            setAmount(0);
-        }
+       if (
+           pkg === "platinum-trial" ||
+           pkg === "gold-trial" ||
+           pkg === "silver-trial"
+       ) {
+           setPlan(pkg);
+           setDays(7);
+           setAmount(0);
+       }
     };
 
     const handleFrequencyChange = (freq) => {
@@ -108,7 +134,18 @@ const Subscribepage = () => {
 
                 $.confirm({
                     title: false,
-                    content: `<img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo"><div>Please Confirm Your Subscription By Clicking  Confirm</div> `,
+                    content: `<img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
+          <div style="margin-top: 10px; text-align: left;">
+           <p>
+  <strong>Subscription Plan:</strong>
+  <span style="font-weight: bold; color: #15803D;">${plan.toUpperCase()}</span>
+</p>
+
+              <p><strong>Duration:</strong> ${days} days<span style="font-size: 12px;padding-bottom: 5px; color: #888; margin-left: 5px;"> (${frequency})</span></p>
+              <p><strong>Amount:</strong> $ <span style="font-weight: bold; color: #15803D;">${amount}</span}</p>
+              
+              <p>Please confirm your subscription by clicking <strong>Confirm</strong> below to proceed.</p>
+          </div>`,
                     buttons: {
                         confirm: function () {
                             window.location.href =
@@ -282,7 +319,7 @@ const Subscribepage = () => {
                                         handlePackageSelect("silver-trial");
                                     }}
                                     className={`w-full border rounded-md py-2 
-    ${plan === "silver" ? "bg-white text-gray-700" : "bg-[#15803D] text-white"} 
+    ${plan === "silver" ? "bg-white text-gray-700" : "bg-[#15803D] text-white  hover:btn-primary"} 
     ${frequency === "annual" ? "cursor-not-allowed" : "hover:bg-green-700"}`}
                                     disabled={frequency === "annual"}
                                 >
@@ -349,7 +386,7 @@ const Subscribepage = () => {
                                         handlePackageSelect("gold-trial");
                                     }}
                                     className={`w-full border rounded-md py-2 
-    ${plan === "gold" ? "bg-white text-gray-700" : "bg-green-600 text-white"} 
+    ${plan === "gold" ? "bg-white text-gray-700" : "bg-[#15803D] text-white hover:btn-primary"} 
     ${frequency === "annual" ? "cursor-not-allowed" : "hover:bg-green-700"}`}
                                     disabled={frequency === "annual"}
                                 >
@@ -423,7 +460,7 @@ const Subscribepage = () => {
     ${
         plan === "platinum"
             ? "bg-white text-gray-700"
-            : "bg-green-600 text-white"
+            : "bg-[#15803D] text-white hover:btn-primary"
     } 
     ${frequency === "annual" ? "cursor-not-allowed" : "hover:bg-green-700"}`}
                                     disabled={frequency === "annual"}

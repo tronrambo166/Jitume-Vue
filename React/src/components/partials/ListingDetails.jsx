@@ -768,7 +768,7 @@ const ListingDetails = ({ onClose }) => {
                                                         Invested In.
                                                     </p>
                                                 </div>
-                                            ) : isInvestor? (
+                                            ) : isInvestor ? (
                                                 <a
                                                     onClick={handleOpen}
                                                     className="bg-green hover:bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
@@ -776,7 +776,7 @@ const ListingDetails = ({ onClose }) => {
                                                     <FaLock className="mr-2" />
                                                     Unlock To Invest
                                                 </a>
-                                            ):(
+                                            ) : (
                                                 <a
                                                     onClick={handleOpen}
                                                     className="bg-green hover:bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
@@ -1032,7 +1032,10 @@ const ListingDetails = ({ onClose }) => {
             {!conv && (
                 <div
                     className={`fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50 ${
-                        !isVisible ? "hidden" : ""
+                        !isVisible ||
+                        details.investment_needed === details.amount_collected
+                            ? "hidden"
+                            : ""
                     }`}
                 >
                     <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
@@ -1269,7 +1272,11 @@ const ListingDetails = ({ onClose }) => {
                                 </div>
                             ) : null}
 
-                            {token && conv && amount_r && running && isInvestor ? (
+                            {token &&
+                            conv &&
+                            amount_r &&
+                            running &&
+                            isInvestor ? (
                                 <>
                                     <div className="w-full md:w-1/3 bg-white border border-gray-300 rounded-lg p-6 flex flex-col justify-between">
                                         <h2 className="text-xl font-semibold text-[#334155] mb-4">
@@ -1429,7 +1436,8 @@ const ListingDetails = ({ onClose }) => {
                                         ) : !isInvestor ? (
                                             <div className="w-full text-center p-4">
                                                 <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
-                                                    You Need To Create Investor Account To Invest.
+                                                    You Need To Create Investor
+                                                    Account To Invest.
                                                 </p>
                                             </div>
                                         ) : (
