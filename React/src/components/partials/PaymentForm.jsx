@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, useSearchParams } from "react-router-dom";
 import { FaCreditCard, FaHome } from "react-icons/fa";
 import axiosClient from "../../axiosClient";
 import { ClipLoader } from "react-spinners";
@@ -18,6 +18,7 @@ import InputMask from "react-input-mask";
 
 const PaymentForm = () => {
     const location = useLocation();
+    const [searchParams] = useSearchParams();
     const [selectedPayment, setSelectedPayment] = useState("card");
     const [loading, setLoading] = useState(false); // Loader state
     // Function to show success toast
@@ -123,6 +124,8 @@ const PaymentForm = () => {
     };
 
     const cancellationDate = getCancellationDate();
+    const string = searchParams.get("string");
+
     // Function to get the cancellation date
 
     // GETTING Parameters
@@ -131,6 +134,16 @@ const PaymentForm = () => {
     const { purpose } = location.state || { purpose: btoa(1) };
     const { percent } = location.state || { percent: btoa(1) };
     //console.log(percent);
+
+    //Remaining Payment Link
+    // if(string != null){
+    //     var original = string.replace('A','=',string);
+    //     //original = base64_decode(original);
+    //     alert(original);
+    // }
+    // else{
+
+    // }
 
     const purpos = base64_decode(purpose);
     var p = "";
@@ -300,13 +313,15 @@ const PaymentForm = () => {
     if (purpos == "s_mile") partiesInfo = "/partiesServiceMile/";
     else partiesInfo = "/partiesInfo/";
     useEffect(() => {
-        // $(".card-number").mask("9999 9999 9999 9999");
-        axiosClient.get(partiesInfo + atob(listing_id)).then(({ data }) => {
+
+            // $(".card-number").mask("9999 9999 9999 9999");
+            axiosClient.get(partiesInfo + atob(listing_id)).then(({ data }) => {
             setUser(data.user);
             setOwner(data.owner);
-            //console.log(owner);
             //console.log(data);
-        });
+            });
+            
+
     }, []);
 
     //MPESA

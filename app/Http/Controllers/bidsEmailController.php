@@ -131,8 +131,8 @@ public function bidsAccepted(Request $request)
          }
 
          //TRANSFERRING FUNDS
-         if($bid->type == 'Monetary' && $bid->stripe_charge_id)
-         {
+         // if($bid->type == 'Monetary' && $bid->stripe_charge_id)
+         // {
                 //Split
                     // $curr='USD'; //$request->currency; 
                     // $tranfer = $this->Client->transfers->create ([ 
@@ -143,10 +143,20 @@ public function bidsAccepted(Request $request)
                     //         'destination' => $owner->connect_id
                     // ]);
                 //Stripe
-         }
+         //}
          //TRANSFERRING FUNDS
+            //Thresold Check
+            if($list->threshold_met == 1){
+                $threshold = 1;
+                //Mail to all invsts
+            }
+            else{
+                $mail_name = 0;
+            }
+
+
             if($bid->type == 'Monetary') 
-              $status ='Confirmed'; else $status ='under_verification';
+              $status ='Accepted'; else $status ='under_verification';
 
               $accepted =  AcceptedBids::create([
               'bid_id' => $id,
@@ -174,12 +184,15 @@ public function bidsAccepted(Request $request)
                 'invest_count' => $invest_count
               ]);
 
+
             //Mail
                 $info=[ 'business_name'=>$list->name, 'bid_id'=>
-                base64_encode($accepted->id), 'type' => $bid->type ];
+                base64_encode($accepted->id), 'type' => $bid->type, 
+                'amount' => base64_encode($bid->amount), 'threshold' => $threshold ];
+
                 $user['to'] = $investor_mail; //'tottenham266@gmail.com'; //
                  if($investor)
-                    Mail::send('bids.accepted', $info, function($msg) use ($user){
+                    Mail::send('bids.initially_accepted' , $info, function($msg) use ($user){
                      $msg->to($user['to']);
                      $msg->subject('Bid accepted!');
                  });

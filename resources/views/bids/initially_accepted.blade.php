@@ -38,7 +38,7 @@
         <h1
             style="font-size: 2rem; font-weight: 700; margin-top: 1rem"
         >
-            Bid Confirmed!
+            Bid Accepted!
         </h1>
     </div>
 
@@ -57,24 +57,31 @@
             "
         >
             Hi, &nbsp; Your bid to invest in the {{$business_name}} has been
-            Confirmed.
+            accepted.
         </p>
-        <p
-            class="email-message"
-            style="
-                font-size: 12px;
-                padding-top: 10px;
-                line-height: 1.8;
-                margin-bottom: 30px;
-            "
-        >
-            @if($type == 'Monetary') Proceed to progress with the milestones
-            work?
-        </p>
-        <div class="flex gap-3">
+
+            @if($type == 'Monetary')
+            @if($threshold == 1)
+
+            <div class="flex gap-3">
+            <p style="font-weight:bold;">Next Steps:</p>
+            <p style="font-weight:bold;">You may now complete the remainder 75% of the payment to proceed to the first
+            milestone via the links below:</p>
+
+            @php 
+            $p = base64_encode('_P_');
+            $i = base64_encode('_B_');
+            $uniqid = hexdec(uniqid());
+            $uniqid = base64_encode($uniqid);
+            $bid_id = base64_encode($bid_id);
+            $amount = base64_encode($amount);
+
+            $encoded_id_amount = $uniqid.$p.$amount.$i.$bid_id; 
+            $encoded_id_amount = str_replace('=','A',$encoded_id_amount);
+            @endphp
             <a
                 target="_blank"
-                href="<?php echo config('app.api_url');?>agreeToProgressWithMilestone/{{$bid_id}}"
+                href="<?php echo config('app.api_url');?>checkout/?{{$encoded_id_amount}}"
                  style="
                         color: #2f9f1f;
                         border: 1px solid #2f9f1f;
@@ -91,33 +98,16 @@
                     onmouseout="this.style.backgroundColor=''; this.style.color='#2f9f1f';"
                     onfocus="this.style.boxShadow='0 0 0 4px rgba(72, 187, 120, 0.5)';"
                     onblur="this.style.boxShadow='';"
-                    >Ok</a
+                    >Pay</a
             >
-            <!-- <a
+            <a
                 href="#"
                 class="text-red-700 hover:text-white border hover:no-underline border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-900 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-800"
-                >Cancel</a
-            > -->
-        </div>
-
-        <p
-            class="email-message"
-            style="
-                font-size: 12px;
-                padding-top: 10px;
-                line-height: 1.8;
-                margin-bottom: 30px;
-            "
-        >
-            If you require a project manager, please
-            <a
-                target="_blank"
-                href="<?php echo config('app.app_url');?>dashboard?b_idToVWPM={{$bid_id}}"
-                >click here</a
+                >Cancel Bid</a
             >
-            (Please note that investors with assets must have a project
-            manager).
-        </p>
+        </div>
+        @endif
+
 
         @else Please Request a Project Manager to Proceed with this Investment
         (Please note that investor with assets must have a project manager)
@@ -141,7 +131,7 @@
             >
 
             <a href="<?php echo config('app.api_url');?>CancelAssetBid/{{$bid_id}}/confirm" 
-			 style="
+             style="
                         color: #e11d48;
                         border: 1px solid #e11d48;
                         padding: 0.625rem 1.25rem;
