@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -39,6 +39,7 @@ const ListingDetails = ({ onClose }) => {
     const [isVisible, setIsVisible] = useState(false);
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
     const handleClose = () => {
         setIsVisible(false);
@@ -396,6 +397,28 @@ const ListingDetails = ({ onClose }) => {
     //CORE METHODS
     let url = "";
     useEffect(() => {
+
+    //Remaining Payment Link
+        const string = searchParams.get("string");
+        if(string != null){
+            var original = string;
+            original = base64_decode(base64_decode(original));
+            const array = original.split("_0A_");
+            const array2 = array[1].split("_X1_");
+            const enc_amount = base64_decode(base64_decode(base64_decode(array2[0])));
+            const enc_bid_id = base64_decode(base64_decode(base64_decode(array2[1])));
+                navigate("/checkout", {
+                    state: {
+                        amount: btoa(enc_amount*0.75),
+                        listing_id: btoa(enc_bid_id),
+                        purpose: btoa('awaiting_payment'),
+                        percent: "",
+                    },
+                });
+        }
+    //Remaining Payment Link
+        
+
         if (!token) $("#unlockButton").removeClass("hidden");
 
         const getDetails = () => {

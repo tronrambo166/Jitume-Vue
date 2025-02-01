@@ -61,7 +61,6 @@
         </p>
 
             @if($type == 'Monetary')
-            @if($threshold == 1)
 
             <div class="flex gap-3">
             <p style="font-weight:bold;">Next Steps:</p>
@@ -69,19 +68,18 @@
             milestone via the links below:</p>
 
             @php 
-            $p = base64_encode('_P_');
-            $i = base64_encode('_B_');
-            $uniqid = hexdec(uniqid());
-            $uniqid = base64_encode($uniqid);
-            $bid_id = base64_encode($bid_id);
-            $amount = base64_encode($amount);
-
+            $listing_id = base64_encode(base64_encode($id));
+            $p = '_0A_';
+            $i = '_X1_';
+            $amount = base64_encode(base64_encode($amount));
+            $bid_id = base64_encode(base64_encode($bid_id));
+            $uniqid = base64_encode(hexdec(uniqid()));
             $encoded_id_amount = $uniqid.$p.$amount.$i.$bid_id; 
-            $encoded_id_amount = str_replace('=','A',$encoded_id_amount);
+            $encoded_id_amount = base64_encode(base64_encode($encoded_id_amount));
             @endphp
             <a
                 target="_blank"
-                href="<?php echo config('app.api_url');?>checkout/?{{$encoded_id_amount}}"
+                href="<?php echo config('app.app_url');?>listing/{{$listing_id}}?string={{$encoded_id_amount}}"
                  style="
                         color: #2f9f1f;
                         border: 1px solid #2f9f1f;
@@ -106,7 +104,6 @@
                 >Cancel Bid</a
             >
         </div>
-        @endif
 
 
         @else Please Request a Project Manager to Proceed with this Investment

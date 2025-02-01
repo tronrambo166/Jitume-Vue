@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
-import { useParams, useNavigate, Link, useSearchParams } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { FaCreditCard, FaHome } from "react-icons/fa";
 import axiosClient from "../../axiosClient";
 import { ClipLoader } from "react-spinners";
@@ -18,7 +18,7 @@ import InputMask from "react-input-mask";
 
 const PaymentForm = () => {
     const location = useLocation();
-    const [searchParams] = useSearchParams();
+    //const [searchParams] = useSearchParams();
     const [selectedPayment, setSelectedPayment] = useState("card");
     const [loading, setLoading] = useState(false); // Loader state
     // Function to show success toast
@@ -124,7 +124,7 @@ const PaymentForm = () => {
     };
 
     const cancellationDate = getCancellationDate();
-    const string = searchParams.get("string");
+    
 
     // Function to get the cancellation date
 
@@ -134,16 +134,6 @@ const PaymentForm = () => {
     const { purpose } = location.state || { purpose: btoa(1) };
     const { percent } = location.state || { percent: btoa(1) };
     //console.log(percent);
-
-    //Remaining Payment Link
-    // if(string != null){
-    //     var original = string.replace('A','=',string);
-    //     //original = base64_decode(original);
-    //     alert(original);
-    // }
-    // else{
-
-    // }
 
     const purpos = base64_decode(purpose);
     var p = "";
@@ -159,6 +149,8 @@ const PaymentForm = () => {
             parseFloat(temp_price) + parseFloat(0.05 * temp_price); // Fixed price value
     } else if (purpos === "s_mile") {
         p = "Pay Service milestone";
+    } else if (purpos === "awaiting_payment") {
+        p = "Remaining Bid Payment";
     } else {
         p = "Small Fee To Unlock Business";
     }
@@ -215,6 +207,51 @@ const PaymentForm = () => {
             } else if (purpos == "bids") {
                 axiosClient
                     .post("/bidCommits", payload)
+                    .then(({ data }) => {
+                        if (data.status == 200) {
+                            $.confirm({
+                                title: "Payment Successful",
+                                content:
+                                    "Go to Dashboard to see investment status.",
+                                buttons: {
+                                    yes: function () {
+                                        navigate("/dashboard");
+                                    },
+                                    home: function () {
+                                        navigate("/");
+                                    },
+                                    cancel: function () {
+                                        $.alert("Canceled!");
+                                    },
+                                },
+                            });
+                        }
+                        if (data.status == 400)
+                            // alert(data.message);
+                            showErrorToast(data.message);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        setLoading(false);
+                        const response = err.response;
+                        showErrorToast(response.data.message);
+                        if (response && response.status === 422) {
+                            console.log(response.data.errors);
+                            showErrorToast(response.data.errors);
+                        }
+                    })
+                    .finally(() => {
+                        setLoading(false); // Stop loading spinner
+                    });
+            } else if (purpos == "awaiting_payment") {
+                const payloadAP = {
+                    bid_id: atob(listing_id),
+                    amount: price,
+                    amountOriginal: amount_real,
+                    stripeToken: $("#stripeToken").val(),
+                };
+                axiosClient
+                    .post("/bidCommitsAwaiting", payloadAP)
                     .then(({ data }) => {
                         if (data.status == 200) {
                             $.confirm({

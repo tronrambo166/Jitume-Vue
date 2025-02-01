@@ -42,6 +42,8 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('bidCommitsEQP', [bidsEmailController::class, 'bidCommitsEQP'])->name('bidCommitsEQP');
     Route::get('bidCommits/{amount}/{business_id}/{percent}', [checkoutController::class, 'bidCommitsForm'])->name('bidCommits');
     Route::post('bidCommits', [checkoutController::class, 'bidCommits'])->name('bidCommits');
+    Route::post('bidCommitsAwaiting', [checkoutController::class, 'bidCommitsAwaiting']);
+    
     
     Route::post('bookingAccepted', [bidsEmailController::class, 'bookingAccepted'])->name('bookingAccepted');
     

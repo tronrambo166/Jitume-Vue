@@ -145,18 +145,9 @@ public function bidsAccepted(Request $request)
                 //Stripe
          //}
          //TRANSFERRING FUNDS
-            //Thresold Check
-            if($list->threshold_met == 1){
-                $threshold = 1;
-                //Mail to all invsts
-            }
-            else{
-                $mail_name = 0;
-            }
-
 
             if($bid->type == 'Monetary') 
-              $status ='Accepted'; else $status ='under_verification';
+              $status ='awaiting_payment'; else $status ='under_verification';
 
               $accepted =  AcceptedBids::create([
               'bid_id' => $id,
@@ -188,7 +179,7 @@ public function bidsAccepted(Request $request)
             //Mail
                 $info=[ 'business_name'=>$list->name, 'bid_id'=>
                 base64_encode($accepted->id), 'type' => $bid->type, 
-                'amount' => base64_encode($bid->amount), 'threshold' => $threshold ];
+                'amount' => base64_encode($bid->amount), 'id' => $list->id ];
 
                 $user['to'] = $investor_mail; //'tottenham266@gmail.com'; //
                  if($investor)

@@ -773,11 +773,7 @@ public function bidCommits(Request $request){
         $investor = User::select('email','id')->where('id',$investor_id)->first();
     }
     else {
-        if(Session::has('investor_email')){   
-        $mail = Session::get('investor_email');
-        $investor = User::where('email',$mail)->first();
-        $investor_id = $investor->id;
-      }
+        return response()->json(['message' => 'Unauthorized!','status' => 401 ]);
     }
 
  try{
@@ -901,9 +897,88 @@ if($bids){
     //return redirect("/#/listingDetails/".$business_id);
          }
 
-
 }
 
+
+
+public function bidCommitsAwaiting(Request $request){
+   if(Auth::check()){
+        $investor_id = Auth::id();
+        $investor = User::select('email','id')->where('id',$investor_id)->first();
+    }
+    else {
+        return response()->json(['message' => 'Unauthorized!','status' => 401 ]);
+    }
+
+    try{
+        //Stripe
+        $curr='USD'; //$request->currency;
+        $amount= $request->amount; 
+        $amountReal= $request->amountOriginal; //$request->amountReal;
+
+        $transferAmount=round($amountReal,2);
+        $amount = round($amount,2);
+
+        $this->validate($request, [
+            'stripeToken' => ['required', 'string']
+        ]);
+        $charge = $this->Client->charges->create ([ 
+                //"billing_address_collection": null,
+                "amount" => $amount*100, //100 * 100,
+                "currency" => $curr,
+                "source" => $request->stripeToken,
+                "description" => "This payment is test purpose only!"
+        ]);
+        //Stripe
+
+        //UPDATE DATABASE
+        $bid_id = $request->bid_id;
+        $bid = AcceptedBids::select('id','stripe_charge_id','business_id','type')
+        ->where('id',$bid_id)->first();
+        
+        $Business = listing::select('name','user_id')->where('id',$bid->business_id)->first();
+        $owner = User::select('email')->where('id', $Business->user_id)->first();
+
+        $stripe_charge_id = $bid->stripe_charge_id.','.$charge->id;
+        $amountUpdate = AcceptedBids::where('id',$bid_id)->update([
+          'status' => 'Confirmed',
+          'stripe_charge_id' => $stripe_charge_id
+        ]);
+
+        //Email & Notifications
+        //Notification
+         $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+         $addNoti = Notifications::create([
+            'date' => $date,
+            'receiver_id' => $investor->id,
+            'customer_id' =>$Business->user_id,
+            'text' => 'Your bid to business '.$Business->name.' is confirmed!',
+            'link' => '/',
+            'type' => 'business',
+
+          ]);
+
+        //Mail
+        $info=[ 'business_name'=>$Business->name, 'bid_id'=>
+            base64_encode($bid_id), 'type' => $bid->type ];
+
+            $user['to'] = $investor->email; //'tottenham266@gmail.com'; //
+             if($investor)
+                Mail::send('bids.accepted' , $info, function($msg) use ($user){
+                 $msg->to($user['to']);
+                 $msg->subject('Bid Confirmed!');
+             });
+        //Mail
+
+        if($amountUpdate)
+        return response()->json(['message' => 'Bid Confirmed! Please goto dashboard or check email!', 'status' => 200]);
+
+    }
+
+    catch(\Exception $e){
+      return response()->json(['message' =>  $e->getMessage(),'status' => 400 ]);
+    }
+}
 
 
 // Onboarding / Connect to stripe 
