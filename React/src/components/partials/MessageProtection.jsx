@@ -43,50 +43,27 @@ const MessageProtection = (message) => {
     // Create a regex to detect abusive words (case-insensitive)
     const abusiveRegex = new RegExp(`\\b(${abusiveWords.join("|")})\\b`, "gi");
 
-    // Mask email addresses
-    let protectedMessage = message
-        .replace(emailRegex, (email) => {
-            const [localPart, domain] = email.split("@");
-            return `${localPart[0]}${"*".repeat(
-                localPart.length - 1
-            )}@${domain}`;
-        })
-        // Mask phone numbers
-        .replace(
-            phoneRegex,
-            (phone) => phone[0] + "*".repeat(phone.length - 1)
-        );
-
     // Check for abusive words
     const abusiveWordsFound = abusiveRegex.test(message);
 
     // Mask abusive words with first and last letters visible
-    protectedMessage = protectedMessage.replace(abusiveRegex, (word) => {
+    let protectedMessage = message.replace(abusiveRegex, (word) => {
         if (word.length <= 2) return word; // Skip masking for very short words
         return word[0] + "*".repeat(word.length - 2) + word[word.length - 1];
     });
 
-    return { protectedMessage, abusiveWordsFound };
-};
+    // Check for email addresses and phone numbers without masking
+    const emailsFound = message.match(emailRegex);
+    const phonesFound = message.match(phoneRegex);
 
-const handleMessage = (newMessage) => {
-    // Protect or encrypt the message using MessageProtection
-    const { protectedMessage, abusiveWordsFound } =
-        MessageProtection(newMessage);
-
-    // Check if the protected message is different from the original message (sensitive info check)
-    if (protectedMessage !== newMessage) {
-        // If the message was altered by the protection (e.g., email or phone masked)
-        showAlert("info", "Your message contains sensitive information.");
-    }
-
-    // Check for abusive language
-    if (abusiveWordsFound) {
-        showAlert(
-            "error",
-            "Your message contains sensitive language that violates our community guidelines. Continued use of abusive language may result in temporary or permanent suspension from the messaging system. Please keep the conversation respectful."
-        );
-    }
+    // Return the results: protected message, whether abusive words were found,
+    // and the found emails and phone numbers
+    return {
+        protectedMessage,
+        abusiveWordsFound,
+        emailsFound, // List of found emails
+        phonesFound, // List of found phone numbers
+    };
 };
 
 export default MessageProtection;

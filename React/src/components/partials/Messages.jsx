@@ -161,35 +161,45 @@ function Messages() {
         }
     };
 
+
+   
+
     const handleSendMessage = (id, service_id, from_id) => {
-        if (!newMessage.trim()) return;
-   const { protectedMessage, abusiveWordsFound } =
-       MessageProtection(newMessage);
+        if (!newMessage.trim()) return; // Prevent sending empty messages
 
-   let alertContent = "";
+        const {
+            protectedMessage,
+            abusiveWordsFound,
+            emailsFound,
+            phonesFound,
+        } = MessageProtection(newMessage); // Protect the message
 
-   // Check if the message contains sensitive information (masked content)
-   const isSensitiveInfo = protectedMessage !== newMessage;
+        let alertContent = "";
+        let isSensitiveInfo = false;
 
-   if (isSensitiveInfo) {
-       alertContent = `
-            <h2 class="text-lg font-semibold mb-4">Your message contains sensitive information.</h2>
-            <p>For your security, please avoid sharing personal information like email addresses, passwords, or other confidential details in this conversation.
+        // Check for sensitive info (emails or phones)
+        if (emailsFound || phonesFound) {
+            isSensitiveInfo = true;
+            alertContent = `
+        <h2 class="text-lg font-semibold mb-4">Your message contains sensitive information.</h2>
+        <p>For your security, please avoid sharing personal information like email addresses, passwords, or other confidential details in this conversation.
             Sharing such information can put your privacy at risk. Please keep the conversation secure.</p>
         `;
-   }
+        }
 
-   if (abusiveWordsFound) {
-       alertContent = `
-            <h2 class="text-lg font-semibold mb-4">Your message contains inappropriate language.</h2>
-            <p>Continued use of abusive language may result in temporary or permanent suspension from the messaging system. Please keep the conversation respectful.</p>
+        // Check for abusive language
+        if (abusiveWordsFound) {
+            alertContent = `
+        <h2 class="text-lg font-semibold mb-4">Your message contains inappropriate language.</h2>
+        <p>Continued use of abusive language may result in temporary or permanent suspension from the messaging system. Please keep the conversation respectful.</p>
         `;
-   }
+        }
 
-   if (alertContent) {
-       $.alert({
-           title: false,
-           content: `
+        // If there is an alert (sensitive info or abusive language), show it first
+        if (alertContent) {
+            $.alert({
+                title: false,
+                content: `
                 <div>
                     <div class="flex items-center mb-4">
                         <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px;" class="jconfirm-logo mr-4">
@@ -198,74 +208,91 @@ function Messages() {
                     ${alertContent}
                 </div>
             `,
-       });
-       return; // Stop execution to let the user modify the message before sending
-   }
-
-        // Check for abusive language
-        if (abusiveWordsFound) {
-           
-            $.alert({
-                title: false,
-                content: `
-                    <div>
-                    <div class="flex items-center mb-4">
-                        <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px;" class="jconfirm-logo mr-4">
-                        <br></br>
-            <h1 class="text-xl font-bold text-red-600">Alert</h1>
-                    </div>
-                    <h2 class="text-lg font-semibold mb-4">Your message contains sensitive language that violates our community guidelines.</h2>
-                    <p>Continued use of abusive language may result in temporary or permanent suspension from the messaging system. Please keep the conversation respectful.</p>
-                </div>
-
-                `,
+                buttons: {
+                    send: {
+                        text: "Send Message Anyway",
+                        btnClass: "btn-green",
+                        action: function () {
+                            if ($("#dontShowAgain").is(":checked")) {
+                                localStorage.setItem("neverShowAlert", "true");
+                            }
+                            sendMessageToBackend(
+                                protectedMessage,
+                                id,
+                                service_id,
+                                from_id
+                            );
+                        },
+                    },
+                    cancel: {
+                        text: "Cancel",
+                        btnClass: "btn-red",
+                        action: function () {
+                            console.log("Message sending cancelled.");
+                        },
+                    },
+                },
             });
+            return; // Prevent further execution until alert is resolved
         }
 
-        var to_id = customer_id ? id : from_id;
-        // Add a temporary timestamp when the message is sent
+        // If no sensitive or abusive message, proceed to send
+        sendMessageToBackend(protectedMessage, id, service_id, from_id);
+    };
+
+    const sendMessageToBackend = (
+        protectedMessage,
+        id,
+        service_id,
+        from_id
+    ) => {
+        const to_id = customer_id ? id : from_id;
+
+        // Create temporary message object to show in UI
         const tempMessage = {
-            sender: "me", // Indicate the sender is the current user
-            msg: protectedMessage, // Use the protected message
+            sender: "me",
+            msg: protectedMessage,
             id,
             service_id,
             to_id,
-            status: "Sending...", // Temporary status
-            created_at: new Date().toISOString(), // Temporary timestamp
+            status: "Sending...", // Temporarily setting status as Sending
+            created_at: new Date().toISOString(),
         };
 
         console.log("Sending message:", tempMessage);
+        setChatHistory((prev) => [...prev, tempMessage]); // Update chat history immediately
 
-        setChatHistory((prev) => [...prev, tempMessage]);
-
+        // Make API call to send the message
         axiosClient
             .post("/serviceReply", {
                 msg_id: id,
                 service_id,
                 msg: protectedMessage,
-                to_id: to_id, // Send the protected message to the backend
+                to_id: to_id,
             })
             .then(({ data }) => {
-                console.log("Success:", data.message);
+                console.log("Message sent successfully:", data.message);
                 setChatHistory((prev) =>
                     prev.map((msg) =>
                         msg === tempMessage ? { ...msg, status: "Sent" } : msg
                     )
-                );
+                ); // Update message status to Sent
             })
             .catch((err) => {
-                showAlert(`error`, `Failed to send message: ${err}`);
+                showAlert("error", `Failed to send message: ${err}`);
                 setChatHistory((prev) =>
                     prev.map((msg) =>
                         msg === tempMessage
                             ? { ...msg, status: "Failed to send" }
                             : msg
                     )
-                );
+                ); // Update message status to Failed to send
             });
 
-        setNewMessage("");
+        setNewMessage(""); // Clear input field after sending message
     };
+
+
 
     const handleRetryMessage = (index) => {
         const message = chatHistory[index];
