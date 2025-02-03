@@ -63,9 +63,9 @@
             class="email-message"
             style="
                 font-size: 12px;
-                padding-top: 10px;
+                padding-top: 5px;
                 line-height: 1.8;
-                margin-bottom: 30px;
+                margin-bottom: 5px;
             "
         >
             @if($type == 'Monetary')

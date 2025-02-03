@@ -822,17 +822,15 @@ public function bookingAccepted(Request $request)
         foreach($bid_ids as $id){
         if($id !=''){
         $bid = serviceBook::where('id',$id)->first();
-        if($bid){ 
-        $investor = User::where('id',$bid->booker_id)->first();
+        
+        if($bid)
+        { 
+        $investor = User::select('id','email')->where('id',$bid->booker_id)
+        ->first();
         $investor_mail = $investor->email;
 
-        $list = Services::where('id',$bid->service_id)->first();
-        $info=['business_name'=>$list->name,'s_id'=>base64_encode(base64_encode($list->id))];
-        $user['to'] = $investor_mail;
-         Mail::send('services.booking_mail', $info, function($msg) use ($user){
-             $msg->to($user['to']);
-             $msg->subject('Booking accepted!');
-         });
+        $list = Services::select('id','name')->where('id',$bid->service_id)
+        ->first();
 
         $confirm = serviceBook::where('id',$id)->update(['status' => 'Confirmed']);
 
@@ -859,9 +857,7 @@ public function bookingAccepted(Request $request)
         }
         //Replicate Miles
 
-         }
-
-         //Notifications
+        //Notifications
          $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
          $addNoti = Notifications::create([
             'date' => $date,
@@ -874,16 +870,75 @@ public function bookingAccepted(Request $request)
           ]);
          //Notifications
 
+        $info=['business_name'=>$list->name,'s_id'=>base64_encode(base64_encode($list->id)), 'reason' => 0];
+        $user['to'] = $investor_mail;
+         Mail::send('services.booking_mail', $info, function($msg) use ($user){
+             $msg->to($user['to']);
+             $msg->subject('Booking accepted!');
+         });
+
+        }
+
+         
+
        }
        }
         Session::put('success','Confirmed!');
-        return response()->json(['message' => 'Success']);
+        return response()->json(['status' => 200, 'message' => 'Success']);
      
        }
         catch(\Exception $e){
             Session::put('failed',$e->getMessage());
-            return response()->json(['message' => $e->getMessage()]);
+            return response()->json(['status' => 400, 'message'=>$e->getMessage()]);
        }  
+
+   }
+
+
+   //REJECT BOOKING
+   public function bookingRejected(Request $request)
+{
+    
+    $bid_ids = $request->bid_ids;
+    try {
+    foreach($bid_ids as $id){
+    if($id !=''){
+        $bid = serviceBook::where('id',$id)->first();
+        $investor = User::select('id','email')->where('id',$bid->booker_id)
+        ->first(); $investor_mail = $investor->email;
+
+        $list = Services::select('id','name')->where('id',$bid->service_id)
+        ->first(); $remove = serviceBook::where('id',$id)->delete();
+        $reason = 'Unknown Reason';
+
+        //Notifications
+         $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+         $addNoti = Notifications::create([
+            'date' => $date,
+            'receiver_id' => $booker_id,
+            'customer_id' => $service_id,
+            'text' => 'Your booking to _name has been rejected due to '.$reason,
+            'link' => 'mybookings',
+            'type' => 'service',
+          ]);
+
+         $info=['business_name'=>$list->name,'s_id'=>base64_encode(base64_encode($list->id)), 'reason' => $reason ]; $user['to'] = $investor_mail;
+         Mail::send('services.booking_mail', $info, function($msg) use ($user){
+             $msg->to($user['to']);
+             $msg->subject('Booking Rejected!');
+         }); 
+        //Notifications   
+
+    }
+    }
+        Session::put('success','Rejected!');
+        return response()->json(['status' => 200, 'message' => 'Success']);
+     
+    }
+    catch(\Exception $e){
+        Session::put('failed',$e->getMessage());
+        return response()->json(['status' => 400, 'message'=>$e->getMessage()]);
+    }  
 
    }
 

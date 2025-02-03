@@ -382,7 +382,7 @@ const MyInvest = () => {
                                         </li>
                                     </ul>
                                 )}
-                            {item.status === "Confirmed" &&
+                            {(item.status === "Confirmed" || item.status === "awaiting_payment")&&
                                 item.type === "Monetary" && (
                                     <ul>
                                         <li>
