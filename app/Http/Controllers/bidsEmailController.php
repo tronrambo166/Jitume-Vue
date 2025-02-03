@@ -78,12 +78,15 @@ public function bidsAccepted(Request $request)
          });
 
          //Refund
-         if($bid->type == 'Monetary' && $bid->paystack_charge_id){
-            //Paystack Refund
-         }
 
-         if($bid->type == 'Monetary' && $bid->stripe_charge_id)
-         $this->Client->refunds->create(['charge' => $bid->stripe_charge_id]);
+         if($bid->type == 'Monetary' && $bid->stripe_charge_id){
+            $actual_paid_amount = ($bid->amount)*0.25;
+            $refund_amount = ($actual_paid_amount)*0.98;
+            $this->Client->refunds->create([
+                'charge' => $bid->stripe_charge_id,
+                'amount' => $refund_amount*100
+            ]);
+         }
          //Refund
 
          

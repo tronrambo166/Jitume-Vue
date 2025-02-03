@@ -68,7 +68,24 @@
                 margin-bottom: 30px;
             "
         >
-            @if($type == 'Monetary') Proceed to progress with the milestones
+            @if($type == 'Monetary')
+
+            <p>
+                We’re pleased to inform you that this investment process has been confirmed. The project will <br>
+                now proceed to the next phase: Milestone Progression (In-Progress).
+                Here’s what to expect moving forward:<br>
+                 Milestone Coordination: Payments will be coordinated seamlessly between the
+                Platform, Business Owner and Investor on completed milestones.<br>
+                 Dashboard Updates: All milestone progress and related financials will be updated in
+                your project dashboard for real-time tracking.<br>
+                 Support: Should you have any questions or require clarification, our support team is
+                here to assist.<br>
+                 Please be on alert of completion milestone emails as progress of their investment
+                depends on your review.<br>
+                 You have the option to request a local project manager to supervise the project.
+            </p>
+
+              Proceed to progress with the milestones
             work?
         </p>
         <div class="flex gap-3">
@@ -177,7 +194,10 @@
             style="height: 3rem; width: auto; margin: 0 auto"
             />
                 </p>
-                <p style="font-weight: 600">Best regards, <br> The Tujitume Team</p>
+                <p style="font-weight: 600">
+                    Thank you for your trust in Tujitume. We are committed to ensuring a smooth and transparent
+                    experience. <br> 
+                    Best regards, <br> The Tujitume Team</p>
 
             </div>
     </div>
