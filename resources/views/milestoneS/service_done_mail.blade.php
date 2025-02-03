@@ -4,20 +4,57 @@
 
 <!--Hidden Cart view-->  
 
-        <div class="row  w-75 m-auto border shadow text-center bg-light" style=" box-shadow: 3px 3px 7px 7px grey; width:70%; background: white;border: 1px solid green;">
-		<div class="container w-75 m-auto" style="box-shadow: 3px 3px 7px 7px grey; background: white;width:80%; margin:auto; text-align:center">
-		
-		 <h2 style="color: green;font-family: sans-serif;">  
-		 	 Congratulations! </h2>
+        <div
+    style="
+        max-width: 1024px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 4rem;
+        background-color: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        position: relative;
+    "
+>
+    <!-- Header with Logo -->
+    <div
+        style="
+            background-color: #14532d;
+            padding: 0.9rem 0;
+            text-align: center;
+            color: #ffffff;
+            position: relative;
+            z-index: 10;
+        "
+    >
+        <img
+            src="{{ $message->embed('https://tujitume.com/images/Email/EmailWhite.png')}}"
+
+            alt="Company Logo"
+            style="height: 3rem; width: auto; margin: 0 auto"
+        />
+        <h1 style="font-size: 2rem; font-weight: 700; margin-top: 1rem">
+            Milestone Completed
+        </h1>
+    </div>
+ <div class="content" style="padding: 20px">
+	<h2 style="color: green; font-size: 1.8rem; font-weight: bold; margin-bottom: 15px;">
+       Congratulations! </h2>
 			
 			<div class="" style="width:50%; margin:auto;">
-			<h4 style="color: black;font-family:  sans-serif;text-align:left;">  All Milestones are completed and {{$owner}} thanks you for your business! Please review</h4>
-
+			 <h4 style="color: black; font-size: 1rem; font-weight: 500; line-height: 1.5;">
+            All Milestones are completed, and <strong>{{$owner}}</strong> thanks you for your business! Please review.
+        </h4>
 			@php $s_id = base64_encode(base64_encode($s_id)); @endphp
-
+			<div style="margin-top: 20px;">
 			<a target="_blank" href="<?php echo config('app.app_url');?>service-details/{{$s_id}}?review_popup=true" class="button continue" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Review</a>
 			
-			</div>
+		</div>
+
+		
+	</div>
+	
 
 
 			<!-- Do you want to Continue to the Next Milestone?
@@ -34,9 +71,38 @@
 		
 				
 				
-				<p style="font-weight: bold; color:black; line-height:22px; font-family:arial; padding-top:20px; padding-bottom:20px; text-align:center;" class="py-3 text-center"> Thanks! <br />   Tujitume Admin.</p>
+			 <div
+                class="footer"
+                style="
+                    margin-top: 2rem;
+                    text-align: start;
+                    color: gray;
+                    font-size: 12px;
+                "
+            >
+                <p>
+                    <img
+                        src="{{ $message->embed('https://tujitume.com/images/Email/EmailVertDark.png')}}"
+                        alt="Company Logo"
+                        style="
+                            height: 3rem;
+                            width: auto;
+                            float: left;
+                            margin-right: 1rem;
+                            margin-top: -0.2rem;
+                            margin-bottom: 4rem;
+                        "
+                    />
+                </p>
+                 <p style="font-weight: 600">
+                    Best regards, <br/>
+                   <div style="margin-bottom:3px;" ">The Tujitume Team</div> 
+                </p>
+            </div>
 
 		</div>
+</div>
+
 		
 		
 		</div>

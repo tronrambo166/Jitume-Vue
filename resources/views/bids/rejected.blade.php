@@ -30,7 +30,7 @@
         "
     >
         <img
-            src="../../../React/src/images/TujitumeLogo.svg"
+            src="{{ $message->embed('https://tujitume.com/images/Email/EmailWhite.png')}}"
             alt="Company Logo"
             class="h-12 w-auto mx-auto"
             style="height: 3rem; width: auto; margin: 0 auto"
@@ -47,21 +47,33 @@
         <div class="content" style="padding: 20px;">
             <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Unfortunately Your Bid Has Been Rejected</h2>
             <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">Hi,<br>Your bid to invest in the {{$business_name}} has been rejected. Please bid again with appropriate details.</p>
-             <div
+            <div
                 class="footer"
                 style="
                     margin-top: 2rem;
-                   text-align :start;
+                    text-align: start;
                     color: gray;
                     font-size: 12px;
                 "
             >
                 <p>
-                    Thank you for using
-                    <span style="font-weight: 600">Tujitume</span>!
+                    <img
+                        src="{{ $message->embed('https://tujitume.com/images/Email/EmailVertDark.png')}}"
+                        alt="Company Logo"
+                        style="
+                            height: 3rem;
+                            width: auto;
+                            float: left;
+                            margin-right: 1rem;
+                            margin-top: -0.2rem;
+                            margin-bottom: 4rem;
+                        "
+                    />
                 </p>
-                <p style="font-weight: 600">Best regards,</p>
-                <p>The Tujitume Team</p>
+                 <p style="font-weight: 600">
+                    Best regards, <br/>
+                   <div style="margin-bottom:3px;" ">The Tujitume Team</div> 
+                </p>
             </div>
      </div>
     </div>

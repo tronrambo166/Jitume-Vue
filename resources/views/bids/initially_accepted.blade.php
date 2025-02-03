@@ -31,7 +31,7 @@
         "
     >
         <img
-            src="{{ $message->embed('https://tujitume.com/images/logo.png')}}"
+            src="{{ $message->embed('https://tujitume.com/images/Email/EmailWhite.png')}}"
             alt="Company Logo"
             style="height: 3rem; width: auto; margin: 0 auto"
         />
@@ -148,24 +148,33 @@
 
         @endif
 
-         <div
+        <div
                 class="footer"
                 style="
                     margin-top: 2rem;
-                   text-align :start;
+                    text-align: start;
                     color: gray;
                     font-size: 12px;
                 "
             >
                 <p>
                     <img
-            src="{{ $message->embed('https://tujitume.com/images/logo.png')}}"
-            alt="Company Logo"
-            style="height: 3rem; width: auto; margin: 0 auto"
-            />
+                        src="{{ $message->embed('https://tujitume.com/images/Email/EmailVertDark.png')}}"
+                        alt="Company Logo"
+                        style="
+                            height: 3rem;
+                            width: auto;
+                            float: left;
+                            margin-right: 1rem;
+                            margin-top: -0.2rem;
+                            margin-bottom: 4rem;
+                        "
+                    />
                 </p>
-                <p style="font-weight: 600">Best regards, <br> The Tujitume Team</p>
-
+                 <p style="font-weight: 600">
+                    Best regards, <br/>
+                   <div style="margin-bottom:3px;" ">The Tujitume Team</div> 
+                </p>
             </div>
     </div>
 </div>

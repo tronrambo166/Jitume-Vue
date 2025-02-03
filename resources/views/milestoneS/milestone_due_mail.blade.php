@@ -4,23 +4,118 @@
 
 <!--Hidden Cart view-->
 
-        <div class="row  w-75 m-auto border shadow text-center bg-light" style="height: 370px; box-shadow: 3px 3px 7px 7px grey; width:70%; background: ghostwhite;border: 1px solid black;">
-		<div class="container w-75 m-auto" style="box-shadow: 3px 3px 7px 7px grey; background: #067495;width:80%; margin:auto; text-align:center">
-		
-		 <h2 style="color: white;font-family: sans-serif;">  
-		 	<br> Your milestone has {{$d}} day(s) left!</h2>
-			
-			<div class="" style="width:50%; margin:auto;">
-			<h4 style="color: silver;font-family:  sans-serif;text-align:left;"> Milestone Name: {{$name}} </h4>
-			<h4 style="color: silver;font-family: sans-serif;text-align:left;"> Amount: {{$amount}} </h4>
-			<h4 style="color: darkgreen;font-family: sans-serif;text-align:left;">  </h4>
-			</div>
-		
-		
-				
-				
-				<p style="font-weight: bold; color:black; line-height:22px; font-family:arial; padding-top:20px; padding-bottom:20px; text-align:center;" class="py-3 text-center"> Thanks! <br />   Tujitume Admin.</p>
+     <div
+    style="
+        max-width: 1024px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 4rem;
+        background-color: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        position: relative;
+    "
+>
+    <!-- Header with Logo -->
+    <div
+        style="
+            background-color: #14532d;
+            padding: 0.9rem 0;
+            text-align: center;
+            color: #ffffff;
+            position: relative;
+            z-index: 10;
+        "
+    >
+        <img
+            src="{{ $message->embed('https://tujitume.com/images/Email/EmailWhite.png')}}"
 
+            alt="Company Logo"
+            style="height: 3rem; width: auto; margin: 0 auto"
+        />
+        <h1 style="font-size: 2rem; font-weight: 700; margin-top: 1rem">
+			Milestone Due Alert!
+        </h1>
+    </div>
+	<div class="content" style="padding: 20px;">
+    <h2 style="
+        color: black;
+        font-family: sans-serif;
+        font-size: 22px;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 10px;
+    ">
+        <br> Your milestone has {{$d}} day(s) left!
+    </h2>
+
+    <div style="
+        width: 50%;
+        margin: auto;
+        padding: 10px;
+        border-radius: 8px;
+    ">
+        <h4 style="
+            color: silver;
+            font-family: sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: left;
+            margin-bottom: 5px;
+        ">
+            Milestone Name: {{$name}}
+        </h4>
+        <h4 style="
+            color: silver;
+            font-family: sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: left;
+            margin-bottom: 5px;
+        ">
+            Amount: {{$amount}}
+        </h4>
+        <h4 style="
+            color: darkgreen;
+            font-family: sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: left;
+        ">
+            <!-- If any text is missing here, you can add it -->
+        </h4>
+    </div>
+</div>
+				<div
+                class="footer"
+                style="
+                    margin-top: 2rem;
+                    text-align: start;
+                    color: gray;
+                    font-size: 12px;
+
+                "
+            >
+                <p>
+                    <img
+                        src="{{ $message->embed('https://tujitume.com/images/Email/EmailVertDark.png')}}"
+                        alt="Company Logo"
+                        style="
+                            height: 3rem;
+                            width: auto;
+                            float: left;
+                            margin-right: 1rem;
+                            margin-top: -0.2rem;
+                            margin-bottom: 4rem;
+                        "
+                    />
+                </p>
+                 <p style="font-weight: 600">
+                    Best regards, <br/>
+                   <div style="margin-bottom:3px;" ">The Tujitume Team</div> 
+                </p>
+            </div>
 		</div>
 		
 		
