@@ -585,15 +585,20 @@ return response()->json([ 'business' => $business, 'milestones' => $milestones ]
 
 public function getMilestones($id){
 
+  $service_fee = Services::select('price')->where('id',$id)->first()->price;
   //Booking check
   $booking = serviceBook::where('service_id',$id)
   ->where('booker_id', Auth::id())
   ->where('status', 'Confirmed')->first();
-  if($booking) $booked = 1; else $booked = 0;
+  if($booking) $booked = 1; else $booked = 0; $isPaid = false;
 
   if($booked){
     $milestones = ServiceMileStatus::where('service_id',$id)
     ->where('booker_id', Auth::id())->get(); 
+
+    $status = ServiceMileStatus::where('service_id',$id)
+    ->where('booker_id', Auth::id())->where('status', 'In Progress')->first();
+    if($status) $isPaid = true;
   }
   else{
     $milestones = Smilestones::where('listing_id',$id)->get();
@@ -628,15 +633,16 @@ else $done_msg = false;
 
 }
 catch(\Exception $e){
-  return response()->json([ 'data' => $e->getMessage() ]);
+  return response()->json([ 'status' => 200, 'data' => $e->getMessage() ]);
 }
 
 //Review
     $reviews = array();
     $reviews = ServiceReviews::where('listing_id',$id)->get();
 
-return response()->json([ 'data' => $milestones, 'done_msg' => $done_msg,
-'booked' => $booked, 'allow' => $allow, 'reviews' => $reviews ]);
+return response()->json([ 'status' => 200, 'data' => $milestones, 'done_msg' => $done_msg,
+'booked' => $booked, 'allow' => $allow, 'reviews' => $reviews, 
+'service_fee' => $service_fee, 'isPaid' => $isPaid ]);
 
  }
 

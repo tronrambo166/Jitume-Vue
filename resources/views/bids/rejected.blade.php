@@ -72,7 +72,7 @@
                 </p>
                  <p style="font-weight: 600">
                     Best regards, <br/>
-                   <div style="margin-bottom:3px;" ">The Tujitume Team</div> 
+                   <div style="margin-bottom:3px;">The Tujitume Team</div> 
                 </p>
             </div>
      </div>

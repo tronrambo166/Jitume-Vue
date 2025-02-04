@@ -510,6 +510,81 @@ public function CancelEquipmentRelease($bidId, $action)
 }
 
 
+public function CancelBookingConfirm($booking_id, $action)
+{   
+    $booking_id = base64_decode($booking_id); 
+    try { 
+        $bid = AcceptedBids::where('id',$booking_id)->first();
+        $investor = User::select('fname','fname','email')->where('id',$bid->investor_id)->first();
+        $inv_name = $investor->fname.' '.$investor->fname;
+        $business = Services::select('name','shop_id','id')->where('id',$bid->business_id)->first();
+        $owner = User::select('email','id')->where('id',$business->shop_id)->first();
+
+        if($action == 'confirm')
+        {
+            $info=[ 'business_name'=>$business->name, 'business_owner'=>$bid->business_id,  'booking_id'=> base64_encode($booking_id)];
+            
+            $user['to'] = $investor->email;
+            Mail::send('bids.eqp_cancel_confirm', $info, function($msg) use ($user){
+                $msg->to($user['to']);
+                $msg->subject('Booking Cancel Confirmation!');
+            });
+
+            //Notifications
+             $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+             $addNoti = Notifications::create([
+                'date' => $date,
+                'receiver_id' => $bid->investor_id,
+                'customer_id' => $owner->id,
+                'bid_id' => $bidId,
+                'text' => 'Your bid to business '.$business->name.' will be cancelled.',
+                'link' => 'booking_cancel_confirm',
+                'type' => 'business',
+              ]);
+          //Notifications
+        }
+        else
+        {
+            $info=['investor'=>$inv_name,'type'=>$bid->type,'business_name'=>$business->name];
+            $user['to'] = $owner->email; //'tottenham266@gmail.com';
+             Mail::send('bids.cancelled', $info, function($msg) use ($user){
+                 $msg->to($user['to']);
+                 $msg->subject('Bid Cancel!');
+             });
+
+            //Notifications
+             $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+             $addNoti = Notifications::create([
+                'date' => $date,
+                'receiver_id' => $owner->id,
+                'customer_id' => $bid->investor_id,
+                'text' => 'A bid to business '.$business->name.' was cancelled by '.$inv_name,
+                'link' => 'investment-bids',
+                'type' => 'business',
+              ]);
+
+             $addNoti2 = Notifications::create([
+                'date' => $date,
+                'receiver_id' => $bid->investor_id,
+                'customer_id' => $owner->id,
+                'text' => 'Your bid to business '.$list->name.' was cancelled.',
+                'link' => 'investment-bids',
+                'type' => 'business',
+              ]);
+            //Notifications
+              ServiceBook::where('id',$booking_id)->delete();
+        }
+
+         return redirect()->to(config('app.app_url').'dashboard')->send();
+     
+       }
+        catch(\Exception $e){
+            //return $e->getMessage().config('app.app_url/dashboard');
+            return redirect()->to(config('app.app_url').'dashboard')->send();
+       }  
+}
+
+
 public function releaseEquipment($business_id, $manager_id, $bid_id){
 //if(!$this_bid) return response()->json(['error:'=>'Bid does not exist!']);
     $b = Listing::select('name','user_id')->where('id',$business_id)->first();
@@ -828,10 +903,8 @@ public function bookingAccepted(Request $request)
         $investor = User::select('id','email')->where('id',$bid->booker_id)
         ->first();
         $investor_mail = $investor->email;
-
         $list = Services::select('id','name')->where('id',$bid->service_id)
         ->first();
-
         $confirm = serviceBook::where('id',$id)->update(['status' => 'Confirmed']);
 
         //Replicate Miles
@@ -870,7 +943,7 @@ public function bookingAccepted(Request $request)
           ]);
          //Notifications
 
-        $info=['business_name'=>$list->name,'s_id'=>base64_encode(base64_encode($list->id)), 'reason' => 0];
+        $info=['business_name'=>$list->name,'s_id'=>base64_encode(base64_encode($list->id)), 'booking_id'=>base64_encode($id), 'reason' => 0];
         $user['to'] = $investor_mail;
          Mail::send('services.booking_mail', $info, function($msg) use ($user){
              $msg->to($user['to']);
@@ -878,8 +951,6 @@ public function bookingAccepted(Request $request)
          });
 
         }
-
-         
 
        }
        }
@@ -897,7 +968,7 @@ public function bookingAccepted(Request $request)
 
    //REJECT BOOKING
    public function bookingRejected(Request $request)
-{
+   {
     
     $bid_ids = $request->bid_ids;
     try {
@@ -944,7 +1015,7 @@ public function bookingAccepted(Request $request)
 
 
    public function agreeToProgressWithReleaseEqp($bidId)
-{   
+   {   
     $bidId = base64_decode($bidId);
     try { 
         $bid = AcceptedBids::select('ms_id','business_id','owner_id','investor_id')

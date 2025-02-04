@@ -74,7 +74,7 @@
                 </p>
                  <p style="font-weight: 600">
                     Best regards, <br/>
-                   <div style="margin-bottom:3px;" ">The Tujitume Team</div> 
+                   <div style="margin-bottom:3px;">The Tujitume Team</div> 
                 </p>
             </div>
 	   </div>
@@ -107,7 +107,7 @@
 			style="width:50%;text-decoration:none;color: aliceblue;background:red;padding:10px 30px;border-radius:5px;margin-left:30px">
 			Cancel </a>
 		</div>
-				<!-- <p>Please be on alert of completion milestone emails as progress of your investment depends on your review. </p> 
+			 <p>Please be on alert of completion milestone emails as progress of your investment depends on your review. </p> 
 	            If you require a project manager, please click here (Please not that investor with assets must have a project manager) <a target="_blank" href="https://test.jitume.com/#/projectManagers/{{$bid_id}}"
 			style="text-decoration:none;color: aliceblue;background:navy;padding:8px;border-radius:5px;">
 			Request a Project Manager </a>

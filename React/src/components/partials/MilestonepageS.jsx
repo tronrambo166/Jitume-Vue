@@ -16,7 +16,11 @@ import { BarLoader } from "react-spinners";
 const MilestonePage = () => {
     const { id } = useParams();
     const listing_id = atob(atob(id));
-    const [miles, setMiles] = useState([]);
+
+    const [isPaid, setIsPaid] = useState([]);
+    const [firstMileId, setFirstMileId] = useState([]);
+    const [serviceFee, setServiceFee] = useState([]);
+    const [miles, setMiles] = useState([]);setServiceFee
     const [no_mile, setNo_mile] = useState(false);
     const [isDone, setIsDone] = useState(false);
     const [booked, setbooked] = useState(false);
@@ -55,10 +59,16 @@ const MilestonePage = () => {
                     if (Array.isArray(data.data)) {
                         console.log(data.data);
                         setMiles(data.data);
+                        setServiceFee(data.service_fee);
+                        setIsPaid(data.isPaid);
                         if (data.data.length !== 0) {
                             for (let i = 0; i < data.data.length; i++) {
                                 if (data.data[i].active == 1)
                                     setCurrStep(i + 1);
+
+                                //Set First Mile Id
+                                if(i == 0)
+                                    setFirstMileId(data.data[0].id);
                             }
                         }
                     } else {
@@ -243,6 +253,7 @@ const MilestonePage = () => {
                                     )}
                                 </React.Fragment>
                             ))}
+
                         </div>
                         <div className="overflow-x-auto sm:rounded-lg  mx-auto border  border-gray-300 ">
                             <table className="table-auto w-full border-collapse border border-gray-300">
@@ -360,17 +371,7 @@ const MilestonePage = () => {
                                                 {milestone.status === "To Do" &&
                                                 milestone.active ? (
                                                     <td className="border border-gray-300 px-6 py-2 text-[#0F172A]">
-                                                        <button
-                                                            onClick={() =>
-                                                                handlePay(
-                                                                    milestone.id,
-                                                                    milestone.amount
-                                                                )
-                                                            }
-                                                            className="px-3 py-1 rounded bg-green-500 text-white"
-                                                        >
-                                                            PAY
-                                                        </button>
+                                                        -
                                                     </td>
                                                 ) : (
                                                     <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
@@ -383,8 +384,30 @@ const MilestonePage = () => {
                                             </tr>
                                         ))}
                                 </tbody>
-                            </table>
+                            </table> 
+
+                            {booked && !isPaid &&
+                                <div className="float-right my-4 px-4" style={{height:'100px'}}>
+                                <p className="text-center text-md"><b>Total Service Fee:</b> ${serviceFee}</p>
+
+                                <button
+                                    onClick={() =>
+                                        handlePay(
+                                            firstMileId,
+                                            serviceFee
+                                        )
+                                    }
+                                    className="px-4 py-1 mt-3 float-right rounded bg-green-800 text-gray-200"
+                                >
+                                    Pay Now
+                                </button>
+                                                    
+                            </div>
+                            }
+
                         </div>
+
+
                         <ToastContainer />
                         <Modal
                             isOpen={isAuthModalOpen}

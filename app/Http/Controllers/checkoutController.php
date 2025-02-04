@@ -566,14 +566,14 @@ catch(\Exception $e){
     { 
 
     if(Auth::check())
+    {
         $investor_id = Auth::id();
+        $investor = User::where('id',$investor_id)->first();
+    }    
     else {
-        if(Session::has('investor_email')){   
-        $mail = Session::get('investor_email');
-        $investor = User::where('email',$mail)->first();
-        $investor_id = $investor->id;
+
+        return response()->json(['message' =>  'Unauthorized!','status' => 400 ]);
       }
-    }
 
     $rep_id = $request->milestone_id; //For Replica table
     $mileRep = ServiceMileStatus::select('id','mile_id')
@@ -619,16 +619,19 @@ catch(\Exception $e){
     $ownerS = User::select('fname','lname','id','email','connect_id')->where('id', $Business->shop_id)
     ->first();
 
-    //Split
+    
     try{
-        $curr='USD'; //$request->currency; 
-        $tranfer = $this->Client->transfers->create ([ 
-                //"billing_address_collection": null,
-                "amount" => $transferAmount*100, //100 * 100,
-                "currency" => $curr,
-                "source_transaction" => $charge->id,
-                'destination' => $ownerS->connect_id
-        ]);
+
+    //Split
+        // $curr='USD'; //$request->currency; 
+        // $tranfer = $this->Client->transfers->create ([ 
+        //         //"billing_address_collection": null,
+        //         "amount" => $transferAmount*100, //100 * 100,
+        //         "currency" => $curr,
+        //         "source_transaction" => $charge->id,
+        //         'destination' => $ownerS->connect_id
+        // ]);
+
         ServiceMileStatus::where('id',$rep_id)->update([ 'status' => 'In Progress']);
         
         //Asset-related
