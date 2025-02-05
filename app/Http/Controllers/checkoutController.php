@@ -631,6 +631,7 @@ catch(\Exception $e){
         //         "source_transaction" => $charge->id,
         //         'destination' => $ownerS->connect_id
         // ]);
+    //Split
 
         ServiceMileStatus::where('id',$rep_id)->update([ 'status' => 'In Progress']);
         

@@ -98,7 +98,7 @@
         margin-top: 15px;
         text-align: center;
     ">
-        <a target="_blank" href="<?php echo config('app.api_url');?>agreeToMileS/{{$s_id}}/{{$booker_id}}"
+        <a target="_blank" href="<?php echo config('app.api_url');?>agreeToMileS/{{$rep_id}}/{{$booker_id}}"
             style="
                 display: inline-block;
                 background-color: #2f9f1f;

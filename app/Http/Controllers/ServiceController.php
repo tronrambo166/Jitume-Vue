@@ -837,6 +837,7 @@ public function mile_status(Request $request){
 
 if($request->status == '') return redirect('business/s_milestones-all');
 
+$rep_mile_id = $request->id;
 $milestones = ServiceMileStatus::where('id',$request->id)
 ->update([
 'status' => $request->status,
@@ -863,7 +864,7 @@ $milestones = ServiceMileStatus::where('id',$request->id)
         $owner = User::where('id', $booking->service_owner_id)->first();
         $customer = User::where('id',$mile->booker_id)->first();
 
-        $info=[  'name'=>$mile->title,  'amount'=>$mile->amount, 'business'=>$business->name, 's_id' => $business->id,'booker_id' => $mile->booker_id, 'owner' => $owner->fname. ' '.$owner->lname ]; 
+        $info=[  'name'=>$mile->title,  'amount'=>$mile->amount, 'business'=>$business->name, 's_id' => $business->id,'booker_id' => $mile->booker_id, 'owner' => $owner->fname. ' '.$owner->lname, 'rep_id' => $rep_mile_id ]; 
 
         $user['to'] = $customer->email;//'sohaankane@gmail.com';
 

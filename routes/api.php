@@ -192,6 +192,8 @@ Route::get('checkDispute/{id}', [BusinessController::class ,'checkDispute']);
 Route::get('JitumeSubscribeEmail/{email}', [PagesController::class, 'JitumeSubscribeEmail']);
  Route::get('CancelAssetBid/{id}/{action}',[bidsEmailController::class,'CancelAssetBid']);
  Route::get('CancelEquipmentRelease/{id}/{action}',[bidsEmailController::class,'CancelEquipmentRelease']);
+Route::get('CancelBookingConfirm/{id}/{action}',[bidsEmailController::class,'CancelBookingConfirm']);
+ 
 
 
 

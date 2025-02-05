@@ -145,6 +145,7 @@ $investments = []; $active = []; $t_share = 0;
         $my_listing =listing::select('id','user_id','name','category','investment_needed','share')
         ->where('id',$share->business_id)->first();
 
+        if($my_listing){
         $activeMilestone = Milestones::select('title')
         ->where('listing_id',$my_listing->id)
         ->where('status','In Progress')->first();
@@ -152,7 +153,6 @@ $investments = []; $active = []; $t_share = 0;
         $Milestone = $activeMilestone->title;
         else $Milestone='';
 
-        if($my_listing){
         $my_listing->myShare = (float)$share->representation;
         $my_listing->amount =$share->amount;
         $my_listing->status = $share->status;

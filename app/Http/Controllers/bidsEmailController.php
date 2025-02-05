@@ -647,17 +647,53 @@ public function releaseEquipment($business_id, $manager_id, $bid_id){
 }
 
 
-public function agreeToMileS($s_id,$booker_id)
+public function agreeToMileS($rep_id,$booker_id)
 {
-    $mileLat = ServiceMileStatus::where('service_id',$s_id)->where('booker_id',$booker_id)->where('status','To Do')->first();
+    try{
 
-    $s_id = base64_encode(base64_encode($s_id));
+    $mileThis = ServiceMileStatus::select('id','service_id','amount','title')
+    ->where('id',$rep_id)->first();
+
+    $mileLat = ServiceMileStatus::where('service_id',$mileThis->service_id)
+    ->where('booker_id',$booker_id)->where('status','To Do')->first();
+    $serv= Services::select('shop_id')->where('id',$mileThis->service_id)->first();
+    $owner = User::select('id','connect_id')->where('id',$serv->shop_id)->first();
 
     if($mileLat)
-    ServiceMileStatus::where('id',$mileLat->id)->update([ 'active' => 1]);
-    Session::put('login_success','Thanks for your review, next milestone can be paid for to begin!!');
-       return redirect()->to(config('app.app_url').'service-milestones/'.$s_id);
+    ServiceMileStatus::where('id',$mileLat->id)->update([ 
+        'active' => 1, 
+        'status'=> 'In Progress'
+    ]);
+
+    $s_id = base64_encode(base64_encode($mileLat->service_id));
+
+    $transferAmount = round($mileThis->amount,2);
+    
+    //Release Milestone Payment
+        $curr='USD'; //$request->currency; 
+        $tranfer = $this->Client->transfers->create ([ 
+                "amount" => $transferAmount*100, //100 * 100,
+                "currency" => $curr,
+                //"source_transaction" => $charge->id,
+                'destination' => $owner->connect_id
+        ]);
+    //Release Milestone Payment
+
+        $text = 'Milestone payment for '.$mileThis->title.' has been released.';
+        $this->createNotification($owner->id,null,$text,'/',' service');
+
+        $text = 'Milestone payment for '.$mileThis->title.' has been released. Next Milestone is in progress';
+        $this->createNotification($booker_id,null,$text,'/',' service');
+
+        return redirect()->to(config('app.app_url').'service-milestones/'.$s_id);
+    }
+   catch(\Exception $e){
+        return $e->getMessage();
+        return redirect()->to(config('app.app_url'));
+   }  
+    
 }
+
 
 public function agreeToNextmile($bidId)
 {
