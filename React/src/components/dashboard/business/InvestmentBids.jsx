@@ -399,7 +399,7 @@ function InvestmentBids() {
             {/* <h3 className="text-left text-lg font-semibold mb-6">
                 Investment Bids
             </h3> */}
-            <div className="flex justify-start gap-6 items-center mb-6">
+            <div className="flex justify-end gap-6 items-center mb-6">
                 <h3
                     onClick={toggleBids}
                     className={`text-sm font-light cursor-pointer border-b-2 ${

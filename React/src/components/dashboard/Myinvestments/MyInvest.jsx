@@ -507,12 +507,12 @@ const MyInvest = () => {
                         {myInvest.length > 0 ? (
                             <section>
                                 {/* Section Title */}
-                                <h1 className="text-[#2D3748] ml-6 mt-4 font-semibold text-xl sm:text-2xl">
+                                <h1 className="text-[#2D3748] pl-2  mt-4 font-semibold text-xl sm:text-2xl">
                                     My Investments
                                 </h1>
 
                                 {/* Filters */}
-                                <div className="flex justify-start ml-6 mt-4 gap-6 items-center">
+                                <div className="flex justify-end pr-2 mt-4 gap-6 items-center">
                                     <h3
                                         onClick={() =>
                                             setActiveFilter("pending")
@@ -542,7 +542,7 @@ const MyInvest = () => {
                                 </div>
 
                                 {/* Table */}
-                                <div className="whitespace-nowrap scroll-thin overflow-x-auto max-w-full">
+                                <div className="scroll-thin overflow-x-auto max-w-full">
                                     <ReusableTable
                                         headers={headers}
                                         data={
@@ -554,6 +554,7 @@ const MyInvest = () => {
                                         tableId="myInvestTable"
                                     />
                                 </div>
+
                             </section>
                         ) : (
                             /* No Investments Section */

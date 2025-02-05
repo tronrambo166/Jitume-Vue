@@ -203,7 +203,7 @@ function InvestmentBids() {
                                     size={20}
                                 />
                             ) : (
-                                "Accept Bids"
+                                "Accept Service"
                             )}
                             {loadingAccept && " Accepting..."}
                         </button>
@@ -240,7 +240,7 @@ function InvestmentBids() {
                                     size={20}
                                 />
                             ) : (
-                                "Reject Bids"
+                                "Reject Service"
                             )}
                             {loadingReject && " Rejecting..."}
                         </button>

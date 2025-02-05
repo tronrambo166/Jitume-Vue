@@ -26,6 +26,7 @@ import ScrollToTop from "../pages/ScrollToTop";
 import { useAlert } from "../partials/AlertContext";
 import TruncateWithModal from "./TruncateWithModal";
 import BackBtn from "./BackBtn";
+import {AiOutlineLoading3Quarters} from "react-icons/ai"
 const ServiceDetails = () => {
     const { token, setUser, setAuth, auth } = useStateContext();
     const { id } = useParams();
@@ -72,6 +73,7 @@ const ServiceDetails = () => {
         setSelectedDate(formattedDate);
         setShowCalendar(false); // Hide calendar after selecting a date
     };
+    const [isLoading, setIsLoading] = useState(false);
 
     const [reviewData, setReviewData] = useState([]);
     const reviews = reviewData; //[
@@ -300,6 +302,8 @@ const ServiceDetails = () => {
     // this is from the addToCart () in serviceDetails.vue
     const book = (e) => {
         e.preventDefault();
+        setIsLoading(true);
+
 
         const selectedDate = $("#date").val();
         const today = new Date().toISOString().split("T")[0]; // Get today's date
@@ -341,6 +345,8 @@ const ServiceDetails = () => {
         axiosClient
             .post("/serviceBook", payload)
             .then(({ data }) => {
+        setIsLoading(false);
+                
                 if (data.success) {
                     $.alert({
                         title: "Alert!",
@@ -723,16 +729,26 @@ const ServiceDetails = () => {
                                         {!token ? (
                                             <button
                                                 onClick={handleAuthModalOpen}
-                                                className="btn-primary w-full py-3 mt-3 rounded-xl" // Made button full width
+                                                className="btn-primary w-full py-3 mt-3 rounded-xl"
                                             >
                                                 Book Now
                                             </button>
                                         ) : (
                                             <button
                                                 onClick={book}
-                                                className="btn-primary font-semibold w-full py-3  h-12 mt-3 whitespace-nowrap rounded-md"
+                                                className="btn-primary font-semibold w-full py-3 h-12 mt-3 whitespace-nowrap rounded-md flex items-center justify-center"
+                                                disabled={isLoading} // Disable the button when loading
                                             >
-                                                Book Now
+                                                {isLoading ? (
+                                                    <AiOutlineLoading3Quarters
+                                                        className="animate-spin text-white mr-2"
+                                                        size={24}
+                                                    />
+                                                ) : (
+                                                    "Book Now"
+                                                )}
+                                                {isLoading && "Booking..."}{" "}
+                                                {/* Optional loading text */}
                                             </button>
                                         )}
                                     </div>

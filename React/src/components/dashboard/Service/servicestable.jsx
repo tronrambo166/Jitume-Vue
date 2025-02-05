@@ -7,6 +7,7 @@ import ReusableTable from "../business/ReusableTable";
 import { BsThreeDots } from "react-icons/bs";
 import { FaCogs } from "react-icons/fa"; // Gears icon, symbolizing a service being done
 import { BarLoader } from "react-spinners";
+import TujitumeLogo from "../../../images/Tujitumelogo.svg";
 
 const ServiceTable = () => {
     const [business, setBusiness] = useState([]);
@@ -44,17 +45,45 @@ const ServiceTable = () => {
         setIsEditModalOpen(true); // Open the modal
     };
 
-    const handleDelete = (id) => {
-        axiosClient
-            .get("/business/delete_service/" + id)
-            .then(() => {
-                setService(service.filter((item) => item.id !== id));
-                showAlert("success", "Service deleted successfully.");
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
+   const handleDelete = (id) => {
+       $.confirm({
+           title: false,
+           content: `
+            <div style="display: flex; align-items: center;">
+                <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
+            </div>
+            <p>Are you sure you want to delete this listing?</p>
+        `,
+           buttons: {
+               confirm: {
+                   text: "Yes",
+                   action: () => {
+                       axiosClient
+                           .get("/business/delete_service/" + id)
+                           .then(() => {
+                               setService(
+                                   service.filter((item) => item.id !== id)
+                               );
+                               showAlert(
+                                   "success",
+                                   "Service deleted successfully."
+                               );
+                           })
+                           .catch((err) => {
+                               console.log(err);
+                           });
+                   },
+               },
+               cancel: {
+                   text: "No",
+                   action: () => {
+                       // Do nothing if the user cancels
+                   },
+               },
+           },
+       });
+   };
+
 
     const handleUpdate = (updatedService) => {
         setService(

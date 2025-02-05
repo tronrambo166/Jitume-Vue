@@ -810,22 +810,33 @@ const ListingDetails = ({ onClose }) => {
                                             )
                                         ) : token && conv ? (
                                             <p className="text-dark bg-gray-100 mt-3 text-gray-700 px-5 rounded-lg shadow-md py-2 md:py-3">
-                                                Business Is Unlocked
+                                                This Business is Fully Invested In
                                             </p>
                                         ) : (
-                                            <a
-                                                // onClick={() =>
-                                                //     setIsModalOpen(true)
-                                                // }
-                                                onClick={handleUnlockClick}
-                                                className="bg-black hover:bg-gray-700 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
-                                            >
-                                                <FontAwesomeIcon
-                                                    icon={faLock}
-                                                    className="mr-2 text-sm"
-                                                />
-                                                Unlock To Invest
-                                            </a>
+                                            <>
+                                                {details.investment_needed ===
+                                                details.amount_collected ? (
+                                                    <div className="w-full text-center p-4">
+                                                        <p className="bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
+                                                            Business Is Fully
+                                                            Invested In.
+                                                        </p>
+                                                    </div>
+                                                ) : (
+                                                    <a
+                                                        onClick={
+                                                            handleUnlockClick
+                                                        }
+                                                        className="bg-black hover:bg-gray-700 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
+                                                    >
+                                                        <FontAwesomeIcon
+                                                            icon={faLock}
+                                                            className="mr-2 text-sm"
+                                                        />
+                                                        Unlock To Invest
+                                                    </a>
+                                                )}
+                                            </>
                                         )}
                                     </div>
 

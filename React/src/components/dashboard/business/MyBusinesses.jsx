@@ -8,6 +8,7 @@ import ReusableTable from "./ReusableTable";
 import { AiOutlineFileAdd } from "react-icons/ai"; // Import the icon
 import { Link } from "react-router-dom";
 import { BarLoader } from "react-spinners";
+import TujitumeLogo from "../../../images/Tujitumelogo.svg";
 
 
 const MyBusinesses = () => {
@@ -42,23 +43,56 @@ const MyBusinesses = () => {
     };
 
     const handleDelete = (id) => {
-        axiosClient
-            .get(`/business/delete_listing/${id}`)
-            .then(({ data }) => {
-                if (data.status === 200) {
-                    showAlert("success", "Listing deleted successfully.");
-                    setBusiness(business.filter((item) => item.id !== id));
-                } else {
-                    showAlert(
-                        "error",
-                        "Failed to delete listing. Please try again."
-                    );
-                }
-            })
-            .catch(() => {
-                showAlert("error", "An error occurred. Please try again.");
-            });
+        $.confirm({
+            title: false,
+            content: `
+                <div style="display: flex; align-items: center;">
+                    <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
+                </div>
+                <p>Are you sure you want to delete this listing?</p>
+            `,
+            buttons: {
+                confirm: {
+                    text: "Yes",
+                    action: () => {
+                        axiosClient
+                            .get(`/business/delete_listing/${id}`)
+                            .then(({ data }) => {
+                                if (data.status === 200) {
+                                    showAlert(
+                                        "success",
+                                        "Listing deleted successfully."
+                                    );
+                                    setBusiness(
+                                        business.filter(
+                                            (item) => item.id !== id
+                                        )
+                                    );
+                                } else {
+                                    showAlert(
+                                        "error",
+                                        "Failed to delete listing. Please try again."
+                                    );
+                                }
+                            })
+                            .catch(() => {
+                                showAlert(
+                                    "error",
+                                    "An error occurred. Please try again."
+                                );
+                            });
+                    },
+                },
+                cancel: {
+                    text: "No",
+                    action: () => {
+                        // You can leave this empty to do nothing on cancel.
+                    },
+                },
+            },
+        });
     };
+
 
     const handleActivate = (id) => {
         axiosClient
