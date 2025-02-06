@@ -663,6 +663,8 @@ public function agreeToMileS($rep_id,$booker_id)
     $mileThis = ServiceMileStatus::select('id','service_id','amount','title')
     ->where('id',$rep_id)->first();
 
+    if(!$mileThis) return 'dont exist';
+
     $mileLat = ServiceMileStatus::where('service_id',$mileThis->service_id)
     ->where('booker_id',$booker_id)->where('status','To Do')->first();
     $serv= Services::select('shop_id')->where('id',$mileThis->service_id)->first();
