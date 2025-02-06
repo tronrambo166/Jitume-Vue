@@ -699,7 +699,7 @@ public function agreeToMileS($rep_id,$booker_id)
         ->where('booker_id',$booker_id)->where('status','To Do')
         ->orWhere('status','In Progress')->first();
 
-        if(!$last)
+        if(!$Last)
         {
             $info=[ 's_id' => $business->id, 'owner' => $owner->fname. ' '.$owner->lname, ]; 
 
