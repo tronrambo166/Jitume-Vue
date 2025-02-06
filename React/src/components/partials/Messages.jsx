@@ -164,42 +164,57 @@ function Messages() {
 
    
 
-    const handleSendMessage = (id, service_id, from_id) => {
-        if (!newMessage.trim()) return; // Prevent sending empty messages
+ const handleSendMessage = (id, service_id, from_id) => {
+     if (!newMessage.trim()) return; // Prevent sending empty messages
 
-        const {
-            protectedMessage,
-            abusiveWordsFound,
-            emailsFound,
-            phonesFound,
-        } = MessageProtection(newMessage); // Protect the message
+     const { protectedMessage, abusiveWordsFound, emailsFound, phonesFound } =
+         MessageProtection(newMessage);
 
-        let alertContent = "";
-        let isSensitiveInfo = false;
+     let alertContent = "";
+     let isSensitiveInfo = false;
 
-        // Check for sensitive info (emails or phones)
-        if (emailsFound || phonesFound) {
-            isSensitiveInfo = true;
-            alertContent = `
-        <h2 class="text-lg font-semibold mb-4">Your message contains sensitive information.</h2>
-        <p>For your security, please avoid sharing personal information like email addresses, passwords, or other confidential details in this conversation.
-            Sharing such information can put your privacy at risk. Please keep the conversation secure.</p>
+     // Get user's preference from localStorage
+     const hideEmailPhoneAlert =
+         localStorage.getItem("hideEmailPhoneAlert") === "true";
+     const hideAbusiveAlert =
+         localStorage.getItem("hideAbusiveAlert") === "true";
+
+     // Track abusive message count
+     let abusiveCount = parseInt(localStorage.getItem("abusiveCount")) || 0;
+     if (abusiveWordsFound) abusiveCount += 1;
+     localStorage.setItem("abusiveCount", abusiveCount); // Update count in storage
+
+     // **Show email/phone alert only if user hasn't opted out**
+     if ((emailsFound || phonesFound) && !hideEmailPhoneAlert) {
+         isSensitiveInfo = true;
+         alertContent = `
+            <h2 class="text-lg font-semibold mb-4">Your message contains sensitive information.</h2>
+            <p>For your security, please avoid sharing personal information like email addresses, passwords, or other confidential details in this conversation.
+               Sharing such information can put your privacy at risk. Please keep the conversation secure.</p>
+            <div class="flex items-center mt-4">
+                <input type="checkbox" id="dontShowEmailPhone" class="mr-2">
+                <label for="dontShowEmailPhone" class="text-sm">Don't show this alert again</label>
+            </div>
         `;
-        }
+     }
 
-        // Check for abusive language
-        if (abusiveWordsFound) {
-            alertContent = `
-        <h2 class="text-lg font-semibold mb-4">Your message contains inappropriate language.</h2>
-        <p>Continued use of abusive language may result in temporary or permanent suspension from the messaging system. Please keep the conversation respectful.</p>
+     // **Show abusive language alert if count is ≤ 5 or user hasn't opted out**
+     if (abusiveWordsFound && (abusiveCount > 5 || !hideAbusiveAlert)) {
+         alertContent = `
+            <h2 class="text-lg font-semibold mb-4">Your message contains inappropriate language.</h2>
+            <p>Continued use of abusive language may result in temporary or permanent suspension from the messaging system. Please keep the conversation respectful.</p>
+            <div class="flex items-center mt-4">
+                <input type="checkbox" id="dontShowAbusive" class="mr-2">
+                <label for="dontShowAbusive" class="text-sm">Don't show this alert again</label>
+            </div>
         `;
-        }
+     }
 
-        // If there is an alert (sensitive info or abusive language), show it first
-        if (alertContent) {
-            $.alert({
-                title: false,
-                content: `
+     // **If any alert should be shown, display it**
+     if (alertContent) {
+         $.alert({
+             title: false,
+             content: `
                 <div>
                     <div class="flex items-center mb-4">
                         <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px;" class="jconfirm-logo mr-4">
@@ -208,37 +223,45 @@ function Messages() {
                     ${alertContent}
                 </div>
             `,
-                buttons: {
-                    send: {
-                        text: "Send Message Anyway",
-                        btnClass: "btn-green",
-                        action: function () {
-                            if ($("#dontShowAgain").is(":checked")) {
-                                localStorage.setItem("neverShowAlert", "true");
-                            }
-                            sendMessageToBackend(
-                                protectedMessage,
-                                id,
-                                service_id,
-                                from_id
-                            );
-                        },
-                    },
-                    cancel: {
-                        text: "Cancel",
-                        btnClass: "btn-red",
-                        action: function () {
-                            console.log("Message sending cancelled.");
-                        },
-                    },
-                },
-            });
-            return; // Prevent further execution until alert is resolved
-        }
+             buttons: {
+                 send: {
+                     text: "Send Message Anyway",
+                     btnClass: "btn-green",
+                     action: function () {
+                         // Save user preference if they check "Don't show again"
+                         if ($("#dontShowEmailPhone").is(":checked")) {
+                             localStorage.setItem(
+                                 "hideEmailPhoneAlert",
+                                 "true"
+                             );
+                         }
+                         if ($("#dontShowAbusive").is(":checked")) {
+                             localStorage.setItem("hideAbusiveAlert", "true");
+                         }
+                         sendMessageToBackend(
+                             protectedMessage,
+                             id,
+                             service_id,
+                             from_id
+                         );
+                     },
+                 },
+                 cancel: {
+                     text: "Cancel",
+                     btnClass: "btn-red",
+                     action: function () {
+                         console.log("Message sending cancelled.");
+                     },
+                 },
+             },
+         });
+         return; // Stop further execution until alert is handled
+     }
 
-        // If no sensitive or abusive message, proceed to send
-        sendMessageToBackend(protectedMessage, id, service_id, from_id);
-    };
+     // **If no alert is triggered, proceed with sending the message**
+     sendMessageToBackend(protectedMessage, id, service_id, from_id);
+ };
+
 
     const sendMessageToBackend = (
         protectedMessage,

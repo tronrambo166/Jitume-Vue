@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 import { BarLoader } from "react-spinners";
 import TujitumeLogo from "../../../images/Tujitumelogo.svg";
 
-
 const MyBusinesses = () => {
     const navigate = useNavigate();
     const [business, setBusiness] = useState([]);
@@ -19,7 +18,6 @@ const MyBusinesses = () => {
     const { showAlert } = useAlert();
     const [isLoading, setIsLoading] = useState(true);
 
-
     useEffect(() => {
         const getBusinesses = () => {
             setIsLoading(true);
@@ -27,6 +25,7 @@ const MyBusinesses = () => {
                 .get("/business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf3E_")
                 .then(({ data }) => {
                     setBusiness(data.business);
+                    console.log(data);
                     setIsLoading(false);
                 })
                 .catch((err) => {
@@ -46,14 +45,27 @@ const MyBusinesses = () => {
         $.confirm({
             title: false,
             content: `
-                <div style="display: flex; align-items: center;">
-                    <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
-                </div>
-                <p>Are you sure you want to delete this listing?</p>
-            `,
+    <div class="flex items-center">
+        <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
+    </div>
+    <h2 class="text-xl font-bold text-red-600 mt-4">Are you absolutely sure?</h2>
+    <p class="text-gray-700 mt-2">
+        You are about to <strong>permanently delete</strong> your business 
+        <span class="text-red-500 font-semibold">"${
+            business.find((item) => item.id === id).name
+        }"</span>. 
+    </p>
+    <p class="text-gray-700 mt-2">
+        This action <strong>cannot be undone</strong>. Once deleted, all associated data will be lost forever.
+    </p>
+    <p class="text-gray-700 mt-2">
+        If you're sure, click <span class="font-bold text-red-600">"Yes, Delete"</span>. Otherwise, select <span class="font-bold">"Cancel"</span>.
+    </p>
+`,
             buttons: {
                 confirm: {
-                    text: "Yes",
+                    text: "Yes, Delete",
+                    btnClass: "btn-red",
                     action: () => {
                         axiosClient
                             .get(`/business/delete_listing/${id}`)
@@ -84,7 +96,9 @@ const MyBusinesses = () => {
                     },
                 },
                 cancel: {
-                    text: "No",
+                    text: "Cancel",
+                    btnClass: "btn-green",
+
                     action: () => {
                         // You can leave this empty to do nothing on cancel.
                     },
@@ -92,7 +106,6 @@ const MyBusinesses = () => {
             },
         });
     };
-
 
     const handleActivate = (id) => {
         axiosClient

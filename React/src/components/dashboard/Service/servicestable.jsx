@@ -45,45 +45,60 @@ const ServiceTable = () => {
         setIsEditModalOpen(true); // Open the modal
     };
 
-   const handleDelete = (id) => {
-       $.confirm({
-           title: false,
-           content: `
-            <div style="display: flex; align-items: center;">
-                <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
-            </div>
-            <p>Are you sure you want to delete this listing?</p>
-        `,
-           buttons: {
-               confirm: {
-                   text: "Yes",
-                   action: () => {
-                       axiosClient
-                           .get("/business/delete_service/" + id)
-                           .then(() => {
-                               setService(
-                                   service.filter((item) => item.id !== id)
-                               );
-                               showAlert(
-                                   "success",
-                                   "Service deleted successfully."
-                               );
-                           })
-                           .catch((err) => {
-                               console.log(err);
-                           });
-                   },
-               },
-               cancel: {
-                   text: "No",
-                   action: () => {
-                       // Do nothing if the user cancels
-                   },
-               },
-           },
-       });
-   };
+    const handleDelete = (id) => {
+        $.confirm({
+            title: false,
 
+            content: `<div class="flex items-center">
+        <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
+    </div>
+    <h2 class="text-xl font-bold text-red-600 mt-4">Are you absolutely sure?</h2>
+    <p class="text-gray-700 mt-2">
+        You are about to <strong>permanently delete</strong> the service  
+        <span class="text-red-500 font-semibold">"${
+            service.find((item) => item.id === id).name
+        }"</span>.
+    </p>
+    <p class="text-gray-700 mt-2">
+        <strong>This action cannot be undone.</strong> Once deleted, all associated data will be lost forever.
+    </p>
+    <p class="text-gray-700 mt-2">
+        If you're sure, click <span class="font-bold text-red-600">"Yes, Delete"</span>. Otherwise, select <span class="font-bold">"Cancel"</span>.
+    </p>
+`,
+
+            buttons: {
+                confirm: {
+                    text: "Yes, Delete",
+                    btnClass: "btn-red",
+                    action: () => {
+                        axiosClient
+                            .get("/business/delete_service/" + id)
+                            .then(() => {
+                                setService(
+                                    service.filter((item) => item.id !== id)
+                                );
+                                showAlert(
+                                    "success",
+                                    "Service deleted successfully."
+                                );
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            });
+                    },
+                },
+                cancel: {
+                    text: "Cancel",
+                    btnClass: "btn-green",
+
+                    action: () => {
+                        // Do nothing if the user cancels
+                    },
+                },
+            },
+        });
+    };
 
     const handleUpdate = (updatedService) => {
         setService(
