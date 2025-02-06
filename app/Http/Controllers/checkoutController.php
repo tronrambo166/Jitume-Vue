@@ -621,18 +621,6 @@ catch(\Exception $e){
 
     
     try{
-
-    //Split
-        // $curr='USD'; //$request->currency; 
-        // $tranfer = $this->Client->transfers->create ([ 
-        //         //"billing_address_collection": null,
-        //         "amount" => $transferAmount*100, //100 * 100,
-        //         "currency" => $curr,
-        //         "source_transaction" => $charge->id,
-        //         'destination' => $ownerS->connect_id
-        // ]);
-    //Split
-
         ServiceMileStatus::where('id',$rep_id)->update([ 'status' => 'In Progress']);
         
         //Asset-related
@@ -701,14 +689,23 @@ catch(\Exception $e){
         //MAIL
         $business = Services::where('id',$mile->listing_id)->first();
         $customer = User::where('id',Auth::id())->first();
-        $info=[  'name'=>$mile->title,  'amount'=>$mile->amount, 'business'=>$business->name, 's_id' => $business_id, 'customer'=>$customer->fname. ' '.$customer->lname ]; 
-        $user['to'] = $ownerS->email;//'sohaankane@gmail.com';
+        $info=[  'name'=>$mile->title,  'amount'=>$business->price, 'business'=>$business->name, 's_id' => $business_id, 'customer'=>$customer->fname. ' '.$customer->lname ]; 
+        $user['to'] = [$ownerS->email, $customer->email];//'sohaankane@gmail.com';
 
          Mail::send('milestoneS.milestone_mail', $info, function($msg) use ($user){
              $msg->to($user['to']);
              $msg->subject('Milestone Paid!');
          });
         //MAIL 
+        //Notifications
+                $addNoti = Notifications::create([
+                'date' => $date,
+                'receiver_id' => $ownerS->id,
+                'customer_id' => $customer->id,
+                'text' => 'Service '.$business->name.' is paid, Milestone is ready to proceed.',
+                'link' => '/',
+                'type' => 'service',
+                ]);
 
         $s_id = base64_encode(base64_encode($business->id));
         return response()->json(['message' =>  'Success', 

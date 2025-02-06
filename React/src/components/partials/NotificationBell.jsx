@@ -235,6 +235,38 @@ const NotificationBell = () => {
     };
 
 
+        const CancelBooking = (id) => {
+        $.confirm({
+            title: false, // Remove the default title to have full control over placement
+            content: `
+                    <div style="display: flex; align-items: center;">
+                        <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
+                    </div>
+                    <p>Are you sure you want to cancel this Booking?</p>
+                `,
+            buttons: {
+                confirm: function () {
+                    axiosClient
+                        .get("CancelBookingConfirm/" + btoa(id) + '/ok_response')
+                        .then(({ data }) => {
+                            console.log(data); // Log response data
+                            if (data.status == 200)
+                                showAlert("success", data.message);
+                            else showAlert("error", data.message);
+                        })
+                        .catch((err) => {
+                            const response = err.response;
+                            console.log(response);
+                        });
+                },
+                cancel: function () {
+                    $.alert("You have canceled"); // Alert if canceled
+                },
+            },
+        });
+    };
+
+
     const AskInvestorToVerify = (bid_id) => {
         $.confirm({
             title: false, // Remove the default title to have full control over placement
@@ -396,6 +428,14 @@ const NotificationBell = () => {
                                                     <button onClick={() =>
                                                         ReleaseEquipment(notif.bid_id)} style={{fontSize: '11px'}} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
                                                          Release Equipment
+                                                    </button>
+                                                
+                                                    </div>
+                                                    ):notif.link =='booking_cancel_confirm'?(
+                                                    <div>
+                                                    <button onClick={() =>
+                                                        CancelBooking(notif.bid_id)} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
+                                                        OK
                                                     </button>
                                                 
                                                     </div>

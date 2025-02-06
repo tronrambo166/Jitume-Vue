@@ -44,10 +44,10 @@
             <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Booking Accepted!</h2>
             <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">Hi,<br>Your booking request to {{$business_name}} has been accepted.</p>
             <div class="button-container" style="display: flex; margin-top: 20px; gap: 20px; "> <!-- https://test.jitume.com -->
-                <a target="_blank" href="<?php echo config('app.app_url');?>service-milestones/{{$s_id}}" class="button button-primary"        style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green; text-align: center;">Pay Here
+                <a target="_blank" href="<?php echo config('app.app_url');?>service-milestones/{{$s_id}}" class="button button-primary"        style="display: inline-block; padding: 8px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green; text-align: center;">Pay Here
                 </a>
 
-                <a target="_blank" href="<?php echo config('app.api_url');?>CancelBookingConfirm/{{$booking_id}}/confirm" class="button button-primary"        style="display: inline-block; padding: 12px 24px; text-decoration: none; color: black; border-radius: 6px; transition: background-color 0.3s ease; background-color: yellow; text-align: center;">Cancel
+                <a target="_blank" href="<?php echo config('app.api_url');?>CancelBookingConfirm/{{$booking_id}}/confirm" class="button button-primary"    style="margin-left: 20px; display: inline-block; padding: 8px 24px; text-decoration: none; color: black; border-radius: 6px; transition: background-color 0.3s ease; background-color: yellow; text-align: center;">Cancel
                 </a>
 
             </div>

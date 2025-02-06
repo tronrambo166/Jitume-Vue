@@ -30,9 +30,9 @@
             style="height: 3rem; width: auto; margin: 0 auto"
         />
         <h1 style="font-size: 2rem; font-weight: 700; margin-top: 1rem">
-            Milestone Payment!
+            Service Payment!
         </h1>
-    </div>
+    </div> 
     <div class="content" style="padding: 20px">
         <h3
             style="
@@ -42,8 +42,7 @@
                 margin-bottom: 15px;
             "
         >
-            Milestone {{$name}} is paid! by {{$customer}}, you can begin working
-            on the Milestone!
+            Service {{$name}} is paid!
         </h3>
 
         <div
@@ -74,12 +73,18 @@
                     font-weight: 500;
                     margin-bottom: 8px;
                 "
-            >
-                <strong>Amount:</strong> {{$amount}}
+            >   @php $Tax = $amount*0.05; $Total = $amount+$Tax; @endphp
+                <strong>Amount:</strong> {{$amount}} <br/>
+                <strong>Tax:</strong> {{$Tax}} <br/>
+                <strong>Total:</strong> {{$Total}}
             </h5>
             <h5 style="color: black; font-size: 1rem; font-weight: 500">
-                <strong>Business Name:</strong> {{$business}}
+                <strong>Service Name:</strong> {{$business}}
             </h5>
+
+            <p style="font-weight: 600; color:yellowgreen;">
+                    Service payment will be held in Escrow. When first milestone is completed & Customer agrees to proceed to next milestone then the payment for first milestone is released. The process goes one till all milestones are done. 
+                </p>
         </div>
 		 <div
                 class="footer"
@@ -106,7 +111,7 @@
                 </p>
                  <p style="font-weight: 600">
                     Best regards, <br/>
-                   <div style="margin-bottom:3px;" ">The Tujitume Team</div> 
+                   <div style="margin-bottom:3px;">The Tujitume Team</div> 
                 </p>
 
         <!-- Do you want to Continue to the Next Milestone?
@@ -120,7 +125,7 @@
 				Cancel </a>
 			</div> -->
 
-        <
+        
     </div>
 </div>
 

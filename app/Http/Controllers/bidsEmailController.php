@@ -514,18 +514,24 @@ public function CancelBookingConfirm($booking_id, $action)
 {   
     $booking_id = base64_decode($booking_id); 
     try { 
-        $bid = AcceptedBids::where('id',$booking_id)->first();
-        $investor = User::select('fname','fname','email')->where('id',$bid->investor_id)->first();
-        $inv_name = $investor->fname.' '.$investor->fname;
-        $business = Services::select('name','shop_id','id')->where('id',$bid->business_id)->first();
+        $bid = serviceBook::where('id',$booking_id)->first();
+        if(!$bid) 
+        return response()->json(['message'=>'Bid does not exist!', 'status'=>400]);
+
+        $booker = User::select('fname','lname','email','id')
+        ->where('id',$bid->booker_id)->first();
+        $business = Services::select('name','shop_id','id')->where('id',$bid->service_id)->first();
         $owner = User::select('email','id')->where('id',$business->shop_id)->first();
+        $booker_name = $booker->fname.' '.$booker->lname;
+        $s_id = base64_encode(base64_encode($business->id));
 
         if($action == 'confirm')
         {
-            $info=[ 'business_name'=>$business->name, 'business_owner'=>$bid->business_id,  'booking_id'=> base64_encode($booking_id)];
+            $info=[ 'business_name'=>$business->name, 'booking_id'=>
+             base64_encode($booking_id), 's_id' => $s_id ];
             
-            $user['to'] = $investor->email;
-            Mail::send('bids.eqp_cancel_confirm', $info, function($msg) use ($user){
+            $user['to'] = $booker->email;
+            Mail::send('services.booking_cancel_confirm', $info, function($msg) use ($user){
                 $msg->to($user['to']);
                 $msg->subject('Booking Cancel Confirmation!');
             });
@@ -534,22 +540,22 @@ public function CancelBookingConfirm($booking_id, $action)
              $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
              $addNoti = Notifications::create([
                 'date' => $date,
-                'receiver_id' => $bid->investor_id,
+                'receiver_id' => $bid->booker_id,
                 'customer_id' => $owner->id,
-                'bid_id' => $bidId,
-                'text' => 'Your bid to business '.$business->name.' will be cancelled.',
+                'bid_id' => $booking_id,
+                'text' => 'Your booking to Service '.$business->name.' will be cancelled with.',
                 'link' => 'booking_cancel_confirm',
-                'type' => 'business',
+                'type' => 'service',
               ]);
           //Notifications
         }
         else
         {
-            $info=['investor'=>$inv_name,'type'=>$bid->type,'business_name'=>$business->name];
+            $info=['investor'=>$booker_name,'business_name'=>$business->name];
             $user['to'] = $owner->email; //'tottenham266@gmail.com';
-             Mail::send('bids.cancelled', $info, function($msg) use ($user){
+             Mail::send('services.booking_cancelled', $info, function($msg) use ($user){
                  $msg->to($user['to']);
-                 $msg->subject('Bid Cancel!');
+                 $msg->subject('Booking Cancel!');
              });
 
             //Notifications
@@ -557,29 +563,32 @@ public function CancelBookingConfirm($booking_id, $action)
              $addNoti = Notifications::create([
                 'date' => $date,
                 'receiver_id' => $owner->id,
-                'customer_id' => $bid->investor_id,
-                'text' => 'A bid to business '.$business->name.' was cancelled by '.$inv_name,
-                'link' => 'investment-bids',
-                'type' => 'business',
+                'customer_id' => $booker->id,
+                'text' => 'A booking to Service '.$business->name.' was cancelled by '.$booker_name,
+                'link' => 'service-bookings',
+                'type' => 'service',
               ]);
 
              $addNoti2 = Notifications::create([
                 'date' => $date,
-                'receiver_id' => $bid->investor_id,
+                'receiver_id' => $booker->id,
                 'customer_id' => $owner->id,
-                'text' => 'Your bid to business '.$list->name.' was cancelled.',
-                'link' => 'investment-bids',
-                'type' => 'business',
+                'text' => 'Your bid to Service '.$business->name.' was cancelled.',
+                'link' => 'service-bookings',
+                'type' => 'service',
               ]);
             //Notifications
               ServiceBook::where('id',$booking_id)->delete();
+
+              if($action == 'ok_response')
+              return response()->json(['status'=>200, 'message'=> 'Booking Cancelled!']);
         }
 
          return redirect()->to(config('app.app_url').'dashboard')->send();
      
        }
         catch(\Exception $e){
-            //return $e->getMessage().config('app.app_url/dashboard');
+            return $e->getMessage();
             return redirect()->to(config('app.app_url').'dashboard')->send();
        }  
 }
@@ -684,6 +693,22 @@ public function agreeToMileS($rep_id,$booker_id)
 
         $text = 'Milestone payment for '.$mileThis->title.' has been released. Next Milestone is in progress';
         $this->createNotification($booker_id,null,$text,'/',' service');
+
+        //Check if Service is done
+        $Last = ServiceMileStatus::where('service_id',$mileThis->service_id)
+        ->where('booker_id',$booker_id)->where('status','To Do')
+        ->orWhere('status','In Progress')->first();
+
+        if(!$last)
+        {
+            $info=[ 's_id' => $business->id, 'owner' => $owner->fname. ' '.$owner->lname, ]; 
+
+            $user['to'] = $customer->email;//'sohaankane@gmail.com';
+             Mail::send('service_done_mail', $info, function($msg) use ($user){
+                 $msg->to($user['to']);
+                 $msg->subject('Service Done!');
+             });  
+        }
 
         return redirect()->to(config('app.app_url').'service-milestones/'.$s_id);
     }

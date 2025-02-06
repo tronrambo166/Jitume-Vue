@@ -1,10 +1,9 @@
+<!--Hidden Cart view-->
+<!-- import tailwind css -->
+<script src="https://cdn.tailwindcss.com"></script>
 
-
-        
-
-<!--Hidden Cart view-->  
-
-        <div
+<!-- Header with Logo -->
+<div
     style="
         max-width: 1024px;
         margin-left: auto;
@@ -17,8 +16,8 @@
         position: relative;
     "
 >
-    <!-- Header with Logo -->
-    <div
+    <div>
+        <div
         style="
             background-color: #14532d;
             padding: 0.9rem 0;
@@ -30,34 +29,34 @@
     >
         <img
             src="{{ $message->embed('https://tujitume.com/images/Email/EmailWhite.png')}}"
-
             alt="Company Logo"
             style="height: 3rem; width: auto; margin: 0 auto"
         />
-        <h1 style="font-size: 2rem; font-weight: 700; margin-top: 1rem">
-            Service Completed
+        <h1
+            class="text-3xl font-bold mt-4"
+            style="font-size: 2rem; font-weight: 700; margin-top: 1rem"
+        >
+            Booking Cancelled!
         </h1>
     </div>
- <div class="content" style="padding: 20px">
-	<h2 style="color: green; font-size: 1.8rem; font-weight: bold; margin-bottom: 15px;">
-       Congratulations! </h2>
-			
-			<div class="" style="width:50%; margin:auto;">
-			 <h4 style="color: black; font-size: 1rem; font-weight: 500; line-height: 1.5;">
-            All Milestones are completed, Service is done! Please review.
-        </h4>
-
-
-			<div style="margin-top: 20px;">
-			<a target="_blank" href="<?php echo config('app.app_url');?>service-details/{{$s_id}}?review_popup=true" class="button continue" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Review</a>
-			
-		</div>
-
-		
-	</div>
-						
-				
-			 <div
+    </div>
+    <!-- Bid Rejected -->
+    <div class="email-container">
+        <div class="content" style="padding: 20px">
+            <h2
+                class="email-title"
+                style="font-size: 20px; margin-bottom: 20px"
+            >
+               Unfortunately, Your Booking Has Been Cancelled.
+            </h2>
+            <p
+                class="email-message"
+                style="font-size: 12px; line-height: 1.8; margin-bottom: 30px"
+            >
+                Hi,<br />The Customer {{$investor}} has decided to cancel their
+                booking from {{$business_name}}.
+            </p>
+          <div
                 class="footer"
                 style="
                     margin-top: 2rem;
@@ -85,30 +84,25 @@
                    <div style="margin-bottom:3px;">The Tujitume Team</div> 
                 </p>
             </div>
-
-		</div>
+        </div>
+    </div>
 </div>
 
-		
-		
-		</div>
-  
-        
-		
-       
-      
+<script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"
+></script>
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-       
-
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    
-
+<script
+    src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"
+></script>
+<script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"
+></script>
 
 <!--Hidden Cart view-->
-
-
-        
-
-        

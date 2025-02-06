@@ -2,9 +2,9 @@
 
         
 
-<!--Hidden Cart view-->
+<!--Hidden Cart view-->  
 
-     <div
+        <div
     style="
         max-width: 1024px;
         margin-left: auto;
@@ -35,66 +35,81 @@
             style="height: 3rem; width: auto; margin: 0 auto"
         />
         <h1 style="font-size: 2rem; font-weight: 700; margin-top: 1rem">
-			Milestone Due Alert!
+            Service Completed
         </h1>
     </div>
-	<div class="content" style="padding: 20px;">
-    <h2 style="
-        color: black;
-        font-family: sans-serif;
-        font-size: 22px;
-        font-weight: 600;
-        text-align: center;
-        margin-bottom: 10px;
+ <div class="content" style="padding: 20px">
+	<h2 style="color: green; font-size: 1.8rem; font-weight: bold; margin-bottom: 15px;">
+       Congratulations! </h2>
+			
+			<div class="" style="width:50%; margin:auto;">
+			 <h4 style="color: black; font-size: 1rem; font-weight: 500; line-height: 1.5;">
+            All Milestones are completed,
+        </h4>
+
+        <p style="
+        margin-top: 20px;
+        font-size: 16px;
+        color: #444;
     ">
-        <br> Your milestone has {{$d}} day(s) left!
-    </h2>
+        Final Payment Can Be Released.
+    </p>
 
     <div style="
-        width: 50%;
-        margin: auto;
-        padding: 10px;
-        border-radius: 8px;
+        margin-top: 15px;
+        text-align: center;
     ">
-        <h4 style="
-            color: silver;
-            font-family: sans-serif;
-            font-size: 16px;
+        <a target="_blank" href="<?php echo config('app.api_url');?>agreeToMileS/{{$rep_id}}/{{$booker_id}}"
+            style="
+                display: inline-block;
+                background-color: #2f9f1f;
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                font-size: 14px;
+                font-weight: 500;
+                border-radius: 8px;
+                text-decoration: none;
+                transition: all 0.3s ease;
+            "
+            onmouseover="this.style.backgroundColor='#1f7f14';"
+            onmouseout="this.style.backgroundColor='#2f9f1f';"
+        >
+            Ok
+        </a>
+
+        <!-- Uncomment if you need a cancel button -->
+        
+        <a href="#" style="
+            display: inline-block;
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 14px;
             font-weight: 500;
-            text-align: left;
-            margin-bottom: 5px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-left: 15px;
         ">
-            Milestone Name: {{$name}}
-        </h4>
-        <h4 style="
-            color: silver;
-            font-family: sans-serif;
-            font-size: 16px;
-            font-weight: 500;
-            text-align: left;
-            margin-bottom: 5px;
-        ">
-            Amount: {{$amount}}
-        </h4>
-        <h4 style="
-            color: darkgreen;
-            font-family: sans-serif;
-            font-size: 16px;
-            font-weight: 500;
-            text-align: left;
-        ">
-            <!-- If any text is missing here, you can add it -->
-        </h4>
+            Cancel
+        </a>
+        
     </div>
-</div>
-				<div
+
+
+
+		
+	</div>
+						
+				
+			 <div
                 class="footer"
                 style="
                     margin-top: 2rem;
                     text-align: start;
                     color: gray;
                     font-size: 12px;
-
                 "
             >
                 <p>
@@ -116,7 +131,10 @@
                    <div style="margin-bottom:3px;">The Tujitume Team</div> 
                 </p>
             </div>
+
 		</div>
+</div>
+
 		
 		
 		</div>
