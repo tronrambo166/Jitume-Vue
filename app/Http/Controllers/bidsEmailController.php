@@ -676,7 +676,7 @@ public function agreeToMileS($rep_id,$booker_id)
         'status'=> 'In Progress'
     ]);
 
-    $s_id = base64_encode(base64_encode($mileLat->service_id));
+    $s_id = base64_encode(base64_encode($mileThis->service_id));
 
     $transferAmount = round($mileThis->amount,2);
     
