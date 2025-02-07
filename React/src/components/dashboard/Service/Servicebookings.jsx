@@ -54,9 +54,28 @@ function InvestmentBids() {
 
     const RejectBids = () => {
         setLoadingReject(true); // Start loading
-        showAlert("info", "Reject functionality coming soon!");
+        const payload = {
+            bid_ids: selectedBids,
+        };
+        console.log(payload);
+
+        axiosClient
+            .post("bookingRejected", payload)
+            .then(({ data }) => {
+                // Use showAlert to display success message
+                showAlert("success", data.message);
+                console.log(data);
+            })
+            .catch((err) => {
+                    console.log(err);
+                    showAlert("error", err.esponse.data.message || "An error occurred");
+            })
+            .finally(() => {
+                setLoadingAccept(false); // Hide spinner
+            });
         setLoadingReject(false); // Stop loading
     };
+
 
     useEffect(() => {
         setLoading(true);
@@ -212,10 +231,7 @@ function InvestmentBids() {
                             onClick={() => {
                                 if (selectedBids.length > 0) {
                                     setLoadingReject(true); // Start loading
-                                    showAlert(
-                                        "info",
-                                        "Reject functionality coming soon!"
-                                    );
+                                    RejectBids();
                                     setLoadingReject(false); // End loading immediately after showing the alert
                                 } else {
                                     showAlert(

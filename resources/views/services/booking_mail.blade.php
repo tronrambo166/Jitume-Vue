@@ -42,7 +42,20 @@
         <div class="content" style="padding: 20px;">
             
             <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Booking Accepted!</h2>
-            <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">Hi,<br>Your booking request to {{$business_name}} has been accepted.</p>
+            <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">
+                Dear Customer,<br>We are pleased to inform you that your booking request for {{$business_name}} has been
+                accepted by the service owner.</p>
+
+            <h5 style="margin-top: 8px;margin-bottom: 15px;">Booking Details:<h5>
+
+
+            <p class="email-message" style="font-size: 12px; padding-top: 5px; line-height: 1.8; margin-bottom: 30px;">
+
+                 <b>Booking ID:</b> #OO{{$id}}<br>
+                 <b>Service Name:</b> {{$business_name}}<br>
+                 <b>Requested Date:</b> {{$date}}<br>
+            </p>
+
             <div class="button-container" style="display: flex; margin-top: 20px; gap: 20px; "> <!-- https://test.jitume.com -->
                 <a target="_blank" href="<?php echo config('app.app_url');?>service-milestones/{{$s_id}}" class="button button-primary"        style="display: inline-block; padding: 8px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green; text-align: center;">Pay Here
                 </a>
@@ -86,7 +99,25 @@
         <div class="content" style="padding: 20px;">
             
             <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Booking Rejected!</h2>
-            <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">Hi,<br>Your booking request to {{$business_name}} has been Rejected. <br> Reason: {{$reason}}</p>
+            <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">
+                Dear Customer,<br>Your booking request for the service {{$business_name}} has
+            been rejected by the service owner.. <br> Reason: {{$reason}}</p>
+
+            <h5 style="margin-top: 8px;margin-bottom: 8px;">Booking Details:<h5>
+
+
+            <p class="email-message" style="font-size: 12px; padding-top: 5px; line-height: 1.5; margin-bottom: 30px;">
+
+                 <b>Booking ID:</b> #OO{{$id}}<br>
+                 <b>Service Name:</b> {{$business_name}}<br>
+                 <b>Requested Date:</b> {{$date}}<br>
+
+                If you believe this rejection was made in error, please contact the service owner directly
+                through Tujitume support.
+            </p>
+
+
+
             <div class="button-container" style="display: flex;gap: 20px;  margin-top: 20px;"> <!-- https://test.jitume.com -->
          
 

@@ -46,6 +46,7 @@ Route::middleware('auth:sanctum')->group(function() {
     
     
     Route::post('bookingAccepted', [bidsEmailController::class, 'bookingAccepted'])->name('bookingAccepted');
+    Route::post('bookingRejected', [bidsEmailController::class, 'bookingRejected'])->name('bookingRejected');
     
     Route::get('FindProjectManagers/{bid_id}', [BusinessController::class, 'FindProjectManagers'])->name('FindProjectManagers');
     Route::get('releaseEquipment/{b_owner_id}/{manager_id}/{bid_id}', [bidsEmailController::class, 'releaseEquipment'])->name('releaseEquipment');

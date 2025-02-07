@@ -597,7 +597,8 @@ public function getMilestones($id){
     ->where('booker_id', Auth::id())->get(); 
 
     $status = ServiceMileStatus::where('service_id',$id)
-    ->where('booker_id', Auth::id())->where('status', 'In Progress')->first();
+    ->where('booker_id', Auth::id())->where('status', 'In Progress')
+    ->orWhere('status', 'Done')->first();
     if($status) $isPaid = true;
   }
   else{
@@ -1033,7 +1034,8 @@ public function serviceBook(Request $request){
   try{
    if(Auth::check()){
       $booker_id = Auth::id();
-      $investor_mail = User::select('email')->where('id', Auth::id())->first()->email;
+      $investor_mail = User::select('email')->where('id', Auth::id())->first()
+      ->email;
    }
       
     else {
@@ -1042,6 +1044,13 @@ public function serviceBook(Request $request){
     $owner = Services::where('id',$request->service_id)->first();
 
     //
+    $ifBooked = serviceBook::where('service_id',$request->service_id)
+    ->where('booker_id', Auth::id())->first();
+    if($ifBooked){
+      return response()->json(['status' => 400, 'message' => 'You already have made a booking!']);
+    }
+    
+
     $previous_booking = ServiceMileStatus::where('service_id',$request->service_id)
     ->where('booker_id', Auth::id())->delete(); 
     //
@@ -1078,13 +1087,13 @@ public function serviceBook(Request $request){
          });
         //Mail
 
-    return response()->json(['success' => 'Booking Success! Go to dashboard to see status']);
+    return response()->json(['status' => 200, 'message' => 'Booking Success! Go to dashboard to see status']);
       } 
 
     }
 
     catch(\Exception $e){
-      return response()->json(['failed' => $e->getMessage()]);
+      return response()->json(['status' => 400, 'message' => $e->getMessage()]);
     }
 }
 

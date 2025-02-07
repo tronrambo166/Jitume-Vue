@@ -920,7 +920,7 @@ try{
         //Email
         Mail::send('bids.invest_completion_alert', $info, function($msg) use ($user){
              $msg->to($user['to']);
-             $msg->subject('Investment completion alert!');
+             $msg->subject('Investment Completion Alert!');
          });
 
         $text = 'All milestones of business '.$list->name.'
@@ -953,7 +953,7 @@ try{
 
         Mail::send('bids.milecompletion_alert', $info, function($msg) use ($user){
              $msg->to($user['to']);
-             $msg->subject('Milestone completion alert!');
+             $msg->subject('Milestone Completion Alert!');
          });
 
         $text = 'Milestone '.$thisMile->title.' of business '.$list->name.'
@@ -1173,7 +1173,7 @@ public function requestOwnerToVerify($bid_id)
          if($owner)
             Mail::send('bids.verify_request', $info, function($msg) use ($user){
              $msg->to($user['to']);
-             $msg->subject('Equipment Verify request!');
+             $msg->subject('Equipment Verify Request!');
          });
         //Email
 
@@ -1201,7 +1201,7 @@ public function markAsVerified($id)
                 $user['to'] = $investor->email;
                  Mail::send('services.equip_release_request', $info, function($msg) use ($user){
                     $msg->to($user['to']);
-                    $msg->subject('Equipment release request!');
+                    $msg->subject('Equipment Release Request!');
                  });
               //EQP RELEASE
             

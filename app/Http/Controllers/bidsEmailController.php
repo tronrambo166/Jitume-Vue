@@ -188,7 +188,7 @@ public function bidsAccepted(Request $request)
                  if($investor)
                     Mail::send('bids.initially_accepted' , $info, function($msg) use ($user){
                      $msg->to($user['to']);
-                     $msg->subject('Bid accepted!');
+                     $msg->subject('Bid Accepted!');
                  });
             //Mail
 
@@ -620,7 +620,7 @@ public function releaseEquipment($business_id, $manager_id, $bid_id){
             $user['to'] = $b_owner->email;
             $mail2 =  Mail::send('bids.manager_eqp_alert', $info, function($msg) use ($user){
                  $msg->to($user['to']);
-                 $msg->subject('Equipment released!');
+                 $msg->subject('Equipment Released!');
              });
 
             $text = 'Equipment X from '.$investor_name.' is ready to release.';
@@ -633,7 +633,7 @@ public function releaseEquipment($business_id, $manager_id, $bid_id){
             $user['to'] = $manager->email;
             $mail2 =  Mail::send('bids.manager_eqp_alert', $info, function($msg) use ($user){
                  $msg->to($user['to']);
-                 $msg->subject('Equipment released!');
+                 $msg->subject('Equipment Released!');
              });
 
             $text = 'Equipment from '.$investor_name.' is ready to release.';
@@ -667,8 +667,9 @@ public function agreeToMileS($rep_id,$booker_id)
 
     $mileLat = ServiceMileStatus::where('service_id',$mileThis->service_id)
     ->where('booker_id',$booker_id)->where('status','To Do')->first();
-    $serv= Services::select('shop_id')->where('id',$mileThis->service_id)->first();
+    $serv= Services::select('id','shop_id')->where('id',$mileThis->service_id)->first();
     $owner = User::select('id','connect_id')->where('id',$serv->shop_id)->first();
+    $customer = User::select('email')->where('id',$booker_id)->first();
 
     if($mileLat)
     ServiceMileStatus::where('id',$mileLat->id)->update([ 
@@ -698,18 +699,25 @@ public function agreeToMileS($rep_id,$booker_id)
 
         //Check if Service is done
         $Last = ServiceMileStatus::where('service_id',$mileThis->service_id)
-        ->where('booker_id',$booker_id)->where('status','To Do')
-        ->orWhere('status','In Progress')->first();
+        ->where('booker_id',$booker_id)->where('status','To Do')->first();
 
-        if(!$Last)
+        $Last2 = ServiceMileStatus::where('service_id',$mileThis->service_id)
+        ->where('booker_id',$booker_id)->where('status','In Progress')->first();
+
+
+        if(!$Last && !$Last2)
         {
-            $info=[ 's_id' => $business->id, 'owner' => $owner->fname. ' '.$owner->lname, ]; 
+            $info=[ 's_id' => base64_encode(base64_encode($serv->id)) ]; 
 
             $user['to'] = $customer->email;//'sohaankane@gmail.com';
-             Mail::send('service_done_mail', $info, function($msg) use ($user){
+             Mail::send('milestoneS.service_done_mail', $info, function($msg) use ($user){
                  $msg->to($user['to']);
                  $msg->subject('Service Done!');
-             });  
+             }); 
+
+             //Delete Booking
+             //serviceBook::where('service_id',$mileThis->service_id)
+             //->where('booker_id',$booker_id)->delete();
         }
 
         return redirect()->to(config('app.app_url').'service-milestones/'.$s_id);
@@ -1006,11 +1014,12 @@ public function bookingAccepted(Request $request)
           ]);
          //Notifications
 
-        $info=['business_name'=>$list->name,'s_id'=>base64_encode(base64_encode($list->id)), 'booking_id'=>base64_encode($id), 'reason' => 0];
+        $info=['business_name'=>$list->name,'s_id'=>base64_encode(base64_encode($list->id)), 'booking_id'=>base64_encode($id), 'reason' => 0, 
+        'id'=>$bid->id, 'date'=>$bid->date];
         $user['to'] = $investor_mail;
          Mail::send('services.booking_mail', $info, function($msg) use ($user){
              $msg->to($user['to']);
-             $msg->subject('Booking accepted!');
+             $msg->subject('Booking Accepted!');
          });
 
         }
@@ -1049,14 +1058,15 @@ public function bookingAccepted(Request $request)
          $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
          $addNoti = Notifications::create([
             'date' => $date,
-            'receiver_id' => $booker_id,
-            'customer_id' => $service_id,
+            'receiver_id' => $bid->booker_id,
+            'customer_id' => $bid->service_id,
             'text' => 'Your booking to _name has been rejected due to '.$reason,
             'link' => 'mybookings',
             'type' => 'service',
           ]);
 
-         $info=['business_name'=>$list->name,'s_id'=>base64_encode(base64_encode($list->id)), 'reason' => $reason ]; $user['to'] = $investor_mail;
+         $info=['business_name'=>$list->name,'s_id'=>base64_encode(base64_encode($list->id)), 'reason' => $reason, 'id'=>$bid->id, 'date'=>$bid->date ]; 
+         $user['to'] = $investor_mail;
          Mail::send('services.booking_mail', $info, function($msg) use ($user){
              $msg->to($user['to']);
              $msg->subject('Booking Rejected!');
@@ -1065,12 +1075,10 @@ public function bookingAccepted(Request $request)
 
     }
     }
-        Session::put('success','Rejected!');
-        return response()->json(['status' => 200, 'message' => 'Success']);
+        return response()->json(['status' => 200, 'message' => 'Rejected, Success!']);
      
     }
     catch(\Exception $e){
-        Session::put('failed',$e->getMessage());
         return response()->json(['status' => 400, 'message'=>$e->getMessage()]);
     }  
 

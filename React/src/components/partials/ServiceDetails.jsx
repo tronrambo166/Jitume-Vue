@@ -345,12 +345,12 @@ const ServiceDetails = () => {
         axiosClient
             .post("/serviceBook", payload)
             .then(({ data }) => {
-        setIsLoading(false);
-                
-                if (data.success) {
+            setIsLoading(false);
+                console.log(data);
+                if (data.status == 200) {
                     $.alert({
                         title: "Alert!",
-                        content: data.success,
+                        content: data.message,
                     });
                     setBooked(true);
 
@@ -361,7 +361,7 @@ const ServiceDetails = () => {
                 } else {
                     $.alert({
                         title: "Alert!",
-                        content: data.failed,
+                        content: data.message,
                         type: "red",
                         buttons: {
                             tryAgain: {
