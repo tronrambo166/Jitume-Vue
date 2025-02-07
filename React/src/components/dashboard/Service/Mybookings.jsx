@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axiosClient from "../../../axiosClient";
-import {
-    useNavigate,
-    useParams
-} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { BarLoader } from "react-spinners";
-
+import { BsThreeDots } from "react-icons/bs";
 
 const MyBookings = () => {
     const [bookings, setBookings] = useState([]);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false); // Spinner state
+    const [openDropdown, setOpenDropdown] = useState(null); // Track which row's dropdown is open
+    const dropdownRefs = useRef({}); // Store refs for each row
 
     useEffect(() => {
         const getBookings = () => {
@@ -19,13 +18,13 @@ const MyBookings = () => {
                 axiosClient
                     .get("/business/my_booking")
                     .then(({ data }) => {
-                setLoading(false);
+                        setLoading(false);
 
                         setBookings(data.results);
                         console.log(data);
                     })
                     .catch((err) => {
-                setLoading(false);
+                        setLoading(false);
 
                         console.log(err);
                     });
@@ -36,6 +35,7 @@ const MyBookings = () => {
 
     const [editItem, setEditItem] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [showModal2, setShowModal2] = useState(false);
 
     const handleEdit = (item) => {
         setEditItem(item);
@@ -52,7 +52,29 @@ const MyBookings = () => {
                 console.log(err);
             });
     };
+    // Toggle Dropdown
+    const handleDropdownToggle = (id) => {
+        setOpenDropdown((prev) => (prev === id ? null : id));
+    };
+    
 
+  useEffect(() => {
+      const handleClickOutside = (event) => {
+          if (
+              openDropdown !== null &&
+              dropdownRefs.current[openDropdown] &&
+              !dropdownRefs.current[openDropdown].contains(event.target)
+          ) {
+              setOpenDropdown(null);
+          }
+      };
+
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+          document.removeEventListener("mousedown", handleClickOutside);
+      };
+  }, [openDropdown]);
+  
     const handleSave = () => {
         setBookings(
             bookings.map((item) => (item.id === editItem.id ? editItem : item))
@@ -157,95 +179,136 @@ const MyBookings = () => {
                                         <td className="px-4 py-4 text-sm">
                                             {item.status}
                                         </td>
-                                        <td className="px-4 py-4 text-sm">
-                                            {item.status == "Confirmed" ? (
+                                        <td className="px-4 py-4 text-sm relative">
+                                            <div
+                                                className="relative inline-block"
+                                                ref={(el) =>
+                                                    (dropdownRefs.current[
+                                                        item.id
+                                                    ] = el)
+                                                }
+                                            >
+                                                {/* Three Dots Button */}
                                                 <button
                                                     onClick={() =>
-                                                        gotoMilestone(
-                                                            item.service_id
+                                                        handleDropdownToggle(
+                                                            item.id
                                                         )
                                                     }
-                                                    className="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-teal-400 text-teal-800 hover:bg-teal-200 focus:outline-none focus:bg-teal-200 disabled:opacity-50 disabled:pointer-events-none dark:text-teal-500 dark:bg-teal-800/30 dark:hover:bg-teal-800/20 dark:focus:bg-teal-800/20"
+                                                    className="p-2 text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition"
                                                 >
-                                                    {" "}
-                                                    Pay
+                                                    <BsThreeDots size={20} />
                                                 </button>
-                                            ) : (
-                                                <button className="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-teal-400 text-teal-800 hover:bg-teal-200 focus:outline-none focus:bg-teal-200 disabled:opacity-50 disabled:pointer-events-none dark:text-teal-500 dark:bg-teal-800/30 dark:hover:bg-teal-800/20 dark:focus:bg-teal-800/20">
-                                                    {" "}
-                                                    -
-                                                </button>
-                                            )}
+
+                                                {/* Dropdown Menu */}
+                                                {openDropdown === item.id && (
+                                                    <div
+                                                        className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 
+                border border-gray-300 dark:border-gray-700 shadow-lg rounded-lg 
+                z-50 p-2 transition"
+                                                        style={{
+                                                            position: "fixed", // Prevents affecting the table layout
+                                                            top: "auto",
+                                                            left: "auto",
+                                                        }}
+                                                    >
+                                                        {item.status ===
+                                                        "Confirmed" ? (
+                                                            <button
+                                                                onClick={() =>
+                                                                    gotoMilestone(
+                                                                        item.service_id
+                                                                    )
+                                                                }
+                                                                className="w-full py-2 px-4 text-sm font-medium rounded-lg 
+                        bg-teal-500 hover:bg-teal-600 text-white focus:outline-none transition"
+                                                            >
+                                                                Pay
+                                                            </button>
+                                                        ) : (
+                                                            <button
+                                                                className="w-full py-2 px-4 text-sm font-medium rounded-lg 
+                        bg-gray-300 text-gray-500 cursor-not-allowed"
+                                                                disabled
+                                                            >
+                                                                No Action
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                )}
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
-                    {showModal && (
-                        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-                            <div className="bg-white rounded-lg shadow-lg w-1/3 p-4">
-                                <h2 className="text-xl font-semibold mb-4">
-                                    Edit Booking
-                                </h2>
-                                <form
-                                    onSubmit={(e) => {
-                                        e.preventDefault();
-                                        handleSave();
-                                    }}
-                                >
-                                    {/* Form Fields */}
-                                    <div className="mb-4">
-                                        <label className="block text-sm font-medium mb-2">
-                                            Date
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={editItem.date}
-                                            onChange={(e) =>
-                                                setEditItem({
-                                                    ...editItem,
-                                                    date: e.target.value,
-                                                })
-                                            }
-                                            className="border rounded-lg p-2 w-full"
-                                        />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label className="block text-sm font-medium mb-2">
-                                            Service Name
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={editItem.serviceName}
-                                            onChange={(e) =>
-                                                setEditItem({
-                                                    ...editItem,
-                                                    serviceName: e.target.value,
-                                                })
-                                            }
-                                            className="border rounded-lg p-2 w-full"
-                                        />
-                                    </div>
-                                    {/* Add more form fields as needed */}
-                                    <div className="flex justify-end">
-                                        <button
-                                            type="button"
-                                            onClick={() => setShowModal(false)}
-                                            className="text-gray-600 py-2 px-4 mr-2 border rounded-xl hover:underline"
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button
-                                            type="submit"
-                                            className="text-blue-600 py-2 px-4 border rounded-xl hover:underline"
-                                        >
-                                            Save
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                    {showModal && <></>}
+                    {showModal2 && (
+                        <></>
+                        // <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+                        //     <div className="bg-white rounded-lg shadow-lg w-1/3 p-4">
+                        //         <h2 className="text-xl font-semibold mb-4">
+                        //             Edit Booking
+                        //         </h2>
+                        //         <form
+                        //             onSubmit={(e) => {
+                        //                 e.preventDefault();
+                        //                 handleSave();
+                        //             }}
+                        //         >
+                        //             {/* Form Fields */}
+                        //             <div className="mb-4">
+                        //                 <label className="block text-sm font-medium mb-2">
+                        //                     Date
+                        //                 </label>
+                        //                 <input
+                        //                     type="text"
+                        //                     value={editItem.date}
+                        //                     onChange={(e) =>
+                        //                         setEditItem({
+                        //                             ...editItem,
+                        //                             date: e.target.value,
+                        //                         })
+                        //                     }
+                        //                     className="border rounded-lg p-2 w-full"
+                        //                 />
+                        //             </div>
+                        //             <div className="mb-4">
+                        //                 <label className="block text-sm font-medium mb-2">
+                        //                     Service Name
+                        //                 </label>
+                        //                 <input
+                        //                     type="text"
+                        //                     value={editItem.serviceName}
+                        //                     onChange={(e) =>
+                        //                         setEditItem({
+                        //                             ...editItem,
+                        //                             serviceName: e.target.value,
+                        //                         })
+                        //                     }
+                        //                     className="border rounded-lg p-2 w-full"
+                        //                 />
+                        //             </div>
+                        //             {/* Add more form fields as needed */}
+                        //             <div className="flex justify-end">
+                        //                 <button
+                        //                     type="button"
+                        //                     onClick={() => setShowModal(false)}
+                        //                     className="text-gray-600 py-2 px-4 mr-2 border rounded-xl hover:underline"
+                        //                 >
+                        //                     Cancel
+                        //                 </button>
+                        //                 <button
+                        //                     type="submit"
+                        //                     className="text-blue-600 py-2 px-4 border rounded-xl hover:underline"
+                        //                 >
+                        //                     Save
+                        //                 </button>
+                        //             </div>
+                        //         </form>
+                        //     </div>
+                        // </div>
                     )}
                 </>
             )}
