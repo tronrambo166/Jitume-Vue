@@ -495,7 +495,9 @@ const ServiceDetails = () => {
                                 <span className="text-yellow-400">
                                     {renderStars(details.rating)}{" "}
                                 </span>
-                                <span className="ml-2">({details.rating})</span>
+                                <span className="ml-2">
+                                    ({(Number(details.rating) || 0).toFixed(2)})
+                                </span>
                             </div>
                             <div className="text-gray-500 text-sm">
                                 {/* {details.rating_count} Ratings */}
@@ -513,9 +515,9 @@ const ServiceDetails = () => {
                                         </p>
                                         <span className="font-semibold text-[20px] text-green-700">
                                             ${details.price}{" "}
-                                            <span className="text-sm">
+                                            {/* <span className="text-sm">
                                                 for 50%
-                                            </span>
+                                            </span> */}
                                         </span>
                                     </div>
                                 </p>
@@ -800,9 +802,9 @@ const ServiceDetails = () => {
                             <div className="sm:col-span-2">
                                 <ReviewList reviews={currentReviews} />
                                 {reviews.length > 5 && ( // Show pagination only if there are more than 5 reviews
-                                    <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
+                                    <div className="flex flex-col sm:flex-row justify-between mb-12 items-center mt-4">
                                         <div className="flex items-center">
-                                            <span className="mr-2 text-gray-600">
+                                            <span className="mr-2  text-gray-600">
                                                 Show
                                             </span>
                                             <select
@@ -810,7 +812,7 @@ const ServiceDetails = () => {
                                                 onChange={
                                                     handleItemsPerPageChange
                                                 }
-                                                className="border bg-white border-gray-300 rounded-full px-4 py-1 text-gray-600 shadow-sm outline-none focus:ring-2 focus:ring-gray-300 transition ease-in-out duration-150"
+                                                className="border bg-white border-gray-300 rounded-full px-4 w-[1px] py-1 text-gray-600 shadow-sm outline-none focus:ring-2 focus:ring-gray-300 transition ease-in-out duration-150"
                                             >
                                                 <option value={5}>5</option>
                                                 <option value={6}>6</option>

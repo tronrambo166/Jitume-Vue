@@ -4,6 +4,7 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 import axios from "axios";
 import axiosClient from "../../../axiosClient";
 import { useAlert } from "../../partials/AlertContext";
+import { BarLoader } from "react-spinners";
 
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 const AddService = ({ connected, userId }) => {
@@ -40,7 +41,6 @@ const AddService = ({ connected, userId }) => {
             showAlert("info", `File selected: ${files[0].name}`);
         }
     };
-
 
     // Check if all required fields are filled
     const checkFormValidity = () => {
@@ -92,9 +92,7 @@ const AddService = ({ connected, userId }) => {
         try {
             // Call individual upload handlers
             await Promise.all(
-                ["image", "pin", "identification", "document"].map(
-                    handleUpload
-                )
+                ["image", "pin", "identification", "document"].map(handleUpload)
             );
 
             const data = new FormData();
@@ -220,7 +218,7 @@ const AddService = ({ connected, userId }) => {
 
                     $("#result_list").show();
                     if (i < 10)
-                        if (city == "")
+                        if (city == "") {
                             $("#result_list").append(
                                 "<div onclick=\"address('" +
                                     name +
@@ -230,50 +228,43 @@ const AddService = ({ connected, userId }) => {
                                     lat +
                                     "', '" +
                                     lng +
-                                    '\');" style="cursor: pointer; padding: 10px; margin: 5px 0; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #f9f9f9; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s ease, box-shadow 0.2s ease;" data-id="' +
+                                    '\');" style="cursor: pointer; padding: 10px 15px; margin: 1px 0; border-bottom: 1px solid #ddd; background-color: #f9f9f9; transition: background-color 0.3s ease;" data-id="' +
                                     name +
-                                    '" class="address single_comms">' +
-                                    "<p class='h6 small text-dark d-inline' style='margin: 0; font-weight: 600; color: #333;'>" +
-                                    "<i class='fa fa-map-marker mr-1 text-primary' aria-hidden='true' style='color: #007bff;'></i> " +
+                                    '" class="address rounded single_comms"> ' +
+                                    '<p class="h6 rounded small text-dark d-inline" style="font-size: 16px; margin: 0; display: flex; align-items: center;"><span style="margin-right: 8px; display: inline-flex; align-items: center;">' +
+                                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="16" height="16" fill="black"><path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/></svg>' +
+                                    "</span>" +
                                     name +
-                                    "</p>" +
-                                    "<p class='d-inline text-dark' style='margin-left: 5px; font-size: 0.9rem; color: #555;'>" +
                                     "<small>, " +
                                     country +
-                                    "</small>" +
-                                    "</p>" +
-                                "</div>"
+                                    "</small> </p></div>"
                             );
-                            
-                        else
-                        $("#result_list").append(
-                            "<div onclick=\"address('" +
-                                name +
-                                "," +
-                                city +
-                                "," +
-                                country +
-                                "', '" +
-                                lat +
-                                "', '" +
-                                lng +
-                                '\');" style="cursor: pointer; padding: 10px; margin: 5px 0; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #f9f9f9; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s ease, box-shadow 0.2s ease;" data-id="' +
-                                name +
-                                '" class="address single_comms">' +
-                                "<p class='small h6 text-dark d-inline' style='margin: 0; font-weight: 600; color: #333;'>" +
-                                "<i class='fa fa-map-marker mr-1 text-primary' aria-hidden='true' style='color: #007bff;'></i> " +
-                                name +
-                                "</p>" +
-                                "<p class='d-inline text-dark' style='margin-left: 5px; font-size: 0.9rem; color: #555;'>" +
-                                "<small>, " +
-                                city +
-                                "," +
-                                country +
-                                "</small>" +
-                                "</p>" +
-                            "</div>"
-                        );
-                        
+                        } else {
+                            $("#result_list").append(
+                                "<div onclick=\"address('" +
+                                    name +
+                                    "," +
+                                    city +
+                                    "," +
+                                    country +
+                                    "', '" +
+                                    lat +
+                                    "', '" +
+                                    lng +
+                                    '\');" style="cursor: pointer; padding: 10px 15px; margin: 1px 0; border-bottom: 1px solid #ddd; background-color: #ffffff; transition: background-color 0.3s ease;" data-id="' +
+                                    name +
+                                    '" class="rounded address single_comms"> ' +
+                                    '<p class="small h6 rounded text-dark d-inline" style="font-size: 16px; margin: 0; display: flex; align-items: center;"><span style="margin-right: 8px; display: inline-flex; align-items: center;">' +
+                                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="16" height="16" fill="black"><path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/></svg>' +
+                                    "</span>" +
+                                    name +
+                                    "<small>, " +
+                                    city +
+                                    ", " +
+                                    country +
+                                    "</small> </p></div>"
+                            );
+                        }
                 }
                 //document.getElementById('result_list').style.overflowY="scroll";
             },
@@ -350,8 +341,11 @@ const AddService = ({ connected, userId }) => {
                     </button>
                 </div>
             )}
-
-            {!Con ? (
+            {Con === "" ? (
+                <div className="flex justify-center py-4">
+                    <BarLoader color="#38a169" width={150} />
+                </div>
+            ) : !Con ? (
                 <div className="flex flex-col items-center  border  rounded-lg justify-center py-4">
                     <div className="flex justify-start">
                         {" "}

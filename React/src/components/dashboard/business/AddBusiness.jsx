@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { FiUpload } from "react-icons/fi";
 import axiosClient from "../../../axiosClient";
 import { AiOutlineLoading3Quarters } from "react-icons/ai"; // Import spinner icon
+import { BarLoader } from "react-spinners";
 
 import { useAlert } from "../../partials/AlertContext";
 const AddBusiness = () => {
@@ -212,9 +213,9 @@ const AddBusiness = () => {
 
                     $("#result_list").show();
                     if (i < 10)
-                        if (city == "")
+                        if (city == "") {
                             $("#result_list").append(
-                                " <div onclick=\"address('" +
+                                "<div onclick=\"address('" +
                                     name +
                                     "," +
                                     country +
@@ -222,17 +223,20 @@ const AddBusiness = () => {
                                     lat +
                                     "', '" +
                                     lng +
-                                    '\');" style="" data-id="' +
+                                    '\');" style="cursor: pointer; padding: 10px 15px; margin: 1px 0; border-bottom: 1px solid #ddd; background-color: #f9f9f9; transition: background-color 0.3s ease;" data-id="' +
                                     name +
-                                    '" class="address  py-1 px-1 my-0 border-top bg-white single_comms">  <p class="h6 small text-dark d-inline" ><i class="fa fa-map-marker mr-1 text-dark" aria-hidden="true"></i> ' +
+                                    '" class="address rounded single_comms"> ' +
+                                    '<p class="h6 rounded small text-dark d-inline" style="font-size: 16px; margin: 0; display: flex; align-items: center;"><span style="margin-right: 8px; display: inline-flex; align-items: center;">' +
+                                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="16" height="16" fill="black"><path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/></svg>' +
+                                    "</span>" +
                                     name +
-                                    '</p> <p  class="d-inline text-dark"><small>, ' +
+                                    "<small>, " +
                                     country +
-                                    "</small> </p> </div>"
+                                    "</small> </p></div>"
                             );
-                        else
+                        } else {
                             $("#result_list").append(
-                                " <div onclick=\"address('" +
+                                "<div onclick=\"address('" +
                                     name +
                                     "," +
                                     city +
@@ -242,16 +246,20 @@ const AddBusiness = () => {
                                     lat +
                                     "', '" +
                                     lng +
-                                    '\');" style="" data-id="' +
+                                    '\');" style="cursor: pointer; padding: 10px 15px; margin: 1px 0; border-bottom: 1px solid #ddd; background-color: #ffffff; transition: background-color 0.3s ease;" data-id="' +
                                     name +
-                                    '" class="address  py-1 px-1 my-0 border-top bg-white single_comms">  <p class="small h6 text-dark d-inline" ><i class="fa fa-map-marker mr-1 text-dark" aria-hidden="true"></i> ' +
+                                    '" class="rounded address single_comms"> ' +
+                                    '<p class="small h6 rounded text-dark d-inline" style="font-size: 16px; margin: 0; display: flex; align-items: center;"><span style="margin-right: 8px; display: inline-flex; align-items: center;">' +
+                                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="16" height="16" fill="black"><path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/></svg>' +
+                                    "</span>" +
                                     name +
-                                    '</p> <p  class="d-inline text-dark"><small>, ' +
+                                    "<small>, " +
                                     city +
-                                    "," +
+                                    ", " +
                                     country +
-                                    "</small> </p> </div>"
+                                    "</small> </p></div>"
                             );
+                        }
                 }
                 //document.getElementById('result_list').style.overflowY="scroll";
             },
@@ -302,7 +310,11 @@ const AddBusiness = () => {
                     Add Business
                 </h2>
 
-                {!Con ? (
+                {Con === "" ? (
+                    <div className="flex justify-center py-4">
+                        <BarLoader color="#38a169" width={150} />
+                    </div>
+                ) : !Con ? (
                     <div className="flex flex-col items-center justify-center ">
                         <p className="text-center bg-light  ">
                             You must onboard to Tujitume Stripe platform to
