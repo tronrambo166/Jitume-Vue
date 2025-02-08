@@ -36,6 +36,7 @@ const MyBookings = () => {
     const [editItem, setEditItem] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
 
     const handleEdit = (item) => {
         setEditItem(item);
@@ -56,25 +57,24 @@ const MyBookings = () => {
     const handleDropdownToggle = (id) => {
         setOpenDropdown((prev) => (prev === id ? null : id));
     };
-    
 
-  useEffect(() => {
-      const handleClickOutside = (event) => {
-          if (
-              openDropdown !== null &&
-              dropdownRefs.current[openDropdown] &&
-              !dropdownRefs.current[openDropdown].contains(event.target)
-          ) {
-              setOpenDropdown(null);
-          }
-      };
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                openDropdown !== null &&
+                dropdownRefs.current[openDropdown] &&
+                !dropdownRefs.current[openDropdown].contains(event.target)
+            ) {
+                setOpenDropdown(null);
+            }
+        };
 
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-          document.removeEventListener("mousedown", handleClickOutside);
-      };
-  }, [openDropdown]);
-  
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [openDropdown]);
+
     const handleSave = () => {
         setBookings(
             bookings.map((item) => (item.id === editItem.id ? editItem : item))
@@ -88,51 +88,47 @@ const MyBookings = () => {
     };
 
     return (
-        <div className="bg-white shadow-md mt-12 p-12 sm:mt-0 rounded-xl w-full px-0 sm:px-4">
-            <h1 className="text-[#2D3748] font-semibold text-2xl mb-4">
+        <div className="bg-white dark:bg-gray-900 shadow-md mt-12 p-6 sm:mt-0 rounded-xl w-full">
+            <h1 className="text-[#2D3748] dark:text-gray-200 font-semibold text-2xl mb-4">
                 My Bookings
             </h1>
+
             {loading ? (
                 <div className="flex justify-start mb-4">
                     <BarLoader color="#38a169" width={150} />
                 </div>
             ) : (
                 <>
-                    {" "}
                     {/* Responsive wrapper for mobile scrolling */}
                     <div className="overflow-x-auto w-full">
-                        <table className="min-w-full divide-y divide-gray-600 text-black">
-                            <thead className="bg-gray-100">
-                                <tr className="text-gray-500">
-                                    <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                                        Date
-                                    </th>
-                                    <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                                        Service Name
-                                    </th>
-                                    <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                                        Category
-                                    </th>
-                                    <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                                        Notes
-                                    </th>
-                                    <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                                        Start Date
-                                    </th>
-                                    <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                                        Location
-                                    </th>
-                                    <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                                        Status
-                                    </th>
-                                    <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                                        Action
-                                    </th>
+                        <table className="min-w-full divide-y divide-gray-600 text-black dark:text-gray-300">
+                            <thead className="bg-gray-100 dark:bg-gray-800">
+                                <tr className="text-gray-500 dark:text-gray-300">
+                                    {[
+                                        "Date",
+                                        "Service Name",
+                                        "Category",
+                                        "Notes",
+                                        "Start Date",
+                                        "Location",
+                                        "Status",
+                                        "Action",
+                                    ].map((header) => (
+                                        <th
+                                            key={header}
+                                            className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                                        >
+                                            {header}
+                                        </th>
+                                    ))}
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
                                 {bookings.map((item) => (
-                                    <tr key={item.id}>
+                                    <tr
+                                        key={item.id}
+                                        className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                                    >
                                         <td className="px-4 py-4 text-sm">
                                             {item.date}
                                         </td>
@@ -140,42 +136,23 @@ const MyBookings = () => {
                                             {item.service}
                                         </td>
                                         <td className="px-4 py-4 text-sm">
-                                            {item.category == "0"
+                                            {item.category === "0"
                                                 ? "Project Management"
                                                 : item.category}
                                         </td>
                                         <td className="px-4 py-4 text-sm">
                                             {item.note}
                                         </td>
-                                        {/* <td className="px-4 py-4 text-sm">
-                                    {item.created_at}
-                                </td> */}
-                                        {/* <td className="px-6 py-4 text-sm   shadow-sm">
-                                    {new Date(item.created_at).toLocaleString(
-                                        "en-US",
-                                        {
-                                            weekday: "long",
-                                            year: "numeric",
-                                            month: "long",
-                                            day: "numeric",
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                            hour12: true,
-                                        }
-                                    )}
-                                </td> */}
-                                        <td className="px-6 py-4 text-sm text-gray-700  rounded-lg shadow-sm">
+                                        <td className="px-4 py-4 text-sm text-gray-700 dark:text-gray-400">
                                             {
                                                 new Date(item.created_at)
                                                     .toISOString()
                                                     .split("T")[0]
                                             }
                                         </td>
-
                                         <td className="px-4 py-4 text-sm truncate max-w-xs">
                                             {item.location}
                                         </td>
-
                                         <td className="px-4 py-4 text-sm">
                                             {item.status}
                                         </td>
@@ -188,30 +165,19 @@ const MyBookings = () => {
                                                     ] = el)
                                                 }
                                             >
-                                                {/* Three Dots Button */}
                                                 <button
                                                     onClick={() =>
                                                         handleDropdownToggle(
                                                             item.id
                                                         )
                                                     }
-                                                    className="p-2 text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition"
+                                                    className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition"
                                                 >
                                                     <BsThreeDots size={20} />
                                                 </button>
 
-                                                {/* Dropdown Menu */}
                                                 {openDropdown === item.id && (
-                                                    <div
-                                                        className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 
-                border border-gray-300 dark:border-gray-700 shadow-lg rounded-lg 
-                z-50 p-2 transition"
-                                                        style={{
-                                                            position: "fixed", // Prevents affecting the table layout
-                                                            top: "auto",
-                                                            left: "auto",
-                                                        }}
-                                                    >
+                                                    <div className="absolute top-10 right-0 min-w-[150px] bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 shadow-lg rounded-lg z-50 p-2 flex flex-col gap-2 transition">
                                                         {item.status ===
                                                         "Confirmed" ? (
                                                             <button
@@ -220,20 +186,31 @@ const MyBookings = () => {
                                                                         item.service_id
                                                                     )
                                                                 }
-                                                                className="w-full py-2 px-4 text-sm font-medium rounded-lg 
-                        bg-teal-500 hover:bg-teal-600 text-white focus:outline-none transition"
+                                                                className="w-full py-2 px-4 text-sm font-medium rounded-lg bg-teal-500 hover:bg-teal-600 text-white focus:outline-none transition"
                                                             >
                                                                 Pay
                                                             </button>
                                                         ) : (
                                                             <button
-                                                                className="w-full py-2 px-4 text-sm font-medium rounded-lg 
-                        bg-gray-300 text-gray-500 cursor-not-allowed"
+                                                                className="w-full py-2 px-4 text-sm font-medium rounded-lg bg-gray-300 text-gray-500 cursor-not-allowed"
                                                                 disabled
                                                             >
                                                                 No Action
                                                             </button>
                                                         )}
+                                                        <button
+                                                            onClick={() => {
+                                                                setSelectedItem(
+                                                                    item
+                                                                );
+                                                                setShowModal2(
+                                                                    true
+                                                                );
+                                                            }}
+                                                            className="py-2 px-4 text-sm rounded-lg bg-gray-700 dark:bg-gray-600 text-white cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 hover:bg-gray-900 dark:hover:bg-gray-500"
+                                                        >
+                                                            View Payment History
+                                                        </button>
                                                     </div>
                                                 )}
                                             </div>
@@ -243,72 +220,81 @@ const MyBookings = () => {
                             </tbody>
                         </table>
                     </div>
-                    {showModal && <></>}
-                    {showModal2 && (
-                        <></>
-                        // <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-                        //     <div className="bg-white rounded-lg shadow-lg w-1/3 p-4">
-                        //         <h2 className="text-xl font-semibold mb-4">
-                        //             Edit Booking
-                        //         </h2>
-                        //         <form
-                        //             onSubmit={(e) => {
-                        //                 e.preventDefault();
-                        //                 handleSave();
-                        //             }}
-                        //         >
-                        //             {/* Form Fields */}
-                        //             <div className="mb-4">
-                        //                 <label className="block text-sm font-medium mb-2">
-                        //                     Date
-                        //                 </label>
-                        //                 <input
-                        //                     type="text"
-                        //                     value={editItem.date}
-                        //                     onChange={(e) =>
-                        //                         setEditItem({
-                        //                             ...editItem,
-                        //                             date: e.target.value,
-                        //                         })
-                        //                     }
-                        //                     className="border rounded-lg p-2 w-full"
-                        //                 />
-                        //             </div>
-                        //             <div className="mb-4">
-                        //                 <label className="block text-sm font-medium mb-2">
-                        //                     Service Name
-                        //                 </label>
-                        //                 <input
-                        //                     type="text"
-                        //                     value={editItem.serviceName}
-                        //                     onChange={(e) =>
-                        //                         setEditItem({
-                        //                             ...editItem,
-                        //                             serviceName: e.target.value,
-                        //                         })
-                        //                     }
-                        //                     className="border rounded-lg p-2 w-full"
-                        //                 />
-                        //             </div>
-                        //             {/* Add more form fields as needed */}
-                        //             <div className="flex justify-end">
-                        //                 <button
-                        //                     type="button"
-                        //                     onClick={() => setShowModal(false)}
-                        //                     className="text-gray-600 py-2 px-4 mr-2 border rounded-xl hover:underline"
-                        //                 >
-                        //                     Cancel
-                        //                 </button>
-                        //                 <button
-                        //                     type="submit"
-                        //                     className="text-blue-600 py-2 px-4 border rounded-xl hover:underline"
-                        //                 >
-                        //                     Save
-                        //                 </button>
-                        //             </div>
-                        //         </form>
-                        //     </div>
-                        // </div>
+
+                    {/* Payment History Modal */}
+                    {showModal2 && selectedItem && (
+                        <div
+                            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4"
+                            onClick={() => setShowModal2(false)}
+                        >
+                            <div
+                                className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-lg"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                    Payment History for{" "}
+                                    {selectedItem.service || "Unknown"}
+                                </h2>
+
+                                <div className="overflow-auto max-h-80">
+                                    <table className="w-full border-collapse">
+                                        <thead>
+                                            <tr className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-white">
+                                                <th className="px-4 py-2 border">
+                                                    Date
+                                                </th>
+                                                <th className="px-4 py-2 border">
+                                                    Amount
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {bookings
+                                                .filter(
+                                                    (item) =>
+                                                        item.service ===
+                                                        selectedItem.service
+                                                )
+                                                .map((item) => (
+                                                    <tr
+                                                        key={item.id}
+                                                        className="border-t hover:bg-gray-50 dark:hover:bg-gray-600"
+                                                    >
+                                                        <td className="px-4 py-2 border text-center">
+                                                            {item.date || "N/A"}
+                                                        </td>
+                                                        <td className="px-4 py-2 border text-center">
+                                                            {item.amount || "0"}
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            {bookings.filter(
+                                                (item) =>
+                                                    item.service ===
+                                                    selectedItem.service
+                                            ).length === 0 && (
+                                                <tr>
+                                                    <td
+                                                        colSpan="2"
+                                                        className="px-4 py-2 text-center text-gray-500 dark:text-gray-400"
+                                                    >
+                                                        No payment history
+                                                        available
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <button
+                                    onClick={() => setShowModal2(false)}
+                                    className="mt-4 w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition"
+                                >
+                                    Close
+                                </button>
+                            </div>
+                        </div>
                     )}
                 </>
             )}
