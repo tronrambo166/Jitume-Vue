@@ -3,6 +3,8 @@ import axiosClient from "../../../axiosClient";
 import { ClipLoader } from "react-spinners"; // Spinner from a React library
 import { useAlert } from "../../partials/AlertContext";
 import { BarLoader } from "react-spinners";
+import { FaChevronDown } from "react-icons/fa";
+import { ProgressBar } from "react-loader-spinner";
 
 function ServiceMilestone() {
     const [milestones, setMilestones] = useState([]);
@@ -15,6 +17,8 @@ function ServiceMilestone() {
     const [loading, setLoading] = useState(false); // Spinner state
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
     const [getloading, setGetLoading] = useState(false); // Spinner state
+    const [statusLoading, setStatusLoading] = useState({});
+
     useEffect(() => {
         const getMilestones = (id = "all") => {
             setGetLoading(true);
@@ -22,7 +26,7 @@ function ServiceMilestone() {
             axiosClient
                 .get(`/business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf4F_-${id}`)
                 .then(({ data }) => {
-            setGetLoading(false);
+                    setGetLoading(false);
 
                     setBusiness(data.business);
                     setMilestones([]); // Reset milestones when changing the service
@@ -30,13 +34,13 @@ function ServiceMilestone() {
                     setSelectedCustomer("All"); // Reset customer dropdown
                 })
                 .catch((err) => {
-            setGetLoading(false);
+                    setGetLoading(false);
 
                     console.log("Error loading data", err);
                     showAlert("error", "Failed to load business data"); // Use showAlert for error message
                 })
                 .finally(() => {
-            setGetLoading(false);
+                    setGetLoading(false);
 
                     setLoading(false); // Hide spinner
                 });
@@ -46,40 +50,49 @@ function ServiceMilestone() {
         getMilestones();
     }, []);
 
-    const handleSet = (id, status) => {
-        setLoading(true); // Show spinner
-        const payload = {
-            id: id,
-            status: status,
-        };
+   const handleSet = (id, status) => {
+       console.log(`Attempting to update milestone ${id} to status: ${status}`);
 
-        axiosClient
-            .post("/business/mile_s_status", payload)
-            .then(({ data }) => {
-                // Update the local state with the new status
-                setMilestones((prevMilestones) =>
-                    prevMilestones.map((milestone) =>
-                        milestone.id === id
-                            ? { ...milestone, status: status }
-                            : milestone
-                    )
-                );
+       setStatusLoading((prev) => ({ ...prev, [id]: true })); // Start loading only for this milestone
 
-                // Conditional alert messages based on the updated status
-                if (status === "Done") {
-                    showAlert("info", "Status updated, Email sent"); // Display "Email sent" message
-                } else {
-                    showAlert("success", "Status updated successfully"); // Display success message for other statuses
-                }
-            })
-            .catch((err) => {
-                console.log("Error updating status", err);
-                showAlert("error", "Failed to update status"); // Use showAlert for error message
-            })
-            .finally(() => {
-                setLoading(false); // Hide spinner
-            });
-    };
+       const payload = { id, status };
+
+       axiosClient
+           .post("/business/mile_s_status", payload)
+           .then(({ data }) => {
+               console.log("Response received:", data);
+
+               // Update milestone status
+               setMilestones((prevMilestones) =>
+                   prevMilestones.map((milestone) =>
+                       milestone.id === id
+                           ? { ...milestone, status }
+                           : milestone
+                   )
+               );
+
+               console.log(
+                   `Milestone ${id} status updated successfully to: ${status}`
+               );
+
+               // Show alert based on status
+               if (status === "Done") {
+                   showAlert("info", "Status updated, Email sent");
+               } else {
+                   showAlert("success", "Status updated successfully");
+               }
+           })
+           .catch((err) => {
+               console.error("Error updating status:", err);
+               showAlert("error", "Failed to update status");
+           })
+           .finally(() => {
+               setStatusLoading((prev) => ({ ...prev, [id]: false })); // Stop loading for this milestone
+               console.log("Request completed for milestone", id);
+           });
+   };
+
+
 
     const getBookers = (e) => {
         const id = e.target.value;
@@ -142,51 +155,55 @@ function ServiceMilestone() {
                     {" "}
                     {/* Dropdowns for selecting service and customer */}
                     <div className="mb-4 flex gap-2">
-                        <select
-                            value={S_id}
-                            onChange={getBookers}
-                            className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green"
-                        >
-                            <option value="" disabled>
-                                Select Service
-                            </option>
-                            {business.map((business) => (
-                                <option key={business.id} value={business.id}>
-                                    {business.name}
+                        <div className="relative w-full">
+                            <select
+                                value={S_id}
+                                onChange={getBookers}
+                                className="border rounded-lg p-2 pr-8 w-full focus:outline-none focus:ring-2 focus:ring-green appearance-none"
+                            >
+                                <option value="" disabled>
+                                    Select Service
                                 </option>
-                            ))}
-                        </select>
+                                {business.map((business) => (
+                                    <option
+                                        key={business.id}
+                                        value={business.id}
+                                    >
+                                        {business.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <FaChevronDown className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 pointer-events-none" />
+                        </div>
 
-                        <select
-                            value={selectedCustomer}
-                            onChange={handleCustomerChange}
-                            className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green"
-                            disabled={customers.length === 0} // Disable if no customers to select
-                        >
-                            <option value="All">Select Customer</option>
-                            {customers.map((customer) => (
-                                <option key={customer.id} value={customer.id}>
-                                    {customer.name}
-                                </option>
-                            ))}
-                        </select>
+                        <div className="relative w-full">
+                            <select
+                                value={selectedCustomer}
+                                onChange={handleCustomerChange}
+                                className={`border rounded-lg p-2 pr-8 w-full focus:outline-none 
+        focus:ring-2 appearance-none 
+        ${
+            customers.length === 0
+                ? "bg-gray-200 border-red-500"
+                : "focus:ring-green border-green-500"
+        }`}
+                                disabled={customers.length === 0} // Disable if no customers
+                            >
+                                <option value="All">Select Customer</option>
+                                {customers.map((customer) => (
+                                    <option
+                                        key={customer.id}
+                                        value={customer.id}
+                                    >
+                                        {customer.name}
+                                    </option>
+                                ))}
+                            </select>
+
+                            <FaChevronDown className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 pointer-events-none" />
+                        </div>
 
                         {/* Find button with a spinner inside */}
-                        <button
-                            type="submit"
-                            className="btn-primary py-2 text-white rounded-md px-6 flex items-center"
-                            disabled={loading} // Disable button while loading
-                        >
-                            {loading ? (
-                                <ClipLoader
-                                    color="#ffffff"
-                                    loading={loading}
-                                    size={20}
-                                />
-                            ) : (
-                                "Find"
-                            )}
-                        </button>
                     </div>
                     <div className="overflow-x-auto shadow-md sm:rounded-lg">
                         <table className="min-w-full bg-white">
@@ -207,9 +224,9 @@ function ServiceMilestone() {
                                     <th className="text-left py-3 px-4 uppercase font-semibold text-[12px] w-1/6">
                                         Status
                                     </th>
-                                    <th className="text-center py-3 px-4 uppercase font-semibold text-[12px] w-1/6">
+                                    {/* <th className="text-center py-3 px-4 uppercase font-semibold text-[12px] w-1/6">
                                         Action
-                                    </th>
+                                    </th> */}
                                 </tr>
                             </thead>
                             <tbody>
@@ -231,29 +248,48 @@ function ServiceMilestone() {
                                             ${milestone.amount.toLocaleString()}
                                         </td>
                                         <td className="py-3 px-4 border-b w-1/6">
-                                            <select
-                                                value={milestone.status}
-                                                onChange={(e) =>
-                                                    handleSet(
-                                                        milestone.id,
-                                                        e.target.value
-                                                    )
-                                                }
-                                                className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green"
-                                            >
-                                                <option value="To Do">
-                                                    To Do
-                                                </option>
-                                                <option value="In Progress">
-                                                    In Progress
-                                                </option>
-                                                <option value="Done">
-                                                    Done
-                                                </option>
-                                            </select>
+                                            <div className="relative flex items-center">
+                                                <select
+                                                    value={milestone.status}
+                                                    onChange={(e) =>
+                                                        handleSet(
+                                                            milestone.id,
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green pr-10"
+                                                    disabled={
+                                                        statusLoading[
+                                                            milestone.id
+                                                        ]
+                                                    } // Disable select while loading
+                                                >
+                                                    <option value="To Do">
+                                                        To Do
+                                                    </option>
+                                                    <option value="In Progress">
+                                                        In Progress
+                                                    </option>
+                                                    <option value="Done">
+                                                        Done
+                                                    </option>
+                                                </select>
+
+                                                {/* Floating Loader on the Right */}
+                                                {statusLoading[
+                                                    milestone.id
+                                                ] && (
+                                                    <div className="absolute right-2">
+                                                        <ClipLoader
+                                                            size={20}
+                                                            color="green"
+                                                        />
+                                                    </div>
+                                                )}
+                                            </div>
                                         </td>
                                         <td className="py-3 px-4 border-b text-center w-1/6">
-                                            <button
+                                            {/* <button
                                                 onClick={() =>
                                                     handleSet(
                                                         milestone.id,
@@ -263,7 +299,7 @@ function ServiceMilestone() {
                                                 className="border border-black text-black px-4 py-2 rounded-lg"
                                             >
                                                 Update
-                                            </button>
+                                            </button> */}
                                         </td>
                                     </tr>
                                 ))}

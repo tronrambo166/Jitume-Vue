@@ -3,7 +3,8 @@ import axiosClient from "../../../axiosClient";
 import { useNavigate, useParams } from "react-router-dom";
 import { BarLoader } from "react-spinners";
 import { BsThreeDots } from "react-icons/bs";
-
+import Watermark from "../../../images/Tujitumelogo.svg";
+import logo from "../../../images/EmailVertDark.png";
 const MyBookings = () => {
     const [bookings, setBookings] = useState([]);
     const navigate = useNavigate();
@@ -42,7 +43,7 @@ const MyBookings = () => {
         setEditItem(item);
         setShowModal(true);
     };
-
+   
     const handleDelete = (id) => {
         axiosClient
             .get("/bookings/delete/" + id)
@@ -231,68 +232,132 @@ const MyBookings = () => {
                                 className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-lg"
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                    Payment History for{" "}
-                                    {selectedItem.service || "Unknown"}
-                                </h2>
+                                {/* Print Preview Section */}
+                                <div className="p-6 border rounded-lg bg-white dark:bg-gray-900">
+                                    {/* Logo and Print Timestamp */}
+                                    <div className="flex justify-between items-center mb-4">
+                                        <img
+                                            src={logo}
+                                            alt="Logo"
+                                            className="h-12"
+                                        />{" "}
+                                        {/* Replace with your logo */}
+                                    </div>
 
-                                <div className="overflow-auto max-h-80">
-                                    <table className="w-full border-collapse">
-                                        <thead>
-                                            <tr className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-white">
-                                                <th className="px-4 py-2 border">
-                                                    Date
-                                                </th>
-                                                <th className="px-4 py-2 border">
-                                                    Amount
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                    {/* Title */}
+                                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white text-center mb-4">
+                                        Payment History for{" "}
+                                        {selectedItem.service || "Unknown"}
+                                    </h2>
+
+                                    {/* Transaction Details */}
+                                    <div className="mb-4 p-4 border rounded-lg bg-gray-50 dark:bg-gray-800">
+                                        <p className="text-sm text-gray-700 dark:text-gray-300">
+                                            <strong>Transaction ID:</strong> #
+                                            {selectedItem.id || "N/A"}
+                                        </p>
+                                        <p className="text-sm text-gray-700 dark:text-gray-300">
+                                            <strong>Service:</strong>{" "}
+                                            {selectedItem.service || "N/A"}
+                                        </p>
+                                    </div>
+
+                                    {/* Payment Table */}
+                                    <div className="overflow-auto max-h-80">
+                                        <table className="w-full border-collapse">
+                                            <thead>
+                                                <tr className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-white">
+                                                    <th className="px-4 py-2 border">
+                                                        Date
+                                                    </th>
+                                                    <th className="px-4 py-2 border">
+                                                        Amount ($)
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {bookings
+                                                    .filter(
+                                                        (item) =>
+                                                            item.service ===
+                                                            selectedItem.service
+                                                    )
+                                                    .map((item) => (
+                                                        <tr
+                                                            key={item.id}
+                                                            className="border-t hover:bg-gray-50 dark:hover:bg-gray-600"
+                                                        >
+                                                            <td className="px-4 py-2 border text-center">
+                                                                {item.date ||
+                                                                    "N/A"}
+                                                            </td>
+                                                            <td className="px-4 py-2 border text-center font-semibold">
+                                                                ${" "}
+                                                                {item.amount ||
+                                                                    "0"}
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                {/* If No Payment History */}
+                                                {bookings.filter(
+                                                    (item) =>
+                                                        item.service ===
+                                                        selectedItem.service
+                                                ).length === 0 && (
+                                                    <tr>
+                                                        <td
+                                                            colSpan="2"
+                                                            className="px-4 py-2 text-center text-gray-500 dark:text-gray-400"
+                                                        >
+                                                            No payment history
+                                                            available
+                                                        </td>
+                                                    </tr>
+                                                )}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    {/* Total Amount */}
+                                    <div className="mt-4 p-4 bg-gray-100 dark:bg-gray-800 border rounded-lg">
+                                        <p className="text-lg font-semibold text-gray-900 dark:text-white text-center">
+                                            Total Paid: ${" "}
                                             {bookings
                                                 .filter(
                                                     (item) =>
                                                         item.service ===
                                                         selectedItem.service
                                                 )
-                                                .map((item) => (
-                                                    <tr
-                                                        key={item.id}
-                                                        className="border-t hover:bg-gray-50 dark:hover:bg-gray-600"
-                                                    >
-                                                        <td className="px-4 py-2 border text-center">
-                                                            {item.date || "N/A"}
-                                                        </td>
-                                                        <td className="px-4 py-2 border text-center">
-                                                            {item.amount || "0"}
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            {bookings.filter(
-                                                (item) =>
-                                                    item.service ===
-                                                    selectedItem.service
-                                            ).length === 0 && (
-                                                <tr>
-                                                    <td
-                                                        colSpan="2"
-                                                        className="px-4 py-2 text-center text-gray-500 dark:text-gray-400"
-                                                    >
-                                                        No payment history
-                                                        available
-                                                    </td>
-                                                </tr>
-                                            )}
-                                        </tbody>
-                                    </table>
+                                                .reduce(
+                                                    (total, item) =>
+                                                        total +
+                                                        (item.amount || 0),
+                                                    0
+                                                )}
+                                        </p>
+                                    </div>
+
+                                    {/* Security Notice */}
+                                    <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 border rounded-lg">
+                                        <p className="text-sm">
+                                            <strong>⚠️ Security Notice:</strong>{" "}
+                                            This receipt is automatically
+                                            generated. If you suspect fraud,
+                                            contact customer support
+                                            immediately.
+                                        </p>
+                                    </div>
                                 </div>
 
-                                <button
-                                    onClick={() => setShowModal2(false)}
-                                    className="mt-4 w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition"
-                                >
-                                    Close
-                                </button>
+                                {/* Print & Close Buttons */}
+                                <div className="mt-4 flex space-x-2">
+                                    <button
+                                        onClick={() => setShowModal2(false)}
+                                        className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition"
+                                    >
+                                        Close
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     )}

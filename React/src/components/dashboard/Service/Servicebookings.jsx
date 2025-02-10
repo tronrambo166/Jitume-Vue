@@ -36,19 +36,25 @@ function InvestmentBids() {
         axiosClient
             .post("bookingAccepted", payload)
             .then(({ data }) => {
-                // Use showAlert to display success message
                 showAlert("success", data.message);
+
+                // Remove accepted bids from the list
+                setBids((prevBids) =>
+                    prevBids.filter((bid) => !selectedBids.includes(bid.id))
+                );
+
+                // Clear selected bids
+                setSelectedBids([]);
             })
             .catch((err) => {
                 if (err.response && err.response.status === 422) {
                     console.log(err.response.data.errors);
                 } else {
-                    // Use showAlert to display error message
                     showAlert("error", err.message || "An error occurred");
                 }
             })
             .finally(() => {
-                setLoadingAccept(false); // Hide spinner
+                setLoadingAccept(false);
             });
     };
 
@@ -62,19 +68,28 @@ function InvestmentBids() {
         axiosClient
             .post("bookingRejected", payload)
             .then(({ data }) => {
-                // Use showAlert to display success message
                 showAlert("success", data.message);
-                console.log(data);
+
+                // Remove rejected bids from the list
+                setBids((prevBids) =>
+                    prevBids.filter((bid) => !selectedBids.includes(bid.id))
+                );
+
+                // Clear selected bids
+                setSelectedBids([]);
             })
             .catch((err) => {
-                    console.log(err);
-                    showAlert("error", err.esponse.data.message || "An error occurred");
+                console.log(err);
+                showAlert(
+                    "error",
+                    err.response?.data?.message || "An error occurred"
+                );
             })
             .finally(() => {
-                setLoadingAccept(false); // Hide spinner
+                setLoadingReject(false);
             });
-        setLoadingReject(false); // Stop loading
     };
+
 
 
     useEffect(() => {
@@ -232,7 +247,6 @@ function InvestmentBids() {
                                 if (selectedBids.length > 0) {
                                     setLoadingReject(true); // Start loading
                                     RejectBids();
-                                    setLoadingReject(false); // End loading immediately after showing the alert
                                 } else {
                                     showAlert(
                                         "info",
@@ -251,14 +265,16 @@ function InvestmentBids() {
         }`} // Red when active
                         >
                             {loadingReject ? (
-                                <AiOutlineLoading3Quarters
-                                    className="animate-spin mr-2"
-                                    size={20}
-                                />
+                                <>
+                                    <AiOutlineLoading3Quarters
+                                        className="animate-spin mr-2"
+                                        size={20}
+                                    />
+                                    Rejecting...
+                                </>
                             ) : (
                                 "Reject Booking"
                             )}
-                            {loadingReject && " Rejecting..."}
                         </button>
                     </div>
                     {/* Modal */}
