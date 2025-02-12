@@ -32,7 +32,7 @@ const ReportModal = ({ onClose }) => {
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-4 z-50">
-            <div className="bg-white rounded-lg shadow-xl w-full max-w-md sm:max-w-lg relative max-h-[85vh] overflow-y-auto">
+            <div className="bg-white scroll-thin rounded-lg shadow-xl w-full max-w-md sm:max-w-lg relative max-h-[85vh] overflow-y-auto">
                 {/* Header */}
                 <div className="sticky top-0 bg-white p-5 border-b z-10 flex items-center">
                     {logo && (
@@ -119,7 +119,7 @@ const ReportModal = ({ onClose }) => {
                     </button>
                     <button
                         onClick={handleSubmit}
-                        className="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600 transition"
+                        className="px-4 py-2 text-white bg-green rounded-lg hover:bg-green-600 transition"
                     >
                         Submit Report
                     </button>

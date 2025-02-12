@@ -6,16 +6,19 @@ const ReportModalSev = ({ onClose }) => {
     const [reportReason, setReportReason] = useState("");
     const [customReason, setCustomReason] = useState("");
     const inputRef = useRef(null); // Ref for scrolling to input
-const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
+    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
 
     // Scroll to input field when "Other" is selected
     useEffect(() => {
         if (reportReason === "Other" && inputRef.current) {
-            inputRef.current.scrollIntoView({
-                behavior: "smooth",
-                block: "center",
-            });
-            inputRef.current.focus();
+            // Add a small delay to ensure the textarea is rendered
+            setTimeout(() => {
+                inputRef.current.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                });
+                inputRef.current.focus(); // Focus on the textarea
+            }, 100); // 100ms delay
         }
     }, [reportReason]);
 
@@ -32,7 +35,7 @@ const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-4 z-50">
-            <div className="bg-white rounded-lg shadow-xl w-full max-w-md sm:max-w-lg relative max-h-[85vh] overflow-y-auto">
+            <div className="bg-white scroll-thin  rounded-lg shadow-xl w-full max-w-md sm:max-w-lg relative max-h-[85vh] overflow-y-auto">
                 {/* Header */}
                 <div className="sticky top-0 bg-white p-5 border-b z-10 flex items-center">
                     {logo && (
@@ -99,6 +102,7 @@ const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
                     {/* Custom Input for "Other" Option */}
                     {reportReason === "Other" && (
                         <textarea
+                            key="other-textarea" // Ensure React re-renders the textarea
                             ref={inputRef} // Assign ref here
                             placeholder="Describe the issue..."
                             value={customReason}
@@ -119,7 +123,7 @@ const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
                     </button>
                     <button
                         onClick={handleSubmit}
-                        className="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600 transition"
+                        className="px-4 py-2 text-white bg-green rounded-lg hover:bg-green-600 transition"
                     >
                         Submit Report
                     </button>
