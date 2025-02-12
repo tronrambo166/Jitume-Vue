@@ -75,6 +75,7 @@ Route::group([ 'prefix' => 'admin'], function(){
     Route::get('/services-active', [adminController::class,'services_active']);
     Route::get('/prospects', [adminController::class,'prospects']);
     Route::get('/disputes', [adminController::class,'disputes']);
+    Route::get('/reports', [adminController::class,'reports']);
              
     Route::post('/adminLogin', [UserController::class, 'adminLogin'])->name('adminLogin');
     Route::get('/reviews', function () {

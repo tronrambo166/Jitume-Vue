@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import logo from "../../images/EmailVertDark.png";
 import { useAlert } from "../partials/AlertContext";
+import axiosClient from "../../axiosClient";
 
-const ReportModal = ({ onClose }) => {
+const ReportModal = ({ onClose, listing_id }) => {
     const [reportReason, setReportReason] = useState("");
     const [customReason, setCustomReason] = useState("");
     const inputRef = useRef(null); // Ref for the input field
@@ -20,11 +21,29 @@ const ReportModal = ({ onClose }) => {
     }, [reportReason]);
 
     const handleSubmit = () => {
-        const finalReason =
-            reportReason === "Other" ? customReason : reportReason;
+        const finalReason = reportReason === "Other" ? customReason : reportReason;
         if (!finalReason.trim()) {
             return showAlert("info", "Please select a reason.");
         }
+        const payload = {
+            listing_id: listing_id,
+            details: customReason,
+            category: reportReason,
+            document: null,
+        };
+        console.log(payload);
+        axiosClient
+            .post("submitReport", payload)
+            .then(({ data }) => {
+                console.log(data); // Log response data
+                if (data.status == 200)
+                    showAlert("success", data.message);
+                else showAlert("error", data.message);
+            })
+            .catch((err) => {
+                const response = err.response;
+                console.log(response);
+            });
 
         console.log("Report Submitted:", finalReason);
         onClose(); // Close modal after submission

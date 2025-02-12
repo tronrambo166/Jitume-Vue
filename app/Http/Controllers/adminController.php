@@ -20,6 +20,7 @@ use App\Models\Listing;
 use App\Models\Services;
 use App\Models\Prospects;
 use App\Models\Dispute;
+use App\Models\Reports;
 use Mail;
 use Session;
 use Exception;
@@ -214,6 +215,20 @@ public function listings_active()
             $disp->user = $disputant;
         }
         return view('admin.disputes',compact('disputes'));     
+    }
+
+    public function reports()
+    {       
+        $reports = Reports::latest()->get();
+        $sortedReports = array();
+
+        // foreach($reports as $rep){
+        //     foreach($sortedReports as $sorted){
+        //         if($sorted->listing_id == $rep->listing_id)
+        //             $double = 1;
+        //     }
+        // }
+        return view('admin.reports',compact('reports'));     
     }
 
     

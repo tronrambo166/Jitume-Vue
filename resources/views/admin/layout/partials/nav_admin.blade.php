@@ -32,6 +32,10 @@
 							<li  class="{{ Request::is('admin/disputes') ? 'active' : '' }}"> 
 								<a href="disputes"><i style="font-size: 18px;" class="fa fa-cog fa-1x"></i> <span>Disputes</span></a>
 							</li>
+
+							<li  class="{{ Request::is('admin/reports') ? 'active' : '' }}"> 
+								<a href="reports"><i style="font-size: 18px;" class="fa fa-cog fa-1x"></i> <span>Reports</span></a>
+							</li>
 							
 							
 							<!-- <li  class="{{ Request::is('admin/songs') ? 'active' : '' }}"> 

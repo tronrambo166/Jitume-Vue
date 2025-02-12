@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\Conversation;
 use App\Models\serviceBook;
 use App\Models\Prospects;
+use App\Models\Reports;
 use Session; 
 use Hash;
 use Auth;
@@ -872,6 +873,38 @@ public function JitumeSubscribeEmail($email){
     return response()->json(['status' => 200, 'message' => 'Thank you for Subscribing, you will receive an email with updates!']);
 
 }
+
+public function submitReport(Request $request){ 
+    
+    try{
+        $listing_id = $request->listing_id;
+        $listing = Listing::where('id',$listing_id)->first();
+        $user = User::select('fname','email')->where('id', Auth::id())->first();
+        $report = Reports::create([
+            'user_id' => Auth::id(),
+            'listing_id' => $listing_id,
+            'listing_name' => $listing->name,
+            'owner_id' => $listing->user_id,
+            'type' => 1,
+            'category' => $request->category,
+            'details' => $request->details,
+            'document' => null,
+        ]);
+        $user['to'] = $user->email; $info = ['listing_name'=> $listing->name, 'category'=>
+        $request->category, 'id'=> $report->id];
+        Mail::send('report_mail', $info, function($msg) use ($user){
+            $msg->to($user['to']);
+            $msg->subject('Subscribe to Jitume');
+        });
+        return response()->json(['status' => 200, 'message' => 'Report Submitted!']);
+    }
+    catch(\Exception $e){
+        return response()->json(['status' => 400, 'message' => $e->getMessage()]);
+
+    }
+
+}
+
 
 //Distance
 public function findNearestListings($latitude, $longitude, $radius = 100)

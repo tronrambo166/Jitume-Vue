@@ -187,6 +187,7 @@ Route::get('getMilestonesS_Auth/{id}', [ServiceController::class, 'getMilestones
 
 Route::get('getMilestonesAuth/{id}', [BusinessController::class ,'getMilestones'])->name('getMilestones');
 Route::get('checkDispute/{id}', [BusinessController::class ,'checkDispute']);
+Route::post('submitReport', [PagesController::class, 'submitReport']);
 });
 //P R O T E C T E D    R O U T E S   ENDS
 

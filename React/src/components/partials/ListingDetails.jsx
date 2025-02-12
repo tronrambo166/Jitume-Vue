@@ -1720,7 +1720,7 @@ const ListingDetails = ({ onClose }) => {
             <ScrollToTop />
 
             {isModalOpen2 && (
-                <ReportModal onClose={() => setIsModalOpen2(false)} />
+                <ReportModal listing_id = {form.listing_id} onClose={() => setIsModalOpen2(false)} />
             )}
         </>
     );
