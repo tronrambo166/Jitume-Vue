@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
-import logo from "../../images/EmailVertDark.png";
+import logo from "../../images/EmailVertDark.png"; // Import logo
 import { useAlert } from "../partials/AlertContext";
 
-const ReportModal = ({ onClose }) => {
+const ReportModalSev = ({ onClose }) => {
     const [reportReason, setReportReason] = useState("");
     const [customReason, setCustomReason] = useState("");
-    const inputRef = useRef(null); // Ref for the input field
-    const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
-    
+    const inputRef = useRef(null); // Ref for scrolling to input
+const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
+
     // Scroll to input field when "Other" is selected
     useEffect(() => {
         if (reportReason === "Other" && inputRef.current) {
@@ -26,7 +26,7 @@ const ReportModal = ({ onClose }) => {
             return showAlert("info", "Please select a reason.");
         }
 
-        console.log("Report Submitted:", finalReason);
+        console.log("Service Report Submitted:", finalReason);
         onClose(); // Close modal after submission
     };
 
@@ -38,16 +38,16 @@ const ReportModal = ({ onClose }) => {
                     {logo && (
                         <img
                             src={logo}
-                            alt="Business Logo"
+                            alt="Service Logo"
                             className="h-10 w-auto object-contain" // Maintains aspect ratio
                         />
                     )}
                     <div className="ml-3">
                         <h2 className="text-lg sm:text-xl font-semibold">
-                            Report This Business
+                            Report This Service
                         </h2>
                         <p className="text-sm text-gray-600">
-                            Select a reason for reporting this business. Your
+                            Select a reason for reporting this service. Your
                             report helps keep the platform safe.
                         </p>
                     </div>
@@ -58,15 +58,15 @@ const ReportModal = ({ onClose }) => {
                     {[
                         {
                             label: "Scam/Fraud",
-                            desc: "This business is involved in fraudulent activities.",
+                            desc: "This service is involved in fraudulent activities.",
                         },
                         {
-                            label: "Incorrect Information",
-                            desc: "The details listed for this business are incorrect.",
+                            label: "Misleading Information",
+                            desc: "The details listed for this service are incorrect.",
                         },
                         {
-                            label: "Fake Business",
-                            desc: "This business does not exist or is misleading users.",
+                            label: "Fake Service",
+                            desc: "This service does not exist or is misleading users.",
                         },
                         {
                             label: "Other",
@@ -129,4 +129,4 @@ const ReportModal = ({ onClose }) => {
     );
 };
 
-export default ReportModal;
+export default ReportModalSev;

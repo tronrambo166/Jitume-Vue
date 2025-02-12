@@ -27,6 +27,10 @@ import { useAlert } from "../partials/AlertContext";
 import TruncateWithModal from "./TruncateWithModal";
 import BackBtn from "./BackBtn";
 import {AiOutlineLoading3Quarters} from "react-icons/ai"
+import { FiFlag } from "react-icons/fi";
+import ReportModalSev from "./ReportModalSev";
+
+
 const ServiceDetails = () => {
     const { token, setUser, setAuth, auth } = useStateContext();
     const { id } = useParams();
@@ -48,6 +52,10 @@ const ServiceDetails = () => {
     const [selectedDate, setSelectedDate] = useState(""); // State to store the selected date
 
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false); // Authentication modal
+    const [isModalOpen2, setIsModalOpen2] = useState(false);
+      const [showTooltip, setShowTooltip] = useState(false);
+
+
 
     const navigate = useNavigate();
     const form = {
@@ -434,8 +442,27 @@ const ServiceDetails = () => {
     //end rating
     return (
         <>
-            <BackBtn />
+            <div className="flex items-center justify-between  ">
+                <BackBtn />
+                <div className="relative flex items-center">
+                    {/* Report Button */}
+                    {showTooltip && (
+                        <div className="absolute bottom-[-40px] whitespace-nowrap left-[-40px] bg-gray-700 text-white text-sm px-2 py-1 rounded-md shadow-md">
+                            Report this business
+                        </div>
+                    )}
 
+                    <button
+                        className="flex items-center gap-2 pr-12"
+                        onMouseEnter={() => setShowTooltip(true)}
+                        onMouseLeave={() => setShowTooltip(false)}
+                        onClick={() => setIsModalOpen2(true)} // Open modal on click
+                    >
+                        <FiFlag size={20} />
+                        <span>Report</span>
+                    </button>
+                </div>
+            </div>
             <div className="w-full flex flex-col md:flex-row justify-center md:justify-end items-center py-2 lg:py-4 mt-3">
                 <div className="flex  flex-col mx-auto w-full gap-4 px-4 md:flex-row md:gap-8 md:px-10 lg:gap-14">
                     {/* Added horizontal padding */}
@@ -847,6 +874,9 @@ const ServiceDetails = () => {
                 </div>
             </div>
             {/* <Footer /> */}
+            {isModalOpen2 && (
+                <ReportModalSev onClose={() => setIsModalOpen2(false)} />
+            )}
             <ScrollToTop />
         </>
     );
