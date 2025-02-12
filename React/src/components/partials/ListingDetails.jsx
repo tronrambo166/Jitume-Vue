@@ -30,6 +30,8 @@ import { useAlert } from "../partials/AlertContext";
 import BackBtn from "./BackBtn";
 import TruncateWithModal from "./TruncateWithModal";
 import TujitumeLogo from "../../images/Tujitumelogo.svg";
+import ReportModal from "./ReportModal";
+import { FiFlag } from "react-icons/fi";
 const ListingDetails = ({ onClose }) => {
     const { token, user, setAuth, auth } = useStateContext();
     const [loading, setLoading] = useState(false);
@@ -40,6 +42,7 @@ const ListingDetails = ({ onClose }) => {
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
+    const [isModalOpen2, setIsModalOpen2] = useState(false);
 
     const handleClose = () => {
         setIsVisible(false);
@@ -100,6 +103,8 @@ const ListingDetails = ({ onClose }) => {
     const [running, setRunning] = useState(false);
     const [mile, setMile] = useState(true);
     const [subscribeData, setSubscribeData] = useState("");
+      const [showTooltip, setShowTooltip] = useState(false);
+
 
     const [isOpen, setIsOpen] = useState(true); // Popup is initially open
 
@@ -690,8 +695,27 @@ const ListingDetails = ({ onClose }) => {
 <img src={bannerframe} alt="" />
         </div>*/}
             {/* <Nav2 />*/}
-            <BackBtn />
+            <div className="flex items-center justify-between  ">
+                <BackBtn />
+                <div className="relative flex items-center">
+                    {/* Report Button */}
+                    {showTooltip && (
+                        <div className="absolute bottom-[-40px] whitespace-nowrap left-[-40px] bg-gray-700 text-white text-sm px-2 py-1 rounded-md shadow-md">
+                            Report this business
+                        </div>
+                    )}
 
+                    <button
+                        className="flex items-center gap-2 pr-12"
+                        onMouseEnter={() => setShowTooltip(true)}
+                        onMouseLeave={() => setShowTooltip(false)}
+                        onClick={() => setIsModalOpen2(true)} // Open modal on click
+                    >
+                        <FiFlag size={20} />
+                        <span>Report</span>
+                    </button>
+                </div>
+            </div>
             <div className="flex flex-col md:flex-row  justify-start items-start py-4 lg:py-8 mt-3 w-full px-4 md:px-6 lg:px-8">
                 <div className="w-full flex ml-1 md:space-x-6  flex-col md:flex-row gap-4 md:gap-6 lg:gap-8">
                     {/* Left Section */}
@@ -810,7 +834,8 @@ const ListingDetails = ({ onClose }) => {
                                             )
                                         ) : token && conv ? (
                                             <p className="text-dark bg-gray-100 mt-3 text-gray-700 px-5 rounded-lg shadow-md py-2 md:py-3">
-                                                This Business is Fully Invested In
+                                                This Business is Fully Invested
+                                                In
                                             </p>
                                         ) : (
                                             <>
@@ -1060,9 +1085,7 @@ const ListingDetails = ({ onClose }) => {
                     </div>
                 </div>
             </div>
-
             {/*Small_fee POPUP*/}
-
             {!conv && (
                 <div
                     className={`fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50 ${
@@ -1261,16 +1284,13 @@ const ListingDetails = ({ onClose }) => {
                     </div>
                 </div>
             )}
-
             {/*Small_fee POPUP*/}
-
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
             <Popup isOpen={isPopupOpen} onClose={closePopup} />
             <UnlockPopup
                 isOpen={isUnlockPopupOpen}
                 onClose={closeUnlockPopup}
             />
-
             <div className="">
                 <hr className="border-t border-gray-300"></hr>
                 <div className=" sm:p-6  ">
@@ -1698,6 +1718,10 @@ const ListingDetails = ({ onClose }) => {
                 </div>
             </div>
             <ScrollToTop />
+
+            {isModalOpen2 && (
+                <ReportModal onClose={() => setIsModalOpen2(false)} />
+            )}
         </>
     );
 };
