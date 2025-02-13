@@ -176,6 +176,11 @@ function CreateInvestorAccount({ isOpen, onClose }) {
 
     
 // ////////////////////////////////////////////////////////////
+    
+    // Handle input focus
+    const handleFocus = (e) => {
+        e.target.select(); // Select the content when the input is focused
+    };
     const handleInput = (e) => {
         const { target } = e;
         const index = inputRefs.current.indexOf(target);
@@ -187,27 +192,21 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                     target.value,
                     ...prevOtp.slice(index + 1),
                 ];
-                //Verify OTP
                 const otpCode = updatedOtp.join("");
 
-                if (index == 3) {
-                    if (vcode == otpCode) {
+                // Submit when all fields are filled
+                if (otpCode.length === otp.length) {
+                    if (vcode === otpCode) {
                         handleRegistrationSubmit();
-
-                        // Add a set loading
                         setLoading(true);
-                        // Add a set loading
                     } else {
                         showAlert("error", "Invalid OTP. Please try again.");
                         setLoading(false);
-                        //return; // Stop further execution if OTP verification fails
                     }
                 }
-                //Verify OTP
 
                 return updatedOtp;
             });
-            //console.log(currotp);
 
             // Move focus to the next input field
             if (index < otp.length - 1) {
@@ -215,36 +214,34 @@ function CreateInvestorAccount({ isOpen, onClose }) {
             }
         }
     };
-    // Handle input focus
-    const handleFocus = (e) => {
-        e.target.select(); // Select the content when the input is focused
-    };
 
     const handlePaste = (e) => {
         e.preventDefault();
         const text = e.clipboardData.getData("text").slice(0, otp.length);
+
         if (/^\d+$/.test(text)) {
             const digits = text.split("");
-            setOtp((prevOtp) => [...digits, ...prevOtp.slice(digits.length)]);
-            inputRefs.current[Math.min(digits.length, otp.length - 1)].focus();
-        }
+            setOtp(digits);
+            inputRefs.current[otp.length - 1].focus();
 
-        //console.log(text)
-        //Verify OTP
-        const otpCode = text;
-        if (vcode == otpCode) {
-            handleRegistrationSubmit();
-        } else {
-            showAlert("error", "Invalid OTP. Please try again.");
+            // Auto-submit if pasted OTP is complete
+            if (digits.length === otp.length) {
+                const otpCode = text;
+                if (vcode === otpCode) {
+                    handleRegistrationSubmit();
+                    setLoading(true);
+                } else {
+                    showAlert("error", "Invalid OTP. Please try again.");
+                    setLoading(false);
+                }
+            }
         }
-        //Verify OTP
     };
 
     const handleKeyDown = (e) => {
         const index = inputRefs.current.indexOf(e.target);
 
         if (e.key === "Backspace" && otp[index] === "") {
-            // If backspace is pressed and current input is empty, focus on previous field
             if (index > 0) {
                 inputRefs.current[index - 1].focus();
             }
@@ -256,6 +253,8 @@ function CreateInvestorAccount({ isOpen, onClose }) {
             ]);
         }
     };
+
+
 
     // ///////////////////////////////////////////////////////////////////////////////////
 
@@ -365,7 +364,8 @@ function CreateInvestorAccount({ isOpen, onClose }) {
     const isFormValid = loginData.email && loginData.password;
 
     const handleRegistrationSubmit = async (e) => {
-        e.preventDefault();
+        // e.preventDefault();
+        if (e) e.preventDefault();
 
         let formErrors = [];
 
