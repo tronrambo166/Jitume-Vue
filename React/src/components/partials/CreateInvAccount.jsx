@@ -94,34 +94,168 @@ function CreateInvestorAccount({ isOpen, onClose }) {
             return false;
         }
     };
-    const handleNext2 = () => {
-        setStep(step + 1);
-    };
+
+    // ///////////////////////////////////////////////////////////////////////////////////
+    const [vcode, setVCode] = useState(null);
+
+    const [otpSent, setOtpSent] = useState(false); // Track if OTP is sent
+
+    console.log("OTP sent:", otpSent);
+    console.log("OTP sent:", vcode);
 
     const handleNext = async () => {
         const validationErrors = validateStepOne();
-        setErrors(validationErrors); // Assuming you have a state for errors
+        setErrors(validationErrors);
 
-        // If there are validation errors, don't proceed to the next step
-        if (Object.keys(validationErrors).length > 0) {
-            return; // Don't proceed if there are errors
-        }
+        // Stop if validation fails
+        if (Object.keys(validationErrors).length > 0) return;
 
-        // Set loading to true when starting the async operation
         setLoading(true);
 
-        // Now that synchronous validation passed, check for email validity
-        const emailValid = await validateEmailExists(); // Call validateEmailExists
-
-        // Set loading to false after the async operation completes
+        // Check if email exists before proceeding
+        const emailValid = await validateEmailExists();
         setLoading(false);
 
-        if (emailValid) {
-            // Proceed to the next step only if email is valid and no errors are present
-            setStep(step + 1);
+        if (!emailValid) return;
+
+        // Proceed to the next step
+        setStep((prevStep) => {
+            if (prevStep === 2 && !otpSent) {
+                sendVerificationEmail(); // Handle email verification only once
+                setOtpSent(true); // Mark OTP as sent
+            }
+            return prevStep + 1;
+        });
+    };
+
+    const sendVerificationEmail = async () => {
+        const code = String(Math.floor(1000 + Math.random() * 9000));
+
+        const verify = await emailVerify(code);
+        if (verify) {
+            showAlert(
+                "info",
+                "Verification email sent successfully. Please check your inbox."
+            );
+        } else {
+            showAlert(
+                "error",
+                "Failed to send verification email. Please try again."
+            );
+            setOtpSent(false); // Reset OTP sent state if it fails
         }
     };
 
+    const emailVerify = async (code) => {
+        try {
+            setLoading(true);
+            const { data } = await axiosClient.get(
+                `emailVerify/${registrationData.email}/${code}`
+            );
+            setLoading(false);
+
+            if (data.status === 200) {
+                setVCode(code);
+                return true;
+            } else {
+                showAlert("error", data.message || "Email not sent.");
+                return false;
+            }
+        } catch (error) {
+            setLoading(false);
+            console.error("Error during email verification:", error);
+            showAlert(
+                "error",
+                error.response?.data?.message || "An error occurred."
+            );
+            return false;
+        }
+    };
+
+    
+// ////////////////////////////////////////////////////////////
+    const handleInput = (e) => {
+        const { target } = e;
+        const index = inputRefs.current.indexOf(target);
+
+        if (target.value) {
+            setOtp((prevOtp) => {
+                const updatedOtp = [
+                    ...prevOtp.slice(0, index),
+                    target.value,
+                    ...prevOtp.slice(index + 1),
+                ];
+                //Verify OTP
+                const otpCode = updatedOtp.join("");
+
+                if (index == 3) {
+                    if (vcode == otpCode) {
+                        handleSubmit();
+
+                        // Add a set loading
+                        setLoading(true);
+                        // Add a set loading
+                    } else {
+                        showAlert("error", "Invalid OTP. Please try again.");
+                        setLoading(false);
+                        //return; // Stop further execution if OTP verification fails
+                    }
+                }
+                //Verify OTP
+
+                return updatedOtp;
+            });
+            //console.log(currotp);
+
+            // Move focus to the next input field
+            if (index < otp.length - 1) {
+                inputRefs.current[index + 1].focus();
+            }
+        }
+    };
+    // Handle input focus
+    const handleFocus = (e) => {
+        e.target.select(); // Select the content when the input is focused
+    };
+
+    const handlePaste = (e) => {
+        e.preventDefault();
+        const text = e.clipboardData.getData("text").slice(0, otp.length);
+        if (/^\d+$/.test(text)) {
+            const digits = text.split("");
+            setOtp((prevOtp) => [...digits, ...prevOtp.slice(digits.length)]);
+            inputRefs.current[Math.min(digits.length, otp.length - 1)].focus();
+        }
+
+        //console.log(text)
+        //Verify OTP
+        const otpCode = text;
+        if (vcode == otpCode) {
+            handleSubmit();
+        } else {
+            showAlert("error", "Invalid OTP. Please try again.");
+        }
+        //Verify OTP
+    };
+
+    const handleKeyDown = (e) => {
+        const index = inputRefs.current.indexOf(e.target);
+
+        if (e.key === "Backspace" && otp[index] === "") {
+            // If backspace is pressed and current input is empty, focus on previous field
+            if (index > 0) {
+                inputRefs.current[index - 1].focus();
+            }
+        } else if (e.key === "Backspace" || e.key === "Delete") {
+            setOtp((prevOtp) => [
+                ...prevOtp.slice(0, index),
+                "",
+                ...prevOtp.slice(index + 1),
+            ]);
+        }
+    };
+
+    // ///////////////////////////////////////////////////////////////////////////////////
 
     const handleBack = () => setStep(step - 1);
 
@@ -137,39 +271,6 @@ function CreateInvestorAccount({ isOpen, onClose }) {
         }));
     };
     // otp otp otp
-    const handleInput = (e, index) => {
-        const { value } = e.target;
-        const newOtp = [...otp];
-        newOtp[index] = value;
-        setOtp(newOtp);
-
-        // Move to next input if value is entered
-        if (value && index < otp.length - 1) {
-            inputRefs.current[index + 1]?.focus();
-        }
-    };
-    const handleKeyDown = (e, index) => {
-        if (e.key === "Backspace" && !otp[index] && index > 0) {
-            inputRefs.current[index - 1]?.focus();
-        }
-    };
-
-    const handlePaste = (e) => {
-        const pastedData = e.clipboardData
-            .getData("text")
-            .split("")
-            .slice(0, 4);
-        setOtp(pastedData);
-        pastedData.forEach((value, index) => {
-            if (inputRefs.current[index]) {
-                inputRefs.current[index].value = value;
-            }
-        });
-    };
-    const handleSubmit = () => {
-        console.log("OTP Submitted:", otp.join(""));
-        // Handle OTP submission logic
-    };
 
     const toggleConfirmPasswordVisibility = () => {
         setShowConfirmPassword(!showConfirmPassword);
@@ -233,7 +334,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
 
         try {
             const { data } = await axiosClient.post("/login", loginData);
-            console.log(data)
+            console.log(data);
             if (data.auth) {
                 setUser(data.user);
                 setToken(data.token);
@@ -266,7 +367,6 @@ function CreateInvestorAccount({ isOpen, onClose }) {
 
         let formErrors = [];
 
-        
         if (!registrationData.tax_pin) {
             formErrors.push("Tax PIN is required!");
             showAlert("error", "Tax PIN is required!");
@@ -356,7 +456,6 @@ function CreateInvestorAccount({ isOpen, onClose }) {
             }
 
             console.log(error); // Log the error for debugging
-            
         } finally {
             setLoading(false); // Stop loading spinner
         }
@@ -828,7 +927,6 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                         </div>
                                     </>
                                 )}
-
                                 {step === 2 && (
                                     <>
                                         {" "}
@@ -1076,96 +1174,94 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                 Back
                                             </button>
                                             <button
-                                                type="submit"
-                                                // onClick={handleNext2}
-                                                className="btn btn-primary whitespace-nowrap rounded-full flex items-center justify-center  sm:w-1/3 sm:ml-auto"
+                                                type="button" // Prevents unintended form submission
+                                                onClick={handleNext}
+                                                className="btn btn-primary whitespace-nowrap rounded-full flex items-center justify-center sm:w-1/3 sm:ml-auto"
                                                 disabled={loading}
                                             >
                                                 {loading ? (
                                                     <AiOutlineLoading3Quarters className="animate-spin mr-2" />
                                                 ) : (
-                                                    "Create Account"
+                                                    "Next"
                                                 )}
                                             </button>
                                         </div>
                                     </>
                                 )}
-
                                 {step === 3 && (
                                     <>
-                                        <div className="text-center mb-6">
-                                            {/* Header Section */}
-
-                                            <h2 className="text-lg text-gray-600 dark:text-gray-400">
+                                        <div className="text-center mb-4">
+                                            <h1 className="text-lg text-[#666666]">
+                                                Verification
+                                            </h1>
+                                            <h2 className="text-md font-semibold text-[#666666]">
                                                 Step 3 of 3
+                                                <p className="text-center py-2 text-gray-700 dark:text-gray-200 font-medium">
+                                                    A verification code has been
+                                                    sent to your &nbsp;
+                                                    <strong className="text-green-600 dark:text-green-400">
+                                                        email
+                                                    </strong>
+                                                </p>
                                             </h2>
-                                            <p className="text-center py-2 text-gray-700 dark:text-gray-200 font-medium">
-                                                A verification code has been
-                                                sent to your &nbsp;
-                                                <strong className="text-green-600 dark:text-green-400">
-                                                    Email
-                                                </strong>
-                                            </p>
-                                        </div>
-
-                                        <div className="text-center">
-                                            {/* OTP Form Section */}
-                                            <section className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300 ">
-                                                <form
-                                                    id="otp-form"
-                                                    className="flex gap-4 justify-center mb-6"
-                                                    onPaste={handlePaste}
-                                                >
-                                                    {otp.map((digit, index) => (
-                                                        <input
-                                                            key={index}
-                                                            type="text"
-                                                            maxLength={1}
-                                                            value={digit}
-                                                            onChange={(e) =>
-                                                                handleInput(
-                                                                    e,
-                                                                    index
-                                                                )
-                                                            }
-                                                            onKeyDown={(e) =>
-                                                                handleKeyDown(
-                                                                    e,
-                                                                    index
-                                                                )
-                                                            }
-                                                            ref={(el) =>
-                                                                (inputRefs.current[
-                                                                    index
-                                                                ] = el)
-                                                            }
-                                                            className="w-14 h-14 rounded-md border border-gray-300 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 text-center text-2xl font-semibold text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 outline-none"
-                                                        />
-                                                    ))}
-                                                </form>
-
-                                                {/* Buttons Section */}
-                                                <div className="flex gap-4 justify-between">
-                                                    <button
-                                                        type="button"
-                                                        onClick={handleBack}
-                                                        className="bg-gray-500 hover:bg-gray-600 text-white rounded-full px-6 py-2 flex items-center justify-center transition duration-200"
+                                            <section className="bg-white text-gray-600  dark:bg-dark">
+                                                <h2 className="text-md justify-center flex mt-2 mb-4 text-gray-700 mr-1">
+                                                    Step 3 of 3
+                                                </h2>
+                                                <div className="container">
+                                                    <form
+                                                        id="otp-form"
+                                                        className="flex gap-2 justify-center"
                                                     >
-                                                        Back
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        onClick={handleSubmit}
-                                                        className="bg-green-600 hover:bg-green-700 text-white rounded-full px-6 py-2 flex items-center justify-center transition duration-200"
-                                                    >
-                                                        Verify
-                                                        <FaCheck className="ml-2" />
-                                                    </button>
+                                                        {otp.map(
+                                                            (digit, index) => (
+                                                                <input
+                                                                    id="otp"
+                                                                    key={index}
+                                                                    type="text"
+                                                                    maxLength={
+                                                                        1
+                                                                    }
+                                                                    value={
+                                                                        digit
+                                                                    }
+                                                                    onChange={
+                                                                        handleInput
+                                                                    }
+                                                                    onKeyDown={
+                                                                        handleKeyDown
+                                                                    }
+                                                                    onFocus={
+                                                                        handleFocus
+                                                                    }
+                                                                    onPaste={
+                                                                        handlePaste
+                                                                    }
+                                                                    ref={(el) =>
+                                                                        (inputRefs.current[
+                                                                            index
+                                                                        ] = el)
+                                                                    }
+                                                                    className="shadow-xs flex w-[64px] items-center justify-center rounded-lg border border-stroke bg-white p-2 text-center text-2xl font-medium text-gray-5 outline-none sm:text-4xl dark:border-dark-3 dark:bg-white/5"
+                                                                />
+                                                            )
+                                                        )}
+                                                    </form>
                                                 </div>
                                             </section>
                                         </div>
                                     </>
                                 )}
+                                {step === 3 && (
+                                    <button
+                                        type="button"
+                                        onClick={handleBack}
+                                        className="bg-green mb-8 hover:bg-green-700 w-full text-white px-4 py-2 rounded-full flex items-center justify-center mt-5"
+                                    >
+                                        Verify
+                                        <FaCheck className="ml-2" />
+                                    </button>
+                                )}{" "}
                             </div>
                         </form>
                     )}
