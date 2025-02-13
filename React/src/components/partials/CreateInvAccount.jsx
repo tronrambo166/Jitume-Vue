@@ -107,31 +107,32 @@ function CreateInvestorAccount({ isOpen, onClose }) {
         const validationErrors = validateStepOne();
         setErrors(validationErrors);
 
-        // Stop if validation fails
         if (Object.keys(validationErrors).length > 0) return;
 
         setLoading(true);
 
-        // Check if email exists before proceeding
         const emailValid = await validateEmailExists();
         setLoading(false);
 
         if (!emailValid) return;
 
-        // Proceed to the next step
-        setStep((prevStep) => {
-            if (prevStep === 2 && !otpSent) {
-                sendVerificationEmail(); // Handle email verification only once
-                setOtpSent(true); // Mark OTP as sent
-            }
-            return prevStep + 1;
-        });
+        if (step === 2 && !otpSent) {
+            setOtpSent(true); // Set it before calling the function
+            sendVerificationEmail();
+        }
+
+        setStep((prevStep) => prevStep + 1);
     };
 
-    const sendVerificationEmail = async () => {
-        const code = String(Math.floor(1000 + Math.random() * 9000));
 
+    const sendVerificationEmail = async () => {
+        if (otpSent) return; // Prevent duplicate calls
+
+        setOtpSent(true); // Ensure it is set before calling API
+
+        const code = String(Math.floor(1000 + Math.random() * 9000));
         const verify = await emailVerify(code);
+
         if (verify) {
             showAlert(
                 "info",
@@ -145,6 +146,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
             setOtpSent(false); // Reset OTP sent state if it fails
         }
     };
+
 
     const emailVerify = async (code) => {
         try {
