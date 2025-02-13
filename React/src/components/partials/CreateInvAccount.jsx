@@ -192,7 +192,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
 
                 if (index == 3) {
                     if (vcode == otpCode) {
-                        handleSubmit();
+                        handleRegistrationSubmit();
 
                         // Add a set loading
                         setLoading(true);
@@ -233,7 +233,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
         //Verify OTP
         const otpCode = text;
         if (vcode == otpCode) {
-            handleSubmit();
+            handleRegistrationSubmit();
         } else {
             showAlert("error", "Invalid OTP. Please try again.");
         }
