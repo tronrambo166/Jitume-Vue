@@ -454,6 +454,8 @@ function CreateInvestorAccount({ isOpen, onClose }) {
             }
 
             showAlert("success", "Registration successful!"); // Show success alert
+            setStep(1);
+
             onClose();
         } catch (error) {
             // Handle backend errors
@@ -964,7 +966,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                         <hr className="my-4"></hr>
                                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 overflow-y-auto no-scrollbar">
                                             <div className="relative">
-                                                <label className="block text-gray-700 text-sm mb-1">
+                                                <label className="block text-gray-700 text-sm mt-4 mb-1">
                                                     Potential Investment{" "}
                                                     <span className="block">
                                                         Range
@@ -986,19 +988,20 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                           )
                                                         : "Select ranges"}
                                                 </div>
+
                                                 {dropdowns.invRangeOpen && (
-                                                    <div className="absolute bg-gray-50 border rounded-lg text-black mt-2 w-full  z-10 max-h-36 overflow-y-auto scroll-thin">
+                                                    <div className="absolute bg-gray-50 border rounded-lg text-black mt-2 w-full z-10 max-h-36 overflow-y-auto scroll-thin shadow-lg">
                                                         {[
                                                             "0-10000",
                                                             "0-100000",
                                                             "10000-100000",
                                                             "100000-250000",
                                                             "250000-500000",
-                                                            "500000-",
+                                                            "500000+",
                                                         ].map((range) => (
                                                             <label
                                                                 key={range}
-                                                                className="block p-2 cursor-pointer hover:bg-green-50"
+                                                                className="flex items-center p-2 cursor-pointer hover:bg-green-50"
                                                             >
                                                                 <input
                                                                     type="checkbox"
@@ -1016,18 +1019,22 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                                     }
                                                                     className="mr-2"
                                                                 />
-                                                                {range}
+                                                                <span className="text-xs">
+                                                                    {range}
+                                                                </span>
                                                             </label>
                                                         ))}
                                                     </div>
                                                 )}
                                             </div>
 
-                                            <div className="relative">
+                                            {/* Industries Dropdown */}
+                                            <div className="relative mt-4">
                                                 <label className="block text-gray-700 text-sm mb-1">
                                                     Which industries are you
                                                     interested in investing?
                                                 </label>
+
                                                 <div
                                                     className="border rounded-lg px-3 py-2 text-sm cursor-pointer focus:ring-2 text-black focus:ring-blue-500"
                                                     onClick={() =>
@@ -1044,14 +1051,15 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                           )
                                                         : "Select industries"}
                                                 </div>
+
                                                 {dropdowns.industriesOpen && (
-                                                    <div className="absolute bg-gray-50  text-black rounded-lg mt-2 w-full  border z-10 max-h-36 overflow-y-auto scroll-thin">
+                                                    <div className="absolute bg-gray-50 text-black rounded-lg  mt-2 w-full border z-10 max-h-36 overflow-y-auto scroll-thin shadow-lg">
                                                         {[
                                                             "Agriculture",
                                                             "Arts/Culture",
                                                             "Sports/Gaming",
                                                             "Auto",
-                                                            "Real State",
+                                                            "Real Estate",
                                                             "Food",
                                                             "Legal",
                                                             "Security",
@@ -1064,7 +1072,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                         ].map((industry) => (
                                                             <label
                                                                 key={industry}
-                                                                className="block p-2 cursor-pointer hover:bg-green-50"
+                                                                className="flex items-center p-2 cursor-pointer hover:bg-green-50"
                                                             >
                                                                 <input
                                                                     type="checkbox"
@@ -1084,12 +1092,15 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                                     }
                                                                     className="mr-2"
                                                                 />
-                                                                {industry}
+                                                                <span className="text-xs">
+                                                                    {industry}
+                                                                </span>
                                                             </label>
                                                         ))}
                                                     </div>
                                                 )}
                                             </div>
+
                                             <div className="relative">
                                                 <label className="block text-gray-700 text-sm mb-1">
                                                     Attach ID/Passport{" "}
