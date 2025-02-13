@@ -100,8 +100,8 @@ function CreateInvestorAccount({ isOpen, onClose }) {
 
     const [otpSent, setOtpSent] = useState(false); // Track if OTP is sent
 
-    console.log("OTP sent:", otpSent);
-    console.log("OTP sent:", vcode);
+    // console.log("OTP sent:", otpSent);
+    // console.log("OTP sent:", vcode);
 
     const handleNext = async () => {
         const validationErrors = validateStepOne();
@@ -1207,9 +1207,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                 </p>
                                             </h2>
                                             <section className="bg-white text-gray-600  dark:bg-dark">
-                                                <h2 className="text-md justify-center flex mt-2 mb-4 text-gray-700 mr-1">
-                                                    Step 3 of 3
-                                                </h2>
+                                               
                                                 <div className="container">
                                                     <form
                                                         id="otp-form"
@@ -1254,16 +1252,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                         </div>
                                     </>
                                 )}
-                                {step === 3 && (
-                                    <button
-                                        type="button"
-                                        onClick={handleBack}
-                                        className="bg-green mb-8 hover:bg-green-700 w-full text-white px-4 py-2 rounded-full flex items-center justify-center mt-5"
-                                    >
-                                        Verify
-                                        <FaCheck className="ml-2" />
-                                    </button>
-                                )}{" "}
+                               
                             </div>
                         </form>
                     )}
