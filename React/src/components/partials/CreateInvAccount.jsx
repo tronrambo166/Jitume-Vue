@@ -5,6 +5,8 @@ import { useStateContext } from "../../contexts/contextProvider";
 import axiosClient from "../../axiosClient";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useAlert } from "../partials/AlertContext";
+import { Bars } from "react-loader-spinner"; // Import Bars loader
+
 import Fogts from "./Fogts";
 function CreateInvestorAccount({ isOpen, onClose }) {
     const [isSignIn, setIsSignIn] = useState(true);
@@ -16,6 +18,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
     const [rememberMe, setRememberMe] = useState(false); // State for "Remember Me" checkbox
     const [otp, setOtp] = useState(["", "", "", ""]);
+    const [loadingsubmit, setLoadingsubmit] = useState(false);
     const inputRefs = useRef([]);
     const [loginData, setLoginData] = useState({
         email: "",
@@ -408,7 +411,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
             return;
         }
 
-        setLoading(true); // Start loading spinner
+        setLoadingsubmit(true); // Start loading spinner
 
         try {
             // Prepare form data for submission
@@ -477,7 +480,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
 
             console.log(error); // Log the error for debugging
         } finally {
-            setLoading(false); // Stop loading spinner
+            setLoadingsubmit(false); // Stop loading spinner
         }
     };
 
@@ -1224,53 +1227,74 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                     </strong>
                                                 </p>
                                             </h2>
-                                            <section className="bg-white text-gray-600  dark:bg-dark">
-                                               
+
+                                            <section className="bg-white text-gray-600 dark:bg-dark">
                                                 <div className="container">
-                                                    <form
-                                                        id="otp-form"
-                                                        className="flex gap-2 justify-center"
-                                                    >
-                                                        {otp.map(
-                                                            (digit, index) => (
-                                                                <input
-                                                                    id="otp"
-                                                                    key={index}
-                                                                    type="text"
-                                                                    maxLength={
-                                                                        1
-                                                                    }
-                                                                    value={
-                                                                        digit
-                                                                    }
-                                                                    onChange={
-                                                                        handleInput
-                                                                    }
-                                                                    onKeyDown={
-                                                                        handleKeyDown
-                                                                    }
-                                                                    onFocus={
-                                                                        handleFocus
-                                                                    }
-                                                                    onPaste={
-                                                                        handlePaste
-                                                                    }
-                                                                    ref={(el) =>
-                                                                        (inputRefs.current[
+                                                    {loadingsubmit ? ( // Show loader if loading is true
+                                                        <div className="flex justify-center">
+                                                            <Bars
+                                                                height="80"
+                                                                width="80"
+                                                                color="#4fa94d"
+                                                                ariaLabel="bars-loading"
+                                                                wrapperStyle={{}}
+                                                                wrapperClass=""
+                                                                visible={true}
+                                                            />
+                                                        </div>
+                                                    ) : (
+                                                        <form
+                                                            id="otp-form"
+                                                            className="flex gap-2 justify-center"
+                                                        >
+                                                            {otp.map(
+                                                                (
+                                                                    digit,
+                                                                    index
+                                                                ) => (
+                                                                    <input
+                                                                        id="otp"
+                                                                        key={
                                                                             index
-                                                                        ] = el)
-                                                                    }
-                                                                    className="shadow-xs flex w-[64px] items-center justify-center rounded-lg border border-stroke bg-white p-2 text-center text-2xl font-medium text-gray-5 outline-none sm:text-4xl dark:border-dark-3 dark:bg-white/5"
-                                                                />
-                                                            )
-                                                        )}
-                                                    </form>
+                                                                        }
+                                                                        type="text"
+                                                                        maxLength={
+                                                                            1
+                                                                        }
+                                                                        value={
+                                                                            digit
+                                                                        }
+                                                                        onChange={
+                                                                            handleInput
+                                                                        }
+                                                                        onKeyDown={
+                                                                            handleKeyDown
+                                                                        }
+                                                                        onFocus={
+                                                                            handleFocus
+                                                                        }
+                                                                        onPaste={
+                                                                            handlePaste
+                                                                        }
+                                                                        ref={(
+                                                                            el
+                                                                        ) =>
+                                                                            (inputRefs.current[
+                                                                                index
+                                                                            ] =
+                                                                                el)
+                                                                        }
+                                                                        className="shadow-xs flex w-[64px] items-center justify-center rounded-lg border border-stroke bg-white p-2 text-center text-2xl font-medium text-gray-5 outline-none sm:text-4xl dark:border-dark-3 dark:bg-white/5"
+                                                                    />
+                                                                )
+                                                            )}
+                                                        </form>
+                                                    )}
                                                 </div>
                                             </section>
                                         </div>
                                     </>
                                 )}
-                               
                             </div>
                         </form>
                     )}

@@ -6,7 +6,7 @@ import axiosClient from "../../axiosClient";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Calendar from "./Calendar"; // Import the Calendar component
 import GoogleRecaptcha from "./GoogleRecaptcha";
-
+import {Bars} from "react-loader-spinner"; // Import
 import { useAlert } from "../partials/AlertContext";
 import { FaEye, FaEyeSlash, FaCheck } from "react-icons/fa";
 
@@ -591,7 +591,9 @@ const RegisterForm = () => {
                         <div className="pb-3">
                             <Calendar onDateSelect={handleDateSelect} />
                             {errors.dob && (
-                                <p className="text-red-500 text-xs">{errors.dob}</p>
+                                <p className="text-red-500 text-xs">
+                                    {errors.dob}
+                                </p>
                             )}
                         </div>
                         <div className="text-center  ">
@@ -780,44 +782,48 @@ const RegisterForm = () => {
                                     </strong>
                                 </p>
                             </h2>
-                            <section className="bg-white text-gray-600  dark:bg-dark">
+
+                            <section className="bg-white text-gray-600 dark:bg-dark">
                                 <h2 className="text-md justify-center flex mt-2 mb-4 text-gray-700 mr-1">
                                     Step 3 of 3
                                 </h2>
-                                <div className="container">
-                                    <form
-                                        id="otp-form"
-                                        className="flex gap-2 justify-center"
-                                    >
-                                        {otp.map((digit, index) => (
-                                            <input
-                                                id="otp"
-                                                key={index}
-                                                type="text"
-                                                maxLength={1}
-                                                value={digit}
-                                                onChange={handleInput}
-                                                onKeyDown={handleKeyDown}
-                                                onFocus={handleFocus}
-                                                onPaste={handlePaste}
-                                                ref={(el) =>
-                                                    (inputRefs.current[index] =
-                                                        el)
-                                                }
-                                                className="shadow-xs flex w-[64px] items-center justify-center rounded-lg border border-stroke bg-white p-2 text-center text-2xl font-medium text-gray-5 outline-none sm:text-4xl dark:border-dark-3 dark:bg-white/5"
-                                            />
-                                        ))}
-                                    </form>
-                                    {/*step === 3 && (
-                                        // <button
-                                        //     type="button"
-                                        //     onClick={handleSubmit}
-                                        //     className="bg-green mb-8 hover:bg-green-700 w-full text-white px-4 py-2 rounded-full flex items-center justify-center mt-5"
-                                        // >
-                                        //     Verify
-                                        //     <FaCheck className="ml-2" />
-                                        // </button>
-                                    ) */}
+                                <div className="container flex flex-col items-center">
+                                    {isLoading ? ( // Show loader if loading is true
+                                        <Bars
+                                            height="80"
+                                            width="80"
+                                            color="#4fa94d"
+                                            ariaLabel="bars-loading"
+                                            wrapperStyle={{}}
+                                            wrapperClass=""
+                                            visible={true}
+                                        />
+                                    ) : (
+                                        <form
+                                            id="otp-form"
+                                            className="flex gap-2 justify-center"
+                                        >
+                                            {otp.map((digit, index) => (
+                                                <input
+                                                    id="otp"
+                                                    key={index}
+                                                    type="text"
+                                                    maxLength={1}
+                                                    value={digit}
+                                                    onChange={handleInput}
+                                                    onKeyDown={handleKeyDown}
+                                                    onFocus={handleFocus}
+                                                    onPaste={handlePaste}
+                                                    ref={(el) =>
+                                                        (inputRefs.current[
+                                                            index
+                                                        ] = el)
+                                                    }
+                                                    className="shadow-xs flex w-[64px] items-center justify-center rounded-lg border border-stroke bg-white p-2 text-center text-2xl font-medium text-gray-5 outline-none sm:text-4xl dark:border-dark-3 dark:bg-white/5"
+                                                />
+                                            ))}
+                                        </form>
+                                    )}
                                 </div>
                             </section>
                         </div>
