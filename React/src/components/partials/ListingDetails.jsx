@@ -32,6 +32,8 @@ import TruncateWithModal from "./TruncateWithModal";
 import TujitumeLogo from "../../images/Tujitumelogo.svg";
 import ReportModal from "./ReportModal";
 import { FiFlag } from "react-icons/fi";
+import CreateInvestorAccount from "./CreateInvAccount";
+
 const ListingDetails = ({ onClose }) => {
     const { token, user, setAuth, auth } = useStateContext();
     const [loading, setLoading] = useState(false);
@@ -326,6 +328,21 @@ const ListingDetails = ({ onClose }) => {
     };
 
     const [showAuthModal, setShowAuthModal] = useState(false);
+
+    const handleOpenReportModal = () => {
+        if (!token) {
+            return setIsModalOpen(true); // Show message if no token
+        }
+        setIsModalOpen2(true); // Open modal if token exists
+    };
+
+
+    const [isInvestorModalOpen, setIsInvestorModalOpen] = useState(false);
+
+   const handleOpenReportModal2 = () => {
+       setIsInvestorModalOpen(true);
+   };
+
 
     // const handleUnlockClick = () => {
     //     setShowAuthModal(true);
@@ -709,7 +726,7 @@ const ListingDetails = ({ onClose }) => {
                         className="flex items-center gap-2 pr-12"
                         onMouseEnter={() => setShowTooltip(true)}
                         onMouseLeave={() => setShowTooltip(false)}
-                        onClick={() => setIsModalOpen2(true)} // Open modal on click
+                        onClick={handleOpenReportModal} // Open modal on click
                     >
                         <FiFlag size={20} />
                         <span>Report</span>
@@ -825,7 +842,9 @@ const ListingDetails = ({ onClose }) => {
                                                 </a>
                                             ) : (
                                                 <a
-                                                    onClick={handleOpen}
+                                                    onClick={
+                                                        handleOpenReportModal2
+                                                    }
                                                     className="bg-green hover:bg-green-600 text-white px-6 md:px-8 py-2 md:py-3 flex items-center rounded-lg whitespace-nowrap cursor-pointer"
                                                 >
                                                     <FaLock className="mr-2" />
@@ -1286,6 +1305,11 @@ const ListingDetails = ({ onClose }) => {
             )}
             {/*Small_fee POPUP*/}
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            <CreateInvestorAccount
+                isOpen={isInvestorModalOpen}
+                onClose={() => setIsInvestorModalOpen(false)}
+            />
+
             <Popup isOpen={isPopupOpen} onClose={closePopup} />
             <UnlockPopup
                 isOpen={isUnlockPopupOpen}
@@ -1720,7 +1744,10 @@ const ListingDetails = ({ onClose }) => {
             <ScrollToTop />
 
             {isModalOpen2 && (
-                <ReportModal listing_id = {form.listing_id} onClose={() => setIsModalOpen2(false)} />
+                <ReportModal
+                    listing_id={form.listing_id}
+                    onClose={() => setIsModalOpen2(false)}
+                />
             )}
         </>
     );

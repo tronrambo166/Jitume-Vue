@@ -33,6 +33,40 @@ const MyBookings = () => {
         };
         getBookings();
     }, []);
+    // Add this effect in your component
+    useEffect(() => {
+        if (openDropdown) {
+            const button =
+                dropdownRefs.current[openDropdown]?.querySelector("button");
+            const dropdown = dropdownRefs.current[openDropdown]?.querySelector(
+                'div[class*="fixed"]'
+            );
+
+            if (button && dropdown) {
+                const rect = button.getBoundingClientRect();
+                const dropdownHeight = dropdown.offsetHeight;
+                const dropdownWidth = dropdown.offsetWidth;
+                const viewportHeight = window.innerHeight;
+                const viewportWidth = window.innerWidth;
+
+                let top = rect.bottom + 5;
+                let left = rect.right - 55;
+
+                // Adjust if dropdown goes off the bottom of the viewport
+                if (top + dropdownHeight > viewportHeight) {
+                    top = rect.top - dropdownHeight - 5;
+                }
+
+                // Adjust if dropdown goes off the right of the viewport
+                if (left + dropdownWidth > viewportWidth) {
+                    left = rect.left - dropdownWidth + 55;
+                }
+
+                dropdown.style.top = `${top}px`;
+                dropdown.style.left = `${left}px`;
+            }
+        }
+    }, [openDropdown]);
 
     const [editItem, setEditItem] = useState(null);
     const [showModal, setShowModal] = useState(false);
@@ -43,7 +77,7 @@ const MyBookings = () => {
         setEditItem(item);
         setShowModal(true);
     };
-   
+
     const handleDelete = (id) => {
         axiosClient
             .get("/bookings/delete/" + id)
@@ -89,8 +123,8 @@ const MyBookings = () => {
     };
 
     return (
-        <div className="bg-white dark:bg-gray-900 shadow-md mt-12 p-6 sm:mt-0 rounded-xl w-full">
-            <h1 className="text-[#2D3748] dark:text-gray-200 font-semibold text-2xl mb-4">
+        <div className="bg-white dark:bg-gray-900 shadow-sm border border-gray-300  p-6 my-[50px] sm:my-[30px] rounded-xl  w-full lg:w-[75vw] xl:w-full ">
+            <h1 className="text-[#2D3748] w-[50vw] dark:text-gray-200 font-semibold text-2xl mb-4">
                 My Bookings
             </h1>
 
@@ -151,15 +185,15 @@ const MyBookings = () => {
                                                     .split("T")[0]
                                             }
                                         </td>
-                                        <td className="px-4 py-4 text-sm truncate max-w-xs">
+                                        <td className="px-4 py-4 text-sm max-w-xs truncate sm:whitespace-normal sm:break-words">
                                             {item.location}
                                         </td>
                                         <td className="px-4 py-4 text-sm">
                                             {item.status}
                                         </td>
-                                        <td className="px-4 py-4 text-sm relative">
+                                        <td className="px-4 py-4 text-sm">
                                             <div
-                                                className="relative inline-block"
+                                                className="relative"
                                                 ref={(el) =>
                                                     (dropdownRefs.current[
                                                         item.id
@@ -176,9 +210,8 @@ const MyBookings = () => {
                                                 >
                                                     <BsThreeDots size={20} />
                                                 </button>
-
                                                 {openDropdown === item.id && (
-                                                    <div className="absolute top-10 right-0 min-w-[150px] bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 shadow-lg rounded-lg z-50 p-2 flex flex-col gap-2 transition">
+                                                    <div className="fixed min-w-[150px] bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 shadow-lg rounded-lg z-50 p-2 flex flex-col gap-2">
                                                         {item.status ===
                                                         "Confirmed" ? (
                                                             <button
