@@ -61,11 +61,22 @@ function CreateInvestorAccount({ isOpen, onClose }) {
         } else if (!/\S+@\S+\.\S+/.test(registrationData.email)) {
             errors.email = "Email address is invalid.";
         }
-        if (!registrationData.password) {
-            errors.password = "Password is required.";
-        } else if (registrationData.password.length < 6) {
-            errors.password = "Password must be at least 6 characters.";
-        }
+       if (!registrationData.password) {
+           errors.password = "Password is required.";
+       } else if (registrationData.password.length < 8) {
+           errors.password = "Password must be at least 8 characters.";
+       } else if (!/[A-Z]/.test(registrationData.password)) {
+           errors.password =
+               "Password must contain at least one uppercase letter.";
+       } else if (!/[a-z]/.test(registrationData.password)) {
+           errors.password =
+               "Password must contain at least one lowercase letter.";
+       } else if (!/\d/.test(registrationData.password)) {
+           errors.password = "Password must contain at least one number.";
+       } else if (!/[^A-Za-z0-9]/.test(registrationData.password)) {
+           errors.password =
+               "Password must contain at least one special character.";
+       }
         if (registrationData.password !== registrationData.confirmPassword) {
             errors.confirmPassword = "Passwords do not match.";
         }
@@ -103,26 +114,33 @@ function CreateInvestorAccount({ isOpen, onClose }) {
     // console.log("OTP sent:", otpSent);
     // console.log("OTP sent:", vcode);
 
-    const handleNext = async () => {
-        const validationErrors = validateStepOne();
-        setErrors(validationErrors);
+   const handleNext = async () => {
+       const validationErrors = validateStepOne();
+       setErrors(validationErrors);
 
-        if (Object.keys(validationErrors).length > 0) return;
+       if (Object.keys(validationErrors).length > 0) {
+           console.log("Validation failed:", validationErrors); // Debugging
+           return;
+       }
 
-        setLoading(true);
+       setLoading(true);
 
-        const emailValid = await validateEmailExists();
-        setLoading(false);
+       const emailValid = await validateEmailExists();
+       setLoading(false);
 
-        if (!emailValid) return;
+       if (!emailValid) {
+           console.log("Email validation failed");
+           return;
+       }
 
-        if (step === 2 && !otpSent) {
-            setOtpSent(true); // Set it before calling the function
-            sendVerificationEmail();
-        }
+       if (step === 2 && !otpSent) {
+           setOtpSent(true);
+           sendVerificationEmail();
+       }
 
-        setStep((prevStep) => prevStep + 1);
-    };
+       setStep((prevStep) => prevStep + 1);
+   };
+
 
 
     const sendVerificationEmail = async () => {
