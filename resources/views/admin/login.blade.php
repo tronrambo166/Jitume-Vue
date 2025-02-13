@@ -7,7 +7,7 @@
             	<div class="container">
                 	<div class="loginbox">
                     	<div class="login-left" style="background:darkseagreen;">
-							<img class="img-fluid" src="../images/logo2.png" alt="Logo">
+							<img class="img-fluid" src="../images/logo.png" alt="Logo">
                         </div>
                         <div class="login-right">
 							<div class="login-right-wrap">

@@ -43,9 +43,9 @@
             Thank you for reporting the listing titled {{$listing_name}} on Tujitume. Your report has been received and is currently under review by our moderation team.
 
             <h5>Report Details:</h5>
-            <b>* Report ID:</b> #{{$id}}
-            <b>* Reported Listing:</b> {{$listing_name}}
-            <b>* Report Category:</b> {{$category}}
+            <b>* Report ID:</b> #{{$id}} <br>
+            <b>* Reported Listing:</b> {{$listing_name}} <br>
+            <b>* Report Category:</b> {{$category}} <br>
             We will update you as soon as we complete the review process.
 
 

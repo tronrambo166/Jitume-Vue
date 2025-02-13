@@ -7,7 +7,7 @@
 			<!-- Logo -->
 			<div class="header-left">
 				<a href="index_admin" class="logo">
-					<img src="../../images/logo2.png" alt="Logo">
+					<img src="../../images/logo.png" alt="Logo">
 				</a>
 				<a href="index_admin" class="logo logo-small">
 					<img src="../../images/logo2.png" alt="Logo" width="30" height="30">

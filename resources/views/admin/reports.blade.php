@@ -25,7 +25,7 @@
 									<div class="table-responsive">
 										
 
-										<table class="datatable table table-hover table-center mb-0">
+										<table id="rTable" class="datatable table table-hover table-center mb-0">
 											<thead>
 												<tr>											
 													<!-- <th>Image</th> -->
@@ -54,7 +54,8 @@
 
 													<td>
 													<p  type="button" class="border text-dark btn btn-light py-1 font-weight-bold small">
-														{{$l->listing_name}}
+														{{$l->listing_name}} 
+														<span title="No of reports" class="border rounded-circle px-2 text-danger"> {{$l->total}} </span>
 													</p>
 													</td>
 
@@ -72,8 +73,12 @@
 													</td>
 
 													<td>
-													<a  type="button" class=" text-dark btn btn-outline-warning py-1 font-weight-bold small">
+													<a style="font-size:10px;" type="button" class="d-block text-dark btn btn-outline-warning py-1 font-weight-bold small">
 														Disable Listing
+													</a>
+
+													<a style="font-size:10px;" type="button" class="d-block mt-1 text-dark btn btn-outline-success py-1 font-weight-bold small">
+														Mark as Safe
 													</a>
 													</td>		
 												</tr>
@@ -98,7 +103,11 @@
 
 			
 	<script type="text/javascript">
-		new DataTable('#example');
+		//new DataTable('#example');
+
+		$('#rTable').DataTable({
+		    "ordering": false
+		});
 	</script>	
 
 			

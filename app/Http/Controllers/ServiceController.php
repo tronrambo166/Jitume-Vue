@@ -1172,6 +1172,7 @@ public function serviceReply(Request $request){
 
     }
     else{
+      //This Conv. is related to Business/Manager/Investor
       $message = ServiceMessages::create([
       'booker_id' => null,
       'service_id' => null,
@@ -1180,6 +1181,18 @@ public function serviceReply(Request $request){
       'to_id' => $request->to_id,
       'from_id' => Auth::id()
     ]); 
+
+      //Email
+      $receiver = User::select('email')->where('id',$request->to_id)->first();
+      $sender = User::select('fname')->where('id', Auth::id())->first();
+
+        $info=[ 'sender'=>$sender->fname, 'msg'=>$request->msg ];
+        $user['to'] = $receiver->email; //'tottenham266@gmail.com';
+            Mail::send('bids.conv_mail', $info, function($msg) use ($user){
+             $msg->to($user['to']);
+             $msg->subject('Message Received!');
+         });
+      //Email
     }
 
     
