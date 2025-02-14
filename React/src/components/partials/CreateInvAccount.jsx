@@ -64,22 +64,22 @@ function CreateInvestorAccount({ isOpen, onClose }) {
         } else if (!/\S+@\S+\.\S+/.test(registrationData.email)) {
             errors.email = "Email address is invalid.";
         }
-       if (!registrationData.password) {
-           errors.password = "Password is required.";
-       } else if (registrationData.password.length < 8) {
-           errors.password = "Password must be at least 8 characters.";
-       } else if (!/[A-Z]/.test(registrationData.password)) {
-           errors.password =
-               "Password must contain at least one uppercase letter.";
-       } else if (!/[a-z]/.test(registrationData.password)) {
-           errors.password =
-               "Password must contain at least one lowercase letter.";
-       } else if (!/\d/.test(registrationData.password)) {
-           errors.password = "Password must contain at least one number.";
-       } else if (!/[^A-Za-z0-9]/.test(registrationData.password)) {
-           errors.password =
-               "Password must contain at least one special character.";
-       }
+        if (!registrationData.password) {
+            errors.password = "Password is required.";
+        } else if (registrationData.password.length < 8) {
+            errors.password = "Password must be at least 8 characters.";
+        } else if (!/[A-Z]/.test(registrationData.password)) {
+            errors.password =
+                "Password must contain at least one uppercase letter.";
+        } else if (!/[a-z]/.test(registrationData.password)) {
+            errors.password =
+                "Password must contain at least one lowercase letter.";
+        } else if (!/\d/.test(registrationData.password)) {
+            errors.password = "Password must contain at least one number.";
+        } else if (!/[^A-Za-z0-9]/.test(registrationData.password)) {
+            errors.password =
+                "Password must contain at least one special character.";
+        }
         if (registrationData.password !== registrationData.confirmPassword) {
             errors.confirmPassword = "Passwords do not match.";
         }
@@ -117,34 +117,32 @@ function CreateInvestorAccount({ isOpen, onClose }) {
     // console.log("OTP sent:", otpSent);
     // console.log("OTP sent:", vcode);
 
-   const handleNext = async () => {
-       const validationErrors = validateStepOne();
-       setErrors(validationErrors);
+    const handleNext = async () => {
+        //    const validationErrors = validateStepOne();
+        //    setErrors(validationErrors);
 
-       if (Object.keys(validationErrors).length > 0) {
-           console.log("Validation failed:", validationErrors); // Debugging
-           return;
-       }
+        //    if (Object.keys(validationErrors).length > 0) {
+        //        console.log("Validation failed:", validationErrors); // Debugging
+        //        return;
+        //    }
 
-       setLoading(true);
+        //    setLoading(true);
 
-       const emailValid = await validateEmailExists();
-       setLoading(false);
+        //    const emailValid = await validateEmailExists();
+        //    setLoading(false);
 
-       if (!emailValid) {
-           console.log("Email validation failed");
-           return;
-       }
+        //    if (!emailValid) {
+        //        console.log("Email validation failed");
+        //        return;
+        //    }
 
-       if (step === 2 && !otpSent) {
-           setOtpSent(true);
-           sendVerificationEmail();
-       }
+        if (step === 2 && !otpSent) {
+            setOtpSent(true);
+            sendVerificationEmail();
+        }
 
-       setStep((prevStep) => prevStep + 1);
-   };
-
-
+        setStep((prevStep) => prevStep + 1);
+    };
 
     const sendVerificationEmail = async () => {
         if (otpSent) return; // Prevent duplicate calls
@@ -167,7 +165,6 @@ function CreateInvestorAccount({ isOpen, onClose }) {
             setOtpSent(false); // Reset OTP sent state if it fails
         }
     };
-
 
     const emailVerify = async (code) => {
         try {
@@ -195,9 +192,8 @@ function CreateInvestorAccount({ isOpen, onClose }) {
         }
     };
 
-    
-// ////////////////////////////////////////////////////////////
-    
+    // ////////////////////////////////////////////////////////////
+
     // Handle input focus
     const handleFocus = (e) => {
         e.target.select(); // Select the content when the input is focused
@@ -274,8 +270,6 @@ function CreateInvestorAccount({ isOpen, onClose }) {
             ]);
         }
     };
-
-
 
     // ///////////////////////////////////////////////////////////////////////////////////
 
@@ -382,6 +376,29 @@ function CreateInvestorAccount({ isOpen, onClose }) {
         }));
     };
 
+    const invRangeRef = useRef(null);
+    const industriesRef = useRef(null);
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                invRangeRef.current &&
+                !invRangeRef.current.contains(event.target)
+            ) {
+                setDropdowns((prev) => ({ ...prev, invRangeOpen: false }));
+            }
+            if (
+                industriesRef.current &&
+                !industriesRef.current.contains(event.target)
+            ) {
+                setDropdowns((prev) => ({ ...prev, industriesOpen: false }));
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
     const isFormValid = loginData.email && loginData.password;
 
     const handleRegistrationSubmit = async (e) => {
@@ -965,7 +982,9 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                         </div>
                                         <hr className="my-4"></hr>
                                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 overflow-y-auto no-scrollbar">
-                                            <div className="relative">
+                                            <div className="relative"
+                                                ref={invRangeRef}
+                                            >
                                                 <label className="block text-gray-700 text-sm mt-4 mb-1">
                                                     Potential Investment{" "}
                                                     <span className="block">
@@ -1029,7 +1048,8 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                             </div>
 
                                             {/* Industries Dropdown */}
-                                            <div className="relative mt-4">
+                                            <div className="relative mt-4"
+                                                ref={industriesRef}>
                                                 <label className="block text-gray-700 text-sm mb-1">
                                                     Which industries are you
                                                     interested in investing?
