@@ -118,23 +118,23 @@ function CreateInvestorAccount({ isOpen, onClose }) {
     // console.log("OTP sent:", vcode);
 
     const handleNext = async () => {
-        //    const validationErrors = validateStepOne();
-        //    setErrors(validationErrors);
+           const validationErrors = validateStepOne();
+           setErrors(validationErrors);
 
-        //    if (Object.keys(validationErrors).length > 0) {
-        //        console.log("Validation failed:", validationErrors); // Debugging
-        //        return;
-        //    }
+           if (Object.keys(validationErrors).length > 0) {
+               console.log("Validation failed:", validationErrors); // Debugging
+               return;
+           }
 
-        //    setLoading(true);
+           setLoading(true);
 
-        //    const emailValid = await validateEmailExists();
-        //    setLoading(false);
+           const emailValid = await validateEmailExists();
+           setLoading(false);
 
-        //    if (!emailValid) {
-        //        console.log("Email validation failed");
-        //        return;
-        //    }
+           if (!emailValid) {
+               console.log("Email validation failed");
+               return;
+           }
 
         if (step === 2 && !otpSent) {
             setOtpSent(true);
@@ -376,29 +376,6 @@ function CreateInvestorAccount({ isOpen, onClose }) {
         }));
     };
 
-    const invRangeRef = useRef(null);
-    const industriesRef = useRef(null);
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (
-                invRangeRef.current &&
-                !invRangeRef.current.contains(event.target)
-            ) {
-                setDropdowns((prev) => ({ ...prev, invRangeOpen: false }));
-            }
-            if (
-                industriesRef.current &&
-                !industriesRef.current.contains(event.target)
-            ) {
-                setDropdowns((prev) => ({ ...prev, industriesOpen: false }));
-            }
-        };
-
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
     const isFormValid = loginData.email && loginData.password;
 
     const handleRegistrationSubmit = async (e) => {
@@ -982,8 +959,8 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                         </div>
                                         <hr className="my-4"></hr>
                                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 overflow-y-auto no-scrollbar">
-                                            <div className="relative"
-                                                ref={invRangeRef}
+                                            <div
+                                                className="relative"
                                             >
                                                 <label className="block text-gray-700 text-sm mt-4 mb-1">
                                                     Potential Investment{" "}
@@ -1048,8 +1025,9 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                             </div>
 
                                             {/* Industries Dropdown */}
-                                            <div className="relative mt-4"
-                                                ref={industriesRef}>
+                                            <div
+                                                className="relative mt-4"
+                                            >
                                                 <label className="block text-gray-700 text-sm mb-1">
                                                     Which industries are you
                                                     interested in investing?
