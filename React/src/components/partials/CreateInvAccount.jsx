@@ -416,6 +416,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
             submitData.append("email", registrationData.email); // Email
             submitData.append("password", registrationData.password); // Password
             submitData.append("id_no", registrationData.id_no); // ID/Passport Number
+            submitData.append("investor", 1);
             submitData.append("tax_pin", registrationData.tax_pin); // Tax PIN
             submitData.append("id_passport", registrationData.id_passport); // Attached ID/Passport
             submitData.append(

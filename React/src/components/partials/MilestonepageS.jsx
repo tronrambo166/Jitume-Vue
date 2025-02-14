@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axiosClient from "../../axiosClient";
 import React from "react";
 import { useStateContext } from "../../contexts/contextProvider";
@@ -317,6 +317,8 @@ const MilestonePage = () => {
                                                 <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
                                                     {"-"}
                                                 </td>
+
+
                                                 <td className="bg-gray-200 text-green-700 border border-gray-300 px-6 py-3 text-[#0F172A]">
                                                     {milestone.time_left}
                                                 </td>
@@ -368,16 +370,28 @@ const MilestonePage = () => {
                                                         )}
                                                     </div>
                                                 </td>
-                                                {milestone.status === "To Do" &&
-                                                milestone.active ? (
-                                                    <td className="border border-gray-300 px-6 py-2 text-[#0F172A]">
-                                                        -
-                                                    </td>
-                                                ) : (
-                                                    <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
-                                                        {"-"}
-                                                    </td>
-                                                )}
+                                                
+                                                {milestone.id && (
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <Link
+                                                        to={
+                                                            "/raise-dispute/" +
+                                                            btoa(
+                                                                btoa(
+                                                                    milestone.id
+                                                                )
+                                                            ) +
+                                                            "/" +
+                                                            milestone.title
+                                                        }
+                                                        className="bg-yellow-300 px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-md"
+                                                    >
+                                                        Raise Dispute
+                                                    </Link>
+                                                </td>
+                                            )}
+
+
                                                 <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
                                                     {milestone.time_left}
                                                 </td>

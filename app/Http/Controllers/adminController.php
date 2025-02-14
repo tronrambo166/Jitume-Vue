@@ -220,26 +220,28 @@ public function listings_active()
     public function reports()
     {       
         $sortedReports = array();
-
-        $reports = DB::table('reports')
+        $reports2 = DB::table('reports')
                  ->select('*', DB::raw('count(*) as total'))
                  ->groupBy('listing_id')->orderBy('total','DESC')->get();
 
-        // foreach($reports as $rep){
-        //     $double = 0;
-        //     foreach($sortedReports as $sorted){
-        //         if($sorted->listing_id == $rep->listing_id){
-        //             $double = 1;
-        //             $sorted->data = $sorted;
+         $reports = Reports::latest()->get();
 
-        //         }
-        //     } 
+        foreach($reports as $rep){
+            $double = 0;
+            foreach($sortedReports as $sorted){
+                if($sorted->listing_id == $rep->listing_id){
+                    $double++;
+                    $sorted->data = $rep;
+                    $sorted->total = $double;
 
-        //     if($double == 0)
-        //         $sortedReports[] = $rep; 
-        // } 
-        //echo '<pre>';print_r($reports);echo '<pre>'; exit;
-        return view('admin.reports',compact('reports'));     
+                }
+            } 
+
+            if($double == 0)
+                $sortedReports[] = $rep; 
+        } 
+        //echo '<pre>';print_r($sortedReports);echo '<pre>'; exit;
+        return view('admin.reports',compact('sortedReports'));     
     }
 
     
