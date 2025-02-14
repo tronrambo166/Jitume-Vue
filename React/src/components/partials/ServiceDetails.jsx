@@ -7,7 +7,7 @@ import {
     faExclamationCircle,
     faMapMarkerAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useEffect } from "react";
 import axiosClient from "../../axiosClient";
 import { Link } from "react-router-dom";
@@ -26,10 +26,9 @@ import ScrollToTop from "../pages/ScrollToTop";
 import { useAlert } from "../partials/AlertContext";
 import TruncateWithModal from "./TruncateWithModal";
 import BackBtn from "./BackBtn";
-import {AiOutlineLoading3Quarters} from "react-icons/ai"
-import { FiFlag } from "react-icons/fi";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { FiFlag, FiMoreHorizontal } from "react-icons/fi";
 import ReportModalSev from "./ReportModalSev";
-
 
 const ServiceDetails = () => {
     const { token, setUser, setAuth, auth } = useStateContext();
@@ -47,15 +46,34 @@ const ServiceDetails = () => {
     const [allowToReview, setallowToReview] = useState(false);
     const [Contactmodal, setContactmodal] = useState("");
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
-
+    const [service_id, setService_id] = useState("");
     const [showCalendar, setShowCalendar] = useState(false); // State to show/hide the calendar
     const [selectedDate, setSelectedDate] = useState(""); // State to store the selected date
 
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false); // Authentication modal
     const [isModalOpen2, setIsModalOpen2] = useState(false);
-      const [showTooltip, setShowTooltip] = useState(false);
+    const [showTooltip, setShowTooltip] = useState(false);
 
+    const [showMenu, setShowMenu] = useState(false);
+    const menuRef = useRef(null);
+   
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setShowMenu(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
+    // demo seting service id to  4  for now
+    useEffect(() => {
+        setService_id("4");
+    }, []);
 
     const navigate = useNavigate();
     const form = {
@@ -242,7 +260,7 @@ const ServiceDetails = () => {
                     setallowToReview(data.allow);
                     setBooked(data.booked);
                     setReviewData(data.reviews);
-                    console.log("daraa",data.reviews);
+                    console.log("daraa", data.reviews);
                     //console.log(milestonesRes.length);
                     console.log(data);
                 })
@@ -312,7 +330,6 @@ const ServiceDetails = () => {
         e.preventDefault();
         setIsLoading(true);
 
-
         const selectedDate = $("#date").val();
         const today = new Date().toISOString().split("T")[0]; // Get today's date
 
@@ -353,7 +370,7 @@ const ServiceDetails = () => {
         axiosClient
             .post("/serviceBook", payload)
             .then(({ data }) => {
-            setIsLoading(false);
+                setIsLoading(false);
                 console.log(data);
                 if (data.status == 200) {
                     $.alert({
@@ -421,7 +438,7 @@ const ServiceDetails = () => {
         setShowPopup(false); // Close the popup after submitting
 
         if (rating == 0) {
-            showAlert("info","A rating cannot be 0!");
+            showAlert("info", "A rating cannot be 0!");
         } else {
             axiosClient
                 .get(
@@ -433,7 +450,7 @@ const ServiceDetails = () => {
                         review
                 )
                 .then((data) => {
-                    showAlert("success","Rating submitted successfully!");
+                    showAlert("success", "Rating submitted successfully!");
                     location.reload();
                 });
         }
@@ -446,7 +463,7 @@ const ServiceDetails = () => {
                 <BackBtn />
                 <div className="relative flex items-center">
                     {/* Report Button */}
-                    {showTooltip && (
+                    {/* {showTooltip && (
                         <div className="absolute bottom-[-40px] whitespace-nowrap left-[-40px] bg-gray-700 text-white text-sm px-2 py-1 rounded-md shadow-md">
                             Report this business
                         </div>
@@ -460,7 +477,7 @@ const ServiceDetails = () => {
                     >
                         <FiFlag size={20} />
                         <span>Report</span>
-                    </button>
+                    </button> */}
                 </div>
             </div>
             <div className="w-full flex flex-col md:flex-row justify-center md:justify-end items-center py-2 lg:py-4 mt-3">
@@ -534,7 +551,7 @@ const ServiceDetails = () => {
                             More business information
                         </h2> */}
                             <p>
-                                <p className="text-5xl font-semibold text-[#334155] flex justify-between items-center">
+                                <p className="text-2xl font-semibold text-[#334155] flex justify-between items-center">
                                     <span>{details.name}</span>
                                     <div className="text-black flex items-center font-bold">
                                         <p className="text-gray-800 text-lg pr-2">
@@ -549,6 +566,7 @@ const ServiceDetails = () => {
                                     </div>
                                 </p>
                             </p>
+
                             <TruncateWithModal
                                 maxLength={300} // Customize the truncation length
                                 buttonText="View More" // Customize the button label
@@ -591,6 +609,32 @@ const ServiceDetails = () => {
                                     >
                                         Contact Me
                                     </button>
+                                )}
+                            </div>
+                            <div
+                                className="relative flex justify-end "
+                                ref={menuRef}
+                            >
+                                <button
+                                    onClick={() => setShowMenu(!showMenu)}
+                                    className="text-gray-700 hover:text-black p-2"
+                                >
+                                    <FiMoreHorizontal size={24} />{" "}
+                                    {/* Changed from FiMoreVertical */}
+                                </button>
+
+                                {showMenu && (
+                                    <div className="absolute right-0 mt-2 w-40 rounded-lg border border-gray-200 bg-white/30 backdrop-blur-lg shadow-lg">
+                                        <button
+                                            className="flex items-center gap-2 px-4 py-2 w-full text-left text-green-700 hover:bg-white/20 rounded-md transition duration-300"
+                                            onClick={() =>
+                                                setIsModalOpen2(true)
+                                            } // Open modal on click
+                                        >
+                                            <FiFlag size={18} />
+                                            Report
+                                        </button>
+                                    </div>
                                 )}
                             </div>
 
@@ -875,7 +919,10 @@ const ServiceDetails = () => {
             </div>
             {/* <Footer /> */}
             {isModalOpen2 && (
-                <ReportModalSev onClose={() => setIsModalOpen2(false)} />
+                <ReportModalSev
+                    service_id={service_id}  // Pass the service_id as a prop but we dont have service id so update this part 
+                    onClose={() => setIsModalOpen2(false)}
+                />
             )}
             <ScrollToTop />
         </>

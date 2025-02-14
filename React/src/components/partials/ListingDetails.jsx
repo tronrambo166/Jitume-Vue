@@ -10,7 +10,7 @@ import {
     faMapMarkerAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import AuthModal from "./Authmodal";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import axiosClient from "../../axiosClient";
 import { useStateContext } from "../../contexts/contextProvider";
 import { Link } from "react-router-dom";
@@ -31,7 +31,7 @@ import BackBtn from "./BackBtn";
 import TruncateWithModal from "./TruncateWithModal";
 import TujitumeLogo from "../../images/Tujitumelogo.svg";
 import ReportModal from "./ReportModal";
-import { FiFlag } from "react-icons/fi";
+import { FiFlag, FiMoreHorizontal } from "react-icons/fi";
 import CreateInvestorAccount from "./CreateInvAccount";
 
 const ListingDetails = ({ onClose }) => {
@@ -84,7 +84,21 @@ const ListingDetails = ({ onClose }) => {
     };
 
     const handlePageClick = (pageNumber) => setCurrentPage(pageNumber);
+    const [showMenu, setShowMenu] = useState(false);
+    const menuRef = useRef(null);
 
+    // Close menu when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setShowMenu(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () =>
+            document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
     const indexOfLastReview = currentPage * itemsPerPage;
     const indexOfFirstReview = indexOfLastReview - itemsPerPage;
     const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
@@ -105,8 +119,7 @@ const ListingDetails = ({ onClose }) => {
     const [running, setRunning] = useState(false);
     const [mile, setMile] = useState(true);
     const [subscribeData, setSubscribeData] = useState("");
-      const [showTooltip, setShowTooltip] = useState(false);
-
+    const [showTooltip, setShowTooltip] = useState(false);
 
     const [isOpen, setIsOpen] = useState(true); // Popup is initially open
 
@@ -336,13 +349,11 @@ const ListingDetails = ({ onClose }) => {
         setIsModalOpen2(true); // Open modal if token exists
     };
 
-
     const [isInvestorModalOpen, setIsInvestorModalOpen] = useState(false);
 
-   const handleOpenReportModal2 = () => {
-       setIsInvestorModalOpen(true);
-   };
-
+    const handleOpenReportModal2 = () => {
+        setIsInvestorModalOpen(true);
+    };
 
     // const handleUnlockClick = () => {
     //     setShowAuthModal(true);
@@ -419,27 +430,29 @@ const ListingDetails = ({ onClose }) => {
     //CORE METHODS
     let url = "";
     useEffect(() => {
-
-    //Remaining Payment Link
+        //Remaining Payment Link
         const string = searchParams.get("string");
-        if(string != null){
+        if (string != null) {
             var original = string;
             original = base64_decode(base64_decode(original));
             const array = original.split("_0A_");
             const array2 = array[1].split("_X1_");
-            const enc_amount = base64_decode(base64_decode(base64_decode(array2[0])));
-            const enc_bid_id = base64_decode(base64_decode(base64_decode(array2[1])));
-                navigate("/checkout", {
-                    state: {
-                        amount: btoa(enc_amount*0.75),
-                        listing_id: btoa(enc_bid_id),
-                        purpose: btoa('awaiting_payment'),
-                        percent: "",
-                    },
-                });
+            const enc_amount = base64_decode(
+                base64_decode(base64_decode(array2[0]))
+            );
+            const enc_bid_id = base64_decode(
+                base64_decode(base64_decode(array2[1]))
+            );
+            navigate("/checkout", {
+                state: {
+                    amount: btoa(enc_amount * 0.75),
+                    listing_id: btoa(enc_bid_id),
+                    purpose: btoa("awaiting_payment"),
+                    percent: "",
+                },
+            });
         }
-    //Remaining Payment Link
-        
+        //Remaining Payment Link
 
         if (!token) $("#unlockButton").removeClass("hidden");
 
@@ -486,7 +499,7 @@ const ListingDetails = ({ onClose }) => {
                 .get("/isSubscribed/" + form.listing_id)
                 .then(({ data }) => {
                     console.log(data);
-                    setIsInvestor(data.isInvestor)
+                    setIsInvestor(data.isInvestor);
 
                     if (data.fee == null) setConv(true);
                     else setConv(data.conv);
@@ -714,24 +727,6 @@ const ListingDetails = ({ onClose }) => {
             {/* <Nav2 />*/}
             <div className="flex items-center justify-between  ">
                 <BackBtn />
-                <div className="relative flex items-center">
-                    {/* Report Button */}
-                    {showTooltip && (
-                        <div className="absolute bottom-[-40px] whitespace-nowrap left-[-40px] bg-gray-700 text-white text-sm px-2 py-1 rounded-md shadow-md">
-                            Report this business
-                        </div>
-                    )}
-
-                    <button
-                        className="flex items-center gap-2 pr-12"
-                        onMouseEnter={() => setShowTooltip(true)}
-                        onMouseLeave={() => setShowTooltip(false)}
-                        onClick={handleOpenReportModal} // Open modal on click
-                    >
-                        <FiFlag size={20} />
-                        <span>Report</span>
-                    </button>
-                </div>
             </div>
             <div className="flex flex-col md:flex-row  justify-start items-start py-4 lg:py-8 mt-3 w-full px-4 md:px-6 lg:px-8">
                 <div className="w-full flex ml-1 md:space-x-6  flex-col md:flex-row gap-4 md:gap-6 lg:gap-8">
@@ -853,8 +848,7 @@ const ListingDetails = ({ onClose }) => {
                                             )
                                         ) : token && conv ? (
                                             <p className="text-dark bg-gray-100 mt-3 text-gray-700 px-5 rounded-lg shadow-md py-2 md:py-3">
-                                                This Business is Fully Invested
-                                                In
+                                                Business Is Unlocked
                                             </p>
                                         ) : (
                                             <>
@@ -1014,21 +1008,22 @@ const ListingDetails = ({ onClose }) => {
                                     </span>
                                 </div> */}
 
-                                <div className="flex flex-col ">
-                                    {/* Skeleton for Rating Stars and Rating Count */}
+                                <div className="flex flex-col items-end">
+                                    {/* Rating Stars and Count */}
                                     {!details ? (
                                         <div className="flex items-center justify-end gap-2 text-right">
                                             <div className="flex items-center">
-                                                <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse"></div>
-                                                <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse ml-1"></div>
-                                                <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse ml-1"></div>
-                                                <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse ml-1"></div>
-                                                <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse ml-1"></div>
+                                                {[...Array(5)].map((_, i) => (
+                                                    <div
+                                                        key={i}
+                                                        className="w-6 h-6 bg-gray-300 rounded-full animate-pulse ml-1"
+                                                    ></div>
+                                                ))}
                                             </div>
                                             <div className="h-6 w-16 bg-gray-300 rounded animate-pulse"></div>
                                         </div>
                                     ) : (
-                                        <div className="flex items-center justify-end gap-2 text-right mb-2">
+                                        <div className="flex items-center justify-end gap-2 text-right mb-1">
                                             <span className="text-yellow-400">
                                                 {renderStars(details.rating)}
                                             </span>
@@ -1036,13 +1031,47 @@ const ListingDetails = ({ onClose }) => {
                                         </div>
                                     )}
 
-                                    {/* Skeleton for Rating Count */}
+                                    {/* Rating Count */}
                                     {!details ? (
-                                        <div className="h-4 w-24 bg-gray-300 rounded animate-pulse text-gray-500 text-sm"></div>
+                                        <div className="h-4 w-24 bg-gray-300 rounded animate-pulse"></div>
                                     ) : (
                                         <div className="text-gray-500 text-sm">
                                             {details.rating_count} Ratings
                                         </div>
+                                    )}
+
+                                     {/* Three-Dot Menu for Report Option */}
+                                    {token ? (
+                                        <div
+                                            className="relative mt-2"
+                                            ref={menuRef}
+                                        >
+                                            <button
+                                                className="text-gray-500 hover:text-gray-700 p-2"
+                                                onClick={() =>
+                                                    setShowMenu(!showMenu)
+                                                }
+                                            >
+                                                <FiMoreHorizontal size={24} />
+                                            </button>
+
+                                            {showMenu && (
+                                                <div className="absolute right-0  bg-white border border-gray-200 rounded-lg shadow-md w-40">
+                                                    <button
+                                                        className="flex items-center gap-2 px-4 py-2 w-full text-left text-green hover:bg-gray-100"
+                                                        onClick={() => {
+                                                            setShowMenu(false);
+                                                            handleOpenReportModal();
+                                                        }}
+                                                    >
+                                                        <FiFlag size={18} />
+                                                        Report
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <></>
                                     )}
                                 </div>
                             </div>

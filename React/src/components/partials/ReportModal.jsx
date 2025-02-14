@@ -15,10 +15,10 @@ const ReportModal = ({ onClose, listing_id }) => {
     const reportOptions = [
         "Misleading or False Information",
         "Scam or Fraudulent Activity",
-        "Intellectual Property Violation",
+        "Intellectual Property Violation", 
         "Spam or Irrelevant Content",
         "Inappropriate Content",
-        "Other",
+        "Other", 
     ];
 
     useEffect(() => {
