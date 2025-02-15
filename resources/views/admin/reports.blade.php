@@ -89,7 +89,7 @@
 						  <div class="modal-dialog" role="document">
 						    <div class="modal-content mx-auto text-center">
 						      <div class="text-center modal-header">
-						        <h5 class="modal-title  text-secondary mx-auto" id="exampleModalLabel">Report List ({{$l->data}})</h5>
+						        <h5 class="modal-title  text-secondary mx-auto" id="exampleModalLabel">Report List ({{gettype($l->data)}})</h5>
 
 						        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						          <span aria-hidden="true">&times;</span>
@@ -104,7 +104,7 @@
 				        	<div class="col-sm-6">
 
 			        		@if(isset($l->data))
-			        		@foreach($l->data as $subReport => $value)
+			        		@foreach(json_decode($l->data, true) as $subReport)
 			        		<p class="font-weight-bold border shadow text-center mt-2
 			        		">Test Report Listing - {{$subReport}}</p>
 			        		@endforeach
