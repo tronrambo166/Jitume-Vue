@@ -13,6 +13,8 @@ import PaymentHero from "../Heros/PaymentHero";
 import { useStateContext } from "../../contexts/contextProvider";
 import { useLocation } from "react-router-dom";
 import Mpesa from "../../images/randomIcons/mpesa.png";
+import Modal from "../partials/Authmodal";
+
 //import { mask } from "../../js/jquery.maskedinput";
 import InputMask from "react-input-mask";
 
@@ -21,6 +23,10 @@ const PaymentForm = () => {
     //const [searchParams] = useSearchParams();
     const [selectedPayment, setSelectedPayment] = useState("card");
     const [loading, setLoading] = useState(false); // Loader state
+    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+        const { token } = useStateContext();
+    
     // Function to show success toast
     const showSuccessToast = (message) => {
         toast.success(message, {
@@ -515,6 +521,14 @@ const PaymentForm = () => {
                 </p>
             </div>
             <ToastContainer />
+            {!token ? (
+  <div className="py-8  flex justify-center mx-6 my-8 space-x-8">
+    {/* Your content for authenticated users */}
+    <button     
+                            onClick={() => setIsAuthModalOpen(true)}
+ className="px-6 py-2 bg-green text-slate-100 rounded-lg">Login To Pay</button>
+  </div>
+) : (
             <div className=" py-8  mx-6 my-8  space-x-8">
                 {showModal && (
                     <div
@@ -1160,11 +1174,16 @@ const PaymentForm = () => {
                     </form>
                 </div>
             </div>
-
+)}
+  <Modal
+                    isOpen={isAuthModalOpen}
+                    onClose={() => setIsAuthModalOpen(false)}
+                />
             {/* Form right */}
             {/* </div> */}
         </>
     );
+   
 };
 
 export default PaymentForm;
