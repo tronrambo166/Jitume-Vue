@@ -440,7 +440,7 @@ function InvestmentBids() {
                     </div>
                 ) : (
                     <div>
-                        <div className="overflow-x-auto shadow-md sm:rounded-lg">
+                        <div className="overflow-x-auto  sm:rounded-lg">
                             <table className="min-w-full bg-white">
                                 <thead className="bg-gray-100 border-b">
                                     <tr className="text-gray-600 text-sm">
@@ -560,9 +560,12 @@ function InvestmentBids() {
                                             <td className="py-3 px-4 border-b text-left">
                                                 {bid.milestone || 3}
                                             </td>
-                                            <td className="text-yellow-500 font-light uppercase py-3 px-4 border-b text-left">
-                                                {bid.status}
-                                            </td>
+                                            <td className="border-b text-center p-2">
+    <span className="bg-yellow-500/50 text-[11px] text-gray-800 font- uppercase px-3 py-1 rounded-full">
+        {bid.status}
+    </span>
+</td>
+
                                         </tr>
                                     ))}
                                 </tbody>
@@ -617,7 +620,7 @@ function InvestmentBids() {
                         {/* <h3 className="text-left text-lg font-semibold mb-6">
                         Ongoing Asset Bids
                     </h3> */}
-                        <div className="overflow-x-auto shadow-md sm:rounded-lg">
+                        <div className="overflow-x-auto shadow- sm:rounded-lg">
                             <table className="min-w-full bg-white">
                                 <thead className="bg-gray-100 border-b">
                                     <tr className="text-gray-600 text-sm">
@@ -699,7 +702,7 @@ function InvestmentBids() {
                                                 {bid.milestone || 3}
                                             </td>
                                             <td className="px-4 py-2 text-sm">
-                                                <p className="text-green-800 text-sm uppercase font-light">
+                                                <p className="bg-lime-500/50 rounded-full py-1 px-2  text-black text-[11px] text-center  uppercase ">
                                                     {" "}
                                                     {bid.status}{" "}
                                                 </p>
@@ -717,7 +720,7 @@ function InvestmentBids() {
                         <BarLoader width={200} color="#4CAF50" />
                     </div>
                 ) : (
-                    <div className="overflow-x-auto shadow-md sm:rounded-lg">
+                    <div className="overflow-x-auto  sm:rounded-lg">
                         <table className="min-w-full bg-white">
                             <thead className="bg-gray-100 border-b">
                                 <tr className="text-gray-600 text-sm">
@@ -798,7 +801,7 @@ function InvestmentBids() {
                                             {bid.milestone || 3}
                                         </td>
                                         <td className="px-4 py-2 text-sm">
-                                            <p className="uppercase text-pink-500 font-bold">
+                                            <p className="uppercase text-orange-600 ">
                                                 {" "}
                                                 {bid.status}{" "}
                                             </p>

@@ -155,7 +155,7 @@ function InvestmentBids() {
             ) : (
                 <>
                     {" "}
-                    <div className="overflow-x-auto shadow-md sm:rounded-lg">
+                    <div className="overflow-x-auto  sm:rounded-lg">
                         <table className="min-w-full bg-white">
                             <thead className="bg-gray-100 border-b">
                                 <tr className="text-gray-600 text-sm">
