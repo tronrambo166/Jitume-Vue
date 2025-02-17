@@ -219,44 +219,27 @@ public function listings_active()
 
     public function reports()
     {       
-        //$sortedReports = new stdClass; $i=0;$j=0;
         $sortedReports = array();
-        $storeReports = array();
-        $reports2 = DB::table('reports')
+
+        $reports = DB::table('reports')
                  ->select('*', DB::raw('count(*) as total'))
                  ->groupBy('listing_id')->orderBy('total','DESC')->get();
 
-         $reports = Reports::latest()->get();
+        // foreach($reports as $rep){
+        //     $double = 0;
+        //     foreach($sortedReports as $sorted){
+        //         if($sorted->listing_id == $rep->listing_id){
+        //             $double = 1;
+        //             $sorted->data = $sorted;
 
-         foreach($reports as $rep)
-         $storeReports[] = json_decode($rep,true);
+        //         }
+        //     } 
 
-        
-            foreach($storeReports as $stored){
-                $double = 0;$i = 0;$c=0;
-                foreach($reports as $rep){
-                if($stored['listing_id'] == $rep->listing_id && 
-                $stored['id'] != $rep->id && $stored['id'] <= $rep->id){
-                    $double++;
-                    $stored['data'][$i] = json_decode($rep,true);
-                    $stored['total'] = $double;$i++; 
-                    $sortedReports[] = $stored;
-                    //echo '<pre>';print_r($sortedReports);echo '<pre>'; exit;
-                }
-            } 
-
-            foreach($sortedReports as $sort)
-                if($sort['listing_id'] == $stored['listing_id']);
-                $c++;
-
-            if($double == 0 && $c == 0)
-                $sortedReports[] = $stored;
-
-            //if($double !=0) 
-            //echo '<pre>';print_r($sortedReports);echo '<pre>'; exit;
-        } 
-        echo '<pre>';print_r($sortedReports);echo '<pre>'; exit;
-        return view('admin.reports',compact('sortedReports'));     
+        //     if($double == 0)
+        //         $sortedReports[] = $rep; 
+        // } 
+        //echo '<pre>';print_r($reports);echo '<pre>'; exit;
+        return view('admin.reports',compact('reports'));     
     }
 
     

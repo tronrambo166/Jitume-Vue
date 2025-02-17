@@ -43,9 +43,9 @@
 										
 											<tbody>	
 
-											@if($sortedReports)
+											@if($reports->count() > 0)
 
-												@foreach($sortedReports as $l)
+												@foreach($reports as $l)
 												<tr>
 
 													<td>
@@ -53,11 +53,11 @@
 													</td>
 
 													<td>
-
+													
 													<button  type="button" class="border text-dark btn btn-light py-1 font-weight-bold small" data-toggle="modal" data-target="#exampleModal{{$l->id}}">
 														{{$l->listing_name}} 
 														<span title="No of reports" class="border rounded-circle px-2 text-danger"> {{$l->total}} </span>
-													</button>
+														</button>
 													</td>
 
 													<td>
@@ -89,28 +89,19 @@
 						  <div class="modal-dialog" role="document">
 						    <div class="modal-content mx-auto text-center">
 						      <div class="text-center modal-header">
-						        <h5 class="modal-title  text-secondary mx-auto" id="exampleModalLabel">Report List ({{gettype($l->data)}})</h5>
-
+						        <h5 class="modal-title  text-secondary mx-auto" id="exampleModalLabel">User Info </h5>
 						        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						          <span aria-hidden="true">&times;</span>
 						        </button>
 						      </div>
-
 				      <div class="modal-body w-75 mx-auto">
 
 				      	<div class="my-3 row w-75 mx-auto border">
 
-
-				        	<div class="col-sm-6">
-
-			        		@if(isset($l->data))
-			        		@foreach(json_decode($l->data, true) as $subReport)
-			        		<p class="font-weight-bold border shadow text-center mt-2
-			        		">Test Report Listing - {{$subReport}}</p>
-			        		@endforeach
-			        		@endif
-
+				        	<div class="col-sm-12">
+				        		<h5 class="w-75 text-center mt-2">Details</h5>
 				        	</div>
+				        	
 				        </div>
 
 
@@ -118,70 +109,50 @@
 				        <div class="row">
 
 				        	<div class="col-sm-6">
-				        		<h6 class="w-75 text-left border pl-3 ">DOB</h6>
+				        		<h6 class="w-75 text-left border pl-3 ">Business -</h6>
 				        	</div>
 				        	<div class="col-sm-6">
-				        		<p class="text-center">@if($l->dob == '')
-							N/A
-							@else
-							{{$l->dob}}
-							@endif</p>
+				        		<p class="text-center">{{$l->listing_name}}</p>
 				        	</div>
 
 				        	<div class="col-sm-6">
-				        		<h6 class="w-75 text-left border pl-3 ">Gender</h6>
+				        		<h6 class="w-75 text-left border pl-3 ">Details -</h6>
 				        	</div>
 				        	<div class="col-sm-6">
-				        		<p class="text-center">@if($l->gender == '')
-							N/A
-							@else
-							{{$l->gender}}
-							@endif</p>
+				        		<p class="text-center">{{$l->details}}</p>
 				        	</div>
 
 				        	<div class="col-sm-6">
-				        		<h6 class="w-75 text-left border pl-3 ">Email</h6>
+				        		<h6 class="w-75 text-left border pl-3 ">Category -</h6>
 				        	</div>
 				        	<div class="col-sm-6">
-				        		<p class="text-center">{{$l->email}}</p>
+				        		<p class="text-center">{{$l->category}}</p>
 				        	</div>
 
 				        	<div class="col-sm-6">
-				        		<h6 class="w-75 text-left border pl-3 ">Id No</h6>
+				        		<button onclick="otherReports();" class="w-75 text-left border pl-3 ">View Reports</button>
 				        	</div>
 				        	<div class="col-sm-6">
-				        		<p class="text-center">@if($l->id_no == '')
-							N/A
-							@else
-							{{$l->id_no}}
-							@endif</p>
+				        		<p class="text-center">
+							</p>
 				        	</div>
 
-				        	<div class="col-sm-6">
-				        		<h6 class="w-75 text-left border pl-3">Tax Pin</h6>
-				        	</div>
-				        	<div class="col-sm-6">
-				        		<p class="text-center">@if($l->tax_pin == '')
-							N/A
-							@else
-							{{$l->tax_pin}}
-							@endif</p>
+
+				        	<div class="tempDiv">
+				        		Loading...
+
 				        	</div>
 
-				        	<div class="col-sm-6">
-				        		<h6 class="w-75 text-left border pl-3">Investment Range</h6>
-				        	</div>
-				        	<div class="col-sm-6">
-				        		<p class="text-center">@if($l->inv_range == '')
-							N/A
-							@else
-							{{$l->inv_range}}
-							@endif</p>
-				        	</div>
+				        	<div class="row">
+				        		<div class="col-sm-3"><p>Id</p></div>
+				        		<div class="col-sm-3"><p>Category</p></div>
+				        		<div class="col-sm-3"><p>Details</p></div>
+				        		<div class="col-sm-3"><p>Document</p></div>
 
-				  
+				        	</div>
 
 				        </div>
+
 				      </div>
 						      <div class="modal-footer">
 						        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -217,6 +188,10 @@
 		$('#rTable').DataTable({
 		    "ordering": false
 		});
+
+		function otherReports(){
+
+		}
 	</script>	
 
 			
