@@ -130,7 +130,7 @@
 				        	</div>
 
 				        	<div class="col-sm-6">
-				        		<button onclick="otherReports();" class="w-75 text-left border pl-3 ">View Reports</button>
+				        		<button onclick="otherReports({{$l->id}});" class="w-75 text-left border pl-3 ">View Reports</button>
 				        	</div>
 				        	<div class="col-sm-6">
 				        		<p class="text-center">
@@ -181,17 +181,50 @@
 			<!-- /Page Wrapper -->
 
 
-			
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
 	<script type="text/javascript">
 		//new DataTable('#example');
 
-		$('#rTable').DataTable({
-		    "ordering": false
-		});
+		// $('#rTable').DataTable({
+		//     "ordering": false
+		// });
 
-		function otherReports(){
+	function otherReports(id){ alert(id);
 
-		}
+     $.ajax({
+            url:"admin/otherReports/"+id, 
+            method:"GET",
+            dataType: 'json',
+          	success: function(data) {  
+            const reports=data.reports;
+            console.log(data);
+
+// Top 20 chart
+           try{
+            Object.entries(reports).forEach(entry => {
+            const [key, value] = entry; console.log(key+'=>'+value);
+            
+                $('#songs').append('<tr><th scope="row" class="text-center">'+i+'</th>     <td> <img width="80px" src="'+art+'" /> </td> <td>'+value.artist+'</td>  <td>'+value.title+'</td> <td> '+move+'</td>  </tr>'); i++;
+
+                
+              })
+              .catch(error => {
+                console.error('Error:', error);
+              });
+            //LastFM
+           
+               $('#loading').remove();
+               $('#tempDiv').remove();
+
+          }
+          catch(e) { if (e !== BreakException) throw e;} 
+            
+
+		},
+		error:function(data) { console.log(data); }
+		 });
+ }
 	</script>	
 
 			

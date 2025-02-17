@@ -242,6 +242,19 @@ public function listings_active()
         return view('admin.reports',compact('reports'));     
     }
 
+
+    public function otherReports($id)
+    {       
+       try{
+         $thisReport = Reports::where('id',$id)->first();
+        $reports = Reports::where('listing_id',$thisReport->listing_id)->get();
+        return response()->json(['reports' => $reports, 'status' => 200]);
+       }
+       catch(\Exception $e){
+return response()->json(['reports' => $e->getMessage(), 'status' => 200]);
+       }     
+    }
+
     
 
 
