@@ -561,7 +561,7 @@ function InvestmentBids() {
                                                 {bid.milestone || 3}
                                             </td>
                                             <td className="border-b text-center p-2">
-    <span className="bg-yellow-500/50 text-[13px] text-gray-800 font- uppercase px-3 py-1 rounded-full">
+    <span className="bg-yellow-500/50 text-[13px] text-black font- uppercase px-3 py-1 rounded-full">
         {bid.status}
     </span>
 </td>
