@@ -56,7 +56,7 @@ const ServiceDetails = () => {
 
     const [showMenu, setShowMenu] = useState(false);
     const menuRef = useRef(null);
-   
+
     // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -611,32 +611,33 @@ const ServiceDetails = () => {
                                     </button>
                                 )}
                             </div>
-                            <div
-                                className="relative flex justify-end "
-                                ref={menuRef}
-                            >
-                                <button
-                                    onClick={() => setShowMenu(!showMenu)}
-                                    className="text-gray-700 hover:text-black p-2"
+                            {token && (
+                                <div
+                                    className="relative flex justify-end"
+                                    ref={menuRef}
                                 >
-                                    <FiMoreHorizontal size={24} />{" "}
-                                    {/* Changed from FiMoreVertical */}
-                                </button>
+                                    <button
+                                        onClick={() => setShowMenu(!showMenu)}
+                                        className="text-gray-700 hover:text-black p-2"
+                                    >
+                                        <FiMoreHorizontal size={24} />
+                                    </button>
 
-                                {showMenu && (
-                                    <div className="absolute right-0 mt-2 w-40 rounded-lg border border-gray-200 bg-white/30 backdrop-blur-lg shadow-lg">
-                                        <button
-                                            className="flex items-center gap-2 px-4 py-2 w-full text-left text-green-700 hover:bg-white/20 rounded-md transition duration-300"
-                                            onClick={() =>
-                                                setIsModalOpen2(true)
-                                            } // Open modal on click
-                                        >
-                                            <FiFlag size={18} />
-                                            Report
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
+                                    {showMenu && (
+                                        <div className="absolute right-0 bottom-full  w-40 rounded-lg border border-gray-200 bg-white/30 backdrop-blur-lg shadow-lg">
+                                            <button
+                                                className="flex items-center gap-2 px-4 py-2 w-full text-left text-green-700 hover:bg-white/20 rounded-md transition duration-300"
+                                                onClick={() =>
+                                                    setIsModalOpen2(true)
+                                                } // Open modal on click
+                                            >
+                                                <FiFlag size={18} />
+                                                Report
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
 
                             {/* Conditional rendering of contact section */}
                             {Contactmodal && token && (
@@ -920,7 +921,7 @@ const ServiceDetails = () => {
             {/* <Footer /> */}
             {isModalOpen2 && (
                 <ReportModalSev
-                    service_id={service_id}  // Pass the service_id as a prop but we dont have service id so update this part 
+                    service_id={service_id} // Pass the service_id as a prop but we dont have service id so update this part
                     onClose={() => setIsModalOpen2(false)}
                 />
             )}

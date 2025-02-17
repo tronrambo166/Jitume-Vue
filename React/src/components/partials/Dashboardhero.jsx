@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 import profile from "../../images/profile.png";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState , useRef } from "react";
 import axiosClient from "../../axiosClient";
 import { useStateContext } from "../../contexts/contextProvider";
 import NotificationBell from "./NotificationBell";
@@ -52,6 +52,8 @@ const Dashboardhero = () => {
         fetchUserData();
     }, []);
 
+    const intervalRef = useRef(null);
+
     useEffect(() => {
         if (!id) return;
 
@@ -60,19 +62,25 @@ const Dashboardhero = () => {
                 const { data } = await axiosClient.get(
                     `business/service_messages_count/${id}`
                 );
-                // console.log("count", data);
                 setCount(data.count);
             } catch (error) {
                 console.error("Error fetching messages count:", error);
             }
         };
 
+        // Fetch immediately, then start interval
         fetchMessageCount();
 
-        const interval = setInterval(fetchMessageCount, 2000); // 2 seconds for testing
+        // Clear any existing interval before setting a new one
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+        }
 
-        return () => clearInterval(interval);
+        intervalRef.current = setInterval(fetchMessageCount, 2000);
+
+        return () => clearInterval(intervalRef.current);
     }, [id]);
+
 
     useEffect(() => {
         const handleUserUpdate = (event) => {

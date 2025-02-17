@@ -329,7 +329,7 @@ const MyInvest = () => {
                             )}
                             {item.status === "under_verification" &&
                                 item.type === "Asset" && (
-                                    <ul className="divide-y divide-gray-200  shadow rounded-lg">
+                                    <ul className="divide-y divide-gray-200 whitespace-nowrap  shadow rounded-lg">
                                         <li>
                                             <button
                                                 onClick={() =>
@@ -337,7 +337,7 @@ const MyInvest = () => {
                                                         item.bid_id
                                                     )
                                                 }
-                                                className="flex items-center w-full text-left px-3 py-2 hover:bg-gray-50 text-green-800 transition duration-150 ease-in-out"
+                                                className="flex items-center w-full text-left px-3 py-2  hover:bg-gray-50 text-green-800 transition duration-150 ease-in-out"
                                             >
                                                 <span className="mr-2">
                                                     <i className="fas fa-briefcase text-green-500"></i>
@@ -354,7 +354,7 @@ const MyInvest = () => {
                                                 onClick={() =>
                                                     verifyRequestBO(item.bid_id)
                                                 }
-                                                className="flex items-center w-full text-left px-3 py-2 hover:bg-gray-50 text-slate-600 transition duration-150 ease-in-out"
+                                                className="flex items-center w-full text-left px-3 py-2  hover:bg-gray-50 text-slate-600 transition duration-150 ease-in-out"
                                             >
                                                 <span className="mr-2">
                                                     <i className="fas fa-user-check text-blue-500"></i>
@@ -372,7 +372,7 @@ const MyInvest = () => {
                                                         item.bid_id
                                                     )
                                                 }
-                                                className="flex items-center w-full text-left px-3 py-2 hover:bg-gray-50 text-pink-700 transition duration-150 ease-in-out"
+                                                className="flex items-center w-full text-left px-3 py-2  hover:bg-gray-50 text-pink-700 transition duration-150 ease-in-out"
                                             >
                                                 <span className="mr-2">
                                                     <i className="fas fa-money-bill-wave text-pink-500"></i>
@@ -382,15 +382,18 @@ const MyInvest = () => {
                                         </li>
                                     </ul>
                                 )}
-                            {(item.status === "Confirmed" || item.status === "awaiting_payment")&&
+                            {(item.status === "Confirmed" ||
+                                item.status === "awaiting_payment") &&
                                 item.type === "Monetary" && (
-                                    <ul>
+                                    <ul className="whitespace-nowrap">
                                         <li>
                                             <button
                                                 onClick={() =>
-                                                    WithdrawInvestment(item.bid_id)
+                                                    WithdrawInvestment(
+                                                        item.bid_id
+                                                    )
                                                 }
-                                                className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-pink-700 transition duration-150 ease-in-out"
+                                                className="block w-full text-left px-4 py-2  hover:bg-gray-100 text-pink-700 transition duration-150 ease-in-out"
                                             >
                                                 Withdraw Investment
                                             </button>

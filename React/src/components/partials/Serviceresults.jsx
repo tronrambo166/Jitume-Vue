@@ -18,6 +18,8 @@ import ServiceSearch from "../partials/ServiceSearch";
 import Search from "../pages/components/Search";
 import CardsPagination from "./CardsPagination";
 import BackBtn from "./BackBtn";
+import noUiSlider from "nouislider";
+import "nouislider/dist/nouislider.css";
 const ServiceResults = () => {
     const categories = [
         { value: "Agriculture", label: "Agriculture" },
@@ -84,7 +86,6 @@ const ServiceResults = () => {
                         )
                     );
                     setMaxPrice(maxPrice); // Set the max price to state
-                    
 
                     // Store the results in localStorage
                     localStorage.setItem(
@@ -120,8 +121,8 @@ const ServiceResults = () => {
             .catch((err) => {
                 console.log(err);
             });
-             max = maxPrice;
-             min = 0;
+        max = maxPrice;
+        min = 0;
     };
 
     //RESULTS
@@ -191,7 +192,6 @@ const ServiceResults = () => {
         });
     };
 
-  
     const search = () => {
         // let filteredResults = dummyResults;
         // if (selectedCategory) {
@@ -637,7 +637,7 @@ const ServiceResults = () => {
 
                                         <div className="flex flex-col pt-2 justify-between flex-grow">
                                             <div className="flex flex-wrap gap-2 text-sm font-bold text-[#1E293B] mb-2">
-                                                {row.category !='0'
+                                                {row.category != "0"
                                                     ? row.category
                                                           .split(",")
                                                           .map((tag, index) => (
@@ -648,7 +648,7 @@ const ServiceResults = () => {
                                                                   #{tag.trim()}
                                                               </span>
                                                           ))
-                                                    : ['#Project Management']}
+                                                    : ["#Project Management"]}
                                             </div>
                                         </div>
 
@@ -661,7 +661,9 @@ const ServiceResults = () => {
                                                     "Lorem ipsum dolor sit amet consectetur..."}
                                             </p>
                                             <p className="text-sm text-gray-600 inline-block">
-                                                {row.category=='0'?'Project-Management':row.category}
+                                                {row.category == "0"
+                                                    ? "Project-Management"
+                                                    : row.category}
                                             </p>
 
                                             <div className="text-sm text-gray-500 flex flex-col gap-1">

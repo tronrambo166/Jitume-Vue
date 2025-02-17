@@ -16,26 +16,35 @@ const NotificationBell = () => {
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
     const { showAlert } = useAlert();
+    const [unreadCount, setUnreadCount] = useState(0);
 
     // Fetch notifications on component mount
-    useEffect(() => {
-        const fetchNotifications = () => {
-            axiosClient
-                .get("business/notifications")
-                .then(({ data }) => {
+  useEffect(() => {
+        const fetchNotifications = async () => {
+            try {
+                const { data } = await axiosClient.get("business/notifications");
+
+                // Only update if the notifications have changed
+                if (data.data !== notifications) {
                     setNotifications(data.data);
-                    console.log("Notifications = ");
-                    console.log(data);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+                    const count = data.data.filter((notif) => notif.new === 1).length;
+                    setUnreadCount(count);
+                }
+            } catch (error) {
+                console.error("Error fetching notifications:", error);
+            }
         };
+
         fetchNotifications();
-    }, []);
+
+        const interval = setInterval(fetchNotifications, 2000); // Poll every 2s
+
+        return () => clearInterval(interval); // Clear interval on component unmount
+    }, [notifications]);  // Depend on the current notifications
+
 
     // Unread count is calculated based on "new" field in the notification
-    const unreadCount = notifications.filter((notif) => notif.new === 1).length;
+    // const unreadCount = notifications.filter((notif) => notif.new === 1).length;
 
     // Toggle dropdown
     const toggleDropdown = () => {
@@ -323,7 +332,7 @@ const NotificationBell = () => {
                     onClick={toggleDropdown}
                 />
                 {unreadCount > 0 && (
-                    <div className="absolute flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-3">
+                    <div className="absolute flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-3 animate-pulse">
                         {unreadCount}
                     </div>
                 )}
@@ -380,103 +389,192 @@ const NotificationBell = () => {
                                                 {notif.date}
                                             </div>
                                             <div className="mt-2 flex space-x-2">
-                                                
-                                                    {notif.link =='verify_request'?(
+                                                {notif.link ==
+                                                "verify_request" ? (
                                                     <div>
-                                                    <button onClick={() =>
-                                                        startConversation(notif.customer_id)} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
-                                                        Agree
-                                                    </button> <br></br>
-                                                    <button onClick={() =>
-                                                         AskInvestorToVerify(notif.bid_id)} style={{fontSize: '11px'}} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
-                                                        Ask Investor To Verify With Project Manager
-                                                    </button>
-                                                    <br></br>
-
+                                                        <button
+                                                            onClick={() =>
+                                                                startConversation(
+                                                                    notif.customer_id
+                                                                )
+                                                            }
+                                                            className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black"
+                                                        >
+                                                            Agree
+                                                        </button>{" "}
+                                                        <br></br>
+                                                        <button
+                                                            onClick={() =>
+                                                                AskInvestorToVerify(
+                                                                    notif.bid_id
+                                                                )
+                                                            }
+                                                            style={{
+                                                                fontSize:
+                                                                    "11px",
+                                                            }}
+                                                            className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black"
+                                                        >
+                                                            Ask Investor To
+                                                            Verify With Project
+                                                            Manager
+                                                        </button>
+                                                        <br></br>
                                                     </div>
-                                                    ):notif.link =='verify_request_manager'?(
+                                                ) : notif.link ==
+                                                  "verify_request_manager" ? (
                                                     <div>
-                                                    <button onClick={() =>
-                                                        startConversationBO_PM(notif.customer_id, notif.bid_id)} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
-                                                        Start Conversation
-                                                    </button>
+                                                        <button
+                                                            onClick={() =>
+                                                                startConversationBO_PM(
+                                                                    notif.customer_id,
+                                                                    notif.bid_id
+                                                                )
+                                                            }
+                                                            className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black"
+                                                        >
+                                                            Start Conversation
+                                                        </button>
                                                     </div>
-                                                    ):notif.link =='bid_cancel_confirm'?(
+                                                ) : notif.link ==
+                                                  "bid_cancel_confirm" ? (
                                                     <div>
-                                                    <button onClick={() =>
-                                                        CancelBid(notif.bid_id)} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
-                                                        OK
-                                                    </button> <br></br>
-                                                    <button onClick={() =>
-                                                        navigateToProjectManager(notif.bid_id)} style={{fontSize: '11px'}} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
-                                                         Request Project Manager
-                                                   to Verify
-                                                    </button>
-
-                                                    <button onClick={() =>
-                                                        verifyRequestBO(notif.bid_id)} style={{fontSize: '11px'}} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
-                                                         Request Business Owner to Verify
-                                                    </button>
-                                                
+                                                        <button
+                                                            onClick={() =>
+                                                                CancelBid(
+                                                                    notif.bid_id
+                                                                )
+                                                            }
+                                                            className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black"
+                                                        >
+                                                            OK
+                                                        </button>{" "}
+                                                        <br></br>
+                                                        <button
+                                                            onClick={() =>
+                                                                navigateToProjectManager(
+                                                                    notif.bid_id
+                                                                )
+                                                            }
+                                                            style={{
+                                                                fontSize:
+                                                                    "11px",
+                                                            }}
+                                                            className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black"
+                                                        >
+                                                            Request Project
+                                                            Manager to Verify
+                                                        </button>
+                                                        <button
+                                                            onClick={() =>
+                                                                verifyRequestBO(
+                                                                    notif.bid_id
+                                                                )
+                                                            }
+                                                            style={{
+                                                                fontSize:
+                                                                    "11px",
+                                                            }}
+                                                            className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black"
+                                                        >
+                                                            Request Business
+                                                            Owner to Verify
+                                                        </button>
                                                     </div>
-                                                    ):notif.link =='eqp_cancel_confirm'?(
+                                                ) : notif.link ==
+                                                  "eqp_cancel_confirm" ? (
                                                     <div>
-                                                    <button onClick={() =>
-                                                        CancelBid(notif.bid_id)} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
-                                                        OK
-                                                    </button> <br></br>
-                                                    <button onClick={() =>
-                                                        ReleaseEquipment(notif.bid_id)} style={{fontSize: '11px'}} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
-                                                         Release Equipment
-                                                    </button>
-                                                
+                                                        <button
+                                                            onClick={() =>
+                                                                CancelBid(
+                                                                    notif.bid_id
+                                                                )
+                                                            }
+                                                            className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black"
+                                                        >
+                                                            OK
+                                                        </button>{" "}
+                                                        <br></br>
+                                                        <button
+                                                            onClick={() =>
+                                                                ReleaseEquipment(
+                                                                    notif.bid_id
+                                                                )
+                                                            }
+                                                            style={{
+                                                                fontSize:
+                                                                    "11px",
+                                                            }}
+                                                            className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black"
+                                                        >
+                                                            Release Equipment
+                                                        </button>
                                                     </div>
-                                                    ):notif.link =='booking_cancel_confirm'?(
+                                                ) : notif.link ==
+                                                  "booking_cancel_confirm" ? (
                                                     <div>
-                                                    <button onClick={() =>
-                                                        CancelBooking(notif.bid_id)} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
-                                                        OK
-                                                    </button>
-                                                
+                                                        <button
+                                                            onClick={() =>
+                                                                CancelBooking(
+                                                                    notif.bid_id
+                                                                )
+                                                            }
+                                                            className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black"
+                                                        >
+                                                            OK
+                                                        </button>
                                                     </div>
-                                                    ):notif.link =='next_mile_agree'?(
+                                                ) : notif.link ==
+                                                  "next_mile_agree" ? (
                                                     <div>
-                                                    <button onClick={() =>
-                                                        nextMileAgree(notif.bid_id)} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
-                                                        Yes
-                                                    </button> <br></br>
+                                                        <button
+                                                            onClick={() =>
+                                                                nextMileAgree(
+                                                                    notif.bid_id
+                                                                )
+                                                            }
+                                                            className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black"
+                                                        >
+                                                            Yes
+                                                        </button>{" "}
+                                                        <br></br>
                                                     </div>
-                                                    ):notif.link =='business_review'?(
+                                                ) : notif.link ==
+                                                  "business_review" ? (
                                                     <div>
-                                                    <button onClick={() =>
-                                                        businessReview(notif.business_id)} className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black">
-                                                        ok
-                                                    </button> <br></br>
+                                                        <button
+                                                            onClick={() =>
+                                                                businessReview(
+                                                                    notif.business_id
+                                                                )
+                                                            }
+                                                            className="border-green-500 px-2 rounded border-solid border-2 text-green-700 text-xs hover:text-black"
+                                                        >
+                                                            ok
+                                                        </button>{" "}
+                                                        <br></br>
                                                     </div>
-                                                    ):(
-
+                                                ) : (
                                                     <Link
-                                                    to={`./${notif.link}`}
-                                                    onClick={closeDropdown}
-                                                    ><button className="text-blue-600 text-xs hover:text-black">
-                                                        View More
-                                                    </button> &nbsp;
-                                                    <button
-                                                    className="text-red-600 text-xs hover:text-red-800"
-                                                    onClick={() =>
-                                                        removeNotification(
-                                                            index
-                                                        )
-                                                    }
-                                                >
-                                                    Remove
-                                                </button>
-
+                                                        to={`./${notif.link}`}
+                                                        onClick={closeDropdown}
+                                                    >
+                                                        <button className="text-blue-600 text-xs hover:text-black">
+                                                            View More
+                                                        </button>{" "}
+                                                        &nbsp;
+                                                        <button
+                                                            className="text-red-600 text-xs hover:text-red-800"
+                                                            onClick={() =>
+                                                                removeNotification(
+                                                                    index
+                                                                )
+                                                            }
+                                                        >
+                                                            Remove
+                                                        </button>
                                                     </Link>
-                                                    )}
-
-                                                
-                                                
+                                                )}
                                             </div>
                                         </div>
                                     </li>
