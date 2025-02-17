@@ -18,6 +18,8 @@ import ServiceSearch from "../partials/ServiceSearch";
 import Search from "../pages/components/Search";
 import CardsPagination from "./CardsPagination";
 import BackBtn from "./BackBtn";
+import noUiSlider from "nouislider";
+import "nouislider/dist/nouislider.css";
 const ServiceResults = () => {
     const categories = [
         { value: "Agriculture", label: "Agriculture" },
