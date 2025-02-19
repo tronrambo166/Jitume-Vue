@@ -130,7 +130,7 @@
 				        	</div>
 
 				        	<div class="col-sm-6">
-				        		<button onclick="otherReports({{$l->id}});" class="w-75 text-left border pl-3 ">View Reports</button>
+				        		<button id="view{{$l->id}}" onclick="otherReports({{$l->id}});" class="w-75 text-left border pl-3 ">View All Reports</button>
 				        	</div>
 				        	<div class="col-sm-6">
 				        		<p class="text-center">
@@ -138,16 +138,15 @@
 				        	</div>
 
 
-				        	<div class="tempDiv">
-				        		Loading...
+				        	<div class="row collapse w-100" id="dataH{{$l->id}}">
+				        		<div class="col-sm-3"><p class="font-weight-bold">Id</p></div>
+				        		<div class="col-sm-3"><p class="font-weight-bold">Category</p></div>
+				        		<div class="col-sm-3"><p class="font-weight-bold">Details</p></div>
+				        		<div class="col-sm-3"><p class="font-weight-bold">Document</p></div>
 
 				        	</div>
 
-				        	<div class="row">
-				        		<div class="col-sm-3"><p>Id</p></div>
-				        		<div class="col-sm-3"><p>Category</p></div>
-				        		<div class="col-sm-3"><p>Details</p></div>
-				        		<div class="col-sm-3"><p>Document</p></div>
+				        	<div class="row" id="data{{$l->id}}">
 
 				        	</div>
 
@@ -190,10 +189,10 @@
 		//     "ordering": false
 		// });
 
-	function otherReports(id){ alert(id);
+	function otherReports(id){
 
      $.ajax({
-            url:"admin/otherReports/"+id, 
+            url:"otherReports/"+id, 
             method:"GET",
             dataType: 'json',
           	success: function(data) {  
@@ -201,24 +200,14 @@
             console.log(data);
 
 // Top 20 chart
-           try{
             Object.entries(reports).forEach(entry => {
-            const [key, value] = entry; console.log(key+'=>'+value);
-            
-                $('#songs').append('<tr><th scope="row" class="text-center">'+i+'</th>     <td> <img width="80px" src="'+art+'" /> </td> <td>'+value.artist+'</td>  <td>'+value.title+'</td> <td> '+move+'</td>  </tr>'); i++;
+            const [key, value] = entry; console.log(value.id);
 
+                $('#data'+id).append('<div class="col-sm-3"><p>#'+value.id+'</p></div><div class="col-sm-3"><p>'+value.category+'</p></div><div class="col-sm-3"><p>'+value.details+'</p></div><div class="col-sm-3"><p>'+value.document+'</p></div>');
                 
-              })
-              .catch(error => {
-                console.error('Error:', error);
               });
-            //LastFM
-           
-               $('#loading').remove();
-               $('#tempDiv').remove();
-
-          }
-          catch(e) { if (e !== BreakException) throw e;} 
+            $('#dataH'+id).removeClass('collapse');
+            $('#view'+id).addClass('collapse');
             
 
 		},

@@ -1772,7 +1772,7 @@ const ListingDetails = ({ onClose }) => {
             </div>
             <ScrollToTop />
 
-            {isModalOpen2 && token (
+            {isModalOpen2 && token && (
                 <ReportModal
                     listing_id={form.listing_id}
                     onClose={() => setIsModalOpen2(false)}
