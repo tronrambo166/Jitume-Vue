@@ -251,8 +251,25 @@ public function listings_active()
         return response()->json(['reports' => $reports, 'status' => 200]);
        }
        catch(\Exception $e){
-return response()->json(['reports' => $e->getMessage(), 'status' => 200]);
+       return response()->json(['reports' => $e->getMessage(), 'status' => 200]);
        }     
+    }
+
+
+    public function reportDownload($id)
+    {
+        $doc = Reports::where('id',$id)->first();
+        $file=$doc->document;
+        if( $file == null || !file_exists(public_path($file)) ){
+            return response('404');
+        }
+
+        $file= public_path($file);
+
+        $headers = array(
+                  'Content-Type: application/pdf',
+                );
+        return Response::download($file, 'filename.pdf', $headers);
     }
 
     

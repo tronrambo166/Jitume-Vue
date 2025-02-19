@@ -60,10 +60,13 @@ const ReportModal = ({ onClose, listing_id }) => {
         if (files[reportReason])
             formData.append("document", files[reportReason]);
 
+        //console.log(files[reportReason]); return;
+
         try {
             const { data } = await axiosClient.post("submitReport", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
+            console.log(data);
 
             data.status === 200
                 ? showAlert("success", data.message)

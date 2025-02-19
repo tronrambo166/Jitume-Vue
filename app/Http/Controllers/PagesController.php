@@ -876,10 +876,19 @@ public function JitumeSubscribeEmail($email){
 
 public function submitReport(Request $request){ 
     
-    try{
+    try{ 
         $listing_id = $request->listing_id;
         $listing = Listing::where('id',$listing_id)->first();
         $user = User::select('fname','email')->where('id', Auth::id())->first();
+
+          $document=$request->file('document');
+          if($document) {        
+          $ext=strtolower($document->getClientOriginalExtension());
+          if($ext!='pdf' && $ext!= 'docx')
+          {
+            return response()->json([ 'status' => 404, 'message' => 'Only pdf & docx are allowed!']);
+          } }
+
         $report = Reports::create([
             'user_id' => Auth::id(),
             'listing_id' => $listing_id,
@@ -890,11 +899,33 @@ public function submitReport(Request $request){
             'details' => $request->details,
             'document' => null,
         ]);
+
+        $report_id = $report->id;
+
+        if($document) {
+          $uniqid=hexdec(uniqid());
+          $ext=strtolower($document->getClientOriginalExtension());
+          $create_name=$uniqid.'.'.$ext;
+          if(!file_exists('files/reports/'.$report_id)) 
+          mkdir('files/reports/'.$report_id, 0777, true);
+
+          $loc='files/reports/'.$report_id.'/';
+          //Move uploaded file
+          $document->move($loc, $create_name);
+          $final_document=$loc.$create_name;
+        }
+        else $final_document='';
+
+        $update = Reports::where('id',$report_id)->update([
+            'document' => $final_document,
+        ]);
+
+        //Mail
         $user['to'] = $user->email; $info = ['listing_name'=> $listing->name, 'category'=>
         $request->category, 'id'=> $report->id];
         Mail::send('report_mail', $info, function($msg) use ($user){
             $msg->to($user['to']);
-            $msg->subject('Subscribe to Jitume');
+            $msg->subject('Report Submitted');
         });
         return response()->json(['status' => 200, 'message' => 'Report Submitted!']);
     }

@@ -8,7 +8,7 @@
 					<div class="page-header">
 						<div class="row">
 							<div class="col-sm-7 col-auto">
-								<h3 class="page-title">Reports</h3>
+								<h3 class="page-title">Reported Listings</h3>
 								<ul class="breadcrumb">
 									<li class="breadcrumb-item"><a href="index">Dashboard</a></li>
 									<li class="breadcrumb-item active">Reports</li>
@@ -87,7 +87,7 @@
 						<!-- Modal -->
 						<div class="modal fade" id="exampleModal{{$l->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 						  <div class="modal-dialog" role="document">
-						    <div class="modal-content mx-auto text-center">
+						    <div style="width: 750px;" class="modal-content mx-auto text-center">
 						      <div class="text-center modal-header">
 						        <h5 class="modal-title  text-secondary mx-auto" id="exampleModalLabel">User Info </h5>
 						        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -203,7 +203,7 @@
             Object.entries(reports).forEach(entry => {
             const [key, value] = entry; console.log(value.id);
 
-                $('#data'+id).append('<div class="col-sm-3"><p>#'+value.id+'</p></div><div class="col-sm-3"><p>'+value.category+'</p></div><div class="col-sm-3"><p>'+value.details+'</p></div><div class="col-sm-3"><p>'+value.document+'</p></div>');
+                $('#data'+id).append('<div class="col-sm-3"><p>#'+value.id+'</p></div><div class="col-sm-3"><p>'+value.category+'</p></div><div class="col-sm-3"><p>'+value.details+'</p></div><div class="col-sm-3"><a href="{{route("reportDownload",'+$id+')}} "><i class="fa fa-download"></i></a></div>');
                 
               });
             $('#dataH'+id).removeClass('collapse');
