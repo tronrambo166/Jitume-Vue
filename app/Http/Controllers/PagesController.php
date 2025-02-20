@@ -884,10 +884,11 @@ public function submitReport(Request $request){
           $document=$request->file('document');
           if($document) {        
           $ext=strtolower($document->getClientOriginalExtension());
-          if($ext!='pdf' && $ext!= 'docx')
-          {
-            return response()->json([ 'status' => 404, 'message' => 'Only pdf & docx are allowed!']);
-          } }
+          // if($ext!='pdf' && $ext!= 'docx')
+          // {
+          //   return response()->json([ 'status' => 404, 'message' => 'Only pdf & docx are allowed!']);
+          // } 
+          }
 
         $report = Reports::create([
             'user_id' => Auth::id(),

@@ -26,6 +26,7 @@ use Session;
 use Exception;
 use stdClass;
 use Redirect;
+use Response;
 class AdminController extends Controller
 {
     public function __construct()
@@ -264,12 +265,23 @@ public function listings_active()
             return response('404');
         }
 
-        $file= public_path($file);
+        $ext = explode('.',$file);
+        // if($ext[1] != 'pdf' && $ext[1] != 'docx'){
+        //     $headers = array('Content-Type'=> 'image/'.$ext[1]);
+        //     $url= public_path($file);
+        //     $extension = pathinfo($url, PATHINFO_EXTENSION);
 
-        $headers = array(
-                  'Content-Type: application/pdf',
-                );
-        return Response::download($file, 'filename.pdf', $headers);
+        //     response()->json(['type'=>$extension]);
+        //     return response()->download($url);
+        // }
+
+        $headers = array('Content-Type'=> 'application/pdf');
+        $url= public_path($file);
+        $extension = pathinfo($url, PATHINFO_EXTENSION);
+
+        response()->json(['type'=>$extension]);
+        return response()->download($url);
+
     }
 
     

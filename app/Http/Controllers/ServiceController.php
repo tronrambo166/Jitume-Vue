@@ -1147,11 +1147,11 @@ public function serviceMsg(Request $request){
 
 public function serviceReply(Request $request){ 
 
-  try{ 
+  try{
     //$owner = Services::where('id',$request->service_id)->first();
     $msg = ServiceMessages::where('id',$request->msg_id)->first();
 
-    if(isset($msg->booker_id)){
+    if($request->service_id != null && $request->service_id != 0){
       if($msg->booker_id == Auth::id()){
       $to_id = $msg->service_owner_id;
       $from_id = $msg->booker_id;

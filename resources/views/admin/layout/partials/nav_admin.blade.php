@@ -22,19 +22,19 @@
 							</li>
 
 							<li  class="{{ Request::is('admin/services-active') ? 'active' : '' }}"> 
-								<a href="services-active"><i style="font-size: 18px;" class="fa fa-cog fa-1x"></i> <span>Active Services</span></a>
+								<a href="services-active"><img style="width: 18px;" src="../images/admin/active.png" /> <span>Active Services</span></a>
 							</li>
 
 							<li  class="{{ Request::is('admin/prospects') ? 'active' : '' }}"> 
-								<a href="prospects"><i style="font-size: 18px;" class="fa fa-cog fa-1x"></i> <span>Prospects</span></a>
+								<a href="prospects"><img style="width: 18px;" src="../images/admin/prospects.png" /> <span>Prospects</span></a>
 							</li>
 
 							<li  class="{{ Request::is('admin/disputes') ? 'active' : '' }}"> 
-								<a href="disputes"><i style="font-size: 18px;" class="fa fa-cog fa-1x"></i> <span>Disputes</span></a>
+								<a href="disputes"><img style="width: 18px;" src="../images/admin/disputes.png" /> <span>Disputes</span></a>
 							</li>
 
 							<li  class="{{ Request::is('admin/reports') ? 'active' : '' }}"> 
-								<a href="reports"><i style="font-size: 18px;" class="fa fa-cog fa-1x"></i> <span>Reports</span></a>
+								<a href="reports"><img style="width: 18px;" src="../images/admin/reports.png" /> <span>Reports</span></a>
 							</li>
 							
 							

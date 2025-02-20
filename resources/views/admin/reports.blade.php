@@ -130,7 +130,7 @@
 				        	</div>
 
 				        	<div class="col-sm-6">
-				        		<button id="view{{$l->id}}" onclick="otherReports({{$l->id}});" class="w-75 text-left border pl-3 ">View All Reports</button>
+				        		<button id="view{{$l->id}}" onclick="otherReports({{$l->id}});" class="w-100 text-left border pl-3 ">View All Reports</button>
 				        	</div>
 				        	<div class="col-sm-6">
 				        		<p class="text-center">
@@ -203,7 +203,7 @@
             Object.entries(reports).forEach(entry => {
             const [key, value] = entry; console.log(value.id);
 
-                $('#data'+id).append('<div class="col-sm-3"><p>#'+value.id+'</p></div><div class="col-sm-3"><p>'+value.category+'</p></div><div class="col-sm-3"><p>'+value.details+'</p></div><div class="col-sm-3"><a href="{{route("reportDownload",'+$id+')}} "><i class="fa fa-download"></i></a></div>');
+                $('#data'+id).append('<div class="col-sm-3"><p>#'+value.id+'</p></div><div class="col-sm-3"><p>'+value.category+'</p></div><div class="col-sm-3"><p>'+value.details+'</p></div><div class="col-sm-3"><a style="cursor:pointer;" onclick="reportDownload('+value.id+')"><i class="fa fa-download"></i></a></div>');
                 
               });
             $('#dataH'+id).removeClass('collapse');
@@ -213,7 +213,25 @@
 		},
 		error:function(data) { console.log(data); }
 		 });
- }
+ 	}
+
+
+ 	function reportDownload(id){
+
+    $.ajax({
+        url:"reportDownload/"+id, 
+        method:"GET",
+        responseType: "blob",
+      	success: function(data) {  
+        console.log(data);
+        if(data == '404')
+        	alert('File does not exist!');
+
+    	},
+		error:function(data) { console.log(data); }
+	});
+
+    }
 	</script>	
 
 			

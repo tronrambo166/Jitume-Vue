@@ -282,19 +282,19 @@ function Messages() {
             created_at: new Date().toISOString(),
         };
 
-        console.log("Sending message:", tempMessage);
+        console.log("Sending message:", tempMessage); //return;
         setChatHistory((prev) => [...prev, tempMessage]); // Update chat history immediately
 
         // Make API call to send the message
         axiosClient
             .post("/serviceReply", {
                 msg_id: id,
-                service_id,
+                service_id:service_id,
                 msg: protectedMessage,
                 to_id: to_id,
             })
             .then(({ data }) => {
-                console.log("Message sent successfully:", data.message);
+                console.log("Message sent successfully:", data);
                 setChatHistory((prev) =>
                     prev.map((msg) =>
                         msg === tempMessage ? { ...msg, status: "Sent" } : msg
