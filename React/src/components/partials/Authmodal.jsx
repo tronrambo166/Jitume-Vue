@@ -22,12 +22,17 @@ const Modal = ({ isOpen, onClose }) => {
     }, [isOpen]);
 
     if (!isOpen || token) return null;
+    const isDashboard = location.pathname.startsWith("/dashboard");
 
     return (
         <div
-            className="fixed inset-0 bg-gray-600 bg-opacity-75 flex justify-center items-start z-50 overflow-y-auto"
+            className={`fixed inset-0 flex justify-center items-start z-50 overflow-y-auto transition-opacity ${
+                isDashboard
+                    ? "bg-gray-600 bg-opacity-75 backdrop-blur-lg"
+                    : "bg-transparent"
+            }`}
             style={{
-                minHeight: "100vh", // Ensure overlay takes full viewport height
+                minHeight: "100vh",
             }}
         >
             <div
@@ -79,7 +84,6 @@ const Modal = ({ isOpen, onClose }) => {
                 <div className="overflow-y-auto max-h-[calc(100vh-180px)] thin-scrollbar">
                     {isLogin ? (
                         <div>
-                            
                             <LoginForm />
                         </div>
                     ) : (
