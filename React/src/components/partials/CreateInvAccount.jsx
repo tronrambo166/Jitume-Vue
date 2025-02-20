@@ -191,6 +191,38 @@ function CreateInvestorAccount({ isOpen, onClose }) {
             return false;
         }
     };
+ const invRangeRef = useRef(null);
+ const industriesRef = useRef(null);
+
+ // Handle clicks outside
+ useEffect(() => {
+     function handleClickOutside(event) {
+         if (
+             invRangeRef.current &&
+             !invRangeRef.current.contains(event.target)
+         ) {
+             setDropdowns((prev) => ({ ...prev, invRangeOpen: false }));
+         }
+         if (
+             industriesRef.current &&
+             !industriesRef.current.contains(event.target)
+         ) {
+             setDropdowns((prev) => ({ ...prev, industriesOpen: false }));
+         }
+     }
+
+     document.addEventListener("mousedown", handleClickOutside);
+     return () => {
+         document.removeEventListener("mousedown", handleClickOutside);
+     };
+ }, []);
+
+ const handleDropdownToggle = (dropdown) => {
+     setDropdowns((prev) => ({
+         ...prev,
+         [dropdown]: !prev[dropdown],
+     }));
+ };
 
     // ////////////////////////////////////////////////////////////
 
@@ -280,12 +312,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
-    const toggleDropdown = (dropdown) => {
-        setDropdowns((prev) => ({
-            ...prev,
-            [dropdown]: !prev[dropdown],
-        }));
-    };
+   
     // otp otp otp
 
     const toggleConfirmPasswordVisibility = () => {
@@ -369,12 +396,12 @@ function CreateInvestorAccount({ isOpen, onClose }) {
         }
     };
 
-    const handleDropdownToggle = (type) => {
-        setDropdowns((prev) => ({
-            ...prev,
-            [type]: !prev[type],
-        }));
-    };
+    // const handleDropdownToggle = (type) => {
+    //     setDropdowns((prev) => ({
+    //         ...prev,
+    //         [type]: !prev[type],
+    //     }));
+    // };
 
     const isFormValid = loginData.email && loginData.password;
 
@@ -960,145 +987,157 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                         </div>
                                         <hr className="my-4"></hr>
                                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 overflow-y-auto no-scrollbar">
-                                            <div
-                                                className="relative"
-                                            >
-                                                <label className="block text-gray-700 text-sm mt-4 mb-1">
-                                                    Potential Investment{" "}
-                                                    <span className="block">
-                                                        Range
-                                                    </span>
-                                                </label>
-
+                                                {/* Investment Range Dropdown */}
                                                 <div
-                                                    className="border rounded-lg px-3 py-2 text-sm cursor-pointer text-black focus:ring-2 focus:ring-blue-500"
-                                                    onClick={() =>
-                                                        handleDropdownToggle(
-                                                            "invRangeOpen"
-                                                        )
-                                                    }
+                                                    className="relative"
+                                                    ref={invRangeRef}
                                                 >
-                                                    {registrationData.inv_range
-                                                        .length > 0
-                                                        ? registrationData.inv_range.join(
-                                                              ", "
-                                                          )
-                                                        : "Select ranges"}
+                                                    <label className="block text-gray-700 text-sm mt-4 mb-1">
+                                                        Potential Investment{" "}
+                                                        <span className="block">
+                                                            Range
+                                                        </span>
+                                                    </label>
+
+                                                    <div
+                                                        className="border rounded-lg px-3 py-2 text-sm cursor-pointer text-black focus:ring-2 focus:ring-blue-500"
+                                                        onClick={() =>
+                                                            handleDropdownToggle(
+                                                                "invRangeOpen"
+                                                            )
+                                                        }
+                                                    >
+                                                        {registrationData
+                                                            .inv_range.length >
+                                                        0
+                                                            ? registrationData.inv_range.join(
+                                                                  ", "
+                                                              )
+                                                            : "Select ranges"}
+                                                    </div>
+
+                                                    {dropdowns.invRangeOpen && (
+                                                        <div className="absolute bg-gray-50 border rounded-lg text-black mt-2 w-full z-10 max-h-36 overflow-y-auto scroll-thin shadow-lg">
+                                                            {[
+                                                                "0-10000",
+                                                                "0-100000",
+                                                                "10000-100000",
+                                                                "100000-250000",
+                                                                "250000-500000",
+                                                                "500000+",
+                                                            ].map((range) => (
+                                                                <label
+                                                                    key={range}
+                                                                    className="flex items-center p-2 cursor-pointer hover:bg-green-50"
+                                                                >
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        name={
+                                                                            range
+                                                                        }
+                                                                        checked={registrationData.inv_range.includes(
+                                                                            range
+                                                                        )}
+                                                                        onChange={(
+                                                                            e
+                                                                        ) =>
+                                                                            handleCheckboxChange(
+                                                                                e,
+                                                                                "inv_range"
+                                                                            )
+                                                                        }
+                                                                        className="mr-2"
+                                                                    />
+                                                                    <span className="text-xs">
+                                                                        {range}
+                                                                    </span>
+                                                                </label>
+                                                            ))}
+                                                        </div>
+                                                    )}
                                                 </div>
 
-                                                {dropdowns.invRangeOpen && (
-                                                    <div className="absolute bg-gray-50 border rounded-lg text-black mt-2 w-full z-10 max-h-36 overflow-y-auto scroll-thin shadow-lg">
-                                                        {[
-                                                            "0-10000",
-                                                            "0-100000",
-                                                            "10000-100000",
-                                                            "100000-250000",
-                                                            "250000-500000",
-                                                            "500000+",
-                                                        ].map((range) => (
-                                                            <label
-                                                                key={range}
-                                                                className="flex items-center p-2 cursor-pointer hover:bg-green-50"
-                                                            >
-                                                                <input
-                                                                    type="checkbox"
-                                                                    name={range}
-                                                                    checked={registrationData.inv_range.includes(
-                                                                        range
-                                                                    )}
-                                                                    onChange={(
-                                                                        e
-                                                                    ) =>
-                                                                        handleCheckboxChange(
-                                                                            e,
-                                                                            "inv_range"
-                                                                        )
-                                                                    }
-                                                                    className="mr-2"
-                                                                />
-                                                                <span className="text-xs">
-                                                                    {range}
-                                                                </span>
-                                                            </label>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                            </div>
-
-                                            {/* Industries Dropdown */}
-                                            <div
-                                                className="relative mt-4"
-                                            >
-                                                <label className="block text-gray-700 text-sm mb-1">
-                                                    Which industries are you
-                                                    interested in investing?
-                                                </label>
-
+                                                {/* Industries Dropdown */}
                                                 <div
-                                                    className="border rounded-lg px-3 py-2 text-sm cursor-pointer focus:ring-2 text-black focus:ring-blue-500"
-                                                    onClick={() =>
-                                                        handleDropdownToggle(
-                                                            "industriesOpen"
-                                                        )
-                                                    }
+                                                    className="relative mt-4"
+                                                    ref={industriesRef}
                                                 >
-                                                    {registrationData
-                                                        .interested_cats
-                                                        .length > 0
-                                                        ? registrationData.interested_cats.join(
-                                                              ", "
-                                                          )
-                                                        : "Select industries"}
-                                                </div>
+                                                    <label className="block text-gray-700 text-sm mb-1">
+                                                        Which industries are you
+                                                        interested in investing?
+                                                    </label>
 
-                                                {dropdowns.industriesOpen && (
-                                                    <div className="absolute bg-gray-50 text-black rounded-lg  mt-2 w-full border z-10 max-h-36 overflow-y-auto scroll-thin shadow-lg">
-                                                        {[
-                                                            "Agriculture",
-                                                            "Arts/Culture",
-                                                            "Sports/Gaming",
-                                                            "Auto",
-                                                            "Real Estate",
-                                                            "Food",
-                                                            "Legal",
-                                                            "Security",
-                                                            "Media/Internet",
-                                                            "Technology/Communications",
-                                                            "Retail",
-                                                            "Finance/Accounting",
-                                                            "Pets",
-                                                            "Domestic (Home Help etc)",
-                                                        ].map((industry) => (
-                                                            <label
-                                                                key={industry}
-                                                                className="flex items-center p-2 cursor-pointer hover:bg-green-50"
-                                                            >
-                                                                <input
-                                                                    type="checkbox"
-                                                                    name={
-                                                                        industry
-                                                                    }
-                                                                    checked={registrationData.interested_cats.includes(
-                                                                        industry
-                                                                    )}
-                                                                    onChange={(
-                                                                        e
-                                                                    ) =>
-                                                                        handleCheckboxChange(
-                                                                            e,
-                                                                            "interested_cats"
-                                                                        )
-                                                                    }
-                                                                    className="mr-2"
-                                                                />
-                                                                <span className="text-xs">
-                                                                    {industry}
-                                                                </span>
-                                                            </label>
-                                                        ))}
+                                                    <div
+                                                        className="border rounded-lg px-3 py-2 text-sm cursor-pointer focus:ring-2 text-black focus:ring-blue-500"
+                                                        onClick={() =>
+                                                            handleDropdownToggle(
+                                                                "industriesOpen"
+                                                            )
+                                                        }
+                                                    >
+                                                        {registrationData
+                                                            .interested_cats
+                                                            .length > 0
+                                                            ? registrationData.interested_cats.join(
+                                                                  ", "
+                                                              )
+                                                            : "Select industries"}
                                                     </div>
-                                                )}
-                                            </div>
+
+                                                    {dropdowns.industriesOpen && (
+                                                        <div className="absolute bg-gray-50 text-black rounded-lg mt-2 w-full border z-10 max-h-36 overflow-y-auto scroll-thin shadow-lg">
+                                                            {[
+                                                                "Agriculture",
+                                                                "Arts/Culture",
+                                                                "Sports/Gaming",
+                                                                "Auto",
+                                                                "Real Estate",
+                                                                "Food",
+                                                                "Legal",
+                                                                "Security",
+                                                                "Media/Internet",
+                                                                "Technology/Communications",
+                                                                "Retail",
+                                                                "Finance/Accounting",
+                                                                "Pets",
+                                                                "Domestic (Home Help etc)",
+                                                            ].map(
+                                                                (industry) => (
+                                                                    <label
+                                                                        key={
+                                                                            industry
+                                                                        }
+                                                                        className="flex items-center p-2 cursor-pointer hover:bg-green-50"
+                                                                    >
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            name={
+                                                                                industry
+                                                                            }
+                                                                            checked={registrationData.interested_cats.includes(
+                                                                                industry
+                                                                            )}
+                                                                            onChange={(
+                                                                                e
+                                                                            ) =>
+                                                                                handleCheckboxChange(
+                                                                                    e,
+                                                                                    "interested_cats"
+                                                                                )
+                                                                            }
+                                                                            className="mr-2"
+                                                                        />
+                                                                        <span className="text-xs">
+                                                                            {
+                                                                                industry
+                                                                            }
+                                                                        </span>
+                                                                    </label>
+                                                                )
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </div>
 
                                             <div className="relative">
                                                 <label className="block text-gray-700 text-sm mb-1">
