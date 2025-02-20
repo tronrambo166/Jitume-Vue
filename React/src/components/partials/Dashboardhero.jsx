@@ -60,6 +60,7 @@ const Dashboardhero = () => {
     useEffect(() => {
         if (!loading && !isAuthModalOpen && wasModalOpened && !token) {
             navigate("/");
+            showAlert("error", "Please login to continue.");
         }
 
         // Ensure reload happens only once after login
@@ -68,10 +69,6 @@ const Dashboardhero = () => {
             window.location.reload();
         }
     }, [loading, isAuthModalOpen, wasModalOpened, token, navigate]);
-
-
-
-
 
     ///////////////////////
     //  useEffect(() => {
