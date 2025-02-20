@@ -118,23 +118,23 @@ function CreateInvestorAccount({ isOpen, onClose }) {
     // console.log("OTP sent:", vcode);
 
     const handleNext = async () => {
-           const validationErrors = validateStepOne();
-           setErrors(validationErrors);
+        const validationErrors = validateStepOne();
+        setErrors(validationErrors);
 
-           if (Object.keys(validationErrors).length > 0) {
-               console.log("Validation failed:", validationErrors); // Debugging
-               return;
-           }
+        if (Object.keys(validationErrors).length > 0) {
+            console.log("Validation failed:", validationErrors); // Debugging
+            return;
+        }
 
-           setLoading(true);
+        setLoading(true);
 
-           const emailValid = await validateEmailExists();
-           setLoading(false);
+        const emailValid = await validateEmailExists();
+        setLoading(false);
 
-           if (!emailValid) {
-               console.log("Email validation failed");
-               return;
-           }
+        if (!emailValid) {
+            console.log("Email validation failed");
+            return;
+        }
 
         if (step === 2 && !otpSent) {
             setOtpSent(true);
@@ -190,6 +190,38 @@ function CreateInvestorAccount({ isOpen, onClose }) {
             );
             return false;
         }
+    };
+    const invRangeRef = useRef(null);
+    const industriesRef = useRef(null);
+
+    // Handle clicks outside
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (
+                invRangeRef.current &&
+                !invRangeRef.current.contains(event.target)
+            ) {
+                setDropdowns((prev) => ({ ...prev, invRangeOpen: false }));
+            }
+            if (
+                industriesRef.current &&
+                !industriesRef.current.contains(event.target)
+            ) {
+                setDropdowns((prev) => ({ ...prev, industriesOpen: false }));
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    const handleDropdownToggle = (dropdown) => {
+        setDropdowns((prev) => ({
+            ...prev,
+            [dropdown]: !prev[dropdown],
+        }));
     };
 
     // ////////////////////////////////////////////////////////////
@@ -280,12 +312,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
-    const toggleDropdown = (dropdown) => {
-        setDropdowns((prev) => ({
-            ...prev,
-            [dropdown]: !prev[dropdown],
-        }));
-    };
+
     // otp otp otp
 
     const toggleConfirmPasswordVisibility = () => {
@@ -369,12 +396,12 @@ function CreateInvestorAccount({ isOpen, onClose }) {
         }
     };
 
-    const handleDropdownToggle = (type) => {
-        setDropdowns((prev) => ({
-            ...prev,
-            [type]: !prev[type],
-        }));
-    };
+    // const handleDropdownToggle = (type) => {
+    //     setDropdowns((prev) => ({
+    //         ...prev,
+    //         [type]: !prev[type],
+    //     }));
+    // };
 
     const isFormValid = loginData.email && loginData.password;
 
@@ -960,8 +987,10 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                         </div>
                                         <hr className="my-4"></hr>
                                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 overflow-y-auto no-scrollbar">
+                                            {/* Investment Range Dropdown */}
                                             <div
                                                 className="relative"
+                                                ref={invRangeRef}
                                             >
                                                 <label className="block text-gray-700 text-sm mt-4 mb-1">
                                                     Potential Investment{" "}
@@ -1028,6 +1057,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                             {/* Industries Dropdown */}
                                             <div
                                                 className="relative mt-4"
+                                                ref={industriesRef}
                                             >
                                                 <label className="block text-gray-700 text-sm mb-1">
                                                     Which industries are you
@@ -1052,7 +1082,7 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                                 </div>
 
                                                 {dropdowns.industriesOpen && (
-                                                    <div className="absolute bg-gray-50 text-black rounded-lg  mt-2 w-full border z-10 max-h-36 overflow-y-auto scroll-thin shadow-lg">
+                                                    <div className="absolute bg-gray-50 text-black rounded-lg mt-2 w-full border z-10 max-h-36 overflow-y-auto scroll-thin shadow-lg">
                                                         {[
                                                             "Agriculture",
                                                             "Arts/Culture",
