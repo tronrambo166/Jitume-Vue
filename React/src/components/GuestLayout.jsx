@@ -17,9 +17,9 @@ import UserRegistrationForm from './partials/Investorreg';
 import Footer2 from './Landing-page/global/Footer2';
 export default function GuestLayout() {
     const { token } = useStateContext();
-    if (token) {
-        return <Navigate to="/" />;
-    }
+    // if (token) {
+    //     return <Navigate to="/" />;
+    // }
     // Determine if Footer or Footer2 should be displayed based on the route
     const useFooter = [
         "/",

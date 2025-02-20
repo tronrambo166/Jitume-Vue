@@ -5,6 +5,7 @@ import { useAlert } from "../../partials/AlertContext";
 import { BarLoader } from "react-spinners";
 import { FaChevronDown } from "react-icons/fa";
 import { ProgressBar } from "react-loader-spinner";
+import TujitumeLogo from "../../../images/Tujitumelogo.svg";
 
 function ServiceMilestone() {
     const [milestones, setMilestones] = useState([]);
@@ -50,49 +51,152 @@ function ServiceMilestone() {
         getMilestones();
     }, []);
 
-   const handleSet = (id, status) => {
-       console.log(`Attempting to update milestone ${id} to status: ${status}`);
+    //    const handleSet = (id, status) => {
+    //        console.log(`Attempting to update milestone ${id} to status: ${status}`);
 
-       setStatusLoading((prev) => ({ ...prev, [id]: true })); // Start loading only for this milestone
+    //        setStatusLoading((prev) => ({ ...prev, [id]: true })); // Start loading only for this milestone
 
-       const payload = { id, status };
+    //        const payload = { id, status };
 
-       axiosClient
-           .post("/business/mile_s_status", payload)
-           .then(({ data }) => {
-               console.log("Response received:", data);
+    //        axiosClient
+    //            .post("/business/mile_s_status", payload)
+    //            .then(({ data }) => {
+    //                console.log("Response received:", data);
 
-               // Update milestone status
-               setMilestones((prevMilestones) =>
-                   prevMilestones.map((milestone) =>
-                       milestone.id === id
-                           ? { ...milestone, status }
-                           : milestone
-                   )
-               );
+    //                // Update milestone status
+    //                setMilestones((prevMilestones) =>
+    //                    prevMilestones.map((milestone) =>
+    //                        milestone.id === id
+    //                            ? { ...milestone, status }
+    //                            : milestone
+    //                    )
+    //                );
 
-               console.log(
-                   `Milestone ${id} status updated successfully to: ${status}`
-               );
+    //                console.log(
+    //                    `Milestone ${id} status updated successfully to: ${status}`
+    //                );
 
-               // Show alert based on status
-               if (status === "Done") {
-                   showAlert("info", "Status updated, Email sent");
-               } else {
-                   showAlert("success", "Status updated successfully");
-               }
-           })
-           .catch((err) => {
-               console.error("Error updating status:", err);
-               showAlert("error", "Failed to update status");
-           })
-           .finally(() => {
-               setStatusLoading((prev) => ({ ...prev, [id]: false })); // Stop loading for this milestone
-               console.log("Request completed for milestone", id);
-           });
-   };
+    //                // Show alert based on status
+    //                if (status === "Done") {
+    //                    showAlert("info", "Status updated, Email sent");
+    //                } else {
+    //                    showAlert("success", "Status updated successfully");
+    //                }
+    //            })
+    //            .catch((err) => {
+    //                console.error("Error updating status:", err);
+    //                showAlert("error", "Failed to update status");
+    //            })
+    //            .finally(() => {
+    //                setStatusLoading((prev) => ({ ...prev, [id]: false })); // Stop loading for this milestone
+    //                console.log("Request completed for milestone", id);
+    //            });
+    //    };
 
+    const handleSet = (id, status) => {
+        const milestone = milestones.find((m) => m.id === id);
+        if (!milestone) return;
 
+        if (milestone.status === "To Do" && status === "Done") {
+            showAlert("error", "You can't jump to 'Done' directly.");
+            return;
+        }
+
+        if (milestone.status === "In Progress" && status === "To Do") {
+            showAlert("error", "You can't move back to 'To Do'.");
+            return;
+        }
+
+        if (milestone.status === "Done") {
+            showAlert("error", "This milestone is already completed.");
+            return;
+        }
+
+        // Automatically set 'In Progress' when moving from 'To Do'
+        if (milestone.status === "To Do" && status === "In Progress") {
+            updateStatus(id, "In Progress");
+            return;
+        }
+
+        if (status === "Done") {
+            $.confirm({
+                title: false,
+                content: `
+            <div class="text-start">
+                <div class="flex items-center">
+                    <img src="${TujitumeLogo}" alt="Tujitume Logo" style="max-width: 100px; margin-right: 10px;" class="jconfirm-logo">
+                </div>
+                <h2 class="text-lg mt-2 font-semibold text-gray-800">Mark this milestone as Done?</h2>
+                <p class="text-gray-600 mt-2">
+                    You are about to complete the milestone 
+                    <span class="text-green-600 font-semibold">
+                        "${milestone.title}"
+                    </span>.
+                </p>
+                <p class="text-gray-500 text-sm mt-1">This action cannot be undone.</p>
+            </div>
+        `,
+                buttons: {
+                    Confirm: {
+                        text: "Yes, Mark it Done",
+                        btnClass: "custom-green-btn",
+                        action: function () {
+                            updateStatus(id, "Done");
+                        },
+                    },
+                    Cancel: {
+                        text: "No, Cancel",
+                        btnClass: "custom-gray-btn",
+                        action: function () {
+                            showAlert("info", "Milestone update canceled.");
+                        },
+                    },
+                },
+            });
+        } else {
+            updateStatus(id, status);
+        }
+    };
+
+    const updateStatus = (id, status) => {
+        console.log(
+            `Attempting to update milestone ${id} to status: ${status}`
+        );
+
+        setStatusLoading((prev) => ({ ...prev, [id]: true }));
+
+        const payload = { id, status };
+
+        axiosClient
+            .post("/business/mile_s_status", payload)
+            .then(({ data }) => {
+                console.log("Response received:", data);
+
+                setMilestones((prevMilestones) =>
+                    prevMilestones.map((milestone) =>
+                        milestone.id === id
+                            ? { ...milestone, status }
+                            : milestone
+                    )
+                );
+
+                console.log(`Milestone ${id} status updated to: ${status}`);
+
+                if (status === "Done") {
+                    showAlert("info", "Status updated, Email sent");
+                } else {
+                    showAlert("success", "Status updated successfully");
+                }
+            })
+            .catch((err) => {
+                console.error("Error updating status:", err);
+                showAlert("error", "Failed to update status");
+            })
+            .finally(() => {
+                setStatusLoading((prev) => ({ ...prev, [id]: false }));
+                console.log("Request completed for milestone", id);
+            });
+    };
 
     const getBookers = (e) => {
         const id = e.target.value;
@@ -261,16 +365,33 @@ function ServiceMilestone() {
                                                     disabled={
                                                         statusLoading[
                                                             milestone.id
-                                                        ]
-                                                    } // Disable select while loading
+                                                        ] ||
+                                                        milestone.status ===
+                                                            "Done"
+                                                    }
                                                 >
-                                                    <option value="To Do">
+                                                    <option
+                                                        value="To Do"
+                                                        disabled={
+                                                            milestone.status !==
+                                                            "To Do"
+                                                        }
+                                                    >
                                                         To Do
                                                     </option>
-                                                    <option value="In Progress">
+                                                    <option
+                                                        value="In Progress"
+                                                        disabled
+                                                    >
                                                         In Progress
                                                     </option>
-                                                    <option value="Done">
+                                                    <option
+                                                        value="Done"
+                                                        disabled={
+                                                            milestone.status !==
+                                                            "In Progress"
+                                                        }
+                                                    >
                                                         Done
                                                     </option>
                                                 </select>

@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 import profile from "../../images/profile.png";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState , useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import axiosClient from "../../axiosClient";
 import { useStateContext } from "../../contexts/contextProvider";
 import NotificationBell from "./NotificationBell";
@@ -23,7 +23,7 @@ import { useAlert } from "../partials/AlertContext";
 import DefaultImg from "./Settings/components/DefaultImg";
 import { MdDashboard } from "react-icons/md"; // A clean dashboard icon
 import TujitumeLogo from "../../images/Tujitumelogo.svg";
-
+import Modal from "./Authmodal";
 const Dashboardhero = () => {
     const { token, setToken } = useStateContext();
     const navigate = useNavigate();
@@ -33,17 +33,22 @@ const Dashboardhero = () => {
     const [count, setCount] = useState("");
     const [loading, setLoading] = useState(true);
     const { showAlert } = useAlert();
+    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+    const [wasModalOpened, setWasModalOpened] = useState(false); // Track if modal was opened before closing
 
     useEffect(() => {
         const fetchUserData = async () => {
+            setLoading(true);
             try {
                 const { data } = await axiosClient.get("/checkAuth");
                 setUser(data.user);
                 setId(data.user.id);
-            } catch(error) {
-                showAlert("error", "Failed to load user data. Redirecting...");
-                navigate("/");
-                console.log(error);
+            } catch (error) {
+                if (!token) {
+                    setIsAuthModalOpen(true);
+                    setWasModalOpened(true);
+                    sessionStorage.setItem("wasModalOpened", "true");
+                }
             } finally {
                 setLoading(false);
             }
@@ -52,6 +57,41 @@ const Dashboardhero = () => {
         fetchUserData();
     }, []);
 
+    useEffect(() => {
+        if (!loading && !isAuthModalOpen && wasModalOpened && !token) {
+            navigate("/");
+        }
+
+        // Ensure reload happens only once after login
+        if (sessionStorage.getItem("wasModalOpened") === "true" && token) {
+            sessionStorage.removeItem("wasModalOpened"); // Prevent infinite reload
+            window.location.reload();
+        }
+    }, [loading, isAuthModalOpen, wasModalOpened, token, navigate]);
+
+
+
+
+
+    ///////////////////////
+    //  useEffect(() => {
+    //      const fetchUserData = async () => {
+    //          try {
+    //              const { data } = await axiosClient.get("/checkAuth");
+    //              setUser(data.user);
+    //              setId(data.user.id);
+    //          } catch (error) {
+    //              showAlert("error", "Failed to load user data. Redirecting...");
+    //              navigate("/");
+    //              console.log(error);
+    //          } finally {
+    //              setLoading(false);
+    //          }
+    //      };
+
+    //      fetchUserData();
+    //  }, []);
+    ///////////////////////
     const intervalRef = useRef(null);
 
     useEffect(() => {
@@ -80,7 +120,6 @@ const Dashboardhero = () => {
 
         return () => clearInterval(intervalRef.current);
     }, [id]);
-
 
     useEffect(() => {
         const handleUserUpdate = (event) => {
@@ -123,27 +162,26 @@ const Dashboardhero = () => {
     };
 
     if (loading) {
-       return (
-           <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
-               <div className="flex flex-col items-center justify-center space-y-4">
-                   <img
-                       src={TujitumeLogo}
-                       alt="Tujitume Logo"
-                       className="w-32 h-auto"
-                   />
-                   <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-green-600"></div>
-               </div>
-           </div>
-       );
-
+        return (
+            <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
+                <div className="flex flex-col items-center justify-center space-y-4">
+                    <img
+                        src={TujitumeLogo}
+                        alt="Tujitume Logo"
+                        className="w-32 h-auto"
+                    />
+                    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-green-600"></div>
+                </div>
+            </div>
+        );
     }
     let alertShown = false;
 
-    if (!token && !alertShown) {
-        showAlert("error", "You are not logged in. Please log in to continue.");
-        navigate("/");
-        alertShown = true;
-    }
+    // if (!token && !alertShown) {
+    //     showAlert("error", "You are not logged in. Please log in to continue.");
+    //     navigate("/");
+    //     alertShown = true;
+    // }
 
     return (
         <div
@@ -200,9 +238,7 @@ const Dashboardhero = () => {
                     <div className="flex justify-between items-center flex-wrap gap-4">
                         <div className="flex gap-2 items-center">
                             <img
-                                src={
-                                    user?.image ? user.image : userImage
-                                }
+                                src={user?.image ? user.image : userImage}
                                 className="rounded-xl w-16 h-16 md:w-20 md:h-20"
                                 alt="Profile"
                             />
@@ -265,6 +301,10 @@ const Dashboardhero = () => {
                     </div>
                 </div>
             </div>
+            <Modal
+                isOpen={isAuthModalOpen}
+                onClose={() => setIsAuthModalOpen(false)}
+            />
         </div>
     );
 };
