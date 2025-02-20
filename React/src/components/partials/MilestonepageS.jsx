@@ -4,23 +4,24 @@ import { useParams, Link } from "react-router-dom";
 import axiosClient from "../../axiosClient";
 import React from "react";
 import { useStateContext } from "../../contexts/contextProvider";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 // import Navbar from "./Navbar";
 import Modal from "./Authmodal";
 import ServiceHero from "../Heros/ServiceHero";
 import BackBtn from "./BackBtn";
 import TujitumeLogo from "../../images/Tujitumelogo.svg";
 import { BarLoader } from "react-spinners";
+import { useAlert } from "../partials/AlertContext";
 
 const MilestonePage = () => {
     const { id } = useParams();
     const listing_id = atob(atob(id));
+    const { showAlert } = useAlert();
 
     const [isPaid, setIsPaid] = useState([]);
     const [firstMileId, setFirstMileId] = useState([]);
     const [serviceFee, setServiceFee] = useState([]);
-    const [miles, setMiles] = useState([]);setServiceFee
+    const [miles, setMiles] = useState([]);
+    setServiceFee;
     const [no_mile, setNo_mile] = useState(false);
     const [isDone, setIsDone] = useState(false);
     const [booked, setbooked] = useState(false);
@@ -49,7 +50,6 @@ const MilestonePage = () => {
         const getMilestones = () => {
             axiosClient
                 .get("/getMilestonesS_Auth/" + listing_id, {
-
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -67,8 +67,7 @@ const MilestonePage = () => {
                                     setCurrStep(i + 1);
 
                                 //Set First Mile Id
-                                if(i == 0)
-                                    setFirstMileId(data.data[0].id);
+                                if (i == 0) setFirstMileId(data.data[0].id);
                             }
                         }
                     } else {
@@ -82,7 +81,7 @@ const MilestonePage = () => {
                     setLoading(false);
                     setMiles([]);
                     console.log(err);
-                    toast.error("An error occurred while fetching the data!");
+                    showAlert("error", "Failed to fetch milestones.");
                 });
         };
 
@@ -253,7 +252,6 @@ const MilestonePage = () => {
                                     )}
                                 </React.Fragment>
                             ))}
-
                         </div>
                         <div className="overflow-x-auto sm:rounded-lg  mx-auto border  border-gray-300 ">
                             <table className="table-auto w-full border-collapse border border-gray-300">
@@ -318,7 +316,6 @@ const MilestonePage = () => {
                                                     {"-"}
                                                 </td>
 
-
                                                 <td className="bg-gray-200 text-green-700 border border-gray-300 px-6 py-3 text-[#0F172A]">
                                                     {milestone.time_left}
                                                 </td>
@@ -370,27 +367,26 @@ const MilestonePage = () => {
                                                         )}
                                                     </div>
                                                 </td>
-                                                
-                                                {milestone.id && (
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <Link
-                                                        to={
-                                                            "/raise-dispute/" +
-                                                            btoa(
-                                                                btoa(
-                                                                    milestone.id
-                                                                )
-                                                            ) +
-                                                            "/" +
-                                                            milestone.title
-                                                        }
-                                                        className="bg-yellow-300 px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-md"
-                                                    >
-                                                        Raise Dispute
-                                                    </Link>
-                                                </td>
-                                            )}
 
+                                                {milestone.id && (
+                                                    <td className="px-6 py-4 whitespace-nowrap">
+                                                        <Link
+                                                            to={
+                                                                "/raise-dispute/" +
+                                                                btoa(
+                                                                    btoa(
+                                                                        milestone.id
+                                                                    )
+                                                                ) +
+                                                                "/" +
+                                                                milestone.title
+                                                            }
+                                                            className="bg-yellow-300 px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-md"
+                                                        >
+                                                            Raise Dispute
+                                                        </Link>
+                                                    </td>
+                                                )}
 
                                                 <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
                                                     {milestone.time_left}
@@ -398,31 +394,28 @@ const MilestonePage = () => {
                                             </tr>
                                         ))}
                                 </tbody>
-                            </table> 
+                            </table>
 
-                            {booked && !isPaid &&
-                                <div className="float-right my-4 px-4" style={{height:'100px'}}>
-                                <p className="text-center text-md"><b>Total Service Fee:</b> ${serviceFee}</p>
-
-                                <button
-                                    onClick={() =>
-                                        handlePay(
-                                            firstMileId,
-                                            serviceFee
-                                        )
-                                    }
-                                    className="px-4 py-1 mt-3 float-right rounded bg-green-800 text-gray-200"
+                            {booked && !isPaid && (
+                                <div
+                                    className="float-right my-4 px-4"
+                                    style={{ height: "100px" }}
                                 >
-                                    Pay Now
-                                </button>
-                                                    
-                            </div>
-                            }
+                                    <p className="text-center text-md">
+                                        <b>Total Service Fee:</b> ${serviceFee}
+                                    </p>
 
+                                    <button
+                                        onClick={() =>
+                                            handlePay(firstMileId, serviceFee)
+                                        }
+                                        className="px-4 py-1 mt-3 float-right rounded bg-green-800 text-gray-200"
+                                    >
+                                        Pay Now
+                                    </button>
+                                </div>
+                            )}
                         </div>
-
-
-                        <ToastContainer />
                         <Modal
                             isOpen={isAuthModalOpen}
                             onClose={() => setIsAuthModalOpen(false)}

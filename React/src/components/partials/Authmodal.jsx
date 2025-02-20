@@ -29,7 +29,7 @@ const Modal = ({ isOpen, onClose }) => {
             className={`fixed inset-0 flex justify-center items-start z-50 overflow-y-auto transition-opacity ${
                 isDashboard
                     ? "bg-gray-600 bg-opacity-75 backdrop-blur-lg"
-                    : "bg-transparent"
+                    : "bg-gray-600 bg-opacity-75 "
             }`}
             style={{
                 minHeight: "100vh",

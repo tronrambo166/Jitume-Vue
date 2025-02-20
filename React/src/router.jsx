@@ -47,6 +47,7 @@ import RaiseDispute from "./components/partials/RaiseDispute";
 import Dispute from "./components/footer-pages/Dispute";
 // // src/components/ScrollToTop.js
 import ScrollToTop from "./components/partials/ScrollToTop";
+
 const router = createBrowserRouter([
     {
         path: "/",
