@@ -26,7 +26,7 @@
         "
     >
         <img
-             src="{{ $message->embed('https://tujitume.com/images/Email/EmailWhite.png')}}"
+             src=""
 
             alt="Company Logo"
             style="height: 3rem; width: auto; margin: 0 auto"
@@ -75,7 +75,7 @@
             >
                 <p>
                     <img
-                        src="{{ $message->embed('https://tujitume.com/images/Email/EmailVertDark.png')}}"
+                        src=""
                         alt="Company Logo"
                         style="
                             height: 3rem;
@@ -133,7 +133,7 @@
             >
                 <p>
                     <img
-                        src="{{ $message->embed('https://tujitume.com/images/Email/EmailVertDark.png')}}"
+                        src=""
                         alt="Company Logo"
                         style="
                             height: 3rem;

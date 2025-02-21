@@ -56,8 +56,9 @@ const MilestonePage = () => {
                 })
                 .then(({ data }) => {
                     setLoading(false);
+                    console.log(data);
+                    
                     if (Array.isArray(data.data)) {
-                        console.log(data.data);
                         setMiles(data.data);
                         setServiceFee(data.service_fee);
                         setIsPaid(data.isPaid);

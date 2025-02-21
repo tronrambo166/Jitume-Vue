@@ -1134,7 +1134,7 @@ const ListingDetails = ({ onClose }) => {
                 </div>
             </div>
             {/*Small_fee POPUP*/}
-            {!conv && (
+            {!conv && isInvestor && (
                 <div
                     className={`fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50 ${
                         !isVisible ||
