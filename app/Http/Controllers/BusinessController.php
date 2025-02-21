@@ -17,6 +17,8 @@ use App\Models\Review;
 use App\Models\BusinessSubscriptions;
 use App\Models\Notifications;
 use App\Models\Dispute;
+use App\Models\ServiceMileStatus;
+
 
 use Stripe\StripeClient;
 use Response;
@@ -726,9 +728,17 @@ return response()->json([ 'data' => $milestones, 'progress' => 0, 'length' => 0 
 
 }
 
- public function checkDispute($listing_id){
+ public function checkDispute($listing_id, $type){
+
+  if($type == 'B'){
     $accepted = AcceptedBids::where('business_id',$listing_id)
     ->where('investor_id', Auth::id())->first();
+  }
+  else{
+    $accepted = serviceBook::where('service_id',$listing_id)
+    ->where('booker', Auth::id())->where('status', 'Paid')->first();
+  }
+    
     if($accepted)
       $toDispute = true;
     else
@@ -1717,10 +1727,22 @@ return response()->json(['status' => 200]);
 public function raiseDispute(Request $request)
 {
         try {
-            $mile = Milestones::where('id', $request->project_id)->first();
-            $project = listing::where('id', $mile->listing_id)->first();
+
+            if($request->type == 'B')
+            {
+                $mile = Milestones::where('id', $request->project_id)->first();
+                $project = listing::where('id', $mile->listing_id)->first();
+                $owner = User::where('id', $project->user_id)->first();
+            }
+            else
+            {
+                $mile = ServiceMileStatus::where('id', $request->project_id)->first();
+                $project = Services::where('id', $mile->service_id)->first();
+                $owner = User::where('id', $project->shop_id)->first();
+            }
+
             //$disputant = User::where('id', Auth::id())->first();
-            $owner = User::where('id', $project->user_id)->first();
+            
 
             //FILE
             $document=$request->file('document'); //return $document;

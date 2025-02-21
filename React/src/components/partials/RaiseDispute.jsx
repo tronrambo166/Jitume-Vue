@@ -8,6 +8,7 @@ const RaiseDispute = () => {
 
     const { id } = useParams();
     const { name } = useParams();
+    const { type } = useParams();
     const [business, setBusiness] = useState([]);
     const [loading, setLoading] = useState(true);
     const [maxPrice, setMaxPrice] = useState(100);
@@ -59,6 +60,7 @@ const RaiseDispute = () => {
             reason:reason,
             details:details,
             document:docfile,
+            type:type,
         }
         console.log(payload); //return;
 

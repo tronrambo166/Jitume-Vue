@@ -57,6 +57,8 @@ const ReportModal = ({ onClose, listing_id }) => {
         formData.append("listing_id", listing_id);
         formData.append("details", finalDetails);
         formData.append("category", reportReason);
+        formData.append("type", 1);
+
         if (files[reportReason])
             formData.append("document", files[reportReason]);
 

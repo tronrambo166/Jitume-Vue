@@ -921,7 +921,7 @@ const ServiceDetails = () => {
             {/* <Footer /> */}
             {isModalOpen2 && (
                 <ReportModalSev
-                    service_id={service_id} // Pass the service_id as a prop but we dont have service id so update this part
+                    service_id={form.service_id} // Pass the service_id as a prop but we dont have service id so update this part
                     onClose={() => setIsModalOpen2(false)}
                 />
             )}

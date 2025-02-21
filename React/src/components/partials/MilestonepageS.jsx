@@ -37,7 +37,7 @@ const MilestonePage = () => {
     // const [miles, setMiles] = useState([]);
     const total_steps = miles.length;
     const [loading, setLoading] = useState(true); // Set to true when data is being loaded
-
+    const [dispute, setDispute] = useState(false);
     //const curr_step = 0;
 
     useEffect(() => {
@@ -87,7 +87,21 @@ const MilestonePage = () => {
                 });
         };
 
+
+        const checkDispute = () => {
+            axiosClient
+                .get("/checkDispute/" + listing_id + 'S')
+                .then(({ data }) => {
+                    console.log(data);
+                    if (data.status == 200) setDispute(data.dispute);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+
         getMilestones();
+        checkDispute();
     }, [listing_id, token]);
 
     const handleStatusChange = (milestoneName, status) => {
@@ -372,7 +386,7 @@ const MilestonePage = () => {
                                                     </div>
                                                 </td>
                                                 
-                                                {milestone.id && (
+                                                {milestone.id  && (
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <Link
                                                         to={
@@ -383,7 +397,9 @@ const MilestonePage = () => {
                                                                 )
                                                             ) +
                                                             "/" +
-                                                            milestone.title
+                                                            milestone.title+
+                                                            "/" +
+                                                            "S"
                                                         }
                                                         className="bg-yellow-300 px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-md"
                                                     >

@@ -878,9 +878,15 @@ public function submitReport(Request $request){
     
     try{ 
         $listing_id = $request->listing_id;
-        $listing = Listing::where('id',$listing_id)->first();
-        $user = User::select('fname','email')->where('id', Auth::id())->first();
 
+        if($request->type == 1){
+            $listing = Listing::where('id',$listing_id)->first();
+        }
+        else{
+            $listing = Services::where('id',$listing_id)->first();
+        }
+
+          $user = User::select('fname','email')->where('id', Auth::id())->first();
           $document=$request->file('document');
           if($document) {        
           $ext=strtolower($document->getClientOriginalExtension());
@@ -895,7 +901,7 @@ public function submitReport(Request $request){
             'listing_id' => $listing_id,
             'listing_name' => $listing->name,
             'owner_id' => $listing->user_id,
-            'type' => 1,
+            'type' => $request->type,
             'category' => $request->category,
             'details' => $request->details,
             'document' => null,

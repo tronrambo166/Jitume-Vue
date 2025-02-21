@@ -54,9 +54,11 @@ const ReportModalSev = ({ onClose, service_id }) => {
 
         const finalDetails = details[reportReason] || "";
         const formData = new FormData();
-        formData.append("service_id", service_id);
+        formData.append("listing_id", service_id);
         formData.append("details", finalDetails);
         formData.append("category", reportReason);
+        formData.append("type", 2);
+
         if (files[reportReason])
             formData.append("document", files[reportReason]);
 
@@ -64,6 +66,7 @@ const ReportModalSev = ({ onClose, service_id }) => {
             const { data } = await axiosClient.post("submitReport", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
+            console.log(data);
 
             data.status === 200
                 ? showAlert("success", data.message)

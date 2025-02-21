@@ -73,7 +73,7 @@ const router = createBrowserRouter([
             },
             { path: "/business-milestones/:id", element: <MilestonesPage /> },
             { path: "/service-milestones/:id", element: <MilestonesPageS /> },
-            { path: "/raise-dispute/:id/:name", element: <RaiseDispute /> },
+            { path: "/raise-dispute/:id/:name/:type", element: <RaiseDispute /> },
 
             {
                 path: "/serviceresults/:resIds/:loc",

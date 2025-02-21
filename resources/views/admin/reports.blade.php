@@ -67,7 +67,7 @@
 														{{$l->details}}
 													</td>
 													<td>
-														{{$l->details}}
+														<a style="cursor:pointer;" onclick="reportDownload({{$l->id}})"><i class="fa fa-download"></i></a>
 													</td>
 													<td>
 														<p class="text-success font-weight-bold"> {{$l->status}} </p>

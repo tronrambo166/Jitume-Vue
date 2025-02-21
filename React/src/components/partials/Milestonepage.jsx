@@ -42,7 +42,7 @@ const MilestonePage = () => {
 
         const checkDispute = () => {
             axiosClient
-                .get("/checkDispute/" + listing_id)
+                .get("/checkDispute/" + listing_id + 'B')
                 .then(({ data }) => {
                     console.log(data);
                     if (data.status == 200) setDispute(data.dispute);
@@ -217,7 +217,9 @@ const MilestonePage = () => {
                                                                 )
                                                             ) +
                                                             "/" +
-                                                            milestone.title
+                                                            milestone.title+
+                                                            "/" +
+                                                            "B"
                                                         }
                                                         className="bg-yellow-300 px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-md"
                                                     >
