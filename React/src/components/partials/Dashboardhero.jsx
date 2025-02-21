@@ -36,6 +36,42 @@ const Dashboardhero = () => {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [wasModalOpened, setWasModalOpened] = useState(false); // Track if modal was opened before closing
 
+    // useEffect(() => {
+    //     const fetchUserData = async () => {
+    //         setLoading(true);
+    //         try {
+    //             const { data } = await axiosClient.get("/checkAuth");
+    //             setUser(data.user);
+    //             setId(data.user.id);
+    //         } catch (error) {
+    //             if (!token) {
+    //                 setIsAuthModalOpen(true);
+    //                 setWasModalOpened(true);
+    //                 sessionStorage.setItem("wasModalOpened", "true");
+    //             }
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+
+    //     fetchUserData();
+    // }, []);
+
+    // useEffect(() => {
+    //     if (!loading && !isAuthModalOpen && wasModalOpened && !token) {
+    //         navigate("/");
+    //         showAlert("error", "Please login to continue.");
+    //     }
+
+    //     // Ensure reload happens only once after login
+    //     if (sessionStorage.getItem("wasModalOpened") === "true" && token) {
+    //         sessionStorage.removeItem("wasModalOpened"); // Prevent infinite reload
+    //         window.location.reload();
+    //     }
+    // }, [loading, isAuthModalOpen, wasModalOpened, token, navigate]);
+
+
+
     useEffect(() => {
         const fetchUserData = async () => {
             setLoading(true);
@@ -47,7 +83,7 @@ const Dashboardhero = () => {
                 if (!token) {
                     setIsAuthModalOpen(true);
                     setWasModalOpened(true);
-                    sessionStorage.setItem("wasModalOpened", "true");
+                    localStorage.setItem("wasModalOpened", "true");
                 }
             } finally {
                 setLoading(false);
@@ -64,8 +100,8 @@ const Dashboardhero = () => {
         }
 
         // Ensure reload happens only once after login
-        if (sessionStorage.getItem("wasModalOpened") === "true" && token) {
-            sessionStorage.removeItem("wasModalOpened"); // Prevent infinite reload
+        if (localStorage.getItem("wasModalOpened") === "true" && token) {
+            localStorage.removeItem("wasModalOpened"); // Prevent infinite reload
             window.location.reload();
         }
     }, [loading, isAuthModalOpen, wasModalOpened, token, navigate]);
