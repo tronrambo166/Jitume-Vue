@@ -19,15 +19,44 @@ const NotificationBell = () => {
     const [unreadCount, setUnreadCount] = useState(0);
 
     // Fetch notifications on component mount
-  useEffect(() => {
+    //   useEffect(() => {
+    //         const fetchNotifications = async () => {
+    //             try {
+    //                 const { data } = await axiosClient.get("business/notifications");
+
+    //                 // Only update if the notifications have changed
+    //                 if (data.data !== notifications) {
+    //                     setNotifications(data.data);
+    //                     const count = data.data.filter((notif) => notif.new === 1).length;
+    //                     setUnreadCount(count);
+    //                 }
+    //             } catch (error) {
+    //                 console.error("Error fetching notifications:", error);
+    //             }
+    //         };
+
+    //         fetchNotifications();
+
+    //         const interval = setInterval(fetchNotifications, 2000); // Poll every 2s
+
+    //         return () => clearInterval(interval); // Clear interval on component unmount
+    //     }, [notifications]);  // Depend on the current notifications
+
+    useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const { data } = await axiosClient.get("business/notifications");
+                const { data } = await axiosClient.get(
+                    "business/notifications"
+                );
 
                 // Only update if the notifications have changed
-                if (data.data !== notifications) {
+                if (
+                    JSON.stringify(data.data) !== JSON.stringify(notifications)
+                ) {
                     setNotifications(data.data);
-                    const count = data.data.filter((notif) => notif.new === 1).length;
+                    const count = data.data.filter(
+                        (notif) => notif.new === 1
+                    ).length;
                     setUnreadCount(count);
                 }
             } catch (error) {
@@ -35,13 +64,8 @@ const NotificationBell = () => {
             }
         };
 
-        fetchNotifications();
-
-        const interval = setInterval(fetchNotifications, 2000); // Poll every 2s
-
-        return () => clearInterval(interval); // Clear interval on component unmount
-    }, [notifications]);  // Depend on the current notifications
-
+        fetchNotifications(); // Fetch once on mount
+    }, []); // Runs only once on mount
 
     // Unread count is calculated based on "new" field in the notification
     // const unreadCount = notifications.filter((notif) => notif.new === 1).length;
@@ -66,7 +90,7 @@ const NotificationBell = () => {
                 .catch((err) => {
                     console.log(err);
                 });
-                //Set as Read/ New ==0
+            //Set as Read/ New ==0
         }
     };
 
@@ -103,7 +127,7 @@ const NotificationBell = () => {
         setDropdownOpen(false);
     };
 
-    const startConversation = (customer_id) =>{
+    const startConversation = (customer_id) => {
         const message = `Hi, thank you for considering investing in my business. Let me know how to best verify this equipment.`; // const sender = Nurul; // Example sender name
         const message2 = `Hi, please let me know how best to verify this “investor” “equipment” `;
         // Set the new message using the context
@@ -111,30 +135,38 @@ const NotificationBell = () => {
 
         // Navigate to the messages page
         navigate("/dashboard/messages", {
-                            state: { customer_id: customer_id },
+            state: { customer_id: customer_id },
         });
-    }
+    };
 
-    const startConversationBO_PM = (customer_id, bid_id) =>{
-        axiosClient.get("business/bidInfo/"+bid_id).then(({ data }) => {
-            if(data.status== 200){
-                //setInvestor(data.investor);
-                //setSerial(data.data.serial);
-                const message = `Hi, please let me know how best to verify investor `+data.investor+`'s equipment (`+data.data.serial+`) `;
-                setdashmsg(message); 
-                navigate("/dashboard/messages", {
-                    state: { customer_id: customer_id },
-                });
-            console.log(data); 
-            }
-        })
-        .catch((err) => { console.log(err); });
+    const startConversationBO_PM = (customer_id, bid_id) => {
+        axiosClient
+            .get("business/bidInfo/" + bid_id)
+            .then(({ data }) => {
+                if (data.status == 200) {
+                    //setInvestor(data.investor);
+                    //setSerial(data.data.serial);
+                    const message =
+                        `Hi, please let me know how best to verify investor ` +
+                        data.investor +
+                        `'s equipment (` +
+                        data.data.serial +
+                        `) `;
+                    setdashmsg(message);
+                    navigate("/dashboard/messages", {
+                        state: { customer_id: customer_id },
+                    });
+                    console.log(data);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
         // Set the new message using the context
-    }
-  
+    };
 
-//Request Project M./Owner Func.
-        const verifyRequestBO = (bid_id) => {
+    //Request Project M./Owner Func.
+    const verifyRequestBO = (bid_id) => {
         $.confirm({
             title: false, // Remove the default title to have full control over placement
             content: `
@@ -177,16 +209,16 @@ const NotificationBell = () => {
         });
     };
 
-        // navigateToProjectManager
+    // navigateToProjectManager
     const navigateToProjectManager = (bid_id) => {
-            let ids = "";
-            axiosClient
+        let ids = "";
+        axiosClient
             .get("FindProjectManagers/" + bid_id)
             .then(({ data }) => {
-                if(data.status == 200){
+                if (data.status == 200) {
                     Object.entries(data.results).forEach((entry) => {
-                    const [index, row] = entry;
-                    ids = ids + row.id + ",";
+                        const [index, row] = entry;
+                        ids = ids + row.id + ",";
                     });
                     console.log(data.results);
                     if (!ids) ids = 0;
@@ -195,23 +227,21 @@ const NotificationBell = () => {
                     sessionStorage.setItem("queryLng", data.lng);
 
                     navigate(
-                    "/serviceResults/" + base64_encode(ids) + "/" + data.loc
+                        "/serviceResults/" + base64_encode(ids) + "/" + data.loc
                     );
                     if (locationUrl.pathname.includes("serviceResults"))
                         window.scrollTo(0, 0);
+                } else {
+                    console.log(data);
+                    showAlert("error", data.message);
                 }
-                else{
-                    console.log(data)
-                    showAlert( "error", data.message);
-                }
-                
             })
             .catch((err) => {
                 console.log(err);
             });
     };
 
-        // Cance logic here
+    // Cance logic here
     const CancelBid = (id) => {
         $.confirm({
             title: false, // Remove the default title to have full control over placement
@@ -243,8 +273,7 @@ const NotificationBell = () => {
         });
     };
 
-
-        const CancelBooking = (id) => {
+    const CancelBooking = (id) => {
         $.confirm({
             title: false, // Remove the default title to have full control over placement
             content: `
@@ -256,7 +285,9 @@ const NotificationBell = () => {
             buttons: {
                 confirm: function () {
                     axiosClient
-                        .get("CancelBookingConfirm/" + btoa(id) + '/ok_response')
+                        .get(
+                            "CancelBookingConfirm/" + btoa(id) + "/ok_response"
+                        )
                         .then(({ data }) => {
                             console.log(data); // Log response data
                             if (data.status == 200)
@@ -274,7 +305,6 @@ const NotificationBell = () => {
             },
         });
     };
-
 
     const AskInvestorToVerify = (bid_id) => {
         $.confirm({
@@ -305,24 +335,29 @@ const NotificationBell = () => {
         });
     };
 
+    const ReleaseEquipment = (bid_id) => {
+        axiosClient
+            .get("business/bidInfo/" + bid_id)
+            .then(({ data }) => {
+                if (data.status == 200) {
+                    navigate(
+                        "/equipmentRelease/" +
+                            data.data.business_id +
+                            "/" +
+                            data.data.project_manager +
+                            "/" +
+                            base64_encode(bid_id)
+                    );
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
 
-    const ReleaseEquipment = (bid_id) =>{
-        axiosClient.get("business/bidInfo/"+bid_id).then(({ data }) => {
-            if(data.status== 200){
-                navigate("/equipmentRelease/"+data.data.business_id+"/"+data.data.project_manager
-                +"/"+base64_encode(bid_id)); 
-            }
-            else{
-                alert(data.message);
-            }
-        })
-        .catch((err) => { console.log(err); });
-    }
-
-    
-//Request Project M./Owner Func.
-
-    
+    //Request Project M./Owner Func.
 
     return (
         <div className="relative">

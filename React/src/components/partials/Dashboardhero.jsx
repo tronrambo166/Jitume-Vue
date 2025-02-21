@@ -70,8 +70,6 @@ const Dashboardhero = () => {
     //     }
     // }, [loading, isAuthModalOpen, wasModalOpened, token, navigate]);
 
-
-
     useEffect(() => {
         const fetchUserData = async () => {
             setLoading(true);
@@ -127,6 +125,32 @@ const Dashboardhero = () => {
     ///////////////////////
     const intervalRef = useRef(null);
 
+    // useEffect(() => {
+    //     if (!id) return;
+
+    //     const fetchMessageCount = async () => {
+    //         try {
+    //             const { data } = await axiosClient.get(
+    //                 `business/service_messages_count/${id}`
+    //             );
+    //             setCount(data.count);
+    //         } catch (error) {
+    //             console.error("Error fetching messages count:", error);
+    //         }
+    //     };
+
+    //     // Fetch immediately, then start interval
+    //     fetchMessageCount();
+
+    //     // Clear any existing interval before setting a new one
+    //     if (intervalRef.current) {
+    //         clearInterval(intervalRef.current);
+    //     }
+
+    //     intervalRef.current = setInterval(fetchMessageCount, 2000);
+
+    //     return () => clearInterval(intervalRef.current);
+    // }, [id]);
     useEffect(() => {
         if (!id) return;
 
@@ -141,18 +165,8 @@ const Dashboardhero = () => {
             }
         };
 
-        // Fetch immediately, then start interval
-        fetchMessageCount();
-
-        // Clear any existing interval before setting a new one
-        if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-        }
-
-        intervalRef.current = setInterval(fetchMessageCount, 2000);
-
-        return () => clearInterval(intervalRef.current);
-    }, [id]);
+        fetchMessageCount(); // Fetch once on mount
+    }, [id]); // Runs only when `id` changes
 
     useEffect(() => {
         const handleUserUpdate = (event) => {
