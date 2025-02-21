@@ -708,7 +708,7 @@ catch(\Exception $e){
                 ]);
 
             $paid = serviceBook::where('id',$booking->id)
-            ->update(['status' => 'Paid']);
+            ->update(['paid' => 1]);
 
         $s_id = base64_encode(base64_encode($business->id));
         return response()->json(['message' =>  'Success', 

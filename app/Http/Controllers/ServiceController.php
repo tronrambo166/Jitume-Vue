@@ -596,10 +596,10 @@ public function getMilestones($id){
     $milestones = ServiceMileStatus::where('service_id',$id)
     ->where('booker_id', Auth::id())->get(); 
 
-    $status = ServiceMileStatus::where('service_id',$id)
-    ->where('booker_id', Auth::id())->where('status', 'In Progress')
-    ->orWhere('status', 'Done')->first();
-    if($status) $isPaid = true;
+    // $status = ServiceMileStatus::where('service_id',$id)
+    // ->where('booker_id', Auth::id())->where('status', 'In Progress')
+    // ->orWhere('status', 'Done')->first();
+    if($booking->paid == 1) $isPaid = true;
   }
   else{
     $milestones = Smilestones::where('listing_id',$id)->get();
