@@ -1335,6 +1335,7 @@ const ListingDetails = ({ onClose }) => {
             {/*Small_fee POPUP*/}
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
             <CreateInvestorAccount
+                isInvestor = {isInvestor}
                 isOpen={isInvestorModalOpen}
                 onClose={() => setIsInvestorModalOpen(false)}
             />

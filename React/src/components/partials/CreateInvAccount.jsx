@@ -8,7 +8,7 @@ import { useAlert } from "../partials/AlertContext";
 import { Bars } from "react-loader-spinner"; // Import Bars loader
 
 import Fogts from "./Fogts";
-function CreateInvestorAccount({ isOpen, onClose }) {
+function CreateInvestorAccount({ isOpen, onClose, isInvestor }) {
     const [isSignIn, setIsSignIn] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -117,32 +117,39 @@ function CreateInvestorAccount({ isOpen, onClose }) {
     // console.log("OTP sent:", otpSent);
     // console.log("OTP sent:", vcode);
 
-    const handleNext = async () => {
-        const validationErrors = validateStepOne();
-        setErrors(validationErrors);
+   const handleNext = async () => {
+       // Skip validation if thisUser is false (not an investor)
+       if (!thisUser) {
+           setStep((prevStep) => prevStep + 1);
+           return;
+       }
 
-        if (Object.keys(validationErrors).length > 0) {
-            console.log("Validation failed:", validationErrors); // Debugging
-            return;
-        }
+       // Run validation if thisUser is true (Investor)
+       const validationErrors = validateStepOne();
+       setErrors(validationErrors);
 
-        setLoading(true);
+       if (Object.keys(validationErrors).length > 0) {
+           console.log("Validation failed:", validationErrors); // Debugging
+           return;
+       }
 
-        const emailValid = await validateEmailExists();
-        setLoading(false);
+       setLoading(true);
+       const emailValid = await validateEmailExists();
+       setLoading(false);
 
-        if (!emailValid) {
-            console.log("Email validation failed");
-            return;
-        }
+       if (!emailValid) {
+           console.log("Email validation failed");
+           return;
+       }
 
-        if (step === 2 && !otpSent) {
-            setOtpSent(true);
-            sendVerificationEmail();
-        }
+       if (step === 2 && !otpSent) {
+           setOtpSent(true);
+           sendVerificationEmail();
+       }
 
-        setStep((prevStep) => prevStep + 1);
-    };
+       setStep((prevStep) => prevStep + 1);
+   };
+
 
     const sendVerificationEmail = async () => {
         if (otpSent) return; // Prevent duplicate calls
@@ -226,6 +233,13 @@ function CreateInvestorAccount({ isOpen, onClose }) {
 
     // ////////////////////////////////////////////////////////////
 
+    const [thisUser, setThisUser] = useState(true);
+
+    useEffect(() => {
+        setThisUser(isInvestor !== undefined ? isInvestor : true);
+    }, [isInvestor]); // Runs when isInvestor changes
+
+    console.log("oyaa", thisUser);
     // Handle input focus
     const handleFocus = (e) => {
         e.target.select(); // Select the content when the input is focused
@@ -668,307 +682,348 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                             onSubmit={handleRegistrationSubmit}
                             className="flex flex-col items-center"
                         >
-                            <h2 className="text-2xl font-semibold text-gray-800">
-                                Create Account
-                            </h2>
+                            {thisUser === true ? (
+                                <h2 className="text-2xl font-semibold text-gray-800">
+                                    Create Account
+                                </h2>
+                            ) : (
+                                <h2 className="text-2xl font-semibold text-gray-800">
+                                    Switch To Investor Account
+                                </h2>
+                            )}
 
                             <div className="max-w-4xl mx-auto p-4 overflow-x-hidden">
                                 {step === 1 && (
                                     <>
                                         <div className="text-center mb-4">
                                             <h1 className="text-lg text-gray-700">
-                                                Registration
+                                                {thisUser === true
+                                                    ? "Registration"
+                                                    : "Switch "}
                                             </h1>
-                                            <h2 className="text-md text-gray-700 mr-2">
-                                                Step 1 of 3
-                                            </h2>
-                                        </div>
-                                        <hr className="my-4"></hr>
 
+                                            {thisUser === true && (
+                                                <h2 className="text-md text-gray-700 mr-2">
+                                                    Step 1 of 3
+                                                </h2>
+                                            )}
+                                        </div>
+                                        
+                                        <hr className="my-4"></hr>
+                                        
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            
                                             {/* First Name */}
-                                            <div className="relative">
-                                                <label className="block text-gray-700 text-sm">
-                                                    First Name{" "}
-                                                    <span className="text-red-500">
-                                                        *
-                                                    </span>
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    name="fname"
-                                                    value={
-                                                        registrationData.fname
-                                                    }
-                                                    onChange={
-                                                        handleRegistrationChange
-                                                    }
-                                                    className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
-                                                        errors.fname
-                                                            ? "border-red-500"
-                                                            : ""
-                                                    }`}
-                                                    required
-                                                />
-                                                {errors.fname && (
-                                                    <p className="text-red-500 text-xs mt-1">
-                                                        {errors.fname}
-                                                    </p>
-                                                )}
-                                            </div>
+                                            {thisUser === true && (
+                                                <div className="relative">
+                                                    <label className="block text-gray-700 text-sm">
+                                                        First Name{" "}
+                                                        <span className="text-red-500">
+                                                            *
+                                                        </span>
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        name="fname"
+                                                        value={
+                                                            registrationData.fname
+                                                        }
+                                                        onChange={
+                                                            handleRegistrationChange
+                                                        }
+                                                        className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
+                                                            errors.fname
+                                                                ? "border-red-500"
+                                                                : ""
+                                                        }`}
+                                                        required
+                                                    />
+                                                    {errors.fname && (
+                                                        <p className="text-red-500 text-xs mt-1">
+                                                            {errors.fname}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            )}
 
                                             {/* Middle Name */}
-                                            <div className="relative">
-                                                <label className="block text-gray-700 text-sm">
-                                                    Middle Name
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    name="mname"
-                                                    value={
-                                                        registrationData.mname
-                                                    }
-                                                    onChange={
-                                                        handleRegistrationChange
-                                                    }
-                                                    className="border rounded-lg px-3 py-2 w-full text-sm text-black"
-                                                />
-                                            </div>
+                                            {thisUser === true && (
+                                                <div className="relative">
+                                                    <label className="block text-gray-700 text-sm">
+                                                        Middle Name
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        name="mname"
+                                                        value={
+                                                            registrationData.mname
+                                                        }
+                                                        onChange={
+                                                            handleRegistrationChange
+                                                        }
+                                                        className="border rounded-lg px-3 py-2 w-full text-sm text-black"
+                                                    />
+                                                </div>
+                                            )}
 
                                             {/* Last Name */}
-                                            <div className="relative">
-                                                <label className="block text-gray-700 text-sm">
-                                                    Last Name{" "}
-                                                    <span className="text-red-500">
-                                                        *
-                                                    </span>
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    name="lname"
-                                                    value={
-                                                        registrationData.lname
-                                                    }
-                                                    onChange={
-                                                        handleRegistrationChange
-                                                    }
-                                                    className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
-                                                        errors.lname
-                                                            ? "border-red-500"
-                                                            : ""
-                                                    }`}
-                                                    required
-                                                />
-                                                {errors.lname && (
-                                                    <p className="text-red-500 text-xs mt-1">
-                                                        {errors.lname}
-                                                    </p>
-                                                )}
-                                            </div>
+                                            {thisUser === true && (
+                                                <div className="relative">
+                                                    <label className="block text-gray-700 text-sm">
+                                                        Last Name{" "}
+                                                        <span className="text-red-500">
+                                                            *
+                                                        </span>
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        name="lname"
+                                                        value={
+                                                            registrationData.lname
+                                                        }
+                                                        onChange={
+                                                            handleRegistrationChange
+                                                        }
+                                                        className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
+                                                            errors.lname
+                                                                ? "border-red-500"
+                                                                : ""
+                                                        }`}
+                                                        required
+                                                    />
+                                                    {errors.lname && (
+                                                        <p className="text-red-500 text-xs mt-1">
+                                                            {errors.lname}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            )}
 
                                             {/* Email */}
-                                            <div className="relative">
-                                                <label className="block text-gray-700 text-sm">
-                                                    Email{" "}
-                                                    <span className="text-red-500">
-                                                        *
-                                                    </span>
-                                                </label>
-                                                <input
-                                                    type="email"
-                                                    name="email"
-                                                    value={
-                                                        registrationData.email
-                                                    }
-                                                    onChange={
-                                                        handleRegistrationChange
-                                                    }
-                                                    className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
-                                                        errors.email
-                                                            ? "border-red-500"
-                                                            : ""
-                                                    }`}
-                                                    required
-                                                />
-                                                {errors.email && (
-                                                    <p className="text-red-500 text-xs mt-1">
-                                                        {errors.email}
-                                                    </p>
-                                                )}
-                                            </div>
+                                            {thisUser === true && (
+                                                <div className="relative">
+                                                    <label className="block text-gray-700 text-sm">
+                                                        Email{" "}
+                                                        <span className="text-red-500">
+                                                            *
+                                                        </span>
+                                                    </label>
+                                                    <input
+                                                        type="email"
+                                                        name="email"
+                                                        value={
+                                                            registrationData.email
+                                                        }
+                                                        onChange={
+                                                            handleRegistrationChange
+                                                        }
+                                                        className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
+                                                            errors.email
+                                                                ? "border-red-500"
+                                                                : ""
+                                                        }`}
+                                                        required
+                                                    />
+                                                    {errors.email && (
+                                                        <p className="text-red-500 text-xs mt-1">
+                                                            {errors.email}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            )}
 
                                             {/* Password */}
-                                            <div className="relative flex flex-col space-y-1">
-                                                <label className="block text-gray-700 text-sm font-medium">
-                                                    Password{" "}
-                                                    <span className="text-red-500">
-                                                        *
-                                                    </span>
-                                                </label>
-                                                <input
-                                                    type={
-                                                        showPassword
-                                                            ? "text"
-                                                            : "password"
-                                                    }
-                                                    name="password"
-                                                    value={
-                                                        registrationData.password
-                                                    }
-                                                    onChange={
-                                                        handleRegistrationChange
-                                                    }
-                                                    className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
-                                                        errors.password
-                                                            ? "border-red-500"
-                                                            : ""
-                                                    }`}
-                                                    required
-                                                />
-                                                <button
-                                                    type="button"
-                                                    onClick={
-                                                        togglePasswordVisibility
-                                                    }
-                                                    className="absolute right-3 top-8 text-gray-500 hover:text-primary"
-                                                >
-                                                    {showPassword ? (
-                                                        <FaEyeSlash />
-                                                    ) : (
-                                                        <FaEye />
+                                            {thisUser === true && (
+                                                <div className="relative flex flex-col space-y-1">
+                                                    <label className="block text-gray-700 text-sm font-medium">
+                                                        Password{" "}
+                                                        <span className="text-red-500">
+                                                            *
+                                                        </span>
+                                                    </label>
+                                                    <input
+                                                        type={
+                                                            showPassword
+                                                                ? "text"
+                                                                : "password"
+                                                        }
+                                                        name="password"
+                                                        value={
+                                                            registrationData.password
+                                                        }
+                                                        onChange={
+                                                            handleRegistrationChange
+                                                        }
+                                                        className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
+                                                            errors.password
+                                                                ? "border-red-500"
+                                                                : ""
+                                                        }`}
+                                                        required
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={
+                                                            togglePasswordVisibility
+                                                        }
+                                                        className="absolute right-3 top-8 text-gray-500 hover:text-primary"
+                                                    >
+                                                        {showPassword ? (
+                                                            <FaEyeSlash />
+                                                        ) : (
+                                                            <FaEye />
+                                                        )}
+                                                    </button>
+                                                    {errors.password && (
+                                                        <p className="text-red-500 text-xs mt-1">
+                                                            {errors.password}
+                                                        </p>
                                                     )}
-                                                </button>
-                                                {errors.password && (
-                                                    <p className="text-red-500 text-xs mt-1">
-                                                        {errors.password}
-                                                    </p>
-                                                )}
-                                            </div>
+                                                </div>
+                                            )}
 
                                             {/* Confirm Password */}
-                                            <div className="relative flex flex-col space-y-1">
-                                                <label className="block text-gray-700 text-sm font-medium">
-                                                    Confirm Password{" "}
-                                                    <span className="text-red-500">
-                                                        *
-                                                    </span>
-                                                </label>
-                                                <input
-                                                    type={
-                                                        showConfirmPassword
-                                                            ? "text"
-                                                            : "password"
-                                                    }
-                                                    name="confirmPassword"
-                                                    value={
-                                                        registrationData.confirmPassword
-                                                    }
-                                                    onChange={
-                                                        handleRegistrationChange
-                                                    }
-                                                    className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
-                                                        errors.confirmPassword
-                                                            ? "border-red-500"
-                                                            : ""
-                                                    }`}
-                                                    required
-                                                />
-                                                <button
-                                                    type="button"
-                                                    onClick={
-                                                        toggleConfirmPasswordVisibility
-                                                    }
-                                                    className="absolute right-3 top-8 text-gray-500 hover:text-primary"
-                                                >
-                                                    {showConfirmPassword ? (
-                                                        <FaEyeSlash />
-                                                    ) : (
-                                                        <FaEye />
+                                            {thisUser === true && (
+                                                <div className="relative flex flex-col space-y-1">
+                                                    <label className="block text-gray-700 text-sm font-medium">
+                                                        Confirm Password{" "}
+                                                        <span className="text-red-500">
+                                                            *
+                                                        </span>
+                                                    </label>
+                                                    <input
+                                                        type={
+                                                            showConfirmPassword
+                                                                ? "text"
+                                                                : "password"
+                                                        }
+                                                        name="confirmPassword"
+                                                        value={
+                                                            registrationData.confirmPassword
+                                                        }
+                                                        onChange={
+                                                            handleRegistrationChange
+                                                        }
+                                                        className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
+                                                            errors.confirmPassword
+                                                                ? "border-red-500"
+                                                                : ""
+                                                        }`}
+                                                        required
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={
+                                                            toggleConfirmPasswordVisibility
+                                                        }
+                                                        className="absolute right-3 top-8 text-gray-500 hover:text-primary"
+                                                    >
+                                                        {showConfirmPassword ? (
+                                                            <FaEyeSlash />
+                                                        ) : (
+                                                            <FaEye />
+                                                        )}
+                                                    </button>
+                                                    {errors.confirmPassword && (
+                                                        <p className="text-red-500 text-xs mt-1">
+                                                            {
+                                                                errors.confirmPassword
+                                                            }
+                                                        </p>
                                                     )}
-                                                </button>
-                                                {errors.confirmPassword && (
-                                                    <p className="text-red-500 text-xs mt-1">
-                                                        {errors.confirmPassword}
-                                                    </p>
-                                                )}
-                                            </div>
+                                                </div>
+                                            )}
 
                                             {/* ID/Passport Number */}
-                                            <div className="relative">
-                                                <label className="block text-gray-700 text-sm">
-                                                    ID/Passport Number{" "}
-                                                    <span className="text-red-500">
-                                                        *
-                                                    </span>
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    name="id_no"
-                                                    value={
-                                                        registrationData.id_no
-                                                    }
-                                                    onChange={
-                                                        handleRegistrationChange
-                                                    }
-                                                    className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
-                                                        errors.id_no
-                                                            ? "border-red-500"
-                                                            : ""
-                                                    }`}
-                                                    required
-                                                />
-                                                {errors.id_no && (
-                                                    <p className="text-red-500 text-xs mt-1">
-                                                        {errors.id_no}
-                                                    </p>
-                                                )}
-                                            </div>
+                                            {thisUser === true && (
+                                                <div className="relative">
+                                                    <label className="block text-gray-700 text-sm">
+                                                        ID/Passport Number{" "}
+                                                        <span className="text-red-500">
+                                                            *
+                                                        </span>
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        name="id_no"
+                                                        value={
+                                                            registrationData.id_no
+                                                        }
+                                                        onChange={
+                                                            handleRegistrationChange
+                                                        }
+                                                        className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
+                                                            errors.id_no
+                                                                ? "border-red-500"
+                                                                : ""
+                                                        }`}
+                                                        required
+                                                    />
+                                                    {errors.id_no && (
+                                                        <p className="text-red-500 text-xs mt-1">
+                                                            {errors.id_no}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            )}
 
                                             {/* Tax PIN */}
-                                            <div className="relative">
-                                                <label className="block text-gray-700 text-sm">
-                                                    Tax PIN{" "}
-                                                    <span className="text-red-500">
-                                                        *
-                                                    </span>
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    name="tax_pin"
-                                                    value={
-                                                        registrationData.tax_pin
-                                                    }
-                                                    onChange={
-                                                        handleRegistrationChange
-                                                    }
-                                                    className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
-                                                        errors.tax_pin
-                                                            ? "border-red-500"
-                                                            : ""
-                                                    }`}
-                                                    required
-                                                />
-                                                {errors.tax_pin && (
-                                                    <p className="text-red-500 text-xs mt-1">
-                                                        {errors.tax_pin}
-                                                    </p>
-                                                )}
-                                            </div>
+                                            {thisUser === true && (
+                                                <div className="relative">
+                                                    <label className="block text-gray-700 text-sm">
+                                                        Tax PIN{" "}
+                                                        <span className="text-red-500">
+                                                            *
+                                                        </span>
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        name="tax_pin"
+                                                        value={
+                                                            registrationData.tax_pin
+                                                        }
+                                                        onChange={
+                                                            handleRegistrationChange
+                                                        }
+                                                        className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
+                                                            errors.tax_pin
+                                                                ? "border-red-500"
+                                                                : ""
+                                                        }`}
+                                                        required
+                                                    />
+                                                    {errors.tax_pin && (
+                                                        <p className="text-red-500 text-xs mt-1">
+                                                            {errors.tax_pin}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
                                         <hr className="my-4"></hr>
 
                                         <div className="mt-4 flex justify-center lg:justify-end">
                                             <button
                                                 type="button"
-                                                onClick={handleNext}
-                                                // onClick={handleNext2}
+                                                onClick={() => {
+                                                    if (thisUser === true) {
+                                                        handleNext();
+                                                    } else {
+                                                        setStep(
+                                                            (prevStep) =>
+                                                                prevStep + 1
+                                                        );
+                                                    }
+                                                }}
                                                 className="btn btn-primary px-20 rounded-full"
                                                 disabled={loading} // Disable the button when loading
                                             >
                                                 {loading ? (
                                                     <AiOutlineLoading3Quarters className="animate-spin w-6 h-6 text-white" /> // Spinner icon
-                                                ) : (
+                                                ) : thisUser === true ? (
                                                     "Next"
+                                                ) : (
+                                                    "Switch"
                                                 )}
                                             </button>
                                         </div>
@@ -978,15 +1033,86 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                     <>
                                         {" "}
                                         <div className="  text-center mb-4">
-                                            <h1 className="text-lg text-gray-700">
-                                                Registration
-                                            </h1>
-                                            <h2 className="text-md text-gray-700 mr-2">
-                                                Step 2 of 3
-                                            </h2>
+                                            {thisUser === true && (
+                                                <h1 className="text-lg text-gray-700">
+                                                    Registration
+                                                </h1>
+                                            )}
+                                            {thisUser === true && (
+                                                <h2 className="text-md text-gray-700 mr-2">
+                                                    Step 2 of 3
+                                                </h2>
+                                            )}
                                         </div>
                                         <hr className="my-4"></hr>
                                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 overflow-y-auto no-scrollbar">
+                                            {/* ID/Passport Number */}
+                                            {!thisUser && (
+                                                <>
+                                                    {/* ID/Passport Number */}
+                                                    <div className="relative">
+                                                        <label className="block text-gray-700 text-sm">
+                                                            ID/Passport Number{" "}
+                                                            <span className="text-red-500">
+                                                                *
+                                                            </span>
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            name="id_no"
+                                                            value={
+                                                                registrationData.id_no
+                                                            }
+                                                            onChange={
+                                                                handleRegistrationChange
+                                                            }
+                                                            className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
+                                                                errors.id_no
+                                                                    ? "border-red-500"
+                                                                    : ""
+                                                            }`}
+                                                            required
+                                                        />
+                                                        {errors.id_no && (
+                                                            <p className="text-red-500 text-xs mt-1">
+                                                                {errors.id_no}
+                                                            </p>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Tax PIN */}
+                                                    <div className="relative">
+                                                        <label className="block text-gray-700 text-sm">
+                                                            Tax PIN{" "}
+                                                            <span className="text-red-500">
+                                                                *
+                                                            </span>
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            name="tax_pin"
+                                                            value={
+                                                                registrationData.tax_pin
+                                                            }
+                                                            onChange={
+                                                                handleRegistrationChange
+                                                            }
+                                                            className={`border rounded-lg px-3 py-2 w-full text-sm text-black ${
+                                                                errors.tax_pin
+                                                                    ? "border-red-500"
+                                                                    : ""
+                                                            }`}
+                                                            required
+                                                        />
+                                                        {errors.tax_pin && (
+                                                            <p className="text-red-500 text-xs mt-1">
+                                                                {errors.tax_pin}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                </>
+                                            )}
+
                                             {/* Investment Range Dropdown */}
                                             <div
                                                 className="relative"
@@ -1232,18 +1358,26 @@ function CreateInvestorAccount({ isOpen, onClose }) {
                                             <button
                                                 type="button"
                                                 onClick={handleBack}
-                                                className="btn bg-gray-500 hover:bg-gray-600 rounded-full flex items-center justify-center w-1/3"
+                                                className="btn bg-gray-500 hover:bg-gray-600 text-white rounded-full flex items-center justify-center w-1/3"
                                             >
                                                 Back
                                             </button>
                                             <button
                                                 type="button" // Prevents unintended form submission
-                                                onClick={handleNext}
+                                                onClick={() => {
+                                                    if (thisUser === false) {
+                                                        alert("Submit");
+                                                    } else {
+                                                        handleNext();
+                                                    }
+                                                }}
                                                 className="btn btn-primary whitespace-nowrap rounded-full flex items-center justify-center sm:w-1/3 sm:ml-auto"
                                                 disabled={loading}
                                             >
                                                 {loading ? (
                                                     <AiOutlineLoading3Quarters className="animate-spin mr-2" />
+                                                ) : thisUser === false ? (
+                                                    "Submit"
                                                 ) : (
                                                     "Next"
                                                 )}
