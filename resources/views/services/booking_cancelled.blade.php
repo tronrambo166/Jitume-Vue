@@ -36,7 +36,7 @@
             class="text-3xl font-bold mt-4"
             style="font-size: 2rem; font-weight: 700; margin-top: 1rem"
         >
-            Booking Cancelled!
+            Booking Cancelled
         </h1>
     </div>
     </div>

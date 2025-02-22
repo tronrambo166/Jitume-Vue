@@ -30,7 +30,7 @@
             style="height: 3rem; width: auto; margin: 0 auto"
         />
         <h1 style="font-size: 2rem; font-weight: 700; margin-top: 1rem">
-            Service Payment!
+            Service Payment
         </h1>
     </div> 
     <div class="content" style="padding: 20px">
@@ -42,7 +42,7 @@
                 margin-bottom: 15px;
             "
         >
-            Service {{$name}} is paid!
+            Service {{$business}} is paid!
         </h3>
 
         <div

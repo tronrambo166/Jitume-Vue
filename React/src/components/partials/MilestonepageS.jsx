@@ -90,7 +90,7 @@ const MilestonePage = () => {
 
         const checkDispute = () => {
             axiosClient
-                .get("/checkDispute/" + listing_id + 'S')
+                .get("/checkDispute/" + listing_id + '/S')
                 .then(({ data }) => {
                     console.log(data);
                     if (data.status == 200) setDispute(data.dispute);
@@ -286,9 +286,9 @@ const MilestonePage = () => {
                                         <th className="border border-gray-300 px-6 py-3 text-left text-xs font-semibold text-[#0F172A] uppercase tracking-wider">
                                             Status
                                         </th>
-                                        <th className="border border-gray-300 px-6 py-3 text-left text-xs font-semibold text-[#0F172A] uppercase tracking-wider">
+                                        {dispute && <th className="border border-gray-300 px-6 py-3 text-left text-xs font-semibold text-[#0F172A] uppercase tracking-wider">
                                             Action
-                                        </th>
+                                        </th>}
                                         <th className="border border-gray-300 px-6 py-3 text-left text-xs font-semibold text-[#0F172A] uppercase tracking-wider">
                                             Time Left
                                         </th>
@@ -386,7 +386,7 @@ const MilestonePage = () => {
                                                     </div>
                                                 </td>
                                                 
-                                                {milestone.id  && (
+                                                {milestone.id && dispute && (
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <Link
                                                         to={

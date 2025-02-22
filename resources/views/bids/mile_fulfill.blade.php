@@ -39,7 +39,7 @@
             class="text-3xl font-bold mt-4"
             style="font-size: 2rem; font-weight: 700; margin-top: 1rem"
         >
-            Fulfills a milestone!
+            Fulfills a milestone
         </h1>
     </div>
        <div >

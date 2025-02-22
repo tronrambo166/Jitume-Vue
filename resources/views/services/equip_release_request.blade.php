@@ -41,7 +41,7 @@
         <h1
             style="font-size: 2rem; font-weight: 700; margin-top: 1rem"
         >
-            Project Manger Assigned!
+            Project Manger Assigned
         </h1>
     </div>
      <div class="content" style="padding: 20px;">

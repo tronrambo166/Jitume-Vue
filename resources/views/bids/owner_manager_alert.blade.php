@@ -40,13 +40,13 @@
             class="text-3xl font-bold mt-4"
             style="font-size: 2rem; font-weight: 700; margin-top: 1rem"
         >
-            Projet Manger Assigned!
+            Projet Manger Assigned
         </h1>
     </div>
         <div >
 		<div style="padding: 20px">
 		
-		 <h2 class="text-left text-lg  text-black mb-4"> Project Manger Has Been Assigned!</h2>
+		 <h2 class="text-left text-lg  text-black mb-4"> Project Manger Has Been Assigned</h2>
 			
 			@if($mail_to == 'owner')
             <div class="" style="width:100%;  margin:auto;">

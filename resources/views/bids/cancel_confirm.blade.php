@@ -95,7 +95,7 @@
                         onmouseout="this.style.backgroundColor='#14532d';"
                         target="_blank"
                     >
-                        Request a Project Manager to Verify.</a
+                        Request a Project Manager to Verify</a
                     >
 
                     <a

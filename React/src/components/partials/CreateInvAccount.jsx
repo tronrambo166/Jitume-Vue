@@ -19,6 +19,7 @@ function CreateInvestorAccount({ isOpen, onClose, isInvestor }) {
     const [rememberMe, setRememberMe] = useState(false); // State for "Remember Me" checkbox
     const [otp, setOtp] = useState(["", "", "", ""]);
     const [loadingsubmit, setLoadingsubmit] = useState(false);
+    const [isswitch, setIsswitch] = useState(false);
     const inputRefs = useRef([]);
     const [loginData, setLoginData] = useState({
         email: "",
@@ -38,6 +39,7 @@ function CreateInvestorAccount({ isOpen, onClose, isInvestor }) {
         attached_id: null,
         pin: null,
         investor: 1,
+        switch: "",
         id_no: "",
         past_investment: "",
         website: "",
@@ -458,6 +460,12 @@ function CreateInvestorAccount({ isOpen, onClose, isInvestor }) {
             submitData.append("password", registrationData.password); // Password
             submitData.append("id_no", registrationData.id_no); // ID/Passport Number
             submitData.append("investor", 1);
+
+            if(thisUser == false){
+                registrationData.switch = 1;
+                submitData.append("switch", registrationData.switch);
+            }
+            
             submitData.append("tax_pin", registrationData.tax_pin); // Tax PIN
             submitData.append("id_passport", registrationData.id_passport); // Attached ID/Passport
             submitData.append(
@@ -476,7 +484,7 @@ function CreateInvestorAccount({ isOpen, onClose, isInvestor }) {
                 registrationData.interested_cats
             ); // Interested Categories
 
-            console.log(registrationData);
+            console.log(registrationData); console.log(thisUser); return;
 
             // Submit the registration data
             const { data } = await axiosClient.post("/register", submitData);
@@ -1366,7 +1374,7 @@ function CreateInvestorAccount({ isOpen, onClose, isInvestor }) {
                                                 type="button" // Prevents unintended form submission
                                                 onClick={() => {
                                                     if (thisUser === false) {
-                                                        alert("Submit");
+                                                        setIsswitch(true); handleRegistrationSubmit();
                                                     } else {
                                                         handleNext();
                                                     }

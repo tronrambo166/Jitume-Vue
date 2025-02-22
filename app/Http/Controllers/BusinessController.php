@@ -18,6 +18,7 @@ use App\Models\BusinessSubscriptions;
 use App\Models\Notifications;
 use App\Models\Dispute;
 use App\Models\ServiceMileStatus;
+use App\Models\serviceBook;
 
 
 use Stripe\StripeClient;
@@ -736,7 +737,7 @@ return response()->json([ 'data' => $milestones, 'progress' => 0, 'length' => 0 
   }
   else{
     $accepted = serviceBook::where('service_id',$listing_id)
-    ->where('booker', Auth::id())->where('status', 'Paid')->first();
+    ->where('booker_id', Auth::id())->where('paid', 1)->first();
   }
     
     if($accepted)

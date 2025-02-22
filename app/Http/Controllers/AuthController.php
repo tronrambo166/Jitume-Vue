@@ -178,6 +178,11 @@ class AuthController extends Controller
 
             //File Type Check END!
 
+            if(isset($request->switch) && $request->switch == 1)
+            {
+
+            }
+            
             $user = User::create([
             'fname' => $data['fname'],
             'mname' => $data['mname'],

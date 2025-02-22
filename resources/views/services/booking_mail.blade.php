@@ -41,7 +41,7 @@
     @if($reason == 0)
         <div class="content" style="padding: 20px;">
             
-            <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Booking Accepted!</h2>
+            <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Booking Accepted</h2>
             <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">
                 Dear Customer,<br>We are pleased to inform you that your booking request for {{$business_name}} has been
                 accepted by the service owner.</p>
@@ -98,7 +98,7 @@
 
         <div class="content" style="padding: 20px;">
             
-            <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Booking Rejected!</h2>
+            <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Booking Rejected</h2>
             <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">
                 Dear Customer,<br>Your booking request for the service {{$business_name}} has
             been rejected by the service owner.. <br> Reason: {{$reason}}</p>

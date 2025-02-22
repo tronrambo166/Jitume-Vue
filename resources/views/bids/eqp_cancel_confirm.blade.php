@@ -34,7 +34,7 @@
                     style="height: 3rem; width: auto; margin: 0 auto"
                 />
                 <h1 style="font-size: 2rem; font-weight: 700; margin-top: 1rem">
-                    Equipment Release Cancel Confirmation!
+                    Equipment Release Cancel Confirmation
                 </h1>
             </div>
         </div>
@@ -95,7 +95,7 @@
                         onmouseout="this.style.backgroundColor='#14532d';"
                         target="_blank"
                     >
-                        Release Equipment.</a
+                        Release Equipment</a
                     >
 
                     

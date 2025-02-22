@@ -712,7 +712,7 @@ public function agreeToMileS($rep_id,$booker_id)
             $user['to'] = $customer->email;//'sohaankane@gmail.com';
              Mail::send('milestoneS.service_done_mail', $info, function($msg) use ($user){
                  $msg->to($user['to']);
-                 $msg->subject('Service Done!');
+                 $msg->subject('Service Done!'); 
              }); 
 
              //Delete Booking
@@ -989,6 +989,7 @@ public function bookingAccepted(Request $request)
                 'mile_id' => $mile->id,
                 'service_id' => $service_id,
                 'booker_id' => $booker_id,
+                'booking_id' => $id,
                 'title' => $mile->title,
                 'amount' => $mile->amount,
                 'document' => $mile->document,

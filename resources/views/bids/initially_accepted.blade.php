@@ -45,7 +45,7 @@
     <div class="email-container" >
     <div class="content" style="padding: 20px">
         <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px">
-            Congratulations!
+            Congratulations
         </h2>
         <p
             class="email-message"
@@ -115,7 +115,7 @@
     onmouseout="this.style.backgroundColor='#14532d';" target="_blank"
                 href="<?php echo config('app.app_url');?>dashboard?b_idToVWPM={{$bid_id}}"
             >
-                Request a Project Manager to Verify.</a
+                Request a Project Manager to Verify</a
             >
 
             <a  

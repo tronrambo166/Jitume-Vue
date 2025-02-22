@@ -576,7 +576,7 @@ catch(\Exception $e){
       }
 
     $rep_id = $request->milestone_id; //For Replica table
-    $mileRep = ServiceMileStatus::select('id','mile_id')
+    $mileRep = ServiceMileStatus::select('id','mile_id','booking_id')
     ->where('id',$rep_id)->first();
 
     $id = $mileRep->mile_id; 
@@ -622,14 +622,14 @@ catch(\Exception $e){
     
     try{
         ServiceMileStatus::where('id',$rep_id)->update([ 'status' => 'In Progress']);
+        $booking = serviceBook::where('id',$mileRep->booking_id)->first();
         
         //Asset-related
         $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
         if ($Business->category == '0') 
         {
             $investor = User::select('fname','lname','id','email')->where('id',$investor_id)->first();
-            $booking = serviceBook::where('service_id',$business_id)
-            ->where('booker_id',$investor_id)->first();
+
             $accepted_bids = AcceptedBids::select('business_id','owner_id','id')
             ->where('id',$booking->business_bid_id)->first();
             $ownerB = User::select('id','email')

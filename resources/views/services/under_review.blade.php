@@ -40,7 +40,7 @@
         </h1>
     </div>
 <div class="content" style="padding: 20px;">
-            <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Booking Under Review!</h2>
+            <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Booking Under Review</h2>
             <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 0.5; margin-bottom: 30px;">Hi,&nbsp; Your booking to  {{$business_name}} is under review. You'll get a notification when it's accepted.</p>
             <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">
 

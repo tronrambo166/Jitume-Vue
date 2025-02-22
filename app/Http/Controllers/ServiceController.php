@@ -589,16 +589,13 @@ public function getMilestones($id){
   //Booking check
   $booking = serviceBook::where('service_id',$id)
   ->where('booker_id', Auth::id())
-  ->where('status', 'Confirmed')->first();
+  ->where('status', 'Confirmed')->latest()->first();
   if($booking) $booked = 1; else $booked = 0; $isPaid = false;
 
   if($booked){
     $milestones = ServiceMileStatus::where('service_id',$id)
     ->where('booker_id', Auth::id())->get(); 
 
-    // $status = ServiceMileStatus::where('service_id',$id)
-    // ->where('booker_id', Auth::id())->where('status', 'In Progress')
-    // ->orWhere('status', 'Done')->first();
     if($booking->paid == 1) $isPaid = true;
   }
   else{
@@ -1098,10 +1095,16 @@ public function serviceBook(Request $request){
 }
 
 public function rebook_service($id){ 
-       $booking = serviceBook::where('service_id',$id)
+        $booking = serviceBook::where('service_id',$id)
          ->where('booker_id', Auth::id())->orderBy("id", "DESC")->delete();
-         if($booking) return 'success';
-         else return 'failed';
+
+        $sms = ServiceMileStatus::where('service_id',$id)
+         ->where('booker_id', Auth::id())->delete();
+
+         if($booking && $sms) 
+          return 'success';
+         else
+          return 'failed';
 }
 
 

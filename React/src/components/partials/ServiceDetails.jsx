@@ -373,10 +373,19 @@ const ServiceDetails = () => {
                 setIsLoading(false);
                 console.log(data);
                 if (data.status == 200) {
-                    $.alert({
-                        title: "Alert!",
-                        content: data.message,
-                    });
+                    $.confirm({
+                                title: "Booking Successful",
+                                content:
+                                    "Go to Dashboard to see status.",
+                                buttons: {
+                                    yes: function () {
+                                        navigate("/dashboard/mybookings");
+                                    },
+                                    cancel: function () {
+                                        $.alert("Canceled!");
+                                    },
+                                },
+                            });
                     setBooked(true);
 
                     // Clear form fields
