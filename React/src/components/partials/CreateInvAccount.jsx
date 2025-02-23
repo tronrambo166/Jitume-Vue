@@ -12,7 +12,8 @@ function CreateInvestorAccount({ isOpen, onClose, isInvestor }) {
     const [isSignIn, setIsSignIn] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const { setUser, setToken } = useStateContext();
+    const { setUser, setToken, token } = useStateContext();
+    const [userEmail, setUserEmail] = useState(null);
     const [loading, setLoading] = useState(false); // Loading state
     const [errors, setErrors] = useState({}); // Error state
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
@@ -205,6 +206,19 @@ function CreateInvestorAccount({ isOpen, onClose, isInvestor }) {
 
     // Handle clicks outside
     useEffect(() => {
+
+        const fetchUserData = async () => {
+            try {
+                const { data } = await axiosClient.get("/checkAuth");
+                setUserEmail(data.user.email);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        if(token)
+        fetchUserData();
+
         function handleClickOutside(event) {
             if (
                 invRangeRef.current &&
@@ -453,6 +467,13 @@ function CreateInvestorAccount({ isOpen, onClose, isInvestor }) {
         try {
             // Prepare form data for submission
             const submitData = new FormData();
+
+            if(thisUser == false){
+                registrationData.switch = 1;
+                registrationData.email = userEmail;
+                submitData.append("switch", registrationData.switch);
+            }
+
             submitData.append("fname", registrationData.fname); // First Name
             submitData.append("mname", registrationData.mname || ""); // Optional Middle Name
             submitData.append("lname", registrationData.lname); // Last Name
@@ -460,12 +481,6 @@ function CreateInvestorAccount({ isOpen, onClose, isInvestor }) {
             submitData.append("password", registrationData.password); // Password
             submitData.append("id_no", registrationData.id_no); // ID/Passport Number
             submitData.append("investor", 1);
-
-            if(thisUser == false){
-                registrationData.switch = 1;
-                submitData.append("switch", registrationData.switch);
-            }
-            
             submitData.append("tax_pin", registrationData.tax_pin); // Tax PIN
             submitData.append("id_passport", registrationData.id_passport); // Attached ID/Passport
             submitData.append(
@@ -484,7 +499,7 @@ function CreateInvestorAccount({ isOpen, onClose, isInvestor }) {
                 registrationData.interested_cats
             ); // Interested Categories
 
-            console.log(registrationData); console.log(thisUser); return;
+            console.log(registrationData); 
 
             // Submit the registration data
             const { data } = await axiosClient.post("/register", submitData);

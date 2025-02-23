@@ -130,10 +130,6 @@ class AuthController extends Controller
         {
         $data = $request->all();
         $investor = 1; 
-        $user = User::where('email',$data['email'])->first();
-            if($user!=''){ 
-            return response()->json([ 'status' => 400, 'message' => 'Only pdf & docx are allowed!']);
-             } 
 
          $inv_range = $data['inv_range'];
          $interested_cats = $data['interested_cats'];  
@@ -179,24 +175,45 @@ class AuthController extends Controller
             //File Type Check END!
 
             if(isset($request->switch) && $request->switch == 1)
-            {
+            {   
+                $user = User::select('id')->where('email',$data['email'])->first();
+                
+                $update = User::where('email',$data['email'])
+                ->update([
+                'investor' => $investor,
+                'id_no' => $id_no,
+                'tax_pin' => $tax_pin,
+                'inv_range' =>  json_encode($inv_range),
+                'interested_cats' =>  json_encode($interested_cats), 
+                'past_investment' => $past_investment,
+                'website' => $website         
+                ]);   
 
             }
+            else
+            {   
+                $userCheck = User::where('email',$data['email'])->first();
+                if($userCheck){ 
+                    return response()->json([ 'status' => 400, 'message' => 'Email already exists!']);
+                 } 
+
+                $user = User::create([
+                'fname' => $data['fname'],
+                'mname' => $data['mname'],
+                'lname' => $data['lname'],
+                'email' => $data['email'],
+                'password' => bcrypt($data['password']),
+                'investor' => $investor,
+                'id_no' => $id_no,
+                'tax_pin' => $tax_pin,
+                'inv_range' =>  json_encode($inv_range),
+                'interested_cats' =>  json_encode($interested_cats), 
+                'past_investment' => $past_investment,
+                'website' => $website         
+                ]);  
+            }
             
-            $user = User::create([
-            'fname' => $data['fname'],
-            'mname' => $data['mname'],
-            'lname' => $data['lname'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'investor' => $investor,
-            'id_no' => $id_no,
-            'tax_pin' => $tax_pin,
-            'inv_range' =>  json_encode($inv_range),
-            'interested_cats' =>  json_encode($interested_cats), 
-            'past_investment' => $past_investment,
-            'website' => $website         
-           ]);   
+             
 
             //Upload
             $inv_id = $user->id;
