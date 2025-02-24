@@ -39,14 +39,14 @@
         <h1
             style="font-size: 2rem; font-weight: 700; margin-top: 1rem"
         >
-            Bid Confirmed!
+            Bid Confirmed
         </h1>
     </div>
 
     <div class="email-container" >
     <div class="content" style="padding: 20px">
         <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px">
-            Congratulations!
+            Congratulations
         </h2>
         <p
             class="email-message"

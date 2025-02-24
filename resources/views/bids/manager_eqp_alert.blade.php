@@ -66,7 +66,7 @@
                     Hi,<br />
                     The Process of <b>{{$investor_name}}</b> & Business:
                     <b>{{$b_name}}</b> has begun, the contact information of the
-                    parties involved is below, Thank you!
+                    parties involved is below, Thank you
 
                     <p style="margin-top: 10px">
                         @if($to == 'BO')

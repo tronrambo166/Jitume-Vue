@@ -45,7 +45,7 @@
         </h1>
     </div>
      <div class="content" style="padding: 20px;">
-            <h2 style="font-size: 20px; margin-bottom: 20px;">Project Manager Assigned!</h2>
+            <h2 style="font-size: 20px; margin-bottom: 20px;">Project Manager Assigned</h2>
             <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">Hi, Your bid is now verified, you can now Proceed to release the equipment.</p>
             <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 1.8; margin-bottom: 30px;">Please be on alert of completion milestone emails as progress of their investment depends on your review.</p>
 

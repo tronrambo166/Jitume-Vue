@@ -38,7 +38,7 @@
         <h1
             style="font-size: 2rem; font-weight: 700; margin-top: 1rem"
         >
-            Bid Accepted!
+            Bid Accepted
         </h1>
     </div>
 

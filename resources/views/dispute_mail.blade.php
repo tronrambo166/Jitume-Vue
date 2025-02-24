@@ -31,7 +31,7 @@
             style="height: 3rem; width: auto; margin: 0 auto"
         />
         <h1 style="font-size: 2rem; font-weight: 700; margin-top: 1rem">
-            Dispute Raised!
+            Dispute Raised
         </h1>
     </div>
     <div class="content" style="padding: 20px">

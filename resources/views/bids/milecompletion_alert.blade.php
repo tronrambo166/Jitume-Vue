@@ -54,7 +54,7 @@
             <div class="email-container">
                 <div class="content" style="padding: 20px">
                     <h2 style="font-size: 20px; margin-bottom: 20px">
-                        Completion of Milestone!
+                        Completion of Milestone
                     </h2>
                     <p
                         class="email-message"

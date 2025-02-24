@@ -34,7 +34,7 @@
                     style="height: 3rem; width: auto; margin: 0 auto"
                 />
                 <h1 style="font-size: 2rem; font-weight: 700; margin-top: 1rem">
-                    Bid Cancel Confirmation!
+                    Bid Cancel Confirmation
                 </h1>
             </div>
         </div>

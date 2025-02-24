@@ -43,7 +43,7 @@
                 class="email-title"
                 style="font-size: 1.25rem; margin-bottom: 15px; color: #333"
             >
-                Your milestone has {{$d}} day(s) left!
+                Your milestone has {{$d}} day(s) left
             </h2>
 
             <div

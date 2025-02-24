@@ -35,7 +35,7 @@
             style="height: 3rem; width: auto; margin: 0 auto"
         />
         <h1 style="font-size: 2rem; font-weight: 700; margin-top: 1rem">
-			Milestone Due Alert!
+			Milestone Due Alert
         </h1>
     </div>
 	<div class="content" style="padding: 20px;">
@@ -47,7 +47,7 @@
         text-align: center;
         margin-bottom: 10px;
     ">
-        <br> Your milestone has {{$d}} day(s) left!
+        <br> Your milestone has {{$d}} day(s) left
     </h2>
 
     <div style="

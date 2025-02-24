@@ -30,14 +30,14 @@
             style="height: 3rem; width: auto; margin: 0 auto"
         />
         <h1 style="font-size: 2rem; font-weight: 700; margin-top: 1rem">
-            Request to invest with equipments!
+            Request to invest with equipments
         </h1>
     </div>
 
     <div class="content" style="padding: 20px">
         <h2 style="text-align: left; color: black; font-family: sans-serif">
             <br />
-            Request to invest with equipments!
+            Request to invest with equipments
         </h2>
 
         <div style="width: 100%; margin: auto; padding: 16px">

@@ -23,13 +23,13 @@
         <img src="{{ $message->embed('https://tujitume.com/images/Email/EmailWhite.png')}}" alt="Company Logo"
             style="height: 3rem; width: auto; margin: 0 auto" />
         <h1 style="font-size: 2rem; font-weight: 700; margin-top: 1rem">
-            Milestone Status Changed to Done!
+            Milestone Status Changed to Done
         </h1>
     </div>
 
     <div style="padding: 20px; text-align: center; font-family: sans-serif; background: #f9f9f9; border-radius: 8px;">
         <h2 style="color: black; font-size: 1.5rem; font-weight: bold; margin-bottom: 15px;">
-            Milestone Status Changed to Done!
+            Milestone Status Changed to Done
         </h2>
 
         <div

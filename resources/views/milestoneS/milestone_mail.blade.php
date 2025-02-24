@@ -122,7 +122,7 @@
                  <p style="font-weight: 600">
                     If you have any questions, please contact us at support@tujitume.com.
                     
-                    Thank you for choosing Tujitume!<br/>
+                    Thank you for choosing Tujitume<br/>
                     Best regards, <br/>
                    <div style="margin-bottom:3px;">The Tujitume Team</div> 
                 </p>
