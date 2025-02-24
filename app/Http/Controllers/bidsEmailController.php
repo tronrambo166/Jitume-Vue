@@ -673,9 +673,9 @@ public function agreeToMileS($rep_id,$booker_id)
 
     $mileLat = ServiceMileStatus::where('service_id',$mileThis->service_id)
     ->where('booker_id',$booker_id)->where('status','To Do')->first();
-    $serv= Services::select('id','shop_id')->where('id',$mileThis->service_id)->first();
-    $owner = User::select('id','connect_id')->where('id',$serv->shop_id)->first();
-    $customer = User::select('email')->where('id',$booker_id)->first();
+    $serv= Services::select('name','id','shop_id','price')->where('id',$mileThis->service_id)->first();
+    $owner = User::select('fname','id','connect_id')->where('id',$serv->shop_id)->first();
+    $customer = User::select('fname','email')->where('id',$booker_id)->first();
 
     if($mileLat)
     ServiceMileStatus::where('id',$mileLat->id)->update([ 
@@ -701,7 +701,7 @@ public function agreeToMileS($rep_id,$booker_id)
             'released' => 1
         ]);
 
-        $text = 'Milestone payment for '.$mileThis->title.' has been released.';
+        $text = 'Milestone payment for '.$mileThis->title.' has been released to your account..';
         $this->createNotification($owner->id,null,$text,'/',' service');
 
         $text = 'Milestone payment for '.$mileThis->title.' has been released. Next Milestone is in progress';
@@ -716,8 +716,21 @@ public function agreeToMileS($rep_id,$booker_id)
 
 
         if(!$Last && !$Last2)
-        {
-            $info=[ 's_id' => base64_encode(base64_encode($serv->id)) ]; 
+        {   
+            //Customer
+            $info=[ 's_id' => base64_encode(base64_encode($serv->id)), 
+            'service' => $serv->name, 'amount' => $serv->price, 'to'=>1, 'user_name'=> $customer->fname ]; 
+
+            $user['to'] = $customer->email;//'sohaankane@gmail.com';
+             Mail::send('milestoneS.service_done_mail', $info, function($msg) use ($user){
+                 $msg->to($user['to']);
+                 $msg->subject('Service Done!'); 
+             }); 
+
+
+            //Owner
+             $info=[ 's_id' => base64_encode(base64_encode($serv->id)), 
+            'service' => $serv->name, 'amount' => $serv->price, 'to'=>2, 'user_name'=> $owner->fname ]; 
 
             $user['to'] = $customer->email;//'sohaankane@gmail.com';
              Mail::send('milestoneS.service_done_mail', $info, function($msg) use ($user){
@@ -984,7 +997,7 @@ public function bookingAccepted(Request $request)
         $investor = User::select('id','email')->where('id',$bid->booker_id)
         ->first();
         $investor_mail = $investor->email;
-        $list = Services::select('id','name')->where('id',$bid->service_id)
+        $list = Services::select('id','name','price')->where('id',$bid->service_id)
         ->first();
         $confirm = serviceBook::where('id',$id)->update(['status' => 'Confirmed']);
 
@@ -1026,7 +1039,8 @@ public function bookingAccepted(Request $request)
          //Notifications
 
         $info=['business_name'=>$list->name,'s_id'=>base64_encode(base64_encode($list->id)), 'booking_id'=>base64_encode($id), 'reason' => 0, 
-        'id'=>$bid->id, 'date'=>$bid->date];
+        'id'=>$bid->id, 'date'=>$bid->date, 'amount'=>$list->price];
+
         $user['to'] = $investor_mail;
          Mail::send('services.booking_mail', $info, function($msg) use ($user){
              $msg->to($user['to']);

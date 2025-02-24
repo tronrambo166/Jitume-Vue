@@ -42,7 +42,7 @@
                 margin-bottom: 15px;
             "
         >
-            Service {{$business}} is paid!
+            Payment Received for Service {{$business}}.
         </h3>
 
         <div
@@ -56,6 +56,18 @@
                 text-align: left;
             "
         >
+            <p
+                style="
+                    color: black;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    margin-bottom: 8px;
+                "
+            >
+                We have successfully received your payment for the service {{$business}}. The
+                payment details are as follows:
+            </p>
+
             <h5
                 style="
                     color: black;
@@ -64,18 +76,12 @@
                     margin-bottom: 8px;
                 "
             >
-                <strong>Milestone Name:</strong> {{$name}}
-            </h5>
-            <h5
-                style="
-                    color: black;
-                    font-size: 1rem;
-                    font-weight: 500;
-                    margin-bottom: 8px;
-                "
-            >   @php $Tax = $amount*0.05; $Total = $amount+$Tax; @endphp
+               @php $Tax = $amount*0.05; $Total = $amount+$Tax; @endphp
+
+                 <b>Booking ID:</b> #OO{{$id}}<br>
+                 <b>Service Name:</b> {{$business}}<br>
                 <strong>Amount:</strong> {{$amount}} <br/>
-                <strong>Tax:</strong> {{$Tax}} <br/>
+                <strong>Tujitume Fee:</strong> {{$Tax}} <br/>
                 <strong>Total:</strong> {{$Total}}
             </h5>
             <h5 style="color: black; font-size: 1rem; font-weight: 500">
@@ -83,7 +89,11 @@
             </h5>
 
             <p style="font-weight: 600; color:yellowgreen;">
-                    Service payment will be held in Escrow. When first milestone is completed & Customer agrees to proceed to next milestone then the payment for first milestone is released. The process goes one till all milestones are done. 
+                    Your payment is securely held in escrow and will be released incrementally as
+                    milestones are completed. <br/></br>
+
+                    Milestone Status Update:
+                    - Milestone 1: **In Progress**
                 </p>
         </div>
 		 <div
@@ -110,6 +120,9 @@
                     />
                 </p>
                  <p style="font-weight: 600">
+                    If you have any questions, please contact us at support@tujitume.com.
+                    
+                    Thank you for choosing Tujitume!<br/>
                     Best regards, <br/>
                    <div style="margin-bottom:3px;">The Tujitume Team</div> 
                 </p>

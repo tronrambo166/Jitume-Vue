@@ -35,17 +35,21 @@
             style="height: 3rem; width: auto; margin: 0 auto"
         />
         <h1 style="font-size: 2rem; font-weight: 700; margin-top: 1rem">
-            Service Completed
+            Final Payment Released for [Service Name]
         </h1>
     </div>
  <div class="content" style="padding: 20px">
 	<h2 style="color: green; font-size: 1.8rem; font-weight: bold; margin-bottom: 15px;">
-       Congratulations! </h2>
+       Dear {{$user_name}} , </h2>
 			
-			<div class="" style="width:50%; margin:auto;">
+			<div class="" style="">
 			 <h4 style="color: black; font-size: 1rem; font-weight: 500; line-height: 1.5;">
-            All Milestones are completed, Service is done! Please review.
-        </h4>
+                 The final payment for the service {{$service}} has been successfully released to
+                 @if($to == 1) the service owner @else your account @endif .
+             </h4>
+             <p>Payment Details: <br>Total Amount Released: {{$amount}}</p>
+            <p>The service {{$service}} is now marked as fully completed. If you have any
+            feedback or request, contact Tujitume support, support@tujitume.com.</p>
 
 
 			<div style="margin-top: 20px;">

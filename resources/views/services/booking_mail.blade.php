@@ -54,7 +54,15 @@
                  <b>Booking ID:</b> #OO{{$id}}<br>
                  <b>Service Name:</b> {{$business_name}}<br>
                  <b>Requested Date:</b> {{$date}}<br>
+
+                 @php $Tax = $amount*0.05; $Total = $amount+$Tax; @endphp
+                <strong>Amount:</strong> {{$amount}} <br/>
+                <strong>Jitume Fee:</strong> {{$Tax}} <br/>
+                <strong>Total:</strong> {{$Total}}<br>
             </p>
+
+            <h5>Next Steps:</h5>
+            <p> If you no longer wish to proceed, you may cancel the booking by clicking 'Cancel'</p>
 
             <div class="button-container" style="display: flex; margin-top: 20px; gap: 20px; "> <!-- https://test.jitume.com -->
                 <a target="_blank" href="<?php echo config('app.app_url');?>service-milestones/{{$s_id}}" class="button button-primary"        style="display: inline-block; padding: 8px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green; text-align: center;">Pay Here
@@ -64,6 +72,10 @@
                 </a>
 
             </div>
+
+
+            <p> If you need assistance, feel free to reach out to us at support@tujitume.com </p>
+
             <div
                 class="footer"
                 style="

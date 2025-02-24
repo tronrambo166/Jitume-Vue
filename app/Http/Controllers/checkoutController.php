@@ -689,12 +689,12 @@ catch(\Exception $e){
         //MAIL
         $business = Services::where('id',$mile->listing_id)->first();
         $customer = User::where('id',Auth::id())->first();
-        $info=[  'name'=>$mile->title,  'amount'=>$business->price, 'business'=>$business->name, 's_id' => $business_id, 'customer'=>$customer->fname. ' '.$customer->lname ]; 
+        $info=[  'name'=>$mile->title,  'amount'=>$business->price, 'business'=>$business->name, 's_id' => $business_id, 'customer'=>$customer->fname. ' '.$customer->lname, 'id'=>$booking->id ]; 
         $user['to'] = [$ownerS->email, $customer->email];//'sohaankane@gmail.com';
 
          Mail::send('milestoneS.milestone_mail', $info, function($msg) use ($user){
              $msg->to($user['to']);
-             $msg->subject('Milestone Paid!');
+             $msg->subject('Service Payment Received');
          });
         //MAIL 
         //Notifications

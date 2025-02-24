@@ -35,30 +35,55 @@
             style="height: 3rem; width: auto; margin: 0 auto"
         />
         <h1 style="font-size: 2rem; font-weight: 700; margin-top: 1rem">
-            Service Completed
+            Final Milestone Completed for {{$business}}
         </h1>
     </div>
  <div class="content" style="padding: 20px">
 	<h2 style="color: green; font-size: 1.8rem; font-weight: bold; margin-bottom: 15px;">
-       Congratulations! </h2>
+      Dear Customer,</h2>
 			
-			<div class="" style="width:50%; margin:auto;">
+			<div class="" style="">
 			 <h4 style="color: black; font-size: 1rem; font-weight: 500; line-height: 1.5;">
-            All Milestones are completed,
+            All milestones for the service {{$business}} have been completed by the service
+owner.
         </h4>
 
         <p style="
         margin-top: 20px;
         font-size: 16px;
-        color: #444;
+        color:black;
+        
     ">
-        Final Payment Can Be Released.
+        Next Steps:<br>
+Please confirm if you would like to release the final payment. Once confirmed, the
+remaining payment will be transferred to the service owner.
     </p>
+<div style="
+    background-color: #fff3cd; 
+    color: #856404; 
+    font-weight: bold; 
+    padding: 10px; 
+    border-radius: 5px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+">
+    If no action is taken within <strong>7 days</strong> from the date of this email, the final payment will
+    be automatically released to the service.
+</div>
 
-    <div style="
-        margin-top: 15px;
-        text-align: center;
+<div style="margin-top: 10px;">
+    <!-- <a href="#" style="
+        background-color: #28a745; 
+        color: white; 
+        font-weight: bold; 
+        padding: 10px 15px; 
+        border-radius: 5px; 
+        text-decoration: none;
+        display: inline-block;
+        margin-right: 8px;
     ">
+        RELEASE FINAL PAYMENT
+    </a> -->
 
     @php $random = $rep_id + 51;
     $random2 = $booker_id + 47;
@@ -83,30 +108,23 @@
             onmouseover="this.style.backgroundColor='#1f7f14';"
             onmouseout="this.style.backgroundColor='#2f9f1f';"
         >
-            Ok
+            RELEASE FINAL PAYMENT
         </a>
 
-        <!-- Uncomment if you need a cancel button -->
-        
-        <a href="#" style="
-            display: inline-block;
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 14px;
-            font-weight: 500;
-            border-radius: 8px;
-            text-decoration: none;
-            margin-left: 15px;
-        ">
-            Cancel
-        </a>
-        
-    </div>
 
-
-
+    <a href="#" style="
+        background-color: #007bff; 
+        color: white; 
+        font-weight: bold; 
+        padding: 10px 15px; 
+        border-radius: 5px; 
+        text-decoration: none;
+        display: inline-block;
+    ">
+         @php $s_id = base64_encode(base64_encode($s_id)) @endphp
+        <a target="_blank" href="<?php echo config('app.app_url');?>service-details/{{$s_id}}?review_popup=true" class="button continue" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Review Service</a>
+    </a>
+</div>
 		
 	</div>
 						
