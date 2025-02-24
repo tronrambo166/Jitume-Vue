@@ -112,18 +112,9 @@ remaining payment will be transferred to the service owner.
         </a>
 
 
-    <a href="#" style="
-        background-color: #007bff; 
-        color: white; 
-        font-weight: bold; 
-        padding: 10px 15px; 
-        border-radius: 5px; 
-        text-decoration: none;
-        display: inline-block;
-    ">
          @php $s_id = base64_encode(base64_encode($s_id)) @endphp
         <a target="_blank" href="<?php echo config('app.app_url');?>service-details/{{$s_id}}?review_popup=true" class="button continue" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Review Service</a>
-    </a>
+        </a>
 </div>
 		
 	</div>
