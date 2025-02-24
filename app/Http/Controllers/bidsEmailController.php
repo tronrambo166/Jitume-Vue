@@ -657,13 +657,19 @@ public function releaseEquipment($business_id, $manager_id, $bid_id){
 
 
 public function agreeToMileS($rep_id,$booker_id)
-{
+{   
+    $Arr1 = explode('.', base64_decode($rep_id));
+    $Arr2 = explode('.', base64_decode($booker_id));
+
+    $rep_id = $Arr1[0];
+    $booker_id = $Arr2[0];
+
     try{
 
-    $mileThis = ServiceMileStatus::select('id','service_id','amount','title')
-    ->where('id',$rep_id)->first();
+    $mileThis = ServiceMileStatus::select('id','service_id','amount','title','released')->where('id',$rep_id)->first();
 
-    if(!$mileThis) return 'dont exist';
+    if(!$mileThis) return 'Milestone do not exist!';
+    if($mileThis && $mileThis->released == 1) return 'Payment already released for this milestone!';
 
     $mileLat = ServiceMileStatus::where('service_id',$mileThis->service_id)
     ->where('booker_id',$booker_id)->where('status','To Do')->first();
@@ -690,6 +696,10 @@ public function agreeToMileS($rep_id,$booker_id)
                 'destination' => $owner->connect_id
         ]);
     //Release Milestone Payment
+        $released = ServiceMileStatus::where('id',$rep_id)
+        ->update([
+            'released' => 1
+        ]);
 
         $text = 'Milestone payment for '.$mileThis->title.' has been released.';
         $this->createNotification($owner->id,null,$text,'/',' service');

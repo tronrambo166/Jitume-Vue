@@ -98,6 +98,14 @@
         margin-top: 15px;
         text-align: center;
     ">
+
+    @php $random = $rep_id + 51;
+    $random2 = $booker_id + 47;
+
+    $rep_id = base64_encode($rep_id.'.'.$random);
+    $booker_id = base64_encode($booker_id.'.'.$random2);
+    @endphp
+
         <a target="_blank" href="<?php echo config('app.api_url');?>agreeToMileS/{{$rep_id}}/{{$booker_id}}"
             style="
                 display: inline-block;
