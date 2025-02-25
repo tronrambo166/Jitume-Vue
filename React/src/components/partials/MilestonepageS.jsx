@@ -314,7 +314,7 @@ const MilestonePage = () => {
                                                 <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
                                                     <button
                                                         onClick={download_doc(
-                                                            milestone.mile_id
+                                                            booked?milestone.mile_id:milestone.id
                                                         )}
                                                         className="text-black hover:underline"
                                                     >
@@ -361,7 +361,7 @@ const MilestonePage = () => {
                                                 <td className="border border-gray-300 px-6 py-3 text-[#0F172A]">
                                                     <button
                                                         onClick={download_doc(
-                                                            milestone.mile_id
+                                                            booked?milestone.mile_id:milestone.id
                                                         )}
                                                         className="text-black hover:underline"
                                                     >

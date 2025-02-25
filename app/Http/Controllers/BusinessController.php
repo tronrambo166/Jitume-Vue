@@ -1774,7 +1774,8 @@ public function raiseDispute(Request $request)
                 'project_name' => $project->name,
                 'reason' => $request->reason,
                 'details' => $request->details,
-                'document' => $final_document,   
+                'document' => $final_document,
+                'type' => $request->type,
             ]); 
 
             //MAIL

@@ -106,9 +106,9 @@ class AdminController extends Controller
    }
 
 
- public function del_artist($id)
+ public function remove_dispute($id)
     {           
-       User::where('id', $id)->delete();
+       Dispute::where('id', $id)->delete();
        return back()->with('success', "Deleted!"); 
  }
  
@@ -214,7 +214,8 @@ public function listings_active()
         foreach ($disputes as $disp){
             $disputant = User::select('fname', 'lname', 'email')->where('id',$disp->user_id)->first();
             $disp->user = $disputant;
-        }
+        } 
+        //return $disputes;
         return view('admin.disputes',compact('disputes'));     
     }
 
@@ -434,6 +435,31 @@ else{
       ->orWhere('website', 'like', '%'.$searchText.'%')
       ->get();
       //return $users;
+
+        foreach($users as $user){
+        $investedBusiness = DB::table('business_bids')
+        ->where('investor_id', $user->id)
+            ->join('listings', 'business_bids.business_id', '=', 'listings.id')
+            ->select('business_bids.*', 'listings.name')
+            ->get();
+
+        $activeBusiness = DB::table('business_bids')
+            ->where('owner_id', $user->id)
+            ->join('listings', 'business_bids.business_id', '=', 'listings.id')
+            ->groupBy('business_bids.business_id')
+            ->select('business_bids.*', 'listings.name', 'listings.investment_needed', 'listings.category')
+            ->get();
+
+        $bookedServices = DB::table('service_books')
+        ->where('booker_id', '=', $user->id)
+        ->join('services', 'service_books.service_id', '=', 'services.id')
+        ->select('service_books.*', 'services.name','services.price')
+        ->get();
+
+        $user->investedBusiness = $investedBusiness;
+        $user->bookedServices = $bookedServices;  
+        $user->activeBusiness = $activeBusiness;        
+    }
 
       return view('admin.users', compact('users'));     
 

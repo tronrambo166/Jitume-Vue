@@ -650,8 +650,7 @@ return response()->json([ 'status' => 200, 'data' => $milestones, 'done_msg' => 
     if($doc)
     $file=$doc->document;
 
-    if($file)
-    if( $file == null || !file_exists(public_path($file)) ){
+    if( !$file || !file_exists(public_path($file)) ){
 
         return response('404');
     }
@@ -868,7 +867,7 @@ $milestones = ServiceMileStatus::where('id',$request->id)
 
          Mail::send($filename, $info, function($msg) use ($user){
              $msg->to($user['to']);
-             $msg->subject('Milestone Done!');
+             $msg->subject('Milestone Done');
          });  
          return response()->json(['message' => 'Status set success, mail sent!']);
 //Mail

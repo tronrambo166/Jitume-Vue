@@ -80,7 +80,7 @@
 														Details
 													</a>
 
-													<a  type="button" class=" text-dark btn btn-outline-warning py-1 font-weight-bold small">
+													<a onclick="confirm('are you sure?');" href="{{route('remove_dispute',$l->id )}}" type="button" class=" text-dark btn btn-outline-warning py-1 font-weight-bold small">
 														Remove
 													</a>
 													</td>		

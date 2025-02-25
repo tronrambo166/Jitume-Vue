@@ -64,11 +64,10 @@ Route::group([ 'prefix' => 'admin'], function(){
     Route::get('/index_admin', [adminController::class, 'index_admin'])->name('index_admin');
     Route::get('/logout',[UserController::class,'logout'])->name('logout');
 
-    Route::get('/artists', [adminController::class,'artists'])->name('artistsList');
     Route::get('/approve/{id}', [adminController::class,'approve'])->name('approve');
     Route::get('/restrict/{id}', [adminController::class,'restrict'])->name('restrict');
     Route::get('/del_users/{id}', [adminController::class,'del_artist'])->name('del_users');
-    Route::get('/remove_song/{id}', [adminController::class,'remove_song'])->name('remove_song');
+    Route::get('/remove_dispute/{id}', [adminController::class,'remove_dispute'])->name('remove_dispute');
   
     Route::get('/users', [adminController::class,'users'])->name('users');   
     Route::get('/listings-active', [adminController::class,'listings_active']);
