@@ -45,7 +45,7 @@ const ServiceResults = () => {
             label: "Technology/Communications",
         },
     ];
-    //alert(btoa(btoa(6)));
+    //alert(atob(atob(atob('VG1jOVBRPT0='))));
 
     const { resIds } = useParams();
     const { loc } = useParams();
@@ -449,7 +449,7 @@ const ServiceResults = () => {
                                     className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
                                     name="min"
                                 >
-                                    Set Range - 
+                                    Set Range
                                 </button>
                                 <div className="mt-2">
                                     <label className="text-gray-700 font-semibold mb-2">
@@ -622,7 +622,7 @@ const ServiceResults = () => {
                         ) : (
                             currentCards.map((row) => (
                                 <Link
-                                    to={`/service-details/${btoa(btoa(row.id))}`}
+                                    to={`/service-details/${btoa(row.id)}`}
                                     key={row.id}
                                 >
                                     <div className="border p-5 border-[#0000001A]/10 shadow-sm bg-white h-[500px] rounded-2xl flex flex-col w-full max-w-[900px] mx-auto">
