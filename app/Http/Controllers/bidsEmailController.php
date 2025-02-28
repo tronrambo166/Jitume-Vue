@@ -63,8 +63,9 @@ public function bidsAccepted(Request $request)
         //REJECT
         if(isset($request->reject) && $request->reject == 1){
         foreach($bid_ids as $id){
-        if($id !=''){
         $bid = BusinessBids::where('id',$id)->first();
+        
+        if($id !='' && $bid){
         $investor = User::where('id',$bid->investor_id)->first();
         $investor_mail = $investor->email;
         $list = listing::where('id',$bid->business_id)->first();
@@ -110,7 +111,7 @@ public function bidsAccepted(Request $request)
         Session::put('success','Rejected!');
         return response()->json(['message' => 'Rejected!']);
         }
-        //REJECT 
+        //REJECT ENDS
 
 
         foreach($bid_ids as $id){
@@ -932,12 +933,13 @@ public function  bidCommitsEQP(Request $request){
     $total_bid_amount = $total_bid_amount+($b->amount);
 
     $list = listing::select('id','user_id','name')->where('id',$business_id)->first();
+    $owner = User::select('id','email')->where('id',$list->user_id)->first();
+
     if($total_bid_amount >= $mile1->amount && $list->threshold_met == null){
         listing::where('id',$business_id)->update(['threshold_met' => 1]);
 
-        $owner = User::select('id','email')->where('id',$list->user_id)->first();
         $info=[ 'business_name'=>$list->name ];
-        $user['to'] = $owner->email; //'tottenham266@gmail.com'; //$owner->email;
+        $user['to'] = $owner->email; //'tottenham266@gmail.com';
          Mail::send('bids.mile_fulfill', $info, function($msg) use ($user){
              $msg->to($user['to']);
              $msg->subject('Fulfills a milestone!');

@@ -45,6 +45,7 @@ const ServiceResults = () => {
             label: "Technology/Communications",
         },
     ];
+    //alert(btoa(btoa(6)));
 
     const { resIds } = useParams();
     const { loc } = useParams();

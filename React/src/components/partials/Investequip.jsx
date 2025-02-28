@@ -173,7 +173,7 @@ const Investequip = () => {
                     },
                 });
             } else {
-                showAlert("failed", response.data.message); // Show failure alert
+                showAlert("error", response.data.message); // Show failure alert
             }
         } catch (error) {
             const response = err.response;
