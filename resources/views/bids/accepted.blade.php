@@ -137,10 +137,12 @@
             manager).
         </p>
 
-        @else Please Request a Project Manager to Proceed with this Investment
+        @else 
+
+        Please Request a Project Manager to Proceed with this Investment
         (Please note that investor with assets must have a project manager)
         <br />
-        <div class="w-full mx-auto mt-4 py-4 text-center">
+        <div style="margin-top:35px;" class="w-full mx-auto mt-4 py-4 text-center">
             <a  style="background-color: #14532d; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; font-weight: 500; font-size: 1rem; transition: background-color 0.3s ease-in-out;"
     onmouseover="this.style.backgroundColor='#139647';"
     onmouseout="this.style.backgroundColor='#14532d';" target="_blank"

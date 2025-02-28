@@ -1079,7 +1079,7 @@ public function serviceBook(Request $request){
         $user['to'] = $investor_mail; //'tottenham266@gmail.com'; //
             Mail::send('services.under_review', $info, function($msg) use ($user){
              $msg->to($user['to']);
-             $msg->subject('Booking Under Review!');
+             $msg->subject('Booking Under Review');
          });
         //Mail
 
@@ -1192,7 +1192,7 @@ public function serviceReply(Request $request){
         $user['to'] = $receiver->email; //'tottenham266@gmail.com';
             Mail::send('bids.conv_mail', $info, function($msg) use ($user){
              $msg->to($user['to']);
-             $msg->subject('Message Received!');
+             $msg->subject('Message Received');
          });
       //Email
     }

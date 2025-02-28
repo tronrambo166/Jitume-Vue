@@ -64,7 +64,7 @@ public function bidsAccepted(Request $request)
         if(isset($request->reject) && $request->reject == 1){
         foreach($bid_ids as $id){
         $bid = BusinessBids::where('id',$id)->first();
-        
+
         if($id !='' && $bid){
         $investor = User::where('id',$bid->investor_id)->first();
         $investor_mail = $investor->email;
@@ -75,7 +75,7 @@ public function bidsAccepted(Request $request)
          if($investor)
             Mail::send('bids.rejected', $info, function($msg) use ($user){
              $msg->to($user['to']);
-             $msg->subject('Bid Rejected!');
+             $msg->subject('Bid Rejected');
          });
 
          //Refund
@@ -172,12 +172,15 @@ public function bidsAccepted(Request $request)
             ]);
             
             //After Bid is Accepted
-              $amount_collected = $list->amount_collected + $bid->amount;
-              $invest_count = $list->invest_count + 1;
-              Listing::where('id', $bid->business_id)->update([
-                'amount_collected' => $amount_collected,
-                'invest_count' => $invest_count
-              ]);
+            if($bid->type == 'Monetary'){
+                $amount_collected = $list->amount_collected + $bid->amount;
+                $invest_count = $list->invest_count + 1;
+                Listing::where('id', $bid->business_id)->update([
+                    'amount_collected' => $amount_collected,
+                    'invest_count' => $invest_count
+                ]);
+            }
+              
 
 
             //Mail
@@ -189,7 +192,7 @@ public function bidsAccepted(Request $request)
                  if($investor)
                     Mail::send('bids.initially_accepted' , $info, function($msg) use ($user){
                      $msg->to($user['to']);
-                     $msg->subject('Bid Accepted!');
+                     $msg->subject('Bid Accepted');
                  });
             //Mail
 
@@ -378,7 +381,7 @@ public function CancelAssetBid($bidId, $action)
             $user['to'] = $investor->email;
             Mail::send('bids.cancel_confirm', $info, function($msg) use ($user){
                 $msg->to($user['to']);
-                $msg->subject('Bid Cancel Confirmation!');
+                $msg->subject('Bid Cancel Confirmation');
          });
 
             //Notifications
@@ -400,7 +403,7 @@ public function CancelAssetBid($bidId, $action)
             $user['to'] = $owner->email; //'tottenham266@gmail.com';
              Mail::send('bids.cancelled', $info, function($msg) use ($user){
                  $msg->to($user['to']);
-                 $msg->subject('Bid Cancel!');
+                 $msg->subject('Bid Cancel');
              });
 
             //Notifications
@@ -453,7 +456,7 @@ public function CancelEquipmentRelease($bidId, $action)
             $user['to'] = $investor->email;
             Mail::send('bids.eqp_cancel_confirm', $info, function($msg) use ($user){
                 $msg->to($user['to']);
-                $msg->subject('Equipment Cancel Confirmation!');
+                $msg->subject('Equipment Cancel Confirmation');
             });
 
             //Notifications
@@ -475,7 +478,7 @@ public function CancelEquipmentRelease($bidId, $action)
             $user['to'] = $owner->email; //'tottenham266@gmail.com';
              Mail::send('bids.cancelled', $info, function($msg) use ($user){
                  $msg->to($user['to']);
-                 $msg->subject('Bid Cancel!');
+                 $msg->subject('Bid Cancel');
              });
 
             //Notifications
@@ -534,7 +537,7 @@ public function CancelBookingConfirm($booking_id, $action)
             $user['to'] = $booker->email;
             Mail::send('services.booking_cancel_confirm', $info, function($msg) use ($user){
                 $msg->to($user['to']);
-                $msg->subject('Booking Cancel Confirmation!');
+                $msg->subject('Booking Cancel Confirmation');
             });
 
             //Notifications
@@ -556,7 +559,7 @@ public function CancelBookingConfirm($booking_id, $action)
             $user['to'] = $owner->email; //'tottenham266@gmail.com';
              Mail::send('services.booking_cancelled', $info, function($msg) use ($user){
                  $msg->to($user['to']);
-                 $msg->subject('Booking Cancel!');
+                 $msg->subject('Booking Cancel');
              });
 
             //Notifications
@@ -621,7 +624,7 @@ public function releaseEquipment($business_id, $manager_id, $bid_id){
             $user['to'] = $b_owner->email;
             $mail2 =  Mail::send('bids.manager_eqp_alert', $info, function($msg) use ($user){
                  $msg->to($user['to']);
-                 $msg->subject('Equipment Released!');
+                 $msg->subject('Equipment Released');
              });
 
             $text = 'Equipment X from '.$investor_name.' is ready to release.';
@@ -634,7 +637,7 @@ public function releaseEquipment($business_id, $manager_id, $bid_id){
             $user['to'] = $manager->email;
             $mail2 =  Mail::send('bids.manager_eqp_alert', $info, function($msg) use ($user){
                  $msg->to($user['to']);
-                 $msg->subject('Equipment Released!');
+                 $msg->subject('Equipment Released');
              });
 
             $text = 'Equipment from '.$investor_name.' is ready to release.';
@@ -725,7 +728,7 @@ public function agreeToMileS($rep_id,$booker_id)
             $user['to'] = $customer->email;//'sohaankane@gmail.com';
              Mail::send('milestoneS.service_done_mail', $info, function($msg) use ($user){
                  $msg->to($user['to']);
-                 $msg->subject('Service Done!'); 
+                 $msg->subject('Service Done'); 
              }); 
 
 
@@ -736,7 +739,7 @@ public function agreeToMileS($rep_id,$booker_id)
             $user['to'] = $customer->email;//'sohaankane@gmail.com';
              Mail::send('milestoneS.service_done_mail', $info, function($msg) use ($user){
                  $msg->to($user['to']);
-                 $msg->subject('Service Done!'); 
+                 $msg->subject('Service Done'); 
              }); 
 
              //Delete Booking
@@ -942,7 +945,7 @@ public function  bidCommitsEQP(Request $request){
         $user['to'] = $owner->email; //'tottenham266@gmail.com';
          Mail::send('bids.mile_fulfill', $info, function($msg) use ($user){
              $msg->to($user['to']);
-             $msg->subject('Fulfills a milestone!');
+             $msg->subject('Fulfills a milestone');
          });
 
         //Notifications
@@ -1046,7 +1049,7 @@ public function bookingAccepted(Request $request)
         $user['to'] = $investor_mail;
          Mail::send('services.booking_mail', $info, function($msg) use ($user){
              $msg->to($user['to']);
-             $msg->subject('Booking Accepted!');
+             $msg->subject('Booking Accepted');
          });
 
         }
@@ -1096,7 +1099,7 @@ public function bookingAccepted(Request $request)
          $user['to'] = $investor_mail;
          Mail::send('services.booking_mail', $info, function($msg) use ($user){
              $msg->to($user['to']);
-             $msg->subject('Booking Rejected!');
+             $msg->subject('Booking Rejected');
          }); 
         //Notifications   
 

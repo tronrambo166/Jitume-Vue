@@ -65,7 +65,7 @@
                     margin-bottom: 8px;
                 "
             >
-                We have successfully received your payment for the service {{$business}}. The
+                We have successfully received payment for the service {{$business}}. The
                 payment details are as follows:
             </p>
 

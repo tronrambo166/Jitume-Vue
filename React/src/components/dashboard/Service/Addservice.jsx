@@ -307,7 +307,7 @@ const AddService = ({ connected, userId }) => {
     }, []);
 
     const connectToStripe = () => {
-        window.location.href = "https://test.jitume.com/connect/" + id;
+        window.location.href = "https://tujitume.com/connect/" + id;
     };
 
     return (

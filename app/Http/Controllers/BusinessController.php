@@ -931,7 +931,7 @@ try{
         //Email
         Mail::send('bids.invest_completion_alert', $info, function($msg) use ($user){
              $msg->to($user['to']);
-             $msg->subject('Investment Completion Alert!');
+             $msg->subject('Investment Completion Alert');
          });
 
         $text = 'All milestones of business '.$list->name.'
@@ -964,7 +964,7 @@ try{
 
         Mail::send('bids.milecompletion_alert', $info, function($msg) use ($user){
              $msg->to($user['to']);
-             $msg->subject('Milestone Completion Alert!');
+             $msg->subject('Milestone Completion Alert');
          });
 
         $text = 'Milestone '.$thisMile->title.' of business '.$list->name.'
@@ -1045,7 +1045,7 @@ try {
          if($owner)
             Mail::send('bids.cancelled', $info, function($msg) use ($user){
              $msg->to($user['to']);
-             $msg->subject('Bid Cancelled!');
+             $msg->subject('Bid Cancelled');
          });
   //Email
 
@@ -1102,7 +1102,7 @@ try {
          if($owner)
             Mail::send('bids.cancelled', $info, function($msg) use ($user){
              $msg->to($user['to']);
-             $msg->subject('Bid Cancelled!');
+             $msg->subject('Bid Cancelled');
          });
   //Email
           $bid_remove = AcceptedBids::where('id',$id)->delete();
@@ -1135,7 +1135,7 @@ public function askInvestorToVerify($id)
          if($investor)
             Mail::send('bids.askInvestorToVerify', $info, function($msg) use ($user){
              $msg->to($user['to']);
-             $msg->subject('Investor To Verify!');
+             $msg->subject('Investor To Verify');
             });
         //Email
 
@@ -1184,7 +1184,7 @@ public function requestOwnerToVerify($bid_id)
          if($owner)
             Mail::send('bids.verify_request', $info, function($msg) use ($user){
              $msg->to($user['to']);
-             $msg->subject('Equipment Verify Request!');
+             $msg->subject('Equipment Verify Request');
          });
         //Email
 
@@ -1206,27 +1206,25 @@ public function markAsVerified($id)
         $investor =User::select('email','id')->where('id',$bid->investor_id)
         ->first();
 
-            //Notifications
-              //EQP RELEASE
-                $info=[ 'business_owner'=>$bid->business_id, 'manager'=>$bid->project_manager, 'bid_id'=> base64_encode($id)];
-                $user['to'] = $investor->email;
-                 Mail::send('services.equip_release_request', $info, function($msg) use ($user){
-                    $msg->to($user['to']);
-                    $msg->subject('Equipment Release Request!');
-                 });
-              //EQP RELEASE
-            
-             // $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
-             // $addNoti = Notifications::create([
-             //    'date' => $date,
-             //    'receiver_id' => $bid->investor_id,
-             //    'customer_id' => $owner->id,
-             //    'bid_id' => $bidId,
-             //    'text' => 'Your bid to business '.$business->name.' will be cancelled.',
-             //    'link' => 'bid_cancel_confirm',
-             //    'type' => 'business',
-             //  ]);
-            //Notifications
+          //Notifications
+          //EQP RELEASE
+            $info=[ 'business_owner'=>$bid->business_id, 'manager'=>$bid->project_manager, 'bid_id'=> base64_encode($id)];
+            $user['to'] = $investor->email;
+             Mail::send('services.equip_release_request', $info, function($msg) use ($user){
+                $msg->to($user['to']);
+                $msg->subject('Equipment Release Request');
+             });
+          //EQP RELEASE
+
+          //Amount Collection
+            $list = listing::where('id',$bid->business_id)->first();
+            $amount_collected = $list->amount_collected + $bid->amount;
+            $invest_count = $list->invest_count + 1;
+            Listing::where('id', $bid->business_id)->update([
+                'amount_collected' => $amount_collected,
+                'invest_count' => $invest_count
+            ]);
+          //Amount Collection
 
         return response()->json(['status' => 200, 'message' => 'Bid marked as verified!']);
     }
@@ -1307,9 +1305,11 @@ public function confirmed_bids()
     $business = listing::select('name','id')
     ->where('id',$r->business_id)->first();
 
-    $activeMilestone = Milestones::select('title')
-    ->where('listing_id',$business->id)
-    ->where('status','In Progress')->first();
+    if($business){
+      $activeMilestone = Milestones::select('title')
+      ->where('listing_id',$business->id)
+      ->where('status','In Progress')->first();
+    }
 
     if($activeMilestone)
         $Milestone = $activeMilestone->title;

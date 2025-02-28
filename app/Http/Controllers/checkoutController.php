@@ -166,7 +166,7 @@ class checkoutController extends Controller
 //
       $session = $this->Client->checkout->sessions->create([
               // https://test.jitume.com, http://127.0.0.1:8000
-              'success_url' => 'https://test.jitume.com/stripeSubscribeSuccess?session_id={CHECKOUT_SESSION_ID}',
+              'success_url' => 'https://tujitume.com/stripeSubscribeSuccess?session_id={CHECKOUT_SESSION_ID}',
               'cancel_url' => 'https://example.com/canceled.html',
               'mode' => 'subscription',
               'line_items' => [[

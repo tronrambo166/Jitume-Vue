@@ -46,23 +46,24 @@
         <div >
         <div class="content" style="padding: 20px;">
             <h2 class="email-title" style="font-size: 20px; margin-bottom: 20px;">Your Have Received A Message</h2>
-            <p class="email-message" style="font-size: 12px; padding-top: 10px; line-height: 0.5; margin-bottom: 30px;">Hi,&nbsp; {{$sender}} sent you a message regarding equipment verification process.
+           <p class="email-message" 
+   style="font-size: 14px; padding-top: 10px; line-height: 1.6; margin-bottom: 30px; color: #333; font-family: Arial, sans-serif;">
+    Hi, <strong>{{$sender}}</strong> sent you a message regarding the equipment verification process.
+    <br><br>
+    <span style="background-color: #f1f8e9; color: #256029; padding: 8px 12px; border-radius: 6px; display: inline-block; font-size: 14px; font-weight: 500; max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+        
+    </span>
+    <br><br>
+    <a href="<?php echo config('app.app_url');?>dashboard/messages" 
+       target="_blank"
+       style="display: inline-block; background-color: #14532d; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px; transition: background-color 0.3s ease-in-out;"
+       onmouseover="this.style.backgroundColor='#139647';"
+       onmouseout="this.style.backgroundColor='#14532d';">
+        View Message
+    </a>
+</p>
 
-                <br> 
-                <span 
-                style="background-color: #f6e5e5;color:green; padding-right: 10px;padding-left: 10px; border-radius:6px;" >
-                {{$msg}}
-                </span>  
 
-            <a   target="_blank"
-            href="<?php echo config('app.app_url');?>dashboard/messages"
-                 style="background-color: #14532d; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; font-weight: 500; font-size: 1rem; transition: background-color 0.3s ease-in-out;"
-    onmouseover="this.style.backgroundColor='#139647';"
-    onmouseout="this.style.backgroundColor='#14532d';"target="_blank"
-            >
-                View</a
-            >
-        </p>
 
 
 
