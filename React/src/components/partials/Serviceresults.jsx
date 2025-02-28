@@ -449,7 +449,7 @@ const ServiceResults = () => {
                                     className="px-6 py-2 text-black border-2 border-gray-400 rounded-lg sm:w-32 hover:bg-gray-100 hover:text-green-900 transition-colors"
                                     name="min"
                                 >
-                                    Set Range
+                                    Set Range - 
                                 </button>
                                 <div className="mt-2">
                                     <label className="text-gray-700 font-semibold mb-2">
