@@ -622,9 +622,7 @@ const ServiceResults = () => {
                         ) : (
                             currentCards.map((row) => (
                                 <Link
-                                    to={`/service-details/${btoa(
-                                        btoa(row.id)
-                                    )}`}
+                                    to={`/service-details/${btoa(btoa(row.id))}`}
                                     key={row.id}
                                 >
                                     <div className="border p-5 border-[#0000001A]/10 shadow-sm bg-white h-[500px] rounded-2xl flex flex-col w-full max-w-[900px] mx-auto">
