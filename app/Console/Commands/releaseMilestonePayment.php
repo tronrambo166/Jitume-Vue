@@ -6,6 +6,9 @@ use Illuminate\Console\Command;
 use App\Models\User;
 use App\Models\ServiceMileStatus;
 use App\Models\serviceBook;
+use App\Models\Services;
+use App\Models\Notifications;
+use Stripe\StripeClient;
 use Session; 
 use Auth;
 use Mail;
@@ -13,7 +16,7 @@ use DateTime;
 use DB;
 
 class releaseMilestonePayment extends Command
-{
+{   
     /**
      * The name and signature of the console command.
      *
@@ -45,28 +48,36 @@ class releaseMilestonePayment extends Command
                     $start_date = new DateTime(date("Y-m-d H:i:s"));
                     $since_start = $start_date->diff(new DateTime($time_due_date));
                     $time_past = $since_start->d.' days, '.$since_start->h.' hours, '. $since_start->i.' minutes';
-                    //echo $time_past.$mile->id; //exit;
+                    //echo $time_past.$mile->id; exit;
+
+                    $business = Services::where('id', $mile->service_id)
+                    ->first();
 
                     //Send Reminder Mail
-                    if(($since_start->d == 5 || $since_start->d == 5) && 
+                    if(($since_start->d == 5 || $since_start->d == 7) && 
                         $since_start->h == 0)
                     {   
                         $customer = User::where('id',$mile->booker_id)->first();
-                        $info=['d'=>1, 'name'=>$mile->title,'amount'=>$mile->amount,];
+
+                        $info=[ 'd'=>$since_start->d, 'name'=>$mile->title,
+                        'amount'=>$mile->amount, 'business'=>$business->name, 's_id' => $business->id,'booker_id' => $mile->booker_id, 'rep_id' => $mile->id ]; 
+
                         $user['to'] = $customer->email;
-                        Mail::send('milestone.milestone_due_mail', $info, function($msg) 
+                        Mail::send('milestoneS.payment_release_reminder', $info, function($msg) 
                         use ($user){
                         $msg->to($user['to']);
-                        $msg->subject('Milestone Release Request');
+                        $msg->subject('Milestone Payment Release Request');
                         });  
                     }
 
+                    echo $time_past.$mile->id;
                     //Payment Release and Alert
-                    if($since_start->d > 7  && $since_start->h == 0)
+                    if($since_start->d > 7  && $since_start->h == 1)
                     {   
                         $random = $mile->id + 51;$random2 = $mile->booker_id + 47;
                         $rep_id = base64_encode($mile->id.'.'.$random);
                         $booker_id = base64_encode($mile->booker_id.'.'.$random2);
+
                         $this->Release($rep_id, $booker_id);
                     }
                 }
@@ -92,6 +103,7 @@ class releaseMilestonePayment extends Command
         if(!$mileThis) return 'Milestone do not exist!';
         if($mileThis && $mileThis->released == 1) return 'Payment already released for this milestone!';
 
+
         $mileLat = ServiceMileStatus::where('service_id',$mileThis->service_id)
         ->where('booker_id',$booker_id)->where('status','To Do')->first();
         $serv= Services::select('name','id','shop_id','price')->where('id',$mileThis->service_id)->first();
@@ -105,12 +117,12 @@ class releaseMilestonePayment extends Command
         ]);
 
         $s_id = base64_encode(base64_encode($mileThis->service_id));
-
         $transferAmount = round($mileThis->amount,2);
         
         //Release Milestone Payment
+            $client = new \Stripe\StripeClient('sk_test_51JFWrpJkjwNxIm6zcIxSq9meJlasHB3MpxJYepYx1RuQnVYpk0zmoXSXz22qS62PK5pryX4ptYGCHaudKePMfGyH00sO7Jwion');
             $curr='USD'; //$request->currency; 
-            $tranfer = $this->Client->transfers->create ([ 
+            $tranfer = $client->transfers->create ([ 
                     "amount" => $transferAmount*100, //100 * 100,
                     "currency" => $curr,
                     //"source_transaction" => $charge->id,
@@ -121,6 +133,7 @@ class releaseMilestonePayment extends Command
             ->update([
                 'released' => 1
             ]);
+
 
             $text = 'Milestone payment for '.$mileThis->title.' has been released to your account..';
             $this->createNotification($owner->id,null,$text,'/',' service');
@@ -161,12 +174,27 @@ class releaseMilestonePayment extends Command
 
             }
 
-            //return redirect()->to(config('app.app_url').'service-milestones/'.$s_id);
+            echo 'Success';
         }
         catch(\Exception $e){
-            return $e->getMessage();
+            echo $e->getMessage();exit;
         }  
     
     }
+
+
+    public function createNotification($receiver_id,$customer_id,$text,$link,$type)
+    {
+        $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+        $addNoti = Notifications::create([
+            'date' => $date,
+            'receiver_id' => $receiver_id,
+            'customer_id' => $customer_id,
+            'text' => $text,
+            'link' => $link,
+            'type' => $type,
+        ]);
+    }
+
 
 }
