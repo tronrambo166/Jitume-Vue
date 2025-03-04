@@ -1437,6 +1437,10 @@ public function assetEquip_download($id, $type){
     $thisListing = Listing::where('id',$listing_id)->first();
     //Investor's Fee
 
+    if($thisListing)
+    $investors_fee = $thisListing->$investors_fee;
+    else $investors_fee = null;
+
     if($subs){
 
     //Get Stripe Subscription
@@ -1450,7 +1454,7 @@ public function assetEquip_download($id, $type){
     catch(\Exception $e){
       $count = 0;
       $results['subscribed'] = 0;
-      return response()->json([ 'data' => $results, 'conv'=>$conv, 'fee'=> $thisListing->investors_fee, 'count' => $count, 'reviews' => $reviews, 
+      return response()->json([ 'data' => $results, 'conv'=>$conv, 'fee'=> $investors_fee, 'count' => $count, 'reviews' => $reviews, 
         'error' => $e->getMessage(), 'isInvestor' => $isInvestor ] );
     }
       if($subs->plan == 'platinum' || $subs->plan == 'platinum-trial')
@@ -1488,7 +1492,7 @@ public function assetEquip_download($id, $type){
     }
 
 
-    return response()->json([ 'data' => $results, 'fee'=> $thisListing->investors_fee, 'conv'=>$conv, 'count' => $count, 'reviews' => $reviews, 
+    return response()->json([ 'data' => $results, 'fee'=> $investors_fee, 'conv'=>$conv, 'count' => $count, 'reviews' => $reviews, 
       'isInvestor' => $isInvestor] );
 }
 

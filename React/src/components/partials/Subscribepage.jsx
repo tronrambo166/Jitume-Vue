@@ -294,8 +294,8 @@ const Subscribepage = () => {
                                             : "text-[#334155]"
                                     }`}
                                 >
-                                    {packagePrices.silver[frequency]}
-                                    10 free "Unlock tokens" per month <br></br>{" "}
+                                    {/*{packagePrices.silver[frequency]}*/}
+                                      10 free "Unlock tokens" per month <br></br>{" "}
                                     from any range.
                                 </p>
                             </div>
@@ -308,7 +308,7 @@ const Subscribepage = () => {
                                             : "text-[#334155]"
                                     }`}
                                 >
-                                    Starting from{" "}
+                                    Starting from{" "} &nbsp;
                                     <span className="font-semibold text-[17px]">
                                         ${packagePrices.silver[frequency]}
                                     </span>
@@ -361,8 +361,8 @@ const Subscribepage = () => {
                                             : "text-[#334155]"
                                     }`}
                                 >
-                                    {packagePrices.gold[frequency]}
-                                    30 free "Unlock tokens" per month
+                                    {/*{packagePrices.gold[frequency]}*/}
+                                     30 free "Unlock tokens" per month
                                     <br /> for any range.
                                 </p>
                             </div>
@@ -375,7 +375,7 @@ const Subscribepage = () => {
                                             : "#F3F4F6"
                                     }`}
                                 >
-                                    Starting from{" "}
+                                    Starting from{" "} &nbsp;
                                     <span className="font-semibold  text-[17px]">
                                         ${packagePrices.gold[frequency]}
                                     </span>
@@ -431,8 +431,8 @@ const Subscribepage = () => {
                                             : "text-[#334155]"
                                     }`}
                                 >
-                                    {packagePrices.platinum[frequency]}
-                                    Silver access + Gold access to <br /> all
+                                    {/*{packagePrices.platinum[frequency]}*/}
+                                     Silver access + Gold access to <br /> all
                                     data.
                                 </p>
                             </div>
@@ -445,7 +445,7 @@ const Subscribepage = () => {
                                             : "#334155"
                                     }`}
                                 >
-                                    Starting from{" "}
+                                    Starting from{" "} &nbsp;
                                     <span className="font-semibold text-[17px]">
                                         ${packagePrices.platinum[frequency]}
                                     </span>
