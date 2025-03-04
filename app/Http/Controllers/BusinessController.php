@@ -1439,7 +1439,7 @@ public function assetEquip_download($id, $type){
     //Investor's Fee
 
     if($thisListing)
-    $investors_fee = $thisListing->$investors_fee;
+    $investors_fee = $thisListing->investors_fee;
 
     if($subs){
 
