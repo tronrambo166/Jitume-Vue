@@ -255,7 +255,6 @@ function CreateInvestorAccount({ isOpen, onClose, isInvestor }) {
         setThisUser(isInvestor !== undefined ? isInvestor : true);
     }, [isInvestor]); // Runs when isInvestor changes
 
-    console.log("oyaa", thisUser);
     // Handle input focus
     const handleFocus = (e) => {
         e.target.select(); // Select the content when the input is focused

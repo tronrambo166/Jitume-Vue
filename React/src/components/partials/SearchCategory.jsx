@@ -119,11 +119,11 @@ const Search = ({ value, setLocationQuery, setNameQuery }) => {
                                 All Categories
                             </option>
                             <option value="Agriculture">Agriculture</option>
-                            <option value="Arts-Culture">Arts-Culture</option>
+                            <option value="Arts Culture">Arts-Culture</option>
                             <option value="Auto">Auto</option>
                             <option value="Domestic">Domestic</option>
                             <option value="Fashion">Fashion</option>
-                            <option value="Finance-Accounting">
+                            <option value="Finance Accounting">
                                 Finance-Accounting
                             </option>
                             <option value="Food">Food</option>
@@ -133,12 +133,15 @@ const Search = ({ value, setLocationQuery, setNameQuery }) => {
                             </option>
                             <option value="Other">Other</option>
                             <option value="Pets">Pets</option>
-                            <option value="Real-State">Real-State</option>
+                            <option value="Real State">Real-State</option>
                             <option value="Retail">Retail</option>
                             <option value="Security">Security</option>
-                            <option value="Sports-Gaming">Sports-Gaming</option>
-                            <option value="Technology-Communications">
+                            <option value="Sports Gaming">Sports-Gaming</option>
+                            <option value="Technology Communications">
                                 Technology-Communications
+                            </option>
+                             <option value="Other">
+                                Other
                             </option>
                         </select>
 

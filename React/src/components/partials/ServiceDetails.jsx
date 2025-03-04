@@ -323,7 +323,7 @@ const ServiceDetails = () => {
     // this is from the getMilestones () in serviceDetails.vue
 
     //end getMilestones
-
+     console.log("data", details);
     // begin addToCart
     // this is from the addToCart () in serviceDetails.vue
     const book = (e) => {

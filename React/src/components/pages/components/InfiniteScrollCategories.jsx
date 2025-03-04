@@ -4,13 +4,14 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 const categories = [
     "Business Planning",
     "IT",
-    "Legal",
-    "Project Management",
+    "Legal Project Management",
     "Branding & Design",
 
-    "Finance, Accounting & Tax",
-    "Marketing",
+    "Auto",
+    "Finance, Accounting & Tax Marketing",
+    "Tax Marketing",
     "Public Relations",
+    "Project/Asset Management",
     "Other",
 ];
 
@@ -94,7 +95,7 @@ const HorizontalInfiniteScroll = () => {
                         >
                             <Link
                                 to={`/servicecategory/${category
-                                    .replace(/&/g, "And") // Replace & with 'And'
+                                    .replace(/&/g, "and") // Replace & with 'And'
                                     .replace(/[\s/]/g, "-")}`} // Replace spaces and slashes with '-'
                             >
                                 {category}

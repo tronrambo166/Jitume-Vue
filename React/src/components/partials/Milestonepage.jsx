@@ -117,34 +117,56 @@ const MilestonePage = () => {
                         {/* Dynamically Render Steps */}
                         <div className="flex justify-center px-8 lg:px-96 lg:mb-6 sm:px-8">
                             <div className="flex justify-center items-center mb-8 space-x-2 sm:space-x-4 container max-w-screen-md">
-                                {miles.map((milestone, index) => (
-                                    <React.Fragment key={index}>
-                                        {/* Step and Number */}
-                                        <div className="flex items-center space-x-2">
-                                            <div
-                                                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center font-bold text-sm sm:text-base ${
-                                                    index === miles.length - 1
-                                                        ? "bg-white border border-gray-400 text-gray-700" // Inactive step: white with gray border
-                                                        : "bg-[#198754] text-white" // Completed steps
-                                                }`}
-                                            >
-                                                {index + 1}
-                                            </div>
-                                            <span className="text-xs sm:text-sm text-gray-600">
-                                                Step {index + 1}
-                                            </span>
-                                        </div>
+                                {miles.map((milestone, index) => {
+                                    const isCompleted =
+                                        milestone.status === "Done";
+                                    const isPending =
+                                        milestone.status === "Pending";
+                                    const isActive =
+                                        milestone.status === "In Progress";
 
-                                        {/* Centered Dots */}
-                                        {index < miles.length - 1 && (
-                                            <div className="flex-grow h-1 mx-2 sm:mx-4 flex items-center">
-                                                <div className="w-full border-t-2 border-dashed border-gray-400"></div>
+                                    return (
+                                        <React.Fragment key={index}>
+                                            {/* Step and Number */}
+                                            <div className="flex items-center space-x-2">
+                                                <div
+                                                    className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center font-bold text-sm sm:text-base
+                                ${isCompleted ? "bg-[#198754] text-white" : ""}
+                                ${
+                                    isPending
+                                        ? "bg-yellow-500 text-white animate-pulse"
+                                        : ""
+                                }
+                                ${
+                                    isActive
+                                        ? "bg-[#198754] text-white animate-pulse"
+                                        : ""
+                                }
+                                ${
+                                    !isCompleted && !isPending && !isActive
+                                        ? "bg-white border border-gray-400 text-gray-700"
+                                        : ""
+                                }`}
+                                                >
+                                                    {index + 1}
+                                                </div>
+                                                <span className="text-xs sm:text-sm text-gray-600">
+                                                    Step {index + 1}
+                                                </span>
                                             </div>
-                                        )}
-                                    </React.Fragment>
-                                ))}
+
+                                            {/* Centered Dots */}
+                                            {index < miles.length - 1 && (
+                                                <div className="flex-grow h-1 mx-2 sm:mx-4 flex items-center">
+                                                    <div className="w-full border-t-2 border-dashed border-gray-400"></div>
+                                                </div>
+                                            )}
+                                        </React.Fragment>
+                                    );
+                                })}
                             </div>
                         </div>
+
                         <div className="overflow-x-auto  sm:rounded-lg  mx-auto border border-gray-300">
                             <table className="min-w-full bg-white border-collapse">
                                 <thead className="bg-[#E5E7EB]">
@@ -198,8 +220,11 @@ const MilestonePage = () => {
                                                     className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-md ${
                                                         milestone.status ===
                                                         "In Progress"
-                                                            ? "bg-[#198754] text-white"
-                                                            : "bg-black text-white"
+                                                            ? "bg-yellow-500 text-white"
+                                                            : milestone.status ===
+                                                              "To Do"
+                                                            ? "bg-gray-200 text-blaxk"
+                                                            : "bg-[#198754] text-white"
                                                     }`}
                                                 >
                                                     {milestone.status}
@@ -217,7 +242,7 @@ const MilestonePage = () => {
                                                                 )
                                                             ) +
                                                             "/" +
-                                                            milestone.title+
+                                                            milestone.title +
                                                             "/" +
                                                             "B"
                                                         }

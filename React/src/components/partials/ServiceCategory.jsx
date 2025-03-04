@@ -26,40 +26,44 @@ const CategoryPage = ({ categoryName }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(6); // Items per page (adjust as needed)
 
-    useEffect(() => {
-        // Fetch category results
-        const fetchCategoryResults = () => {
-            axiosClient
-                .get(`/categoryResults/${name}`)
-                .then(({ data }) => {
-                    if (data.services && data.services.length > 0) {
-                        setCards(data.services);
+   useEffect(() => {
+       // Revert category name formatting
+       const originalName = name
+           .replace(/-/g, " ") // Replace '-' back to spaces
 
-                        const prices = data.services.map((card) => card.price);
-                        const max = Math.max(...prices);
-                        const min = Math.min(...prices);
+       // Fetch category results
+       const fetchCategoryResults = () => {
+           axiosClient
+               .get(`/categoryResults/${originalName}`)
+               .then(({ data }) => {
+                   if (data.services && data.services.length > 0) {
+                       setCards(data.services);
 
-                        setMinn(0);
-                        setMaxx(max);
-                        setMaxPrice(max);
+                       const prices = data.services.map((card) => card.price);
+                       const max = Math.max(...prices);
+                       const min = Math.min(...prices);
 
-                        // Load range from localStorage or set default
-                        const savedRange = JSON.parse(
-                            localStorage.getItem("sliderRange")
-                        );
-                        if (savedRange) {
-                            setRange(savedRange);
-                        } else {
-                            setRange([0, max]);
-                        }
-                    }
-                })
-                .catch((err) => {})
-                .finally(() => setLoading(false));
-        };
+                       setMinn(0);
+                       setMaxx(max);
+                       setMaxPrice(max);
 
-        fetchCategoryResults();
-    }, [name]);
+                       // Load range from localStorage or set default
+                       const savedRange = JSON.parse(
+                           localStorage.getItem("sliderRange")
+                       );
+                       if (savedRange) {
+                           setRange(savedRange);
+                       } else {
+                           setRange([0, max]);
+                       }
+                   }
+               })
+               .catch((err) => {})
+               .finally(() => setLoading(false));
+       };
+
+       fetchCategoryResults();
+   }, [name]);
 
     const handleAmountChange = (value) => {
         setRange(value); // Update the range

@@ -24,52 +24,131 @@ const ForgotPassModal = ({ onClose }) => {
 
     const handleEmailSubmit = async () => {
         if (email.trim()) {
-            setIsLoading(true);
-            const newCode = Math.floor(Math.random() * 10000);
-            const verify = await emailVerify(newCode);
-            setIsLoading(false);
-            if (verify) {
-                showAlert(
-                    "info",
-                    "Verification email sent successfully. Please check your inbox and enter the code below."
+            try {
+                setIsLoading(true);
+
+                // Check if the email exists
+                const { data } = await axiosClient.get(
+                    "emailExists/" + email
                 );
-                setShowResetModal(true);
+                if (data.status === 200) {
+                    setIsLoading(false);
+                    return showAlert(
+                        "error",
+                        "Email does not exist. Please use a registered email."
+                    );
+                }
+
+                // Generate verification code
+                const newCode = Math.floor(1000 + Math.random() * 9000); // Ensures 4-digit code
+                const verify = await emailVerify(newCode);
+
+                setIsLoading(false);
+                if (verify) {
+                    showAlert(
+                        "info",
+                        "Verification email sent successfully. Please check your inbox and enter the code below."
+                    );
+                    setShowResetModal(true);
+                } else {
+                    showAlert(
+                        "error",
+                        "Failed to send verification email. Please try again."
+                    );
+                }
+            } catch (error) {
+                setIsLoading(false);
+                showAlert("error", "An error occurred. Please try again.");
+                console.error("Error checking email existence:", error);
             }
         } else {
             showAlert("error", "Please enter a valid email address.");
         }
     };
 
-    const handleResetSubmit = async () => {
-        if (oldCode == code) {
-            if (password === passwordC) {
-                setIsLoading(true);
-                const { data } = await axiosClient.get(
-                    `resetPassword/${email}/${password}`
-                );
-                setIsLoading(false);
-                if (data.status === 200) {
-                    showAlert(
-                        "success",
-                        "Password reset successful! You can now log in with your new password."
-                    );
-                    onClose();
-                } else {
-                    showAlert(
-                        "error",
-                        data.message || "Password reset failed."
-                    );
-                }
-            } else {
-                showAlert("error", "Passwords do not match. Please try again.");
-            }
-        } else {
+
+    // const handleResetSubmit = async () => {
+    //     if (oldCode == code) {
+    //         if (password === passwordC) {
+    //             setIsLoading(true);
+    //             const { data } = await axiosClient.get(
+    //                 `resetPassword/${email}/${password}`
+    //             );
+    //             setIsLoading(false);
+    //             if (data.status === 200) {
+    //                 showAlert(
+    //                     "success",
+    //                     "Password reset successful! You can now log in with your new password."
+    //                 );
+    //                 onClose();
+    //             } else {
+    //                 showAlert(
+    //                     "error",
+    //                     data.message || "Password reset failed."
+    //                 );
+    //             }
+    //         } else {
+    //             showAlert("error", "Passwords do not match. Please try again.");
+    //         }
+    //     } else {
+    //         showAlert(
+    //             "error",
+    //             "Invalid code. Please check your email and enter the correct code."
+    //         );
+    //     }
+    // };
+const handleResetSubmit = async () => {
+    if (!code || !password || !passwordC) {
+        showAlert("error", "All fields are required.");
+        return;
+    }
+
+    if (oldCode !== code) {
+        showAlert(
+            "error",
+            "Invalid code. Please check your email and enter the correct code."
+        );
+        return;
+    }
+
+    if (password !== passwordC) {
+        showAlert("error", "Passwords do not match. Please try again.");
+        return;
+    }
+
+    // Password validation rules
+    const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+        showAlert(
+            "error",
+            "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character."
+        );
+        return;
+    }
+
+    try {
+        setIsLoading(true);
+        const { data } = await axiosClient.get(
+            `resetPassword/${email}/${password}`
+        );
+        setIsLoading(false);
+
+        if (data.status === 200) {
             showAlert(
-                "error",
-                "Invalid code. Please check your email and enter the correct code."
+                "success",
+                "Password reset successful! You can now log in with your new password."
             );
+            onClose();
+        } else {
+            showAlert("error", data.message || "Password reset failed.");
         }
-    };
+    } catch (error) {
+        setIsLoading(false);
+        showAlert("error", "An error occurred. Please try again later.");
+    }
+};
 
     const emailVerify = async (code) => {
         try {

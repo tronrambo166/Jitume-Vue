@@ -123,17 +123,21 @@ const Search = ({ value, setLocationQuery, setNameQuery }) => {
                             <option value="Project Management">
                                 Project Management
                             </option>
-                            <option value="Branding And Design">
+                            <option value="Branding and Design">
                                 Branding and Design
                             </option>
-                            <option value="Finance, Accounting & Tax">
-                                Finance, Accounting & Tax
+                            <option value="Finance, Accounting & Tax Marketing">
+                                Finance, Accounting & Tax Marketing
                             </option>
-                            <option value="Marketing">Marketing</option>
+                            <option value="Tax Marketing">Tax Marketing</option>
                             <option value="Public Relations">
                                 Public Relations
                             </option>
+                            <option value="Project Asset Management">
+                                Project/Asset Management
+                            </option>
                             <option value="Auto">Auto</option>
+                            <option value="Other">Other</option>
                         </select>
                         <FaChevronDown className="absolute right-3 text-gray-500 pointer-events-none" />
                     </div>
