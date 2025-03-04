@@ -1416,6 +1416,7 @@ public function assetEquip_download($id, $type){
     $results = array();
     $investor_id = Auth::id();
     $count = 0;
+    $investors_fee == null;
 
     $isInvest = User::select('investor')->where('id',$investor_id)
     ->first()->investor;
@@ -1439,7 +1440,6 @@ public function assetEquip_download($id, $type){
 
     if($thisListing)
     $investors_fee = $thisListing->$investors_fee;
-    else $investors_fee = null;
 
     if($subs){
 
