@@ -169,6 +169,7 @@
                         font-weight: 500;
                         border-radius: 0.5rem;
                         text-align: center;
+                        margin-top: 15px;
                         margin-right: 0.5rem;
                         margin-bottom: 0.5rem;
                         text-decoration: none;

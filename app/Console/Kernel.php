@@ -15,6 +15,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command('send:milestone_reminder')->everyHour();
         $schedule->command('release:service_milestone_payment')->everyHour();
+        $schedule->command('send:bid_approval_reminder')->everyHour();
+        
     }
 
     /**
