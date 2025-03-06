@@ -1,10 +1,5 @@
-
-
-        
-
 <!--Hidden Cart view--> 
-
-       <div
+    <div
     style="
         max-width: 1024px;
         margin-left: auto;
@@ -35,7 +30,7 @@
             style="height: 3rem; width: auto; margin: 0 auto"
         />
         <h1 style="font-size: 2rem; font-weight: 700; margin-top: 1rem">
-			Milestone Reminder for {{$name}}
+            Bid Approval Reminder for {{$business}}
         </h1>
     </div>
 
@@ -47,8 +42,7 @@
         font-weight: 600;
         margin-bottom: 16px;
     ">  
-        <!-- Milestone {{$name}} is Completed!   -->
-         Dear Customer,
+         Dear {{$owner}},
     </h3>
 
    <div style="
@@ -61,7 +55,7 @@
         margin-bottom: 5px;
         line-height: 1.3;
     ">
-        The Milestone payment for {{$name}} of the service {{$business}} will be automatically released in @php echo 7-$d; @endphp, if you do not proceed to continue.
+        Hi, you have pending bids awaiting action on your dashboard. Please review the pending bids.
     </h5>
     <h5 style="
         color: #333;
@@ -71,31 +65,10 @@
         margin-bottom: 5px;
         line-height: 1.3;
     ">
-        Milestone Details: <br> Milestone: {{$name}} <br> 
-        Status: <span style="
-            background-color: #d4edda; 
-            color: #155724; 
-            font-weight: bold;
-            padding: 2px 8px; 
-            border-radius: 15px;
-            display: inline-block;
-            margin-top: 5px;
-            padding-left: 10px;
-        ">Completed</span>
+        Business Name: <br> Milestone: {{$business}} 
+
     </h5>
-    <h5 style="
-        color: #333;
-        font-family: sans-serif;
-        font-size: 16px;
-        font-weight: 500;
-        margin-bottom: 0;
-        line-height: 1.3;
-        margin-bottom: 10px;
-    ">
-        <!-- Business Name: <b>{{$business}}</b> -->
-         Next Steps:<br>Please confirm if you would like to proceed to the next milestone. Once confirmed, the
-payment for this milestone will be released to the service owner.
-    </h5>
+    
     <div style="
     background-color: #fff3cd; 
     color: #856404; 
@@ -105,36 +78,15 @@ payment for this milestone will be released to the service owner.
     margin-bottom: 10px;
     line-height: 1.5;
 ">
-    If no action is taken within <strong> @php echo 7-$d; @endphp  days</strong> 
-    milestone will be automatically released to the service owner as per our auto-approval
+    If no action is taken within <strong> 30  days</strong> 
+    bids will be automatically cancelled as per Tujitume
     policy.<br><br>
 
-    If you have any concerns about the milestone, please <strong>contact us</strong> before the auto-approval 
-    period ends.
 </div>
 
 <div style="margin-top: 10px;">
-<!--    <a href="#" style="
-        background-color: #28a745; 
-        color: white; 
-        font-weight: bold; 
-        padding: 10px 15px; 
-        border-radius: 5px; 
-        text-decoration: none;
-        display: inline-block;
-        margin-right: 8px;
-        ">
-        CONFIRM AND PROCEED
-    </a> -->
 
-    @php $random = $rep_id + 51;
-    $random2 = $booker_id + 47;
-
-    $rep_id = base64_encode($rep_id.'.'.$random);
-    $booker_id = base64_encode($booker_id.'.'.$random2);
-    @endphp
-
-        <a target="_blank" href="<?php echo config('app.api_url');?>agreeToMileS/{{$rep_id}}/{{$booker_id}}"
+        <a target="_blank" href="<?php echo config('app.app_url');?>dashboard/investment-bids"
             style="
                 display: inline-block;
                 background-color: #2f9f1f;
@@ -150,7 +102,7 @@ payment for this milestone will be released to the service owner.
             onmouseover="this.style.backgroundColor='#1f7f14';"
             onmouseout="this.style.backgroundColor='#2f9f1f';"
         >
-            CONFIRM AND PROCEED
+            Review Bids
         </a>
 
 
@@ -169,14 +121,6 @@ payment for this milestone will be released to the service owner.
 
 </div>
 
-
-    <p style="
-        margin-top: 20px;
-        font-size: 16px;
-        color: #444;
-    ">
-        <!-- Do you want to proceed to the next milestone? -->
-    </p>
 
 
      <div
@@ -209,12 +153,12 @@ payment for this milestone will be released to the service owner.
             </div>
 </div>
    
-		
-		
-		</div>
+        
+        
+        </div>
   
         
-		
+        
        
       
 
@@ -223,12 +167,4 @@ payment for this milestone will be released to the service owner.
 
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    
-
-
 <!--Hidden Cart view-->
-
-
-        
-
-        
