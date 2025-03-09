@@ -104,25 +104,6 @@ const Dashboardhero = () => {
         }
     }, [loading, isAuthModalOpen, wasModalOpened, token, navigate]);
 
-    ///////////////////////
-    //  useEffect(() => {
-    //      const fetchUserData = async () => {
-    //          try {
-    //              const { data } = await axiosClient.get("/checkAuth");
-    //              setUser(data.user);
-    //              setId(data.user.id);
-    //          } catch (error) {
-    //              showAlert("error", "Failed to load user data. Redirecting...");
-    //              navigate("/");
-    //              console.log(error);
-    //          } finally {
-    //              setLoading(false);
-    //          }
-    //      };
-
-    //      fetchUserData();
-    //  }, []);
-    ///////////////////////
     const intervalRef = useRef(null);
 
     // useEffect(() => {
@@ -207,6 +188,16 @@ const Dashboardhero = () => {
             // })
             .finally(() => setLoading(false));
     };
+
+    const account = (ev) => {
+        ev.preventDefault();
+        navigate("./account", {
+            state: {
+                user_id: id
+            },
+        });
+    };
+
 
     if (loading) {
         return (
@@ -336,13 +327,13 @@ const Dashboardhero = () => {
                             </Link>
 
                             {id && (
-                                <Link
-                                    to={`./account/${id}`}
+                                <button
+                                    onClick={account}
                                     className="flex items-center hover:text-green gap-1"
                                 >
                                     <FaDollarSign />
                                     <span>Account</span>
-                                </Link>
+                                </button>
                             )}
                         </div>
                     </div>

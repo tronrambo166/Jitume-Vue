@@ -121,7 +121,7 @@ const router = createBrowserRouter([
             { path: "service-milestone", element: <ServiceMilestone /> },
             { path: "service-bookings", element: <ServiceBookings /> },
             { path: "messages", element: <Messages /> },
-            { path: "account/:user_id", element: <AccountPage /> },
+            { path: "account", element: <AccountPage /> },
             { path: "payment-form", element: <PaymentForm /> },
             { path: "services-table", element: <ServiceTable /> },
             { path: "addservicemilestone", element: <Addservicemilestone /> },

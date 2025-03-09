@@ -11,11 +11,14 @@ import {
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosClient from "../../../axiosClient";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { BarLoader } from "react-spinners";
 
 function AccountPage() {
-    const { user_id } = useParams();
+    const location = useLocation();
+    const { user_id } = location.state || { user_id: 0 };
+
+    //const { user_id } = useParams();
     const navigate = useNavigate();
 
     const connectToStripe = () => {
