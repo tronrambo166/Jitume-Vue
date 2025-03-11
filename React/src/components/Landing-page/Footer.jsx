@@ -194,6 +194,12 @@ document.addEventListener("DOMContentLoaded", () => {
                                                         Refer a business
                                                     </Link>
                                                 </li>
+                                                
+                                            </>
+                                        )}
+
+                                        {title === "About Us" && (
+                                            <>
                                                 <li>
                                                     <Link
                                                         target="_blank"
@@ -202,11 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                                         Tutorials
                                                     </Link>
                                                 </li>
-                                            </>
-                                        )}
 
-                                        {title === "About Us" && (
-                                            <>
                                                 <li>
                                                     <Link
                                                         target="_blank"

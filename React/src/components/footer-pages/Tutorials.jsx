@@ -10,29 +10,28 @@ const Tutorials = () => {
     const videoSections = [
         {
             id: "overview",
-            title: "Tujitume Overview",
+            title: "Tujitume: Empowering Startups and SMEs through Local / Diaspora Investment.",
             description: [
-                "Welcome to Tujitume! This overview introduces you to our platform designed to connect equipment owners with those who need to rent equipment. Learn about our mission, the problems we solve, and how our platform benefits both equipment owners and renters through an efficient, secure, and user-friendly marketplace.",
-                "This video walks you through the key features of Tujitume and explains how our platform revolutionizes equipment rental in the region.",
-                "With Tujitume, users can browse available equipment, compare rental rates, and make secure transactions all in one place. Our platform ensures transparency and trust by verifying equipment listings and enabling user reviews.",
+                "Tujitume is a pioneering web platform designed to connect startups and SMEs with investors, equipping them with the insights and business services they need to secure funding in their local markets. By providing tailored solutions that address regional challenges, Tujitume enhances the investment readiness of startups and SMEs while offering investors a secure and transparent way to discover promising businesses.",
+                "At the core of Tujitume is a robust escrow system, ensuring that funding and service delivery occur in structured phases or milestones. This guarantees accountability, traceability, and trust at every stage. Additionally, integrated project management tools facilitate seamless transactions, offering both startups and investors clear performance insights that drive successful partnership.",
             ],
             videoUrl:
                 "https://drive.google.com/file/d/1PyUfXjC_5zMAAFoLvpZzAWqL2u6lLo23/preview",
             listItems: [],
         },
         {
-            id: "business",
+            id: "Investor User Flow on Tujitume.",
             title: "Business Flow (Monetary)",
             description: [
                 "Understanding how monetary transactions work within Tujitume is essential for all users. This section explains the complete business flow, from listing equipment to payment processing and equipment return.",
             ],
             videoUrl: "https://drive.google.com/file/d/1eiMJQZkMVTWSj6N8AAK086vXkpGtZPfZ/preview", // Replace with actual video URL
             listItems: [
-                "How payments are processed and secured",
-                "Equipment verification and quality control",
-                "The logistics of equipment delivery and return",
-                "Our commission structure and pricing model",
-                "Dispute resolution and our protection guarantees",
+                "1.Investors visit Tujitume’s marketplace to explore vetted startups and SMEs within their preferred region.",
+                "They create an account to initiate the investment process.",
+                "To begin investing, they place a 25% monetary deposit or contribute equipment of equivalent value, as outlined in the investment notes.",
+                "The startup or SME reviews the investment proposal and either accepts or rejects it via their dashboard.",
+                "Once accepted, the investor funds the business in structured milestone-based phases until the full investment is completed.",
             ],
         },
         {
@@ -58,12 +57,11 @@ const Tutorials = () => {
             ],
             videoUrl: "https://drive.google.com/file/d/10XOBGd9uTYTgORbl17eZotsn0xnIc4PI/preview", // Replace with actual video URL
             listItems: [
-                "Account creation and verification",
-                "Equipment listing process (for owners)",
-                "Searching and requesting equipment (for renters)",
-                "Communication between parties",
-                "Contract creation and approval",
-                "Completing transactions and leaving reviews",
+                "Businesses visit the services section to browse a marketplace of business services available in their region.",
+                "They create an account to book a service.",
+                "The service is booked directly from an individual service provider’s page.",
+                "The provider reviews the request and either accepts or rejects it via their dashboard.",
+                "If accepted, the requester pays for the full service upfront, with payments.",
             ],
         },
     ];
