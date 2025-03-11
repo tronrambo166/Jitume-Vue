@@ -22,11 +22,26 @@ const Tutorials = () => {
         },
         {
             id: "business",
-            title: "Business Flow (Monetary and Equipment)",
+            title: "Business Flow (Monetary)",
+            description: [
+                "Understanding how monetary transactions work within Tujitume is essential for all users. This section explains the complete business flow, from listing equipment to payment processing and equipment return.",
+            ],
+            videoUrl: "https://drive.google.com/file/d/1eiMJQZkMVTWSj6N8AAK086vXkpGtZPfZ/preview", // Replace with actual video URL
+            listItems: [
+                "How payments are processed and secured",
+                "Equipment verification and quality control",
+                "The logistics of equipment delivery and return",
+                "Our commission structure and pricing model",
+                "Dispute resolution and our protection guarantees",
+            ],
+        },
+        {
+            id: "business",
+            title: "Business Flow (Equipment)",
             description: [
                 "Understanding how transactions and equipment movement work within Tujitume is essential for all users. This section explains the complete business flow, from listing equipment to payment processing and equipment return.",
             ],
-            videoUrl: "", // Replace with actual video URL
+            videoUrl: "https://drive.google.com/file/d/1IAADgamusdIb730Tios1jZ9yxJSa_a3y/preview", // Replace with actual video URL
             listItems: [
                 "How payments are processed and secured",
                 "Equipment verification and quality control",
@@ -41,7 +56,7 @@ const Tutorials = () => {
             description: [
                 "The service flow tutorial demonstrates how users interact with the Tujitume platform from registration to completing transactions. This comprehensive guide shows the step-by-step process for both equipment owners and renters.",
             ],
-            videoUrl: "", // Replace with actual video URL
+            videoUrl: "https://drive.google.com/file/d/10XOBGd9uTYTgORbl17eZotsn0xnIc4PI/preview", // Replace with actual video URL
             listItems: [
                 "Account creation and verification",
                 "Equipment listing process (for owners)",
