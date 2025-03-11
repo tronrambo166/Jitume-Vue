@@ -178,17 +178,12 @@ document.addEventListener("DOMContentLoaded", () => {
                                         )}
                                         {title === "Business" && (
                                             <>
-                                                {/* <li>Seed investor</li> */}
-                                                {/* <li>Early funding</li> */}
-                                                {/* <li>Growth funding</li> */}
-                                                {/* <li>Funded community</li> */}
                                                 <li>
                                                     <Link
                                                         target="_blank"
                                                         to={"/knowledge-hub"}
                                                     >
-                                                        {" "}
-                                                        Knowledge hub{" "}
+                                                        Knowledge hub
                                                     </Link>
                                                 </li>
                                                 <li>
@@ -196,12 +191,20 @@ document.addEventListener("DOMContentLoaded", () => {
                                                         target="_blank"
                                                         to={"/refer-a-business"}
                                                     >
-                                                        {" "}
-                                                        Refer a business{" "}
+                                                        Refer a business
+                                                    </Link>
+                                                </li>
+                                                <li>
+                                                    <Link
+                                                        target="_blank"
+                                                        to={"/tutorials"}
+                                                    >
+                                                        Tutorials
                                                     </Link>
                                                 </li>
                                             </>
                                         )}
+
                                         {title === "About Us" && (
                                             <>
                                                 <li>

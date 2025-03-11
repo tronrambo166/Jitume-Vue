@@ -45,6 +45,7 @@ import WhatIsJitume from "./components/footer-pages/WhatIsJitume";
 import DueDiligence from "./components/footer-pages/DueDiligence";
 import RaiseDispute from "./components/partials/RaiseDispute";
 import Dispute from "./components/footer-pages/Dispute";
+import Tutorials from "./components/footer-pages/Tutorials";
 // // src/components/ScrollToTop.js
 import ScrollToTop from "./components/partials/ScrollToTop";
 const router = createBrowserRouter([
@@ -73,14 +74,20 @@ const router = createBrowserRouter([
             },
             { path: "/business-milestones/:id", element: <MilestonesPage /> },
             { path: "/service-milestones/:id", element: <MilestonesPageS /> },
-            { path: "/raise-dispute/:id/:name/:type", element: <RaiseDispute /> },
+            {
+                path: "/raise-dispute/:id/:name/:type",
+                element: <RaiseDispute />,
+            },
 
             {
                 path: "/serviceresults/:resIds/:loc",
                 name: "serviceresults",
                 element: <ServiceResults />,
             },
-            { path: "/projectManagers/:resIds/:loc/:bid_id", element: <ProjectManagers /> },
+            {
+                path: "/projectManagers/:resIds/:loc/:bid_id",
+                element: <ProjectManagers />,
+            },
             {
                 path: "/equipmentRelease/:b_owner_id/:manager_id/:bid_id",
                 element: <EquipmentRelease />,
@@ -89,7 +96,6 @@ const router = createBrowserRouter([
             { path: "/checkout", element: <PaymentForm /> },
             { path: "/category/:name", element: <CategoryPage /> },
             { path: "/servicecategory/:name", element: <ServiceCategory /> },
-
 
             { path: "/mile", element: <Mile /> },
             { path: "/investEquip/:amount/:id/:percent", element: <Invest /> },
@@ -106,6 +112,7 @@ const router = createBrowserRouter([
             { path: "/what-is-jitume", element: <WhatIsJitume /> },
             { path: "/due-diligence", element: <DueDiligence /> },
             { path: "/Resolution-center", element: <Dispute /> },
+            { path: "/tutorials", element: <Tutorials /> },
         ],
     },
     {
