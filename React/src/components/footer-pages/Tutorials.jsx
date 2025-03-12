@@ -27,7 +27,7 @@ const Tutorials = () => {
             ],
             videoUrl: "https://drive.google.com/file/d/1eiMJQZkMVTWSj6N8AAK086vXkpGtZPfZ/preview", // Replace with actual video URL
             listItems: [
-                "1.Investors visit Tujitume’s marketplace to explore vetted startups and SMEs within their preferred region.",
+                "Investors visit Tujitume’s marketplace to explore vetted startups and SMEs within their preferred region.",
                 "They create an account to initiate the investment process.",
                 "To begin investing, they place a 25% monetary deposit or contribute equipment of equivalent value, as outlined in the investment notes.",
                 "The startup or SME reviews the investment proposal and either accepts or rejects it via their dashboard.",
@@ -53,7 +53,7 @@ const Tutorials = () => {
             id: "service",
             title: "Service Flow",
             description: [
-                "The service flow tutorial demonstrates how users interact with the Tujitume platform from registration to completing transactions. This comprehensive guide shows the step-by-step process for both equipment owners and renters.",
+                "The service flow tutorial demonstrates how users interact with the Tujitume platform from registration to complete delivering a service. This comprehensive guide shows the step-by-step process of creating a service by service owner then booking, paying the service fee, and completing milestones by customer until service is completed.",
             ],
             videoUrl: "https://drive.google.com/file/d/10XOBGd9uTYTgORbl17eZotsn0xnIc4PI/preview", // Replace with actual video URL
             listItems: [
