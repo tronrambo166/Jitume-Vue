@@ -38,7 +38,36 @@ const VideoSection = ({ section, isLastSection, isAlternate }) => {
                 !isLastSection ? "mb-8" : ""
             }`}
         >
-            {/* Video Section */}
+            {/* Text Content Section - Now First */}
+            <div className="flex flex-col justify-center">
+                <h2 className="text-2xl font-semibold mb-4 text-green">
+                    {section.title}
+                </h2>
+                <div className="prose max-w-none">
+                    {section.description.map((paragraph, index) => (
+                        <p key={index} className="mb-4">
+                            {paragraph}
+                        </p>
+                    ))}
+
+                    {section.listItems.length > 0 && (
+                        <>
+                            <p className="font-medium mb-2 text-green">
+                                The video covers:
+                            </p>
+                            <ul className="list-disc pl-6">
+                                {section.listItems.map((item, index) => (
+                                    <li key={index} className="mb-2">
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </>
+                    )}
+                </div>
+            </div>
+
+            {/* Video Section - Now Second */}
             <div
                 className="relative w-full aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg overflow-hidden"
                 onMouseEnter={() => setIsHovered(true)}
@@ -74,35 +103,6 @@ const VideoSection = ({ section, isLastSection, isAlternate }) => {
                         {section.title} Video
                     </div>
                 )}
-            </div>
-
-            {/* Text Content Section */}
-            <div className="flex flex-col justify-center">
-                <h2 className="text-2xl font-semibold mb-4 text-green">
-                    {section.title}
-                </h2>
-                <div className="prose max-w-none">
-                    {section.description.map((paragraph, index) => (
-                        <p key={index} className="mb-4">
-                            {paragraph}
-                        </p>
-                    ))}
-
-                    {section.listItems.length > 0 && (
-                        <>
-                            <p className="font-medium mb-2 text-green">
-                                The video covers:
-                            </p>
-                            <ul className="list-disc pl-6">
-                                {section.listItems.map((item, index) => (
-                                    <li key={index} className="mb-2">
-                                        {item}
-                                    </li>
-                                ))}
-                            </ul>
-                        </>
-                    )}
-                </div>
             </div>
         </div>
     );

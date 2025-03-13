@@ -164,7 +164,7 @@ const Tutorials = () => {
             {!isSearching && (
                 <>
                     {/* Additional Resources */}
-                    <ResourcesSection onSearchTerm={handleResourceClick} />
+                    {/* <ResourcesSection onSearchTerm={handleResourceClick} /> */}
 
                     {/* FAQ Section */}
                     <FAQSection />
