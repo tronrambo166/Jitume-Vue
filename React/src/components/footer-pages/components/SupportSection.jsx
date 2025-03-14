@@ -11,8 +11,8 @@ const SupportSection = () => {
                 Our support team is available to assist you with any questions
                 about using Tujitume.
             </p>
-            <button className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">
-                Contact Support
+             <button className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                support@tujitume.com
             </button>
         </section>
     );
