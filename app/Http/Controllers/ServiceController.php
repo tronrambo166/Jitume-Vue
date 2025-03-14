@@ -308,10 +308,10 @@ $old_document = $current->document;
           $create_name=$uniqid.'.'.$ext;
           $loc='images/services/';
           //Move uploaded file
-          //$image->move($loc, $create_name);
+          $image->move($loc, $create_name);
           $final_img=$this->api_base_url.$loc.$create_name;
           //Compress
-          $compressedImage = $obj->compressImage($image, $loc.$create_name, 60);
+          //$compressedImage = $obj->compressImage($image, $loc.$create_name, 60);
 
           $data['image'] = $final_img;
           if($old_cover!=null && file_exists($old_cover))
