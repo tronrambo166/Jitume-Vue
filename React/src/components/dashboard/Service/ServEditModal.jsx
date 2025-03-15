@@ -177,9 +177,18 @@ const ServEditModal = ({ isOpen, onClose, service, onUpdate }) => {
                                 <div className="absolute left-0 right-0 mt-1 bg-white border border-gray-300 rounded shadow-lg z-10">
                                     <ul className="py-2">
                                         {[
-                                            "Category 1",
-                                            "Category 2",
-                                            "Category 3",
+                                            "Business Planning",
+                                            "IT",
+                                            "Legal Project Management",
+                                            "Branding & Design",
+
+                                            "Auto",
+                                            "Finance, Accounting & Tax ",
+                                            // "Tax Marketing",
+                                            "Marketing",
+                                            "Public Relations",
+                                            "Project/Asset Management",
+                                            "Other",
                                         ].map((category) => (
                                             <li
                                                 key={category}

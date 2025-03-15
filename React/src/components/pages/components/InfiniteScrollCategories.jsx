@@ -8,8 +8,9 @@ const categories = [
     "Branding & Design",
 
     "Auto",
-    "Finance, Accounting & Tax Marketing",
-    "Tax Marketing",
+    "Finance, Accounting & Tax ",
+    // "Tax Marketing",
+    "Marketing",
     "Public Relations",
     "Project/Asset Management",
     "Other",

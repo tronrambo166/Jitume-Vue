@@ -432,20 +432,18 @@ const AddService = ({ connected, userId }) => {
                                 <option value="Legal Project Management">
                                     Legal Project Management
                                 </option>
-                                <option value="Branding and Design">
-                                    Branding and Design
+                                <option value="Branding & Design">
+                                    Branding & Design
                                 </option>
                                 <option value="Auto">Auto</option>
-                                <option value="Finance, Accounting & Tax Marketing">
-                                    Finance, Accounting & Tax Marketing
+                                <option value="Finance, Accounting & Tax">
+                                    Finance, Accounting & Tax
                                 </option>
-                                <option value="Tax Marketing">
-                                    Tax Marketing
-                                </option>
+                                <option value="Marketing">Marketing</option>
                                 <option value="Public Relations">
                                     Public Relations
                                 </option>
-                                <option value="0">
+                                <option value="Project/Asset Management">
                                     Project/Asset Management
                                 </option>
                                 <option value="Other">Other</option>
