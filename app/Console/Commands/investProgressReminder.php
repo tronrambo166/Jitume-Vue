@@ -51,15 +51,16 @@ class investProgressReminder extends Command
 
             $business = Listing::select('name')->where('id', $bid->business_id)->first();
 
+
+
             //Send Reminder Mail
             if(($since_start->d == 3 || $since_start->d == 7 || 
                 $since_start->d == 14) && $since_start->h == 0)
-            {   
-                foreach($sent_businesses as $s)
-                if($s == $bid->business_id)
-                    $sent++;
+            {
 
-                if ($sent == 0) {
+                //Type Check
+                if($bid->status == 'awaiting_payment')
+                {
                     $owner = User::select('fname','email')
                     ->where('id',$bid->owner_id)->first();
 
@@ -67,14 +68,23 @@ class investProgressReminder extends Command
                     'owner' => $owner->fname]; 
                     $user['to'] = $owner->email;
 
-                    Mail::send('bids.reminder.bid_approve_reminder', 
+                    Mail::send('bids.reminder.awaiting_payment_reminder', 
                     $info, function($msg) 
                     use ($user){
                     $msg->to($user['to']);
-                    $msg->subject('Bid Approval Reminder');
+                    $msg->subject('Awaiting Payment Reminder');
                     });
-                    $sent_businesses[] = $bid->business_id;
                 }
+
+                else if($bid->status == 'Confirmed')
+                {
+
+                }
+
+                else()
+                {
+
+                }  
                 
                 //High value alert
                 if($bid->amount > 20000){
