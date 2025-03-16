@@ -114,13 +114,14 @@ export const analyzeMessage = async (message) => {
                 const realBadWords = data.bad_words_list.filter((word) => {
                     // Check if this "bad word" is just part of an email or phone
                     const isPartOfEmail = detectedEmails.some((email) =>
-                        email.includes(word)
+                        email.includes(word.word)
                     );
                     const isPartOfPhone = detectedPhones.some((phone) =>
-                        phone.includes(word)
+                        phone.includes(word.word)
                     );
-                    const isCommonFalsePositive =
-                        commonFalsePositives.includes(word);
+                    const isCommonFalsePositive = commonFalsePositives.includes(
+                        word.word
+                    );
 
                     return (
                         !isPartOfEmail &&
@@ -135,34 +136,13 @@ export const analyzeMessage = async (message) => {
 
             // If bad words were found and censored response is available, use it
             if (abusiveWordsFound && data.censored_content) {
-                // We need to apply the censoring to the original message since we used a modified
-                // version for the API call
-                abusiveCensoredMessage = message;
+                // Use the censored content directly from the API
+                abusiveCensoredMessage = data.censored_content;
 
-                // Apply censoring for each bad word that was found
-                if (data.bad_words_list) {
-                    for (const badWord of data.bad_words_list) {
-                        // Skip false positives
-                        const isPartOfEmail = detectedEmails.some((email) =>
-                            email.includes(badWord)
-                        );
-                        const isPartOfPhone = detectedPhones.some((phone) =>
-                            phone.includes(badWord)
-                        );
-                        if (isPartOfEmail || isPartOfPhone) continue;
+                // Also use this censored content as the base for the protected message
+                protectedMessage = data.censored_content;
 
-                        // Create a regex that matches the whole word
-                        const wordRegex = new RegExp(`\\b${badWord}\\b`, "gi");
-                        const censored = "*".repeat(badWord.length);
-                        abusiveCensoredMessage = abusiveCensoredMessage.replace(
-                            wordRegex,
-                            censored
-                        );
-                    }
-                }
-
-                // Also censor sensitive info in the protected message
-                protectedMessage = abusiveCensoredMessage;
+                // Then add email and phone censoring to the protected message if needed
                 if (emailsFound) {
                     protectedMessage = protectedMessage.replace(
                         emailRegex,

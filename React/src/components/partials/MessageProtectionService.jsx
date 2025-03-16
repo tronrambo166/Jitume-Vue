@@ -45,14 +45,12 @@ function useMessageProtection(showAlert) {
             const hideAbusiveAlert =
                 localStorage.getItem("hideAbusiveAlert") === "true";
 
-            // Start with the original message that will be gradually updated based on alerts
-            let currentMessage = message;
-            let alertsShown = false;
+            // Keep track of what needs to be censored
+            let shouldCensorEmails = false;
+            let shouldCensorPhones = false;
+            let shouldCensorAbusive = abusiveWordsFound; // Always censor abusive content if found
 
-            // First, check for abusive content - if found, always censor it regardless of other alerts
-            if (abusiveWordsFound) {
-                currentMessage = abusiveCensoredMessage;
-            }
+            let alertsShown = false;
 
             // Handle email alert
             if (emailsFound && !hideEmailAlert) {
@@ -65,22 +63,7 @@ function useMessageProtection(showAlert) {
                         TujitumeLogo,
                         showAlert,
                         (censorEmail) => {
-                            // Apply email censoring if requested
-                            if (censorEmail) {
-                                if (currentMessage === message) {
-                                    currentMessage = emailCensoredMessage;
-                                } else if (
-                                    currentMessage === abusiveCensoredMessage
-                                ) {
-                                    // If abusive words already censored, now also censor email
-                                    const tempMsg =
-                                        abusiveCensoredMessage.replace(
-                                            /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
-                                            "***@***.***"
-                                        );
-                                    currentMessage = tempMsg;
-                                }
-                            }
+                            shouldCensorEmails = censorEmail;
                             resolve();
                         }
                     );
@@ -98,34 +81,14 @@ function useMessageProtection(showAlert) {
                         TujitumeLogo,
                         showAlert,
                         (censorPhone) => {
-                            // Apply phone censoring if requested
-                            if (censorPhone) {
-                                if (currentMessage === message) {
-                                    currentMessage = phoneCensoredMessage;
-                                } else if (
-                                    currentMessage === emailCensoredMessage
-                                ) {
-                                    currentMessage =
-                                        sensitiveInfoCensoredMessage; // Both email and phone censored
-                                } else if (
-                                    currentMessage === abusiveCensoredMessage
-                                ) {
-                                    // If abusive words already censored, now also censor phone
-                                    const tempMsg =
-                                        abusiveCensoredMessage.replace(
-                                            /(\+\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g,
-                                            "***-***-****"
-                                        );
-                                    currentMessage = tempMsg;
-                                }
-                            }
+                            shouldCensorPhones = censorPhone;
                             resolve();
                         }
                     );
                 });
             }
 
-            // Handle abusive language alert separately (but don't re-censor content)
+            // Handle abusive language alert separately
             if (abusiveWordsFound && (abusiveCount > 5 || !hideAbusiveAlert)) {
                 alertsShown = true;
                 const alertContent = createAbusiveAlertContent();
@@ -136,15 +99,72 @@ function useMessageProtection(showAlert) {
                         TujitumeLogo,
                         showAlert,
                         () => {
-                            // No need to modify the message here - already handled abusive content above
+                            // No user choice needed - we always censor abusive content
                             resolve();
                         }
                     );
                 });
             }
 
+            // Now apply all the censoring based on what was determined above
+            let finalMessage = message;
+
+            // Apply censoring based on what was decided in the alerts
+            if (
+                shouldCensorEmails &&
+                shouldCensorPhones &&
+                shouldCensorAbusive
+            ) {
+                // Everything needs to be censored
+                finalMessage = protectedMessage;
+            } else if (shouldCensorEmails && shouldCensorPhones) {
+                // Only emails and phones
+                finalMessage = sensitiveInfoCensoredMessage;
+            } else if (shouldCensorEmails && shouldCensorAbusive) {
+                // Emails and abusive content
+                finalMessage = message;
+                // First censor abusive words
+                finalMessage = abusiveCensoredMessage;
+                // Then censor emails
+                finalMessage = finalMessage.replace(
+                    /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
+                    "***@***.***"
+                );
+            } else if (shouldCensorPhones && shouldCensorAbusive) {
+                // Phones and abusive content
+                finalMessage = message;
+                // First censor abusive words
+                finalMessage = abusiveCensoredMessage;
+                // Then censor phones
+                finalMessage = finalMessage.replace(
+                    /(\+\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g,
+                    "***-***-****"
+                );
+            } else if (shouldCensorEmails) {
+                // Only emails
+                finalMessage = emailCensoredMessage;
+            } else if (shouldCensorPhones) {
+                // Only phones
+                finalMessage = phoneCensoredMessage;
+            } else if (shouldCensorAbusive) {
+                // Only abusive content
+                finalMessage = abusiveCensoredMessage;
+            }
+
+            // Debug logs to verify what's happening
+            console.log("Message analysis results:", {
+                originalMessage: message,
+                finalMessage,
+                abusiveWordsFound,
+                emailsFound,
+                phonesFound,
+                shouldCensorAbusive,
+                shouldCensorEmails,
+                shouldCensorPhones,
+            });
+
             // Send the final message (with any applicable censoring)
-            sendCallback(currentMessage, id, service_id, from_id);
+            sendCallback(finalMessage, id, service_id, from_id);
         } catch (error) {
             console.error("Error in message protection:", error);
             // If there's an error in the protection service, still allow the message to be sent
