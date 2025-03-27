@@ -102,10 +102,7 @@ const GrantProviderRegistration = ({ handleBackToLogin }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // if (!validateStep()) {
-        //     showAlert("error", "Please complete all steps before submitting.");
-        //     return;
-        // }
+ 
 
         setIsSubmitting(true);
         console.log("Form submission started", formData);

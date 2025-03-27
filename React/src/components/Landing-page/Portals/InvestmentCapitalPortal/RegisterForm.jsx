@@ -199,46 +199,38 @@ const InvestorRegisterForm = ({ onSwitchToLogin }) => {
             <Stepper currentStep={currentStep} totalSteps={5} />
 
             <div className="mt-6">
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-6">
                     {renderStepContent()}
 
-                    <div className="flex justify-between mt-8">
+                    <div className="flex justify-between mt-6">
                         {currentStep > 1 && (
                             <button
                                 type="button"
                                 onClick={prevStep}
-                                className="py-2 px-4 bg-gray-200 text-gray-700 font-medium rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                                className="py-2 px-4 bg-gray-400 text-gray-700 font-medium rounded-md shadow-sm hover:bg-gray-200 transition-all focus:ring-2 focus:ring-gray-400 disabled:opacity-50"
                                 disabled={isSubmitting}
                             >
                                 Back
                             </button>
                         )}
 
-                        {currentStep < 5 ? (
-                            <button
-                                type="button"
-                                onClick={nextStep}
-                                className="ml-auto py-2 px-4 bg-green-600 text-white font-medium rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                                disabled={isSubmitting}
-                            >
-                                Continue
-                            </button>
-                        ) : (
-                            <button
-                                type="submit"
-                                className="w-full py-2 px-4 bg-green-600 text-white font-medium rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 flex justify-center items-center"
-                                disabled={isSubmitting}
-                            >
-                                {isSubmitting ? (
-                                    <>
-                                        <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mr-2" />
-                                        Processing...
-                                    </>
-                                ) : (
-                                    "Complete Registration"
-                                )}
-                            </button>
-                        )}
+                        <button
+                            type={currentStep < 5 ? "button" : "submit"}
+                            onClick={currentStep < 5 ? nextStep : undefined}
+                            className="py-2 px-5 bg-green-600 text-white font-medium rounded-md shadow-md hover:bg-green-700 transition-all focus:ring-2 focus:ring-green-500 flex items-center justify-center disabled:opacity-50"
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? (
+                                <>
+                                    <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mr-2" />
+                                    Processing...
+                                </>
+                            ) : currentStep < 5 ? (
+                                "Next"
+                            ) : (
+                                "Finish"
+                            )}
+                        </button>
                     </div>
                 </form>
 
@@ -247,7 +239,7 @@ const InvestorRegisterForm = ({ onSwitchToLogin }) => {
                         Already have an account?{" "}
                         <button
                             onClick={onSwitchToLogin}
-                            className="font-medium text-green-600 hover:text-green-500"
+                            className="font-medium text-green-600 hover:text-green-500 focus:ring-2 focus:ring-green-400"
                             disabled={isSubmitting}
                         >
                             Sign in

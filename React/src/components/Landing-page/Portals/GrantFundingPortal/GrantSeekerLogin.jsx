@@ -3,8 +3,10 @@ import { Mail, Lock } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import logo from "../../../../images/Tujitumelogo.svg"; // Adjust path as needed
+import { useNavigate } from "react-router-dom";
 
 const GrantSeekerLogin = ({ onRegisterClick, showSignUp }) => {
+    const navigate = useNavigate();
     const [loginData, setLoginData] = useState({
         email: "",
         password: "",
@@ -29,10 +31,14 @@ const GrantSeekerLogin = ({ onRegisterClick, showSignUp }) => {
         }, 1500);
     };
 
-    const handleGoogleLogin = () => {
-        console.log("Google login initiated");
-        // Add actual Google login implementation here
-    };
+   const handleGoogleLogin = () => {
+       console.log("Google login initiated");
+
+       // Replace this with actual Google login logic
+       // If login is successful, navigate to the grants page
+
+       navigate("/grants-overview/grants-overview/grants-home");
+   };
 
     if (showSignUp) return null;
 
