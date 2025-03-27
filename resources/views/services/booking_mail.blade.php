@@ -64,14 +64,57 @@
             <h5>Next Steps:</h5>
             <p> If you no longer wish to proceed, you may cancel the booking by clicking 'Cancel'</p>
 
-            <div class="button-container" style="display: flex; margin-top: 20px; gap: 20px; "> <!-- https://test.jitume.com -->
-                <a target="_blank" href="<?php echo config('app.app_url');?>service-milestones/{{$s_id}}" class="button button-primary"        style="display: inline-block; padding: 8px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green; text-align: center;">Pay Here
-                </a>
+            <div class="button-container" style="display: flex; margin-top: 20px; gap: 20px; align-items: center;">
+    <!-- Pay Button -->
+    <a 
+        target="_blank" 
+        href="<?php echo config('app.app_url');?>service-milestones/{{$s_id}}" 
+        style="
+            display: inline-block;
+            padding: 10px 24px;
+            text-decoration: none;
+            color: #fff;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            background-color: #2f9f1f;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid #2f9f1f;
+            font-size: 0.875rem;
+        "
+        onmouseover="this.style.backgroundColor='#26801a';"
+        onmouseout="this.style.backgroundColor='#2f9f1f';"
+        onfocus="this.style.boxShadow='0 0 0 3px rgba(47, 159, 31, 0.3)';"
+        onblur="this.style.boxShadow='none';"
+    >
+        Pay Here
+    </a>
 
-                <a target="_blank" href="<?php echo config('app.api_url');?>CancelBookingConfirm/{{$booking_id}}/confirm" class="button button-primary"    style="margin-left: 20px; display: inline-block; padding: 8px 24px; text-decoration: none; color: black; border-radius: 6px; transition: background-color 0.3s ease; background-color: yellow; text-align: center;">Cancel
-                </a>
-
-            </div>
+    <!-- Cancel Button -->
+    <a 
+        target="_blank" 
+        href="<?php echo config('app.api_url');?>CancelBookingConfirm/{{$booking_id}}/confirm" 
+        style="
+            display: inline-block;
+            padding: 10px 24px;
+            text-decoration: none;
+            color: #e11d48;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            background-color: transparent;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid #e11d48;
+            font-size: 0.875rem;
+        "
+        onmouseover="this.style.backgroundColor='#e11d48'; this.style.color='white';"
+        onmouseout="this.style.backgroundColor='transparent'; this.style.color='#e11d48';"
+        onfocus="this.style.boxShadow='0 0 0 3px rgba(225, 29, 72, 0.3)';"
+        onblur="this.style.boxShadow='none';"
+    >
+        Cancel
+    </a>
+</div>
 
 
             <p> If you need assistance, feel free to reach out to us at support@tujitume.com </p>

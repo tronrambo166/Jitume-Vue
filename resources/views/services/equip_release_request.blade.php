@@ -52,7 +52,22 @@
             <div class="button-container" style="display: flex; margin-top: 20px;">
                 <a target="_blank" href="<?php echo config('app.app_url');?>equipmentRelease/{{$business_owner}}/{{$manager}}/{{$bid_id}}" class="button" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: #fff; border-radius: 6px; transition: background-color 0.3s ease; background-color: green;">Proceed to Release Equipment.</a>
 
-                &nbsp; <a target="_blank" href="<?php echo config('app.api_url');?>CancelEquipmentRelease/{{$bid_id}}/confirm" class="button" style="display: inline-block; padding: 12px 24px; text-decoration: none; color: black; border-radius: 6px; transition: background-color 0.3s ease; background-color: yellow;">Cancel.</a>
+                &nbsp; <a target="_blank" href="<?php echo config('app.api_url');?>CancelEquipmentRelease/{{$bid_id}}/confirm" class="button" style="
+                        color: #e11d48;
+                        border: 1px solid #e11d48;
+                        padding: 0.625rem 1.25rem;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        border-radius: 0.5rem;
+                        text-align: center;
+                        margin-right: 0.5rem;
+                        margin-bottom: 0.5rem;
+                        text-decoration: none;
+                    "
+                    onmouseover="this.style.backgroundColor='#9f1239'; this.style.color='white'; this.style.textDecoration='none';"
+                    onmouseout="this.style.backgroundColor=''; this.style.color='#e11d48';"
+                    onfocus="this.style.boxShadow='0 0 0 4px rgba(248, 113, 113, 0.5)';"
+                    onblur="this.style.boxShadow='';">Cancel.</a>
             </div>
 
            <div

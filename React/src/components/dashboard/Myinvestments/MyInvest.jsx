@@ -32,6 +32,7 @@ const MyInvest = () => {
     const [loading, setLoading] = useState(false);
     const [searchParams] = useSearchParams();
     const [colorIndex, setColorIndex] = useState(0);
+    const [allInvest, setallInvest] = useState([]);
     const colors = [
         "text-red-500",
         "text-blue-500",
@@ -79,6 +80,7 @@ const MyInvest = () => {
                     .then(({ data }) => {
                         setMyInvest(data.pending);
                         setActiveInvest(data.active);
+                        setallInvest(data);
                         console.log("myInvestmen both active and pending", data);
                         //setName(data.user_name);
                         //SetInvestname(data.results[0].name);
@@ -94,6 +96,7 @@ const MyInvest = () => {
         getInvestments();
     }, []);
     
+    console.log("allInvest", allInvest);
 
     // Cance logic here
     const handleCancel = (id) => {

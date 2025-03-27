@@ -51,9 +51,11 @@
             <a
                 target="_blank"
                 href="<?php echo config('app.app_url');?>dashboard"
-                style="background-color: #1e3a8a; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; font-weight: 500; font-size: 1rem; transition: background-color 0.3s ease-in-out;"
-    onmouseover="this.style.backgroundColor='#1e40af';"
-    onmouseout="this.style.backgroundColor='#1e3a8a';"
+                style="color: #2f8555; border: 1px solid #2f8555; padding: 0.625rem 1.25rem; font-size: 0.875rem; font-weight: 500; border-radius: 0.5rem; text-align: center; margin-right: 0.5rem; margin-bottom: 0.5rem; text-decoration: none; transition: background-color 0.3s, color 0.3s; outline: none;"
+    onmouseover="this.style.backgroundColor='#38a169'; this.style.color='white';"
+    onmouseout="this.style.backgroundColor=''; this.style.color='#2f8555';"
+    onfocus="this.style.boxShadow='0 0 0 4px rgba(72, 187, 120, 0.5)';"
+    onblur="this.style.boxShadow='';"
 >
                 Review</a
             >

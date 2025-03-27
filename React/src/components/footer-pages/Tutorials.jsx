@@ -4,7 +4,7 @@ import VideoSection from "./components/VideoSection";
 import ResourcesSection from "./components/ResourcesSection";
 import FAQSection from "./components/FAQSection";
 import SupportSection from "./components/SupportSection";
-
+import TujitimeDescription from "./components/TujitumeDescription";
 const Tutorials = () => {
     // Video data
     const videoSections = [
@@ -168,6 +168,7 @@ const Tutorials = () => {
 
                     {/* FAQ Section */}
                     <FAQSection />
+                    <TujitimeDescription />
 
                     {/* Contact Support */}
                     <SupportSection />

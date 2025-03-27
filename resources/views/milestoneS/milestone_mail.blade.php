@@ -8,7 +8,7 @@
         margin-top: 4rem;
         background-color: white;
         border-radius: 0.5rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e0e0e0;
         overflow: hidden;
         position: relative;
     "
@@ -34,112 +34,54 @@
         </h1>
     </div> 
     <div class="content" style="padding: 20px">
-        <h3
-            style="
-                color: green;
-                font-size: 1.5rem;
-                font-weight: bold;
-                margin-bottom: 15px;
-                text-align: center;
-            "
-        >
-            Payment Received for Service {{$business}}.
-        </h3>
+    <h3 style="color: green; font-size: 1.5rem; font-weight: bold; margin-bottom: 15px;">
+        Payment Received for Service {{$business}}.
+    </h3>
 
-        <div
-            style="
-                width: 60%;
-                margin: auto;
-                background: white;
-                padding: 15px;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                text-align: left;
-            "
-        >
-            <p
-                style="
-                    color: black;
-                    font-size: 1rem;
-                    font-weight: 500;
-                    margin-bottom: 8px;
-                "
-            >
-                We have successfully received payment for the service {{$business}}. The
-                payment details are as follows:
-            </p>
+    <div style="background: white; padding: 15px; border-radius: 8px; ;">
+        <p style="color: black; font-size: 1rem; font-weight: 500; margin-bottom: 8px;">
+            We have successfully received payment for the service {{$business}}. The
+            payment details are as follows:
+        </p>
 
-            <h5
-                style="
-                    color: black;
-                    font-size: 1rem;
-                    font-weight: 500;
-                    margin-bottom: 8px;
-                "
-            >
-               @php $Tax = $amount*0.05; $Total = $amount+$Tax; @endphp
+        <h5 style="color: black; font-size: 1rem; font-weight: 500; margin-bottom: 8px;">
+           @php $Tax = $amount*0.05; $Total = $amount+$Tax; @endphp
 
-                 <b>Booking ID:</b> #OO{{$id}}<br>
-                 <b>Service Name:</b> {{$business}}<br>
-                <strong>Amount:</strong> {{$amount}} <br/>
-                <strong>Tujitume Fee:</strong> {{$Tax}} <br/>
-                <strong>Total:</strong> {{$Total}}
-            </h5>
-            <h5 style="color: black; font-size: 1rem; font-weight: 500">
-                <strong>Service Name:</strong> {{$business}}
-            </h5>
+             <b>Booking ID:</b> #OO{{$id}}<br>
+             <b>Service Name:</b> {{$business}}<br>
+            <strong>Amount:</strong> {{$amount}} <br/>
+            <strong>Tujitume Fee:</strong> {{$Tax}} <br/>
+            <strong>Total:</strong> {{$Total}}
+        </h5>
+        <h5 style="color: black; font-size: 1rem; font-weight: 500">
+            <strong>Service Name:</strong> {{$business}}
+        </h5>
 
-            <p style="font-weight: 600; color:yellowgreen;">
-                    Your payment is securely held in escrow and will be released incrementally as
-                    milestones are completed. <br/></br>
+        <p style="font-weight: 600; color: yellowgreen; margin-top: 15px;">
+            Your payment is securely held in escrow and will be released incrementally as
+            milestones are completed. <br/><br/>
 
-                    Milestone Status Update:
-                    - Milestone 1: **In Progress**
-                </p>
-        </div>
-		 <div
-                class="footer"
-                style="
-                    margin-top: 2rem;
-                    text-align: start;
-                    color: gray;
-                    font-size: 12px;
-                "
-            >
-                <p>
-                    <img
-                        src="{{ $message->embed('https://tujitume.com/images/Email/EmailVertDark.png')}}"
-                        alt="Company Logo"
-                        style="
-                            height: 3rem;
-                            width: auto;
-                            float: left;
-                            margin-right: 1rem;
-                            margin-top: -0.2rem;
-                            margin-bottom: 4rem;
-                        "
-                    />
-                </p>
-                 <p style="font-weight: 600">
+            Milestone Status Update:<br/>
+            - Milestone 1: <strong>In Progress</strong>
+        </p>
+    </div>
+
+    <div class="footer" style="margin-top: 2rem; color: gray; font-size: 12px;">
+        <div style="display: flex; align-items: flex-start; margin-bottom: 1rem;">
+            <img src="{{ $message->embed('https://tujitume.com/images/Email/EmailVertDark.png')}}"
+                 alt="Company Logo"
+                 style="height: 3rem; width: auto; margin-right: 1rem;">
+            <div>
+                <p style="font-weight: 600; margin: 0;">
                     If you have any questions, please contact us at support@tujitume.com.
-                    
-                    Thank you for choosing Tujitume!<br/>
-                    Best regards, <br/>
-                   <div style="margin-bottom:3px;">The Tujitume Team</div> 
                 </p>
-
-        <!-- Do you want to Continue to the Next Milestone?
-		        <div style="width:100%;margin: auto; padding-bottom:20px;padding-top:15px;"> 
-		        	<a target="_blank" href="http://localhost/laravel_projects/jitumeLive/public/agreeToMileS/{{$s_id}}"
-				style="width:50%;text-decoration:none;color: aliceblue;background:green;padding:10px 30px;border-radius:5px;margin-left:30px">
-				Continue</a>
-
-				<a
-				style="width:50%;text-decoration:none;color: aliceblue;background:red;padding:10px 30px;border-radius:5px;margin-left:30px">
-				Cancel </a>
-			</div> -->
-
-        
+                <p style="margin: 0.5rem 0 0 0;">
+                    Thank you for choosing Tujitume!<br/>
+                    Best regards,<br/>
+                    The Tujitume Team
+                </p>
+            </div>
+        </div>
     </div>
 </div>
 

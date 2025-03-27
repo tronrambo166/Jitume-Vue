@@ -62,12 +62,14 @@
 
             @if($type == 'Monetary')
 
-            <div class="flex gap-3">
-            <p style="font-weight:bold;">Next Steps:</p>
-            <p style="font-weight:bold;">You may now complete the remainder 75% of the payment to proceed to the first
-            milestone via the links below:</p>
+          <div class="flex gap-3" style="flex-direction: column;">
+    <p style="font-weight: bold; margin-bottom: 0.5rem;">Next Steps:</p>
+    <p style="font-weight: bold; margin-bottom: 1rem;">
+        You may now complete the remainder 75% of the payment to proceed to the first milestone via the links below:
+    </p>
 
-            @php 
+    <div class="flex gap-3" style="align-items: center;">
+        @php 
             $listing_id = base64_encode(base64_encode($id));
             $p = '_0A_';
             $i = '_X1_';
@@ -76,34 +78,52 @@
             $uniqid = base64_encode(hexdec(uniqid()));
             $encoded_id_amount = $uniqid.$p.$amount.$i.$bid_id; 
             $encoded_id_amount = base64_encode(base64_encode($encoded_id_amount));
-            @endphp
-            <a
-                target="_blank"
-                href="<?php echo config('app.app_url');?>listing/{{$listing_id}}?string={{$encoded_id_amount}}"
-                 style="
-                        color: #2f9f1f;
-                        border: 1px solid #2f9f1f;
-                        padding: 0.625rem 1.25rem;
-                        font-size: 0.875rem;
-                        font-weight: 500;
-                        border-radius: 0.5rem;
-                        text-align: center;
-                        margin-right: 0.5rem;
-                        margin-bottom: 0.5rem;
-                        text-decoration: none;
-                    "
-                    onmouseover="this.style.backgroundColor='#388e3c'; this.style.color='white'; this.style.textDecoration='none';"
-                    onmouseout="this.style.backgroundColor=''; this.style.color='#2f9f1f';"
-                    onfocus="this.style.boxShadow='0 0 0 4px rgba(72, 187, 120, 0.5)';"
-                    onblur="this.style.boxShadow='';"
-                    >Pay</a
-            >
-            <a
-                href="#"
-                class="text-red-700 hover:text-white border hover:no-underline border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-900 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-800"
-                >Cancel Bid</a
-            >
-        </div>
+        @endphp
+        
+        <a
+            target="_blank"
+            href="<?php echo config('app.app_url');?>listing/{{$listing_id}}?string={{$encoded_id_amount}}"
+            style="
+                color: #2f9f1f;
+                border: 1px solid #2f9f1f;
+                padding: 0.625rem 1.25rem;
+                font-size: 0.875rem;
+                font-weight: 500;
+                border-radius: 0.5rem;
+                text-align: center;
+                text-decoration: none;
+                transition: all 0.2s ease;
+            "
+            onmouseover="this.style.backgroundColor='#2f9f1f'; this.style.color='white';"
+            onmouseout="this.style.backgroundColor='transparent'; this.style.color='#2f9f1f';"
+            onfocus="this.style.boxShadow='0 0 0 3px rgba(47, 159, 31, 0.3)';"
+            onblur="this.style.boxShadow='none';"
+        >
+            Pay Now
+        </a>
+        
+        <a
+            href="#"
+            style="
+                color: #e11d48;
+                border: 1px solid #e11d48;
+                padding: 0.625rem 1.25rem;
+                font-size: 0.875rem;
+                font-weight: 500;
+                border-radius: 0.5rem;
+                text-align: center;
+                text-decoration: none;
+                transition: all 0.2s ease;
+            "
+            onmouseover="this.style.backgroundColor='#e11d48'; this.style.color='white';"
+            onmouseout="this.style.backgroundColor='transparent'; this.style.color='#e11d48';"
+            onfocus="this.style.boxShadow='0 0 0 3px rgba(225, 29, 72, 0.3)';"
+            onblur="this.style.boxShadow='none';"
+        >
+            Cancel Bid
+        </a>
+    </div>
+</div>
 
 
         @else Please Request a Project Manager to Proceed with this Investment

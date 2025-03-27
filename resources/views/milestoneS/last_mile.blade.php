@@ -108,7 +108,7 @@ remaining payment will be transferred to the service owner.
             onmouseover="this.style.backgroundColor='#1f7f14';"
             onmouseout="this.style.backgroundColor='#2f9f1f';"
         >
-            RELEASE FINAL PAYMENT
+            Release final payment
         </a>
 
 

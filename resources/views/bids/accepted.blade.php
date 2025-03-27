@@ -72,22 +72,22 @@
             @if($type == 'Monetary')
 
             <p>
-                We’re pleased to inform you that this investment process has been confirmed. The project will <br>
-                now proceed to the next phase: Milestone Progression (In-Progress).
-                Here’s what to expect moving forward:<br>
-                 Milestone Coordination: Payments will be coordinated seamlessly between the
-                Platform, Business Owner and Investor on completed milestones.<br>
-                 Dashboard Updates: All milestone progress and related financials will be updated in
-                your project dashboard for real-time tracking.<br>
-                 Support: Should you have any questions or require clarification, our support team is
-                here to assist.<br>
-                 Please be on alert of completion milestone emails as progress of their investment
-                depends on your review.<br>
-                 You have the option to request a local project manager to supervise the project.
-            </p>
+            We’re pleased to inform you that this investment process has been confirmed. The project will <br>
+            now proceed to the next phase: Milestone Progression (In-Progress).
+            Here’s what to expect moving forward:<br>
+            <span style="color: #2E8B57;">✓</span> Milestone Coordination: Payments will be coordinated seamlessly between the
+            Platform, Business Owner and Investor on completed milestones.<br>
+            <span style="color: #2E8B57;">✓</span> Dashboard Updates: All milestone progress and related financials will be updated in
+            your project dashboard for real-time tracking.<br>
+            <span style="color: #2E8B57;">✓</span> Support: Should you have any questions or require clarification, our support team is
+            here to assist.<br>
+            <span style="color: #2E8B57;">✓</span> Please be on alert of completion milestone emails as progress of their investment
+            depends on your review.<br>
+            <span style="color: #2E8B57;">✓</span> You have the option to request a local project manager to supervise the project.
+        </p>
 
-              Proceed to progress with the milestones
-            work?
+             <p style="margin-left: 19px;"> Proceed to progress with the milestones
+            work?</p>
         </p>
         <div class="flex gap-3">
             <a

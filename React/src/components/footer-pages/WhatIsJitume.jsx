@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaChevronRight } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
-
+import TujitumeDescription from "./components/TujitumeDescription";
 const Careers = () => {
 
     useEffect(() => {
@@ -39,7 +39,7 @@ const Careers = () => {
 </p>
                 
             </div>
-          
+          <TujitumeDescription />
         </div>
     );
 };
