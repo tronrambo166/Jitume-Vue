@@ -48,6 +48,10 @@ import Dispute from "./components/footer-pages/Dispute";
 import Tutorials from "./components/footer-pages/Tutorials";
 // // src/components/ScrollToTop.js
 import ScrollToTop from "./components/partials/ScrollToTop";
+import { GrantsOverview } from "./components/Grants/screens/Grantsoverview";
+import DashboardHome from "./components/Grants/components/Grantshome";
+import InvestmentDashboard from "./components/Grants/screens/InvestmentDashboard.JSX";
+
 const router = createBrowserRouter([
     {
         path: "/",
@@ -113,8 +117,22 @@ const router = createBrowserRouter([
             { path: "/due-diligence", element: <DueDiligence /> },
             { path: "/Resolution-center", element: <Dispute /> },
             { path: "/tutorials", element: <Tutorials /> },
+
+
         ],
     },
+{
+  path: "/grants-overview",
+  element: <GrantsOverview />,
+  children: [
+    { path: "grants-home", element: <DashboardHome /> },
+    { path: "funding/investments", element: <InvestmentDashboard /> } ,
+    { path: "grants-overview/grants-home", element: <DashboardHome/> }
+
+    // ✅ Correct
+  ],
+},
+
     {
         path: "/dashboard",
         element: <Dashboard />, // This ensures the Dashboard doesn't use the DefaultLayout

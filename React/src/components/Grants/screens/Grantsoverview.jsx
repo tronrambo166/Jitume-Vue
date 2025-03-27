@@ -1,0 +1,663 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  Outlet, 
+  Link, 
+  useLocation,
+  Routes,
+  Route
+} from 'react-router-dom';
+import {
+  Briefcase,
+  PlusCircle,
+  Search,
+  Home,
+  DollarSign,
+  TrendingUp,
+  Award,
+  Settings,
+  LogOut,
+  Menu,
+  Clock,
+  CreditCard,
+  Bell,
+  User,
+  ChevronDown,
+  BarChart2,
+  Users,
+  Bookmark,
+  FileText,
+  Video,
+  MessageSquare
+} from 'lucide-react';
+import GrantApplicationModal from '../Utils/Modals/Grantmodal';
+
+const toggleModal = () => {
+  setIsModalOpen((prev) => !prev);
+};
+// Shared Components
+const Navigation = {
+  Sidebar: ({ isMobile, onClose }) => {
+    const location = useLocation();
+    const [openMenus, setOpenMenus] = useState({});
+    
+    // Initialize open menus based on current path
+    useEffect(() => {
+      const initialOpenState = {};
+      navItems.forEach(item => {
+        if (item.children) {
+          initialOpenState[item.to] = location.pathname.startsWith(item.to);
+        }
+      });
+      setOpenMenus(initialOpenState);
+    }, [location.pathname]);
+
+    const toggleMenu = (to) => {
+      setOpenMenus(prev => ({
+        ...prev,
+        [to]: !prev[to]
+      }));
+    };
+
+    const NavItem = ({ icon: Icon, label, to, hasChildren, isActive }) => (
+      <div>
+        <Link 
+          to={to} 
+          className={`
+            flex items-center px-4 py-3 rounded-lg transition-colors 
+            ${isActive 
+              ? 'bg-gray-100 text-green-700' 
+              : 'hover:bg-gray-100 text-gray-700 hover:text-green-700'
+            }
+          `}
+          onClick={(e) => {
+            if (isMobile && !hasChildren) onClose();
+            if (hasChildren) {
+              e.preventDefault();
+              toggleMenu(to);
+            }
+          }}
+        >
+          <Icon className="mr-3" size={20} />
+          <span className="flex-1">{label}</span>
+          {hasChildren && (
+            <ChevronDown 
+              className={`ml-2 transition-transform duration-200 ${openMenus[to] ? 'rotate-180' : ''}`} 
+              size={16} 
+            />
+          )}
+        </Link>
+        {hasChildren && openMenus[to] && (
+          <div className="ml-8 mt-1 space-y-1 animate-fadeIn">
+            {navItems.find(item => item.to === to).children.map((child) => (
+              <SubItem 
+                key={child.to} 
+                label={child.label} 
+                to={child.to} 
+                isActive={location.pathname === child.to}
+                onClose={onClose}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+
+    const SubItem = ({ label, to, isActive, onClose }) => (
+      <Link 
+        to={to}
+        className={`
+          block px-3 py-2 text-sm rounded transition-colors
+          ${isActive 
+            ? 'bg-gray-100 text-green-700' 
+            : 'hover:bg-gray-100 text-gray-600 hover:text-green-700'
+          }
+        `}
+        onClick={isMobile ? onClose : undefined}
+      >
+        {label}
+      </Link>
+    );
+
+    const navItems = [
+      { 
+        icon: Home, 
+        label: 'Dashboard', 
+        to: 'grants-overview/grants-home',
+        exact: true
+      },
+      { 
+        icon: Briefcase, 
+        label: 'Grants', 
+        to: '/grants-overview/grants',
+        children: [
+          { label: 'Discover Grants', to: '/grants-overview/grants/discover' },
+          { label: 'My Applications', to: '/grants-overview/grants/applications' },
+          { label: 'Saved Grants', to: '/grants-overview/grants/saved' }
+        ]
+      },
+      { 
+        icon: CreditCard, 
+        label: 'Funding', 
+        to: '/grants-overview/funding',
+        children: [
+          { label: 'Investment Portal', to: '/grants-overview/funding/investments' },
+          { label: 'Capital Offers', to: '/grants-overview/funding/offers' },
+          { label: 'Deal Room', to: '/grants-overview/funding/deals' }
+        ]
+      },
+      { 
+        icon: BarChart2, 
+        label: 'Impact', 
+        to: '/grants-overview/impact',
+        children: [
+          { label: 'Metrics Dashboard', to: '/grants-overview/impact/metrics' },
+          { label: 'Impact Stories', to: '/grants-overview/impact/stories' }
+        ]
+      },
+      { 
+        icon: Users, 
+        label: 'Network', 
+        to: '/grants-overview/network',
+        children: [
+          { label: 'Mentors', to: '/grants-overview/network/mentors' },
+          { label: 'Investors', to: '/grants-overview/network/investors' },
+          { label: 'Founders', to: '/grants-overview/network/founders' }
+        ]
+      },
+      { 
+        icon: Clock, 
+        label: 'Office Hours', 
+        to: '/grants-overview/office-hours' 
+      },
+      { 
+        icon: Settings, 
+        label: 'Settings', 
+        to: '/grants-overview/settings',
+        children: [
+          { label: 'Profile', to: '/grants-overview/settings/profile' },
+          { label: 'Notifications', to: '/grants-overview/settings/notifications' },
+          { label: 'Security', to: '/grants-overview/settings/security' }
+        ]
+      }
+    ];
+
+    return (
+      <div className={`
+        fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-50 
+        transform transition-transform duration-300 ease-in-out
+        ${isMobile ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+      `}>
+        <div className="p-6 border-b">
+          <h2 className="text-2xl font-bold text-green-600">Tujitume</h2>
+          <p className="text-sm text-gray-500">Grants Platform</p>
+        </div>
+        <nav className="p-4 space-y-1 overflow-y-auto h-[calc(100vh-120px)]">
+          {navItems.map((item) => (
+            <NavItem 
+              key={item.to}
+              icon={item.icon}
+              label={item.label}
+              to={item.to}
+              hasChildren={!!item.children}
+              isActive={item.exact 
+                ? location.pathname === item.to
+                : location.pathname.startsWith(item.to)
+              }
+            />
+          ))}
+          <div className="pt-4 mt-4 border-t">
+            <NavItem 
+              icon={LogOut} 
+              label="Logout" 
+              to="/logout" 
+              isActive={location.pathname === '/logout'}
+              hasChildren={false}
+            />
+          </div>
+        </nav>
+      </div>
+    );
+  },
+
+  TopNavigation: () => {
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const profileRef = React.useRef(null);
+    
+    // Close profile dropdown when clicking outside
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (profileRef.current && !profileRef.current.contains(event.target)) {
+          setIsProfileOpen(false);
+        }
+      };
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
+
+    return (
+      <div className="bg-white shadow-sm p-4 flex justify-between items-center">
+        <div className="flex items-center space-x-4">
+          <button className="text-gray-600 hover:text-blue-600">
+            <Bell size={20} />
+          </button>
+          <div className="relative">
+            <input 
+              type="text" 
+              placeholder="Search..." 
+              className="pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none w-full md:w-64"
+            />
+            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+          </div>
+        </div>
+        <div className="flex items-center space-x-4" ref={profileRef}>
+          <button 
+            className="flex items-center space-x-2 text-gray-700 hover:text-blue-700"
+            onClick={() => setIsProfileOpen(!isProfileOpen)}
+          >
+            <User size={20} />
+            <span className="hidden md:inline">Profile</span>
+          </button>
+          
+          {isProfileOpen && (
+            <div className="absolute right-4 top-16 bg-white shadow-lg rounded-lg p-2 w-48 z-50 border border-gray-100">
+              <Link 
+                to="/grants-overview/settings/profile" 
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                onClick={() => setIsProfileOpen(false)}
+              >
+                My Profile
+              </Link>
+              <Link 
+                to="/grants-overview/settings/notifications" 
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                onClick={() => setIsProfileOpen(false)}
+              >
+                Notifications
+              </Link>
+              <Link 
+                to="/logout" 
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                onClick={() => setIsProfileOpen(false)}
+              >
+                Logout
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+};
+
+// Main Layout Component
+const GrantsOverview = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const toggleModal = () => {
+    setIsModalOpen((prev) => !prev); // This will toggle the modal state
+  };
+
+  const sidebarRef = React.useRef(null);
+  
+  // Close sidebar when clicking outside on mobile
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isSidebarOpen && sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    if (isSidebarOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isSidebarOpen]);
+
+  return (
+    <div className="flex h-screen bg-gray-50">
+      {/* Sidebar */}
+      <div ref={sidebarRef}>
+        <Navigation.Sidebar 
+          isMobile={isSidebarOpen} 
+          onClose={() => setIsSidebarOpen(false)} 
+        />
+      </div>
+
+      {/* Main Content Area */}
+      <div className="flex-1 ml-0 md:ml-64 overflow-y-auto transition-all duration-300">
+        {/* Mobile Header */}
+        <div className="md:hidden bg-white shadow-sm p-4 flex justify-between items-center">
+          <button 
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="p-2 hover:bg-gray-100 rounded-lg"
+          >
+            <Menu />
+          </button>
+          <h1 className="text-xl font-bold text-green-600">Tujitume</h1>
+        </div>
+
+        {/* Top Navigation */}
+        <Navigation.TopNavigation />
+
+        <div className="p-6 bg-gray-50 min-h-screen">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-800 flex items-center">
+                <Briefcase className="mr-3 text-black" />
+                Grants Management
+              </h1>
+              <p className="text-gray-500 mt-2">
+                Explore and manage grant opportunities
+              </p>
+            </div>
+            <button
+        onClick={toggleModal}
+        className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-700 transition w-full md:w-auto justify-center"
+      >
+        <PlusCircle className="mr-2" />
+        New Grant Application
+      </button>
+
+      {/* Modal Component */}
+      {isModalOpen && <GrantApplicationModal onClose={toggleModal} />}
+          </div>
+
+          {/* Main Content Area with Outlet */}
+          <div className="bg-white rounded-lg shadow-sm">
+            <Outlet />
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Page Components
+const DashboardHome = () => {
+  const statsCards = [
+    {
+      icon: <Award className="text-purple-500" />,
+      title: 'Total Grants Applied',
+      value: '12',
+      color: 'bg-purple-50'
+    },
+    {
+      icon: <DollarSign className="text-blue-500" />,
+      title: 'Total Funding Received',
+      value: '$225,000',
+      color: 'bg-blue-50'
+    },
+    {
+      icon: <TrendingUp className="text-indigo-500" />,
+      title: 'Success Rate',
+      value: '75%',
+      color: 'bg-indigo-50'
+    }
+  ];
+
+  const grants = [
+    {
+      id: 1,
+      title: 'Agricultural Innovation Grant',
+      amount: 50000,
+      deadline: 'May 30, 2024',
+      status: 'Open'
+    },
+    {
+      id: 2,
+      title: 'Renewable Energy Startup Fund',
+      amount: 75000,
+      deadline: 'June 15, 2024',
+      status: 'Upcoming'
+    },
+    {
+      id: 3,
+      title: 'Tech for Social Impact',
+      amount: 100000,
+      deadline: 'April 22, 2024',
+      status: 'Closed'
+    }
+  ];
+
+  const GrantCard = ({ title, amount, deadline, status }) => (
+    <div className="bg-white border border-gray-100 rounded-lg p-4 hover:shadow-md transition">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="font-semibold text-gray-800">{title}</h3>
+        <span className={`px-2 py-1 rounded-full text-xs ${
+          status === 'Open' ? 'bg-blue-100 text-blue-700' :
+          status === 'Closed' ? 'bg-red-100 text-red-700' :
+          'bg-yellow-100 text-yellow-700'
+        }`}>
+          {status}
+        </span>
+      </div>
+      <div className="grid grid-cols-2 gap-2">
+        <div className="flex items-center">
+          <DollarSign className="mr-2 text-blue-500" size={16} />
+          <span className="text-sm text-gray-600">${amount.toLocaleString()}</span>
+        </div>
+        <div className="flex items-center">
+          <Clock className="mr-2 text-indigo-500" size={16} />
+          <span className="text-sm text-gray-600">{deadline}</span>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="p-6">
+      {/* Stats Overview */}
+      <div className="grid md:grid-cols-3 gap-4 mb-6">
+        {statsCards.map((card, index) => (
+          <div
+            key={index}
+            className={`${card.color} rounded-lg p-4 flex items-center space-x-4`}
+          >
+            <div className="p-3 rounded-full bg-white">
+              {card.icon}
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">{card.title}</p>
+              <h3 className="text-2xl font-bold text-gray-800">{card.value}</h3>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      {/* Grants Listing */}
+      <div>
+        <h2 className="text-xl font-semibold mb-4">Recent Grant Opportunities</h2>
+        <div className="grid md:grid-cols-3 gap-4">
+          {grants.map((grant) => (
+            <GrantCard
+              key={grant.id}
+              title={grant.title}
+              amount={grant.amount}
+              deadline={grant.deadline}
+              status={grant.status}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const GrantsList = () => {
+  const grants = [
+    {
+      id: 1,
+      title: 'Agricultural Innovation Grant',
+      organization: 'Green Future Foundation',
+      amount: 50000,
+      deadline: 'May 30, 2024',
+      status: 'Open'
+    },
+    {
+      id: 2,
+      title: 'Renewable Energy Startup Fund',
+      organization: 'Sustainable Tech Ventures',
+      amount: 75000,
+      deadline: 'June 15, 2024',
+      status: 'Upcoming'
+    },
+    {
+      id: 3,
+      title: 'Tech for Social Impact',
+      organization: 'Digital Empowerment Network',
+      amount: 100000,
+      deadline: 'April 22, 2024',
+      status: 'Closed'
+    }
+  ];
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-6 text-gray-800">Available Grants</h1>
+      <div className="space-y-4">
+        {grants.map((grant) => (
+          <div 
+            key={grant.id} 
+            className="bg-white border border-gray-100 rounded-lg p-4 flex justify-between items-center hover:shadow-md transition"
+          >
+            <div>
+              <h3 className="text-lg font-semibold text-gray-800">{grant.title}</h3>
+              <p className="text-sm text-gray-500">{grant.organization}</p>
+              <div className="mt-2 flex items-center space-x-4">
+                <div className="flex items-center">
+                  <DollarSign className="mr-2 text-blue-500" size={16} />
+                  <span className="text-sm text-gray-600">${grant.amount.toLocaleString()}</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="mr-2 text-indigo-500" size={16} />
+                  <span className="text-sm text-gray-600">{grant.deadline}</span>
+                </div>
+              </div>
+            </div>
+            <span className={`px-2 py-1 rounded-full text-xs ${
+              grant.status === 'Open' ? 'bg-blue-100 text-blue-700' :
+              grant.status === 'Closed' ? 'bg-red-100 text-red-700' :
+              'bg-yellow-100 text-yellow-700'
+            }`}>
+              {grant.status}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const GrantApplication = () => {
+  const [formData, setFormData] = useState({
+    title: '',
+    organization: '',
+    description: '',
+    amount: '',
+    category: ''
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission logic
+    console.log('Grant Application Submitted', formData);
+  };
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-6 text-gray-800">Apply for a Grant</h1>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Grant Title</label>
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Organization</label>
+          <input
+            type="text"
+            name="organization"
+            value={formData.organization}
+            onChange={handleChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Description</label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            rows={4}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Requested Amount</label>
+            <input
+              type="number"
+              name="amount"
+              value={formData.amount}
+              onChange={handleChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Category</label>
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              required
+            >
+              <option value="">Select Category</option>
+              <option value="agriculture">Agriculture</option>
+              <option value="energy">Renewable Energy</option>
+              <option value="technology">Technology</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition"
+          >
+            Submit Grant Application
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export { 
+  GrantsOverview, 
+  DashboardHome, 
+  GrantsList, 
+  GrantApplication 
+};
