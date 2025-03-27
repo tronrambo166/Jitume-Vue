@@ -6,6 +6,8 @@ import CheckboxGroup from "./components/CheckboxGroup";
 import FormTextarea from "./components/FormTextarea";
 import TermsCheckbox from "./components/TermsCheckbox";
 import StepperIndicator from "./components/StepperIndicator";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import logo from "../../../../images/Tujitumelogo.svg"; // Adjust path as needed
 import {
     ORGANIZATION_TYPES,
     FOCUS_SECTOR_OPTIONS,
@@ -13,13 +15,15 @@ import {
     INITIAL_FORM_DATA,
 } from "./registrationOptions";
 
-const GrantProviderRegistration = () => {
+const GrantProviderRegistration = ({ handleBackToLogin }) => {
     const { showAlert } = useAlert();
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
+        console.log(`Field updated: ${name} = ${value}`);
         setFormData((prev) => ({
             ...prev,
             [name]: value,
@@ -27,6 +31,7 @@ const GrantProviderRegistration = () => {
     };
 
     const handleSectorChange = (sector) => {
+        console.log(`Sector changed: ${sector}`);
         setFormData((prev) => {
             const currentSectors = prev.focusSectors;
             const newSectors = currentSectors.includes(sector)
@@ -41,6 +46,7 @@ const GrantProviderRegistration = () => {
     };
 
     const handleRegionChange = (region) => {
+        console.log(`Region changed: ${region}`);
         setFormData((prev) => {
             const currentRegions = prev.targetRegions;
             const newRegions = currentRegions.includes(region)
@@ -80,29 +86,45 @@ const GrantProviderRegistration = () => {
 
     const nextStep = () => {
         if (validateStep()) {
+            console.log(`Moving to step ${currentStep + 1}`);
             setCurrentStep((prev) => Math.min(prev + 1, 6));
         } else {
+            console.warn("Validation failed for current step");
             showAlert("error", "Please fill in all required fields correctly.");
         }
     };
 
     const prevStep = () => {
+        console.log(`Moving back to step ${currentStep - 1}`);
         setCurrentStep((prev) => Math.max(prev - 1, 1));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!validateStep()) {
-            showAlert("error", "Please complete all steps before submitting.");
-            return;
-        }
+        // if (!validateStep()) {
+        //     showAlert("error", "Please complete all steps before submitting.");
+        //     return;
+        // }
 
-        console.log("Form Data Submitted:", formData);
-        showAlert("success", "Registration successful!");
+        setIsSubmitting(true);
+        console.log("Form submission started", formData);
+
+        try {
+            // Simulate API call
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+            console.log("Form submitted successfully", formData);
+            showAlert("success", "Registration successful!");
+        } catch (error) {
+            console.error("Submission error:", error);
+            showAlert("error", "Registration failed. Please try again.");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const renderStepContent = () => {
+        console.log(`Rendering step ${currentStep} content`);
         switch (currentStep) {
             case 1:
                 return (
@@ -241,48 +263,75 @@ const GrantProviderRegistration = () => {
     };
 
     return (
-        <>
-            <div className="p-6 bg-white rounded-lg max-w-2xl mx-auto">
-                <h2 className="text-2xl font-bold mb-6 text-center text-green">
-                    Registration
-                </h2>
-
-                <StepperIndicator currentStep={currentStep} />
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    {renderStepContent()}
-
-                    <div className="flex justify-between mt-6">
-                        {currentStep > 1 && currentStep < 6 && (
-                            <button
-                                type="button"
-                                onClick={prevStep}
-                                className="py-2 px-4 bg-gray-300 text-black font-semibold rounded-md hover:bg-gray-400"
-                            >
-                                Previous
-                            </button>
-                        )}
-
-                        {currentStep < 6 ? (
-                            <button
-                                type="button"
-                                onClick={nextStep}
-                                className="ml-auto py-2 px-4 bg-green text-white font-semibold rounded-md hover:bg-green-600"
-                            >
-                                {currentStep === 5 ? "Review" : "Next"}
-                            </button>
-                        ) : (
-                            <button
-                                type="submit"
-                                className="w-full py-2 px-4 bg-green text-white font-semibold rounded-md hover:bg-green-600"
-                            >
-                                Complete Registration
-                            </button>
-                        )}
-                    </div>
-                </form>
+        <div className="p-6 bg-white rounded-lg max-w-2xl mx-auto">
+            {/* Logo Section */}
+            <div className="flex justify-center mb-4">
+                <img src={logo} alt="Tujitume Logo" className="h-16" />
             </div>
-        </>
+
+            <h2 className="text-2xl font-bold mb-6 text-center text-green">
+                Grant Provider Registration
+            </h2>
+
+            {/* "Already have an account" link */}
+
+            <StepperIndicator currentStep={currentStep} />
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+                {renderStepContent()}
+
+                <div className="flex justify-between mt-6">
+                    {currentStep > 1 && currentStep < 6 && (
+                        <button
+                            type="button"
+                            onClick={prevStep}
+                            className="py-2 px-4 bg-gray-300 text-black font-semibold rounded-md hover:bg-gray-400"
+                            disabled={isSubmitting}
+                        >
+                            Previous
+                        </button>
+                    )}
+
+                    {currentStep < 6 ? (
+                        <button
+                            type="button"
+                            onClick={nextStep}
+                            className="ml-auto py-2 px-4 bg-green text-white font-semibold rounded-md hover:bg-green-600"
+                            disabled={isSubmitting}
+                        >
+                            {currentStep === 5 ? "Review" : "Next"}
+                        </button>
+                    ) : (
+                        <button
+                            type="submit"
+                            className="w-full py-2 px-4 bg-green text-white font-semibold rounded-md hover:bg-green-600 flex items-center justify-center"
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? (
+                                <>
+                                    <AiOutlineLoading3Quarters className="animate-spin mr-2" />
+                                    Processing...
+                                </>
+                            ) : (
+                                "Complete Registration"
+                            )}
+                        </button>
+                    )}
+                </div>
+            </form>
+            <div className="text-center mb-6">
+                <p className="text-gray-600">
+                    Already have an account?{" "}
+                    <button
+                        onClick={handleBackToLogin}
+                        className="font-medium text-green-600 hover:text-green-500"
+                        disabled={isSubmitting}
+                    >
+                        Sign in here
+                    </button>
+                </p>
+            </div>
+        </div>
     );
 };
 

@@ -289,24 +289,24 @@ const Navbar = () => {
 
                         {/* Dropdown Menu */}
                         {isDropdown && (
-                            <div className="absolute left-0 mt-3 w-56 bg-white bg-opacity-20 backdrop-blur-lg rounded-xl shadow-lg z-50 border border-white border-opacity-20 overflow-hidden">
-                                <ul className="py-1">
+                            <div className="absolute left-0 mt-3 w-56 bg-white bg-opacity-80 backdrop-blur-md rounded-xl shadow-lg z-50 border border-gray-300 overflow-hidden">
+                                <ul className="py-1 text-black">
                                     <li>
                                         <a
                                             href="/investment-capital"
-                                            className="block px-4 py-3 hover:bg-white hover:bg-opacity-10 transition-colors duration-200"
+                                            className="block px-4 py-3 hover:bg-gray-200 transition-colors duration-200"
                                             onClick={() => setIsDropdown(false)}
                                         >
-                                            Investment Capital Portal
+                                            Investment Opportunities
                                         </a>
                                     </li>
                                     <li>
                                         <a
                                             href="/grant-funding"
-                                            className="block px-4 py-3 hover:bg-white hover:bg-opacity-10 transition-colors duration-200"
+                                            className="block px-4 py-3 hover:bg-gray-200 transition-colors duration-200"
                                             onClick={() => setIsDropdown(false)}
                                         >
-                                            Grant Funding Portal
+                                            Business Grants
                                         </a>
                                     </li>
                                     {!isServicePage && (
@@ -318,9 +318,9 @@ const Navbar = () => {
                                                     );
                                                     setIsDropdown(false);
                                                 }}
-                                                className="w-full text-left px-4 py-3 hover:bg-white hover:bg-opacity-10 transition-colors duration-200"
+                                                className="w-full text-left px-4 py-3 hover:bg-gray-200 transition-colors duration-200"
                                             >
-                                                Create Investor Account
+                                                Create an Investor Account
                                             </button>
                                         </li>
                                     )}
