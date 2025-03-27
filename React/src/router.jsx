@@ -46,6 +46,9 @@ import DueDiligence from "./components/footer-pages/DueDiligence";
 import RaiseDispute from "./components/partials/RaiseDispute";
 import Dispute from "./components/footer-pages/Dispute";
 import Tutorials from "./components/footer-pages/Tutorials";
+// Portals
+import InvestmentCapital from "./components/Landing-page/Portals/InvestmentCapitalPortal/InvestmentCapital";
+import GrantFunding from "./components/Landing-page/Portals/GrantFundingPortal/GrantFunding";
 // // src/components/ScrollToTop.js
 import ScrollToTop from "./components/partials/ScrollToTop";
 import { GrantsOverview } from "./components/Grants/screens/Grantsoverview";
@@ -105,6 +108,7 @@ const router = createBrowserRouter([
             { path: "/investEquip/:amount/:id/:percent", element: <Invest /> },
             // test test
             { path: "/test", element: <Test /> },
+
             // test test
 
             //FOOTER
@@ -121,6 +125,7 @@ const router = createBrowserRouter([
 
         ],
     },
+<<<<<<< Updated upstream
 {
   path: "/grants-overview",
   element: <GrantsOverview />,
@@ -133,6 +138,10 @@ const router = createBrowserRouter([
   ],
 },
 
+=======
+    { path: "/investment-capital", element: <InvestmentCapital /> },
+    { path: "/grant-funding", element: <GrantFunding /> },
+>>>>>>> Stashed changes
     {
         path: "/dashboard",
         element: <Dashboard />, // This ensures the Dashboard doesn't use the DefaultLayout

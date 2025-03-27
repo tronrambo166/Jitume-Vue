@@ -24,6 +24,7 @@ const Navbar = () => {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [isCreateInvModalOpen, setIsCreateInvModalOpen] = useState(false);
     const { showAlert } = useAlert(); // Destructuring showAlert from useAlert
+    const [isDropdown, setIsDropdown] = useState(false);
 
     const dropdownTimeoutRef = useRef(null);
 
@@ -38,6 +39,28 @@ const Navbar = () => {
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
+
+    const useClickOutside = (ref, callback) => {
+        useEffect(() => {
+            const handleClickOutside = (event) => {
+                if (ref.current && !ref.current.contains(event.target)) {
+                    callback();
+                }
+            };
+
+            document.addEventListener("mousedown", handleClickOutside);
+            return () => {
+                document.removeEventListener("mousedown", handleClickOutside);
+            };
+        }, [ref, callback]);
+    };
+
+    const dropdownRef = useRef(null);
+
+    // Close dropdown when clicking outside
+    useClickOutside(dropdownRef, () => {
+        setIsDropdown(false);
+    });
 
     const { user, token, setUser, setToken } = useStateContext();
     const [isOpen, setIsOpen] = useState(false);
@@ -85,11 +108,7 @@ const Navbar = () => {
                         className="hover:opacity-75 transition-opacity"
                     >
                         <span>
-                            <img
-                                src={logo}
-                                width={130}
-                                alt="Logo"
-                            />
+                            <img src={logo} width={130} alt="Logo" />
                         </span>
                     </Link>
                 </div>
@@ -213,7 +232,7 @@ const Navbar = () => {
                 <div className="hidden md:flex items-center gap-3 ml-auto">
                     {" "}
                     {/* Updated to hidden md:flex */}
-                    {token ? (
+                    {/* {token ? (
                         <Link
                             to="/dashboard"
                             className="group relative  font-bold text-[#ffffff] text-[13px] hover:text-white ml-16"
@@ -231,7 +250,84 @@ const Navbar = () => {
                                 <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
                             </button>
                         )
-                    )}
+                    )} */}
+                    <div className="relative" ref={dropdownRef}>
+                        {/* Dashboard Link */}
+                        {token ? (
+                            <Link
+                                to="/dashboard"
+                                className="group relative font-bold text-[#ffffff] text-[13px] hover:text-white ml-16"
+                            >
+                                Dashboard
+                                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                            </Link>
+                        ) : (
+                            <button
+                                onClick={() => setIsDropdown(!isDropdown)}
+                                className="group relative font-bold text-[#CBD5E1] text-[13px] hover:text-white ml-16 flex items-center"
+                            >
+                                Investor Options
+                                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                                <svg
+                                    className={`ml-1 w-4 h-4 transition-transform ${
+                                        isDropdown ? "rotate-180" : ""
+                                    }`}
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M19 9l-7 7-7-7"
+                                    />
+                                </svg>
+                            </button>
+                        )}
+
+                        {/* Dropdown Menu */}
+                        {isDropdown && (
+                            <div className="absolute left-0 mt-3 w-56 bg-white bg-opacity-20 backdrop-blur-lg rounded-xl shadow-lg z-50 border border-white border-opacity-20 overflow-hidden">
+                                <ul className="py-1">
+                                    <li>
+                                        <a
+                                            href="/investment-capital"
+                                            className="block px-4 py-3 hover:bg-white hover:bg-opacity-10 transition-colors duration-200"
+                                            onClick={() => setIsDropdown(false)}
+                                        >
+                                            Investment Capital Portal
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="/grant-funding"
+                                            className="block px-4 py-3 hover:bg-white hover:bg-opacity-10 transition-colors duration-200"
+                                            onClick={() => setIsDropdown(false)}
+                                        >
+                                            Grant Funding Portal
+                                        </a>
+                                    </li>
+                                    {!isServicePage && (
+                                        <li>
+                                            <button
+                                                onClick={() => {
+                                                    setIsCreateInvModalOpen(
+                                                        true
+                                                    );
+                                                    setIsDropdown(false);
+                                                }}
+                                                className="w-full text-left px-4 py-3 hover:bg-white hover:bg-opacity-10 transition-colors duration-200"
+                                            >
+                                                Create Investor Account
+                                            </button>
+                                        </li>
+                                    )}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
                     {token ? (
                         <button
                             onClick={() => {
