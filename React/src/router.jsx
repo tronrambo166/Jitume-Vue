@@ -53,7 +53,7 @@ import GrantFunding from "./components/Landing-page/Portals/GrantFundingPortal/G
 import ScrollToTop from "./components/partials/ScrollToTop";
 import { GrantsOverview } from "./components/Grants/screens/Grantsoverview";
 import DashboardHome from "./components/Grants/components/Grantshome";
-import InvestmentDashboard from "./components/Grants/screens/InvestmentDashboard.JSX";
+import InvestmentDashboard from "./components/Grants/screens/InvestmentDashboard";
 
 const router = createBrowserRouter([
     {
@@ -121,27 +121,24 @@ const router = createBrowserRouter([
             { path: "/due-diligence", element: <DueDiligence /> },
             { path: "/Resolution-center", element: <Dispute /> },
             { path: "/tutorials", element: <Tutorials /> },
-
-
         ],
     },
-<<<<<<< Updated upstream
-{
-  path: "/grants-overview",
-  element: <GrantsOverview />,
-  children: [
-    { path: "grants-home", element: <DashboardHome /> },
-    { path: "funding/investments", element: <InvestmentDashboard /> } ,
-    { path: "grants-overview/grants-home", element: <DashboardHome/> }
 
-    // ✅ Correct
-  ],
-},
+    {
+        path: "/grants-overview",
+        element: <GrantsOverview />,
+        children: [
+            { path: "grants-home", element: <DashboardHome /> },
+            { path: "funding/investments", element: <InvestmentDashboard /> },
+            { path: "grants-overview/grants-home", element: <DashboardHome /> },
 
-=======
+            // ✅ Correct
+        ],
+    },
+
     { path: "/investment-capital", element: <InvestmentCapital /> },
     { path: "/grant-funding", element: <GrantFunding /> },
->>>>>>> Stashed changes
+
     {
         path: "/dashboard",
         element: <Dashboard />, // This ensures the Dashboard doesn't use the DefaultLayout

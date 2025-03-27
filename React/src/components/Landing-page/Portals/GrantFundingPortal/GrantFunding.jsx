@@ -17,12 +17,23 @@ const GrantFunding = () => {
         <>
             <div className="flex flex-col md:flex-row min-h-screen">
                 {/* Left side - Image (full height) */}
-                <div className="hidden md:flex md:w-1/2">
+                <div className="hidden md:flex md:w-1/2 h-screen relative">
                     <img
-                        src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-                        alt="Grant funding illustration"
-                        className="w-full h-full object-cover"
+                        src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                        alt="Investment capital"
+                        className="absolute inset-0 w-full h-full object-cover"
                     />
+                    <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+
+                    <div className="relative z-10 flex flex-col items-center justify-center text-white text-center w-full p-8">
+                        <h3 className="text-3xl font-bold">
+                            Global Investment Platform
+                        </h3>
+                        <p className="mt-2 text-lg">
+                            Connect with entrepreneurs and investment
+                            opportunities worldwide.
+                        </p>
+                    </div>
                 </div>
 
                 {/* Right side - Form */}

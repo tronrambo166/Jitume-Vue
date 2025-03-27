@@ -244,7 +244,7 @@ const GrantProviderRegistration = () => {
         <>
             <div className="p-6 bg-white rounded-lg max-w-2xl mx-auto">
                 <h2 className="text-2xl font-bold mb-6 text-center text-green">
-                    Grant Provider Registration
+                    Registration
                 </h2>
 
                 <StepperIndicator currentStep={currentStep} />
