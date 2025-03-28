@@ -46,11 +46,14 @@ import DueDiligence from "./components/footer-pages/DueDiligence";
 import RaiseDispute from "./components/partials/RaiseDispute";
 import Dispute from "./components/footer-pages/Dispute";
 import Tutorials from "./components/footer-pages/Tutorials";
+// Portals
+import InvestmentCapital from "./components/Landing-page/Portals/InvestmentCapitalPortal/InvestmentCapital";
+import GrantFunding from "./components/Landing-page/Portals/GrantFundingPortal/GrantFunding";
 // // src/components/ScrollToTop.js
 import ScrollToTop from "./components/partials/ScrollToTop";
 import { GrantsOverview } from "./components/Grants/screens/Grantsoverview";
 import DashboardHome from "./components/Grants/components/Grantshome";
-import InvestmentDashboard from "./components/Grants/screens/InvestmentDashboard.JSX";
+import InvestmentDashboard from "./components/Grants/screens/InvestmentDashboard";
 import DealRoom from "./components/Grants/screens/Dealroom";
 import TujitumeGrantPortal from "./components/Grants/screens/Grantsportal";
 
@@ -119,25 +122,23 @@ const router = createBrowserRouter([
             { path: "/due-diligence", element: <DueDiligence /> },
             { path: "/Resolution-center", element: <Dispute /> },
             { path: "/tutorials", element: <Tutorials /> },
-
-
         ],
     },
- {
-  path: "/grants-overview",
-  element: <GrantsOverview />,
-  children: [
-    { index: true, element: <DashboardHome /> }, // Handles BOTH /grants-overview AND /grants-overview/grants-home
-    { path: "funding/investments", element: <InvestmentDashboard /> },
-    { 
-      path: "funding/deals", 
-      children: [
-        { path: ":opportunityId", element: <DealRoom /> }
-      ]
+    {
+        path: "/grants-overview",
+        element: <GrantsOverview />,
+        children: [
+            { index: true, element: <DashboardHome /> }, // Handles BOTH /grants-overview AND /grants-overview/grants-home
+            { path: "funding/investments", element: <InvestmentDashboard /> },
+            {
+                path: "funding/deals",
+                children: [{ path: ":opportunityId", element: <DealRoom /> }],
+            },
+            { path: "grants/discover", element: <TujitumeGrantPortal /> },
+        ],
     },
-    { path: "grants/discover", element: <TujitumeGrantPortal /> }
-  ],
-},
+    { path: "/investment-capital", element: <InvestmentCapital /> },
+    { path: "/grant-funding", element: <GrantFunding /> },
 
     {
         path: "/dashboard",
