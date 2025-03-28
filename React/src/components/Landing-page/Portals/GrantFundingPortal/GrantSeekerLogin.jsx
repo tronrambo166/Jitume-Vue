@@ -28,7 +28,7 @@ const GrantSeekerLogin = ({ onRegisterClick, showSignUp }) => {
     };
 
     const handleGoogleLogin = () => {
-        navigate("/grants-overview/grants-overview/grants-home");
+        navigate("/grants-overview");
     };
 
     if (showSignUp) return null;

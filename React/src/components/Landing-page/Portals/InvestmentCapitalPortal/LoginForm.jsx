@@ -5,8 +5,10 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useAlert } from "../../../partials/AlertContext";
 import ForgotPassModal from "../../../partials/ForgotPassModal";
 import logo2 from "../../../../images/Tujitumelogo.svg";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({ onSwitchToRegister }) => {
+    const navigate = useNavigate();
     const { showAlert } = useAlert();
     const [loginData, setLoginData] = useState({
         email: "",
@@ -32,7 +34,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
     };
 
     const handleGoogleLogin = () => {
-        console.log("Continue with Google clicked");
+         navigate("/grants-overview");
     };
 
     const handleForgotPasswordClick = (e) => {
