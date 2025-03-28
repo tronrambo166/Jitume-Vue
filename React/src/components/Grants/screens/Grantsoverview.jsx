@@ -127,7 +127,7 @@ const Navigation = {
       },
       { 
         icon: Briefcase, 
-        label: 'Grants', 
+        label: 'Grants Funding', 
         to: '/grants-overview/grants',
         children: [
           { label: 'Discover Grants', to: '/grants-overview/grants/discover' },
@@ -137,7 +137,7 @@ const Navigation = {
       },
       { 
         icon: CreditCard, 
-        label: 'Funding', 
+        label: ' Investment Funding', 
         to: '/grants-overview/funding',
         children: [
           { label: 'Investment Portal', to: '/grants-overview/funding/investments' },
