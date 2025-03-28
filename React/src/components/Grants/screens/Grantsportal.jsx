@@ -603,7 +603,7 @@ const TujitumeGrantPortal = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-5xl mx-auto">
+      <div className=" container">
         <header className="mb-8 flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold text-gray-800">Tujitume Grants</h1>

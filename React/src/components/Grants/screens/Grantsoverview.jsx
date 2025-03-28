@@ -122,7 +122,8 @@ const Navigation = {
       { 
         icon: Home, 
         label: 'Dashboard', 
-        to: 'grants-overview/grants-home',
+        to: "/grants-overview",  // ✅ Uses the index route (cleaner)
+        // OR to: "/grants-overview/grants-home" if you still want the longer URL
         exact: true
       },
       { 
@@ -191,19 +192,31 @@ const Navigation = {
           <h2 className="text-2xl font-bold text-green-600">Tujitume</h2>
           <p className="text-sm text-gray-500">Grants Platform</p>
         </div>
-        <nav className="p-4 space-y-1 overflow-y-auto h-[calc(100vh-120px)]">
+        <nav className="p-4 space-y-1  overflow-y-auto h-[calc(100vh-120px)]">
           {navItems.map((item) => (
-            <NavItem 
-              key={item.to}
-              icon={item.icon}
-              label={item.label}
-              to={item.to}
-              hasChildren={!!item.children}
-              isActive={item.exact 
-                ? location.pathname === item.to
-                : location.pathname.startsWith(item.to)
-              }
-            />
+           <NavItem 
+           key={item.to}
+           icon={item.icon}
+           label={
+             <span style={{ 
+               whiteSpace: "nowrap", 
+               overflow: "hidden", 
+               textOverflow: "ellipsis", 
+               display: "inline-block", 
+               maxWidth: "100%" 
+             }}>
+               {item.label}
+             </span>
+           }
+           to={item.to}
+           hasChildren={!!item.children}
+           isActive={
+             item.exact 
+               ? location.pathname === item.to
+               : location.pathname.startsWith(item.to)
+           }
+         />
+         
           ))}
           <div className="pt-4 mt-4 border-t">
             <NavItem 

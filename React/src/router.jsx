@@ -123,23 +123,21 @@ const router = createBrowserRouter([
 
         ],
     },
-    {
-        path: "/grants-overview",
-        element: <GrantsOverview />,
-        children: [
-          { index: true, element: <DashboardHome /> }, // This handles /grants-overview
-          { path: "grants-home", element: <DashboardHome /> },
-          { path: "funding/investments", element: <InvestmentDashboard /> },
-          { 
-            path: "funding/deals", 
-            children: [
-            //   { index: true, element: <div>Please select a deal</div> }, // Handles /grants-overview/funding/deals
-              { path: ":opportunityId", element: <DealRoom /> } // Handles /grants-overview/funding/deals/123
-            ]
-          },
-          { path: "grants/discover", element: <TujitumeGrantPortal /> }
-        ],
-      },
+ {
+  path: "/grants-overview",
+  element: <GrantsOverview />,
+  children: [
+    { index: true, element: <DashboardHome /> }, // Handles BOTH /grants-overview AND /grants-overview/grants-home
+    { path: "funding/investments", element: <InvestmentDashboard /> },
+    { 
+      path: "funding/deals", 
+      children: [
+        { path: ":opportunityId", element: <DealRoom /> }
+      ]
+    },
+    { path: "grants/discover", element: <TujitumeGrantPortal /> }
+  ],
+},
 
     {
         path: "/dashboard",
