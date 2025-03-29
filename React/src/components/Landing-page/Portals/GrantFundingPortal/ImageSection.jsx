@@ -1,10 +1,18 @@
 import React from "react";
+<<<<<<< HEAD
+=======
+import PortalImg from "../../../../images/wwe.jpg";
+>>>>>>> 12b9ff5463a2f99939642a5cf36054a3b2367f55
 
 const ImageSection = () => {
     return (
         <div className="hidden md:flex md:w-1/2 h-screen relative">
             <img
+<<<<<<< HEAD
                 src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+=======
+                src={PortalImg}
+>>>>>>> 12b9ff5463a2f99939642a5cf36054a3b2367f55
                 alt="Investment capital"
                 className="absolute inset-0 w-full h-full object-cover"
             />

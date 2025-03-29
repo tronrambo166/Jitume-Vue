@@ -17,6 +17,7 @@ const InvestmentCapital = () => {
 
     return (
         <div className="min-h-screen flex flex-col md:flex-row">
+<<<<<<< HEAD
             <ImageComponent />
 
             <div className="w-full md:w-1/2 p-8 bg-white">
@@ -33,6 +34,26 @@ const InvestmentCapital = () => {
                         />
                     </div>
                 )}
+=======
+            {/* Left Side - Fixed Image (doesn't scroll) */}
+                <ImageComponent />
+
+            {/* Right Side - Scrollable Content */}
+            <div className="w-full md:w-1/2 p-8 bg-white overflow-y-auto h-screen">
+                <BackBtn />
+
+                <div className=" mx-auto ">
+                    {showSignUp ? (
+                        <RegisterForm onSwitchToLogin={handleBackToLogin} />
+                    ) : (
+                        <div className=" max-w-md mx-auto py-8 flex flex-col justify-center min-h-[calc(100vh-200px)]">
+                            <LoginForm
+                                onSwitchToRegister={handleSwitchToRegister}
+                            />
+                        </div>
+                    )}
+                </div>
+>>>>>>> 12b9ff5463a2f99939642a5cf36054a3b2367f55
             </div>
         </div>
     );

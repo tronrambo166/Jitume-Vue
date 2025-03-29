@@ -75,7 +75,6 @@ class investProgressReminder extends Command
                     $msg->subject('Awaiting Payment Reminder');
                     });
                 }
-
                 else if($bid->status == 'Confirmed')
                 {
 

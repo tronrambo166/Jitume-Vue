@@ -54,6 +54,11 @@ import ScrollToTop from "./components/partials/ScrollToTop";
 import { GrantsOverview } from "./components/Grants/screens/Grantsoverview";
 import DashboardHome from "./components/Grants/components/Grantshome";
 import InvestmentDashboard from "./components/Grants/screens/InvestmentDashboard";
+<<<<<<< HEAD
+=======
+import DealRoom from "./components/Grants/screens/Dealroom";
+import TujitumeGrantPortal from "./components/Grants/screens/Grantsportal";
+>>>>>>> 12b9ff5463a2f99939642a5cf36054a3b2367f55
 
 const router = createBrowserRouter([
     {
@@ -123,11 +128,15 @@ const router = createBrowserRouter([
             { path: "/tutorials", element: <Tutorials /> },
         ],
     },
+<<<<<<< HEAD
 
+=======
+>>>>>>> 12b9ff5463a2f99939642a5cf36054a3b2367f55
     {
         path: "/grants-overview",
         element: <GrantsOverview />,
         children: [
+<<<<<<< HEAD
             { path: "grants-home", element: <DashboardHome /> },
             { path: "funding/investments", element: <InvestmentDashboard /> },
             { path: "grants-overview/grants-home", element: <DashboardHome /> },
@@ -136,6 +145,17 @@ const router = createBrowserRouter([
         ],
     },
 
+=======
+            { index: true, element: <DashboardHome /> }, // Handles BOTH /grants-overview AND /grants-overview/grants-home
+            { path: "funding/investments", element: <InvestmentDashboard /> },
+            {
+                path: "funding/deals",
+                children: [{ path: ":opportunityId", element: <DealRoom /> }],
+            },
+            { path: "grants/discover", element: <TujitumeGrantPortal /> },
+        ],
+    },
+>>>>>>> 12b9ff5463a2f99939642a5cf36054a3b2367f55
     { path: "/investment-capital", element: <InvestmentCapital /> },
     { path: "/grant-funding", element: <GrantFunding /> },
 
