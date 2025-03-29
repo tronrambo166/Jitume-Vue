@@ -2,16 +2,20 @@ import React, { useState } from "react";
 import { Mail, Lock } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import logo from "../../../../images/Tujitumelogo.svg"; // Adjust path as needed
+import { useAlert } from "../../../partials/AlertContext";
+import ForgotPassModal from "../../../partials/ForgotPassModal";
+import logo from "../../../../images/Tujitumelogo.svg";
 import { useNavigate } from "react-router-dom";
 
 const GrantSeekerLogin = ({ onRegisterClick, showSignUp }) => {
     const navigate = useNavigate();
+    const { showAlert } = useAlert();
     const [loginData, setLoginData] = useState({
         email: "",
         password: "",
     });
     const [isLoading, setIsLoading] = useState(false);
+    const [showForgotPassModal, setShowForgotPassModal] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -31,10 +35,27 @@ const GrantSeekerLogin = ({ onRegisterClick, showSignUp }) => {
         navigate("/grants-overview");
     };
 
+    const handleForgotPasswordClick = (e) => {
+        e.preventDefault();
+        setShowForgotPassModal(true);
+    };
+
+    const handleCloseForgotPassModal = () => {
+        setShowForgotPassModal(false);
+    };
+
+    const handlePasswordResetSuccess = () => {
+        setShowForgotPassModal(false);
+        showAlert(
+            "success",
+            "Password reset successful! You can now log in with your new password."
+        );
+    };
+
     if (showSignUp) return null;
 
     return (
-        <div className="w-full max-w-sm mx-auto p-6 bg-white  rounded-lg">
+        <div className="w-full max-w-sm mx-auto p-6 bg-white rounded-lg">
             {/* Logo Section */}
             <div className="flex justify-center">
                 <img src={logo} alt="Tujitume Logo" className="h-14 mb-4" />
@@ -109,7 +130,7 @@ const GrantSeekerLogin = ({ onRegisterClick, showSignUp }) => {
                         <span className="text-gray-900">Remember me</span>
                     </label>
                     <button
-                        onClick={(e) => e.preventDefault()}
+                        onClick={handleForgotPasswordClick}
                         className="text-green-600 hover:text-green-500"
                         disabled={isLoading}
                     >
@@ -145,6 +166,16 @@ const GrantSeekerLogin = ({ onRegisterClick, showSignUp }) => {
                     Sign up
                 </button>
             </div>
+
+            {/* Forgot Password Modal */}
+            {showForgotPassModal && (
+                <ForgotPassModal
+                    isOpen={showForgotPassModal}
+                    onClose={handleCloseForgotPassModal}
+                    onSuccess={handlePasswordResetSuccess}
+                    initialEmail={loginData.email}
+                />
+            )}
         </div>
     );
 };
