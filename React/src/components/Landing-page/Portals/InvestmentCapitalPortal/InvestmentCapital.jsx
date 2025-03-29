@@ -17,24 +17,6 @@ const InvestmentCapital = () => {
 
     return (
         <div className="min-h-screen flex flex-col md:flex-row">
-<<<<<<< HEAD
-            <ImageComponent />
-
-            <div className="w-full md:w-1/2 p-8 bg-white">
-                <BackBtn />
-
-                {showSignUp ? (
-                    <div className="w-full">
-                        <RegisterForm onSwitchToLogin={handleBackToLogin} />
-                    </div>
-                ) : (
-                    <div className="flex items-center justify-center h-full">
-                        <LoginForm
-                            onSwitchToRegister={handleSwitchToRegister}
-                        />
-                    </div>
-                )}
-=======
             {/* Left Side - Fixed Image (doesn't scroll) */}
                 <ImageComponent />
 
@@ -53,7 +35,6 @@ const InvestmentCapital = () => {
                         </div>
                     )}
                 </div>
->>>>>>> 12b9ff5463a2f99939642a5cf36054a3b2367f55
             </div>
         </div>
     );
