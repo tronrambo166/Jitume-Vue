@@ -17,10 +17,8 @@ const GrantFunding = () => {
 
     return (
         <div className="flex min-h-screen">
-            {/* Left side - Image (fixed, exactly half screen) */}
             <ImageSection />
 
-            {/* Right side - Form (scrollable, exactly half screen) */}
             <div className="w-full md:w-1/2 p-8 bg-white overflow-y-auto h-screen flex flex-col">
                 <div>
                     <BackBtn />

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FileText ,Eye } from "lucide-react";
+import { FileText ,Eye ,Globe } from "lucide-react";
 import DocumentPreviewModal from "./DocumentPreviewModal";
 
 const RegistrationSummary = ({ formData, onTermsChange }) => {
@@ -146,7 +146,7 @@ const RegistrationSummary = ({ formData, onTermsChange }) => {
                             Website
                         </p>
                         <div className="flex items-center">
-                            <FileText className="h-4 w-4 text-gray-500 mr-2" />
+                            <Globe className="h-4 w-4 text-gray-500 mr-2" />
                             <a
                                 href={
                                     formData.website.startsWith("http")

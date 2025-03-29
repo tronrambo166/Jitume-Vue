@@ -141,66 +141,90 @@ const InvestorRegisterForm = ({ onSwitchToLogin }) => {
         setCurrentStep((prev) => Math.max(prev - 1, 1));
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+   const handleSubmit = async (e) => {
+       e.preventDefault();
 
-        if (!formData.termsAgreed) {
-            showAlert("error", "Please agree to the terms and conditions");
-            return;
-        }
+       if (!formData.termsAgreed) {
+           showAlert("error", "Please agree to the terms and conditions");
+           return;
+       }
 
-        setIsSubmitting(true);
+       setIsSubmitting(true);
 
-        const submissionData = new FormData();
-        Object.keys(formData).forEach((key) => {
-            if (key === "investmentGuidelines") {
-                formData.investmentGuidelines.forEach((file) => {
-                    submissionData.append(`investmentGuidelines`, file);
-                });
-            } else if (key === "investmentRange") {
-                submissionData.append(
-                    "investmentRangeMin",
-                    formData.investmentRange.min
-                );
-                submissionData.append(
-                    "investmentRangeMax",
-                    formData.investmentRange.max
-                );
-            } else if (Array.isArray(formData[key])) {
-                submissionData.append(key, formData[key].join(","));
-            } else {
-                submissionData.append(key, formData[key]);
-            }
-        });
+       try {
+           const submitData = new FormData();
 
-        try {
-            // Simulate API call
-            await new Promise((resolve) => setTimeout(resolve, 2000));
+           submitData.append("name", formData.name);
+           submitData.append("investorType", formData.investorType);
+           submitData.append("email", formData.email);
+           submitData.append("phone", formData.phone);
+           submitData.append("website", formData.website || "");
+           submitData.append("password", formData.password);
+           submitData.append("confirmPassword", formData.confirmPassword);
+           submitData.append(
+               "preferredSectors",
+               formData.preferredSectors.join(",")
+           );
+           submitData.append(
+               "startupStagePreferences",
+               formData.startupStagePreferences.join(",")
+           );
+           submitData.append(
+               "investmentRangeMin",
+               formData.investmentRange.min
+           );
+           submitData.append(
+               "investmentRangeMax",
+               formData.investmentRange.max
+           );
+           submitData.append(
+               "geographicFocus",
+               formData.geographicFocus.join(",")
+           );
+           submitData.append(
+               "engagementTypes",
+               formData.engagementTypes.join(",")
+           );
+           submitData.append("termsAgreed", formData.termsAgreed);
 
-            // On successful submission
-            showAlert("success", "Registration completed successfully!");
+           if (
+               formData.investmentGuidelines &&
+               formData.investmentGuidelines.length > 0
+           ) {
+               formData.investmentGuidelines.forEach((file) => {
+                   submitData.append("investmentGuidelines", file);
+               });
+           }
 
-            // Here you would typically redirect or reset the form
-            console.log("Form submitted successfully!", {
-                ...formData,
-                investmentGuidelines: formData.investmentGuidelines.map(
-                    (file) => ({
-                        name: file.name,
-                        type: file.type,
-                        size: file.size,
-                    })
-                ),
-            });
-        } catch (error) {
-            console.error("Submission error:", error);
-            showAlert(
-                "error",
-                "An error occurred during submission. Please try again."
-            );
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+           console.log("Submitting form data:", {
+               ...Object.fromEntries(submitData),
+               investmentGuidelines:
+                   formData.investmentGuidelines?.map((f) => f.name) || [],
+           });
+
+
+           await new Promise((resolve) => setTimeout(resolve, 2000));
+
+           showAlert("success", "Registration completed successfully!");
+
+           console.log("Form submitted successfully!");
+       } catch (error) {
+           console.error("Submission error:", error);
+
+           let errorMessage = "Registration failed. Please try again.";
+
+           if (error.response) {
+               errorMessage = error.response.data.message || errorMessage;
+           } else if (error.request) {
+               errorMessage =
+                   "No response from server. Please check your connection.";
+           }
+
+           showAlert("error", errorMessage);
+       } finally {
+           setIsSubmitting(false);
+       }
+   };
 
     const renderStepContent = () => {
         switch (currentStep) {

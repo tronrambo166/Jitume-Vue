@@ -266,7 +266,7 @@ const Navbar = () => {
                                 onClick={() => setIsDropdown(!isDropdown)}
                                 className="group relative font-bold text-white/90 text-xs hover:text-white ml-16 flex items-center"
                             >
-                                Investor Options
+                                Grants & Investment
                                 <span className="absolute left-0 bottom-0 w-0 h-px bg-yellow-400/80 transition-all duration-300 group-hover:w-full" />
                                 <svg
                                     className={`ml-1 w-3 h-3 transition-transform duration-300 ${
@@ -301,7 +301,7 @@ const Navbar = () => {
                                             className="block px-3 py-2 hover:bg-white/10 transition-colors"
                                             onClick={() => setIsDropdown(false)}
                                         >
-                                            Investment Opportunities
+                                            Investor Capital
                                         </a>
                                     </li>
                                     <li>
@@ -310,7 +310,7 @@ const Navbar = () => {
                                             className="block px-3 py-2 hover:bg-white/10 transition-colors"
                                             onClick={() => setIsDropdown(false)}
                                         >
-                                            Business Grants
+                                            Grant Funding
                                         </a>
                                     </li>
                                     {!isServicePage && (
@@ -324,7 +324,8 @@ const Navbar = () => {
                                                 }}
                                                 className="w-full text-left px-3 py-2 hover:bg-white/10 transition-colors"
                                             >
-                                                Create Investor Account
+                                                Create Individual Investor
+                                                Account
                                             </button>
                                         </li>
                                     )}

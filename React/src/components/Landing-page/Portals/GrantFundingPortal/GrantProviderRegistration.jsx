@@ -105,45 +105,50 @@ const GrantProviderRegistration = ({ handleBackToLogin }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Handle step navigation
         if (currentStep < 4) {
             nextStep();
             return;
         }
 
-        if (!formData.termsAgreed) {
-            showAlert("error", "You must agree to the terms and conditions");
-            return;
-        }
-
-        // Prepare the data to be sent to backend
-        const submissionData = {
-            organizationName: formData.organizationName,
-            organizationType: formData.organizationType,
-            email: formData.email,
-            phoneNumber: formData.phoneNumber,
-            website: formData.website, // Include website in submission
-            missionStatement: formData.missionStatement,
-            focusSectors: formData.focusSectors,
-            targetRegions: formData.targetRegions,
-            organizationDocuments: formData.organizationDocuments?.map(
-                (file) => ({
-                    name: file.name,
-                    type: file.type,
-                    size: file.size,
-                })
-            ),
-        };
-
         setIsSubmitting(true);
+
         try {
-            // Simulate form submission
+            const submitData = new FormData();
+
+            submitData.append("organizationName", formData.organizationName);
+            submitData.append("organizationType", formData.organizationType);
+            submitData.append("email", formData.email);
+            submitData.append("phoneNumber", formData.phoneNumber);
+            submitData.append("website", formData.website || "");
+            submitData.append("missionStatement", formData.missionStatement);
+            submitData.append("focusSectors", formData.focusSectors);
+            submitData.append("targetRegions", formData.targetRegions);
+            submitData.append("termsAgreed", formData.termsAgreed);
+
+            if (formData.organizationDocuments) {
+                formData.organizationDocuments.forEach((file, index) => {
+                    submitData.append(`document_${index}`, file);
+                });
+            }
+
+            console.log(
+                "Form data to be submitted:",
+                Object.fromEntries(submitData)
+            );
+
             await new Promise((resolve) => setTimeout(resolve, 2000));
 
-            console.log("Form data to be submitted:", submissionData);
             showAlert("success", "Registration successful!");
+
         } catch (error) {
             console.error("Registration error:", error);
-            showAlert("error", "Registration failed. Please try again.");
+            const errorMessage =
+                error.response?.data?.message ||
+                error.message ||
+                "Registration failed. Please try again.";
+            showAlert("error", errorMessage);
         } finally {
             setIsSubmitting(false);
         }

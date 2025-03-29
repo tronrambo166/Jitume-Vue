@@ -481,66 +481,63 @@ function CreateInvestorAccount({ isOpen, onClose, isInvestor }) {
             submitData.append("id_no", registrationData.id_no); // ID/Passport Number
             submitData.append("investor", 1);
             submitData.append("tax_pin", registrationData.tax_pin); // Tax PIN
-            submitData.append("id_passport", registrationData.id_passport); // Attached ID/Passport
+            submitData.append("id_passport", registrationData.id_passport); 
             submitData.append(
                 "confirmPassword",
                 registrationData.confirmPassword
             );
-            submitData.append("pin", registrationData.pin); // Attached PIN
+            submitData.append("pin", registrationData.pin); 
             submitData.append(
                 "past_investment",
                 registrationData.past_investment
-            ); // Past Investment
+            ); 
             submitData.append("website", registrationData.website); // Website (Optional)
             submitData.append("inv_range", registrationData.inv_range); // Investment Range
             submitData.append(
                 "interested_cats",
                 registrationData.interested_cats
-            ); // Interested Categories
+            ); 
 
             console.log(registrationData); 
 
-            // Submit the registration data
             const { data } = await axiosClient.post("/register", submitData);
 
-            // Check for backend-specific errors (e.g., if the email already exists)
             if (data.error) {
                 formErrors.push(data.error);
-                showAlert("error", data.error); // Show backend-specific error alert
+                showAlert("error", data.error);
                 setErrors({ general: formErrors });
                 return;
             }
 
-            showAlert("success", "Registration successful!"); // Show success alert
+            showAlert("success", "Registration successful!"); 
             setStep(1);
 
             onClose();
         } catch (error) {
-            // Handle backend errors
             if (error.response) {
                 const errorMessage =
                     error.response.data.message ||
                     "Registration failed. Please try again.";
                 formErrors.push(errorMessage);
-                showAlert("error", errorMessage); // Show error alert
+                showAlert("error", errorMessage); 
                 setErrors({ general: formErrors });
             } else if (error.request) {
                 const errorMessage =
                     "No response from the server. Please try again.";
                 formErrors.push(errorMessage);
-                showAlert("error", errorMessage); // Show error alert
+                showAlert("error", errorMessage);
                 setErrors({ general: formErrors });
             } else {
                 const errorMessage =
                     "An unexpected error occurred. Please try again.";
                 formErrors.push(errorMessage);
-                showAlert("error", errorMessage); // Show error alert
+                showAlert("error", errorMessage); 
                 setErrors({ general: formErrors });
             }
 
-            console.log(error); // Log the error for debugging
+            console.log(error); 
         } finally {
-            setLoadingsubmit(false); // Stop loading spinner
+            setLoadingsubmit(false); 
         }
     };
 
