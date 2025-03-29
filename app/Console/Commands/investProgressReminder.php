@@ -79,8 +79,7 @@ class investProgressReminder extends Command
                 {
 
                 }
-
-                else()
+                else
                 {
 
                 }  
