@@ -8,6 +8,8 @@ import Step1 from "./components/steps/Step1";
 import Step2 from "./components/steps/Step2";
 import Step3 from "./components/steps/Step3";
 import RegistrationSummary from "./components/RegistrationSummary";
+import axiosClient from "../../../../axiosClient";
+import { useStateContext } from "../../../../contexts/contextProvider";
 
 const SignInPrompt = ({ handleBackToLogin, isSubmitting }) => (
     <div className="text-center mb-6">
@@ -25,7 +27,8 @@ const SignInPrompt = ({ handleBackToLogin, isSubmitting }) => (
 );
 
 const GrantProviderRegistration = ({ handleBackToLogin }) => {
-    const { showAlert } = useAlert();
+     const { setUser, setToken, token } = useStateContext();
+     const { showAlert } = useAlert();
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState({
         ...INITIAL_FORM_DATA,
@@ -117,19 +120,22 @@ const GrantProviderRegistration = ({ handleBackToLogin }) => {
         try {
             const submitData = new FormData();
 
-            submitData.append("organizationName", formData.organizationName);
-            submitData.append("organizationType", formData.organizationType);
+            submitData.append("fname", formData.organizationName);
+            submitData.append("org_type", formData.organizationType);
             submitData.append("email", formData.email);
-            submitData.append("phoneNumber", formData.phoneNumber);
+            submitData.append("password", formData.password);
+            submitData.append("phone", formData.phoneNumber);
             submitData.append("website", formData.website || "");
-            submitData.append("missionStatement", formData.missionStatement);
-            submitData.append("focusSectors", formData.focusSectors);
-            submitData.append("targetRegions", formData.targetRegions);
+            submitData.append("mission", formData.missionStatement);
+            submitData.append("interested_cats", formData.focusSectors);
+            submitData.append("regions", formData.targetRegions);
             submitData.append("termsAgreed", formData.termsAgreed);
+            submitData.append("investor", 2);
 
             if (formData.organizationDocuments) {
                 formData.organizationDocuments.forEach((file, index) => {
-                    submitData.append(`document_${index}`, file);
+                    //submitData.append(`document_${index}`, file);
+                    submitData.append("document", file);
                 });
             }
 
@@ -137,6 +143,20 @@ const GrantProviderRegistration = ({ handleBackToLogin }) => {
                 "Form data to be submitted:",
                 Object.fromEntries(submitData)
             );
+
+            const { data } = await axiosClient.post("/register", submitData);
+            console.log(data);
+
+            if (data.error) {
+                formErrors.push(data.error);
+                showAlert("error", data.error);
+                setErrors({ general: formErrors });
+                return;
+            }
+            if (data.auth) {
+                setUser(data.user);
+                setToken(data.token);
+            }
 
             await new Promise((resolve) => setTimeout(resolve, 2000));
 

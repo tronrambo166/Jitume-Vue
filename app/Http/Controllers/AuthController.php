@@ -260,7 +260,8 @@ class AuthController extends Controller
             if(isset($request->investor) && $request->investor == 2)
             {
                 $data = $request->all();
-                $this->grantRegister($data);
+                $register = $this->grantRegister($data);
+                return $register;
             }
 
 
@@ -325,43 +326,22 @@ class AuthController extends Controller
     // REGISTER SUB FUNCTIONS...
 
     public function grantRegister($data)
-    {    return $data;
+    {    
          $investor = 2; 
-         $inv_range = $data['inv_range'];
          $interested_cats = $data['interested_cats'];  
-         $past_investment = $data['past_investment'];
-         $website = $data['website'];
-         $id_no = $data['id_no'];
-         $tax_pin = $data['tax_pin']; 
+         $website = $data['website']; 
 
          //File Type Check!
-        $passport=$data['id_passport'];
+        $passport=$data['document'];
         if($passport) {
           $ext=strtolower($passport->getClientOriginalExtension());
           
           $size=($passport->getSize())/1048576; // Get MB
-          if($size == 2 || $size > 2)
+          if($size == 3 || $size > 3)
           {
             return response()->json([ 'status' => 400, 'message' => 'Document size must be less than 2MB!']);
           }
 
-          if($ext!='pdf' && $ext!= 'docx')
-          {
-            return response()->json([ 'status' => 400, 'message' => 'Only pdf & docx are allowed!']);
-          } 
-        }
-
-
-        if(isset($data['pin'])){
-        $pin=$data['pin'];
-          $ext=strtolower($pin->getClientOriginalExtension());
-
-          $size=($pin->getSize())/1048576; // Get MB
-          if($size == 2 || $size > 2)
-          {
-            return response()->json([ 'status' => 400, 'message' => 'Document size must be less than 2MB!']);
-          }
-          
           if($ext!='pdf' && $ext!= 'docx')
           {
             return response()->json([ 'status' => 400, 'message' => 'Only pdf & docx are allowed!']);
@@ -369,25 +349,7 @@ class AuthController extends Controller
         }
 
             //File Type Check END!
-
-            if(isset($request->switch) && $request->switch == 1)
-            {   
-                $user = User::select('id')->where('email',$data['email'])->first();
-                
-                $update = User::where('email',$data['email'])
-                ->update([
-                'investor' => $investor,
-                'id_no' => $id_no,
-                'tax_pin' => $tax_pin,
-                'inv_range' =>  json_encode($inv_range),
-                'interested_cats' =>  json_encode($interested_cats), 
-                'past_investment' => $past_investment,
-                'website' => $website         
-                ]);   
-
-            }
-            else
-            {   
+ 
                 $userCheck = User::where('email',$data['email'])->first();
                 if($userCheck){ 
                     return response()->json([ 'status' => 400, 'message' => 'Email already exists!']);
@@ -395,37 +357,27 @@ class AuthController extends Controller
 
                 $user = User::create([
                 'fname' => $data['fname'],
-                'mname' => $data['mname'],
-                'lname' => $data['lname'],
                 'email' => $data['email'],
                 'password' => bcrypt($data['password']),
                 'investor' => $investor,
-                'id_no' => $id_no,
-                'tax_pin' => $tax_pin,
-                'inv_range' =>  json_encode($inv_range),
                 'interested_cats' =>  json_encode($interested_cats), 
-                'past_investment' => $past_investment,
-                'website' => $website         
+                'org_type' => $data['org_type'],
+                'phone' => $data['phone'],
+                'mission' => $data['mission'],
+                'regions' => $data['regions'],
+                'website' => $data['org_type'] 
                 ]);  
-            }
+           
             
              
 
             //Upload
             $inv_id = $user->id;
 
-             try {
-             if (!file_exists('files/investor/'.$inv_id)) 
+            try {
+            if (!file_exists('files/investor/'.$inv_id)) 
                       mkdir('files/investor/'.$inv_id, 0777, true);
                       $loc='files/investor/'.$inv_id.'/';
-            if(isset($pin) && $pin !=null) {
-                      $uniqid=hexdec(uniqid());
-                      $ext=strtolower($pin->getClientOriginalExtension());
-                      $create_name=$uniqid.'.'.$ext;    
-                      //Move uploaded file
-                      $pin->move($loc, $create_name);
-                      $final_pin=$loc.$create_name;
-            } else $final_pin=null;
 
             if($passport) {
                       $uniqid=hexdec(uniqid());
@@ -436,7 +388,6 @@ class AuthController extends Controller
             }else $final_passport=''; 
 
                          User::where('id',$inv_id)->update([
-                        'pin' => $final_pin,
                         'id_passport' => $final_passport              
                        ]);  
                        $token = $user->createToken('main')->plainTextToken;
