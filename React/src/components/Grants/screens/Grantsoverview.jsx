@@ -151,7 +151,7 @@ const Navigation = {
         label: 'Impact', 
         to: '/grants-overview/impact',
         children: [
-          { label: 'Metrics Dashboard', to: '/grants-overview/impact/metrics' },
+          { label: 'Metrics Dashboard', to: '/grants-overview/analytics' },
           { label: 'Impact Stories', to: '/grants-overview/impact/stories' }
         ]
       },

@@ -56,6 +56,7 @@ import DashboardHome from "./components/Grants/components/Grantshome";
 import InvestmentDashboard from "./components/Grants/screens/InvestmentDashboard";
 import DealRoom from "./components/Grants/screens/Dealroom";
 import TujitumeGrantPortal from "./components/Grants/screens/Grantsportal";
+import TujitumeDashboard from "./components/Grants/screens/Analytics";
 
 const router = createBrowserRouter([
     {
@@ -129,15 +130,19 @@ const router = createBrowserRouter([
         path: "/grants-overview",
         element: <GrantsOverview />,
         children: [
-            { index: true, element: <DashboardHome /> }, // Handles BOTH /grants-overview AND /grants-overview/grants-home
-            { path: "funding/investments", element: <InvestmentDashboard /> },
-            {
-                path: "funding/deals",
-                children: [{ path: ":opportunityId", element: <DealRoom /> }],
-            },
-            { path: "grants/discover", element: <TujitumeGrantPortal /> },
+          { index: true, element: <DashboardHome /> },
+          { path: "funding/investments", element: <InvestmentDashboard /> },
+          {
+            path: "funding/deals",
+            children: [{ path: ":opportunityId", element: <DealRoom /> }],
+          },
+          { path: "grants/discover", element: <TujitumeGrantPortal /> },
+          // Add analytics as a child route
+          { path: "analytics", element: <TujitumeDashboard /> },
         ],
-    },
+      },
+      // Remove the standalone analytics route
+      // { path: "/analytics", element: <TujitumeDashboard /> },
     { path: "/investment-capital", element: <InvestmentCapital /> },
     { path: "/grant-funding", element: <GrantFunding /> },
 
