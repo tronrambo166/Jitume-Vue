@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { Mail, Lock } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useAlert } from "../../../partials/AlertContext";
 import ForgotPassModal from "../../../partials/ForgotPassModal";
 import logo2 from "../../../../images/Tujitumelogo.svg";
 import { useNavigate } from "react-router-dom";
+import axiosClient from "../../../../axiosClient";
 
 const LoginForm = ({ onSwitchToRegister }) => {
     const navigate = useNavigate();
@@ -16,25 +17,111 @@ const LoginForm = ({ onSwitchToRegister }) => {
     });
     const [isLoading, setIsLoading] = useState(false);
     const [showForgotPassModal, setShowForgotPassModal] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
+    const [serverError, setServerError] = useState("");
+
+    // Check for saved email on component mount
+    useEffect(() => {
+        const savedEmail = localStorage.getItem("savedEmail");
+        const savedRememberMe = localStorage.getItem("rememberMe") === "true";
+
+        if (savedEmail && savedRememberMe) {
+            setLoginData((prev) => ({ ...prev, email: savedEmail }));
+            setRememberMe(true);
+        }
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setLoginData((prev) => ({ ...prev, [name]: value }));
+
+        // Clear error when user types
+        if (serverError) {
+            setServerError("");
+        }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        console.log("Form Data:", loginData);
+        setServerError("");
 
-        // Simulate API call
-        setTimeout(() => {
+        const { email, password } = loginData;
+
+        // Basic validation
+        if (!email.trim()) {
+            setServerError("Please enter your email address");
             setIsLoading(false);
-        }, 1500);
+            return;
+        }
+
+        if (!password) {
+            setServerError("Please enter your password");
+            setIsLoading(false);
+            return;
+        }
+
+        try {
+            const payload = {
+                email: email.trim(),
+                password,
+                browserLoginCheck: 1,
+            };
+
+            const { data } = await axiosClient.post("/login", payload);
+
+            if (data.auth) {
+                // Save the email if remember me is checked
+                if (rememberMe) {
+                    localStorage.setItem("savedEmail", email);
+                    localStorage.setItem("rememberMe", "true");
+                } else {
+                    localStorage.removeItem("savedEmail");
+                    localStorage.removeItem("rememberMe");
+                }
+
+                // Set auth data in local storage or context
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("user", JSON.stringify(data.user));
+
+                // Show success message
+                const userName =
+                    data.user?.fname && data.user?.lname
+                        ? `${data.user.fname} ${data.user.lname}`
+                        : "User";
+                showAlert("success", `Login successful! Welcome, ${userName}`);
+
+                // Navigate to grants overview page
+                navigate("/grants-overview");
+            } else {
+                setServerError(
+                    data.message ||
+                        "Login failed. Please check your credentials."
+                );
+                showAlert(
+                    "error",
+                    data.message ||
+                        "Login failed. Please check your credentials."
+                );
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            const errorMessage =
+                error.response?.data?.message ||
+                "Login failed. Please try again later.";
+            setServerError(errorMessage);
+            showAlert("error", errorMessage);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
-    const handleGoogleLogin = () => {
-         navigate("/grants-overview");
+    const handleGoogleLogin = async () => {
+        showAlert(
+            "error",
+            "Failed to initialize Google login. Please try again."
+        );
     };
 
     const handleForgotPasswordClick = (e) => {
@@ -48,10 +135,15 @@ const LoginForm = ({ onSwitchToRegister }) => {
 
     const handlePasswordResetSuccess = () => {
         setShowForgotPassModal(false);
-        showAlert(
-            "success",
-            "Password reset successful! You can now log in with your new password."
-        );
+        showAlert("success", "Password reset instructions sent to your email!");
+    };
+
+    const handleRememberMeChange = (e) => {
+        setRememberMe(e.target.checked);
+    };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
     };
 
     return (
@@ -62,7 +154,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
                     <img
                         src={logo2}
                         alt="Tujitume Logo"
-                        className="h-16 mb-4" // Adjust height as needed
+                        className="h-16 " // Adjust height as needed
                     />
                 </div>
 
@@ -70,7 +162,15 @@ const LoginForm = ({ onSwitchToRegister }) => {
                     Welcome back
                 </h2>
 
+                {/* Server Error Message */}
+                {serverError && (
+                    <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded-md text-sm">
+                        {serverError}
+                    </div>
+                )}
+
                 <button
+                    type="button"
                     onClick={handleGoogleLogin}
                     className="w-full flex items-center justify-center gap-2 py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
@@ -89,12 +189,18 @@ const LoginForm = ({ onSwitchToRegister }) => {
                     </div>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form
+                    onSubmit={handleSubmit}
+                    className="space-y-4"
+                    id="login-form"
+                    autoComplete="on"
+                >
                     <div className="relative">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <Mail className="h-5 w-5 text-gray-400" />
                         </div>
                         <input
+                            id="email"
                             name="email"
                             type="email"
                             required
@@ -102,6 +208,8 @@ const LoginForm = ({ onSwitchToRegister }) => {
                             onChange={handleInputChange}
                             className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
                             placeholder="Email address"
+                            autoComplete="email"
+                            disabled={isLoading}
                         />
                     </div>
 
@@ -110,14 +218,30 @@ const LoginForm = ({ onSwitchToRegister }) => {
                             <Lock className="h-5 w-5 text-gray-400" />
                         </div>
                         <input
+                            id="password"
                             name="password"
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             required
                             value={loginData.password}
                             onChange={handleInputChange}
-                            className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                            className="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
                             placeholder="Password"
+                            autoComplete="current-password"
+                            disabled={isLoading}
                         />
+                        {/* Password visibility toggle */}
+                        <button
+                            type="button"
+                            onClick={togglePasswordVisibility}
+                            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                            tabIndex="-1"
+                        >
+                            {showPassword ? (
+                                <EyeOff className="h-5 w-5" />
+                            ) : (
+                                <Eye className="h-5 w-5" />
+                            )}
+                        </button>
                     </div>
 
                     <div className="flex items-center justify-between">
@@ -126,18 +250,23 @@ const LoginForm = ({ onSwitchToRegister }) => {
                                 id="remember_me"
                                 name="remember_me"
                                 type="checkbox"
-                                className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                                checked={rememberMe}
+                                onChange={handleRememberMeChange}
+                                className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded cursor-pointer"
+                                disabled={isLoading}
                             />
                             <label
                                 htmlFor="remember_me"
-                                className="ml-2 block text-sm text-gray-900"
+                                className="ml-2 block text-sm text-gray-900 cursor-pointer"
                             >
                                 Remember me
                             </label>
                         </div>
                         <button
+                            type="button"
                             onClick={handleForgotPasswordClick}
                             className="text-sm font-medium text-green-600 hover:text-green-500"
+                            disabled={isLoading}
                         >
                             Forgot password?
                         </button>
@@ -162,8 +291,10 @@ const LoginForm = ({ onSwitchToRegister }) => {
                 <div className="text-center text-sm text-gray-600">
                     Don't have an account?{" "}
                     <button
+                        type="button"
                         onClick={onSwitchToRegister}
                         className="font-medium text-green-600 hover:text-green-500"
+                        disabled={isLoading}
                     >
                         Sign up
                     </button>
