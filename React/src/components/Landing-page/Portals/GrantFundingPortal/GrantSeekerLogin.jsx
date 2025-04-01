@@ -7,6 +7,7 @@ import ForgotPassModal from "../../../partials/ForgotPassModal";
 import logo from "../../../../images/Tujitumelogo.svg";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../../../../axiosClient";
+import { useStateContext } from "../../../../contexts/contextProvider";
 
 const GrantSeekerLogin = ({ onRegisterClick, showSignUp }) => {
     const navigate = useNavigate();
@@ -20,6 +21,7 @@ const GrantSeekerLogin = ({ onRegisterClick, showSignUp }) => {
     const [serverError, setServerError] = useState("");
     const [showForgotPassModal, setShowForgotPassModal] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const { setUser, setToken } = useStateContext();
 
     // Check for saved email on component mount
     useEffect(() => {
@@ -84,8 +86,8 @@ const GrantSeekerLogin = ({ onRegisterClick, showSignUp }) => {
                 }
 
                 // Set auth data in local storage or context
-                localStorage.setItem("token", data.token);
-                localStorage.setItem("user", JSON.stringify(data.user));
+                //localStorage.setItem("token", data.token);
+                //localStorage.setItem("user", JSON.stringify(data.user));
 
                 // Show success message
                 const userName =
@@ -94,8 +96,14 @@ const GrantSeekerLogin = ({ onRegisterClick, showSignUp }) => {
                         : "User";
                 showAlert("success", `Login successful! Welcome, ${userName}`);
 
+                setUser(data.user);
+                setToken(data.token);
                 // Navigate to grants overview page
-                navigate("/grants-overview");
+                if(data.user.investor == 2)
+                    navigate("/grants-overview");
+                else 
+                    navigate("/dashboard");
+
             } else {
                 setServerError(
                     data.message ||

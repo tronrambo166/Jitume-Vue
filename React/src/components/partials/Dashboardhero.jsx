@@ -77,6 +77,10 @@ const Dashboardhero = () => {
                 const { data } = await axiosClient.get("/checkAuth");
                 setUser(data.user);
                 setId(data.user.id);
+
+                if(data.user.investor == 2)
+                    navigate("/grants-overview");
+                
             } catch (error) {
                 if (!token) {
                     setIsAuthModalOpen(true);
@@ -89,6 +93,7 @@ const Dashboardhero = () => {
         };
 
         fetchUserData();
+
     }, []);
 
     useEffect(() => {

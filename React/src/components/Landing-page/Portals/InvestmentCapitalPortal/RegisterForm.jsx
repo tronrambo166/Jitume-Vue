@@ -8,6 +8,8 @@ import SummaryStep from "./steps/SummaryStep";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import logo from "../../../../images/Tujitumelogo.svg";
 import { useAlert } from "../../../partials/AlertContext";
+import axiosClient from "../../../../axiosClient";
+import { useStateContext } from "../../../../contexts/contextProvider";
 
 const InvestorRegisterForm = ({ onSwitchToLogin }) => {
     const [currentStep, setCurrentStep] = useState(1);
@@ -15,6 +17,7 @@ const InvestorRegisterForm = ({ onSwitchToLogin }) => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [fileUploadError, setFileUploadError] = useState("");
+    const { setUser, setToken, token } = useStateContext();
     const { showAlert } = useAlert();
 
     const [formData, setFormData] = useState({
@@ -154,35 +157,32 @@ const InvestorRegisterForm = ({ onSwitchToLogin }) => {
        try {
            const submitData = new FormData();
 
-           submitData.append("name", formData.name);
-           submitData.append("investorType", formData.investorType);
+           submitData.append("fname", formData.name);
+           submitData.append("org_type", formData.investorType);
            submitData.append("email", formData.email);
            submitData.append("phone", formData.phone);
            submitData.append("website", formData.website || "");
            submitData.append("password", formData.password);
            submitData.append("confirmPassword", formData.confirmPassword);
+           submitData.append("investor", 3);
            submitData.append(
-               "preferredSectors",
+               "interested_cats",
                formData.preferredSectors.join(",")
            );
            submitData.append(
-               "startupStagePreferences",
+               "startup_stage",
                formData.startupStagePreferences.join(",")
            );
            submitData.append(
-               "investmentRangeMin",
-               formData.investmentRange.min
+               "inv_range",
+               formData.investmentRange.min+','+formData.investmentRange.max
            );
            submitData.append(
-               "investmentRangeMax",
-               formData.investmentRange.max
-           );
-           submitData.append(
-               "geographicFocus",
+               "regions",
                formData.geographicFocus.join(",")
            );
            submitData.append(
-               "engagementTypes",
+               "eng_prefer",
                formData.engagementTypes.join(",")
            );
            submitData.append("termsAgreed", formData.termsAgreed);
@@ -192,16 +192,30 @@ const InvestorRegisterForm = ({ onSwitchToLogin }) => {
                formData.investmentGuidelines.length > 0
            ) {
                formData.investmentGuidelines.forEach((file) => {
-                   submitData.append("investmentGuidelines", file);
+                   submitData.append("document", file);
                });
            }
 
-           console.log("Submitting form data:", {
+            console.log("Submitting form data:", {
                ...Object.fromEntries(submitData),
                investmentGuidelines:
                    formData.investmentGuidelines?.map((f) => f.name) || [],
-           });
+            });
 
+            const { data } = await axiosClient.post("/register", submitData);
+            console.log(data);
+
+            if (data.error) {
+                formErrors.push(data.error);
+                showAlert("error", data.error);
+                setErrors({ general: formErrors });
+                return;
+            }
+            if (data.auth) {
+                setUser(data.user);
+                setToken(data.token);
+                navigate("/grants-overview");
+            }
 
            await new Promise((resolve) => setTimeout(resolve, 2000));
 

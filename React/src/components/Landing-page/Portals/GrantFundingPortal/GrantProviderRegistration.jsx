@@ -156,6 +156,7 @@ const GrantProviderRegistration = ({ handleBackToLogin }) => {
             if (data.auth) {
                 setUser(data.user);
                 setToken(data.token);
+                navigate("/grants-overview");
             }
 
             await new Promise((resolve) => setTimeout(resolve, 2000));

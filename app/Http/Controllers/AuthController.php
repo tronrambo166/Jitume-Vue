@@ -15,7 +15,7 @@ use Mail;
 class AuthController extends Controller
 {
     public function checkAuth() {
-         $user = User::select('email','id', 'fname', 'lname', 'gender','image')
+         $user = User::select('email','id', 'fname', 'lname', 'gender','image','investor')
          ->where('id', Auth::id())->first();
          return response()->json([
             'user' => $user
@@ -264,7 +264,15 @@ class AuthController extends Controller
                 return $register;
             }
 
+            if(isset($request->investor) && $request->investor == 3)
+            {
+                $data = $request->all();
+                $register = $this->invCapitalRegister($data);
+                return $register;
+            }
 
+
+        //Regular User Register
         $mname = $request->mname;
         $gender = $request->gender;
         $dob = $request->dob;
@@ -365,7 +373,7 @@ class AuthController extends Controller
                 'phone' => $data['phone'],
                 'mission' => $data['mission'],
                 'regions' => $data['regions'],
-                'website' => $data['org_type'] 
+                'website' => $website 
                 ]);  
            
             
@@ -394,7 +402,7 @@ class AuthController extends Controller
                         return response()->json([
                             'user' => $user,
                             'token' => $token,
-                            'auth' => Auth::check()
+                            'auth' => true
                         ]); 
 
                         } catch (\Exception $e) {
@@ -402,6 +410,88 @@ class AuthController extends Controller
                               
                         }
     }
+
+
+    public function invCapitalRegister($data)
+    {    
+         $investor = 2; 
+         $interested_cats = $data['interested_cats'];  
+         $website = $data['website']; 
+
+         //File Type Check!
+        $passport=$data['document'];
+        if($passport) {
+          $ext=strtolower($passport->getClientOriginalExtension());
+          
+          $size=($passport->getSize())/1048576; // Get MB
+          if($size == 3 || $size > 3)
+          {
+            return response()->json([ 'status' => 400, 'message' => 'Document size must be less than 2MB!']);
+          }
+
+          if($ext!='pdf' && $ext!= 'docx')
+          {
+            return response()->json([ 'status' => 400, 'message' => 'Only pdf & docx are allowed!']);
+          } 
+        }
+
+            //File Type Check END!
+ 
+                $userCheck = User::where('email',$data['email'])->first();
+                if($userCheck){ 
+                    return response()->json([ 'status' => 400, 'message' => 'Email already exists!']);
+                 } 
+
+                $user = User::create([
+                'fname' => $data['fname'],
+                'email' => $data['email'],
+                'password' => bcrypt($data['password']),
+                'investor' => $investor,
+                'interested_cats' =>  json_encode($interested_cats), 
+                'org_type' => $data['org_type'],
+                'phone' => $data['phone'],
+                'startup_stage' => $data['startup_stage'],
+                'inv_range' => $data['inv_range'],
+                'eng_prefer' => $data['eng_prefer'],
+                'regions' => $data['regions'],
+                'website' => $website 
+                ]);  
+           
+            
+             
+
+            //Upload
+            $inv_id = $user->id;
+
+            try {
+            if (!file_exists('files/investor/'.$inv_id)) 
+                      mkdir('files/investor/'.$inv_id, 0777, true);
+                      $loc='files/investor/'.$inv_id.'/';
+
+            if($passport) {
+                      $uniqid=hexdec(uniqid());
+                      $ext=strtolower($passport->getClientOriginalExtension());
+                      $create_name=$uniqid.'.'.$ext;
+                      $passport->move($loc, $create_name);
+                      $final_passport=$loc.$create_name;
+            }else $final_passport=''; 
+
+                         User::where('id',$inv_id)->update([
+                        'id_passport' => $final_passport              
+                       ]);  
+                       $token = $user->createToken('main')->plainTextToken;
+                        return response()->json([
+                            'user' => $user,
+                            'token' => $token,
+                            'auth' => true
+                        ]); 
+
+                        } catch (\Exception $e) {
+                           return response()->json([ 'status' => 400, 'message' => $e->getMessage() ]);
+                              
+                        }
+    }
+
 
 
 }
