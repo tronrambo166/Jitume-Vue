@@ -1,8 +1,10 @@
+import { useStateContext } from "../../../contexts/contextProvider";
 import React, { useState, useEffect } from 'react';
 import { 
   Outlet, 
   Link, 
   useLocation,
+  useNavigate,
   Routes,
   Route
 } from 'react-router-dom';
@@ -29,17 +31,22 @@ import {
   Video,
   MessageSquare
 } from 'lucide-react';
-import GrantApplicationModal from '../Utils/Modals/Grantmodal';
+import GrantApplicationModal from '../Utils/Modals/Newgrant';
 
-const toggleModal = () => {
-  setIsModalOpen((prev) => !prev);
-};
 // Shared Components
 const Navigation = {
   Sidebar: ({ isMobile, onClose }) => {
     const location = useLocation();
     const [openMenus, setOpenMenus] = useState({});
-    
+    const { token, setToken, setUser } = useStateContext();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      if (!token) {
+        navigate('/');
+      }
+    }, [token, navigate]);
+
     // Initialize open menus based on current path
     useEffect(() => {
       const initialOpenState = {};
@@ -58,34 +65,56 @@ const Navigation = {
       }));
     };
 
-    const NavItem = ({ icon: Icon, label, to, hasChildren, isActive }) => (
+    const handleLogout = () => {
+      setToken(null);
+      setUser(null);
+      localStorage.removeItem('ACCESS_TOKEN');
+      localStorage.removeItem('USER');
+      navigate('/');
+    };
+
+    const NavItem = ({ icon: Icon, label, to, hasChildren, isActive, isLogout = false }) => (
       <div>
-        <Link 
-          to={to} 
-          className={`
-            flex items-center px-4 py-3 rounded-lg transition-colors 
-            ${isActive 
-              ? 'bg-gray-100 text-green-700' 
-              : 'hover:bg-gray-100 text-gray-700 hover:text-green-700'
-            }
-          `}
-          onClick={(e) => {
-            if (isMobile && !hasChildren) onClose();
-            if (hasChildren) {
-              e.preventDefault();
-              toggleMenu(to);
-            }
-          }}
-        >
-          <Icon className="mr-3" size={20} />
-          <span className="flex-1">{label}</span>
-          {hasChildren && (
-            <ChevronDown 
-              className={`ml-2 transition-transform duration-200 ${openMenus[to] ? 'rotate-180' : ''}`} 
-              size={16} 
-            />
-          )}
-        </Link>
+        {isLogout ? (
+          <button
+            onClick={handleLogout}
+            className={`
+              flex items-center px-4 py-3 rounded-lg transition-colors 
+              w-full text-left
+              hover:bg-gray-100 text-gray-700 hover:text-green-700
+            `}
+          >
+            <Icon className="mr-3" size={20} />
+            <span className="flex-1">{label}</span>
+          </button>
+        ) : (
+          <Link 
+            to={to} 
+            className={`
+              flex items-center px-4 py-3 rounded-lg transition-colors 
+              ${isActive 
+                ? 'bg-gray-100 text-green-700' 
+                : 'hover:bg-gray-100 text-gray-700 hover:text-green-700'
+              }
+            `}
+            onClick={(e) => {
+              if (isMobile && !hasChildren) onClose();
+              if (hasChildren) {
+                e.preventDefault();
+                toggleMenu(to);
+              }
+            }}
+          >
+            <Icon className="mr-3" size={20} />
+            <span className="flex-1">{label}</span>
+            {hasChildren && (
+              <ChevronDown 
+                className={`ml-2 transition-transform duration-200 ${openMenus[to] ? 'rotate-180' : ''}`} 
+                size={16} 
+              />
+            )}
+          </Link>
+        )}
         {hasChildren && openMenus[to] && (
           <div className="ml-8 mt-1 space-y-1 animate-fadeIn">
             {navItems.find(item => item.to === to).children.map((child) => (
@@ -122,8 +151,7 @@ const Navigation = {
       { 
         icon: Home, 
         label: 'Dashboard', 
-        to: "/grants-overview",  // ✅ Uses the index route (cleaner)
-        // OR to: "/grants-overview/grants-home" if you still want the longer URL
+        to: "/grants-overview",
         exact: true
       },
       { 
@@ -138,7 +166,7 @@ const Navigation = {
       },
       { 
         icon: CreditCard, 
-        label: ' Investment Funding', 
+        label: 'Investment Funding', 
         to: '/grants-overview/funding',
         children: [
           { label: 'Investment Portal', to: '/grants-overview/funding/investments' },
@@ -192,31 +220,30 @@ const Navigation = {
           <h2 className="text-2xl font-bold text-green-600">Tujitume</h2>
           <p className="text-sm text-gray-500">Grants Platform</p>
         </div>
-        <nav className="p-4 space-y-1  overflow-y-auto h-[calc(100vh-120px)]">
+        <nav className="p-4 space-y-1 overflow-y-auto h-[calc(100vh-120px)]">
           {navItems.map((item) => (
-           <NavItem 
-           key={item.to}
-           icon={item.icon}
-           label={
-             <span style={{ 
-               whiteSpace: "nowrap", 
-               overflow: "hidden", 
-               textOverflow: "ellipsis", 
-               display: "inline-block", 
-               maxWidth: "100%" 
-             }}>
-               {item.label}
-             </span>
-           }
-           to={item.to}
-           hasChildren={!!item.children}
-           isActive={
-             item.exact 
-               ? location.pathname === item.to
-               : location.pathname.startsWith(item.to)
-           }
-         />
-         
+            <NavItem 
+              key={item.to}
+              icon={item.icon}
+              label={
+                <span style={{ 
+                  whiteSpace: "nowrap", 
+                  overflow: "hidden", 
+                  textOverflow: "ellipsis", 
+                  display: "inline-block", 
+                  maxWidth: "100%" 
+                }}>
+                  {item.label}
+                </span>
+              }
+              to={item.to}
+              hasChildren={!!item.children}
+              isActive={
+                item.exact 
+                  ? location.pathname === item.to
+                  : location.pathname.startsWith(item.to)
+              }
+            />
           ))}
           <div className="pt-4 mt-4 border-t">
             <NavItem 
@@ -225,6 +252,7 @@ const Navigation = {
               to="/logout" 
               isActive={location.pathname === '/logout'}
               hasChildren={false}
+              isLogout={true}
             />
           </div>
         </nav>
@@ -235,7 +263,15 @@ const Navigation = {
   TopNavigation: () => {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const profileRef = React.useRef(null);
-    
+    const { token, setToken, setUser } = useStateContext();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      if (!token) {
+        navigate('/');
+      }
+    }, [token, navigate]);
+
     // Close profile dropdown when clicking outside
     useEffect(() => {
       const handleClickOutside = (event) => {
@@ -248,6 +284,14 @@ const Navigation = {
         document.removeEventListener('mousedown', handleClickOutside);
       };
     }, []);
+
+    const handleLogout = () => {
+      setToken(null);
+      setUser(null);
+      localStorage.removeItem('ACCESS_TOKEN');
+      localStorage.removeItem('USER');
+      navigate('/');
+    };
 
     return (
       <div className="bg-white shadow-sm p-4 flex justify-between items-center">
@@ -289,13 +333,12 @@ const Navigation = {
               >
                 Notifications
               </Link>
-              <Link 
-                to="/logout" 
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
-                onClick={() => setIsProfileOpen(false)}
+              <button
+                onClick={handleLogout}
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
               >
                 Logout
-              </Link>
+              </button>
             </div>
           )}
         </div>
@@ -308,8 +351,17 @@ const Navigation = {
 const GrantsOverview = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { token } = useStateContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/');
+    }
+  }, [token, navigate]);
+
   const toggleModal = () => {
-    setIsModalOpen((prev) => !prev); // This will toggle the modal state
+    setIsModalOpen((prev) => !prev);
   };
 
   const sidebarRef = React.useRef(null);
@@ -330,6 +382,10 @@ const GrantsOverview = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isSidebarOpen]);
+
+  if (!token) {
+    return null;
+  }
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -369,30 +425,38 @@ const GrantsOverview = () => {
               </p>
             </div>
             <button
-        onClick={toggleModal}
-        className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-700 transition w-full md:w-auto justify-center"
-      >
-        <PlusCircle className="mr-2" />
-        New Grant Application
-      </button>
-
-      {/* Modal Component */}
-      {isModalOpen && <GrantApplicationModal onClose={toggleModal} />}
+              onClick={toggleModal}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-700 transition w-full md:w-auto justify-center"
+            >
+              <PlusCircle className="mr-2" />
+              New Grant Application
+            </button>
           </div>
 
           {/* Main Content Area with Outlet */}
           <div className="bg-white rounded-lg shadow-sm">
             <Outlet />
-            
           </div>
         </div>
       </div>
+
+      {/* Modal Component */}
+      {isModalOpen && <GrantApplicationModal onClose={toggleModal} />}
     </div>
   );
 };
 
 // Page Components
 const DashboardHome = () => {
+  const { token } = useStateContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/');
+    }
+  }, [token, navigate]);
+
   const statsCards = [
     {
       icon: <Award className="text-purple-500" />,
@@ -503,6 +567,15 @@ const DashboardHome = () => {
 };
 
 const GrantsList = () => {
+  const { token } = useStateContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/');
+    }
+  }, [token, navigate]);
+
   const grants = [
     {
       id: 1,
@@ -568,6 +641,15 @@ const GrantsList = () => {
 };
 
 const GrantApplication = () => {
+  const { token } = useStateContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/');
+    }
+  }, [token, navigate]);
+
   const [formData, setFormData] = useState({
     title: '',
     organization: '',
