@@ -157,10 +157,10 @@ const Navigation = {
       },
       { 
         icon: Users, 
-        label: 'Network', 
+        label: 'Profile', 
         to: '/grants-overview/network',
         children: [
-          { label: 'Mentors', to: '/grants-overview/network/mentors' },
+          { label: 'Profile', to: '/grants-overview/profile' },
           { label: 'Investors', to: '/grants-overview/network/investors' },
           { label: 'Founders', to: '/grants-overview/network/founders' }
         ]
