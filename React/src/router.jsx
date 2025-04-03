@@ -58,6 +58,7 @@ import DealRoom from "./components/Grants/screens/Dealroom";
 import TujitumeGrantPortal from "./components/Grants/screens/Grantsportal";
 import TujitumeDashboard from "./components/Grants/screens/Analytics";
 import ProfilePage from "./components/Grants/screens/Investorprofile";
+import PitchDashboard from "./components/Grants/screens/PitchDeck";
 
 const router = createBrowserRouter([
     {
@@ -140,7 +141,9 @@ const router = createBrowserRouter([
           { path: "grants/discover", element: <TujitumeGrantPortal /> },
           // Add analytics as a child route
           { path: "analytics", element: <TujitumeDashboard /> },
-          { path: "profile", element: <ProfilePage /> }
+          { path: "profile", element: <ProfilePage /> },
+          { path: "pitch", element: <PitchDashboard /> }
+
 
         ],
       },

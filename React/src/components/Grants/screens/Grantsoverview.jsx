@@ -29,9 +29,130 @@ import {
   Bookmark,
   FileText,
   Video,
-  MessageSquare
+  MessageSquare,
+  Grid,
+  X
 } from 'lucide-react';
 import GrantApplicationModal from '../Utils/Modals/Newgrant';
+
+// Toast Notification Component
+const ToastNotification = ({ message, type = 'info', onClose }) => {
+  const bgColor = {
+    success: 'bg-green-100 border-green-300',
+    error: 'bg-red-100 border-red-300',
+    warning: 'bg-yellow-100 border-yellow-300',
+    info: 'bg-blue-100 border-blue-300'
+  }[type];
+
+  const textColor = {
+    success: 'text-green-700',
+    error: 'text-red-700',
+    warning: 'text-yellow-700',
+    info: 'text-blue-700'
+  }[type];
+
+  const icon = {
+    success: <CheckCircle className="text-green-500" size={18} />,
+    error: <XCircle className="text-red-500" size={18} />,
+    warning: <AlertTriangle className="text-yellow-500" size={18} />,
+    info: <Info className="text-blue-500" size={18} />
+  }[type];
+
+  return (
+    <div className={`fixed top-4 right-4 z-50 border rounded-lg p-4 shadow-lg ${bgColor} ${textColor} flex items-start max-w-sm`}>
+      <div className="mr-3 mt-0.5">
+        {icon}
+      </div>
+      <div className="flex-1">
+        <p className="text-sm font-medium">{message}</p>
+      </div>
+      <button 
+        onClick={onClose}
+        className="ml-4 text-gray-500 hover:text-gray-700"
+      >
+        <X size={18} />
+      </button>
+    </div>
+  );
+};
+
+// Toast Context and Provider
+const ToastContext = React.createContext();
+
+const ToastProvider = ({ children }) => {
+  const [toasts, setToasts] = useState([]);
+
+  const addToast = (message, type = 'info', duration = 5000) => {
+    const id = Date.now();
+    setToasts((prev) => [...prev, { id, message, type }]);
+    
+    if (duration) {
+      setTimeout(() => {
+        removeToast(id);
+      }, duration);
+    }
+  };
+
+  const removeToast = (id) => {
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
+  };
+
+  return (
+    <ToastContext.Provider value={{ addToast }}>
+      {children}
+      <div className="fixed top-0 right-0 z-50 p-4 space-y-2">
+        {toasts.map((toast) => (
+          <ToastNotification
+            key={toast.id}
+            message={toast.message}
+            type={toast.type}
+            onClose={() => removeToast(toast.id)}
+          />
+        ))}
+      </div>
+    </ToastContext.Provider>
+  );
+};
+
+const useToast = () => {
+  const context = React.useContext(ToastContext);
+  if (!context) {
+    throw new Error('useToast must be used within a ToastProvider');
+  }
+  return context;
+};
+
+// Icons needed for toast notifications
+const CheckCircle = (props) => (
+  <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+  </svg>
+);
+
+const XCircle = (props) => (
+  <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"></circle>
+    <line x1="15" y1="9" x2="9" y2="15"></line>
+    <line x1="9" y1="9" x2="15" y2="15"></line>
+  </svg>
+);
+
+const AlertTriangle = (props) => (
+  <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+    <line x1="12" y1="9" x2="12" y2="13"></line>
+    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+  </svg>
+);
+
+const Info = (props) => (
+  <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"></circle>
+    <line x1="12" y1="16" x2="12" y2="12"></line>
+    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+  </svg>
+);
 
 // Shared Components
 const Navigation = {
@@ -40,6 +161,7 @@ const Navigation = {
     const [openMenus, setOpenMenus] = useState({});
     const { token, setToken, setUser } = useStateContext();
     const navigate = useNavigate();
+    const { addToast } = useToast();
 
     useEffect(() => {
       if (!token) {
@@ -70,6 +192,7 @@ const Navigation = {
       setUser(null);
       localStorage.removeItem('ACCESS_TOKEN');
       localStorage.removeItem('USER');
+      addToast('Logged out successfully', 'success');
       navigate('/');
     };
 
@@ -160,8 +283,10 @@ const Navigation = {
         to: '/grants-overview/grants',
         children: [
           { label: 'Discover Grants', to: '/grants-overview/grants/discover' },
-          { label: 'My Applications', to: '/grants-overview/grants/applications' },
-          { label: 'Saved Grants', to: '/grants-overview/grants/saved' }
+          { label: 'Pitch-Deck', to: '/grants-overview/pitch' },
+
+          // { label: 'My Applications', to: '/grants-overview/grants/applications' },
+          // { label: 'Saved Grants', to: '/grants-overview/grants/saved' }
         ]
       },
       { 
@@ -170,17 +295,17 @@ const Navigation = {
         to: '/grants-overview/funding',
         children: [
           { label: 'Investment Portal', to: '/grants-overview/funding/investments' },
-          { label: 'Capital Offers', to: '/grants-overview/funding/offers' },
-          { label: 'Deal Room', to: '/grants-overview/funding/deals' }
+          // { label: 'Capital Offers', to: '/grants-overview/funding/offers' },
+          // { label: 'Deal Room', to: '/grants-overview/funding/deals' }
         ]
       },
       { 
         icon: BarChart2, 
-        label: 'Impact', 
+        label: 'Analytics', 
         to: '/grants-overview/impact',
         children: [
           { label: 'Metrics Dashboard', to: '/grants-overview/analytics' },
-          { label: 'Impact Stories', to: '/grants-overview/impact/stories' }
+          // { label: 'Impact Stories', to: '/grants-overview/impact/stories' }
         ]
       },
       { 
@@ -189,8 +314,9 @@ const Navigation = {
         to: '/grants-overview/network',
         children: [
           { label: 'Profile', to: '/grants-overview/profile' },
-          { label: 'Investors', to: '/grants-overview/network/investors' },
-          { label: 'Founders', to: '/grants-overview/network/founders' }
+
+          // { label: 'Investors', to: '/grants-overview/network/investors' },
+          // { label: 'Founders', to: '/grants-overview/network/founders' }
         ]
       },
       { 
@@ -200,7 +326,7 @@ const Navigation = {
       },
       { 
         icon: Settings, 
-        label: 'Settings', 
+        label: 'Schedule', 
         to: '/grants-overview/settings',
         children: [
           { label: 'Profile', to: '/grants-overview/settings/profile' },
@@ -208,6 +334,16 @@ const Navigation = {
           { label: 'Security', to: '/grants-overview/settings/security' }
         ]
       }
+      // { 
+      //   icon: Settings, 
+      //   label: 'Pitch Deck', 
+      //   to: '/grants-overview/pitch',
+      //   children: [
+      //     { label: 'Pitch-Deck', to: '/grants-overview/pitch' },
+      //     // { label: 'Notifications', to: '/grants-overview/settings/notifications' },
+      //     // { label: 'Security', to: '/grants-overview/settings/security' }
+      //   ]
+      // }
     ];
 
     return (
@@ -265,6 +401,7 @@ const Navigation = {
     const profileRef = React.useRef(null);
     const { token, setToken, setUser } = useStateContext();
     const navigate = useNavigate();
+    const { addToast } = useToast();
 
     useEffect(() => {
       if (!token) {
@@ -290,13 +427,17 @@ const Navigation = {
       setUser(null);
       localStorage.removeItem('ACCESS_TOKEN');
       localStorage.removeItem('USER');
+      addToast('Logged out successfully', 'success');
       navigate('/');
     };
 
     return (
       <div className="bg-white shadow-sm p-4 flex justify-between items-center">
         <div className="flex items-center space-x-4">
-          <button className="text-gray-600 hover:text-blue-600">
+          <button 
+            className="text-gray-600 hover:text-blue-600 relative"
+            onClick={() => addToast('No new notifications', 'info')}
+          >
             <Bell size={20} />
           </button>
           <div className="relative">
@@ -344,6 +485,52 @@ const Navigation = {
         </div>
       </div>
     );
+  },
+
+  Breadcrumbs: () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const pathnames = location.pathname.split('/').filter(x => x);
+
+    return (
+      <div className="flex items-center gap-2 text-sm mb-4">
+         <Link 
+          to="/" 
+          className="text-gray-500 hover:text-green-600 flex items-center"
+        >
+          <Home className="mr-1" size={16} />
+          Home
+        </Link>
+        <Link 
+          to="/grants-overview" 
+          className="text-gray-500 hover:text-green-600 flex items-center"
+        >
+          <Grid className="mr-1" size={16} />
+          Overview
+        </Link>
+        {pathnames.map((name, index) => {
+          const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
+          const isLast = index === pathnames.length - 1;
+          const displayName = name.replace(/-/g, ' ').replace('grantsoverview', '');
+
+          return (
+            <span key={routeTo} className="flex items-center">
+              <span className="mx-2 text-gray-400">/</span>
+              {isLast ? (
+                <span className="text-green-600 capitalize">{displayName}</span>
+              ) : (
+                <Link 
+                  to={routeTo} 
+                  className="text-gray-500 hover:text-green-600 capitalize"
+                >
+                  {displayName}
+                </Link>
+              )}
+            </span>
+          );
+        })}
+      </div>
+    );
   }
 };
 
@@ -353,6 +540,7 @@ const GrantsOverview = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { token } = useStateContext();
   const navigate = useNavigate();
+  const { addToast } = useToast();
 
   useEffect(() => {
     if (!token) {
@@ -407,7 +595,17 @@ const GrantsOverview = () => {
           >
             <Menu />
           </button>
-          <h1 className="text-xl font-bold text-green-600">Tujitume</h1>
+          <div className="flex items-center">
+            <button 
+              onClick={() => window.history.back()}
+              className="p-2 hover:bg-gray-100 rounded-lg mr-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+            </button>
+            <h1 className="text-xl font-bold text-green-600">Tujitume</h1>
+          </div>
         </div>
 
         {/* Top Navigation */}
@@ -416,9 +614,10 @@ const GrantsOverview = () => {
         <div className="p-6 bg-gray-50 min-h-screen">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
             <div>
+              <Navigation.Breadcrumbs />
               <h1 className="text-2xl md:text-3xl font-bold text-gray-800 flex items-center">
                 <Briefcase className="mr-3 text-black" />
-                Grants Management
+                Grants Dashboard
               </h1>
               <p className="text-gray-500 mt-2">
                 Explore and manage grant opportunities
@@ -429,7 +628,7 @@ const GrantsOverview = () => {
               className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-700 transition w-full md:w-auto justify-center"
             >
               <PlusCircle className="mr-2" />
-              New Grant Application
+             Apply For Grant
             </button>
           </div>
 
@@ -446,10 +645,11 @@ const GrantsOverview = () => {
   );
 };
 
-// Page Components
+// Page Components (remain exactly the same as before)
 const DashboardHome = () => {
   const { token } = useStateContext();
   const navigate = useNavigate();
+  const { addToast } = useToast();
 
   useEffect(() => {
     if (!token) {
@@ -503,7 +703,10 @@ const DashboardHome = () => {
   ];
 
   const GrantCard = ({ title, amount, deadline, status }) => (
-    <div className="bg-white border border-gray-100 rounded-lg p-4 hover:shadow-md transition">
+    <div 
+      className="bg-white border border-gray-100 rounded-lg p-4 hover:shadow-md transition cursor-pointer"
+      onClick={() => addToast(`Clicked on ${title} grant`, 'info')}
+    >
       <div className="flex justify-between items-center mb-4">
         <h3 className="font-semibold text-gray-800">{title}</h3>
         <span className={`px-2 py-1 rounded-full text-xs ${
@@ -535,6 +738,7 @@ const DashboardHome = () => {
           <div
             key={index}
             className={`${card.color} rounded-lg p-4 flex items-center space-x-4`}
+            onClick={() => addToast(`Viewing ${card.title}`, 'info')}
           >
             <div className="p-3 rounded-full bg-white">
               {card.icon}
@@ -569,6 +773,7 @@ const DashboardHome = () => {
 const GrantsList = () => {
   const { token } = useStateContext();
   const navigate = useNavigate();
+  const { addToast } = useToast();
 
   useEffect(() => {
     if (!token) {
@@ -610,7 +815,8 @@ const GrantsList = () => {
         {grants.map((grant) => (
           <div 
             key={grant.id} 
-            className="bg-white border border-gray-100 rounded-lg p-4 flex justify-between items-center hover:shadow-md transition"
+            className="bg-white border border-gray-100 rounded-lg p-4 flex justify-between items-center hover:shadow-md transition cursor-pointer"
+            onClick={() => addToast(`Selected ${grant.title}`, 'info')}
           >
             <div>
               <h3 className="text-lg font-semibold text-gray-800">{grant.title}</h3>
@@ -643,6 +849,7 @@ const GrantsList = () => {
 const GrantApplication = () => {
   const { token } = useStateContext();
   const navigate = useNavigate();
+  const { addToast } = useToast();
 
   useEffect(() => {
     if (!token) {
@@ -669,6 +876,7 @@ const GrantApplication = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission logic
+    addToast('Grant application submitted successfully!', 'success');
     console.log('Grant Application Submitted', formData);
   };
 
@@ -750,9 +958,36 @@ const GrantApplication = () => {
   );
 };
 
+// Wrap the exports with ToastProvider
+const GrantsOverviewWithToast = () => (
+  <ToastProvider>
+    <GrantsOverview />
+  </ToastProvider>
+);
+
+const DashboardHomeWithToast = () => (
+  <ToastProvider>
+    <DashboardHome />
+  </ToastProvider>
+);
+
+const GrantsListWithToast = () => (
+  <ToastProvider>
+    <GrantsList />
+  </ToastProvider>
+);
+
+const GrantApplicationWithToast = () => (
+  <ToastProvider>
+    <GrantApplication />
+  </ToastProvider>
+);
+
 export { 
-  GrantsOverview, 
-  DashboardHome, 
-  GrantsList, 
-  GrantApplication 
+  GrantsOverviewWithToast as GrantsOverview, 
+  DashboardHomeWithToast as DashboardHome, 
+  GrantsListWithToast as GrantsList, 
+  GrantApplicationWithToast as GrantApplication,
+  ToastProvider,
+  useToast
 };
