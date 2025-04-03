@@ -363,7 +363,7 @@ const Navigation = {
               }
             />
           ))}
-          <div className="pt-4 mt-4 border-t">
+          <div className="pt-1 mt-2 text-green-500 border-t">
             <NavItem 
               icon={LogOut} 
               label="Logout" 
