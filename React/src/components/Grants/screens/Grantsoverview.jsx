@@ -34,6 +34,7 @@ import {
   X
 } from 'lucide-react';
 import GrantApplicationModal from '../Utils/Modals/Newgrant';
+import OfferGrantModal from "../Utils/Modals/AddnewGrant";
 
 // Toast Notification Component
 const ToastNotification = ({ message, type = 'info', onClose }) => {
@@ -284,9 +285,6 @@ const Navigation = {
         children: [
           { label: 'Discover Grants', to: '/grants-overview/grants/discover' },
           { label: 'Pitch-Deck', to: '/grants-overview/pitch' },
-
-          // { label: 'My Applications', to: '/grants-overview/grants/applications' },
-          // { label: 'Saved Grants', to: '/grants-overview/grants/saved' }
         ]
       },
       { 
@@ -295,8 +293,6 @@ const Navigation = {
         to: '/grants-overview/funding',
         children: [
           { label: 'Investment Portal', to: '/grants-overview/funding/investments' },
-          // { label: 'Capital Offers', to: '/grants-overview/funding/offers' },
-          // { label: 'Deal Room', to: '/grants-overview/funding/deals' }
         ]
       },
       { 
@@ -305,7 +301,6 @@ const Navigation = {
         to: '/grants-overview/impact',
         children: [
           { label: 'Metrics Dashboard', to: '/grants-overview/analytics' },
-          // { label: 'Impact Stories', to: '/grants-overview/impact/stories' }
         ]
       },
       { 
@@ -314,9 +309,6 @@ const Navigation = {
         to: '/grants-overview/network',
         children: [
           { label: 'Profile', to: '/grants-overview/profile' },
-
-          // { label: 'Investors', to: '/grants-overview/network/investors' },
-          // { label: 'Founders', to: '/grants-overview/network/founders' }
         ]
       },
       { 
@@ -334,16 +326,6 @@ const Navigation = {
           { label: 'Security', to: '/grants-overview/settings/security' }
         ]
       }
-      // { 
-      //   icon: Settings, 
-      //   label: 'Pitch Deck', 
-      //   to: '/grants-overview/pitch',
-      //   children: [
-      //     { label: 'Pitch-Deck', to: '/grants-overview/pitch' },
-      //     // { label: 'Notifications', to: '/grants-overview/settings/notifications' },
-      //     // { label: 'Security', to: '/grants-overview/settings/security' }
-      //   ]
-      // }
     ];
 
     return (
@@ -537,7 +519,8 @@ const Navigation = {
 // Main Layout Component
 const GrantsOverview = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
+  const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
   const { token } = useStateContext();
   const navigate = useNavigate();
   const { addToast } = useToast();
@@ -548,8 +531,12 @@ const GrantsOverview = () => {
     }
   }, [token, navigate]);
 
-  const toggleModal = () => {
-    setIsModalOpen((prev) => !prev);
+  const toggleApplicationModal = () => {
+    setIsApplicationModalOpen((prev) => !prev);
+  };
+
+  const toggleOfferModal = () => {
+    setIsOfferModalOpen((prev) => !prev);
   };
 
   const sidebarRef = React.useRef(null);
@@ -567,7 +554,7 @@ const GrantsOverview = () => {
     }
     
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
     };
   }, [isSidebarOpen]);
 
@@ -623,13 +610,22 @@ const GrantsOverview = () => {
                 Explore and manage grant opportunities
               </p>
             </div>
-            <button
-              onClick={toggleModal}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-700 transition w-full md:w-auto justify-center"
-            >
-              <PlusCircle className="mr-2" />
-             Apply For Grant
-            </button>
+            <div className="flex space-x-4">
+              <button
+                onClick={toggleApplicationModal}
+                className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-700 transition w-full md:w-auto justify-center"
+              >
+                <PlusCircle className="mr-2" />
+                Apply For Grant
+              </button>
+              <button
+                onClick={toggleOfferModal}
+                className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-700 transition w-full md:w-auto justify-center"
+              >
+                <PlusCircle className="mr-2" />
+                Offer Grant
+              </button>
+            </div>
           </div>
 
           {/* Main Content Area with Outlet */}
@@ -639,8 +635,28 @@ const GrantsOverview = () => {
         </div>
       </div>
 
-      {/* Modal Component */}
-      {isModalOpen && <GrantApplicationModal onClose={toggleModal} />}
+      {/* Modal Components */}
+      {isApplicationModalOpen && (
+        <GrantApplicationModal 
+          isOpen={isApplicationModalOpen}
+          onClose={toggleApplicationModal}
+          onSubmit={(formData) => {
+            console.log('Grant application submitted:', formData);
+            toggleApplicationModal();
+          }}
+        />
+      )}
+      
+      {isOfferModalOpen && (
+        <OfferGrantModal 
+          isOpen={isOfferModalOpen}
+          onClose={toggleOfferModal}
+          onSubmit={(formData) => {
+            console.log('Grant offer submitted:', formData);
+            toggleOfferModal();
+          }}
+        />
+      )}
     </div>
   );
 };
