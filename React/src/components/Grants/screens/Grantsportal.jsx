@@ -3,8 +3,9 @@ import {
   MapPin, Rocket, Users, Lightbulb, TrendingUp, Globe, 
   CheckCircle2, XCircle, FileText, Upload, Download, 
   Plus, Filter, Search, ChevronDown, ChevronUp, Calendar,
-  Zap, ArrowRight, ExternalLink
+  Zap, ArrowRight, ExternalLink, Loader
 } from 'lucide-react';
+import { useStateContext } from "../../../contexts/contextProvider";
 import axiosClient from "../../../axiosClient";
 
 const TujitumeGrantPortal = () => {
@@ -12,6 +13,8 @@ const TujitumeGrantPortal = () => {
   const [selectedGrant, setSelectedGrant] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [grants, setGrants] = useState([]);
+
   const [filters, setFilters] = useState({
     sectors: [],
     regions: [],
@@ -21,7 +24,9 @@ const TujitumeGrantPortal = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [uploadedDocuments, setUploadedDocuments] = useState({});
   const [grantApplications, setGrantApplications] = useState([]);
-  const [grants, setGrants] = useState([]);
+  const [grantOpportunities, setGrantOpportunities] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [newGrant, setNewGrant] = useState({
     title: '',
     organization: '',
@@ -34,80 +39,91 @@ const TujitumeGrantPortal = () => {
     keyFocus: [],
     documentsRequired: []
   });
+  const { user, token, setUser, setToken } = useStateContext();
 
-  // Enhanced grant data with futuristic categories
-
+  // Fetch grants from API
   useEffect(() => {
-        const getGrants = () => {
-            //setLoading(true);
-            axiosClient
-                .get("grant/grants")
-                .then(({ data }) => {
-                    //setLoading(false);
-                    setGrants(data.grants);
-                    console.log(grants);
-                })
-                .catch((err) => {
-                    console.log(err);
-                    //setLoading(false);
-                });
-        };
-        getGrants();
-    }, []);
-
-  const [grantOpportunities] = useState([
-    {
-      id: 1,
-      title: 'Agri-Tech Innovation Fund',
-      organization: 'Green Future Foundation',
-      impact: 'Transforming Small-Scale Farming with AI',
-      totalFund: 250000,
-      maxGrantPerStartup: 50000,
-      regions: ['Kenya', 'Uganda', 'Tanzania'],
-      sectors: ['Agriculture', 'AI', 'Sustainability'],
-      deadline: '2025-06-30',
-      matchScore: 87,
-      keyFocus: ['AI Integration', 'Sustainable Agriculture'],
-      documentsRequired: ['Business Plan', 'Financial Projections', 'Team CVs'],
-      status: 'open',
-      featured: true,
-      techLevel: 'high' // New futuristic field
-    },
-    {
-      id: 2,
-      title: 'Renewable Energy Catalyst',
-      organization: 'Power Africa Collective',
-      impact: 'Smart Grid Solutions for Rural Africa',
-      totalFund: 500000,
-      maxGrantPerStartup: 75000,
-      regions: ['Rwanda', 'Ethiopia', 'Kenya'],
-      sectors: ['Energy', 'IoT', 'Smart Cities'],
-      deadline: '2025-07-15',
-      matchScore: 93,
-      keyFocus: ['Off-Grid Tech', 'Community Microgrids'],
-      documentsRequired: ['Technical Proposal', 'Impact Assessment', 'Budget'],
-      status: 'open',
-      featured: true,
-      techLevel: 'very-high'
-    },
-    {
-      id: 3,
-      title: 'Blockchain for Social Impact',
-      organization: 'Decentralized Africa',
-      impact: 'Transparent Aid Distribution Systems',
-      totalFund: 350000,
-      maxGrantPerStartup: 60000,
-      regions: ['All African Countries'],
-      sectors: ['Blockchain', 'Fintech', 'Transparency'],
-      deadline: '2025-08-20',
-      matchScore: 78,
-      keyFocus: ['Smart Contracts', 'Digital Identity'],
-      documentsRequired: ['Whitepaper', 'Technical Roadmap'],
-      status: 'open',
-      techLevel: 'cutting-edge'
-    }
-  ]);
-
+    const fetchGrants = async () => {
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        // 1. Make API call using your configured axiosClient
+        const response = await axiosClient.get('/grant/grants');
+        
+        // 2. Process successful response
+        setGrantOpportunities(response.data);
+  
+      } catch (err) {
+        console.error('Failed to fetch grants:', err);
+        
+        // Set appropriate error message
+        const errorMessage = err.response?.status === 401
+          ? 'Session expired. Please login again.'
+          : err.response?.data?.message || 'Failed to load grant opportunities. Please try again later.';
+        
+        setError(errorMessage);
+        
+        // Fallback to sample data
+        setGrantOpportunities([
+          {
+            id: 1,
+            title: 'Agri-Tech Innovation Fund',
+            organization: 'Green Future Foundation',
+            impact: 'Transforming Small-Scale Farming with AI',
+            totalFund: 250000,
+            maxGrantPerStartup: 50000,
+            regions: ['Kenya', 'Uganda', 'Tanzania'],
+            sectors: ['Agriculture', 'AI', 'Sustainability'],
+            deadline: '2025-06-30',
+            matchScore: 87,
+            keyFocus: ['AI Integration', 'Sustainable Agriculture'],
+            documentsRequired: ['Business Plan', 'Financial Projections', 'Team CVs'],
+            status: 'open',
+            featured: true,
+            techLevel: 'high'
+          },
+          {
+            id: 2,
+            title: 'Renewable Energy Catalyst',
+            organization: 'Power Africa Collective',
+            impact: 'Smart Grid Solutions for Rural Africa',
+            totalFund: 500000,
+            maxGrantPerStartup: 75000,
+            regions: ['Rwanda', 'Ethiopia', 'Kenya'],
+            sectors: ['Energy', 'IoT', 'Smart Cities'],
+            deadline: '2025-07-15',
+            matchScore: 93,
+            keyFocus: ['Off-Grid Tech', 'Community Microgrids'],
+            documentsRequired: ['Technical Proposal', 'Impact Assessment', 'Budget'],
+            status: 'open',
+            featured: true,
+            techLevel: 'very-high'
+          },
+          {
+            id: 3,
+            title: 'Blockchain for Social Impact',
+            organization: 'Decentralized Africa',
+            impact: 'Transparent Aid Distribution Systems',
+            totalFund: 350000,
+            maxGrantPerStartup: 60000,
+            regions: ['All African Countries'],
+            sectors: ['Blockchain', 'Fintech', 'Transparency'],
+            deadline: '2025-08-20',
+            matchScore: 78,
+            keyFocus: ['Smart Contracts', 'Digital Identity'],
+            documentsRequired: ['Whitepaper', 'Technical Roadmap'],
+            status: 'open',
+            techLevel: 'cutting-edge'
+          }
+        ]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchGrants();
+  }, []); // No dependencies needed since axiosClient handles token internally
   // Filter grants
   const filteredGrants = grantOpportunities.filter(grant => {
     const matchesSearch = grant.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -176,14 +192,14 @@ const TujitumeGrantPortal = () => {
   };
 
   // Create new grant with futuristic fields
-  const createNewGrant = () => {
+  const createNewGrant = async () => {
     if (!newGrant.title || !newGrant.organization || !newGrant.totalFund) {
       alert('Please fill in all required fields');
       return;
     }
 
     const grant = {
-      id: grantOpportunities.length + 1,
+      id: Date.now(), // Use timestamp as temporary ID
       ...newGrant,
       totalFund: Number(newGrant.totalFund),
       maxGrantPerStartup: Number(newGrant.maxGrantPerStartup),
@@ -193,22 +209,73 @@ const TujitumeGrantPortal = () => {
       createdAt: new Date().toISOString()
     };
 
-    setGrantOpportunities([...grantOpportunities, grant]);
-    setShowCreateModal(false);
-    setNewGrant({
-      title: '',
-      organization: '',
-      impact: '',
-      totalFund: '',
-      maxGrantPerStartup: '',
-      regions: [],
-      sectors: [],
-      deadline: '',
-      keyFocus: [],
-      documentsRequired: []
-    });
+    setIsLoading(true);
+    
+    try {
+      // Submit to API
+      const response = await fetch('/grant/grants', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(grant),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+      
+      const createdGrant = await response.json();
+      setGrantOpportunities([...grantOpportunities, createdGrant]);
+      alert('Grant opportunity created successfully!');
+    } catch (err) {
+      console.error('Failed to create grant:', err);
+      alert('Failed to create grant opportunity. Please try again.');
+      // Fallback - add locally even if API fails
+      setGrantOpportunities([...grantOpportunities, grant]);
+    } finally {
+      setIsLoading(false);
+      setShowCreateModal(false);
+      setNewGrant({
+        title: '',
+        organization: '',
+        impact: '',
+        totalFund: '',
+        maxGrantPerStartup: '',
+        regions: [],
+        sectors: [],
+        deadline: '',
+        keyFocus: [],
+        documentsRequired: []
+      });
+    }
   };
 
+  // Sample UI for loading state
+  if (isLoading && grantOpportunities.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64 w-full">
+        <Loader className="h-12 w-12 animate-spin text-blue-500" />
+        <p className="mt-4 text-lg">Loading grant opportunities...</p>
+      </div>
+    );
+  }
+
+  // Sample UI for error state
+  if (error && grantOpportunities.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64 w-full text-red-500">
+        <XCircle className="h-12 w-12" />
+        <p className="mt-4 text-lg">{error}</p>
+        <button 
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          onClick={() => window.location.reload()}
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  }
   // Futuristic Dashboard with animated cards
   const renderDashboard = () => (
     <div className="space-y-8">
@@ -450,26 +517,12 @@ const TujitumeGrantPortal = () => {
   // Futuristic Grant Cards
   const renderGrantOpportunities = () => (
     <div className="space-y-6">
-      {filteredGrants.length === 0 ? (
+      {grants.length === 0 ? (
         <div className="bg-white p-8 rounded-xl border border-gray-200 text-center">
-          <p className="text-gray-600">No grants match your current filters</p>
-          <button 
-            onClick={() => {
-              setSearchTerm('');
-              setFilters({
-                sectors: [],
-                regions: [],
-                amountRange: [0, 1000000],
-                deadline: ''
-              });
-            }}
-            className="mt-4 text-green-600 hover:text-green-800 flex items-center justify-center mx-auto"
-          >
-            Reset all filters <RefreshCw size={16} className="ml-1" />
-          </button>
+          <p className="text-gray-600">No grant opportunities available</p>
         </div>
       ) : (
-        filteredGrants.map(grant => (
+        grants.map(grant => (
           <div 
             key={grant.id} 
             className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-all"
@@ -492,7 +545,7 @@ const TujitumeGrantPortal = () => {
                   <span className="text-gray-700">{grant.regions.join(', ')}</span>
                 </div>
               </div>
-              
+  
               <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
                   <h3 className="text-sm font-medium text-gray-700 mb-2">Impact Focus</h3>
@@ -541,7 +594,7 @@ const TujitumeGrantPortal = () => {
                   </ul>
                 </div>
               </div>
-              
+  
               <div className="mt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div className="flex flex-wrap gap-2">
                   {grant.keyFocus.map(focus => (
@@ -585,6 +638,7 @@ const TujitumeGrantPortal = () => {
       )}
     </div>
   );
+  
 
   // Futuristic Application Modal
   const renderApplicationModal = () => (
