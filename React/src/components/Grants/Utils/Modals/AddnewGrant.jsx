@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axiosClient from "../../../../axiosClient";
 
 const OfferGrantModal = ({ onClose, refreshGrants }) => {
   // Refs for focus management
@@ -197,19 +198,21 @@ const OfferGrantModal = ({ onClose, refreshGrants }) => {
       });
 
       // API call - replace with your actual endpoint
-      const response = await axios.post('http://your-api-endpoint.com/api/grants', formDataToSend, {
+      const response = await axiosClient.post('grant/create-grant', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}`
+          'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN') || ''}`
         },
-        timeout: 15000
+        timeout: 2000
       });
 
-      if (response.status < 200 || response.status >= 300) {
+      console.log(response);
+
+      if (response.status != 200) {
         throw new Error(response.data?.message || 'Failed to create grant');
       }
-
-      toast.update(loadingToastId, {
+      else{
+        toast.update(loadingToastId, {
         render: 'Grant created successfully!',
         type: 'success',
         isLoading: false,
@@ -220,6 +223,9 @@ const OfferGrantModal = ({ onClose, refreshGrants }) => {
       setShowSuccessModal(true);
       refreshGrants();
       resetForm();
+      }
+
+      
 
     } catch (error) {
       console.error("Submission error:", error);

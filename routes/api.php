@@ -12,6 +12,8 @@ use App\Http\Controllers\bidsEmailController;
 use App\Http\Controllers\socialController;
 use App\Http\Controllers\PayStackController;
 use App\Http\Controllers\MpesaController;
+use App\Http\Controllers\GrantController;
+
 //P R O T E C T E D    R O U T E S
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('logout',[AuthController::class,'logout']);
@@ -98,10 +100,10 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/checkAuth', [AuthController::class,'checkAuth']);
 
 
-    // B U S I N E S S    P R O T E C T E D
-   Route::prefix('/business')->group(function(){
+// B U S I N E S S    P R O T E C T E D
+Route::prefix('/business')->group(function(){
    
-   Route::post('update-profile', [PagesController::class, 'update_profile'])->name('update-profile');
+Route::post('update-profile', [PagesController::class, 'update_profile'])->name('update-profile');
 
 Route::get('bBQhdsfE_WWe4Q-_f7ieh7Hdhf2E_', [BusinessController::class, 'add_listing'])->name('add-listing');
 Route::post('create-listing', [BusinessController::class, 'save_listing'])->name('create-listing');
@@ -181,6 +183,18 @@ Route::get('withdraw_investment/{id}', [bidsEmailController::class, 'withdraw_in
 });
 
 // B U S I N E S S    P R O T E C T E D   ENDS
+
+
+// G R A N T S    P R O T E C T E D
+
+Route::prefix('/grant')->group(function(){
+   Route::post('create-grant', [GrantController::class, 'store']);
+   Route::get('grants', [GrantController::class, 'index']);
+   Route::post('update-grant', [GrantController::class, 'update']);
+   Route::post('delete-grant', [GrantController::class, 'destroy']);
+});
+
+// G R A N T S    P R O T E C T E D   ENDS
 
 Route::get('serviceResultsAuth/{ids}', [PagesController::class, 'serviceResultsAuth']); 
 Route::get('getMilestonesS_Auth/{id}', [ServiceController::class, 'getMilestones'])->name('getMilestonesS');

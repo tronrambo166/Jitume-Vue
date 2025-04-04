@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   MapPin, Rocket, Users, Lightbulb, TrendingUp, Globe, 
   CheckCircle2, XCircle, FileText, Upload, Download, 
   Plus, Filter, Search, ChevronDown, ChevronUp, Calendar,
   Zap, ArrowRight, ExternalLink
 } from 'lucide-react';
+import axiosClient from "../../../axiosClient";
 
 const TujitumeGrantPortal = () => {
   const [activeView, setActiveView] = useState('dashboard');
@@ -20,6 +21,7 @@ const TujitumeGrantPortal = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [uploadedDocuments, setUploadedDocuments] = useState({});
   const [grantApplications, setGrantApplications] = useState([]);
+  const [grants, setGrants] = useState([]);
   const [newGrant, setNewGrant] = useState({
     title: '',
     organization: '',
@@ -34,6 +36,25 @@ const TujitumeGrantPortal = () => {
   });
 
   // Enhanced grant data with futuristic categories
+
+  useEffect(() => {
+        const getGrants = () => {
+            //setLoading(true);
+            axiosClient
+                .get("grant/grants")
+                .then(({ data }) => {
+                    //setLoading(false);
+                    setGrants(data.grants);
+                    console.log(grants);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    //setLoading(false);
+                });
+        };
+        getGrants();
+    }, []);
+
   const [grantOpportunities] = useState([
     {
       id: 1,

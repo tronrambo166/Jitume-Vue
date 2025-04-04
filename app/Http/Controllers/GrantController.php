@@ -26,7 +26,7 @@ class GrantController extends Controller
     public function index()
     {
         $grants = Grant::all();
-        return response()->json($grants);
+        return response()->json(['grants' => $grants]);
     }
 
     /**
@@ -43,41 +43,61 @@ class GrantController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'grant_title' => 'required|string|max:255',
-            'total_grant_amount' => 'required|numeric',
-            'funding_per_business' => 'required|numeric',
-            'eligibility_criteria' => 'nullable|string',
-            'required_documents' => 'nullable|json',
-            'application_deadline' => 'required|date',
-            'grant_focus' => 'required|string',
-            'startup_stage_focus' => 'nullable|json',
-            'impact_objectives' => 'nullable|string',
-            'evaluation_criteria' => 'nullable|string',
-            'grant_brief_pdf' => 'nullable|file|mimes:pdf|max:2048',
+                "grantTitle" => "required|string|max:255",
+                "totalGrantAmount" => "required|numeric",
+                "fundingPerBusiness" => "required|numeric",
+                "eligibilityCriteria" => "nullable|string",
+                "applicationDeadline" => "required|date",
+                "grantFocus" => "required|string",
+                "impactObjectives" => "nullable|string",
+                "evaluationCriteria" => "nullable|string",
+                "grantBriefPDF" => "nullable|file|mimes:pdf|max:2048",
+
         ]);
 
-        $grant = Grant::create([
-            'grant_title' => $request->grant_title,
-            'total_grant_amount' => $request->total_grant_amount,
-            'funding_per_business' => $request->funding_per_business,
-            'eligibility_criteria' => $request->eligibility_criteria,
-            'required_documents' => $request->required_documents,
-            'application_deadline' => $request->application_deadline,
-            'grant_focus' => $request->grant_focus,
-            'startup_stage_focus' => $request->startup_stage_focus,
-            'impact_objectives' => $request->impact_objectives,
-            'evaluation_criteria' => $request->evaluation_criteria,
-            'grant_brief_pdf' => $request->grant_brief_pdf,
+        try{    
+            $grant = Grant::create([
+            'grant_title' => $request->grantTitle,
+            'total_grant_amount' => $request->totalGrantAmount,
+            'funding_per_business' => $request->fundingPerBusiness,
+            'eligibility_criteria' => $request->eligibilityCriteria,
+            'required_documents' => $request->requiredDocuments,
+            'application_deadline' => $request->applicationDeadline,
+            'grant_focus' => $request->grantFocus,
+            'startup_stage_focus' => $request->startupStageFocus,
+            'impact_objectives' => $request->impactObjectives,
+            'evaluation_criteria' => $request->evaluationCriteria,
+            //'grant_brief_pdf' => $request->grantBriefPDF,
         ]);
 
-        //Upload File
+            //Upload File
+            $grant_brief_pdf = $request->file('grantBriefPDF');
+            if (!file_exists('files/grants/'.$grant->id)) 
+                mkdir('files/grants/'.$grant->id, 0777, true);
+                
+            $loc='files/grants/'.$grant->id.'/';
+            if($grant_brief_pdf) {
+                $uniqid=hexdec(uniqid());
+                $ext=strtolower($grant_brief_pdf->getClientOriginalExtension());
+                $create_name=$uniqid.'.'.$ext;
+                $grant_brief_pdf->move($loc, $create_name);
+                $final_pdf=$loc.$create_name;
+            }
+            else $final_pdf='';
+            Grant::where('id',$grant->id)->update([
+                'grant_brief_pdf' => $final_pdf              
+            ]); 
 
-        return response()->json(['message' => 'Grant created successfully', 'grant' => $grant], 201);
+            return response()->json(['message' => 'Grant created successfully'], 200);
+        }
+        catch(\Exception $e){
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
     }
 
-    /**
-     * Display the specified grant.
-     */
+
+    // Display the specified grant.
+
     public function show($id)
     {
         $grant = Grant::findOrFail($id);
