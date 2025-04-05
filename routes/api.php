@@ -13,6 +13,7 @@ use App\Http\Controllers\socialController;
 use App\Http\Controllers\PayStackController;
 use App\Http\Controllers\MpesaController;
 use App\Http\Controllers\GrantController;
+use App\Http\Controllers\InvCapitalController;
 
 //P R O T E C T E D    R O U T E S
 Route::middleware('auth:sanctum')->group(function() {
@@ -188,10 +189,23 @@ Route::get('withdraw_investment/{id}', [bidsEmailController::class, 'withdraw_in
 // G R A N T S    P R O T E C T E D
 
 Route::prefix('/grant')->group(function(){
+   //Grant
    Route::post('create-grant', [GrantController::class, 'store']);
+   Route::post('grant-application',[GrantController::class,'store_application']);
    Route::get('grants', [GrantController::class, 'index']);
+   Route::get('pitches/{grant_id}', [GrantController::class, 'pitches']);
    Route::post('update-grant', [GrantController::class, 'update']);
-   Route::post('delete-grant', [GrantController::class, 'destroy']);
+   Route::get('delete-grant/{id}', [GrantController::class, 'destroy']);
+});
+
+Route::prefix('/capital')->group(function(){
+   //Capital
+   Route::post('create-capital-offer', [InvCapitalController::class, 'store']);
+   Route::post('investment-application',[InvCapitalController::class,'store_application']);
+   Route::get('capital-offers', [InvCapitalController::class, 'index']);
+   Route::get('pitches/{capital_id}', [InvCapitalController::class, 'pitches']);
+   Route::post('update-capital', [InvCapitalController::class, 'update']);
+   Route::get('delete-capital', [InvCapitalController::class, 'destroy']);
 });
 
 // G R A N T S    P R O T E C T E D   ENDS

@@ -9,6 +9,7 @@ use App\Models\Services;
 use App\Models\User;
 use App\Models\Notifications;
 use App\Models\Grant;
+use App\Models\GrantApplication;
 use Illuminate\Support\Facades\File;
 use Response;
 use Session; 
@@ -16,7 +17,6 @@ use Hash;
 use Auth;
 use Mail;
 use DateTime;
-
 
 class GrantController extends Controller
 {
@@ -29,13 +29,12 @@ class GrantController extends Controller
         return response()->json(['grants' => $grants]);
     }
 
-    /**
-     * Show the form for creating a new grant.
-     */
-    public function create()
+    public function pitches($grant_id)
     {
-        return view('grants.create');
+        $pitches = GrantApplication::where('grant_id',$grant_id)->latest()->get();
+        return response()->json(['pitches' => $pitches]);
     }
+
 
     /**
      * Store a newly created grant in storage.
@@ -95,6 +94,98 @@ class GrantController extends Controller
         }
     }
 
+    // Store Grant Application
+    public function store_application(Request $request)
+    {
+
+        try{
+
+            $request->validate([
+            'grant_id' => 'nullable|numeric',
+            'business_id' => 'nullable|numeric',
+            'startup_name' => 'required|string|max:255',
+            'contact_name' => 'required|string|max:255',
+            'contact_email' => 'required|email|max:255',
+            'sector' => 'required|string|max:255',
+            'headquarters_location' => 'required|string|max:255',
+            'stage' => 'required|string|max:255',
+            'revenue_last_12_months' => 'nullable|numeric',
+            'team_experience_avg_years' => 'nullable|numeric',
+            'traction_kpis' => 'nullable|string',
+            'pitch_deck_file' => 'nullable|file|mimes:pdf,docx',
+            'pitch_video' => 'nullable|file|mimes:mp4,avi,mov,wmv|max:2048',
+            'business_plan_file' => 'nullable|file|mimes:pdf,docx',
+            'social_impact_areas' => 'nullable|string',
+
+            ]);
+         
+            $grant = GrantApplication::create([
+            'grant_id' => $request->grant_id,
+            'business_id' => $request->business_id,
+            'startup_name' => $request->startup_name,
+            'contact_person_name' => $request->contact_name,
+            'contact_person_email' => $request->contact_email,
+            'sector' => $request->sector,
+            'headquarters_location' => $request->headquarters_location,
+            'stage' => $request->stage,
+            'revenue_last_12_months' => $request->revenue_last_12_months,
+            'team_experience_avg_years' => $request->team_experience_avg_years,
+            'traction_kpis' => $request->traction_kpis,
+            //'pitch_deck_file' => $pitchDeckFile ?? null,
+            //'pitch_video' => $pitchVideoFile ?? null,
+            //'business_plan_file' => $businessPlanFile ?? null,
+            'social_impact_areas' => $request->social_impact_areas
+            ]);
+
+            //Upload Files
+            $pitch_deck_file = $request->file('pitch_deck_file');
+            $pitch_video = $request->file('pitch_video');
+            $business_plan_file = $request->file('business_plan_file');
+
+            if (!file_exists('files/grantApps/'.$grant->id)) 
+                mkdir('files/grantApps/'.$grant->id, 0777, true);
+            $loc='files/grantApps/'.$grant->id.'/';
+
+            if($pitch_deck_file) {
+                $uniqid=hexdec(uniqid());
+                $ext=strtolower($pitch_deck_file->getClientOriginalExtension());
+                $create_name=$uniqid.'.'.$ext;
+                $pitch_deck_file->move($loc, $create_name);
+                $pitch_deck_path=$loc.$create_name;
+            }
+            else $pitch_deck_path='';
+
+            if($pitch_video) {
+                $uniqid=hexdec(uniqid());
+                $ext=strtolower($pitch_video->getClientOriginalExtension());
+                $create_name=$uniqid.'.'.$ext;
+                $pitch_video->move($loc, $create_name);
+                $pitch_video_path=$loc.$create_name;
+            }
+            else $pitch_video_path='';
+
+            if($business_plan_file) {
+                $uniqid=hexdec(uniqid());
+                $ext=strtolower($business_plan_file->getClientOriginalExtension());
+                $create_name=$uniqid.'.'.$ext;
+                $business_plan_file->move($loc, $create_name);
+                $business_plan_path=$loc.$create_name;
+            }
+            else $business_plan_path='';
+
+            GrantApplication::where('id',$grant->id)->update([
+                'pitch_deck_file' => $pitch_deck_path,
+                'pitch_video' => $pitch_video_path,
+                'business_plan_file' => $business_plan_path              
+            ]); 
+
+            return response()->json(['message' => 'Grant Application Successfull.'], 200);
+        }
+        catch(\Exception $e){
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
 
     // Display the specified grant.
 
@@ -104,39 +195,52 @@ class GrantController extends Controller
         return response()->json($grant);
     }
 
-    /**
-     * Show the form for editing the specified grant.
-     */
-    public function edit($id)
-    {
-        $grant = Grant::findOrFail($id);
-        return view('grants.edit', compact('grant'));
-    }
 
     /**
      * Update the specified grant in storage.
      */
     public function update(Request $request, $id)
     {
-        $grant = Grant::findOrFail($id);
+        try{
+            $grant = Grant::findOrFail($id);
 
-        $request->validate([
-            'grant_title' => 'sometimes|string|max:255',
-            'total_grant_amount' => 'sometimes|numeric',
-            'funding_per_business' => 'sometimes|numeric',
-            'eligibility_criteria' => 'nullable|string',
-            'required_documents' => 'nullable|json',
-            'application_deadline' => 'sometimes|date',
-            'grant_focus' => 'sometimes|string',
-            'startup_stage_focus' => 'nullable|json',
-            'impact_objectives' => 'nullable|string',
-            'evaluation_criteria' => 'nullable|string',
-            'grant_brief_pdf' => 'nullable|file|mimes:pdf|max:2048',
-        ]);
+            $request->validate([
+                'grant_title' => 'sometimes|string|max:255',
+                'total_grant_amount' => 'sometimes|numeric',
+                'funding_per_business' => 'sometimes|numeric',
+                'eligibility_criteria' => 'nullable|string',
+                'required_documents' => 'nullable|string',
+                'application_deadline' => 'sometimes|date',
+                'grant_focus' => 'sometimes|string',
+                'startup_stage_focus' => 'nullable|string',
+                'impact_objectives' => 'nullable|string',
+                'evaluation_criteria' => 'nullable|string',
+                //'grant_brief_pdf' => 'nullable|file|mimes:pdf|max:2048',
+            ]);
 
-        $grant->update($request->all());
+            //Upload File
+            $grant_brief_pdf = $request->file('grant_brief_pdf');
+            if (!file_exists('files/grants/'.$grant->id)) 
+                mkdir('files/grants/'.$grant->id, 0777, true);
+                
+            $loc='files/grants/'.$grant->id.'/';
+            if($grant_brief_pdf) {
+                $uniqid=hexdec(uniqid());
+                $ext=strtolower($grant_brief_pdf->getClientOriginalExtension());
+                $create_name=$uniqid.'.'.$ext;
+                $grant_brief_pdf->move($loc, $create_name);
+                $final_pdf=$loc.$create_name;
+            }
+            else $final_pdf=''; 
 
-        return response()->json(['message' => 'Grant updated successfully', 'grant' => $grant]);
+            $request->grant_brief_pdf=$final_pdf;
+            $grant->update($request->all());
+
+            return response()->json(['message' => 'Grant updated successfully', 'grant' => $grant],200);
+        }
+        catch(\Exception $e){
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
     }
 
     /**
