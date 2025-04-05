@@ -264,7 +264,7 @@ const Navbar = () => {
                         ) : (
                             <button
                                 onClick={() => setIsDropdown(!isDropdown)}
-                                className="group relative font-bold text-white/90 text-xs hover:text-white ml-16 flex items-center"
+                                className="group relative font-bold text-white/90 text-xs ml-2 hover:text-white  flex items-center"
                             >
                                 Grants & Investment
                                 <span className="absolute left-0 bottom-0 w-0 h-px bg-yellow-400/80 transition-all duration-300 group-hover:w-full" />

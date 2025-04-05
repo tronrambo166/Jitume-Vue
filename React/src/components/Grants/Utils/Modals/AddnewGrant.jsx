@@ -168,85 +168,88 @@ const OfferGrantModal = ({ onClose, refreshGrants }) => {
 
   // Submit form data to API
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Log final form data before submission
-    console.log('Submitting form:', formData);
-    
-    if (!validateForm()) {
-      toast.error('Please complete all required fields', {
-        style: { backgroundColor: theme.error }
-      });
-      return;
-    }
-    
-    setIsSubmitting(true);
-    const loadingToastId = toast.loading('Creating grant offer...', {
-      style: { backgroundColor: theme.primary }
-    });
-  
-    try {
-      const formDataToSend = new FormData();
-      Object.entries(formData).forEach(([key, value]) => {
-        if (Array.isArray(value)) {
-          value.forEach(item => formDataToSend.append(key, item));
-        } else if (value instanceof File) {
-          formDataToSend.append(key, value);
-        } else {
-          formDataToSend.append(key, value);
-        }
-      });
+      e.preventDefault();
 
-      // API call - replace with your actual endpoint
-      const response = await axiosClient.post('grant/create-grant', formDataToSend, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${localStorage.getItem('ACCESS_TOKEN') || ''}`
-        },
-        timeout: 2000
-      });
+      // Log final form data before submission
+      console.log("Submitting form:", formData);
 
-      console.log(response);
-
-      if (response.status != 200) {
-        throw new Error(response.data?.message || 'Failed to create grant');
-      }
-      else{
-        toast.update(loadingToastId, {
-        render: 'Grant created successfully!',
-        type: 'success',
-        isLoading: false,
-        autoClose: 3000,
-        style: { backgroundColor: theme.primary }
-      });
-
-      setShowSuccessModal(true);
-      refreshGrants();
-      resetForm();
+      if (!validateForm()) {
+          toast.error("Please complete all required fields", {
+              style: { backgroundColor: theme.error },
+          });
+          return;
       }
 
-      
-
-    } catch (error) {
-      console.error("Submission error:", error);
-      let errorMessage = 'Failed to create grant. Please try again.';
-      if (error.response) {
-        errorMessage = error.response.data?.message || errorMessage;
-      } else if (error.request) {
-        errorMessage = 'Network error - please check your connection';
-      }
-
-      toast.update(loadingToastId, {
-        render: errorMessage,
-        type: 'error',
-        isLoading: false,
-        autoClose: 5000,
-        style: { backgroundColor: theme.error }
+      setIsSubmitting(true);
+      const loadingToastId = toast.loading("Creating grant offer...", {
+          style: { backgroundColor: theme.primary },
       });
-    } finally {
-      setIsSubmitting(false);
-    }
+
+      try {
+          const formDataToSend = new FormData();
+          Object.entries(formData).forEach(([key, value]) => {
+              if (Array.isArray(value)) {
+                  value.forEach((item) => formDataToSend.append(key, item));
+              } else if (value instanceof File) {
+                  formDataToSend.append(key, value);
+              } else {
+                  formDataToSend.append(key, value);
+              }
+          });
+
+          // API call - replace with your actual endpoint
+          const response = await axiosClient.post(
+              "grant/create-grant",
+              formDataToSend
+          );
+
+          console.log(response);
+
+          if (response.status !== 200) {
+              throw new Error(
+                  response.data?.message || "Failed to create grant"
+              );
+          } else {
+              toast.update(loadingToastId, {
+                  render: "Grant created successfully!",
+                  type: "success",
+                  isLoading: false,
+                  autoClose: 3000,
+                  style: { backgroundColor: theme.primary },
+              });
+
+              setShowSuccessModal(true);
+
+              // Safely call refreshGrants if it's passed as a prop
+              if (typeof refreshGrants === "function") {
+                  await refreshGrants();
+              } else {
+                  console.warn("refreshGrants is not a function");
+              }
+
+              resetForm();
+          }
+      } catch (error) {
+          console.error("Submission error:", error);
+          let errorMessage = "Failed to create grant. Please try again.";
+          if (error.response) {
+              errorMessage = error.response.data?.message || errorMessage;
+          } else if (error.request) {
+              errorMessage = "Network error - please check your connection";
+          }
+
+          toast.update(loadingToastId, {
+              render: errorMessage,
+              type: "error",
+              isLoading: false,
+              autoClose: 5000,
+              style: { backgroundColor: theme.error },
+          });
+      } finally {
+          setIsSubmitting(false);
+      }
   };
+
 
   // Reset form to initial state
   const resetForm = () => {

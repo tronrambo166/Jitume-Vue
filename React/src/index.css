@@ -24,11 +24,11 @@
 }
 
 /* Adjust links position on the service page for desktop view */
-/* .service-links {
+.service-links {
     @media (min-width: 768px) {
         margin-left: -160px;
     }
-} */
+}
 
 #dashbg {
     background-image: url(./images/dashbg.png);
