@@ -28,6 +28,7 @@ import {
 import { useStateContext } from "../../../contexts/contextProvider";
 import axiosClient from "../../../axiosClient";
 import DocumentPreviewModal from "../components/DocumentPreviewModal";
+import { Disclosure } from '@headlessui/react';
 const TujitumeGrantPortal = () => {
     const [activeView, setActiveView] = useState("dashboard");
     const [selectedGrant, setSelectedGrant] = useState(null);
@@ -766,70 +767,146 @@ const dashboardMetrics = {
 
 
     // Futuristic Grant Cards
-    const renderGrantOpportunities = () => (
-        <div className="space-y-6">
-          {grantOpportunities.length === 0 ? (
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-8 rounded-xl border border-gray-200 shadow-sm text-center">
-              <p className="text-gray-600 font-medium">
-                No grant opportunities available
-              </p>
-            </div>
-          ) : (
-            grantOpportunities.map((grant) => (
-              <div
-                key={grant.id}
-                className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300"
-              >
-                <div className="p-6">
-                  {/* Header Section with improved layout */}
-                  <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center flex-wrap gap-2 mb-2">
-                        <h2 className="text-xl font-bold text-gray-900 hover:text-green-600 transition-colors">
+  const renderGrantOpportunities = () => (
+  <div className="space-y-4">
+    {grantOpportunities.length === 0 ? (
+      <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-xl border border-gray-200 shadow-sm text-center">
+        <p className="text-gray-600 font-medium">
+          No grant opportunities available
+        </p>
+      </div>
+    ) : (
+      grantOpportunities.map((grant) => (
+        <div
+          key={grant.id}
+          className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-all duration-200"
+        >
+          <Disclosure>
+            {({ open }) => (
+              <>
+                {/* Collapsible Header with Essential Info and Apply Button */}
+                <Disclosure.Button className="w-full p-5 text-left">
+                  <div className="flex flex-col md:flex-row md:justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center flex-wrap gap-2 mb-1">
+                        <h2 className="text-lg font-bold text-gray-900 truncate">
                           {grant.title || grant.grant_title}
                         </h2>
                         {grant.techLevel === "cutting-edge" && (
-                          <span className="px-2.5 py-1 bg-purple-100 text-purple-800 text-xs rounded-full flex items-center">
-                            <Zap size={12} className="mr-1" />
+                          <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full flex-shrink-0">
+                            <Zap size={12} className="mr-1 inline" />
                             Cutting Edge
                           </span>
                         )}
                       </div>
-                      <p className="text-gray-600 font-medium">
-                        {grant.organization || "No organization specified"}
-                      </p>
+                      
+                      <div className="flex flex-wrap items-center gap-3 mt-2">
+                        <div className="flex items-center text-sm text-gray-600">
+                          <Briefcase size={14} className="mr-1.5 text-gray-400" />
+                          {grant.organization || "No organization"}
+                        </div>
+                        
+                        <div className="flex items-center text-sm text-gray-600">
+                          <MapPin size={14} className="mr-1.5 text-gray-400" />
+                          {grant.regions.length > 0 ? grant.regions.join(", ") : "All regions"}
+                        </div>
+                        
+                        {grant.application_deadline && (
+                          <div className="flex items-center text-sm text-gray-600">
+                            <Calendar size={14} className="mr-1.5 text-gray-400" />
+                            {new Date(grant.application_deadline).toLocaleDateString()}
+                          </div>
+                        )}
+                      </div>
                     </div>
                     
-                    <div className="flex items-center space-x-3">
-                      <div className="flex items-center space-x-2 bg-green-50 px-3 py-1.5 rounded-full">
-                        <MapPin className="text-green-600" size={16} />
-                        <span className="text-gray-700 font-medium text-sm">
-                          {grant.regions.length > 0
-                            ? grant.regions.join(", ")
-                            : "All regions"}
-                        </span>
+                    <div className="flex items-center space-x-3 flex-shrink-0">
+                      {/* Primary Apply Button - Always Visible */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedGrant(grant);
+                        }}
+                        className={`px-3 py-1.5 bg-gradient-to-r from-green-600 to-green-500 text-white text-sm rounded-lg hover:from-green-700 hover:to-green-600 transition-all flex items-center space-x-1.5 shadow-sm ${
+                          open ? 'hidden md:flex' : 'flex'
+                        }`}
+                        title="Apply now"
+                      >
+                        <Upload size={16} />
+                        <span>Apply</span>
+                      </button>
+                      
+                      {/* Quick Actions - Visible when collapsed */}
+                      <div className={`flex space-x-2 ${open ? 'hidden' : 'flex'}`}>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const fileName = grant.grant_brief_pdf?.split("/").pop() || "grant_brief.pdf";
+                            setCurrentPreviewFile({
+                              name: fileName,
+                              url: grant.grant_brief_pdf
+                            });
+                            setPreviewModalOpen(true);
+                          }}
+                          disabled={!grant.grant_brief_pdf}
+                          className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all"
+                          title="View document"
+                        >
+                          <FileText size={18} />
+                        </button>
                       </div>
                       
                       <div className="group relative">
                         <button
-                          onClick={() => handleDeleteGrant(grant.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteGrant(grant.id);
+                          }}
                           className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-all"
                           aria-label="Delete grant"
                         >
                           <Trash size={18} />
                         </button>
-                        <span className="absolute -bottom-12 -left-12 w-32 py-1 px-2 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-all duration-300">
-                          Delete this grant
+                        <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-all duration-200">
+                          Delete
                         </span>
                       </div>
+                      
+                      <ChevronDown
+                        size={20}
+                        className={`text-gray-400 transition-transform duration-200 ${
+                          open ? "transform rotate-180" : ""
+                        }`}
+                      />
                     </div>
                   </div>
-      
-                  {/* Divider with gradient */}
-                  <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-4"></div>
-      
-                  {/* Content Section with improved layout */}
-                  <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+                  
+                  {/* Funding Summary - Visible when collapsed */}
+                  <div className={`mt-3 flex flex-wrap items-center gap-3 ${open ? 'hidden' : 'flex'}`}>
+                    {grant.total_grant_amount && (
+                      <span className="inline-flex items-center px-2.5 py-1 bg-green-50 text-green-800 text-xs rounded-full">
+                        <DollarSign size={12} className="mr-1" />
+                        Total: ${grant.total_grant_amount.toLocaleString()}
+                      </span>
+                    )}
+                    {grant.funding_per_business && (
+                      <span className="inline-flex items-center px-2.5 py-1 bg-blue-50 text-blue-800 text-xs rounded-full">
+                        <Briefcase size={12} className="mr-1" />
+                        Per Business: ${grant.funding_per_business.toLocaleString()}
+                      </span>
+                    )}
+                    {grant.grant_focus && (
+                      <span className="inline-flex items-center px-2.5 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">
+                        {grant.grant_focus}
+                      </span>
+                    )}
+                  </div>
+                </Disclosure.Button>
+
+                {/* Expanded Content */}
+                <Disclosure.Panel className="px-5 pb-5 border-t border-gray-100">
+                  <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* Grant Focus Column */}
                     <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                       <h3 className="text-sm font-medium text-gray-700 mb-2 flex items-center">
                         <span className="inline-block w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
@@ -849,53 +926,65 @@ const dashboardMetrics = {
                       </div>
                     </div>
                     
+                    {/* Detailed Funding Column */}
                     <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                       <h3 className="text-sm font-medium text-gray-700 mb-2 flex items-center">
                         <span className="inline-block w-2 h-2 bg-green-400 rounded-full mr-2"></span>
                         Funding Details
                       </h3>
                       <div className="space-y-2">
-                        <div className="flex items-center space-x-2 bg-white p-2 rounded-md">
-                          <div className="p-1.5 bg-green-100 rounded-md">
-                            <DollarSign className="text-green-600" size={14} />
+                        {grant.total_grant_amount && (
+                          <div className="flex items-center space-x-2 bg-white p-2 rounded-md">
+                            <div className="p-1.5 bg-green-100 rounded-md">
+                              <DollarSign className="text-green-600" size={14} />
+                            </div>
+                            <div>
+                              <span className="text-sm block">Total Grant:</span>
+                              <span className="font-medium">${grant.total_grant_amount.toLocaleString()}</span>
+                            </div>
                           </div>
-                          <span className="text-sm">
-                            Total Grant: <span className="font-medium">${grant.total_grant_amount || "N/A"}</span>
-                          </span>
-                        </div>
-                        <div className="flex items-center space-x-2 bg-white p-2 rounded-md">
-                          <div className="p-1.5 bg-green-100 rounded-md">
-                            <Briefcase className="text-green-600" size={14} />
+                        )}
+                        {grant.funding_per_business && (
+                          <div className="flex items-center space-x-2 bg-white p-2 rounded-md">
+                            <div className="p-1.5 bg-green-100 rounded-md">
+                              <Briefcase className="text-green-600" size={14} />
+                            </div>
+                            <div>
+                              <span className="text-sm block">Per Business:</span>
+                              <span className="font-medium">${grant.funding_per_business.toLocaleString()}</span>
+                            </div>
                           </div>
-                          <span className="text-sm">
-                            Per Business: <span className="font-medium">${grant.funding_per_business || "N/A"}</span>
-                          </span>
-                        </div>
-                        <div className="flex items-center space-x-2 bg-white p-2 rounded-md">
-                          <div className="p-1.5 bg-green-100 rounded-md">
-                            <Calendar className="text-green-600" size={14} />
+                        )}
+                        {grant.application_deadline && (
+                          <div className="flex items-center space-x-2 bg-white p-2 rounded-md">
+                            <div className="p-1.5 bg-green-100 rounded-md">
+                              <Calendar className="text-green-600" size={14} />
+                            </div>
+                            <div>
+                              <span className="text-sm block">Deadline:</span>
+                              <span className="font-medium">
+                                {new Date(grant.application_deadline).toLocaleDateString()}
+                              </span>
+                            </div>
                           </div>
-                          <span className="text-sm">
-                            Deadline:{" "}
-                            <span className="font-medium">
-                              {grant.application_deadline
-                                ? new Date(grant.application_deadline).toLocaleDateString()
-                                : "No deadline"}
-                            </span>
-                          </span>
-                        </div>
+                        )}
                       </div>
                     </div>
                     
+                    {/* Documents Column */}
                     <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                       <h3 className="text-sm font-medium text-gray-700 mb-2 flex items-center">
                         <span className="inline-block w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
                         Required Documents
                       </h3>
-                      <p className="text-gray-600 text-sm mb-2">
-                        {grant.required_documents || "Not specified"}
-                      </p>
-                      {grant.documentsRequired.length > 0 && (
+                      {grant.required_documents ? (
+                        <p className="text-gray-600 text-sm mb-2">
+                          {grant.required_documents}
+                        </p>
+                      ) : (
+                        <p className="text-gray-400 text-sm">Not specified</p>
+                      )}
+                      {grant.documentsRequired?.length > 0 && (
                         <ul className="space-y-2 mt-2">
                           {grant.documentsRequired.map((doc, index) => (
                             <li
@@ -914,9 +1003,9 @@ const dashboardMetrics = {
                       )}
                     </div>
                   </div>
-      
-                  {/* Footer Section with improved actions */}
-                  <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  
+                  {/* Eligibility and Apply Section */}
+                  <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
                       <div className="space-y-3">
                         <div>
@@ -940,50 +1029,48 @@ const dashboardMetrics = {
                       </div>
                     </div>
                     
-                    <div className="flex flex-col md:flex-row items-center justify-end gap-3 bg-gray-50 rounded-lg p-4 border border-gray-100">
+                    <div className="flex flex-col space-y-3 md:space-y-0 md:flex-row items-center justify-end gap-3">
                       <button
                         onClick={() => {
-                          // Create a file object from the PDF URL
-                          const fileName =
-                            grant.grant_brief_pdf
-                              .split("/")
-                              .pop() || "grant_brief.pdf";
-                          const file = {
+                          const fileName = grant.grant_brief_pdf?.split("/").pop() || "grant_brief.pdf";
+                          setCurrentPreviewFile({
                             name: fileName,
-                            url: grant.grant_brief_pdf,
-                          };
-                          setCurrentPreviewFile(file);
+                            url: grant.grant_brief_pdf
+                          });
                           setPreviewModalOpen(true);
                         }}
                         disabled={!grant.grant_brief_pdf}
                         className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center space-x-2 w-full md:w-auto justify-center"
                       >
                         <FileText size={16} />
-                        <span>View Document</span>
+                        <span>View Full Document</span>
                       </button>
-                      <button
+                      {/* <button
                         onClick={() => setSelectedGrant(grant)}
                         className="px-4 py-2 bg-gradient-to-r from-gray-900 to-gray-800 text-white rounded-lg hover:from-green-600 hover:to-green-500 transition-all flex items-center space-x-2 w-full md:w-auto justify-center shadow-sm"
                       >
                         <Upload size={16} />
-                        <span>Apply Now</span>
-                      </button>
+                        <span>Begin Application</span>
+                      </button> */}
                     </div>
                   </div>
-                </div>
-                
-                {previewModalOpen && (
-                  <DocumentPreviewModal
-                    file={currentPreviewFile}
-                    isOpen={previewModalOpen}
-                    onClose={() => setPreviewModalOpen(false)}
-                  />
-                )}
-              </div>
-            ))
+                </Disclosure.Panel>
+              </>
+            )}
+          </Disclosure>
+          
+          {previewModalOpen && (
+            <DocumentPreviewModal
+              file={currentPreviewFile}
+              isOpen={previewModalOpen}
+              onClose={() => setPreviewModalOpen(false)}
+            />
           )}
         </div>
-      );
+      ))
+    )}
+  </div>
+);
     // Futuristic Application Modal
     const renderApplicationModal = () => (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
