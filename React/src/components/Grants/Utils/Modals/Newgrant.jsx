@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { X, ChevronRight, Upload, Check, Calendar, Shield, Award, ArrowRight, ChevronDown, Sparkles, Zap, Globe, Clock, FileCheck, AlertTriangle } from "lucide-react";
 import axiosClient from '../../../../axiosClient';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+
+import { ToastContainer } from 'react-toastify';
 export default function GrantApplicationModal({ onClose, grantId }) {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,8 +32,46 @@ export default function GrantApplicationModal({ onClose, grantId }) {
       pitchDeck: null,
       businessPlan: null,
       pitchVideo: null
-    }
+    },
+    isComplete: false,
   });
+
+  const checkIfComplete = () => {
+    // Check if all required fields are filled
+    const requiredFields = [
+      'startupName', 'contactPerson', 'contactEmail', 'sector', 'location', 
+      'stage', 'revenue', 'teamExperience', 'traction', 'impactAreas', 
+      'isGenderLed', 'isYouthLed', 'isRuralBased', 'usesLocalSourcing'
+    ];
+
+    const areFieldsComplete = requiredFields.every(field => {
+      if (Array.isArray(formData[field])) {
+        // If it's an array (like impactAreas), it shouldn't be empty
+        return formData[field].length > 0;
+      }
+      if (typeof formData[field] === 'boolean') {
+        // If it's a boolean (like isGenderLed), just check the value
+        return formData[field] !== null;
+      }
+      return formData[field] !== ''; // Check for non-empty strings
+    });
+
+    // Check if at least one document is provided
+    const areDocumentsComplete = ['pitchDeck', 'businessPlan', 'pitchVideo'].some(doc => formData.documents[doc]);
+
+    // Update the isComplete flag based on the above checks
+    setFormData(prevState => ({
+      ...prevState,
+      isComplete: areFieldsComplete && areDocumentsComplete,
+    }));
+  };
+
+  // Run check whenever formData changes
+  useEffect(() => {
+    checkIfComplete();
+  }, [formData]);
+
+
 
   const modalRef = useRef();
 
@@ -87,30 +129,58 @@ export default function GrantApplicationModal({ onClose, grantId }) {
         is_rural_based: formData.isRuralBased,
         uses_local_sourcing: formData.usesLocalSourcing
       };
-
+  
       // Append all fields
       Object.entries(requestData).forEach(([key, value]) => {
         formDataToSend.append(key, value);
       });
-
+  
       // Append files
       Object.entries(formData.documents).forEach(([key, file]) => {
         if (file) formDataToSend.append(`${key}_file`, file);
       });
-
+  
       await axiosClient.post('grant/grant-application', formDataToSend, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-
+  
       setSubmissionSuccess(true);
+      toast.success(
+        <div className="flex items-center gap-2">
+          <Check className="h-4 w-4 text-green-500" />
+          <span>Application submitted successfully!</span>
+        </div>, 
+        {
+          position: "bottom-right",
+          autoClose: 1700,
+          hideProgressBar: true,
+          closeButton: false,
+          className: "!bg-white !text-gray-700 !shadow-sm !rounded-lg !border !border-gray-100 !px-3 !py-2",
+          onClose: onClose // Close modal when toast closes
+        }
+      );
+  
     } catch (error) {
       console.error('Submission error:', error);
-      setSubmissionError(error.response?.data?.message || 'Submission failed');
+      const errorMessage = error.response?.data?.message || 'Submission failed';
+      setSubmissionError(errorMessage);
+      toast.error(
+        <div className="flex items-center gap-2">
+          <X className="h-4 w-4 text-red-500" />
+          <span>{errorMessage}</span>
+        </div>, 
+        {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeButton: false,
+          className: "!bg-white !text-gray-700 !shadow-sm !rounded-lg !border !border-red-100 !px-3 !py-2"
+        }
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
-
 
 
   useEffect(() => {
@@ -132,10 +202,79 @@ export default function GrantApplicationModal({ onClose, grantId }) {
     else if (score >= 60) matchLevel = "Strong Match";
     setMatchPreview({ score, matchLevel });
   }, [formData]);
-
-  const nextStep = () => setStep(prev => Math.min(prev + 1, 3));
+ 
+  // Custom Toast component for consistent styling
+  const ValidationToast = ({ message }) => (
+    <div className="flex items-start">
+      <AlertTriangle className="text-yellow-500 mr-2 mt-0.5 flex-shrink-0" />
+      <div>
+        <p className="font-medium">Validation Required</p>
+        <p className="text-sm">{message}</p>
+      </div>
+    </div>
+  );
+  
+  const nextStep = () => {
+    // Validate current step before proceeding
+    let canProceed = true;
+    
+    if (step === 1) {
+      const requiredFields = ['startupName', 'contactPerson', 'contactEmail', 'sector', 'location'];
+      canProceed = requiredFields.every(field => formData[field]?.trim() !== '');
+      if (!canProceed) {
+        toast(<div className="flex items-center gap-2">
+          <AlertTriangle className="h-4 w-4 text-amber-500" />
+          <span>Complete all fields to continue</span>
+        </div>, {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: true,
+          closeButton: false,
+          className: "!bg-gray-700 !text-gray-200 !shadow-sm !rounded-lg !border !border-gray-100 !px-3 !py-2",
+        });
+        return;
+      }
+    }
+    else if (step === 2) {
+      const requiredFields = ['stage', 'revenue', 'teamExperience', 'traction'];
+      canProceed = requiredFields.every(field => formData[field]?.trim() !== '');
+      if (!canProceed) {
+        toast.warning(<ValidationToast message="Please fill all required fields in Step 2 before proceeding" />, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          className: '!bg-white !text-gray-800 !shadow-lg !border !border-yellow-200',
+        });
+        return;
+      }
+    }
+    else if (step === 3) {
+      canProceed = formData.impactAreas.length > 0;
+      if (!canProceed) {
+        toast.warning(<ValidationToast message="Please select at least one impact area before proceeding" />, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          className: '!bg-white !text-gray-800 !shadow-lg !border !border-yellow-200',
+        });
+        return;
+      }
+    }
+  
+    // Only proceed if validation passed
+    if (canProceed) {
+      setStep(prev => Math.min(prev + 1, 3));
+    }
+  };
   const prevStep = () => setStep(prev => Math.max(prev - 1, 1));
-
   const sectors = ["Agriculture", "Renewable Energy", "Tech"];
   const stages = ["Idea", "MVP", "Seed", "Growth"];
   const impactAreas = ["Food Security", "Carbon Reduction", "Job Creation", "Water Conservation", "Education", "Healthcare", "Financial Inclusion"];
@@ -165,7 +304,22 @@ export default function GrantApplicationModal({ onClose, grantId }) {
     }
   };
   return (
+    
     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
+      <ToastContainer
+  position="top-center"
+  autoClose={5000}
+  hideProgressBar={false}
+  newestOnTop={false}
+  closeOnClick
+  rtl={false}
+  pauseOnFocusLoss
+  draggable
+  pauseOnHover
+  toastClassName="!bg-white !text-gray-800 !shadow-lg !border !border-yellow-200"
+  bodyClassName="p-3"
+  progressClassName="!bg-yellow-500"
+/>
       <div className="bg-white rounded-lg shadow-2xl w-full max-w-4xl border border-gray-100 flex flex-col max-h-[90vh]" ref={modalRef}>
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-400 via-green-500 to-teal-400"></div>
         
