@@ -618,14 +618,14 @@ const GrantsOverview = () => {
                 <PlusCircle className="mr-2" />
                 Offer Grant
               </button>
-              <button
+              {/* <button
                 onClick={toggleApplicationModal}
                 className="bg-green-600 whitespace-nowrap text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-700 transition w-full md:w-auto justify-center"
               >
                 <PlusCircle className="mr-2" />
                 Apply For Grant
               </button>
-             
+              */}
             </div>
           </div>
 
