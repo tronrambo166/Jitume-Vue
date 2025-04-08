@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const GrantApplicationModal = ({ onClose, userId }) => {
+const GrantApplicationModal = ({ onClose, userId, }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     // Step 1: Basic Information

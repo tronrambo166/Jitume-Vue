@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { X, ChevronRight, Upload, Check, Calendar, Shield, Award, ArrowRight, ChevronDown, Sparkles, Zap, Globe, Clock, FileCheck, AlertTriangle } from "lucide-react";
+import axiosClient from '../../../../axiosClient';
 
-export default function GrantApplicationModal({ onClose }) {
+export default function GrantApplicationModal({ onClose, grantId }) {
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionSuccess, setSubmissionSuccess] = useState(false);
+  const [submissionError, setSubmissionError] = useState(null);
+  
   const [matchPreview, setMatchPreview] = useState(null);
   const [formData, setFormData] = useState({
     startupName: "",
@@ -28,19 +33,19 @@ export default function GrantApplicationModal({ onClose }) {
 
   const modalRef = useRef();
 
-  const handleClickOutside = (event) => {
-    if (modalRef.current && !modalRef.current.contains(event.target)) {
-      onClose();
-    }
-  };
-
+  // Handle outside click
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        onClose();
+      }
     };
-  }, []);
 
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [onClose]);
+
+  // Form handlers
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -50,15 +55,63 @@ export default function GrantApplicationModal({ onClose }) {
   };
 
   const handleImpactAreaChange = (area) => {
-    setFormData(prev => {
-      const currentAreas = [...prev.impactAreas];
-      if (currentAreas.includes(area)) {
-        return { ...prev, impactAreas: currentAreas.filter(a => a !== area) };
-      } else {
-        return { ...prev, impactAreas: [...currentAreas, area] };
-      }
-    });
+    setFormData(prev => ({
+      ...prev,
+      impactAreas: prev.impactAreas.includes(area)
+        ? prev.impactAreas.filter(a => a !== area)
+        : [...prev.impactAreas, area]
+    }));
   };
+
+  // Submission handler
+  const handleFinalSubmit = async () => {
+    setIsSubmitting(true);
+    setSubmissionError(null);
+    
+    try {
+      const formDataToSend = new FormData();
+      const requestData = {
+        grant_id: grantId,
+        startup_name: formData.startupName,
+        contact_name: formData.contactPerson,
+        contact_email: formData.contactEmail,
+        sector: formData.sector,
+        headquarters_location: formData.location,
+        stage: formData.stage,
+        revenue_last_12_months: formData.revenue,
+        team_experience_avg_years: formData.teamExperience,
+        traction_kpis: formData.traction,
+        social_impact_areas: formData.impactAreas.join(','),
+        is_gender_led: formData.isGenderLed,
+        is_youth_led: formData.isYouthLed,
+        is_rural_based: formData.isRuralBased,
+        uses_local_sourcing: formData.usesLocalSourcing
+      };
+
+      // Append all fields
+      Object.entries(requestData).forEach(([key, value]) => {
+        formDataToSend.append(key, value);
+      });
+
+      // Append files
+      Object.entries(formData.documents).forEach(([key, file]) => {
+        if (file) formDataToSend.append(`${key}_file`, file);
+      });
+
+      await axiosClient.post('grant/grant-application', formDataToSend, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+
+      setSubmissionSuccess(true);
+    } catch (error) {
+      console.error('Submission error:', error);
+      setSubmissionError(error.response?.data?.message || 'Submission failed');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+
 
   useEffect(() => {
     let score = 0;
@@ -96,6 +149,21 @@ export default function GrantApplicationModal({ onClose }) {
     return "bg-red-400";
   };
 
+
+  // Handle file upload
+
+  const handleFileChange = (e, field) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData(prev => ({
+        ...prev,
+        documents: {
+          ...prev.documents,
+          [field]: file
+        }
+      }));
+    }
+  };
   return (
     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
       <div className="bg-white rounded-lg shadow-2xl w-full max-w-4xl border border-gray-100 flex flex-col max-h-[90vh]" ref={modalRef}>
@@ -143,293 +211,334 @@ export default function GrantApplicationModal({ onClose }) {
             </div>
 
             <div className="px-6 py-4">
-              {step === 1 && (
-                <div className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Startup Name <span className="text-green-500">*</span></label>
-                      <input
-                        type="text"
-                        name="startupName"
-                        value={formData.startupName}
-                        onChange={handleChange}
-                        className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
-                        placeholder="Enter your startup name"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Contact Person <span className="text-green-500">*</span></label>
-                      <input
-                        type="text"
-                        name="contactPerson"
-                        value={formData.contactPerson}
-                        onChange={handleChange}
-                        className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
-                        placeholder="Full name"
-                        required
-                      />
-                    </div>
-                  </div>
+  {step === 1 && (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Startup Name <span className="text-green-500">*</span></label>
+          <input
+            type="text"
+            name="startupName"
+            value={formData.startupName}
+            onChange={handleChange}
+            className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
+            placeholder="Enter your startup name"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Contact Person <span className="text-green-500">*</span></label>
+          <input
+            type="text"
+            name="contactPerson"
+            value={formData.contactPerson}
+            onChange={handleChange}
+            className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
+            placeholder="Full name"
+            required
+          />
+        </div>
+      </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Contact Email <span className="text-green-500">*</span></label>
-                    <input
-                      type="email"
-                      name="contactEmail"
-                      value={formData.contactEmail}
-                      onChange={handleChange}
-                      className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
-                      placeholder="email@example.com"
-                      required
-                    />
-                  </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Contact Email <span className="text-green-500">*</span></label>
+        <input
+          type="email"
+          name="contactEmail"
+          value={formData.contactEmail}
+          onChange={handleChange}
+          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
+          placeholder="email@example.com"
+          required
+        />
+      </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Sector <span className="text-green-500">*</span></label>
-                      <div className="relative">
-                        <select
-                          name="sector"
-                          value={formData.sector}
-                          onChange={handleChange}
-                          className="w-full appearance-none bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
-                          required
-                        >
-                          <option value="">Select Sector</option>
-                          {sectors.map(sector => (
-                            <option key={sector} value={sector}>{sector}</option>
-                          ))}
-                        </select>
-                        <ChevronDown className="absolute right-3 top-3.5 w-5 h-5 text-gray-500" />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Stage <span className="text-green-500">*</span></label>
-                      <div className="relative">
-                        <select
-                          name="stage"
-                          value={formData.stage}
-                          onChange={handleChange}
-                          className="w-full appearance-none bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
-                          required
-                        >
-                          <option value="">Select Stage</option>
-                          {stages.map(stage => (
-                            <option key={stage} value={stage}>{stage}</option>
-                          ))}
-                        </select>
-                        <ChevronDown className="absolute right-3 top-3.5 w-5 h-5 text-gray-500" />
-                      </div>
-                    </div>
-                  </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Sector <span className="text-green-500">*</span></label>
+          <div className="relative">
+            <select
+              name="sector"
+              value={formData.sector}
+              onChange={handleChange}
+              className="w-full appearance-none bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
+              required
+            >
+              <option value="">Select Sector</option>
+              {sectors.map(sector => (
+                <option key={sector} value={sector}>{sector}</option>
+              ))}
+            </select>
+            <ChevronDown className="absolute right-3 top-3.5 w-5 h-5 text-gray-500" />
+          </div>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Stage <span className="text-green-500">*</span></label>
+          <div className="relative">
+            <select
+              name="stage"
+              value={formData.stage}
+              onChange={handleChange}
+              className="w-full appearance-none bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
+              required
+            >
+              <option value="">Select Stage</option>
+              {stages.map(stage => (
+                <option key={stage} value={stage}>{stage}</option>
+              ))}
+            </select>
+            <ChevronDown className="absolute right-3 top-3.5 w-5 h-5 text-gray-500" />
+          </div>
+        </div>
+      </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Headquarters Location <span className="text-green-500">*</span></label>
-                      <div className="relative">
-                        <select
-                          name="location"
-                          value={formData.location}
-                          onChange={handleChange}
-                          className="w-full appearance-none bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
-                          required
-                        >
-                          <option value="">Select Location</option>
-                          {countries.map(country => (
-                            <option key={country} value={country}>{country}</option>
-                          ))}
-                        </select>
-                        <ChevronDown className="absolute right-3 top-3.5 w-5 h-5 text-gray-500" />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Revenue (Last 12 Months)</label>
-                      <div className="relative">
-                        <span className="absolute left-4 top-3.5 text-gray-500">$</span>
-                        <input
-                          type="number"
-                          name="revenue"
-                          value={formData.revenue}
-                          onChange={handleChange}
-                          className="w-full bg-gray-50 border border-gray-200 rounded-lg pl-8 pr-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
-                          placeholder="0"
-                        />
-                      </div>
-                    </div>
-                  </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Headquarters Location <span className="text-green-500">*</span></label>
+          <div className="relative">
+            <select
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              className="w-full appearance-none bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
+              required
+            >
+              <option value="">Select Location</option>
+              {countries.map(country => (
+                <option key={country} value={country}>{country}</option>
+              ))}
+            </select>
+            <ChevronDown className="absolute right-3 top-3.5 w-5 h-5 text-gray-500" />
+          </div>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Revenue (Last 12 Months)</label>
+          <div className="relative">
+            <span className="absolute left-4 top-3.5 text-gray-500">$</span>
+            <input
+              type="number"
+              name="revenue"
+              value={formData.revenue}
+              onChange={handleChange}
+              className="w-full bg-gray-50 border border-gray-200 rounded-lg pl-8 pr-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
+              placeholder="0"
+            />
+          </div>
+        </div>
+      </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Team Experience (Avg. Years)</label>
-                      <input
-                        type="number"
-                        name="teamExperience"
-                        value={formData.teamExperience}
-                        onChange={handleChange}
-                        className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
-                        placeholder="0"
-                        min="0"
-                        max="50"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Traction / KPIs</label>
-                      <textarea
-                        name="traction"
-                        value={formData.traction}
-                        onChange={handleChange}
-                        className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
-                        placeholder="Key metrics that show your progress"
-                        rows="3"
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Team Experience (Avg. Years)</label>
+          <input
+            type="number"
+            name="teamExperience"
+            value={formData.teamExperience}
+            onChange={handleChange}
+            className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
+            placeholder="0"
+            min="0"
+            max="50"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Traction / KPIs</label>
+          <textarea
+            name="traction"
+            value={formData.traction}
+            onChange={handleChange}
+            className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
+            placeholder="Key metrics that show your progress"
+            rows="3"
+          />
+        </div>
+      </div>
+    </div>
+  )}
 
-              {step === 2 && (
-                <div className="space-y-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Social/Environmental Impact Areas</label>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                      {impactAreas.map(area => (
-                        <label 
-                          key={area}
-                          className={`flex items-center p-3 rounded-lg border ${formData.impactAreas.includes(area) ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:bg-gray-50'} transition-colors cursor-pointer`}
-                        >
-                          <input
-                            type="checkbox"
-                            checked={formData.impactAreas.includes(area)}
-                            onChange={() => handleImpactAreaChange(area)}
-                            className="sr-only"
-                          />
-                          <div className={`w-5 h-5 rounded flex items-center justify-center mr-3 ${formData.impactAreas.includes(area) ? 'bg-green-500' : 'border border-gray-300'}`}>
-                            {formData.impactAreas.includes(area) && <Check className="w-3 h-3 text-white" />}
-                          </div>
-                          <span className="text-gray-800">{area}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
+  {step === 2 && (
+    <div className="space-y-6">
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Social/Environmental Impact Areas</label>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {impactAreas.map(area => (
+            <label 
+              key={area}
+              className={`flex items-center p-3 rounded-lg border ${formData.impactAreas.includes(area) ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:bg-gray-50'} transition-colors cursor-pointer`}
+            >
+              <input
+                type="checkbox"
+                checked={formData.impactAreas.includes(area)}
+                onChange={() => handleImpactAreaChange(area)}
+                className="sr-only"
+              />
+              <div className={`w-5 h-5 rounded flex items-center justify-center mr-3 ${formData.impactAreas.includes(area) ? 'bg-green-500' : 'border border-gray-300'}`}>
+                {formData.impactAreas.includes(area) && <Check className="w-3 h-3 text-white" />}
+              </div>
+              <span className="text-gray-800">{area}</span>
+            </label>
+          ))}
+        </div>
+      </div>
 
-                  <div className="bg-gray-50 rounded-xl p-5 border border-gray-200">
-                    <div className="flex items-center mb-4">
-                      <div className="p-2 bg-green-100 rounded-lg mr-3">
-                        <Sparkles className="w-5 h-5 text-green-600" />
-                      </div>
-                      <h3 className="text-lg font-medium text-gray-800">Bonus Considerations</h3>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <label className={`flex items-center space-x-3 p-3 rounded-lg ${formData.isGenderLed ? 'bg-green-50 border border-green-100' : 'hover:bg-gray-100'} transition-colors cursor-pointer`}>
-                        <input
-                          type="checkbox"
-                          name="isGenderLed"
-                          checked={formData.isGenderLed}
-                          onChange={handleChange}
-                          className="form-checkbox h-5 w-5 text-green-500 rounded border-gray-300 focus:ring-green-500"
-                        />
-                        <div>
-                          <span className="text-gray-700 font-medium">Gender-led Business</span>
-                          <p className="text-xs text-gray-500">Business is led by women</p>
-                        </div>
-                      </label>
-                      
-                      <label className={`flex items-center space-x-3 p-3 rounded-lg ${formData.isYouthLed ? 'bg-green-50 border border-green-100' : 'hover:bg-gray-100'} transition-colors cursor-pointer`}>
-                        <input
-                          type="checkbox"
-                          name="isYouthLed"
-                          checked={formData.isYouthLed}
-                          onChange={handleChange}
-                          className="form-checkbox h-5 w-5 text-green-500 rounded border-gray-300 focus:ring-green-500"
-                        />
-                        <div>
-                          <span className="text-gray-700 font-medium">Youth-led Business</span>
-                          <p className="text-xs text-gray-500">Founders are 35 years or below</p>
-                        </div>
-                      </label>
-                      
-                      <label className={`flex items-center space-x-3 p-3 rounded-lg ${formData.isRuralBased ? 'bg-green-50 border border-green-100' : 'hover:bg-gray-100'} transition-colors cursor-pointer`}>
-                        <input
-                          type="checkbox"
-                          name="isRuralBased"
-                          checked={formData.isRuralBased}
-                          onChange={handleChange}
-                          className="form-checkbox h-5 w-5 text-green-500 rounded border-gray-300 focus:ring-green-500"
-                        />
-                        <div>
-                          <span className="text-gray-700 font-medium">Rural-based Operation</span>
-                          <p className="text-xs text-gray-500">Business operates in rural/underserved areas</p>
-                        </div>
-                      </label>
-                      
-                      <label className={`flex items-center space-x-3 p-3 rounded-lg ${formData.usesLocalSourcing ? 'bg-green-50 border border-green-100' : 'hover:bg-gray-100'} transition-colors cursor-pointer`}>
-                        <input
-                          type="checkbox"
-                          name="usesLocalSourcing"
-                          checked={formData.usesLocalSourcing}
-                          onChange={handleChange}
-                          className="form-checkbox h-5 w-5 text-green-500 rounded border-gray-300 focus:ring-green-500"
-                        />
-                        <div>
-                          <span className="text-gray-700 font-medium">Local Sourcing</span>
-                          <p className="text-xs text-gray-500">Uses locally sourced materials or labor</p>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {step === 3 && (
-                <div className="space-y-6">
-                  <div className="bg-green-50 rounded-xl p-5 border border-green-100 mb-6">
-                    <div className="flex items-start">
-                      <div className="bg-green-100 rounded-lg p-2 mr-4">
-                        <Clock className="w-6 h-6 text-green-600" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-medium text-gray-800 mb-1">Complete Your Application</h3>
-                        <p className="text-gray-600">Upload the required documents to finalize your grant application.</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="border border-dashed border-gray-300 rounded-xl p-8 bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors text-center">
-                      <div className="bg-green-100 rounded-full p-4 w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                        <Upload className="w-8 h-8 text-green-600" />
-                      </div>
-                      <h3 className="text-lg font-medium text-gray-800 mb-2">Upload Pitch Deck <span className="text-green-500">*</span></h3>
-                      <p className="text-gray-500 mb-4">PDF, PPT or PPTX (Max 10MB)</p>
-                      <button className="bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 font-medium px-5 py-2 rounded-lg transition-colors inline-flex items-center shadow-sm">
-                        <span>Select File</span>
-                      </button>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="border border-dashed border-gray-300 rounded-xl p-6 bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors text-center">
-                        <h3 className="text-lg font-medium text-gray-800 mb-2">Business Plan <span className="text-green-500">*</span></h3>
-                        <p className="text-gray-500 mb-4">PDF, DOC or DOCX (Max 5MB)</p>
-                        <button className="bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 font-medium px-4 py-2 rounded-lg transition-colors inline-flex items-center shadow-sm">
-                          <span>Select File</span>
-                        </button>
-                      </div>
-                      
-                      <div className="border border-dashed border-gray-300 rounded-xl p-6 bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors text-center">
-                        <h3 className="text-lg font-medium text-gray-800 mb-2">Pitch Video</h3>
-                        <p className="text-gray-500 mb-4">MP4 or YouTube/Vimeo link</p>
-                        <button className="bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 font-medium px-4 py-2 rounded-lg transition-colors inline-flex items-center shadow-sm">
-                          <span>Upload or Link</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+      <div className="bg-gray-50 rounded-xl p-5 border border-gray-200">
+        <div className="flex items-center mb-4">
+          <div className="p-2 bg-green-100 rounded-lg mr-3">
+            <Sparkles className="w-5 h-5 text-green-600" />
+          </div>
+          <h3 className="text-lg font-medium text-gray-800">Bonus Considerations</h3>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <label className={`flex items-center space-x-3 p-3 rounded-lg ${formData.isGenderLed ? 'bg-green-50 border border-green-100' : 'hover:bg-gray-100'} transition-colors cursor-pointer`}>
+            <input
+              type="checkbox"
+              name="isGenderLed"
+              checked={formData.isGenderLed}
+              onChange={handleChange}
+              className="form-checkbox h-5 w-5 text-green-500 rounded border-gray-300 focus:ring-green-500"
+            />
+            <div>
+              <span className="text-gray-700 font-medium">Gender-led Business</span>
+              <p className="text-xs text-gray-500">Business is led by women</p>
             </div>
+          </label>
+          
+          <label className={`flex items-center space-x-3 p-3 rounded-lg ${formData.isYouthLed ? 'bg-green-50 border border-green-100' : 'hover:bg-gray-100'} transition-colors cursor-pointer`}>
+            <input
+              type="checkbox"
+              name="isYouthLed"
+              checked={formData.isYouthLed}
+              onChange={handleChange}
+              className="form-checkbox h-5 w-5 text-green-500 rounded border-gray-300 focus:ring-green-500"
+            />
+            <div>
+              <span className="text-gray-700 font-medium">Youth-led Business</span>
+              <p className="text-xs text-gray-500">Founders are 35 years or below</p>
+            </div>
+          </label>
+          
+          <label className={`flex items-center space-x-3 p-3 rounded-lg ${formData.isRuralBased ? 'bg-green-50 border border-green-100' : 'hover:bg-gray-100'} transition-colors cursor-pointer`}>
+            <input
+              type="checkbox"
+              name="isRuralBased"
+              checked={formData.isRuralBased}
+              onChange={handleChange}
+              className="form-checkbox h-5 w-5 text-green-500 rounded border-gray-300 focus:ring-green-500"
+            />
+            <div>
+              <span className="text-gray-700 font-medium">Rural-based Operation</span>
+              <p className="text-xs text-gray-500">Business operates in rural/underserved areas</p>
+            </div>
+          </label>
+          
+          <label className={`flex items-center space-x-3 p-3 rounded-lg ${formData.usesLocalSourcing ? 'bg-green-50 border border-green-100' : 'hover:bg-gray-100'} transition-colors cursor-pointer`}>
+            <input
+              type="checkbox"
+              name="usesLocalSourcing"
+              checked={formData.usesLocalSourcing}
+              onChange={handleChange}
+              className="form-checkbox h-5 w-5 text-green-500 rounded border-gray-300 focus:ring-green-500"
+            />
+            <div>
+              <span className="text-gray-700 font-medium">Local Sourcing</span>
+              <p className="text-xs text-gray-500">Uses locally sourced materials or labor</p>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+  )}
 
+{step === 3 && (
+  <div className="space-y-6">
+    <div className="bg-green-50 rounded-xl p-5 border border-green-100 mb-6">
+      <div className="flex items-start">
+        <div className="bg-green-100 rounded-lg p-2 mr-4">
+          <Clock className="w-6 h-6 text-green-600" />
+        </div>
+        <div>
+          <h3 className="text-lg font-medium text-gray-800 mb-1">Complete Your Application</h3>
+          <p className="text-gray-600">Upload the required documents to finalize your grant application.</p>
+        </div>
+      </div>
+    </div>
+
+    <div className="space-y-4">
+      {/* Pitch Deck Upload */}
+      <div className="border border-dashed border-gray-300 rounded-xl p-8 bg-gray-50 hover:bg-gray-100 transition-colors text-center">
+        <div className="bg-green-100 rounded-full p-4 w-16 h-16 flex items-center justify-center mx-auto mb-4">
+          <Upload className="w-8 h-8 text-green-600" />
+        </div>
+        <h3 className="text-lg font-medium text-gray-800 mb-2">Upload Pitch Deck <span className="text-green-500">*</span></h3>
+        <p className="text-gray-500 mb-4">PDF, PPT or PPTX (Max 10MB)</p>
+        <input
+          type="file"
+          id="pitchDeck"
+          accept=".pdf,.ppt,.pptx"
+          onChange={(e) => handleFileChange(e, 'pitchDeck')}
+          className="hidden"
+        />
+        <label
+          htmlFor="pitchDeck"
+          className="bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 font-medium px-5 py-2 rounded-lg transition-colors inline-flex items-center shadow-sm cursor-pointer"
+        >
+          <span>{formData.documents.pitchDeck ? formData.documents.pitchDeck.name : 'Select File'}</span>
+        </label>
+        {formData.documents.pitchDeck && (
+          <p className="mt-2 text-sm text-green-600">File selected: {formData.documents.pitchDeck.name}</p>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Business Plan Upload */}
+        <div className="border border-dashed border-gray-300 rounded-xl p-6 bg-gray-50 hover:bg-gray-100 transition-colors text-center">
+          <h3 className="text-lg font-medium text-gray-800 mb-2">Business Plan <span className="text-green-500">*</span></h3>
+          <p className="text-gray-500 mb-4">PDF, DOC or DOCX (Max 5MB)</p>
+          <input
+            type="file"
+            id="businessPlan"
+            accept=".pdf,.doc,.docx"
+            onChange={(e) => handleFileChange(e, 'businessPlan')}
+            className="hidden"
+          />
+          <label
+            htmlFor="businessPlan"
+            className="bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 font-medium px-4 py-2 rounded-lg transition-colors inline-flex items-center shadow-sm cursor-pointer"
+          >
+            <span>{formData.documents.businessPlan ? formData.documents.businessPlan.name : 'Select File'}</span>
+          </label>
+          {formData.documents.businessPlan && (
+            <p className="mt-2 text-sm text-green-600">File selected: {formData.documents.businessPlan.name}</p>
+          )}
+        </div>
+        
+        {/* Pitch Video Upload */}
+        <div className="border border-dashed border-gray-300 rounded-xl p-6 bg-gray-50 hover:bg-gray-100 transition-colors text-center">
+          <h3 className="text-lg font-medium text-gray-800 mb-2">Pitch Video</h3>
+          <p className="text-gray-500 mb-4">MP4 or YouTube/Vimeo link</p>
+          <input
+            type="file"
+            id="pitchVideo"
+            accept=".mp4,video/*"
+            onChange={(e) => handleFileChange(e, 'pitchVideo')}
+            className="hidden"
+          />
+          <label
+            htmlFor="pitchVideo"
+            className="bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 font-medium px-4 py-2 rounded-lg transition-colors inline-flex items-center shadow-sm cursor-pointer"
+          >
+            <span>{formData.documents.pitchVideo ? formData.documents.pitchVideo.name : 'Upload or Link'}</span>
+          </label>
+          {formData.documents.pitchVideo && (
+            <p className="mt-2 text-sm text-green-600">File selected: {formData.documents.pitchVideo.name}</p>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+</div>
             <div className="px-6 py-4 border-t border-gray-100 flex justify-between items-center bg-white">
               {step > 1 ? (
                 <button 
@@ -450,11 +559,27 @@ export default function GrantApplicationModal({ onClose }) {
                   Next Step <ArrowRight className="w-4 h-4 ml-2" />
                 </button>
               ) : (
-                <button 
-                  className="bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white px-8 py-3 rounded-lg transition-all shadow-lg shadow-green-200 flex items-center font-medium"
-                >
-                  Submit Application <Check className="w-4 h-4 ml-2" />
-                </button>
+                <button
+                onClick={handleFinalSubmit}
+                disabled={isSubmitting || submissionSuccess}
+                className={`bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white px-8 py-3 rounded-lg transition-all shadow-lg shadow-green-200 flex items-center font-medium ${
+                  isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
+                } ${
+                  submissionSuccess ? 'from-green-600 to-green-600 hover:from-green-600 hover:to-green-600' : ''
+                }`}
+              >
+                {isSubmitting ? (
+                  'Submitting...'
+                ) : submissionSuccess ? (
+                  <>
+                    Submitted! <Check className="w-4 h-4 ml-2" />
+                  </>
+                ) : (
+                  <>
+                    Submit Application <Check className="w-4 h-4 ml-2" />
+                  </>
+                )}
+              </button>
               )}
             </div>
           </div>

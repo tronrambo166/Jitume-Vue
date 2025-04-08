@@ -29,6 +29,7 @@ import { useStateContext } from "../../../contexts/contextProvider";
 import axiosClient from "../../../axiosClient";
 import DocumentPreviewModal from "../components/DocumentPreviewModal";
 import { Disclosure } from '@headlessui/react';
+import GrantApplicationModal from "../Utils/Modals/Newgrant";
 const TujitumeGrantPortal = () => {
     const [activeView, setActiveView] = useState("dashboard");
     const [selectedGrant, setSelectedGrant] = useState(null);
@@ -823,18 +824,20 @@ const dashboardMetrics = {
                     <div className="flex items-center space-x-3 flex-shrink-0">
                       {/* Primary Apply Button - Always Visible */}
                       <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedGrant(grant);
-                        }}
-                        className={`px-3 py-1.5 bg-gradient-to-r from-green-600 to-green-500 text-white text-sm rounded-lg hover:from-green-700 hover:to-green-600 transition-all flex items-center space-x-1.5 shadow-sm ${
-                          open ? 'hidden md:flex' : 'flex'
-                        }`}
-                        title="Apply now"
-                      >
-                        <Upload size={16} />
-                        <span>Apply</span>
-                      </button>
+  onClick={(e) => {
+    e.stopPropagation();
+    setSelectedGrant(grant);
+    setShowCreateModal(true); // this line opens the modal!
+  }}
+  className={`px-3 py-1.5 bg-gradient-to-r from-green-600 to-green-500 text-white text-sm rounded-lg hover:from-green-700 hover:to-green-600 transition-all flex items-center space-x-1.5 shadow-sm ${
+    open ? 'hidden md:flex' : 'flex'
+  }`}
+  title="Apply now"
+>
+  <Upload size={16} />
+  <span>Apply</span>
+</button>
+
                       
                       {/* Quick Actions - Visible when collapsed */}
                       <div className={`flex space-x-2 ${open ? 'hidden' : 'flex'}`}>
@@ -1072,127 +1075,7 @@ const dashboardMetrics = {
   </div>
 );
     // Futuristic Application Modal
-    const renderApplicationModal = () => (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
-            <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-gray-200 shadow-2xl">
-                <div className="p-6">
-                    <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-2xl font-bold text-gray-900">
-                            Apply for {selectedGrant.title}
-                        </h2>
-                        <button
-                            onClick={() => setSelectedGrant(null)}
-                            className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100"
-                        >
-                            <XCircle size={24} />
-                        </button>
-                    </div>
 
-                    <div className="space-y-6">
-                        <div>
-                            <h3 className="text-lg font-medium text-gray-900 mb-3">
-                                Required Documents
-                            </h3>
-                            <div className="space-y-3">
-                                {selectedGrant.documentsRequired.map((doc) => {
-                                    const docKey = `${selectedGrant.id}-${doc}`;
-                                    return (
-                                        <div
-                                            key={doc}
-                                            className="p-4 bg-gray-50 rounded-lg border border-gray-200"
-                                        >
-                                            <div className="flex justify-between items-center">
-                                                <div className="flex items-center space-x-3">
-                                                    <FileText
-                                                        className="text-green-600"
-                                                        size={20}
-                                                    />
-                                                    <span className="font-medium">
-                                                        {doc}
-                                                    </span>
-                                                </div>
-                                                {uploadedDocuments[docKey] ? (
-                                                    <div className="flex items-center space-x-3">
-                                                        <span className="text-sm text-gray-600">
-                                                            {
-                                                                uploadedDocuments[
-                                                                    docKey
-                                                                ].name
-                                                            }{" "}
-                                                            (
-                                                            {
-                                                                uploadedDocuments[
-                                                                    docKey
-                                                                ].size
-                                                            }
-                                                            )
-                                                        </span>
-                                                        <button
-                                                            onClick={() =>
-                                                                handleDocumentUpload(
-                                                                    selectedGrant.id,
-                                                                    doc
-                                                                )
-                                                            }
-                                                            className="text-sm text-green-600 hover:text-green-800 font-medium"
-                                                        >
-                                                            Replace
-                                                        </button>
-                                                    </div>
-                                                ) : (
-                                                    <button
-                                                        onClick={() =>
-                                                            handleDocumentUpload(
-                                                                selectedGrant.id,
-                                                                doc
-                                                            )
-                                                        }
-                                                        className="text-sm text-green-600 hover:text-green-800 font-medium flex items-center"
-                                                    >
-                                                        <Upload
-                                                            size={16}
-                                                            className="mr-1"
-                                                        />
-                                                        Upload
-                                                    </button>
-                                                )}
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-
-                        <div>
-                            <label className="block text-lg font-medium text-gray-900 mb-3">
-                                Project Summary
-                            </label>
-                            <textarea
-                                className="w-full border border-gray-300 rounded-lg p-4 h-40 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                                placeholder="Describe your project's innovative approach and expected impact..."
-                            />
-                        </div>
-
-                        <div className="pt-4 flex justify-end space-x-4">
-                            <button
-                                onClick={() => setSelectedGrant(null)}
-                                className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 font-medium"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                className="px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-green-600 transition-colors font-medium flex items-center space-x-2"
-                                onClick={() => submitApplication(selectedGrant)}
-                            >
-                                <Upload size={18} />
-                                <span>Submit Application</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
 
     return (
         <div className="min-h-screen bg-gray-50 p-6">
@@ -1375,298 +1258,21 @@ const dashboardMetrics = {
             </div>
         </div>
     )}
-            {selectedGrant && renderApplicationModal()}
-            {showCreateModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
-                    <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-gray-200 shadow-2xl">
-                        <div className="p-6">
-                            <div className="flex justify-between items-center mb-6">
-                                <h2 className="text-2xl font-bold text-gray-900">
-                                    Create New Grant
-                                </h2>
-                                <button
-                                    onClick={() => setShowCreateModal(false)}
-                                    className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100"
-                                >
-                                    <XCircle size={24} />
-                                </button>
-                            </div>
+         {selectedGrant && showCreateModal && (
+  <GrantApplicationModal
+    grantId={selectedGrant.id} // or selectedGrant.id depending on your data
+    newGrant={newGrant}
+    setNewGrant={setNewGrant}
+    setShowCreateModal={setShowCreateModal}
+    createNewGrant={createNewGrant}
+    onClose={() => {
+      setShowCreateModal(false);
+      setSelectedGrant(null);
+    }}
+  />
+)}
 
-                            <div className="space-y-6">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Grant Title*
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                                            value={newGrant.title}
-                                            onChange={(e) =>
-                                                setNewGrant({
-                                                    ...newGrant,
-                                                    title: e.target.value,
-                                                })
-                                            }
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Organization*
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                                            value={newGrant.organization}
-                                            onChange={(e) =>
-                                                setNewGrant({
-                                                    ...newGrant,
-                                                    organization:
-                                                        e.target.value,
-                                                })
-                                            }
-                                        />
-                                    </div>
-                                </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Impact Statement
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                                        value={newGrant.impact}
-                                        onChange={(e) =>
-                                            setNewGrant({
-                                                ...newGrant,
-                                                impact: e.target.value,
-                                            })
-                                        }
-                                    />
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Total Fund Amount*
-                                        </label>
-                                        <input
-                                            type="number"
-                                            className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                                            value={newGrant.totalFund}
-                                            onChange={(e) =>
-                                                setNewGrant({
-                                                    ...newGrant,
-                                                    totalFund: e.target.value,
-                                                })
-                                            }
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Max Grant Per Startup*
-                                        </label>
-                                        <input
-                                            type="number"
-                                            className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                                            value={newGrant.maxGrantPerStartup}
-                                            onChange={(e) =>
-                                                setNewGrant({
-                                                    ...newGrant,
-                                                    maxGrantPerStartup:
-                                                        e.target.value,
-                                                })
-                                            }
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Technology Level
-                                        </label>
-                                        <select
-                                            className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                                            value={newGrant.techLevel}
-                                            onChange={(e) =>
-                                                setNewGrant({
-                                                    ...newGrant,
-                                                    techLevel: e.target.value,
-                                                })
-                                            }
-                                        >
-                                            <option value="emerging">
-                                                Emerging Tech
-                                            </option>
-                                            <option value="high">
-                                                High Tech
-                                            </option>
-                                            <option value="cutting-edge">
-                                                Cutting Edge
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Deadline
-                                        </label>
-                                        <input
-                                            type="date"
-                                            className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                                            value={newGrant.deadline}
-                                            onChange={(e) =>
-                                                setNewGrant({
-                                                    ...newGrant,
-                                                    deadline: e.target.value,
-                                                })
-                                            }
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Sectors
-                                        </label>
-                                        <select
-                                            multiple
-                                            className="w-full border border-gray-300 rounded-lg p-3 h-32 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                                            onChange={(e) =>
-                                                setNewGrant({
-                                                    ...newGrant,
-                                                    sectors: Array.from(
-                                                        e.target
-                                                            .selectedOptions,
-                                                        (option) => option.value
-                                                    ),
-                                                })
-                                            }
-                                        >
-                                            <option value="AI">
-                                                Artificial Intelligence
-                                            </option>
-                                            <option value="Blockchain">
-                                                Blockchain
-                                            </option>
-                                            <option value="IoT">
-                                                Internet of Things
-                                            </option>
-                                            <option value="Renewable Energy">
-                                                Renewable Energy
-                                            </option>
-                                            <option value="AgriTech">
-                                                AgriTech
-                                            </option>
-                                            <option value="Fintech">
-                                                Fintech
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Regions
-                                        </label>
-                                        <select
-                                            multiple
-                                            className="w-full border border-gray-300 rounded-lg p-3 h-32 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                                            onChange={(e) =>
-                                                setNewGrant({
-                                                    ...newGrant,
-                                                    regions: Array.from(
-                                                        e.target
-                                                            .selectedOptions,
-                                                        (option) => option.value
-                                                    ),
-                                                })
-                                            }
-                                        >
-                                            <option value="East Africa">
-                                                East Africa
-                                            </option>
-                                            <option value="West Africa">
-                                                West Africa
-                                            </option>
-                                            <option value="Southern Africa">
-                                                Southern Africa
-                                            </option>
-                                            <option value="North Africa">
-                                                North Africa
-                                            </option>
-                                            <option value="Pan-African">
-                                                Pan-African
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Key Focus Areas (comma separated)
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                                        value={newGrant.keyFocus.join(", ")}
-                                        onChange={(e) =>
-                                            setNewGrant({
-                                                ...newGrant,
-                                                keyFocus: e.target.value
-                                                    .split(",")
-                                                    .map((item) => item.trim()),
-                                            })
-                                        }
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Required Documents (comma separated)
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                                        value={newGrant.documentsRequired.join(
-                                            ", "
-                                        )}
-                                        onChange={(e) =>
-                                            setNewGrant({
-                                                ...newGrant,
-                                                documentsRequired:
-                                                    e.target.value
-                                                        .split(",")
-                                                        .map((item) =>
-                                                            item.trim()
-                                                        ),
-                                            })
-                                        }
-                                    />
-                                </div>
-
-                                <div className="flex justify-end space-x-4 pt-4">
-                                    <button
-                                        onClick={() =>
-                                            setShowCreateModal(false)
-                                        }
-                                        className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 font-medium"
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium flex items-center space-x-2"
-                                        onClick={createNewGrant}
-                                    >
-                                        <Plus size={18} />
-                                        <span>Create Grant</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
