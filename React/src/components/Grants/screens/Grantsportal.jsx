@@ -32,6 +32,11 @@ import DocumentPreviewModal from "../components/DocumentPreviewModal";
 import { Disclosure } from '@headlessui/react';
 import GrantApplicationModal from "../Utils/Modals/Newgrant";
 import PitchesOutlet from "../components/Grantpitches";
+import { 
+    CheckCircle, 
+    Star, 
+  } from "lucide-react";
+  
 const TujitumeGrantPortal = () => {
     const [viewingPitchesForGrant, setViewingPitchesForGrant] = useState(null);
     const [activeView, setActiveView] = useState("dashboard");
@@ -923,9 +928,177 @@ const dashboardMetrics = {
                       </div>
       
                       {/* Expanded Content - remains the same */}
-                      <Disclosure.Panel className="px-5 pb-5 border-t border-gray-100">
-                        {/* ... rest of your Disclosure.Panel content ... */}
-                      </Disclosure.Panel>
+                      <Disclosure.Panel className="px-4 pb-5 pt-3 border-t border-gray-100">
+  <div className="space-y-5">
+    {/* Key Stats - Horizontal scrollable on mobile */}
+    <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar -mx-1 px-1">
+      {grant.total_grant_amount && (
+        <div className="flex-shrink-0 border border-gray-200 px-3 py-2 rounded-md">
+          <p className="text-xs text-gray-500">Total Grant</p>
+          <p className="text-base font-medium text-gray-900">${grant.total_grant_amount.toLocaleString()}</p>
+        </div>
+      )}
+      
+      {grant.funding_per_business && (
+        <div className="flex-shrink-0 border border-gray-200 px-3 py-2 rounded-md">
+          <p className="text-xs text-gray-500">Per Business</p>
+          <p className="text-base font-medium text-gray-900">${grant.funding_per_business.toLocaleString()}</p>
+        </div>
+      )}
+      
+      {grant.application_deadline && (
+        <div className="flex-shrink-0 border border-gray-200 px-3 py-2 rounded-md">
+          <p className="text-xs text-gray-500">Deadline</p>
+          <p className="text-base font-medium text-gray-900">{new Date(grant.application_deadline).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})}</p>
+        </div>
+      )}
+      
+      {grant.grant_focus && (
+        <div className="flex-shrink-0 border border-gray-200 px-3 py-2 rounded-md">
+          <p className="text-xs text-gray-500">Focus</p>
+          <p className="text-base font-medium text-gray-900">{grant.grant_focus}</p>
+        </div>
+      )}
+    </div>
+
+    {/* Collapsible/Expandable Sections */}
+    <div className="space-y-4">
+      {/* Description Section */}
+      <Disclosure defaultOpen={true}>
+        {({open}) => (
+          <>
+            <Disclosure.Button className="flex w-full justify-between items-center py-2 text-left text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
+              <span className="flex items-center text-gray-700">
+                <FileText size={15} className="mr-2 text-gray-400" />
+                Description
+              </span>
+              <ChevronDown
+                size={16}
+                className={`text-gray-400 transition-transform ${open ? 'transform rotate-180' : ''}`}
+              />
+            </Disclosure.Button>
+            <Disclosure.Panel className="text-sm text-gray-600 pl-6 pr-2">
+              {grant.description || "No description available."}
+            </Disclosure.Panel>
+          </>
+        )}
+      </Disclosure>
+      
+      {/* Eligibility Section */}
+      <Disclosure>
+        {({open}) => (
+          <>
+            <Disclosure.Button className="flex w-full justify-between items-center py-2 text-left text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
+              <span className="flex items-center text-gray-700">
+                <CheckCircle size={15} className="mr-2 text-gray-400" />
+                Eligibility Criteria
+              </span>
+              <ChevronDown
+                size={16}
+                className={`text-gray-400 transition-transform ${open ? 'transform rotate-180' : ''}`}
+              />
+            </Disclosure.Button>
+            <Disclosure.Panel className="text-sm text-gray-600 pl-6 pr-2">
+              {grant.eligibility_criteria || "No eligibility criteria specified."}
+            </Disclosure.Panel>
+          </>
+        )}
+      </Disclosure>
+      
+      {/* Evaluation Section */}
+      <Disclosure>
+        {({open}) => (
+          <>
+            <Disclosure.Button className="flex w-full justify-between items-center py-2 text-left text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
+              <span className="flex items-center text-gray-700">
+                <Star size={15} className="mr-2 text-gray-400" />
+                Evaluation Criteria
+              </span>
+              <ChevronDown
+                size={16}
+                className={`text-gray-400 transition-transform ${open ? 'transform rotate-180' : ''}`}
+              />
+            </Disclosure.Button>
+            <Disclosure.Panel className="text-sm text-gray-600 pl-6 pr-2">
+              {grant.evaluation_criteria || "No evaluation criteria specified."}
+            </Disclosure.Panel>
+          </>
+        )}
+      </Disclosure>
+      
+      {/* Documents Section */}
+      {(grant.documentsRequired && grant.documentsRequired.length > 0) && (
+        <Disclosure>
+          {({open}) => (
+            <>
+              <Disclosure.Button className="flex w-full justify-between items-center py-2 text-left text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
+                <span className="flex items-center text-gray-700">
+                  <FileText size={15} className="mr-2 text-gray-400" />
+                  Required Documents
+                </span>
+                <ChevronDown
+                  size={16}
+                  className={`text-gray-400 transition-transform ${open ? 'transform rotate-180' : ''}`}
+                />
+              </Disclosure.Button>
+              <Disclosure.Panel className="text-sm text-gray-600 pl-6 pr-2">
+                <ul className="list-disc pl-5 space-y-1">
+                  {grant.documentsRequired.map((doc, index) => (
+                    <li key={index}>{doc}</li>
+                  ))}
+                </ul>
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+      )}
+    </div>
+    
+    {/* Action Buttons - Stacked on mobile, side by side on larger screens */}
+    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-4 pt-3 border-t border-gray-100">
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          setSelectedGrant(grant);
+          setShowCreateModal(true);
+        }}
+        className="flex-1 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-all flex items-center justify-center space-x-2"
+      >
+        <Upload size={16} />
+        <span>Apply</span>
+      </button>
+      
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          setViewingPitchesForGrant(grant.id);
+        }}
+        className="flex-1 py-2 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 transition-all flex items-center justify-center space-x-2"
+      >
+        <Eye size={16} />
+        <span>View Pitches</span>
+      </button>
+      
+      {grant.grant_brief_pdf && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            const fileName = grant.grant_brief_pdf?.split("/").pop() || "grant_brief.pdf";
+            setCurrentPreviewFile({
+              name: fileName,
+              url: grant.grant_brief_pdf
+            });
+            setPreviewModalOpen(true);
+          }}
+          className="flex-1 py-2 border border-gray-200 text-gray-700 rounded-md hover:bg-gray-50 transition-all flex items-center justify-center space-x-2"
+        >
+          <FileText size={16} />
+          <span>Brief</span>
+        </button>
+      )}
+    </div>
+  </div>
+</Disclosure.Panel>
                     </>
                   )}
                 </Disclosure>
