@@ -1,4 +1,5 @@
 import { useStateContext } from "../../../contexts/contextProvider";
+import axiosClient from "../../../axiosClient";
 import React, { useState, useEffect } from 'react';
 import { 
   Outlet, 
@@ -34,7 +35,7 @@ import {
   X
 } from 'lucide-react';
 import GrantApplicationModal from '../Utils/Modals/Newgrant';
-import OfferGrantModal from "../Utils/Modals/AddnewGrant";
+// import OfferGrantModal from "../Utils/Modals/AddnewGrant";
 
 // Toast Notification Component
 const ToastNotification = ({ message, type = 'info', onClose }) => {
@@ -379,94 +380,117 @@ const Navigation = {
   },
 
   TopNavigation: () => {
-    const [isProfileOpen, setIsProfileOpen] = useState(false);
-    const profileRef = React.useRef(null);
-    const { token, setToken, setUser } = useStateContext();
-    const navigate = useNavigate();
-    const { addToast } = useToast();
+      const [isProfileOpen, setIsProfileOpen] = useState(false);
+      const profileRef = React.useRef(null);
+      const { token, setToken, setUser } = useStateContext();
+      const[GetuserRole, setGetuserRole] = useState(null);
+      const navigate = useNavigate();
+      const { addToast } = useToast();
 
-    useEffect(() => {
-      if (!token) {
-        navigate('/');
-      }
-    }, [token, navigate]);
+      // useEffect(() => {
+      //   if (!token) {
+      //     navigate('/');
+      //   }
+      // }, [token, navigate]);
 
-    // Close profile dropdown when clicking outside
-    useEffect(() => {
-      const handleClickOutside = (event) => {
-        if (profileRef.current && !profileRef.current.contains(event.target)) {
-          setIsProfileOpen(false);
-        }
+      useEffect(() => {
+          const fetchUserData = async () => {
+              try {
+                  const { data } = await axiosClient.get("/checkAuth");
+                  setGetuserRole(data.user);
+              } catch (error) {
+                navigate("/");
+                  console.error(error);
+              }
+          };
+
+          fetchUserData();
+      }, []);
+
+      console.log("User Role:", GetuserRole);
+
+      // Close profile dropdown when clicking outside
+      useEffect(() => {
+          const handleClickOutside = (event) => {
+              if (
+                  profileRef.current &&
+                  !profileRef.current.contains(event.target)
+              ) {
+                  setIsProfileOpen(false);
+              }
+          };
+          document.addEventListener("mousedown", handleClickOutside);
+          return () => {
+              document.removeEventListener("mousedown", handleClickOutside);
+          };
+      }, []);
+
+      const handleLogout = () => {
+          setToken(null);
+          setUser(null);
+          localStorage.removeItem("ACCESS_TOKEN");
+          localStorage.removeItem("USER");
+          addToast("Logged out successfully", "success");
+          navigate("/");
       };
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }, []);
 
-    const handleLogout = () => {
-      setToken(null);
-      setUser(null);
-      localStorage.removeItem('ACCESS_TOKEN');
-      localStorage.removeItem('USER');
-      addToast('Logged out successfully', 'success');
-      navigate('/');
-    };
+      return (
+          <div className="bg-white shadow-sm p-4 flex justify-between items-center">
+              <div className="flex items-center space-x-4">
+                  <button
+                      className="text-gray-600 hover:text-blue-600 relative"
+                      onClick={() => addToast("No new notifications", "info")}
+                  >
+                      <Bell size={20} />
+                  </button>
+                  <div className="relative">
+                      <input
+                          type="text"
+                          placeholder="Search..."
+                          className="pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none w-full md:w-64"
+                      />
+                      <Search
+                          className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400"
+                          size={18}
+                      />
+                  </div>
+              </div>
+              <div className="flex items-center space-x-4" ref={profileRef}>
+                  <button
+                      className="flex items-center space-x-2 text-gray-700 hover:text-blue-700"
+                      onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  >
+                      <User size={20} />
+                      <span className="hidden md:inline">Profile</span>
+                  </button>
 
-    return (
-      <div className="bg-white shadow-sm p-4 flex justify-between items-center">
-        <div className="flex items-center space-x-4">
-          <button 
-            className="text-gray-600 hover:text-blue-600 relative"
-            onClick={() => addToast('No new notifications', 'info')}
-          >
-            <Bell size={20} />
-          </button>
-          <div className="relative">
-            <input 
-              type="text" 
-              placeholder="Search..." 
-              className="pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none w-full md:w-64"
-            />
-            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                  {isProfileOpen && (
+                      <div className="absolute right-4 top-16 bg-white shadow-lg rounded-lg p-2 w-48 z-50 border border-gray-100">
+                          <Link
+                              to="/grants-overview/settings/profile"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                              onClick={() => setIsProfileOpen(false)}
+                          >
+                              My Profile
+                          </Link>
+                          <Link
+                              to="/grants-overview/settings/notifications"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                              onClick={() => setIsProfileOpen(false)}
+                          >
+                              Notifications
+                          </Link>
+                          <button
+                              onClick={handleLogout}
+                              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                          >
+                              Logout
+                          </button>
+                      </div>
+                  )}
+              </div>
           </div>
-        </div>
-        <div className="flex items-center space-x-4" ref={profileRef}>
-          <button 
-            className="flex items-center space-x-2 text-gray-700 hover:text-blue-700"
-            onClick={() => setIsProfileOpen(!isProfileOpen)}
-          >
-            <User size={20} />
-            <span className="hidden md:inline">Profile</span>
-          </button>
-          
-          {isProfileOpen && (
-            <div className="absolute right-4 top-16 bg-white shadow-lg rounded-lg p-2 w-48 z-50 border border-gray-100">
-              <Link 
-                to="/grants-overview/settings/profile" 
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
-                onClick={() => setIsProfileOpen(false)}
-              >
-                My Profile
-              </Link>
-              <Link 
-                to="/grants-overview/settings/notifications" 
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
-                onClick={() => setIsProfileOpen(false)}
-              >
-                Notifications
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
-              >
-                Logout
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-    );
+      );
   },
 
   Breadcrumbs: () => {
@@ -530,6 +554,7 @@ const GrantsOverview = () => {
       navigate('/');
     }
   }, [token, navigate]);
+  
 
   const toggleApplicationModal = () => {
     setIsApplicationModalOpen((prev) => !prev);
@@ -611,13 +636,13 @@ const GrantsOverview = () => {
               </p>
             </div>
             <div className="flex space-x-4">
-            <button
+            {/* <button
                 onClick={toggleOfferModal}
                 className="bg-gray-800 text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-700 transition w-full md:w-auto justify-center"
               >
                 <PlusCircle className="mr-2" />
                 Offer Grant
-              </button>
+              </button> */}
               {/* <button
                 onClick={toggleApplicationModal}
                 className="bg-green-600 whitespace-nowrap text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-700 transition w-full md:w-auto justify-center"
@@ -648,7 +673,7 @@ const GrantsOverview = () => {
         />
       )}
       
-      {isOfferModalOpen && (
+      {/* {isOfferModalOpen && (
         <OfferGrantModal 
           isOpen={isOfferModalOpen}
           onClose={toggleOfferModal}
@@ -657,7 +682,7 @@ const GrantsOverview = () => {
             toggleOfferModal();
           }}
         />
-      )}
+      )} */}
     </div>
   );
 };

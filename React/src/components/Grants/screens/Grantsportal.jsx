@@ -25,18 +25,18 @@ import {
     Briefcase,
     Trash,
     Eye,
+    PlusCircle,
 } from "lucide-react";
 import { useStateContext } from "../../../contexts/contextProvider";
 import axiosClient from "../../../axiosClient";
 import DocumentPreviewModal from "../components/DocumentPreviewModal";
-import { Disclosure } from '@headlessui/react';
+import { Disclosure } from "@headlessui/react";
 import GrantApplicationModal from "../Utils/Modals/Newgrant";
+import OfferGrantModal from "../Utils/Modals/AddnewGrant";
+
 import PitchesOutlet from "../components/Grantpitches";
-import { 
-    CheckCircle, 
-    Star, 
-  } from "lucide-react";
-  
+import { CheckCircle, Star } from "lucide-react";
+
 const TujitumeGrantPortal = () => {
     const [viewingPitchesForGrant, setViewingPitchesForGrant] = useState(null);
     const [activeView, setActiveView] = useState("dashboard");
@@ -46,7 +46,7 @@ const TujitumeGrantPortal = () => {
     const [grants, setGrants] = useState([]);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [pendingDeleteId, setPendingDeleteId] = useState(null);
-
+    const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
 
     const [filters, setFilters] = useState({
         sectors: [],
@@ -156,20 +156,22 @@ const TujitumeGrantPortal = () => {
 
         fetchGrants();
     }, []);
-    
 
+    const mee = () => {
+        console.log("Create Grant");
+    };
+    console.log("The status of showCreateModal is :", showCreateModal);
 
     // Delete Grant
     const handleDeleteGrant = (id) => {
-        setPendingDeleteId(id);  // Store the grant ID to delete
+        setPendingDeleteId(id); // Store the grant ID to delete
         setShowConfirmModal(true); // Open the confirmation modal
     };
-    
-    
+
     const confirmDeleteGrant = async () => {
         try {
             await axiosClient.get(`/grant/delete-grant/${pendingDeleteId}`);
-    
+
             setGrantOpportunities((prevGrants) =>
                 prevGrants.filter((grant) => grant.id !== pendingDeleteId)
             );
@@ -181,74 +183,90 @@ const TujitumeGrantPortal = () => {
             setPendingDeleteId(null);
         }
     };
-    
+
     const cancelDeleteGrant = () => {
         setShowConfirmModal(false);
         setPendingDeleteId(null);
     };
-    
+
     // No dependencies needed since axiosClient handles token internally
     console.log("grantOpportunities", grantOpportunities);
     // Filter grants
-   const filteredGrants = grantOpportunities.filter((grant) => {
-    const grantTitle = grant.title || grant.grant_title || "";
-    const matchesSearch =
-        grantTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (grant.organization || "").toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesSectors =
-        filters.sectors.length === 0 ||
-        (grant.sectors && Array.isArray(grant.sectors) && 
-         filters.sectors.some((sector) => grant.sectors.includes(sector)));
-    
-    const matchesRegions =
-        filters.regions.length === 0 ||
-        (grant.regions && Array.isArray(grant.regions) && 
-         filters.regions.some((region) => grant.regions.includes(region)));
-    
-    const fundingAmount = grant.funding_per_business || grant.maxGrantPerStartup;
-    const parsedAmount = parseFloat(fundingAmount);
-    const matchesAmount =
-        !isNaN(parsedAmount) &&
-        parsedAmount >= filters.amountRange[0] &&
-        parsedAmount <= filters.amountRange[1];
-    
-    const matchesDeadline =
-        !filters.deadline ||
-        (grant.application_deadline && new Date(grant.application_deadline) <= new Date(filters.deadline));
+    const filteredGrants = grantOpportunities.filter((grant) => {
+        const grantTitle = grant.title || grant.grant_title || "";
+        const matchesSearch =
+            grantTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (grant.organization || "")
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase());
 
-    return (
-        matchesSearch &&
-        matchesSectors &&
-        matchesRegions &&
-        matchesAmount &&
-        matchesDeadline
-    );
-});
-console.log("filteredGrants", filteredGrants);
+        const matchesSectors =
+            filters.sectors.length === 0 ||
+            (grant.sectors &&
+                Array.isArray(grant.sectors) &&
+                filters.sectors.some((sector) =>
+                    grant.sectors.includes(sector)
+                ));
 
-// Dashboard metrics
-const dashboardMetrics = {
-    activeApplications: grantApplications.length,
-    totalFundingPotential: grantApplications.reduce(
-        (sum, app) => {
-            const fundingAmount = app.grant?.funding_per_business || app.grant?.maxGrantPerStartup;
+        const matchesRegions =
+            filters.regions.length === 0 ||
+            (grant.regions &&
+                Array.isArray(grant.regions) &&
+                filters.regions.some((region) =>
+                    grant.regions.includes(region)
+                ));
+
+        const fundingAmount =
+            grant.funding_per_business || grant.maxGrantPerStartup;
+        const parsedAmount = parseFloat(fundingAmount);
+        const matchesAmount =
+            !isNaN(parsedAmount) &&
+            parsedAmount >= filters.amountRange[0] &&
+            parsedAmount <= filters.amountRange[1];
+
+        const matchesDeadline =
+            !filters.deadline ||
+            (grant.application_deadline &&
+                new Date(grant.application_deadline) <=
+                    new Date(filters.deadline));
+
+        return (
+            matchesSearch &&
+            matchesSectors &&
+            matchesRegions &&
+            matchesAmount &&
+            matchesDeadline
+        );
+    });
+    console.log("filteredGrants", filteredGrants);
+
+    // Dashboard metrics
+    const dashboardMetrics = {
+        activeApplications: grantApplications.length,
+        totalFundingPotential: grantApplications.reduce((sum, app) => {
+            const fundingAmount =
+                app.grant?.funding_per_business ||
+                app.grant?.maxGrantPerStartup;
             const parsedAmount = parseFloat(fundingAmount);
             return sum + (!isNaN(parsedAmount) ? parsedAmount : 0);
-        },
-        0
-    ),
-    countriesCovered: new Set(
-        grantApplications.flatMap((app) => 
-            app.grant?.regions && Array.isArray(app.grant.regions) ? app.grant.regions : []
-        )
-    ).size,
-    matchingGrants: filteredGrants.length,
-    highTechGrants: grantOpportunities.filter((g) =>
-        g.techLevel && ["high", "very-high", "cutting-edge"].includes(g.techLevel)
-    ).length,
-};
-
+        }, 0),
+        countriesCovered: new Set(
+            grantApplications.flatMap((app) =>
+                app.grant?.regions && Array.isArray(app.grant.regions)
+                    ? app.grant.regions
+                    : []
+            )
+        ).size,
+        matchingGrants: filteredGrants.length,
+        highTechGrants: grantOpportunities.filter(
+            (g) =>
+                g.techLevel &&
+                ["high", "very-high", "cutting-edge"].includes(g.techLevel)
+        ).length,
+    };
+    const toggleOfferModal = () => {
+        setIsOfferModalOpen((prev) => !prev);
+    };
     // Futuristic document upload with drag and drop
     const handleDocumentUpload = (grantId, documentName) => {
         const fileInput = document.createElement("input");
@@ -451,12 +469,10 @@ const dashboardMetrics = {
 
             {/* Featured Grants - Futuristic Cards */}
             <div>
-                
-
                 <div>
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-xl font-bold text-gray-900">
-                            Featured  Grants
+                            Featured Grants
                         </h2>
                         <button
                             onClick={() => setActiveView("opportunities")}
@@ -568,7 +584,7 @@ const dashboardMetrics = {
                                                 </div>
                                             </div>
                                         </div>
-                               
+
                                         <div className="mt-6 flex space-x-3">
                                             {grant.grant_brief_pdf && (
                                                 <button
@@ -593,9 +609,11 @@ const dashboardMetrics = {
                                                 </button>
                                             )}
                                             <button
-                                                onClick={() =>
-                                                    setSelectedGrant(grant)
-                                                }
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setSelectedGrant(grant);
+                                                    setShowCreateModal(true);
+                                                }}
                                                 className={`flex-1 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center space-x-2 ${
                                                     !grant.grant_brief_pdf
                                                         ? "w-full"
@@ -616,8 +634,6 @@ const dashboardMetrics = {
         </div>
     );
 
-
-    
     // Enhanced Filters with futuristic elements
     const renderFilters = () => (
         <div className="bg-white p-5 rounded-xl border border-gray-200 mb-6">
@@ -770,353 +786,505 @@ const dashboardMetrics = {
         </div>
     );
 
-    
-
-
-
-
     //  Grant Cards
     const renderGrantOpportunities = () => (
         <div className="space-y-4">
-          {grantOpportunities.length === 0 ? (
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-xl border border-gray-200 shadow-sm text-center">
-              <p className="text-gray-600 font-medium">
-                No grant opportunities available
-              </p>
-            </div>
-          ) : (
-            grantOpportunities.map((grant) => (
-              <div
-                key={grant.id}
-                className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-all duration-200"
-              >
-                <Disclosure>
-                  {({ open }) => (
-                    <>
-                      {/* Header content - no longer a Disclosure.Button */}
-                      <div className="p-5">
-                        <div className="flex flex-col md:flex-row md:justify-between gap-4">
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center flex-wrap gap-2 mb-1">
-                              <h2 className="text-lg font-bold text-gray-900 truncate">
-                                {grant.title || grant.grant_title}
-                              </h2>
-                              {grant.techLevel === "cutting-edge" && (
-                                <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full flex-shrink-0">
-                                  <Zap size={12} className="mr-1 inline" />
-                                  Cutting Edge
-                                </span>
-                              )}
-                            </div>
-                            
-                            <div className="flex flex-wrap items-center gap-3 mt-2">
-                              <div className="flex items-center text-sm text-gray-600">
-                                <Briefcase size={14} className="mr-1.5 text-gray-400" />
-                                {grant.organization || "No organization"}
-                              </div>
-                              
-                              <div className="flex items-center text-sm text-gray-600">
-                                <MapPin size={14} className="mr-1.5 text-gray-400" />
-                                {grant.regions.length > 0 ? grant.regions.join(", ") : "All regions"}
-                              </div>
-                              
-                              {grant.application_deadline && (
-                                <div className="flex items-center text-sm text-gray-600">
-                                  <Calendar size={14} className="mr-1.5 text-gray-400" />
-                                  {new Date(grant.application_deadline).toLocaleDateString()}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                          
-                          <div className="flex items-center space-x-3 flex-shrink-0">
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setViewingPitchesForGrant(grant.id);
-                              }}
-                              className={`px-3 py-1.5 bg-gradient-to-r from-[rgb(253,224,71)] to-gray-100 text-black text-sm rounded-lg hover:from-[rgb(253,224,71)] hover:to-gray-100 transition-all flex items-center space-x-1.5 shadow-sm ${
-                                open ? 'hidden md:flex' : 'flex'
-                              }`}
-                              title="View pitches"
-                            >
-                              <Eye size={16} />
-                              <span>Pitches</span>
-                            </button>
-                            
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedGrant(grant);
-                                setShowCreateModal(true);
-                              }}
-                              className={`px-3 py-1.5 bg-gradient-to-r from-green-600 to-green-500 text-white text-sm rounded-lg hover:from-green-700 hover:to-green-600 transition-all flex items-center space-x-1.5 shadow-sm ${
-                                open ? 'hidden md:flex' : 'flex'
-                              }`}
-                              title="Apply now"
-                            >
-                              <Upload size={16} />
-                              <span>Apply</span>
-                            </button>
-                            
-                            <div className={`flex space-x-2 ${open ? 'hidden' : 'flex'}`}>
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  const fileName = grant.grant_brief_pdf?.split("/").pop() || "grant_brief.pdf";
-                                  setCurrentPreviewFile({
-                                    name: fileName,
-                                    url: grant.grant_brief_pdf
-                                  });
-                                  setPreviewModalOpen(true);
-                                }}
-                                disabled={!grant.grant_brief_pdf}
-                                className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all"
-                                title="View document"
-                              >
-                                <FileText size={18} />
-                              </button>
-                            </div>
-                            
-                            <div className="group relative">
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleDeleteGrant(grant.id);
-                                }}
-                                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-all"
-                                aria-label="Delete grant"
-                              >
-                                <Trash size={18} />
-                              </button>
-                              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-all duration-200">
-                                Delete
-                              </span>
-                            </div>
-                            
-                            {/* Only the chevron is now the Disclosure.Button */}
-                            <Disclosure.Button className="p-2 text-gray-400 hover:bg-gray-100 rounded-full transition-all">
-                              <ChevronDown
-                                size={20}
-                                className={`transition-transform duration-200 ${
-                                  open ? "transform rotate-180" : ""
-                                }`}
-                              />
-                            </Disclosure.Button>
-                          </div>
-                        </div>
-                        
-                        <div className={`mt-3 flex flex-wrap items-center gap-3 ${open ? 'hidden' : 'flex'}`}>
-                          {grant.total_grant_amount && (
-                            <span className="inline-flex items-center px-2.5 py-1 bg-green-50 text-green-800 text-xs rounded-full">
-                              <DollarSign size={12} className="mr-1" />
-                              Total: ${grant.total_grant_amount.toLocaleString()}
-                            </span>
-                          )}
-                          {grant.funding_per_business && (
-                            <span className="inline-flex items-center px-2.5 py-1 bg-blue-50 text-blue-800 text-xs rounded-full">
-                              <Briefcase size={12} className="mr-1" />
-                              Per Business: ${grant.funding_per_business.toLocaleString()}
-                            </span>
-                          )}
-                          {grant.grant_focus && (
-                            <span className="inline-flex items-center px-2.5 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">
-                              {grant.grant_focus}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-      
-                      {/* Expanded Content - remains the same */}
-                      <Disclosure.Panel className="px-4 pb-5 pt-3 border-t border-gray-100">
-  <div className="space-y-5">
-    {/* Key Stats - Horizontal scrollable on mobile */}
-    <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar -mx-1 px-1">
-      {grant.total_grant_amount && (
-        <div className="flex-shrink-0 border border-gray-200 px-3 py-2 rounded-md">
-          <p className="text-xs text-gray-500">Total Grant</p>
-          <p className="text-base font-medium text-gray-900">${grant.total_grant_amount.toLocaleString()}</p>
-        </div>
-      )}
-      
-      {grant.funding_per_business && (
-        <div className="flex-shrink-0 border border-gray-200 px-3 py-2 rounded-md">
-          <p className="text-xs text-gray-500">Per Business</p>
-          <p className="text-base font-medium text-gray-900">${grant.funding_per_business.toLocaleString()}</p>
-        </div>
-      )}
-      
-      {grant.application_deadline && (
-        <div className="flex-shrink-0 border border-gray-200 px-3 py-2 rounded-md">
-          <p className="text-xs text-gray-500">Deadline</p>
-          <p className="text-base font-medium text-gray-900">{new Date(grant.application_deadline).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})}</p>
-        </div>
-      )}
-      
-      {grant.grant_focus && (
-        <div className="flex-shrink-0 border border-gray-200 px-3 py-2 rounded-md">
-          <p className="text-xs text-gray-500">Focus</p>
-          <p className="text-base font-medium text-gray-900">{grant.grant_focus}</p>
-        </div>
-      )}
-    </div>
+            {grantOpportunities.length === 0 ? (
+                <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-xl border border-gray-200 shadow-sm text-center">
+                    <p className="text-gray-600 font-medium">
+                        No grant opportunities available
+                    </p>
+                </div>
+            ) : (
+                grantOpportunities.map((grant) => (
+                    <div
+                        key={grant.id}
+                        className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-all duration-200"
+                    >
+                        <Disclosure>
+                            {({ open }) => (
+                                <>
+                                    {/* Header content - no longer a Disclosure.Button */}
+                                    <div className="p-5">
+                                        <div className="flex flex-col md:flex-row md:justify-between gap-4">
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center flex-wrap gap-2 mb-1">
+                                                    <h2 className="text-lg font-bold text-gray-900 truncate">
+                                                        {grant.title ||
+                                                            grant.grant_title}
+                                                    </h2>
+                                                    {grant.techLevel ===
+                                                        "cutting-edge" && (
+                                                        <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full flex-shrink-0">
+                                                            <Zap
+                                                                size={12}
+                                                                className="mr-1 inline"
+                                                            />
+                                                            Cutting Edge
+                                                        </span>
+                                                    )}
+                                                </div>
 
-    {/* Collapsible/Expandable Sections */}
-    <div className="space-y-4">
-      {/* Description Section */}
-      <Disclosure defaultOpen={true}>
-        {({open}) => (
-          <>
-            <Disclosure.Button className="flex w-full justify-between items-center py-2 text-left text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
-              <span className="flex items-center text-gray-700">
-                <FileText size={15} className="mr-2 text-gray-400" />
-                Description
-              </span>
-              <ChevronDown
-                size={16}
-                className={`text-gray-400 transition-transform ${open ? 'transform rotate-180' : ''}`}
-              />
-            </Disclosure.Button>
-            <Disclosure.Panel className="text-sm text-gray-600 pl-6 pr-2">
-              {grant.description || "No description available."}
-            </Disclosure.Panel>
-          </>
-        )}
-      </Disclosure>
-      
-      {/* Eligibility Section */}
-      <Disclosure>
-        {({open}) => (
-          <>
-            <Disclosure.Button className="flex w-full justify-between items-center py-2 text-left text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
-              <span className="flex items-center text-gray-700">
-                <CheckCircle size={15} className="mr-2 text-gray-400" />
-                Eligibility Criteria
-              </span>
-              <ChevronDown
-                size={16}
-                className={`text-gray-400 transition-transform ${open ? 'transform rotate-180' : ''}`}
-              />
-            </Disclosure.Button>
-            <Disclosure.Panel className="text-sm text-gray-600 pl-6 pr-2">
-              {grant.eligibility_criteria || "No eligibility criteria specified."}
-            </Disclosure.Panel>
-          </>
-        )}
-      </Disclosure>
-      
-      {/* Evaluation Section */}
-      <Disclosure>
-        {({open}) => (
-          <>
-            <Disclosure.Button className="flex w-full justify-between items-center py-2 text-left text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
-              <span className="flex items-center text-gray-700">
-                <Star size={15} className="mr-2 text-gray-400" />
-                Evaluation Criteria
-              </span>
-              <ChevronDown
-                size={16}
-                className={`text-gray-400 transition-transform ${open ? 'transform rotate-180' : ''}`}
-              />
-            </Disclosure.Button>
-            <Disclosure.Panel className="text-sm text-gray-600 pl-6 pr-2">
-              {grant.evaluation_criteria || "No evaluation criteria specified."}
-            </Disclosure.Panel>
-          </>
-        )}
-      </Disclosure>
-      
-      {/* Documents Section */}
-      {(grant.documentsRequired && grant.documentsRequired.length > 0) && (
-        <Disclosure>
-          {({open}) => (
-            <>
-              <Disclosure.Button className="flex w-full justify-between items-center py-2 text-left text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
-                <span className="flex items-center text-gray-700">
-                  <FileText size={15} className="mr-2 text-gray-400" />
-                  Required Documents
-                </span>
-                <ChevronDown
-                  size={16}
-                  className={`text-gray-400 transition-transform ${open ? 'transform rotate-180' : ''}`}
-                />
-              </Disclosure.Button>
-              <Disclosure.Panel className="text-sm text-gray-600 pl-6 pr-2">
-                <ul className="list-disc pl-5 space-y-1">
-                  {grant.documentsRequired.map((doc, index) => (
-                    <li key={index}>{doc}</li>
-                  ))}
-                </ul>
-              </Disclosure.Panel>
-            </>
-          )}
-        </Disclosure>
-      )}
-    </div>
-    
-    {/* Action Buttons - Stacked on mobile, side by side on larger screens */}
-    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-4 pt-3 border-t border-gray-100">
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          setSelectedGrant(grant);
-          setShowCreateModal(true);
-        }}
-        className="flex-1 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-all flex items-center justify-center space-x-2"
-      >
-        <Upload size={16} />
-        <span>Apply</span>
-      </button>
-      
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          setViewingPitchesForGrant(grant.id);
-        }}
-        className="flex-1 py-2 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 transition-all flex items-center justify-center space-x-2"
-      >
-        <Eye size={16} />
-        <span>View Pitches</span>
-      </button>
-      
-      {grant.grant_brief_pdf && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            const fileName = grant.grant_brief_pdf?.split("/").pop() || "grant_brief.pdf";
-            setCurrentPreviewFile({
-              name: fileName,
-              url: grant.grant_brief_pdf
-            });
-            setPreviewModalOpen(true);
-          }}
-          className="flex-1 py-2 border border-gray-200 text-gray-700 rounded-md hover:bg-gray-50 transition-all flex items-center justify-center space-x-2"
-        >
-          <FileText size={16} />
-          <span>Brief</span>
-        </button>
-      )}
-    </div>
-  </div>
-</Disclosure.Panel>
-                    </>
-                  )}
-                </Disclosure>
-                
-                {previewModalOpen && (
-                  <DocumentPreviewModal
-                    file={currentPreviewFile}
-                    isOpen={previewModalOpen}
-                    onClose={() => setPreviewModalOpen(false)}
-                  />
-                )}
-              </div>
-            ))
-          )}
+                                                <div className="flex flex-wrap items-center gap-3 mt-2">
+                                                    <div className="flex items-center text-sm text-gray-600">
+                                                        <Briefcase
+                                                            size={14}
+                                                            className="mr-1.5 text-gray-400"
+                                                        />
+                                                        {grant.organization ||
+                                                            "No organization"}
+                                                    </div>
+
+                                                    <div className="flex items-center text-sm text-gray-600">
+                                                        <MapPin
+                                                            size={14}
+                                                            className="mr-1.5 text-gray-400"
+                                                        />
+                                                        {grant.regions.length >
+                                                        0
+                                                            ? grant.regions.join(
+                                                                  ", "
+                                                              )
+                                                            : "All regions"}
+                                                    </div>
+
+                                                    {grant.application_deadline && (
+                                                        <div className="flex items-center text-sm text-gray-600">
+                                                            <Calendar
+                                                                size={14}
+                                                                className="mr-1.5 text-gray-400"
+                                                            />
+                                                            {new Date(
+                                                                grant.application_deadline
+                                                            ).toLocaleDateString()}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center space-x-3 flex-shrink-0">
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setViewingPitchesForGrant(
+                                                            grant.id
+                                                        );
+                                                    }}
+                                                    className={`px-3 py-1.5 bg-gradient-to-r from-[rgb(253,224,71)] to-gray-100 text-black text-sm rounded-lg hover:from-[rgb(253,224,71)] hover:to-gray-100 transition-all flex items-center space-x-1.5 shadow-sm ${
+                                                        open
+                                                            ? "hidden md:flex"
+                                                            : "flex"
+                                                    }`}
+                                                    title="View pitches"
+                                                >
+                                                    <Eye size={16} />
+                                                    <span>Pitches</span>
+                                                </button>
+
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setSelectedGrant(grant);
+                                                        setShowCreateModal(
+                                                            true
+                                                        );
+                                                    }}
+                                                    className={`px-3 py-1.5 bg-gradient-to-r from-green-600 to-green-500 text-white text-sm rounded-lg hover:from-green-700 hover:to-green-600 transition-all flex items-center space-x-1.5 shadow-sm ${
+                                                        open
+                                                            ? "hidden md:flex"
+                                                            : "flex"
+                                                    }`}
+                                                    title="Apply now"
+                                                >
+                                                    <Upload size={16} />
+                                                    <span>Apply</span>
+                                                </button>
+
+                                                <div
+                                                    className={`flex space-x-2 ${
+                                                        open ? "hidden" : "flex"
+                                                    }`}
+                                                >
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            const fileName =
+                                                                grant.grant_brief_pdf
+                                                                    ?.split("/")
+                                                                    .pop() ||
+                                                                "grant_brief.pdf";
+                                                            setCurrentPreviewFile(
+                                                                {
+                                                                    name: fileName,
+                                                                    url: grant.grant_brief_pdf,
+                                                                }
+                                                            );
+                                                            setPreviewModalOpen(
+                                                                true
+                                                            );
+                                                        }}
+                                                        disabled={
+                                                            !grant.grant_brief_pdf
+                                                        }
+                                                        className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all"
+                                                        title="View document"
+                                                    >
+                                                        <FileText size={18} />
+                                                    </button>
+                                                </div>
+
+                                                <div className="group relative">
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleDeleteGrant(
+                                                                grant.id
+                                                            );
+                                                        }}
+                                                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-all"
+                                                        aria-label="Delete grant"
+                                                    >
+                                                        <Trash size={18} />
+                                                    </button>
+                                                    <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-all duration-200">
+                                                        Delete
+                                                    </span>
+                                                </div>
+
+                                                {/* Only the chevron is now the Disclosure.Button */}
+                                                <Disclosure.Button className="p-2 text-gray-400 hover:bg-gray-100 rounded-full transition-all">
+                                                    <ChevronDown
+                                                        size={20}
+                                                        className={`transition-transform duration-200 ${
+                                                            open
+                                                                ? "transform rotate-180"
+                                                                : ""
+                                                        }`}
+                                                    />
+                                                </Disclosure.Button>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            className={`mt-3 flex flex-wrap items-center gap-3 ${
+                                                open ? "hidden" : "flex"
+                                            }`}
+                                        >
+                                            {grant.total_grant_amount && (
+                                                <span className="inline-flex items-center px-2.5 py-1 bg-green-50 text-green-800 text-xs rounded-full">
+                                                    <DollarSign
+                                                        size={12}
+                                                        className="mr-1"
+                                                    />
+                                                    Total: $
+                                                    {grant.total_grant_amount.toLocaleString()}
+                                                </span>
+                                            )}
+                                            {grant.funding_per_business && (
+                                                <span className="inline-flex items-center px-2.5 py-1 bg-blue-50 text-blue-800 text-xs rounded-full">
+                                                    <Briefcase
+                                                        size={12}
+                                                        className="mr-1"
+                                                    />
+                                                    Per Business: $
+                                                    {grant.funding_per_business.toLocaleString()}
+                                                </span>
+                                            )}
+                                            {grant.grant_focus && (
+                                                <span className="inline-flex items-center px-2.5 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">
+                                                    {grant.grant_focus}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Expanded Content - remains the same */}
+                                    <Disclosure.Panel className="px-4 pb-5 pt-3 border-t border-gray-100">
+                                        <div className="space-y-5">
+                                            {/* Key Stats - Horizontal scrollable on mobile */}
+                                            <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar -mx-1 px-1">
+                                                {grant.total_grant_amount && (
+                                                    <div className="flex-shrink-0 border border-gray-200 px-3 py-2 rounded-md">
+                                                        <p className="text-xs text-gray-500">
+                                                            Total Grant
+                                                        </p>
+                                                        <p className="text-base font-medium text-gray-900">
+                                                            $
+                                                            {grant.total_grant_amount.toLocaleString()}
+                                                        </p>
+                                                    </div>
+                                                )}
+
+                                                {grant.funding_per_business && (
+                                                    <div className="flex-shrink-0 border border-gray-200 px-3 py-2 rounded-md">
+                                                        <p className="text-xs text-gray-500">
+                                                            Per Business
+                                                        </p>
+                                                        <p className="text-base font-medium text-gray-900">
+                                                            $
+                                                            {grant.funding_per_business.toLocaleString()}
+                                                        </p>
+                                                    </div>
+                                                )}
+
+                                                {grant.application_deadline && (
+                                                    <div className="flex-shrink-0 border border-gray-200 px-3 py-2 rounded-md">
+                                                        <p className="text-xs text-gray-500">
+                                                            Deadline
+                                                        </p>
+                                                        <p className="text-base font-medium text-gray-900">
+                                                            {new Date(
+                                                                grant.application_deadline
+                                                            ).toLocaleDateString(
+                                                                "en-US",
+                                                                {
+                                                                    month: "short",
+                                                                    day: "numeric",
+                                                                    year: "numeric",
+                                                                }
+                                                            )}
+                                                        </p>
+                                                    </div>
+                                                )}
+
+                                                {grant.grant_focus && (
+                                                    <div className="flex-shrink-0 border border-gray-200 px-3 py-2 rounded-md">
+                                                        <p className="text-xs text-gray-500">
+                                                            Focus
+                                                        </p>
+                                                        <p className="text-base font-medium text-gray-900">
+                                                            {grant.grant_focus}
+                                                        </p>
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            {/* Collapsible/Expandable Sections */}
+                                            <div className="space-y-4">
+                                                {/* Description Section */}
+                                                <Disclosure defaultOpen={true}>
+                                                    {({ open }) => (
+                                                        <>
+                                                            <Disclosure.Button className="flex w-full justify-between items-center py-2 text-left text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
+                                                                <span className="flex items-center text-gray-700">
+                                                                    <FileText
+                                                                        size={
+                                                                            15
+                                                                        }
+                                                                        className="mr-2 text-gray-400"
+                                                                    />
+                                                                    Description
+                                                                </span>
+                                                                <ChevronDown
+                                                                    size={16}
+                                                                    className={`text-gray-400 transition-transform ${
+                                                                        open
+                                                                            ? "transform rotate-180"
+                                                                            : ""
+                                                                    }`}
+                                                                />
+                                                            </Disclosure.Button>
+                                                            <Disclosure.Panel className="text-sm text-gray-600 pl-6 pr-2">
+                                                                {grant.description ||
+                                                                    "No description available."}
+                                                            </Disclosure.Panel>
+                                                        </>
+                                                    )}
+                                                </Disclosure>
+
+                                                {/* Eligibility Section */}
+                                                <Disclosure>
+                                                    {({ open }) => (
+                                                        <>
+                                                            <Disclosure.Button className="flex w-full justify-between items-center py-2 text-left text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
+                                                                <span className="flex items-center text-gray-700">
+                                                                    <CheckCircle
+                                                                        size={
+                                                                            15
+                                                                        }
+                                                                        className="mr-2 text-gray-400"
+                                                                    />
+                                                                    Eligibility
+                                                                    Criteria
+                                                                </span>
+                                                                <ChevronDown
+                                                                    size={16}
+                                                                    className={`text-gray-400 transition-transform ${
+                                                                        open
+                                                                            ? "transform rotate-180"
+                                                                            : ""
+                                                                    }`}
+                                                                />
+                                                            </Disclosure.Button>
+                                                            <Disclosure.Panel className="text-sm text-gray-600 pl-6 pr-2">
+                                                                {grant.eligibility_criteria ||
+                                                                    "No eligibility criteria specified."}
+                                                            </Disclosure.Panel>
+                                                        </>
+                                                    )}
+                                                </Disclosure>
+
+                                                {/* Evaluation Section */}
+                                                <Disclosure>
+                                                    {({ open }) => (
+                                                        <>
+                                                            <Disclosure.Button className="flex w-full justify-between items-center py-2 text-left text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
+                                                                <span className="flex items-center text-gray-700">
+                                                                    <Star
+                                                                        size={
+                                                                            15
+                                                                        }
+                                                                        className="mr-2 text-gray-400"
+                                                                    />
+                                                                    Evaluation
+                                                                    Criteria
+                                                                </span>
+                                                                <ChevronDown
+                                                                    size={16}
+                                                                    className={`text-gray-400 transition-transform ${
+                                                                        open
+                                                                            ? "transform rotate-180"
+                                                                            : ""
+                                                                    }`}
+                                                                />
+                                                            </Disclosure.Button>
+                                                            <Disclosure.Panel className="text-sm text-gray-600 pl-6 pr-2">
+                                                                {grant.evaluation_criteria ||
+                                                                    "No evaluation criteria specified."}
+                                                            </Disclosure.Panel>
+                                                        </>
+                                                    )}
+                                                </Disclosure>
+
+                                                {/* Documents Section */}
+                                                {grant.documentsRequired &&
+                                                    grant.documentsRequired
+                                                        .length > 0 && (
+                                                        <Disclosure>
+                                                            {({ open }) => (
+                                                                <>
+                                                                    <Disclosure.Button className="flex w-full justify-between items-center py-2 text-left text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
+                                                                        <span className="flex items-center text-gray-700">
+                                                                            <FileText
+                                                                                size={
+                                                                                    15
+                                                                                }
+                                                                                className="mr-2 text-gray-400"
+                                                                            />
+                                                                            Required
+                                                                            Documents
+                                                                        </span>
+                                                                        <ChevronDown
+                                                                            size={
+                                                                                16
+                                                                            }
+                                                                            className={`text-gray-400 transition-transform ${
+                                                                                open
+                                                                                    ? "transform rotate-180"
+                                                                                    : ""
+                                                                            }`}
+                                                                        />
+                                                                    </Disclosure.Button>
+                                                                    <Disclosure.Panel className="text-sm text-gray-600 pl-6 pr-2">
+                                                                        <ul className="list-disc pl-5 space-y-1">
+                                                                            {grant.documentsRequired.map(
+                                                                                (
+                                                                                    doc,
+                                                                                    index
+                                                                                ) => (
+                                                                                    <li
+                                                                                        key={
+                                                                                            index
+                                                                                        }
+                                                                                    >
+                                                                                        {
+                                                                                            doc
+                                                                                        }
+                                                                                    </li>
+                                                                                )
+                                                                            )}
+                                                                        </ul>
+                                                                    </Disclosure.Panel>
+                                                                </>
+                                                            )}
+                                                        </Disclosure>
+                                                    )}
+                                            </div>
+
+                                            {/* Action Buttons - Stacked on mobile, side by side on larger screens */}
+                                            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-4 pt-3 border-t border-gray-100">
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setSelectedGrant(grant);
+                                                        setShowCreateModal(
+                                                            true
+                                                        );
+                                                    }}
+                                                    className="flex-1 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-all flex items-center justify-center space-x-2"
+                                                >
+                                                    <Upload size={16} />
+                                                    <span>Apply</span>
+                                                </button>
+
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setViewingPitchesForGrant(
+                                                            grant.id
+                                                        );
+                                                    }}
+                                                    className="flex-1 py-2 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 transition-all flex items-center justify-center space-x-2"
+                                                >
+                                                    <Eye size={16} />
+                                                    <span>View Pitches</span>
+                                                </button>
+
+                                                {grant.grant_brief_pdf && (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            const fileName =
+                                                                grant.grant_brief_pdf
+                                                                    ?.split("/")
+                                                                    .pop() ||
+                                                                "grant_brief.pdf";
+                                                            setCurrentPreviewFile(
+                                                                {
+                                                                    name: fileName,
+                                                                    url: grant.grant_brief_pdf,
+                                                                }
+                                                            );
+                                                            setPreviewModalOpen(
+                                                                true
+                                                            );
+                                                        }}
+                                                        className="flex-1 py-2 border border-gray-200 text-gray-700 rounded-md hover:bg-gray-50 transition-all flex items-center justify-center space-x-2"
+                                                    >
+                                                        <FileText size={16} />
+                                                        <span>Brief</span>
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </Disclosure.Panel>
+                                </>
+                            )}
+                        </Disclosure>
+
+                        {previewModalOpen && (
+                            <DocumentPreviewModal
+                                file={currentPreviewFile}
+                                isOpen={previewModalOpen}
+                                onClose={() => setPreviewModalOpen(false)}
+                            />
+                        )}
+                    </div>
+                ))
+            )}
         </div>
-      );
+    );
     //  Application Modal
-
 
     return (
         <div className="min-h-screen bg-gray-50 p-6">
@@ -1134,12 +1302,21 @@ const dashboardMetrics = {
                             </p>
                         </div>
                         <div className="flex space-x-3">
-                            <button
+                            {/* <button
+                                // onClick={mee}
                                 onClick={() => setShowCreateModal(true)}
+                                // onClick={toggleOfferModal}
                                 className="px-5 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 shadow-md"
                             >
                                 <Plus size={18} />
                                 <span>Create Grant</span>
+                            </button> */}
+                            <button
+                                onClick={toggleOfferModal}
+                                className="bg-gray-800 text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-700 transition w-full md:w-auto justify-center"
+                            >
+                                <PlusCircle className="mr-2" />
+                                Offer Grants
                             </button>
                         </div>
                     </div>
@@ -1275,60 +1452,74 @@ const dashboardMetrics = {
                 </main>
             </div>
             {viewingPitchesForGrant && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-    <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-      <div className="sticky top-0 bg-white p-4 border-b border-gray-200 flex justify-between items-center">
-        <h3 className="text-lg font-semibold">Grant Pitches</h3>
-        <button 
-          onClick={() => setViewingPitchesForGrant(null)}
-          className="p-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100"
-        >
-          <XCircle size={20} />
-        </button>
-      </div>
-      <PitchesOutlet grantId={viewingPitchesForGrant} />
-    </div>
-  </div>
-)}
-            {/* Modals */}
-            
-    {showConfirmModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
-                <h2 className="text-xl font-semibold mb-4">Confirm Deletion</h2>
-                <p className="mb-6">Are you sure you want to delete this grant?</p>
-                <div className="flex justify-center gap-4">
-                    <button
-                        onClick={cancelDeleteGrant}
-                        className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        onClick={confirmDeleteGrant}
-                        className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-                    >
-                        Delete
-                    </button>
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                        <div className="sticky top-0 bg-white p-4 border-b border-gray-200 flex justify-between items-center">
+                            <h3 className="text-lg font-semibold">
+                                Grant Pitches
+                            </h3>
+                            <button
+                                onClick={() => setViewingPitchesForGrant(null)}
+                                className="p-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100"
+                            >
+                                <XCircle size={20} />
+                            </button>
+                        </div>
+                        <PitchesOutlet grantId={viewingPitchesForGrant} />
+                    </div>
                 </div>
-            </div>
-        </div>
-    )}
-         {selectedGrant && showCreateModal && (
-  <GrantApplicationModal
-    grantId={selectedGrant.id} // or selectedGrant.id depending on your data
-    newGrant={newGrant}
-    setNewGrant={setNewGrant}
-    setShowCreateModal={setShowCreateModal}
-    createNewGrant={createNewGrant}
-    onClose={() => {
-      setShowCreateModal(false);
-      setSelectedGrant(null);
-    }}
-  />
-)}
+            )}
+            {/* Modals */}
 
-
+            {showConfirmModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+                        <h2 className="text-xl font-semibold mb-4">
+                            Confirm Deletion
+                        </h2>
+                        <p className="mb-6">
+                            Are you sure you want to delete this grant?
+                        </p>
+                        <div className="flex justify-center gap-4">
+                            <button
+                                onClick={cancelDeleteGrant}
+                                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={confirmDeleteGrant}
+                                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {selectedGrant && showCreateModal && (
+                <GrantApplicationModal
+                    grantId={selectedGrant.id} // or selectedGrant.id depending on your data
+                    newGrant={newGrant}
+                    setNewGrant={setNewGrant}
+                    setShowCreateModal={setShowCreateModal}
+                    createNewGrant={createNewGrant}
+                    onClose={() => {
+                        setShowCreateModal(false);
+                        setSelectedGrant(null);
+                    }}
+                />
+            )}
+            {isOfferModalOpen && (
+                <OfferGrantModal
+                    isOpen={isOfferModalOpen}
+                    onClose={toggleOfferModal}
+                    onSubmit={(formData) => {
+                        console.log("Grant offer submitted:", formData);
+                        toggleOfferModal();
+                    }}
+                />
+            )}
         </div>
     );
 };
