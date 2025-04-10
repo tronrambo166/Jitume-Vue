@@ -7,6 +7,7 @@ import ForgotPassModal from "../../../partials/ForgotPassModal";
 import logo2 from "../../../../images/Tujitumelogo.svg";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../../../../axiosClient";
+import { useStateContext } from "../../../../contexts/contextProvider";
 
 const LoginForm = ({ onSwitchToRegister }) => {
     const navigate = useNavigate();
@@ -20,6 +21,8 @@ const LoginForm = ({ onSwitchToRegister }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
     const [serverError, setServerError] = useState("");
+        const { setUser, setToken } = useStateContext();
+    
 
     // Check for saved email on component mount
     useEffect(() => {
@@ -81,7 +84,11 @@ const LoginForm = ({ onSwitchToRegister }) => {
                     localStorage.removeItem("rememberMe");
                 }
 
-                // Set auth data in local storage or context
+                // Update auth state using state setters
+                setUser(data.user);
+                setToken(data.token);
+
+                // Also store in localStorage for persistence
                 localStorage.setItem("token", data.token);
                 localStorage.setItem("user", JSON.stringify(data.user));
 
@@ -92,9 +99,12 @@ const LoginForm = ({ onSwitchToRegister }) => {
                         : "User";
                 showAlert("success", `Login successful! Welcome, ${userName}`);
 
-                if (data.user.investor == 3) navigate("/category/Arts-Culture");
-                else navigate("/dashboard");
-                
+                // Navigate based on user type
+                if (data.user.investor == 3 || data.user.investor === 2) {
+                    navigate("/grants-overview");
+                } else {
+                    navigate("/dashboard");
+                }
             } else {
                 setServerError(
                     data.message ||

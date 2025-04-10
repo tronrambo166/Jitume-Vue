@@ -101,7 +101,7 @@ const GrantSeekerLogin = ({ onRegisterClick, showSignUp }) => {
                 setUser(data.user);
                 setToken(data.token);
                 // Navigate to grants overview page
-                if (data.user.investor === 2) {
+                if (data.user.investor === 2 || data.user.investor === 3) {
                     navigate("/grants-overview", {
                         // state: {
                         //     user: data.user,

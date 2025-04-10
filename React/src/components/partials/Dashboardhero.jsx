@@ -78,8 +78,11 @@ const Dashboardhero = () => {
                 setUser(data.user);
                 setId(data.user.id);
 
-                if(data.user.investor == 2)
+                if (data.user.investor == 3 || data.user.investor === 2) {
                     navigate("/grants-overview");
+                } else {
+                    navigate("/dashboard");
+                }
                 
             } catch (error) {
                 if (!token) {

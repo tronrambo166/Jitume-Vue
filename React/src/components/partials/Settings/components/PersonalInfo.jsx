@@ -24,6 +24,7 @@ const PersonalInfo = () => {
             .then(({ data }) => {
                 setFormData(data.user);
                 setTempData(data.user);
+                console.log("darar :",data)
                 //setImagePreview(data.user.image); // Assume the API returns an image URL
             })
             // .catch(() => {
