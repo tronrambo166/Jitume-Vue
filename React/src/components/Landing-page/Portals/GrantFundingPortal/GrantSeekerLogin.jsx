@@ -5,12 +5,14 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useAlert } from "../../../partials/AlertContext";
 import ForgotPassModal from "../../../partials/ForgotPassModal";
 import logo from "../../../../images/Tujitumelogo.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axiosClient from "../../../../axiosClient";
 import { useStateContext } from "../../../../contexts/contextProvider";
 
 const GrantSeekerLogin = ({ onRegisterClick, showSignUp }) => {
     const navigate = useNavigate();
+    const location = useLocation();
+
     const { showAlert } = useAlert();
     const [loginData, setLoginData] = useState({
         email: "",
@@ -99,10 +101,14 @@ const GrantSeekerLogin = ({ onRegisterClick, showSignUp }) => {
                 setUser(data.user);
                 setToken(data.token);
                 // Navigate to grants overview page
-                if(data.user.investor == 2)
-                    navigate("/grants-overview");
-                else 
-                    navigate("/dashboard");
+                if (data.user.investor === 2) {
+                    navigate("/grants-overview", {
+                        // state: {
+                        //     user: data.user,
+                           
+                        // },
+                    });
+                } else navigate("/dashboard");
 
             } else {
                 setServerError(
@@ -115,6 +121,7 @@ const GrantSeekerLogin = ({ onRegisterClick, showSignUp }) => {
                         "Login failed. Please check your credentials."
                 );
             }
+            console.log("dara",data)
         } catch (error) {
             console.error("Login error:", error);
             const errorMessage =

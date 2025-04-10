@@ -92,8 +92,9 @@ const LoginForm = ({ onSwitchToRegister }) => {
                         : "User";
                 showAlert("success", `Login successful! Welcome, ${userName}`);
 
-                // Navigate to grants overview page
-                navigate("/grants-overview");
+                if (data.user.investor == 3) navigate("/category/Arts-Culture");
+                else navigate("/dashboard");
+                
             } else {
                 setServerError(
                     data.message ||

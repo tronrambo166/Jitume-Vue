@@ -55,6 +55,7 @@ const TujitumeGrantPortal = () => {
         deadline: "",
     });
     const [showFilters, setShowFilters] = useState(false);
+    
     const [uploadedDocuments, setUploadedDocuments] = useState({});
     const [grantApplications, setGrantApplications] = useState([]);
     const [grantOpportunities, setGrantOpportunities] = useState([]);
