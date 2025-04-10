@@ -193,52 +193,29 @@ const TujitumeGrantPortal = () => {
     // No dependencies needed since axiosClient handles token internally
     console.log("grantOpportunities", grantOpportunities);
     // Filter grants
-    const filteredGrants = grantOpportunities.filter((grant) => {
-        const grantTitle = grant.title || grant.grant_title || "";
-        const matchesSearch =
-            grantTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            (grant.organization || "")
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase());
-
-        const matchesSectors =
-            filters.sectors.length === 0 ||
-            (grant.sectors &&
-                Array.isArray(grant.sectors) &&
-                filters.sectors.some((sector) =>
-                    grant.sectors.includes(sector)
-                ));
-
-        const matchesRegions =
-            filters.regions.length === 0 ||
-            (grant.regions &&
-                Array.isArray(grant.regions) &&
-                filters.regions.some((region) =>
-                    grant.regions.includes(region)
-                ));
-
-        const fundingAmount =
-            grant.funding_per_business || grant.maxGrantPerStartup;
-        const parsedAmount = parseFloat(fundingAmount);
-        const matchesAmount =
-            !isNaN(parsedAmount) &&
-            parsedAmount >= filters.amountRange[0] &&
-            parsedAmount <= filters.amountRange[1];
-
-        const matchesDeadline =
-            !filters.deadline ||
-            (grant.application_deadline &&
-                new Date(grant.application_deadline) <=
-                    new Date(filters.deadline));
-
-        return (
-            matchesSearch &&
-            matchesSectors &&
-            matchesRegions &&
-            matchesAmount &&
-            matchesDeadline
-        );
-    });
+    const filteredGrants = grantOpportunities
+    .filter((grant) => {
+      const grantTitle = grant.title || grant.grant_title || "";
+      const matchesSearch = grantTitle.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        (grant.organization || "").toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSectors = filters.sectors.length === 0 || 
+        (grant.sectors && Array.isArray(grant.sectors) && 
+         filters.sectors.some((sector) => grant.sectors.includes(sector)));
+      const matchesRegions = filters.regions.length === 0 || 
+        (grant.regions && Array.isArray(grant.regions) && 
+         filters.regions.some((region) => grant.regions.includes(region)));
+      const fundingAmount = grant.funding_per_business || grant.maxGrantPerStartup;
+      const parsedAmount = parseFloat(fundingAmount);
+      const matchesAmount = !isNaN(parsedAmount) && 
+        parsedAmount >= filters.amountRange[0] && 
+        parsedAmount <= filters.amountRange[1];
+      const matchesDeadline = !filters.deadline || 
+        (grant.application_deadline && 
+         new Date(grant.application_deadline) <= new Date(filters.deadline));
+      return matchesSearch && matchesSectors && matchesRegions && matchesAmount && matchesDeadline;
+    })
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Newest first
+    .slice(0, 6); // Limit to 10 results
     console.log("filteredGrants", filteredGrants);
 
     // Dashboard metrics
@@ -518,14 +495,11 @@ const TujitumeGrantPortal = () => {
                                                 </p>
                                             </div>
                                             <div className="text-right">
-                                                <p className="text-xl font-bold text-gray-900">
-                                                    $
-                                                    {parseInt(
-                                                        grant.funding_per_business ||
-                                                            grant.maxGrantPerStartup ||
-                                                            0
-                                                    ).toLocaleString()}
-                                                </p>
+                                            <p className="text-xl font-bold text-gray-900">
+  $
+  {grant.total_grant_amount || grant.maxGrantPerStartup || 0}
+</p>
+
                                                 <div className="flex items-center justify-end text-xs text-gray-500 mt-1">
                                                     <Calendar
                                                         size={12}
@@ -556,11 +530,11 @@ const TujitumeGrantPortal = () => {
                                                     </span>
                                                 )}
                                                 {grant.startup_stage_focus && (
-                                                    <span className="px-2.5 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
-                                                        {
-                                                            grant.startup_stage_focus
-                                                        }
-                                                    </span>
+                                                   <span className="px-2.5 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
+                                                   {grant.startup_stage_focus
+                                                     ? grant.startup_stage_focus.replace(/[\[\]"]+/g, '')
+                                                     : "No stage specified"}
+                                                 </span>
                                                 )}
                                             </div>
 
@@ -579,9 +553,10 @@ const TujitumeGrantPortal = () => {
                                                         Documents:
                                                     </h4>
                                                     <p className="text-sm text-gray-600">
-                                                        {grant.required_documents ||
-                                                            "Not specified"}
-                                                    </p>
+  {grant.required_documents
+    ? grant.required_documents.replace(/[\[\]"]+/g, '') 
+    : "Not specified"}
+</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1299,7 +1274,7 @@ const TujitumeGrantPortal = () => {
                                 <span className="text-green-600">Grants</span>
                             </h1>
                             <p className="text-gray-600">
-                                Empowering Africa's Futuristic Entrepreneurs
+                                Empowering Africa's  Entrepreneurs
                             </p>
                         </div>
                         <div className="flex space-x-3">

@@ -4,6 +4,7 @@ import {
   BadgePercent, Venus, Clock, Home, LocateFixed
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import InvestmentModal from '../Utils/Modals/Opportunityform';
 
 const calculateMatchScore = (opportunity, investorPreferences) => {
   let score = 0;
@@ -47,6 +48,10 @@ const InvestmentOpportunities = () => {
       localSourcing: false
     }
   });
+  const toggleModal = () => {
+    console.log("Button clicked, current state:", isAddingOpportunity); // Debug log
+    setIsAddingOpportunity(!isAddingOpportunity);
+  };
 
   const [opportunities, setOpportunities] = useState([
     { 
@@ -226,7 +231,7 @@ const InvestmentOpportunities = () => {
               <Search className="absolute left-0 top-3 text-neutral-400" size={18} />
             </div>
             <button 
-              onClick={() => setIsAddingOpportunity(!isAddingOpportunity)}
+              onClick={toggleModal}
               className="px-4 py-2 bg-white border border-neutral-300 rounded-md text-neutral-700 hover:bg-neutral-50 transition-colors flex items-center gap-2 whitespace-nowrap shadow-sm"
             >
               {isAddingOpportunity ? (
@@ -241,6 +246,16 @@ const InvestmentOpportunities = () => {
             </button>
           </div>
         </header>
+
+        {/* Investment Modal */}
+        <InvestmentModal 
+          isOpen={isAddingOpportunity} 
+          onClose={() => setIsAddingOpportunity(false)}
+          onSuccess={(newOpp) => {
+            setOpportunities([...opportunities, newOpp]);
+            setIsAddingOpportunity(false);
+          }}
+        />
 
         {/* Tabs */}
         <div className="flex border-b border-neutral-200 mb-6">
@@ -339,101 +354,6 @@ const InvestmentOpportunities = () => {
           </div>
         </div>
 
-        {/* Add Opportunity Form */}
-        {isAddingOpportunity && (
-          <div className="bg-white border border-neutral-200 rounded-lg p-6 mb-8 shadow-sm">
-            <form onSubmit={handleAddOpportunity} className="grid md:grid-cols-2 gap-6">
-              <input 
-                type="text"
-                name="name"
-                value={newOpportunity.name}
-                onChange={handleInputChange}
-                placeholder="Opportunity Name"
-                className="border-b border-neutral-300 pb-2 focus:outline-none focus:border-neutral-600"
-                required
-              />
-              <select
-                name="sector"
-                value={newOpportunity.sector}
-                onChange={handleInputChange}
-                className="border-b border-neutral-300 pb-2 focus:outline-none focus:border-neutral-600"
-                required
-              >
-                <option value="">Select Sector</option>
-                {sectorOptions.filter(s => s !== 'All').map(sector => (
-                  <option key={sector} value={sector}>{sector}</option>
-                ))}
-              </select>
-              <input 
-                type="text"
-                name="location"
-                value={newOpportunity.location}
-                onChange={handleInputChange}
-                placeholder="Location"
-                className="border-b border-neutral-300 pb-2 focus:outline-none focus:border-neutral-600"
-              />
-              <input 
-                type="number"
-                name="amount"
-                value={newOpportunity.amount}
-                onChange={handleInputChange}
-                placeholder="Investment Amount"
-                className="border-b border-neutral-300 pb-2 focus:outline-none focus:border-neutral-600"
-                required
-                min="0"
-              />
-              <div className="md:col-span-2 grid grid-cols-2 md:grid-cols-4 gap-4">
-                <label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    name="isFemaleLed"
-                    checked={newOpportunity.isFemaleLed}
-                    onChange={handleInputChange}
-                    className="rounded text-emerald-600 focus:ring-emerald-500"
-                  />
-                  Female-Led
-                </label>
-                <label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    name="isYouthLed"
-                    checked={newOpportunity.isYouthLed}
-                    onChange={handleInputChange}
-                    className="rounded text-emerald-600 focus:ring-emerald-500"
-                  />
-                  Youth-Led
-                </label>
-                <label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    name="isRuralBased"
-                    checked={newOpportunity.isRuralBased}
-                    onChange={handleInputChange}
-                    className="rounded text-emerald-600 focus:ring-emerald-500"
-                  />
-                  Rural-Based
-                </label>
-                <label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    name="usesLocalSourcing"
-                    checked={newOpportunity.usesLocalSourcing}
-                    onChange={handleInputChange}
-                    className="rounded text-emerald-600 focus:ring-emerald-500"
-                  />
-                  Local Sourcing
-                </label>
-              </div>
-              <button 
-                type="submit"
-                className="md:col-span-2 bg-emerald-600 text-white py-3 rounded-md hover:bg-emerald-700 transition-colors font-medium"
-              >
-                Add Investment Opportunity
-              </button>
-            </form>
-          </div>
-        )}
-
         {/* Main Content */}
         {activeTab === 'discover' && (
           <div className="space-y-6">
@@ -506,12 +426,12 @@ const InvestmentOpportunities = () => {
                         <Eye size={16} /> View Details
                       </button>
                       <Link 
-  to={`/grants-overview/funding/deals/${opp.id}`}
-  state={{ opportunity: opp }}
-  className="flex-1 text-white whitespace-nowrap bg-emerald-600 hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium"
->
-  <ArrowUpRight size={16} /> Open Deal Room
-</Link>
+                        to={`/grants-overview/funding/deals/${opp.id}`}
+                        state={{ opportunity: opp }}
+                        className="flex-1 text-white whitespace-nowrap bg-emerald-600 hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium"
+                      >
+                        <ArrowUpRight size={16} /> Open Deal Room
+                      </Link>
                     </div>
                   </div>
                 </div>
