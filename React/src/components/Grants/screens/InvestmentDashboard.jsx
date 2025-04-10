@@ -1,42 +1,42 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { 
   MapPin, Filter, ArrowUpRight, Eye, PlusCircle, Search, X,
   BadgePercent, Venus, Clock, Home, LocateFixed
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import InvestmentModal from '../Utils/Modals/Opportunityform';
+import axiosClient from "../../../axiosClient";
 
 const calculateMatchScore = (opportunity, investorPreferences) => {
   let score = 0;
   
-  if (opportunity.sector === investorPreferences.sector) score += 30;
-  if (opportunity.location === investorPreferences.location) score += 15;
-  if (opportunity.stage === investorPreferences.stage) score += 10;
-  if (opportunity.revenue >= investorPreferences.minRevenue) score += 10;
-  if (opportunity.teamExperience >= investorPreferences.teamThreshold) score += 10;
-  if (opportunity.impactScore >= investorPreferences.impactThreshold) score += 10;
-  if (opportunity.milestoneSuccessRate >= 70) score += 10;
-  if (opportunity.documentsComplete) score += 5;
+  // Only use actual data from API
+  const sector = opportunity.sectors?.split(',')[0] || '';
+  const location = opportunity.regions?.split(',')[0] || '';
+  const stage = opportunity.startup_stage || '';
+  
+  // Compare with investor preferences if available
+  if (investorPreferences.sector && sector === investorPreferences.sector) score += 30;
+  if (investorPreferences.location && location === investorPreferences.location) score += 15;
+  if (investorPreferences.stage && stage === investorPreferences.stage) score += 10;
+  
+  // Add impact scores if available (only using real data flags)
+  if (opportunity.is_female_led) score += 10;
+  if (opportunity.is_youth_led) score += 10;
+  if (opportunity.is_rural_based) score += 10;
+  if (opportunity.uses_local_sourcing) score += 10;
 
-  if (opportunity.isFemaleLed) score += 5;
-  if (opportunity.isYouthLed) score += 5;
-  if (opportunity.isRuralBased) score += 5;
-  if (opportunity.usesLocalSourcing) score += 5;
-
+  // Normalize to 100
   return Math.min(score, 100);
 };
 
 const InvestmentOpportunities = () => {
-
-
-  const investorPreferences = {
-    sector: 'Renewable Energy',
-    location: 'Kenya',
-    stage: 'Series A',
-    minRevenue: 10000,
-    teamThreshold: 3,
-    impactThreshold: 5
-  };
+  // Get investor preferences from API or user profile instead of hardcoding
+  const [investorPreferences, setInvestorPreferences] = useState({
+    sector: '',
+    location: '',
+    stage: ''
+  });
 
   const [filters, setFilters] = useState({
     sector: 'All',
@@ -50,72 +50,111 @@ const InvestmentOpportunities = () => {
       localSourcing: false
     }
   });
+  
+  const [opportunities, setOpportunities] = useState([]);
+  const [isAddingOpportunity, setIsAddingOpportunity] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState('discover');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   const toggleModal = () => {
-    console.log("Button clicked, current state:", isAddingOpportunity); // Debug log
     setIsAddingOpportunity(!isAddingOpportunity);
   };
 
-  const [opportunities, setOpportunities] = useState([]);
+  // Fetch investor preferences
+  useEffect(() => {
+    const fetchPreferences = async () => {
+      try {
+        // This would be replaced with your actual API endpoint for preferences
+        const response = await axiosClient.get('investor/preferences');
+        if (response.data && response.data.preferences) {
+          setInvestorPreferences(response.data.preferences);
+        }
+      } catch (error) {
+        console.error('Error fetching investor preferences:', error);
+        // Fallback to empty preferences
+      }
+    };
+    
+    // Comment out if you don't have this endpoint yet
+    // fetchPreferences();
+  }, []);
 
   useEffect(() => {
     const fetchCapitalOffers = async () => {
+      setIsLoading(true);
+      setError(null);
       try {
-        const response = await axios.get('capital/capital-offers');
-        if (response.data && Array.isArray(response.data)) {
-          setOpportunities(response.data);
+        const response = await axiosClient.get('capital/capital-offers');
+        console.log('Capital offers response:', response.data);
+        
+        if (response.data && Array.isArray(response.data.capital)) {
+          setOpportunities(response.data.capital);
         } else {
           console.warn('Unexpected response format:', response.data);
+          setError('Received unexpected data format from server');
         }
       } catch (error) {
         console.error('Error fetching capital offers:', error);
+        setError('Failed to fetch investment opportunities');
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchCapitalOffers();
   }, []);
-  const [newOpportunity, setNewOpportunity] = useState({
-    name: '',
-    sector: '',
-    location: '',
-    amount: '',
-    stage: '',
-    isFemaleLed: false,
-    isYouthLed: false,
-    isRuralBased: false,
-    usesLocalSourcing: false,
-    impactMetrics: {}
-  });
 
-  const [isAddingOpportunity, setIsAddingOpportunity] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [activeTab, setActiveTab] = useState('discover');
-
-  const sectorOptions = ['All', 'Renewable Energy', 'Agriculture', 'Technology'];
-  const stageOptions = ['All', 'Seed', 'Series A', 'Growth'];
-
-  const scoredOpportunities = useMemo(() => {
+  // Adapt API response to component structure - only using real data
+  const processedOpportunities = useMemo(() => {
     return opportunities.map(opp => ({
-      ...opp,
-      matchScore: calculateMatchScore(opp, investorPreferences),
-      status: calculateMatchStatus(calculateMatchScore(opp, investorPreferences))
+      id: opp.id,
+      name: opp.offer_title,
+      sector: opp.sectors?.split(',')[0] || 'Unknown',
+      allSectors: opp.sectors || '',
+      location: opp.regions?.split(',')[0] || 'Unknown',
+      allRegions: opp.regions || '',
+      amount: parseFloat(opp.total_capital_available) || 0,
+      perStartupAmount: parseFloat(opp.per_startup_allocation) || 0,
+      stage: opp.startup_stage || 'Unknown',
+      isFemaleLed: opp.is_female_led || false,
+      isYouthLed: opp.is_youth_led || false,
+      isRuralBased: opp.is_rural_based || false,
+      usesLocalSourcing: opp.uses_local_sourcing || false,
+      requiredDocs: opp.required_docs?.split(',') || [],
+      milestoneRequirements: opp.milestone_requirements || 'None specified',
+      createdAt: opp.created_at,
+      updatedAt: opp.updated_at
     }));
   }, [opportunities]);
 
-  function calculateMatchStatus(score) {
-    if (score >= 80) return 'Ideal Match';
-    if (score >= 60) return 'Strong Match';
-    return 'Needs Revision';
-  }
+  const scoredOpportunities = useMemo(() => {
+    return processedOpportunities.map(opp => {
+      const matchScore = calculateMatchScore(opp, investorPreferences);
+      let status = 'Potential Match';
+      if (matchScore >= 80) status = 'Ideal Match';
+      else if (matchScore >= 60) status = 'Strong Match';
+      else if (matchScore >= 40) status = 'Good Match';
+      
+      return {
+        ...opp,
+        matchScore,
+        status
+      };
+    });
+  }, [processedOpportunities, investorPreferences]);
 
   const filteredOpportunities = useMemo(() => {
     return scoredOpportunities.filter(opp => {
-      const matchesSector = filters.sector === 'All' || opp.sector === filters.sector;
+      const matchesSector = filters.sector === 'All' || opp.allSectors.includes(filters.sector);
       const matchesMinInvestment = !filters.minInvestment || opp.amount >= parseFloat(filters.minInvestment);
       const matchesMaxInvestment = !filters.maxInvestment || opp.amount <= parseFloat(filters.maxInvestment);
       const matchesStage = filters.stage === 'All' || opp.stage === filters.stage;
       const matchesSearch = !searchTerm || 
         opp.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        opp.location.toLowerCase().includes(searchTerm.toLowerCase());
+        opp.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        opp.allSectors.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesPriorities = (
         (!filters.priorities.femaleLed || opp.isFemaleLed) &&
         (!filters.priorities.youthLed || opp.isYouthLed) &&
@@ -128,55 +167,35 @@ const InvestmentOpportunities = () => {
     });
   }, [scoredOpportunities, filters, searchTerm]);
 
-  const handleAddOpportunity = (e) => {
-    e.preventDefault();
-    if (!newOpportunity.name || !newOpportunity.sector || !newOpportunity.amount) {
-      alert('Please fill in all required fields');
-      return;
-    }
-
-    const opportunityToAdd = {
-      ...newOpportunity,
-      id: opportunities.length + 1,
-      revenue: 0,
-      teamExperience: 0,
-      impactScore: 0,
-      milestoneSuccessRate: 0,
-      documentsComplete: false,
-      matchScore: 0
-    };
-
-    setOpportunities([...opportunities, opportunityToAdd]);
-    setNewOpportunity({
-      name: '',
-      sector: '',
-      location: '',
-      amount: '',
-      stage: '',
-      isFemaleLed: false,
-      isYouthLed: false,
-      isRuralBased: false,
-      usesLocalSourcing: false,
-      impactMetrics: {}
-    });
-    setIsAddingOpportunity(false);
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setNewOpportunity(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-  };
-
   const getStatusColor = (status) => {
     switch(status) {
       case 'Ideal Match': return 'bg-green-100 text-green-800';
       case 'Strong Match': return 'bg-yellow-100 text-yellow-800';
+      case 'Good Match': return 'bg-blue-100 text-blue-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
+
+  // Extract actual sectors and stages from the data for filters
+  const availableSectors = useMemo(() => {
+    const sectors = new Set(['All']);
+    opportunities.forEach(opp => {
+      if (opp.sectors) {
+        opp.sectors.split(',').forEach(sector => sectors.add(sector.trim()));
+      }
+    });
+    return Array.from(sectors);
+  }, [opportunities]);
+
+  const availableStages = useMemo(() => {
+    const stages = new Set(['All']);
+    opportunities.forEach(opp => {
+      if (opp.startup_stage) {
+        stages.add(opp.startup_stage.trim());
+      }
+    });
+    return Array.from(stages);
+  }, [opportunities]);
 
   return (
     <div className="min-h-screen bg-neutral-50 text-neutral-900 antialiased">
@@ -252,9 +271,62 @@ const InvestmentOpportunities = () => {
           </button>
         </div>
 
-        {/* Priority Filters */}
+        {/* Filters */}
         <div className="bg-white p-4 rounded-lg border border-neutral-200 mb-6 shadow-xs">
           <div className="flex flex-wrap items-center gap-4">
+            <span className="text-sm font-medium text-neutral-700">Filters:</span>
+            
+            {/* Sector Filter */}
+            <div className="relative">
+              <select
+                value={filters.sector}
+                onChange={(e) => setFilters(prev => ({ ...prev, sector: e.target.value }))}
+                className="pl-3 pr-8 py-2 border border-neutral-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              >
+                {availableSectors.map(sector => (
+                  <option key={sector} value={sector}>{sector}</option>
+                ))}
+              </select>
+            </div>
+            
+            {/* Stage Filter */}
+            <div className="relative">
+              <select
+                value={filters.stage}
+                onChange={(e) => setFilters(prev => ({ ...prev, stage: e.target.value }))}
+                className="pl-3 pr-8 py-2 border border-neutral-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              >
+                {availableStages.map(stage => (
+                  <option key={stage} value={stage}>{stage}</option>
+                ))}
+              </select>
+            </div>
+            
+            {/* Min Investment */}
+            <div className="relative">
+              <input
+                type="number"
+                placeholder="Min $"
+                value={filters.minInvestment}
+                onChange={(e) => setFilters(prev => ({ ...prev, minInvestment: e.target.value }))}
+                className="pl-3 pr-3 py-2 border border-neutral-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 w-24"
+              />
+            </div>
+            
+            {/* Max Investment */}
+            <div className="relative">
+              <input
+                type="number"
+                placeholder="Max $"
+                value={filters.maxInvestment}
+                onChange={(e) => setFilters(prev => ({ ...prev, maxInvestment: e.target.value }))}
+                className="pl-3 pr-3 py-2 border border-neutral-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 w-24"
+              />
+            </div>
+          </div>
+          
+          {/* Priority Filters */}
+          <div className="flex flex-wrap items-center gap-4 mt-4">
             <span className="text-sm font-medium text-neutral-700">Priority Filters:</span>
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -328,7 +400,37 @@ const InvestmentOpportunities = () => {
         </div>
 
         {/* Main Content */}
-        {activeTab === 'discover' && (
+        {isLoading ? (
+          <div className="bg-white border border-neutral-200 rounded-lg p-8 text-center">
+            <p className="text-neutral-500">Loading investment opportunities...</p>
+          </div>
+        ) : error ? (
+          <div className="bg-white border border-neutral-200 rounded-lg p-8 text-center">
+            <p className="text-red-500">{error}</p>
+            <button 
+              onClick={() => {
+                setIsLoading(true);
+                axiosClient.get('capital/capital-offers')
+                  .then(response => {
+                    if (response.data && Array.isArray(response.data.capital)) {
+                      setOpportunities(response.data.capital);
+                      setError(null);
+                    } else {
+                      setError('Unexpected data format');
+                    }
+                  })
+                  .catch(err => {
+                    console.error('Error retrying fetch:', err);
+                    setError('Failed to fetch data');
+                  })
+                  .finally(() => setIsLoading(false));
+              }}
+              className="mt-4 px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition-colors"
+            >
+              Retry
+            </button>
+          </div>
+        ) : activeTab === 'discover' ? (
           <div className="space-y-6">
             {filteredOpportunities.length > 0 ? (
               filteredOpportunities.map((opp) => (
@@ -360,22 +462,50 @@ const InvestmentOpportunities = () => {
                           <Venus size={14} /> Female-Led
                         </span>
                       )}
+                      {opp.isYouthLed && (
+                        <span className="flex items-center gap-1 text-emerald-600">
+                          <Clock size={14} /> Youth-Led
+                        </span>
+                      )}
                       {opp.isRuralBased && (
                         <span className="flex items-center gap-1 text-emerald-600">
                           <Home size={14} /> Rural
                         </span>
                       )}
+                      {opp.usesLocalSourcing && (
+                        <span className="flex items-center gap-1 text-emerald-600">
+                          <LocateFixed size={14} /> Local Sourcing
+                        </span>
+                      )}
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm text-neutral-700 mb-4">
-                      {Object.entries(opp.impactMetrics).map(([key, value]) => (
-                        <div key={key}>
-                          <span className="block text-neutral-500 uppercase text-xs mb-1">
-                            {key.replace(/([A-Z])/g, ' $1').toLowerCase()}
-                          </span>
-                          <span className="font-medium">{value}</span>
-                        </div>
-                      ))}
+                      <div>
+                        <span className="block text-neutral-500 uppercase text-xs mb-1">
+                          Required Documents
+                        </span>
+                        <span className="font-medium">
+                          {opp.requiredDocs.length > 0 
+                            ? opp.requiredDocs.slice(0, 2).join(', ') + (opp.requiredDocs.length > 2 ? '...' : '') 
+                            : 'None specified'}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="block text-neutral-500 uppercase text-xs mb-1">
+                          Per Startup Allocation
+                        </span>
+                        <span className="font-medium">
+                          ${opp.perStartupAmount ? opp.perStartupAmount.toLocaleString() : 'Not specified'}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="block text-neutral-500 uppercase text-xs mb-1">
+                          Listed Date
+                        </span>
+                        <span className="font-medium">
+                          {new Date(opp.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
@@ -387,11 +517,8 @@ const InvestmentOpportunities = () => {
                       </div>
                       <div className="hidden md:block border-l border-neutral-200"></div>
                       <div className="flex flex-col">
-                        <span className="text-sm text-neutral-500">Potential ROI</span>
-                        <div className="text-2xl font-light">
-                          {opp.sector === 'Renewable Energy' ? '18-25%' : 
-                           opp.sector === 'Agriculture' ? '12-20%' : '22-30%'}
-                        </div>
+                        <span className="text-sm text-neutral-500">Total Capital</span>
+                        <div className="text-2xl font-light">${opp.amount.toLocaleString()}</div>
                       </div>
                     </div>
                     <div className="flex gap-3 w-full">
@@ -415,15 +542,11 @@ const InvestmentOpportunities = () => {
               </div>
             )}
           </div>
-        )}
-
-        {activeTab === 'watchlist' && (
+        ) : activeTab === 'watchlist' ? (
           <div className="bg-white border border-neutral-200 rounded-lg p-8 text-center">
             <p className="text-neutral-500">Your watchlist is currently empty. Save opportunities to track them here.</p>
           </div>
-        )}
-
-        {activeTab === 'active' && (
+        ) : (
           <div className="bg-white border border-neutral-200 rounded-lg p-8 text-center">
             <p className="text-neutral-500">You don't have any active investments yet.</p>
           </div>
