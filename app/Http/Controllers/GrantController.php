@@ -12,7 +12,7 @@ use App\Models\Grant;
 use App\Models\GrantApplication;
 use Illuminate\Support\Facades\File;
 use Response;
-use Session; 
+use Session;
 use Hash;
 use Auth;
 use Mail;
@@ -24,7 +24,7 @@ class GrantController extends Controller
      * Display a listing of grants.
      */
     public function index()
-    {   
+    {
         if(Auth::check()){
             $user_id = Auth::id();
             $user = User::select('investor','id')->where('id',$user_id)->first();
@@ -32,7 +32,7 @@ class GrantController extends Controller
                 $grants = Grant::where('user_id',$user_id)->get();
                 return response()->json(['grants' => $grants]);
             }
-               
+
         }
 
         $grants = Grant::all();
@@ -64,26 +64,27 @@ class GrantController extends Controller
 
         ]);
 
-        try{    
+        try{
             $grant = Grant::create([
-            'grant_title' => $request->grantTitle,
-            'total_grant_amount' => $request->totalGrantAmount,
-            'funding_per_business' => $request->fundingPerBusiness,
-            'eligibility_criteria' => $request->eligibilityCriteria,
-            'required_documents' => $request->requiredDocuments,
-            'application_deadline' => $request->applicationDeadline,
-            'grant_focus' => $request->grantFocus,
-            'startup_stage_focus' => $request->startupStageFocus,
-            'impact_objectives' => $request->impactObjectives,
-            'evaluation_criteria' => $request->evaluationCriteria,
-            //'grant_brief_pdf' => $request->grantBriefPDF,
-        ]);
+                'user_id' => Auth::id(),
+                'grant_title' => $request->grantTitle,
+                'total_grant_amount' => $request->totalGrantAmount,
+                'funding_per_business' => $request->fundingPerBusiness,
+                'eligibility_criteria' => $request->eligibilityCriteria,
+                'required_documents' => $request->requiredDocuments,
+                'application_deadline' => $request->applicationDeadline,
+                'grant_focus' => $request->grantFocus,
+                'startup_stage_focus' => $request->startupStageFocus,
+                'impact_objectives' => $request->impactObjectives,
+                'evaluation_criteria' => $request->evaluationCriteria,
+                //'grant_brief_pdf' => $request->grantBriefPDF,
+            ]);
 
             //Upload File
             $grant_brief_pdf = $request->file('grantBriefPDF');
-            if (!file_exists('files/grants/'.$grant->id)) 
+            if (!file_exists('files/grants/'.$grant->id))
                 mkdir('files/grants/'.$grant->id, 0777, true);
-                
+
             $loc='files/grants/'.$grant->id.'/';
             if($grant_brief_pdf) {
                 $uniqid=hexdec(uniqid());
@@ -94,8 +95,8 @@ class GrantController extends Controller
             }
             else $final_pdf='';
             Grant::where('id',$grant->id)->update([
-                'grant_brief_pdf' => $final_pdf              
-            ]); 
+                'grant_brief_pdf' => $final_pdf
+            ]);
 
             return response()->json(['message' => 'Grant created successfully'], 200);
         }
@@ -128,7 +129,7 @@ class GrantController extends Controller
             'social_impact_areas' => 'nullable|string',
 
             ]);
-         
+
             $grant = GrantApplication::create([
             'grant_id' => $request->grant_id,
             'business_id' => $request->business_id,
@@ -152,7 +153,7 @@ class GrantController extends Controller
             $pitch_video = $request->file('pitch_video');
             $business_plan_file = $request->file('business_plan_file');
 
-            if (!file_exists('files/grantApps/'.$grant->id)) 
+            if (!file_exists('files/grantApps/'.$grant->id))
                 mkdir('files/grantApps/'.$grant->id, 0777, true);
             $loc='files/grantApps/'.$grant->id.'/';
 
@@ -186,8 +187,8 @@ class GrantController extends Controller
             GrantApplication::where('id',$grant->id)->update([
                 'pitch_deck_file' => $pitch_deck_path,
                 'pitch_video' => $pitch_video_path,
-                'business_plan_file' => $business_plan_path              
-            ]); 
+                'business_plan_file' => $business_plan_path
+            ]);
 
             return response()->json(['message' => 'Grant Application Successfull.'], 200);
         }
@@ -230,9 +231,9 @@ class GrantController extends Controller
 
             //Upload File
             $grant_brief_pdf = $request->file('grant_brief_pdf');
-            if (!file_exists('files/grants/'.$grant->id)) 
+            if (!file_exists('files/grants/'.$grant->id))
                 mkdir('files/grants/'.$grant->id, 0777, true);
-                
+
             $loc='files/grants/'.$grant->id.'/';
             if($grant_brief_pdf) {
                 $uniqid=hexdec(uniqid());
@@ -241,7 +242,7 @@ class GrantController extends Controller
                 $grant_brief_pdf->move($loc, $create_name);
                 $final_pdf=$loc.$create_name;
             }
-            else $final_pdf=''; 
+            else $final_pdf='';
 
             $request->grant_brief_pdf=$final_pdf;
             $grant->update($request->all());

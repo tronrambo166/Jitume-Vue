@@ -12,7 +12,7 @@ use App\Models\CapitalOffer;
 use App\Models\StartupPitches;
 use Illuminate\Support\Facades\File;
 use Response;
-use Session; 
+use Session;
 use Hash;
 use Auth;
 use Mail;
@@ -24,7 +24,7 @@ class InvCapitalController extends Controller
      * Display a listing of grants.
      */
     public function index()
-    {   
+    {
         if(Auth::check()){
             $user_id = Auth::id();
             $user = User::select('investor','id')->where('id',$user_id)->first();
@@ -32,7 +32,7 @@ class InvCapitalController extends Controller
                 $capital = CapitalOffer::where('user_id',$user_id)->get();
                 return response()->json(['capital' => $capital]);
             }
-               
+
         }
         $capital = CapitalOffer::all();
         return response()->json(['capital' => $capital]);
@@ -50,9 +50,9 @@ class InvCapitalController extends Controller
      */
     public function store(Request $request)
     {
-        
 
-        try{    
+
+        try{
             $request->validate([
             'offer_title' => 'required|string|max:255',
             'total_capital_available' => 'required|numeric',
@@ -64,24 +64,25 @@ class InvCapitalController extends Controller
             'required_docs' => 'nullable|string',
             'offer_brief_file' => 'nullable|file|mimes:pdf|max:2048',
         ]);
-            
+
             $capital = CapitalOffer::create([
-            'offer_title' => $request->offer_title,
-            'total_capital_available' => $request->total_capital_available,
-            'per_startup_allocation' => $request->per_startup_allocation,
-            'milestone_requirements' => $request->milestone_requirements,
-            'startup_stage' => $request->startup_stage,
-            'sectors' => $request->sectors,
-            'regions' => $request->regions,
-            'required_docs' => $request->required_docs,
+                'user_id' => Auth::id(),
+                'offer_title' => $request->offer_title,
+                'total_capital_available' => $request->total_capital_available,
+                'per_startup_allocation' => $request->per_startup_allocation,
+                'milestone_requirements' => $request->milestone_requirements,
+                'startup_stage' => $request->startup_stage,
+                'sectors' => $request->sectors,
+                'regions' => $request->regions,
+                'required_docs' => $request->required_docs,
             //'offer_brief_file' => $request->offer_brief_file,
         ]);
 
             //Upload File
             $offer_brief_file = $request->file('offer_brief_file');
-            if (!file_exists('files/capitals/'.$capital->id)) 
+            if (!file_exists('files/capitals/'.$capital->id))
                 mkdir('files/capitals/'.$capital->id, 0777, true);
-                
+
             $loc='files/capitals/'.$capital->id.'/';
             if($offer_brief_file) {
                 $uniqid=hexdec(uniqid());
@@ -92,8 +93,8 @@ class InvCapitalController extends Controller
             }
             else $final_pdf='';
             CapitalOffer::where('id',$capital->id)->update([
-                'offer_brief_file' => $final_pdf              
-            ]); 
+                'offer_brief_file' => $final_pdf
+            ]);
 
             return response()->json(['message' => 'List Capital created successfully'], 200);
         }
@@ -158,7 +159,7 @@ class InvCapitalController extends Controller
             $pitch_video = $request->file('pitch_video');
             $business_plan_file = $request->file('business_plan');
 
-            if (!file_exists('files/capitalPitches/'.$capital->id)) 
+            if (!file_exists('files/capitalPitches/'.$capital->id))
                 mkdir('files/capitalPitches/'.$capital->id, 0777, true);
             $loc='files/capitalPitches/'.$capital->id.'/';
 
@@ -192,8 +193,8 @@ class InvCapitalController extends Controller
             StartupPitches::where('id',$capital->id)->update([
                 'pitch_deck_file' => $pitch_deck_path,
                 'pitch_video' => $pitch_video_path,
-                'business_plan' => $business_plan_path              
-            ]); 
+                'business_plan' => $business_plan_path
+            ]);
 
             return response()->json(['message' => 'Investment Application Successfull.'], 200);
         }
@@ -234,9 +235,9 @@ class InvCapitalController extends Controller
 
             //Upload File
             $offer_brief_file = $request->file('offer_brief_file');
-            if (!file_exists('files/capitals/'.$capital->id)) 
+            if (!file_exists('files/capitals/'.$capital->id))
                 mkdir('files/capitals/'.$capital->id, 0777, true);
-                
+
             $loc='files/capitals/'.$capital->id.'/';
             if($offer_brief_file) {
                 $uniqid=hexdec(uniqid());
@@ -245,7 +246,7 @@ class InvCapitalController extends Controller
                 $offer_brief_file->move($loc, $create_name);
                 $final_pdf=$loc.$create_name;
             }
-            else $final_pdf=''; 
+            else $final_pdf='';
 
             $request->offer_brief_file=$final_pdf;
             $capital->update($request->all());
