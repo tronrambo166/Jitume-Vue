@@ -8,6 +8,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
   const [notification, setNotification] = useState(null);
   const [marketInsights, setMarketInsights] = useState(null);
   const [showAnalytics, setShowAnalytics] = useState(false);
+  const [successSubmit, setSuccessSubmit] = useState(false);
   const [formData, setFormData] = useState({
     offer_title: '',
     total_capital_available: '',
@@ -189,11 +190,8 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
   
       await axiosClient.post('/capital/create-capital-offer', formDataToSend);
       
-      setNotification({
-        type: 'success',
-        message: 'Investment opportunity successfully created!'
-      });
-  
+      setSuccessSubmit(true);
+      
       // Reset form and close modal after success
       setTimeout(() => {
         setFormData({
@@ -209,8 +207,9 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
         });
         
         setStep(1);
+        setSuccessSubmit(false);
         onClose();
-        // 🚫 removed onSuccess(); to avoid re-fetch or recalculation
+        if (onSuccess) onSuccess();
       }, 2000);
       
     } catch (error) {
@@ -234,6 +233,33 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
   };
 
   if (!isOpen) return null;
+
+  // Success overlay
+  if (successSubmit) {
+    return (
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 transition-all">
+        <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md border border-neutral-200 text-center">
+          <div className="mb-4 flex justify-center">
+            <div className="p-3 bg-green-100 rounded-full">
+              <CheckCircle size={48} className="text-green-600" />
+            </div>
+          </div>
+          <h2 className="text-2xl font-semibold text-neutral-800 mb-2">Successfully Published</h2>
+          <p className="text-neutral-600 mb-6">
+            Your investment opportunity has been successfully created and is now live.
+          </p>
+          <div className="flex justify-center">
+            <button 
+              onClick={onClose}
+              className="px-6 py-2 bg-neutral-800 text-white rounded-lg hover:bg-neutral-700 font-medium transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const renderNotification = () => {
     if (!notification) return null;
@@ -263,9 +289,9 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 transition-all">
-      <div className="bg-white p-4 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden border border-neutral-200">
-        {/* Glass-like header with gradient */}
-        <div className="relative bg-gradient-to-r from-emerald-500/90 to-teal-600/90 p-6 text-white">
+      <div className="bg-white p-4 rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden border border-neutral-200">
+        {/* Header with neutral professional gradient */}
+        <div className="relative bg-gradient-to-r from-green-700 to-gray-800 p-6 text-white">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-light tracking-wide">
               {step === 1 && "Define Investment Opportunity"}
@@ -284,15 +310,15 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
           <div className="mt-6">
             <div className="flex justify-between mb-2">
               <div className={`flex items-center gap-2 ${step >= 1 ? 'text-white' : 'text-white/50'}`}>
-                <div className={`flex items-center justify-center w-6 h-6 text-xs rounded-full ${step >= 1 ? 'bg-white text-teal-600' : 'bg-white/30 text-white/70'}`}>1</div>
+                <div className={`flex items-center justify-center w-6 h-6 text-xs rounded-full ${step >= 1 ? 'bg-white text-neutral-800' : 'bg-white/30 text-white/70'}`}>1</div>
                 <span className="text-sm font-medium">Basic Details</span>
               </div>
               <div className={`flex items-center gap-2 ${step >= 2 ? 'text-white' : 'text-white/50'}`}>
-                <div className={`flex items-center justify-center w-6 h-6 text-xs rounded-full ${step >= 2 ? 'bg-white text-teal-600' : 'bg-white/30 text-white/70'}`}>2</div>
+                <div className={`flex items-center justify-center w-6 h-6 text-xs rounded-full ${step >= 2 ? 'bg-white text-neutral-800' : 'bg-white/30 text-white/70'}`}>2</div>
                 <span className="text-sm font-medium">Targeting</span>
               </div>
               <div className={`flex items-center gap-2 ${step >= 3 ? 'text-white' : 'text-white/50'}`}>
-                <div className={`flex items-center justify-center w-6 h-6 text-xs rounded-full ${step >= 3 ? 'bg-white text-teal-600' : 'bg-white/30 text-white/70'}`}>3</div>
+                <div className={`flex items-center justify-center w-6 h-6 text-xs rounded-full ${step >= 3 ? 'bg-white text-neutral-800' : 'bg-white/30 text-white/70'}`}>3</div>
                 <span className="text-sm font-medium">Finalize</span>
               </div>
             </div>
@@ -313,9 +339,9 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
           {/* Step 1: Core Investment Details */}
             {step === 1 && (
               <div className="space-y-6">
-                <div className="bg-teal-50 p-4 rounded-lg flex items-start gap-3 mb-4">
-                  <Lightbulb className="text-teal-600 mt-1" size={20} />
-                  <div className="text-sm text-teal-800">
+                <div className="bg-neutral-50 p-4 rounded-lg flex items-start gap-3 mb-4 border border-neutral-100">
+                  <Lightbulb className="text-neutral-600 mt-1" size={20} />
+                  <div className="text-sm text-neutral-700">
                     Define your investment opportunity with clear parameters. This information will be visible to potential startups.
                   </div>
                 </div>
@@ -330,7 +356,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                     value={formData.offer_title}
                     onChange={handleInputChange}
                     placeholder="e.g. Climate Tech Innovation Fund 2025"
-                    className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                    className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500"
                     required
                   />
                 </div>
@@ -349,7 +375,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                         value={formData.total_capital_available}
                         onChange={handleInputChange}
                         placeholder="1000000"
-                        className="w-full pl-10 pr-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                        className="w-full pl-10 pr-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500"
                         required
                       />
                     </div>
@@ -373,7 +399,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                         value={formData.per_startup_allocation}
                         onChange={handleInputChange}
                         placeholder="100000"
-                        className="w-full pl-10 pr-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                        className="w-full pl-10 pr-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500"
                         required
                       />
                     </div>
@@ -395,7 +421,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                     onChange={handleInputChange}
                     rows={4}
                     placeholder="Describe the key milestones startups must achieve to receive funding..."
-                    className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                    className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500"
                     required
                   />
                 </div>
@@ -405,9 +431,9 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
             {/* Step 2: Targeting */}
             {step === 2 && (
               <div className="space-y-6">
-                <div className="bg-teal-50 p-4 rounded-lg flex items-start gap-3 mb-4">
-                  <Target className="text-teal-600 mt-1" size={20} />
-                  <div className="text-sm text-teal-800">
+                <div className="bg-neutral-50 p-4 rounded-lg flex items-start gap-3 mb-4 border border-neutral-100">
+                  <Target className="text-neutral-600 mt-1" size={20} />
+                  <div className="text-sm text-neutral-700">
                     Define your target startup profile. Our AI will provide market analysis based on your selections.
                   </div>
                 </div>
@@ -423,7 +449,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                         onClick={() => setFormData({...formData, startup_stage: stage})}
                         className={`px-3 py-3 rounded-lg border cursor-pointer transition-all ${
                           formData.startup_stage === stage
-                            ? 'bg-teal-50 border-teal-300 text-teal-700 shadow-sm'
+                            ? 'bg-neutral-100 border-neutral-400 text-neutral-800 shadow-sm'
                             : 'bg-white border-neutral-200 hover:bg-neutral-50'
                         }`}
                       >
@@ -444,20 +470,20 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                         onClick={() => handleMultiSelectChange('sectors', sector.name)}
                         className={`flex justify-between items-center px-4 py-3 rounded-lg border cursor-pointer transition-all ${
                           formData.sectors.includes(sector.name)
-                            ? 'bg-teal-50 border-teal-300 text-teal-700'
+                            ? 'bg-neutral-100 border-neutral-400 text-neutral-800'
                             : 'bg-white border-neutral-200 hover:bg-neutral-50'
                         }`}
                       >
                         <div className="font-medium">{sector.name}</div>
                         <div className="flex items-center">
                           {sector.trend === 'hot' && (
-                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-50 text-red-600">
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-neutral-100 text-neutral-800">
                               <Zap size={12} className="mr-1" />
                               {sector.growth}
                             </span>
                           )}
                           {sector.trend === 'warm' && (
-                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-600">
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-neutral-100 text-neutral-800">
                               <TrendingUp size={12} className="mr-1" />
                               {sector.growth}
                             </span>
@@ -473,7 +499,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                         type="text"
                         id="custom-sector"
                         placeholder="Add custom sector"
-                        className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                        className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500"
                         onKeyDown={(e) => {
                           if (e.key === 'Enter') {
                             e.preventDefault();
@@ -484,7 +510,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                       />
                       <button
                         type="button"
-                        className="absolute right-2 top-2 p-1 text-teal-600 hover:text-teal-800 rounded-full hover:bg-teal-50"
+                        className="absolute right-2 top-2 p-1 text-neutral-600 hover:text-neutral-800 rounded-full hover:bg-neutral-100"
                         onClick={() => {
                           const input = document.getElementById('custom-sector');
                           const added = handleCustomOption('sectors', input.value.trim());
@@ -498,31 +524,21 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                   
                   {formData.sectors.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-2">
-                      {formData.sectors.map(sector => {
-                        // Find matching sector from options
-                        const sectorData = sectorOptions.find(s => s.name === sector);
-                        
-                        return (
-                          <div 
-                            key={sector} 
-                            className={`flex items-center px-3 py-1 rounded-full text-sm ${
-                              sectorData?.trend === 'hot' ? 'bg-red-50 text-red-700' :
-                              sectorData?.trend === 'warm' ? 'bg-amber-50 text-amber-700' :
-                              'bg-teal-50 text-teal-700'
-                            }`}
+                      {formData.sectors.map(sector => (
+                        <div 
+                          key={sector} 
+                          className="flex items-center px-3 py-1 rounded-full text-sm bg-neutral-100 text-neutral-700"
+                        >
+                          {sector}
+                          <button
+                            type="button"
+                            className="ml-1 focus:outline-none"
+                            onClick={() => handleMultiSelectChange('sectors', sector)}
                           >
-                            {sector}
-                            {sectorData?.trend === 'hot' && <Zap size={12} className="ml-1" />}
-                            <button
-                              type="button"
-                              className="ml-1 focus:outline-none"
-                              onClick={() => handleMultiSelectChange('sectors', sector)}
-                            >
-                              <X size={14} />
-                            </button>
-                          </div>
-                        );
-                      })}
+                            <X size={14} />
+                          </button>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>
@@ -538,7 +554,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                         onClick={() => handleMultiSelectChange('regions', region)}
                         className={`flex items-center justify-center px-3 py-3 rounded-lg border cursor-pointer transition-all ${
                           formData.regions.includes(region)
-                            ? 'bg-teal-50 border-teal-300 text-teal-700'
+                            ? 'bg-neutral-100 border-neutral-400 text-neutral-800'
                             : 'bg-white border-neutral-200 hover:bg-neutral-50'
                         }`}
                       >
@@ -554,7 +570,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                         type="text"
                         id="custom-region"
                         placeholder="Add custom region"
-                        className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                        className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500"
                         onKeyDown={(e) => {
                           if (e.key === 'Enter') {
                             e.preventDefault();
@@ -565,7 +581,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                       />
                       <button
                         type="button"
-                        className="absolute right-2 top-2 p-1 text-teal-600 hover:text-teal-800 rounded-full hover:bg-teal-50"
+                        className="absolute right-2 top-2 p-1 text-neutral-600 hover:text-neutral-800 rounded-full hover:bg-neutral-100"
                         onClick={() => {
                           const input = document.getElementById('custom-region');
                           const added = handleCustomOption('regions', input.value.trim());
@@ -589,7 +605,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                         onClick={() => handleMultiSelectChange('required_docs', doc)}
                         className={`flex items-center justify-center px-3 py-3 rounded-lg border cursor-pointer transition-all ${
                           formData.required_docs.includes(doc)
-                            ? 'bg-teal-50 border-teal-300 text-teal-700'
+                            ? 'bg-neutral-100 border-neutral-400 text-neutral-800'
                             : 'bg-white border-neutral-200 hover:bg-neutral-50'
                         }`}
                       >
@@ -605,7 +621,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                         type="text"
                         id="custom-doc"
                         placeholder="Add custom document requirement"
-                        className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                        className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500"
                         onKeyDown={(e) => {
                           if (e.key === 'Enter') {
                             e.preventDefault();
@@ -616,7 +632,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                       />
                       <button
                         type="button"
-                        className="absolute right-2 top-2 p-1 text-teal-600 hover:text-teal-800 rounded-full hover:bg-teal-50"
+                        className="absolute right-2 top-2 p-1 text-neutral-600 hover:text-neutral-800 rounded-full hover:bg-neutral-100"
                         onClick={() => {
                           const input = document.getElementById('custom-doc');
                           const added = handleCustomOption('required_docs', input.value.trim());
@@ -641,184 +657,204 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                       <button
                         type="button"
                         onClick={() => setShowAnalytics(!showAnalytics)}
-                        className="text-sm text-teal-600 hover:text-teal-800 flex items-center"
+                        className="text-sm text-neutral-600 hover:text-neutral-800 flex items-center"
                       >
                         <BarChart4 size={18} className="mr-1" />
                         {showAnalytics ? 'Hide Details' : 'Show Details'}
                       </button>
                     </div>
                     
-                    <div className="bg-gradient-to-br from-slate-50 to-teal-50 p-5 rounded-xl border border-teal-100 mb-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 rounded-full bg-red-100 text-red-600">
-                            <Zap size={18} />
-                          </div>
-                          <div>
-                            <div className="text-sm text-neutral-500">Hot Sectors</div>
-                            <div className="font-medium">
-                              {marketInsights.trendingSectors.join(', ')}
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 rounded-full bg-teal-100 text-teal-600">
-                            <TrendingUp size={18} />
-                          </div>
-                          <div>
-                            <div className="text-sm text-neutral-500">Average YoY Growth</div>
-                            <div className="font-medium">{marketInsights.averageGrowth}</div>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 rounded-full bg-amber-100 text-amber-600">
-                            <DollarSign size={18} />
-                          </div>
-                          <div>
-                            <div className="text-sm text-neutral-500">Potential ROI</div>
-                            <div className="font-medium">{marketInsights.potentialROI}</div>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 rounded-full bg-indigo-100 text-indigo-600">
-                            <Clock size={18} />
-                          </div>
-                          <div>
-                            <div className="text-sm text-neutral-500">Time to Exit</div>
-                            <div className="font-medium">{marketInsights.timeToExit}</div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {showAnalytics && (
-                        <div className="mt-6 pt-4 border-t border-teal-100">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
-                            <div>
-                              <div className="text-sm text-neutral-500">Recommended Equity %</div>
-                              <div className="font-medium">{marketInsights.recommendedAllocation}</div>
-                            </div>
-                            <div>
-                              <div className="text-sm text-neutral-500">Risk Level</div>
-                              <div className="font-medium">{marketInsights.riskLevel}</div>
-                            </div>
-                            <div className="md:col-span-2">
-                              <div className="text-sm text-neutral-500">Expected Fund Growth (Based on Market Trends)</div>
-                              <div className="font-medium">
-                                {formatCurrency(marketInsights.expectedCapital)}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
+                    <div className="bg-neutral-50 p-5 rounded-xl border border-neutral-200 mb-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
+  <div className="flex items-start gap-3">
+    <div className="p-2 bg-neutral-200 rounded-full">
+      <TrendingUp size={16} className="text-neutral-700" />
+    </div>
+    <div>
+      <span className="block text-sm text-neutral-500">Average Growth Rate</span>
+      <span className="text-lg font-medium text-neutral-800">{marketInsights.averageGrowth}</span>
+    </div>
+  </div>
+  
+  <div className="flex items-start gap-3">
+    <div className="p-2 bg-neutral-200 rounded-full">
+      <DollarSign size={16} className="text-neutral-700" />
+    </div>
+    <div>
+      <span className="block text-sm text-neutral-500">Potential ROI</span>
+      <span className="text-lg font-medium text-neutral-800">{marketInsights.potentialROI}</span>
+    </div>
+  </div>
+  
+  {showAnalytics && (
+    <>
+      <div className="flex items-start gap-3">
+        <div className="p-2 bg-neutral-200 rounded-full">
+          <Clock size={16} className="text-neutral-700" />
+        </div>
+        <div>
+          <span className="block text-sm text-neutral-500">Est. Time to Exit</span>
+          <span className="text-lg font-medium text-neutral-800">{marketInsights.timeToExit}</span>
+        </div>
+      </div>
+
+      <div className="flex items-start gap-3">
+        <div className="p-2 bg-neutral-200 rounded-full">
+          <AlertTriangle size={16} className="text-neutral-700" />
+        </div>
+        <div>
+          <span className="block text-sm text-neutral-500">Risk Level</span>
+          <span className="text-lg font-medium text-neutral-800">{marketInsights.riskLevel}</span>
+        </div>
+      </div>
+
+      <div className="flex items-start gap-3">
+        <div className="p-2 bg-neutral-200 rounded-full">
+          <Target size={16} className="text-neutral-700" />
+        </div>
+        <div>
+          <span className="block text-sm text-neutral-500">Recommended Allocation</span>
+          <span className="text-lg font-medium text-neutral-800">{marketInsights.recommendedAllocation}</span>
+        </div>
+      </div>
+              
+      {marketInsights.trendingSectors.length > 0 && (
+        <div className="flex items-start gap-3">
+          <div className="p-2 bg-neutral-200 rounded-full">
+            <Zap size={16} className="text-neutral-700" />
+          </div>
+          <div>
+            <span className="block text-sm text-neutral-500">Hot Sectors</span>
+            <span className="text-lg font-medium text-neutral-800">
+              {marketInsights.trendingSectors.join(', ')}
+            </span>
+          </div>
+        </div>
+      )}
+    </>
+  )}
+</div>
+</div>
                   </div>
                 )}
-                
+
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">
-                    Upload Investment Brief (PDF or DOC, optional)
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
+                    Investment Brief (Optional)
                   </label>
-                  <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-neutral-300 border-dashed rounded-lg">
-                    <div className="space-y-2 text-center">
-                      <Upload className="mx-auto h-12 w-12 text-neutral-400" stroke-width={1} />
-                      <div className="flex text-sm text-neutral-600">
-                        <label
-                          htmlFor="file-upload"
-                          className="relative cursor-pointer rounded-md font-medium text-teal-600 hover:text-teal-500"
+                  <div className="border-2 border-dashed border-neutral-300 rounded-lg p-6 text-center">
+                    <input
+                      type="file"
+                      id="offer_brief_file"
+                      className="hidden"
+                      onChange={handleFileChange}
+                      accept=".pdf,.doc,.docx"
+                    />
+                    {!formData.offer_brief_file ? (
+                      <label 
+                        htmlFor="offer_brief_file" 
+                        className="cursor-pointer flex flex-col items-center text-neutral-600"
+                      >
+                        <Upload size={32} className="mb-2" />
+                        <span className="text-sm font-medium">Upload investment brief</span>
+                        <span className="text-xs text-neutral-500 mt-1">PDF, DOC or DOCX (max 5MB)</span>
+                      </label>
+                    ) : (
+                      <div className="flex items-center justify-between bg-neutral-50 p-3 rounded-lg">
+                        <div className="flex items-center">
+                          <FileText size={20} className="text-neutral-600 mr-2" />
+                          <span className="text-sm font-medium truncate max-w-xs">
+                            {formData.offer_brief_file.name}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          className="p-1 hover:bg-neutral-200 rounded-full"
+                          onClick={() => setFormData({...formData, offer_brief_file: null})}
                         >
-                          <span>Upload a file</span>
-                          <input 
-                            id="file-upload" 
-                            name="file-upload" 
-                            type="file" 
-                            className="sr-only"
-                            accept=".pdf,.doc,.docx"
-                            onChange={handleFileChange}
-                          />
-                        </label>
-                        <p className="pl-1">or drag and drop</p>
+                          <X size={16} />
+                        </button>
                       </div>
-                      <p className="text-xs text-neutral-500">
-                        PDF, DOC up to 5MB
-                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
+                  <h3 className="text-lg font-medium mb-3">Investment Summary</h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-sm text-neutral-600">Opportunity Title</span>
+                      <span className="text-sm font-medium">{formData.offer_title}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-neutral-600">Total Capital</span>
+                      <span className="text-sm font-medium">{formatCurrency(formData.total_capital_available)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-neutral-600">Per Startup</span>
+                      <span className="text-sm font-medium">{formatCurrency(formData.per_startup_allocation)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-neutral-600">Stage</span>
+                      <span className="text-sm font-medium">{formData.startup_stage}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-neutral-600">Sectors</span>
+                      <span className="text-sm font-medium">{formData.sectors.join(', ')}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-neutral-600">Regions</span>
+                      <span className="text-sm font-medium">{formData.regions.join(', ')}</span>
                     </div>
                   </div>
-                  {formData.offer_brief_file && (
-                    <div className="mt-2 flex items-center gap-2 text-sm text-neutral-600">
-                      <FileText size={16} />
-                      <span>{formData.offer_brief_file.name}</span>
-                      <button
-                        type="button"
-                        className="text-red-500 hover:text-red-700"
-                        onClick={() => setFormData({...formData, offer_brief_file: null})}
-                      >
-                        <X size={16} />
-                      </button>
-                    </div>
-                  )}
                 </div>
               </div>
             )}
           </form>
-             {/* Footer */}
-        <div className="p-2 bg-neutral-50 border-t border-neutral-200 flex justify-between">
-          {step > 1 ? (
-            <button
-              type="button"
-              onClick={prevStep}
-              disabled={isSubmitting}
-              className="px-4 py-2 rounded-lg border border-neutral-300 text-neutral-700 hover:bg-neutral-100 font-medium transition-colors"
-            >
-              Back
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 rounded-lg border border-neutral-300 text-neutral-700 hover:bg-neutral-100 font-medium transition-colors"
-            >
-              Cancel
-            </button>
-          )}
-          
-          {step < 3 ? (
-            <button
-              type="button"
-              onClick={nextStep}
-              className="px-6 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
-            >
-              Continue
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={handleSubmit}
-              disabled={isSubmitting}
-              className="px-6 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-medium transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 flex items-center gap-2"
-            >
-              {isSubmitting ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Processing...
-                </>
-              ) : (
-                'Publish Investment Opportunity'
-              )}
-            </button>
-          )}
+          <div className="px-6 py-4 bg-neutral-50 border-t border-neutral-200 flex justify-between">
+          <div>
+            {step > 1 && (
+              <button
+                type="button"
+                onClick={prevStep}
+                disabled={isSubmitting}
+                className="px-5 py-2.5 bg-white border border-neutral-300 rounded-lg text-neutral-700 font-medium hover:bg-neutral-50 transition-colors"
+              >
+                Previous
+              </button>
+            )}
+          </div>
+          <div>
+            {step < 3 ? (
+              <button
+                type="button"
+                onClick={nextStep}
+                className="px-5 py-2.5 bg-neutral-800 text-white rounded-lg font-medium hover:bg-neutral-700 transition-colors"
+              >
+                Next
+              </button>
+            ) : (
+              <button
+                type="submit"
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+                className="px-5 py-2.5 bg-green-800 text-white rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center gap-2"
+              >
+                {isSubmitting ? 'Publishing...' : 'Publish Opportunity'}
+                {isSubmitting && (
+                  <div className="w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
+                )}
+              </button>
+            )}
+          </div>
         </div>
         </div>
-        
-     
+
+        {/* Footer with navigation buttons */}
+   
       </div>
     </div>
   );
 };
 
-export default InvestmentModal;
+export default InvestmentModal;                        
