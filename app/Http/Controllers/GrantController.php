@@ -24,7 +24,17 @@ class GrantController extends Controller
      * Display a listing of grants.
      */
     public function index()
-    {
+    {   
+        if(Auth::check()){
+            $user_id = Auth::id();
+            $user = User::select('investor','id')->where('id',$user_id)->first();
+            if($user->investor == 2){
+                $grants = Grant::where('user_id',$user_id)->get();
+                return response()->json(['grants' => $grants]);
+            }
+               
+        }
+
         $grants = Grant::all();
         return response()->json(['grants' => $grants]);
     }

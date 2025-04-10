@@ -24,7 +24,16 @@ class InvCapitalController extends Controller
      * Display a listing of grants.
      */
     public function index()
-    {
+    {   
+        if(Auth::check()){
+            $user_id = Auth::id();
+            $user = User::select('investor','id')->where('id',$user_id)->first();
+            if($user->investor == 3){
+                $capital = CapitalOffer::where('user_id',$user_id)->get();
+                return response()->json(['capital' => $capital]);
+            }
+               
+        }
         $capital = CapitalOffer::all();
         return response()->json(['capital' => $capital]);
     }

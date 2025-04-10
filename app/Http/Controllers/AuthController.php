@@ -414,7 +414,7 @@ class AuthController extends Controller
 
     public function invCapitalRegister($data)
     {    
-         $investor = 2; 
+         $investor = 3; 
          $interested_cats = $data['interested_cats'];  
          $website = $data['website']; 
 
