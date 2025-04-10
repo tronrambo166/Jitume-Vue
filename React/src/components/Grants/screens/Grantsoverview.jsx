@@ -36,6 +36,7 @@ import {
 } from "lucide-react";
 import GrantApplicationModal from "../Utils/Modals/Newgrant";
 // import OfferGrantModal from "../Utils/Modals/AddnewGrant";
+import TujitumeLogo from "../../../images/Tujitumelogo.svg";
 
 // Toast Notification Component
 const ToastNotification = ({ message, type = "info", onClose }) => {
@@ -193,7 +194,7 @@ const Navigation = {
     Sidebar: ({ isMobile, onClose }) => {
         const location = useLocation();
         const [openMenus, setOpenMenus] = useState({});
-        const { token, setToken, setUser } = useStateContext();
+        const { token, setToken } = useStateContext();
         const navigate = useNavigate();
         const { addToast } = useToast();
 
@@ -318,10 +319,33 @@ const Navigation = {
                 {label}
             </Link>
         );
-        // const { user } = useStateContext();
-        const user = { investor: 3 }; // hard-coded for test
+        const { user, setUser } = useStateContext();
+        const [loading, setLoading] = useState(true);
 
+        useEffect(() => {
+            const fetchUserData = async () => {
+                setLoading(true);
+
+                try {
+                    const { data } = await axiosClient.get("/checkAuth");
+                    setUser(data.user);
+                    setLoading(false);
+
+                    console.log("My dara :", data);
+
+                    if (data.user.investor == 1) navigate("/dashboard");
+                } catch (error) {
+                    console.log(error);
+                    setLoading(false);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            fetchUserData();
+        }, []);
         console.log("user", user);
+
         const navItems = [
             {
                 icon: Home,
@@ -410,65 +434,79 @@ const Navigation = {
             },
         ].filter(Boolean); // Remove any undefined entries
         return (
-            <div
-                className={`
+            <>
+                <div
+                    className={`
         fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-50 
         transform transition-transform duration-300 ease-in-out
         ${isMobile ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
       `}
-            >
-                <div className="p-6 border-b">
-                    <h2 className="text-2xl font-bold text-green-600">
-                        Tujitume
-                    </h2>
-                    <p className="text-sm text-gray-500">Grants Platform</p>
-                </div>
-                <nav className="p-4 space-y-1 overflow-y-auto h-[calc(100vh-120px)]">
-                    {navItems.map((item) => (
-                        <NavItem
-                            key={item.to}
-                            icon={item.icon}
-                            label={
-                                <span
-                                    style={{
-                                        whiteSpace: "nowrap",
-                                        overflow: "hidden",
-                                        textOverflow: "ellipsis",
-                                        display: "inline-block",
-                                        maxWidth: "100%",
-                                    }}
-                                >
-                                    {item.label}
-                                </span>
-                            }
-                            to={item.to}
-                            hasChildren={!!item.children}
-                            isActive={
-                                item.exact
-                                    ? location.pathname === item.to
-                                    : location.pathname.startsWith(item.to)
-                            }
-                        />
-                    ))}
-                    <div className="pt-1 mt-2 text-green-500 border-t">
-                        <NavItem
-                            icon={LogOut}
-                            label="Logout"
-                            to="/logout"
-                            isActive={location.pathname === "/logout"}
-                            hasChildren={false}
-                            isLogout={true}
-                        />
+                >
+                    <div className="p-6 border-b">
+                        <h2 className="text-2xl font-bold text-green-600">
+                            Tujitume
+                        </h2>
+                        <p className="text-sm text-gray-500">Grants Platform</p>
                     </div>
-                </nav>
-            </div>
+                    <nav className="p-4 space-y-1 overflow-y-auto h-[calc(100vh-120px)]">
+                        {navItems.map((item) => (
+                            <NavItem
+                                key={item.to}
+                                icon={item.icon}
+                                label={
+                                    <span
+                                        style={{
+                                            whiteSpace: "nowrap",
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            display: "inline-block",
+                                            maxWidth: "100%",
+                                        }}
+                                    >
+                                        {item.label}
+                                    </span>
+                                }
+                                to={item.to}
+                                hasChildren={!!item.children}
+                                isActive={
+                                    item.exact
+                                        ? location.pathname === item.to
+                                        : location.pathname.startsWith(item.to)
+                                }
+                            />
+                        ))}
+                        <div className="pt-1 mt-2 text-green-500 border-t">
+                            <NavItem
+                                icon={LogOut}
+                                label="Logout"
+                                to="/logout"
+                                isActive={location.pathname === "/logout"}
+                                hasChildren={false}
+                                isLogout={true}
+                            />
+                        </div>
+                    </nav>
+                </div>
+                {loading && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
+                        <div className="flex flex-col items-center justify-center space-y-4">
+                            <img
+                                src={TujitumeLogo}
+                                alt="Tujitume Logo"
+                                className="w-32 h-auto"
+                            />
+                            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-green-600"></div>
+                        </div>
+                    </div>
+                )}
+            </>
         );
     },
 
     TopNavigation: () => {
         const [isProfileOpen, setIsProfileOpen] = useState(false);
         const profileRef = React.useRef(null);
-        const { token, setToken, setUser, user } = useStateContext();
+        const { token, setToken, user } = useStateContext();
         const [GetuserRole, setGetuserRole] = useState(null);
         const navigate = useNavigate();
         const { addToast } = useToast();
