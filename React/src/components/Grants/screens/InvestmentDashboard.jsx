@@ -66,10 +66,15 @@ const InvestmentOpportunities = () => {
   useEffect(() => {
     const fetchPreferences = async () => {
       try {
-        // This would be replaced with your actual API endpoint for preferences
+        console.log('Fetching investor preferences...');
         const response = await axiosClient.get('investor/preferences');
+        console.log('Preferences response:', response);
+        
         if (response.data && response.data.preferences) {
+          console.log('Setting investor preferences:', response.data.preferences);
           setInvestorPreferences(response.data.preferences);
+        } else {
+          console.warn('No preferences data received, using defaults');
         }
       } catch (error) {
         console.error('Error fetching investor preferences:', error);
@@ -86,10 +91,13 @@ const InvestmentOpportunities = () => {
       setIsLoading(true);
       setError(null);
       try {
+        console.log('Fetching capital offers...');
         const response = await axiosClient.get('capital/capital-offers');
-        console.log('Capital offers response:', response.data);
+        console.log('API Response:', response);
+        console.log('Response data:', response.data);
         
         if (response.data && Array.isArray(response.data.capital)) {
+          console.log('Capital offers received:', response.data.capital);
           setOpportunities(response.data.capital);
         } else {
           console.warn('Unexpected response format:', response.data);
@@ -97,6 +105,11 @@ const InvestmentOpportunities = () => {
         }
       } catch (error) {
         console.error('Error fetching capital offers:', error);
+        console.error('Error details:', {
+          message: error.message,
+          response: error.response,
+          stack: error.stack
+        });
         setError('Failed to fetch investment opportunities');
       } finally {
         setIsLoading(false);
@@ -108,34 +121,56 @@ const InvestmentOpportunities = () => {
 
   // Adapt API response to component structure - only using real data
   const processedOpportunities = useMemo(() => {
-    return opportunities.map(opp => ({
-      id: opp.id,
-      name: opp.offer_title,
-      sector: opp.sectors?.split(',')[0] || 'Unknown',
-      allSectors: opp.sectors || '',
-      location: opp.regions?.split(',')[0] || 'Unknown',
-      allRegions: opp.regions || '',
-      amount: parseFloat(opp.total_capital_available) || 0,
-      perStartupAmount: parseFloat(opp.per_startup_allocation) || 0,
-      stage: opp.startup_stage || 'Unknown',
-      isFemaleLed: opp.is_female_led || false,
-      isYouthLed: opp.is_youth_led || false,
-      isRuralBased: opp.is_rural_based || false,
-      usesLocalSourcing: opp.uses_local_sourcing || false,
-      requiredDocs: opp.required_docs?.split(',') || [],
-      milestoneRequirements: opp.milestone_requirements || 'None specified',
-      createdAt: opp.created_at,
-      updatedAt: opp.updated_at
-    }));
+    console.log('Processing opportunities:', opportunities);
+    
+    if (!Array.isArray(opportunities)) {
+      console.warn('Opportunities is not an array:', opportunities);
+      return [];
+    }
+    
+    return opportunities
+      .filter(opp => {
+        const isValid = opp && typeof opp === 'object';
+        if (!isValid) {
+          console.warn('Invalid opportunity data:', opp);
+        }
+        return isValid;
+      })
+      .map(opp => {
+        console.log('Processing opportunity:', opp);
+        return {
+          id: opp.id,
+          name: opp.offer_title || 'Untitled Offer',
+          sector: opp.sectors?.split(',')[0] || 'Unknown',
+          allSectors: opp.sectors || '',
+          location: opp.regions?.split(',')[0] || 'Unknown',
+          allRegions: opp.regions || '',
+          amount: parseFloat(opp.total_capital_available) || 0,
+          perStartupAmount: parseFloat(opp.per_startup_allocation) || 0,
+          stage: opp.startup_stage || 'Unknown',
+          isFemaleLed: opp.is_female_led || false,
+          isYouthLed: opp.is_youth_led || false,
+          isRuralBased: opp.is_rural_based || false,
+          usesLocalSourcing: opp.uses_local_sourcing || false,
+          requiredDocs: opp.required_docs?.split(',') || [],
+          milestoneRequirements: opp.milestone_requirements || 'None specified',
+          createdAt: opp.created_at || new Date().toISOString(),
+          updatedAt: opp.updated_at || new Date().toISOString()
+        };
+      });
   }, [opportunities]);
-
+  
   const scoredOpportunities = useMemo(() => {
+    console.log('Calculating match scores with preferences:', investorPreferences);
+    
     return processedOpportunities.map(opp => {
       const matchScore = calculateMatchScore(opp, investorPreferences);
       let status = 'Potential Match';
       if (matchScore >= 80) status = 'Ideal Match';
       else if (matchScore >= 60) status = 'Strong Match';
       else if (matchScore >= 40) status = 'Good Match';
+      
+      console.log(`Opportunity ${opp.id} match score:`, matchScore);
       
       return {
         ...opp,
@@ -146,6 +181,9 @@ const InvestmentOpportunities = () => {
   }, [processedOpportunities, investorPreferences]);
 
   const filteredOpportunities = useMemo(() => {
+    console.log('Filtering opportunities with filters:', filters);
+    console.log('Search term:', searchTerm);
+    
     return scoredOpportunities.filter(opp => {
       const matchesSector = filters.sector === 'All' || opp.allSectors.includes(filters.sector);
       const matchesMinInvestment = !filters.minInvestment || opp.amount >= parseFloat(filters.minInvestment);
@@ -181,21 +219,38 @@ const InvestmentOpportunities = () => {
     const sectors = new Set(['All']);
     opportunities.forEach(opp => {
       if (opp.sectors) {
-        opp.sectors.split(',').forEach(sector => sectors.add(sector.trim()));
+        opp.sectors.split(',').forEach(sector => {
+          const trimmedSector = sector.trim();
+          if (trimmedSector) sectors.add(trimmedSector);
+        });
       }
     });
-    return Array.from(sectors);
+    const sectorsArray = Array.from(sectors);
+    console.log('Available sectors:', sectorsArray);
+    return sectorsArray;
   }, [opportunities]);
 
   const availableStages = useMemo(() => {
     const stages = new Set(['All']);
     opportunities.forEach(opp => {
       if (opp.startup_stage) {
-        stages.add(opp.startup_stage.trim());
+        const trimmedStage = opp.startup_stage.trim();
+        if (trimmedStage) stages.add(trimmedStage);
       }
     });
-    return Array.from(stages);
+    const stagesArray = Array.from(stages);
+    console.log('Available stages:', stagesArray);
+    return stagesArray;
   }, [opportunities]);
+
+  console.log('Rendering with state:', {
+    isLoading,
+    error,
+    opportunities,
+    processedOpportunities,
+    scoredOpportunities,
+    filteredOpportunities
+  });
 
   return (
     <div className="min-h-screen bg-neutral-50 text-neutral-900 antialiased">
@@ -244,6 +299,7 @@ const InvestmentOpportunities = () => {
           isOpen={isAddingOpportunity} 
           onClose={() => setIsAddingOpportunity(false)}
           onSuccess={(newOpp) => {
+            console.log('New opportunity added:', newOpp);
             setOpportunities([...opportunities, newOpp]);
             setIsAddingOpportunity(false);
           }}
@@ -410,12 +466,17 @@ const InvestmentOpportunities = () => {
             <button 
               onClick={() => {
                 setIsLoading(true);
+                setError(null);
+                console.log('Retrying fetch...');
                 axiosClient.get('capital/capital-offers')
                   .then(response => {
+                    console.log('Retry response:', response);
                     if (response.data && Array.isArray(response.data.capital)) {
+                      console.log('Retry successful, setting opportunities');
                       setOpportunities(response.data.capital);
                       setError(null);
                     } else {
+                      console.warn('Unexpected data format in retry');
                       setError('Unexpected data format');
                     }
                   })
@@ -423,7 +484,10 @@ const InvestmentOpportunities = () => {
                     console.error('Error retrying fetch:', err);
                     setError('Failed to fetch data');
                   })
-                  .finally(() => setIsLoading(false));
+                  .finally(() => {
+                    console.log('Retry completed');
+                    setIsLoading(false);
+                  });
               }}
               className="mt-4 px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition-colors"
             >

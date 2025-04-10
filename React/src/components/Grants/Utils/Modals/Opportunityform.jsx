@@ -165,15 +165,14 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
   const prevStep = () => {
     setStep(step - 1);
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+  
     try {
       const formDataToSend = new FormData();
       
-      // Add base fields
+      // Append form data
       formDataToSend.append('offer_title', formData.offer_title);
       formDataToSend.append('total_capital_available', formData.total_capital_available);
       formDataToSend.append('per_startup_allocation', formData.per_startup_allocation);
@@ -183,11 +182,11 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
       formDataToSend.append('regions', formData.regions.join(','));
       formDataToSend.append('required_docs', formData.required_docs.join(','));
       
-      // Add file if present
       if (formData.offer_brief_file) {
         formDataToSend.append('offer_brief_file', formData.offer_brief_file);
       }
   
+      // Make API request
       await axiosClient.post('/capital/create-capital-offer', formDataToSend);
       
       setSuccessSubmit(true);
@@ -205,11 +204,12 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
           required_docs: [],
           offer_brief_file: null
         });
-        
+  
         setStep(1);
         setSuccessSubmit(false);
         onClose();
-        if (onSuccess) onSuccess();
+  
+        if (onSuccess) onSuccess(); // Call onSuccess without passing opp
       }, 2000);
       
     } catch (error) {
@@ -336,7 +336,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
           {renderNotification()}
           
           <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Step 1: Core Investment Details */}
+            {/* Step 1: Core Investment Details */}
             {step === 1 && (
               <div className="space-y-6">
                 <div className="bg-neutral-50 p-4 rounded-lg flex items-start gap-3 mb-4 border border-neutral-100">
@@ -449,7 +449,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                         onClick={() => setFormData({...formData, startup_stage: stage})}
                         className={`px-3 py-3 rounded-lg border cursor-pointer transition-all ${
                           formData.startup_stage === stage
-                            ? 'bg-neutral-100 border-neutral-400 text-neutral-800 shadow-sm'
+                            ? 'bg-green-100 border-green-400 text-green-800 shadow-sm'
                             : 'bg-white border-neutral-200 hover:bg-neutral-50'
                         }`}
                       >
@@ -470,7 +470,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                         onClick={() => handleMultiSelectChange('sectors', sector.name)}
                         className={`flex justify-between items-center px-4 py-3 rounded-lg border cursor-pointer transition-all ${
                           formData.sectors.includes(sector.name)
-                            ? 'bg-neutral-100 border-neutral-400 text-neutral-800'
+                            ? 'bg-green-100 border-green-400 text-green-800'
                             : 'bg-white border-neutral-200 hover:bg-neutral-50'
                         }`}
                       >
@@ -527,12 +527,12 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                       {formData.sectors.map(sector => (
                         <div 
                           key={sector} 
-                          className="flex items-center px-3 py-1 rounded-full text-sm bg-neutral-100 text-neutral-700"
+                          className="flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-800 border border-green-200"
                         >
                           {sector}
                           <button
                             type="button"
-                            className="ml-1 focus:outline-none"
+                            className="ml-1 focus:outline-none text-green-600 hover:text-green-800"
                             onClick={() => handleMultiSelectChange('sectors', sector)}
                           >
                             <X size={14} />
@@ -554,7 +554,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                         onClick={() => handleMultiSelectChange('regions', region)}
                         className={`flex items-center justify-center px-3 py-3 rounded-lg border cursor-pointer transition-all ${
                           formData.regions.includes(region)
-                            ? 'bg-neutral-100 border-neutral-400 text-neutral-800'
+                            ? 'bg-green-100 border-green-400 text-green-800'
                             : 'bg-white border-neutral-200 hover:bg-neutral-50'
                         }`}
                       >
@@ -605,7 +605,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                         onClick={() => handleMultiSelectChange('required_docs', doc)}
                         className={`flex items-center justify-center px-3 py-3 rounded-lg border cursor-pointer transition-all ${
                           formData.required_docs.includes(doc)
-                            ? 'bg-neutral-100 border-neutral-400 text-neutral-800'
+                            ? 'bg-green-100 border-green-400 text-green-800'
                             : 'bg-white border-neutral-200 hover:bg-neutral-50'
                         }`}
                       >
@@ -665,76 +665,76 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                     </div>
                     
                     <div className="bg-neutral-50 p-5 rounded-xl border border-neutral-200 mb-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
-  <div className="flex items-start gap-3">
-    <div className="p-2 bg-neutral-200 rounded-full">
-      <TrendingUp size={16} className="text-neutral-700" />
-    </div>
-    <div>
-      <span className="block text-sm text-neutral-500">Average Growth Rate</span>
-      <span className="text-lg font-medium text-neutral-800">{marketInsights.averageGrowth}</span>
-    </div>
-  </div>
-  
-  <div className="flex items-start gap-3">
-    <div className="p-2 bg-neutral-200 rounded-full">
-      <DollarSign size={16} className="text-neutral-700" />
-    </div>
-    <div>
-      <span className="block text-sm text-neutral-500">Potential ROI</span>
-      <span className="text-lg font-medium text-neutral-800">{marketInsights.potentialROI}</span>
-    </div>
-  </div>
-  
-  {showAnalytics && (
-    <>
-      <div className="flex items-start gap-3">
-        <div className="p-2 bg-neutral-200 rounded-full">
-          <Clock size={16} className="text-neutral-700" />
-        </div>
-        <div>
-          <span className="block text-sm text-neutral-500">Est. Time to Exit</span>
-          <span className="text-lg font-medium text-neutral-800">{marketInsights.timeToExit}</span>
-        </div>
-      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
+                        <div className="flex items-start gap-3">
+                          <div className="p-2 bg-neutral-200 rounded-full">
+                            <TrendingUp size={16} className="text-neutral-700" />
+                          </div>
+                          <div>
+                            <span className="block text-sm text-neutral-500">Average Growth Rate</span>
+                            <span className="text-lg font-medium text-neutral-800">{marketInsights.averageGrowth}</span>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3">
+                          <div className="p-2 bg-neutral-200 rounded-full">
+                            <DollarSign size={16} className="text-neutral-700" />
+                          </div>
+                          <div>
+                            <span className="block text-sm text-neutral-500">Potential ROI</span>
+                            <span className="text-lg font-medium text-neutral-800">{marketInsights.potentialROI}</span>
+                          </div>
+                        </div>
+                        
+                        {showAnalytics && (
+                          <>
+                            <div className="flex items-start gap-3">
+                              <div className="p-2 bg-neutral-200 rounded-full">
+                                <Clock size={16} className="text-neutral-700" />
+                              </div>
+                              <div>
+                                <span className="block text-sm text-neutral-500">Est. Time to Exit</span>
+                                <span className="text-lg font-medium text-neutral-800">{marketInsights.timeToExit}</span>
+                              </div>
+                            </div>
 
-      <div className="flex items-start gap-3">
-        <div className="p-2 bg-neutral-200 rounded-full">
-          <AlertTriangle size={16} className="text-neutral-700" />
-        </div>
-        <div>
-          <span className="block text-sm text-neutral-500">Risk Level</span>
-          <span className="text-lg font-medium text-neutral-800">{marketInsights.riskLevel}</span>
-        </div>
-      </div>
+                            <div className="flex items-start gap-3">
+                              <div className="p-2 bg-neutral-200 rounded-full">
+                                <AlertTriangle size={16} className="text-neutral-700" />
+                              </div>
+                              <div>
+                                <span className="block text-sm text-neutral-500">Risk Level</span>
+                                <span className="text-lg font-medium text-neutral-800">{marketInsights.riskLevel}</span>
+                              </div>
+                            </div>
 
-      <div className="flex items-start gap-3">
-        <div className="p-2 bg-neutral-200 rounded-full">
-          <Target size={16} className="text-neutral-700" />
-        </div>
-        <div>
-          <span className="block text-sm text-neutral-500">Recommended Allocation</span>
-          <span className="text-lg font-medium text-neutral-800">{marketInsights.recommendedAllocation}</span>
-        </div>
-      </div>
-              
-      {marketInsights.trendingSectors.length > 0 && (
-        <div className="flex items-start gap-3">
-          <div className="p-2 bg-neutral-200 rounded-full">
-            <Zap size={16} className="text-neutral-700" />
-          </div>
-          <div>
-            <span className="block text-sm text-neutral-500">Hot Sectors</span>
-            <span className="text-lg font-medium text-neutral-800">
-              {marketInsights.trendingSectors.join(', ')}
-            </span>
-          </div>
-        </div>
-      )}
-    </>
-  )}
-</div>
-</div>
+                            <div className="flex items-start gap-3">
+                              <div className="p-2 bg-neutral-200 rounded-full">
+                                <Target size={16} className="text-neutral-700" />
+                              </div>
+                              <div>
+                                <span className="block text-sm text-neutral-500">Recommended Allocation</span>
+                                <span className="text-lg font-medium text-neutral-800">{marketInsights.recommendedAllocation}</span>
+                              </div>
+                            </div>
+                            
+                            {marketInsights.trendingSectors.length > 0 && (
+                              <div className="flex items-start gap-3">
+                                <div className="p-2 bg-neutral-200 rounded-full">
+                                  <Zap size={16} className="text-neutral-700" />
+                                </div>
+                                <div>
+                                  <span className="block text-sm text-neutral-500">Hot Sectors</span>
+                                  <span className="text-lg font-medium text-neutral-800">
+                                    {marketInsights.trendingSectors.join(', ')}
+                                  </span>
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 )}
 
@@ -810,51 +810,49 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                 </div>
               </div>
             )}
-          </form>
-          <div className="px-6 py-4 bg-neutral-50 border-t border-neutral-200 flex justify-between">
-          <div>
-            {step > 1 && (
-              <button
-                type="button"
-                onClick={prevStep}
-                disabled={isSubmitting}
-                className="px-5 py-2.5 bg-white border border-neutral-300 rounded-lg text-neutral-700 font-medium hover:bg-neutral-50 transition-colors"
-              >
-                Previous
-              </button>
-            )}
-          </div>
-          <div>
-            {step < 3 ? (
-              <button
-                type="button"
-                onClick={nextStep}
-                className="px-5 py-2.5 bg-neutral-800 text-white rounded-lg font-medium hover:bg-neutral-700 transition-colors"
-              >
-                Next
-              </button>
-            ) : (
-              <button
-                type="submit"
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-                className="px-5 py-2.5 bg-green-800 text-white rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center gap-2"
-              >
-                {isSubmitting ? 'Publishing...' : 'Publish Opportunity'}
-                {isSubmitting && (
-                  <div className="w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
-                )}
-              </button>
-            )}
-          </div>
-        </div>
-        </div>
 
-        {/* Footer with navigation buttons */}
-   
+            {/* Footer with navigation buttons */}
+            <div className="px-6 py-4 bg-neutral-50 border-t border-neutral-200 flex justify-between">
+              <div>
+                {step > 1 && (
+                  <button
+                    type="button"
+                    onClick={prevStep}
+                    disabled={isSubmitting}
+                    className="px-5 py-2.5 bg-white border border-neutral-300 rounded-lg text-neutral-700 font-medium hover:bg-neutral-50 transition-colors"
+                  >
+                    Previous
+                  </button>
+                )}
+              </div>
+              <div>
+                {step < 3 ? (
+                  <button
+                    type="button"
+                    onClick={nextStep}
+                    className="px-5 py-2.5 bg-neutral-800 text-white rounded-lg font-medium hover:bg-neutral-700 transition-colors"
+                  >
+                    Next
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="px-5 py-2.5 bg-green-800 text-white rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center gap-2"
+                  >
+                    {isSubmitting ? 'Publishing...' : 'Publish Opportunity'}
+                    {isSubmitting && (
+                      <div className="w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
+                    )}
+                  </button>
+                )}
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
 };
 
-export default InvestmentModal;                        
+export default InvestmentModal;
