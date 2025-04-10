@@ -319,7 +319,7 @@ const Navigation = {
             </Link>
         );
         // const { user } = useStateContext();
-        const user = { investor: 1 }; // hard-coded for test
+        const user = { investor: 3 }; // hard-coded for test
 
         console.log("user", user);
         const navItems = [

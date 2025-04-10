@@ -186,14 +186,14 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
       if (formData.offer_brief_file) {
         formDataToSend.append('offer_brief_file', formData.offer_brief_file);
       }
-
+  
       await axiosClient.post('/capital/create-capital-offer', formDataToSend);
       
       setNotification({
         type: 'success',
         message: 'Investment opportunity successfully created!'
       });
-
+  
       // Reset form and close modal after success
       setTimeout(() => {
         setFormData({
@@ -210,7 +210,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
         
         setStep(1);
         onClose();
-        if (onSuccess) onSuccess();
+        // 🚫 removed onSuccess(); to avoid re-fetch or recalculation
       }, 2000);
       
     } catch (error) {
@@ -223,7 +223,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
       setIsSubmitting(false);
     }
   };
-
+  
   const formatCurrency = (value) => {
     if (!value) return '';
     return new Intl.NumberFormat('en-US', {
@@ -309,8 +309,8 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
         <div className="p-6 overflow-y-auto" style={{ maxHeight: 'calc(90vh - 190px)' }}>
           {renderNotification()}
           
-          <form onSubmit={(e) => { e.preventDefault(); }} className="space-y-6">
-            {/* Step 1: Core Investment Details */}
+          <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Step 1: Core Investment Details */}
             {step === 1 && (
               <div className="space-y-6">
                 <div className="bg-teal-50 p-4 rounded-lg flex items-start gap-3 mb-4">
