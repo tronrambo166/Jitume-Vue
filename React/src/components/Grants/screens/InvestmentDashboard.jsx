@@ -27,6 +27,8 @@ const calculateMatchScore = (opportunity, investorPreferences) => {
 };
 
 const InvestmentOpportunities = () => {
+
+
   const investorPreferences = {
     sector: 'Renewable Energy',
     location: 'Kenya',
@@ -53,53 +55,24 @@ const InvestmentOpportunities = () => {
     setIsAddingOpportunity(!isAddingOpportunity);
   };
 
-  const [opportunities, setOpportunities] = useState([
-    { 
-      id: 1,
-      name: 'Solar Farm Kenya', 
-      sector: 'Renewable Energy',
-      location: 'Nairobi, Kenya',
-      stage: 'Series A',
-      amount: 500000,
-      revenue: 150000,
-      teamExperience: 5,
-      impactScore: 8,
-      milestoneSuccessRate: 85,
-      documentsComplete: true,
-      isFemaleLed: true,
-      isYouthLed: false,
-      isRuralBased: true,
-      usesLocalSourcing: true,
-      impactMetrics: {
-        jobsCreated: 45,
-        carbonOffset: 1200,
-        energyGenerated: '2.5 MW'
-      }
-    },
-    { 
-      id: 2,
-      name: 'AgriTech Tanzania', 
-      sector: 'Agriculture',
-      location: 'Dar es Salaam, Tanzania',
-      stage: 'Seed',
-      amount: 250000,
-      revenue: 50000,
-      teamExperience: 4,
-      impactScore: 7,
-      milestoneSuccessRate: 60,
-      documentsComplete: true,
-      isFemaleLed: false,
-      isYouthLed: true,
-      isRuralBased: true,
-      usesLocalSourcing: false,
-      impactMetrics: {
-        farmersSupported: 250,
-        cropYieldImprovement: '35%',
-        waterConservation: '500,000L'
-      }
-    }
-  ]);
+  const [opportunities, setOpportunities] = useState([]);
 
+  useEffect(() => {
+    const fetchCapitalOffers = async () => {
+      try {
+        const response = await axios.get('capital/capital-offers');
+        if (response.data && Array.isArray(response.data)) {
+          setOpportunities(response.data);
+        } else {
+          console.warn('Unexpected response format:', response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching capital offers:', error);
+      }
+    };
+
+    fetchCapitalOffers();
+  }, []);
   const [newOpportunity, setNewOpportunity] = useState({
     name: '',
     sector: '',
