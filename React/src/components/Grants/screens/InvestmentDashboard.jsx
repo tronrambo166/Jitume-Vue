@@ -94,31 +94,27 @@ const InvestmentOpportunities = () => {
         console.log('Fetching capital offers...');
         const response = await axiosClient.get('capital/capital-offers');
         console.log('API Response:', response);
-        console.log('Response data:', response.data);
         
-        if (response.data && Array.isArray(response.data.capital)) {
-          console.log('Capital offers received:', response.data.capital);
-          setOpportunities(response.data.capital);
+        // Check for both response.data.capital and response.data directly
+        const data = response.data?.capital || response.data;
+        
+        if (data && Array.isArray(data)) {
+          console.log('Capital offers received:', data);
+          setOpportunities(data);
         } else {
           console.warn('Unexpected response format:', response.data);
           setError('Received unexpected data format from server');
         }
       } catch (error) {
         console.error('Error fetching capital offers:', error);
-        console.error('Error details:', {
-          message: error.message,
-          response: error.response,
-          stack: error.stack
-        });
         setError('Failed to fetch investment opportunities');
       } finally {
         setIsLoading(false);
       }
     };
-
+  
     fetchCapitalOffers();
   }, []);
-
   // Adapt API response to component structure - only using real data
   const processedOpportunities = useMemo(() => {
     console.log('Processing opportunities:', opportunities);
@@ -296,15 +292,18 @@ const InvestmentOpportunities = () => {
 
         {/* Investment Modal */}
         <InvestmentModal 
-          isOpen={isAddingOpportunity} 
-          onClose={() => setIsAddingOpportunity(false)}
-          onSuccess={(newOpp) => {
-            console.log('New opportunity added:', newOpp);
-            setOpportunities([...opportunities, newOpp]);
-            setIsAddingOpportunity(false);
-          }}
-        />
-
+  isOpen={isAddingOpportunity} 
+  onClose={() => setIsAddingOpportunity(false)}
+  onSuccess={() => {
+    // Remove the newOpp parameter since we don't want to handle it here
+    console.log('Opportunity submission successful');
+    setIsAddingOpportunity(false);
+    
+    // Optionally, you might want to refresh the opportunities list
+    // You would need to implement fetchCapitalOffers() as a standalone function
+    // fetchCapitalOffers();
+  }}
+/>
         {/* Tabs */}
         <div className="flex border-b border-neutral-200 mb-6">
           <button
