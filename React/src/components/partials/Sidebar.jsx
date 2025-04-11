@@ -492,7 +492,7 @@ const Sidebar = ({ onToggle }) => {
                                                     : "hover:bg-gray-100 bg-gradient-to-r from-blue-50 to-purple-50 border border-gray-200"
                                             }`
                                         }
-                                        to="/grants-overview"
+                                        to="/grants-overview/grants/discover"
                                         end
                                         onClick={() => setIsOpen(false)}
                                     >

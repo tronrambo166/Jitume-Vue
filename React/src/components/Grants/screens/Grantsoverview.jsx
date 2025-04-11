@@ -347,12 +347,16 @@ const Navigation = {
         console.log("user", user);
 
         const navItems = [
-            {
-                icon: Home,
-                label: "Dashboard",
-                to: "/grants-overview",
-                exact: true,
-            },
+            ...(user?.investor
+                ? [
+                      {
+                          icon: Home,
+                          label: "Dashboard",
+                          to: "/grants-overview",
+                          exact: true,
+                      },
+                  ]
+                : []),
             // Hide if user.investor === 3
             ...(user?.investor !== 3
                 ? [
@@ -394,49 +398,57 @@ const Navigation = {
                       },
                   ]
                 : []),
-            {
-                icon: BarChart2,
-                label: "Analytics",
-                to: "/grants-overview/impact",
-                children: [
-                    {
-                        label: "Metrics Dashboard",
-                        to: "/grants-overview/analytics",
-                    },
-                ],
-            },
-            {
-                icon: Users,
-                label: "Profile",
-                to: "/grants-overview/network",
-                children: [
-                    { label: "Profile", to: "/grants-overview/profile" },
-                ],
-            },
-            {
-                icon: Clock,
-                label: "Office Hours",
-                to: "/grants-overview/office-hours",
-            },
-            {
-                icon: Settings,
-                label: "Schedule",
-                to: "/grants-overview/settings",
-                children: [
-                    {
-                        label: "Profile",
-                        to: "/grants-overview/settings/profile",
-                    },
-                    {
-                        label: "Notifications",
-                        to: "/grants-overview/settings/notifications",
-                    },
-                    {
-                        label: "Security",
-                        to: "/grants-overview/settings/security",
-                    },
-                ],
-            },
+
+            ...(user?.investor
+                ? [
+                      {
+                          icon: BarChart2,
+                          label: "Analytics",
+                          to: "/grants-overview/impact",
+                          children: [
+                              {
+                                  label: "Metrics Dashboard",
+                                  to: "/grants-overview/analytics",
+                              },
+                          ],
+                      },
+                      {
+                          icon: Users,
+                          label: "Profile",
+                          to: "/grants-overview/network",
+                          children: [
+                              {
+                                  label: "Profile",
+                                  to: "/grants-overview/profile",
+                              },
+                          ],
+                      },
+                      {
+                          icon: Clock,
+                          label: "Office Hours",
+                          to: "/grants-overview/office-hours",
+                      },
+                      {
+                          icon: Settings,
+                          label: "Schedule",
+                          to: "/grants-overview/settings",
+                          children: [
+                              {
+                                  label: "Profile",
+                                  to: "/grants-overview/settings/profile",
+                              },
+                              {
+                                  label: "Notifications",
+                                  to: "/grants-overview/settings/notifications",
+                              },
+                              {
+                                  label: "Security",
+                                  to: "/grants-overview/settings/security",
+                              },
+                          ],
+                      },
+                  ]
+                : []),
         ].filter(Boolean); // Remove any undefined entries
         return (
             <>
