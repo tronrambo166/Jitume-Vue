@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import InvestmentModal from '../Utils/Modals/Opportunityform';
 import axiosClient from "../../../axiosClient";
 import { useStateContext } from "../../../contexts/contextProvider";
+import InvestmentApplicationModal from '../Utils/Modals/InvestmentModal';
 
 const calculateMatchScore = (opportunity, investorPreferences) => {
     let score = 0;
@@ -66,7 +67,12 @@ const InvestmentOpportunities = () => {
     const [activeTab, setActiveTab] = useState("discover");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-
+    const [showModal, setShowModal] = useState(false);
+    const handleSuccess = () => {
+        // Handle successful submission (e.g., show success message)
+        console.log('Application submitted successfully!');
+      };
+    
     const toggleModal = () => {
         setIsAddingOpportunity(!isAddingOpportunity);
     };
@@ -775,14 +781,35 @@ const InvestmentOpportunities = () => {
                                             <button className="flex-1 text-neutral-700 whitespace-nowrap hover:text-neutral-900 transition-colors flex items-center justify-center gap-2 px-4 py-2 border border-neutral-300 rounded-md hover:bg-neutral-50">
                                                 <Eye size={16} /> View Details
                                             </button>
-                                            <Link
-                                                to={`/grants-overview/funding/deals/${opp.id}`}
-                                                state={{ opportunity: opp }}
-                                                className="flex-1 text-white whitespace-nowrap bg-emerald-600 hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium"
-                                            >
-                                                <ArrowUpRight size={16} /> Open
-                                                Deal Room
-                                            </Link>
+                                            {user.investor === 2 ? (
+  <Link
+    to={`/grants-overview/funding/deals/${opp.id}`}
+    state={{ opportunity: opp }}
+    className="flex-1 text-white whitespace-nowrap bg-emerald-600 hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium"
+  >
+    <ArrowUpRight size={16} /> Open Deal Room
+  </Link>
+) : (
+  <div>
+    <button
+      onClick={() => setShowModal(true)}
+      className="px-4 py-2 bg-green-600 whitespace-nowrap  text-white rounded-md hover:bg-green-700"
+    >
+      Apply for Investment
+    </button>
+
+    {showModal && (
+      <InvestmentApplicationModal
+        businessId={123} // Your business ID
+        capitalId={456} // The capital ID you're applying to
+        onClose={() => setShowModal(false)}
+        onSuccess={handleSuccess}
+      />
+    )}
+  </div>
+)}
+
+
                                         </div>
                                     </div>
                                 </div>

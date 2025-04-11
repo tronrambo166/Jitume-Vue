@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import axiosClient from "../../../axiosClient";
+import { useStateContext } from "../../../contexts/contextProvider";
 
 const DealRoomLayout = () => {
   const { opportunityId } = useParams();
@@ -24,6 +25,8 @@ const DealRoomLayout = () => {
   const [investors, setInvestors] = useState([]);
   const [pitches, setPitches] = useState([]);
   const [isLoadingPitches, setIsLoadingPitches] = useState(false);
+  const { user } = useStateContext();
+  
   const [priorityFilters, setPriorityFilters] = useState({
     isWomenLed: false,
     isYouthLed: false,
@@ -37,14 +40,24 @@ const DealRoomLayout = () => {
   // Fetch pitches from API
   const fetchPitches = async () => {
     if (!opportunityId) return;
-    
+  
     setIsLoadingPitches(true);
     try {
       const response = await axiosClient.get(`capital/pitches/${opportunityId}`);
-      setPitches(response.data || []);
+      
+      console.log('Fetched pitch data:', response.data);
+  
+      const pitchesArray = response?.data?.pitches;
+  
+      if (Array.isArray(pitchesArray)) {
+        setPitches(pitchesArray);
+      } else {
+        console.warn('Unexpected data structure:', response.data);
+        setPitches([]);
+      }
+  
     } catch (error) {
       console.error('Error fetching pitches:', error);
-      // Fallback to mock data if API fails
       setPitches([
         {
           id: 1,
@@ -78,7 +91,7 @@ const DealRoomLayout = () => {
       setIsLoadingPitches(false);
     }
   };
-
+  
   // Mock data fetch with investors and matching criteria
   useEffect(() => {
     let mockDeal;
@@ -469,47 +482,18 @@ const DealRoomLayout = () => {
     );
   };
 
-  // Pitch Card Component
-  const PitchCard = ({ pitch }) => {
-    return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4 hover:shadow-md transition-shadow">
-        <div className="flex justify-between items-start">
-          <div>
-            <h3 className="font-bold text-lg">{pitch.title}</h3>
-            <p className="text-gray-600 text-sm">Presented to: {pitch.audience}</p>
-          </div>
-          <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-            pitch.status === 'Completed' ? 'bg-green-50 text-green-700' : 'bg-yellow-50 text-yellow-700'
-          }`}>
-            {pitch.status}
-          </div>
-        </div>
-        
-        <div className="mt-3 grid grid-cols-3 gap-2 text-sm">
-          <div className="flex items-center">
-            <Calendar size={14} className="mr-1 text-gray-500" />
-            <span>{pitch.date}</span>
-          </div>
-          <div className="flex items-center">
-            <FileText size={14} className="mr-1 text-gray-500" />
-            <span>{pitch.slides} slides</span>
-          </div>
-          <div className="flex items-center">
-            <Star size={14} className="mr-1 text-gray-500" />
-            <span>{pitch.feedback_score}% feedback</span>
-          </div>
-        </div>
-
-        <button 
-          onClick={() => viewPitch(pitch)}
-          className="mt-4 w-full py-2 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700 transition-colors"
-        >
-          View Pitch
-        </button>
-      </div>
-    );
-  };
-
+  {isLoadingPitches ? (
+    <p>Loading pitches...</p>
+  ) : (
+    Array.isArray(pitches) && pitches.length > 0 ? (
+      pitches.map((pitch) => (
+        <PitchCard key={pitch.id} pitch={pitch} />
+      ))
+    ) : (
+      <p>No pitches available.</p>
+    )
+  )}
+  
   // Priority Filters Component
   const PriorityFilters = () => (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
@@ -572,9 +556,10 @@ const DealRoomLayout = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Link to="/investment-portal" className="text-gray-500 hover:text-gray-700">
-                <ArrowLeft size={20} />
-              </Link>
+            <Link to="/grants-overview/funding/investments" className="text-gray-500 hover:text-gray-700">
+  <ArrowLeft size={20} />
+</Link>
+
               <div>
                 <h1 className="text-2xl font-bold">{deal.name} Deal Room</h1>
                 <p className="text-gray-500 text-sm">
@@ -732,43 +717,32 @@ const DealRoomLayout = () => {
 
         {/* Pitches Tab */}
         {activeTab === 'pitches' && (
-          <div className="space-y-6">
-            {isLoadingPitches ? (
-              <div className="flex justify-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
-              </div>
-            ) : (
-              <>
-                <div className="flex justify-between items-center">
-                  <h2 className="text-xl font-bold">Investor Pitches</h2>
-                  <button 
-                    className="px-4 py-2 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700 transition-colors flex items-center"
-                  >
-                    <Presentation size={16} className="mr-2" />
-                    Create New Pitch
-                  </button>
-                </div>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {pitches.map(pitch => (
-                    <PitchCard key={pitch.id} pitch={pitch} />
-                  ))}
-                </div>
-              </>
-            )}
-            {pitches.length === 0 && !isLoadingPitches && (
-              <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-200 text-center">
-                <Presentation size={48} className="mx-auto text-gray-400 mb-3" />
-                <h3 className="text-lg font-medium mb-2">No Pitches Yet</h3>
-                <p className="text-gray-500 mb-4">Create your first investor pitch to track presentations and feedback.</p>
-                <button 
-                  className="px-4 py-2 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700 transition-colors"
-                >
-                  Create First Pitch
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+  <div className="space-y-6">
+    {isLoadingPitches ? (
+      <div className="flex justify-center py-12">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
+      </div>
+    ) : (
+      <>
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-bold">Investor Pitches</h2>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {pitches.map(pitch => (
+            <PitchCard key={pitch.id} pitch={pitch} />
+          ))}
+        </div>
+      </>
+    )}
+    {pitches.length === 0 && !isLoadingPitches && (
+      <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-200 text-center">
+        <Presentation size={48} className="mx-auto text-gray-400 mb-3" />
+        <h3 className="text-lg font-medium mb-2">No Pitches Yet</h3>
+        <p className="text-gray-500 mb-4">Create your first investor pitch to track presentations and feedback.</p>
+      </div>
+    )}
+  </div>
+)}
 
         {/* Documents Tab */}
         {activeTab === 'documents' && (
