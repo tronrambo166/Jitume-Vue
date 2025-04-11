@@ -79,34 +79,35 @@ const InvestmentOpportunities = () => {
 
 
     const handleDelete = async (id) => {
-      const confirmDelete = window.confirm('Are you sure you want to delete this opportunity?');
-      if (!confirmDelete) return;
-    
-      setIsLoading(true);
-      setError(null);
-    
-      try {
-        const response = await axiosClient.delete(`capital/delete-capital/${id}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            // Add any required auth headers
+        const confirmDelete = window.confirm('Are you sure you want to delete this opportunity?');
+        if (!confirmDelete) return;
+      
+        setIsLoading(true);
+        setError(null);
+      
+        try {
+          const response = await axiosClient.get(`capital/delete-capital/${id}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              // Add any required auth headers
+            }
+          });
+      
+          if (response.status === 200 || response.status === 204) {
+            setOpportunities(prev => prev.filter(opp => opp.id !== id));
+            console.log('Successfully deleted opportunity');
+          } else {
+            throw new Error('Unexpected response from server');
           }
-        });
-    
-        if (response.status === 200 || response.status === 204) {
-          setOpportunities(prev => prev.filter(opp => opp.id !== id));
-          // Optional: show toast notification
-          console.log('Successfully deleted opportunity');
-        } else {
-          throw new Error('Unexpected response from server');
+        } catch (err) {
+          console.error('Delete error:', err.response?.data || err.message);
+          setError(err.response?.data?.message || 'Failed to delete opportunity');
+        } finally {
+          setIsLoading(false);
         }
-      } catch (err) {
-        console.error('Delete error:', err.response?.data || err.message);
-        setError(err.response?.data?.message || 'Failed to delete opportunity');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+      };
+      
+      
     // Fetch investor preferences
     useEffect(() => {
         const fetchPreferences = async () => {
