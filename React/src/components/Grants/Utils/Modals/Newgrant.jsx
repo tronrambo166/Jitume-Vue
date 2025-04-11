@@ -67,9 +67,9 @@ export default function GrantApplicationModal({ onClose, grantId }) {
   };
 
   // Run check whenever formData changes
-  useEffect(() => {
-    checkIfComplete();
-  }, [formData]);
+  // useEffect(() => {
+  //   checkIfComplete();
+  // }, [formData]);
 
 
 

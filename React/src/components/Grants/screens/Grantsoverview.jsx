@@ -443,10 +443,29 @@ const Navigation = {
       `}
                 >
                     <div className="p-6 border-b">
-                        <h2 className="text-2xl font-bold text-green-600">
-                            Tujitume
-                        </h2>
-                        <p className="text-sm text-gray-500">Grants Platform</p>
+                        <div className="flex items-center gap-2">
+                            {/* Logo - Add your logo import and img tag if needed */}
+                            <h2 className="text-2xl font-bold text-green-600">
+                                Tujitume
+                                
+                            </h2>
+                            {/* <div className="flex items-center justify-between p-2">
+                                <Link className="flex items-center" to="/">
+                                    <img
+                                        src={TujitumeLogo}
+                                        alt="Logo"
+                                        className="w-[120px] transition-transform duration-300"
+                                    />
+                                </Link>
+                            </div> */}
+                        </div>
+                        <p className="text-sm text-gray-500 mt-1">
+                            {user.investor === 2
+                                ? "Impact funding for African innovators"
+                                : user.investor === 3
+                                ? "Investment opportunities across Africa"
+                                : "Your gateway to growth capital"}
+                        </p>
                     </div>
                     <nav className="p-4 space-y-1 overflow-y-auto h-[calc(100vh-120px)]">
                         {navItems.map((item) => (
@@ -678,7 +697,7 @@ const GrantsOverview = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
     const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
-    const { token } = useStateContext();
+    const { token ,user} = useStateContext();
     const navigate = useNavigate();
     const { addToast } = useToast();
 
@@ -777,11 +796,19 @@ const GrantsOverview = () => {
                             <Navigation.Breadcrumbs />
                             <h1 className="text-2xl md:text-3xl font-bold text-gray-800 flex items-center">
                                 <Briefcase className="mr-3 text-black" />
-                                Grants Dashboard
+                                {user.investor === 2
+                                    ? "Grant Funding Dashboard"
+                                    : user.investor === 3
+                                    ? "Investment Capital Dashboard"
+                                    : "Entrepreneur Dashboard"}
                             </h1>
-                            <p className="text-gray-500 mt-2">
-                                Explore and manage grant opportunities
-                            </p>
+                            <div className="text-gray-500 mt-2">
+                                {user.investor === 2
+                                    ? "Track your funding applications and matches"
+                                    : user.investor === 3
+                                    ? "Discover and negotiate investment opportunities"
+                                    : "Explore and manage grant opportunities"}
+                            </div>
                         </div>
                         <div className="flex space-x-4">
                             {/* <button

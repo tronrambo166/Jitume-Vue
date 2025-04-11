@@ -55,7 +55,7 @@ const TujitumeGrantPortal = () => {
         deadline: "",
     });
     const [showFilters, setShowFilters] = useState(false);
-    
+
     const [uploadedDocuments, setUploadedDocuments] = useState({});
     const [grantApplications, setGrantApplications] = useState([]);
     const [grantOpportunities, setGrantOpportunities] = useState([]);
@@ -194,28 +194,49 @@ const TujitumeGrantPortal = () => {
     console.log("grantOpportunities", grantOpportunities);
     // Filter grants
     const filteredGrants = grantOpportunities
-    .filter((grant) => {
-      const grantTitle = grant.title || grant.grant_title || "";
-      const matchesSearch = grantTitle.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        (grant.organization || "").toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesSectors = filters.sectors.length === 0 || 
-        (grant.sectors && Array.isArray(grant.sectors) && 
-         filters.sectors.some((sector) => grant.sectors.includes(sector)));
-      const matchesRegions = filters.regions.length === 0 || 
-        (grant.regions && Array.isArray(grant.regions) && 
-         filters.regions.some((region) => grant.regions.includes(region)));
-      const fundingAmount = grant.funding_per_business || grant.maxGrantPerStartup;
-      const parsedAmount = parseFloat(fundingAmount);
-      const matchesAmount = !isNaN(parsedAmount) && 
-        parsedAmount >= filters.amountRange[0] && 
-        parsedAmount <= filters.amountRange[1];
-      const matchesDeadline = !filters.deadline || 
-        (grant.application_deadline && 
-         new Date(grant.application_deadline) <= new Date(filters.deadline));
-      return matchesSearch && matchesSectors && matchesRegions && matchesAmount && matchesDeadline;
-    })
-    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Newest first
-    .slice(0, 6); // Limit to 10 results
+        .filter((grant) => {
+            const grantTitle = grant.title || grant.grant_title || "";
+            const matchesSearch =
+                grantTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (grant.organization || "")
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase());
+            const matchesSectors =
+                filters.sectors.length === 0 ||
+                (grant.sectors &&
+                    Array.isArray(grant.sectors) &&
+                    filters.sectors.some((sector) =>
+                        grant.sectors.includes(sector)
+                    ));
+            const matchesRegions =
+                filters.regions.length === 0 ||
+                (grant.regions &&
+                    Array.isArray(grant.regions) &&
+                    filters.regions.some((region) =>
+                        grant.regions.includes(region)
+                    ));
+            const fundingAmount =
+                grant.funding_per_business || grant.maxGrantPerStartup;
+            const parsedAmount = parseFloat(fundingAmount);
+            const matchesAmount =
+                !isNaN(parsedAmount) &&
+                parsedAmount >= filters.amountRange[0] &&
+                parsedAmount <= filters.amountRange[1];
+            const matchesDeadline =
+                !filters.deadline ||
+                (grant.application_deadline &&
+                    new Date(grant.application_deadline) <=
+                        new Date(filters.deadline));
+            return (
+                matchesSearch &&
+                matchesSectors &&
+                matchesRegions &&
+                matchesAmount &&
+                matchesDeadline
+            );
+        })
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Newest first
+        .slice(0, 6); // Limit to 10 results
     console.log("filteredGrants", filteredGrants);
 
     // Dashboard metrics
@@ -495,10 +516,12 @@ const TujitumeGrantPortal = () => {
                                                 </p>
                                             </div>
                                             <div className="text-right">
-                                            <p className="text-xl font-bold text-gray-900">
-  $
-  {grant.total_grant_amount || grant.maxGrantPerStartup || 0}
-</p>
+                                                <p className="text-xl font-bold text-gray-900">
+                                                    $
+                                                    {grant.total_grant_amount ||
+                                                        grant.maxGrantPerStartup ||
+                                                        0}
+                                                </p>
 
                                                 <div className="flex items-center justify-end text-xs text-gray-500 mt-1">
                                                     <Calendar
@@ -530,11 +553,14 @@ const TujitumeGrantPortal = () => {
                                                     </span>
                                                 )}
                                                 {grant.startup_stage_focus && (
-                                                   <span className="px-2.5 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
-                                                   {grant.startup_stage_focus
-                                                     ? grant.startup_stage_focus.replace(/[\[\]"]+/g, '')
-                                                     : "No stage specified"}
-                                                 </span>
+                                                    <span className="px-2.5 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
+                                                        {grant.startup_stage_focus
+                                                            ? grant.startup_stage_focus.replace(
+                                                                  /[\[\]"]+/g,
+                                                                  ""
+                                                              )
+                                                            : "No stage specified"}
+                                                    </span>
                                                 )}
                                             </div>
 
@@ -553,10 +579,13 @@ const TujitumeGrantPortal = () => {
                                                         Documents:
                                                     </h4>
                                                     <p className="text-sm text-gray-600">
-  {grant.required_documents
-    ? grant.required_documents.replace(/[\[\]"]+/g, '') 
-    : "Not specified"}
-</p>
+                                                        {grant.required_documents
+                                                            ? grant.required_documents.replace(
+                                                                  /[\[\]"]+/g,
+                                                                  ""
+                                                              )
+                                                            : "Not specified"}
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -584,21 +613,31 @@ const TujitumeGrantPortal = () => {
                                                     <span>Details</span>
                                                 </button>
                                             )}
-                                            <button
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    setSelectedGrant(grant);
-                                                    setShowCreateModal(true);
-                                                }}
-                                                className={`flex-1 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center space-x-2 ${
-                                                    !grant.grant_brief_pdf
-                                                        ? "w-full"
-                                                        : ""
-                                                }`}
-                                            >
-                                                <Upload size={16} />
-                                                <span>Apply</span>
-                                            </button>
+                                            <p>
+                                                {!user.investor && (
+                                                    <span className="text-sm text-gray-600">
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                setSelectedGrant(
+                                                                    grant
+                                                                );
+                                                                setShowCreateModal(
+                                                                    true
+                                                                );
+                                                            }}
+                                                            className={`flex-1 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center space-x-2 ${
+                                                                !grant.grant_brief_pdf
+                                                                    ? "w-full"
+                                                                    : ""
+                                                            }`}
+                                                        >
+                                                            <Upload size={16} />
+                                                            <span>Apply</span>
+                                                        </button>
+                                                    </span>
+                                                )}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -839,42 +878,48 @@ const TujitumeGrantPortal = () => {
                                             </div>
 
                                             <div className="flex items-center space-x-3 flex-shrink-0">
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        setViewingPitchesForGrant(
-                                                            grant.id
-                                                        );
-                                                    }}
-                                                    className={`px-3 py-1.5 bg-gradient-to-r from-[rgb(253,224,71)] to-gray-100 text-black text-sm rounded-lg hover:from-[rgb(253,224,71)] hover:to-gray-100 transition-all flex items-center space-x-1.5 shadow-sm ${
-                                                        open
-                                                            ? "hidden md:flex"
-                                                            : "flex"
-                                                    }`}
-                                                    title="View pitches"
-                                                >
-                                                    <Eye size={16} />
-                                                    <span>Pitches</span>
-                                                </button>
+                                                {user.investor && (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setViewingPitchesForGrant(
+                                                                grant.id
+                                                            );
+                                                        }}
+                                                        className={`px-3 py-1.5 bg-gradient-to-r from-[rgb(253,224,71)] to-gray-100 text-black text-sm rounded-lg hover:from-[rgb(253,224,71)] hover:to-gray-100 transition-all flex items-center space-x-1.5 shadow-sm ${
+                                                            open
+                                                                ? "hidden md:flex"
+                                                                : "flex"
+                                                        }`}
+                                                        title="View pitches"
+                                                    >
+                                                        <Eye size={16} />
+                                                        <span>Pitches</span>
+                                                    </button>
+                                                )}
 
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        setSelectedGrant(grant);
-                                                        setShowCreateModal(
-                                                            true
-                                                        );
-                                                    }}
-                                                    className={`px-3 py-1.5 bg-gradient-to-r from-green-600 to-green-500 text-white text-sm rounded-lg hover:from-green-700 hover:to-green-600 transition-all flex items-center space-x-1.5 shadow-sm ${
-                                                        open
-                                                            ? "hidden md:flex"
-                                                            : "flex"
-                                                    }`}
-                                                    title="Apply now"
-                                                >
-                                                    <Upload size={16} />
-                                                    <span>Apply</span>
-                                                </button>
+                                                {!user.investor && (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setSelectedGrant(
+                                                                grant
+                                                            );
+                                                            setShowCreateModal(
+                                                                true
+                                                            );
+                                                        }}
+                                                        className={`px-3 py-1.5 bg-gradient-to-r from-green-600 to-green-500 text-white text-sm rounded-lg hover:from-green-700 hover:to-green-600 transition-all flex items-center space-x-1.5 shadow-sm ${
+                                                            open
+                                                                ? "hidden md:flex"
+                                                                : "flex"
+                                                        }`}
+                                                        title="Apply now"
+                                                    >
+                                                        <Upload size={16} />
+                                                        <span>Apply</span>
+                                                    </button>
+                                                )}
 
                                                 <div
                                                     className={`flex space-x-2 ${
@@ -909,23 +954,25 @@ const TujitumeGrantPortal = () => {
                                                     </button>
                                                 </div>
 
-                                                <div className="group relative">
-                                                    <button
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleDeleteGrant(
-                                                                grant.id
-                                                            );
-                                                        }}
-                                                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-all"
-                                                        aria-label="Delete grant"
-                                                    >
-                                                        <Trash size={18} />
-                                                    </button>
-                                                    <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-all duration-200">
-                                                        Delete
-                                                    </span>
-                                                </div>
+                                                {user.investor && (
+                                                    <div className="group relative">
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleDeleteGrant(
+                                                                    grant.id
+                                                                );
+                                                            }}
+                                                            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-all"
+                                                            aria-label="Delete grant"
+                                                        >
+                                                            <Trash size={18} />
+                                                        </button>
+                                                        <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-all duration-200">
+                                                            Delete
+                                                        </span>
+                                                    </div>
+                                                )}
 
                                                 {/* Only the chevron is now the Disclosure.Button */}
                                                 <Disclosure.Button className="p-2 text-gray-400 hover:bg-gray-100 rounded-full transition-all">
@@ -1189,32 +1236,40 @@ const TujitumeGrantPortal = () => {
 
                                             {/* Action Buttons - Stacked on mobile, side by side on larger screens */}
                                             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-4 pt-3 border-t border-gray-100">
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        setSelectedGrant(grant);
-                                                        setShowCreateModal(
-                                                            true
-                                                        );
-                                                    }}
-                                                    className="flex-1 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-all flex items-center justify-center space-x-2"
-                                                >
-                                                    <Upload size={16} />
-                                                    <span>Apply</span>
-                                                </button>
+                                                {!user.investor && (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setSelectedGrant(
+                                                                grant
+                                                            );
+                                                            setShowCreateModal(
+                                                                true
+                                                            );
+                                                        }}
+                                                        className="flex-1 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-all flex items-center justify-center space-x-2"
+                                                    >
+                                                        <Upload size={16} />
+                                                        <span>Apply</span>
+                                                    </button>
+                                                )}
 
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        setViewingPitchesForGrant(
-                                                            grant.id
-                                                        );
-                                                    }}
-                                                    className="flex-1 py-2 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 transition-all flex items-center justify-center space-x-2"
-                                                >
-                                                    <Eye size={16} />
-                                                    <span>View Pitches</span>
-                                                </button>
+                                                {user.investor && (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setViewingPitchesForGrant(
+                                                                grant.id
+                                                            );
+                                                        }}
+                                                        className="flex-1 py-2 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 transition-all flex items-center justify-center space-x-2"
+                                                    >
+                                                        <Eye size={16} />
+                                                        <span>
+                                                            View Pitches
+                                                        </span>
+                                                    </button>
+                                                )}
 
                                                 {grant.grant_brief_pdf && (
                                                     <button
@@ -1274,11 +1329,12 @@ const TujitumeGrantPortal = () => {
                                 <span className="text-green-600">Grants</span>
                             </h1>
                             <p className="text-gray-600">
-                                Empowering Africa's  Entrepreneurs
+                                Empowering Africa's Entrepreneurs
                             </p>
                         </div>
-                        <div className="flex space-x-3">
-                            {/* <button
+                        {user.investor && (
+                            <div className="flex space-x-3">
+                                {/* <button
                                 // onClick={mee}
                                 onClick={() => setShowCreateModal(true)}
                                 // onClick={toggleOfferModal}
@@ -1287,14 +1343,15 @@ const TujitumeGrantPortal = () => {
                                 <Plus size={18} />
                                 <span>Create Grant</span>
                             </button> */}
-                            <button
-                                onClick={toggleOfferModal}
-                                className="bg-gray-800 text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-700 transition w-full md:w-auto justify-center"
-                            >
-                                <PlusCircle className="mr-2" />
-                                Offer Grants
-                            </button>
-                        </div>
+                                <button
+                                    onClick={toggleOfferModal}
+                                    className="bg-gray-800 text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-700 transition w-full md:w-auto justify-center"
+                                >
+                                    <PlusCircle className="mr-2" />
+                                    Offer Grants
+                                </button>
+                            </div>
+                        )}
                     </div>
 
                     {/* Navigation Tabs */}
