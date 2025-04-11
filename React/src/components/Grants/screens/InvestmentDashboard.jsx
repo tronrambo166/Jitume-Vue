@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import React, { useState, useMemo, useEffect } from "react";
 import {
     MapPin,
@@ -15,6 +16,16 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import InvestmentModal from "../Utils/Modals/Opportunityform";
+=======
+import React, { useState, useMemo, useEffect } from 'react';
+import { 
+  MapPin, Filter, ArrowUpRight, Eye, PlusCircle, Search, X,
+  BadgePercent, Venus, Clock, Home, LocateFixed,
+  RefreshCcw
+} from 'lucide-react';
+import { Link } from 'react-router-dom';
+import InvestmentModal from '../Utils/Modals/Opportunityform';
+>>>>>>> Stashed changes
 import axiosClient from "../../../axiosClient";
 import { useStateContext } from "../../../contexts/contextProvider";
 
@@ -55,6 +66,7 @@ const InvestmentOpportunities = () => {
         stage: "",
     });
 
+<<<<<<< Updated upstream
     const [filters, setFilters] = useState({
         sector: "All",
         minInvestment: "",
@@ -67,6 +79,47 @@ const InvestmentOpportunities = () => {
             localSourcing: false,
         },
     });
+=======
+  const [filters, setFilters] = useState({
+    sector: 'All',
+    minInvestment: '',
+    maxInvestment: '',
+    stage: 'All',
+    priorities: {
+      femaleLed: false,
+      youthLed: false,
+      ruralBased: false,
+      localSourcing: false
+    }
+  });
+  
+  const handleRefresh = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const response = await axiosClient.get('capital/capital-offers');
+      const data = response.data?.capital || response.data;
+  
+      if (Array.isArray(data)) {
+        setOpportunities(data);
+      } else {
+        setError('Unexpected data format');
+      }
+    } catch (err) {
+      setError('Failed to refresh opportunities');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  
+  const [opportunities, setOpportunities] = useState([]);
+  const [isAddingOpportunity, setIsAddingOpportunity] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState('discover');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+>>>>>>> Stashed changes
 
     const [opportunities, setOpportunities] = useState([]);
     const [isAddingOpportunity, setIsAddingOpportunity] = useState(false);
@@ -103,6 +156,48 @@ const InvestmentOpportunities = () => {
                 // Fallback to empty preferences
             }
         };
+<<<<<<< Updated upstream
+=======
+      });
+  }, [opportunities]);
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this opportunity?');
+    if (!confirmDelete) return;
+  
+    try {
+      await axiosClient.delete(`capital/delete-capital/${id}`);
+      // Update the source state instead of filteredOpportunities
+      setOpportunities(prev => prev.filter(opp => opp.id !== id));
+      // Optionally show a success message
+      alert('Opportunity deleted successfully');
+    } catch (err) {
+      console.error('Failed to delete opportunity:', err);
+      setError('Could not delete this opportunity');
+      // Show error to user
+      alert('Failed to delete opportunity. Please try again.');
+    }
+  };
+  const scoredOpportunities = useMemo(() => {
+    console.log('Calculating match scores with preferences:', investorPreferences);
+    
+    return processedOpportunities.map(opp => {
+      const matchScore = calculateMatchScore(opp, investorPreferences);
+      let status = 'Potential Match';
+      if (matchScore >= 80) status = 'Ideal Match';
+      else if (matchScore >= 60) status = 'Strong Match';
+      else if (matchScore >= 40) status = 'Good Match';
+      
+      console.log(`Opportunity ${opp.id} match score:`, matchScore);
+      
+      return {
+        ...opp,
+        matchScore,
+        status
+      };
+    });
+  }, [processedOpportunities, investorPreferences]);
+>>>>>>> Stashed changes
 
         // Comment out if you don't have this endpoint yet
         // fetchPreferences();
@@ -295,6 +390,7 @@ const InvestmentOpportunities = () => {
         filteredOpportunities,
     });
 
+<<<<<<< Updated upstream
     return (
         <div className="min-h-screen bg-neutral-50 text-neutral-900 antialiased">
             <div className="container px-4 py-8">
@@ -307,6 +403,341 @@ const InvestmentOpportunities = () => {
                         <p className="text-neutral-500 text-sm">
                             Discover and manage impact-driven investments
                         </p>
+=======
+  const availableStages = useMemo(() => {
+    const stages = new Set(['All']);
+    opportunities.forEach(opp => {
+      if (opp.startup_stage) {
+        const trimmedStage = opp.startup_stage.trim();
+        if (trimmedStage) stages.add(trimmedStage);
+      }
+    });
+    const stagesArray = Array.from(stages);
+    console.log('Available stages:', stagesArray);
+    return stagesArray;
+  }, [opportunities]);
+
+  console.log('Rendering with state:', {
+    isLoading,
+    error,
+    opportunities,
+    processedOpportunities,
+    scoredOpportunities,
+    filteredOpportunities
+  });
+
+  return (
+    <div className="min-h-screen bg-neutral-50 text-neutral-900 antialiased">
+      <div className="container px-4 py-8">
+        {/* Header */}
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+          <div>
+            <h1 className="text-3xl font-extralight tracking-tight text-neutral-800 mb-2">
+              Investment Portal
+            </h1>
+            <p className="text-neutral-500 text-sm">
+              Discover and manage impact-driven investments
+            </p>
+          </div>
+          
+          <div className="flex flex-col md:flex-row items-start md:items-center w-full md:w-auto gap-4">
+            <div className="relative w-full md:w-64">
+              <input 
+                type="text"
+                placeholder="Search opportunities"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 pr-4 py-2 border-b border-neutral-300 bg-transparent focus:outline-none focus:border-neutral-600 transition-colors w-full"
+              />
+              <Search className="absolute left-0 top-3 text-neutral-400" size={18} />
+            </div>
+            <button 
+              onClick={toggleModal}
+              className="px-4 py-2 bg-white border border-neutral-300 rounded-md text-neutral-700 hover:bg-neutral-50 transition-colors flex items-center gap-2 whitespace-nowrap shadow-sm"
+            >
+              {isAddingOpportunity ? (
+                <>
+                  <X size={18} /> Cancel
+                </>
+              ) : (
+                <>
+                  <PlusCircle size={18} /> Add Opportunity
+                </>
+              )}
+            </button>
+          </div>
+        </header>
+
+        {/* Investment Modal */}
+        <InvestmentModal 
+  isOpen={isAddingOpportunity} 
+  onClose={() => setIsAddingOpportunity(false)}
+  onSuccess={() => {
+    // Remove the newOpp parameter since we don't want to handle it here
+    console.log('Opportunity submission successful');
+    setIsAddingOpportunity(false);
+    
+    // Optionally, you might want to refresh the opportunities list
+    // You would need to implement fetchCapitalOffers() as a standalone function
+    // fetchCapitalOffers();
+  }}
+/>
+        {/* Tabs */}
+        <div className="flex border-b border-neutral-200 mb-6">
+          <div className='flex items-center'>
+        <button
+  onClick={handleRefresh}
+  className="p-2 rounded-full m-3 bg-green-600 hover:bg-green-700 shadow transition duration-200"
+  aria-label="Refresh Opportunities"
+>
+  <RefreshCcw className="h-5 w-5 text-gray-100" />
+</button>
+<h2 className='text-sm'>Refresh</h2>
+</div>
+          <button
+            onClick={() => setActiveTab('discover')}
+            className={`px-4 py-2 font-medium text-sm ${activeTab === 'discover' ? 'text-emerald-600 border-b-2 border-emerald-600' : 'text-neutral-500 hover:text-neutral-700'}`}
+          >
+            Discover
+          </button>
+          <button
+            onClick={() => setActiveTab('watchlist')}
+            className={`px-4 py-2 font-medium text-sm ${activeTab === 'watchlist' ? 'text-emerald-600 border-b-2 border-emerald-600' : 'text-neutral-500 hover:text-neutral-700'}`}
+          >
+            Watchlist
+          </button>
+          <button
+            onClick={() => setActiveTab('active')}
+            className={`px-4 py-2 font-medium text-sm ${activeTab === 'active' ? 'text-emerald-600 border-b-2 border-emerald-600' : 'text-neutral-500 hover:text-neutral-700'}`}
+          >
+            Active Investments
+          </button>
+       
+
+        </div>
+
+        {/* Filters */}
+        <div className="bg-white p-4 rounded-lg border border-neutral-200 mb-6 shadow-xs">
+          <div className="flex flex-wrap items-center gap-4">
+            <span className="text-sm font-medium text-neutral-700">Filters:</span>
+            
+            {/* Sector Filter */}
+            <div className="relative">
+              <select
+                value={filters.sector}
+                onChange={(e) => setFilters(prev => ({ ...prev, sector: e.target.value }))}
+                className="pl-3 pr-8 py-2 border border-neutral-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              >
+                {availableSectors.map(sector => (
+                  <option key={sector} value={sector}>{sector}</option>
+                ))}
+              </select>
+            </div>
+            
+            {/* Stage Filter */}
+            <div className="relative">
+              <select
+                value={filters.stage}
+                onChange={(e) => setFilters(prev => ({ ...prev, stage: e.target.value }))}
+                className="pl-3 pr-8 py-2 border border-neutral-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              >
+                {availableStages.map(stage => (
+                  <option key={stage} value={stage}>{stage}</option>
+                ))}
+              </select>
+            </div>
+            
+            {/* Min Investment */}
+            <div className="relative">
+              <input
+                type="number"
+                placeholder="Min $"
+                value={filters.minInvestment}
+                onChange={(e) => setFilters(prev => ({ ...prev, minInvestment: e.target.value }))}
+                className="pl-3 pr-3 py-2 border border-neutral-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 w-24"
+              />
+            </div>
+            
+            {/* Max Investment */}
+            <div className="relative">
+              <input
+                type="number"
+                placeholder="Max $"
+                value={filters.maxInvestment}
+                onChange={(e) => setFilters(prev => ({ ...prev, maxInvestment: e.target.value }))}
+                className="pl-3 pr-3 py-2 border border-neutral-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 w-24"
+              />
+            </div>
+          </div>
+          
+          {/* Priority Filters */}
+          <div className="flex flex-wrap items-center gap-4 mt-4">
+            <span className="text-sm font-medium text-neutral-700">Priority Filters:</span>
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={filters.priorities.femaleLed}
+                onChange={() => setFilters(prev => ({
+                  ...prev,
+                  priorities: {
+                    ...prev.priorities,
+                    femaleLed: !prev.priorities.femaleLed
+                  }
+                }))}
+                className="rounded text-emerald-600 focus:ring-emerald-500"
+              />
+              <span className="flex items-center gap-1">
+                <Venus size={14} /> Female-Led
+              </span>
+            </label>
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={filters.priorities.youthLed}
+                onChange={() => setFilters(prev => ({
+                  ...prev,
+                  priorities: {
+                    ...prev.priorities,
+                    youthLed: !prev.priorities.youthLed
+                  }
+                }))}
+                className="rounded text-emerald-600 focus:ring-emerald-500"
+              />
+              <span className="flex items-center gap-1">
+                <Clock size={14} /> Youth-Led
+              </span>
+            </label>
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={filters.priorities.ruralBased}
+                onChange={() => setFilters(prev => ({
+                  ...prev,
+                  priorities: {
+                    ...prev.priorities,
+                    ruralBased: !prev.priorities.ruralBased
+                  }
+                }))}
+                className="rounded text-emerald-600 focus:ring-emerald-500"
+              />
+              <span className="flex items-center gap-1">
+                <Home size={14} /> Rural-Based
+              </span>
+            </label>
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={filters.priorities.localSourcing}
+                onChange={() => setFilters(prev => ({
+                  ...prev,
+                  priorities: {
+                    ...prev.priorities,
+                    localSourcing: !prev.priorities.localSourcing
+                  }
+                }))}
+                className="rounded text-emerald-600 focus:ring-emerald-500"
+              />
+              <span className="flex items-center gap-1">
+                <LocateFixed size={14} /> Local Sourcing
+              </span>
+            </label>
+          </div>
+        </div>
+
+        {/* Main Content */}
+        {isLoading ? (
+          <div className="bg-white border border-neutral-200 rounded-lg p-8 text-center">
+            <p className="text-neutral-500">Loading investment opportunities...</p>
+          </div>
+        ) : error ? (
+          <div className="bg-white border border-neutral-200 rounded-lg p-8 text-center">
+            <p className="text-red-500">{error}</p>
+            <button 
+              onClick={() => {
+                setIsLoading(true);
+                setError(null);
+                console.log('Retrying fetch...');
+                axiosClient.get('capital/capital-offers')
+                  .then(response => {
+                    console.log('Retry response:', response);
+                    if (response.data && Array.isArray(response.data.capital)) {
+                      console.log('Retry successful, setting opportunities');
+                      setOpportunities(response.data.capital);
+                      setError(null);
+                    } else {
+                      console.warn('Unexpected data format in retry');
+                      setError('Unexpected data format');
+                    }
+                  })
+                  .catch(err => {
+                    console.error('Error retrying fetch:', err);
+                    setError('Failed to fetch data');
+                  })
+                  .finally(() => {
+                    console.log('Retry completed');
+                    setIsLoading(false);
+                  });
+              }}
+              className="mt-4 px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition-colors"
+            >
+              Retry
+            </button>
+          </div>
+        ) : activeTab === 'discover' ? (
+          <div className="space-y-6">
+            {filteredOpportunities.length > 0 ? (
+              filteredOpportunities.map((opp) => (
+                <div 
+                  key={opp.id} 
+                  className="bg-white border border-neutral-200 rounded-lg p-6 flex flex-col md:flex-row justify-between items-start hover:shadow-sm transition-shadow"
+                >
+                    <button
+          onClick={() => handleDelete(opp.id)}
+          className="text-red-600 hover:text-red-800 p-2 rounded-full hover:bg-red-100 transition"
+          aria-label="Delete"
+        >
+          🗑️
+        </button>
+                  <div className="flex-grow w-full">
+                    <div className="flex flex-col md:flex-row md:items-center mb-4 gap-2 md:gap-4">
+                      <h2 className="text-xl font-medium">{opp.name}</h2>
+                      <div className="flex items-center gap-2">
+                        <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(opp.status)}`}>
+                          {opp.status}
+                        </span>
+                        <span className="text-sm text-neutral-500 flex items-center">
+                          <MapPin size={14} className="mr-1" /> {opp.location}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex flex-wrap gap-x-4 gap-y-2 text-neutral-600 mb-4">
+                      <span className="flex items-center gap-1">
+                        <BadgePercent size={14} /> {opp.sector}
+                      </span>
+                      <span>{opp.stage}</span>
+                      <span className="font-semibold">${opp.amount.toLocaleString()}</span>
+                      {opp.isFemaleLed && (
+                        <span className="flex items-center gap-1 text-emerald-600">
+                          <Venus size={14} /> Female-Led
+                        </span>
+                      )}
+                      {opp.isYouthLed && (
+                        <span className="flex items-center gap-1 text-emerald-600">
+                          <Clock size={14} /> Youth-Led
+                        </span>
+                      )}
+                      {opp.isRuralBased && (
+                        <span className="flex items-center gap-1 text-emerald-600">
+                          <Home size={14} /> Rural
+                        </span>
+                      )}
+                      {opp.usesLocalSourcing && (
+                        <span className="flex items-center gap-1 text-emerald-600">
+                          <LocateFixed size={14} /> Local Sourcing
+                        </span>
+                      )}
+>>>>>>> Stashed changes
                     </div>
 
                     <div className="flex flex-col md:flex-row items-start md:items-center w-full md:w-auto gap-4">
