@@ -4,9 +4,11 @@ import {
   BarChart2, Settings, Download, Upload,
   Clock, Calendar, CheckCircle, XCircle,
   DollarSign, Percent, Globe, Lock, Send,
-  Star, User, Award, MapPin, Leaf, Briefcase
+  Star, User, Award, MapPin, Leaf, Briefcase,
+  Presentation
 } from 'lucide-react';
 import { useParams, Link, useLocation } from 'react-router-dom';
+import axiosClient from "../../../axiosClient";
 
 const DealRoomLayout = () => {
   const { opportunityId } = useParams();
@@ -20,6 +22,8 @@ const DealRoomLayout = () => {
   const [timeline, setTimeline] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [investors, setInvestors] = useState([]);
+  const [pitches, setPitches] = useState([]);
+  const [isLoadingPitches, setIsLoadingPitches] = useState(false);
   const [priorityFilters, setPriorityFilters] = useState({
     isWomenLed: false,
     isYouthLed: false,
@@ -29,6 +33,51 @@ const DealRoomLayout = () => {
 
   // Get opportunity data from location state if available
   const opportunityFromState = location.state?.opportunity;
+
+  // Fetch pitches from API
+  const fetchPitches = async () => {
+    if (!opportunityId) return;
+    
+    setIsLoadingPitches(true);
+    try {
+      const response = await axiosClient.get(`capital/pitches/${opportunityId}`);
+      setPitches(response.data || []);
+    } catch (error) {
+      console.error('Error fetching pitches:', error);
+      // Fallback to mock data if API fails
+      setPitches([
+        {
+          id: 1,
+          title: "Seed Funding Pitch",
+          date: "2023-04-15",
+          audience: "Angel Investors",
+          feedback_score: 85,
+          slides: 12,
+          status: "Completed"
+        },
+        {
+          id: 2,
+          title: "Series A Investment Deck",
+          date: "2023-09-22",
+          audience: "VC Firms",
+          feedback_score: 92,
+          slides: 18,
+          status: "Upcoming"
+        },
+        {
+          id: 3,
+          title: "Impact Investor Presentation",
+          date: "2023-06-30",
+          audience: "Impact Funds",
+          feedback_score: 78,
+          slides: 15,
+          status: "Completed"
+        }
+      ]);
+    } finally {
+      setIsLoadingPitches(false);
+    }
+  };
 
   // Mock data fetch with investors and matching criteria
   useEffect(() => {
@@ -160,6 +209,9 @@ const DealRoomLayout = () => {
         timestamp: new Date(Date.now() - 3600000).toISOString()
       }
     ]);
+
+    // Fetch pitches
+    fetchPitches();
   }, [opportunityId, opportunityFromState]);
 
   // Message sending handler
@@ -361,6 +413,12 @@ const DealRoomLayout = () => {
     return 'Needs Revision';
   };
 
+  // View pitch handler
+  const viewPitch = (pitch) => {
+    alert(`Viewing pitch: ${pitch.title}`);
+    // In a real app, this would open the pitch details or presentation
+  };
+
   // Investor Card Component
   const InvestorCard = ({ investor }) => {
     const score = calculateMatchScore(deal, investor);
@@ -374,9 +432,9 @@ const DealRoomLayout = () => {
             <p className="text-gray-600 text-sm">{investor.type}</p>
           </div>
           <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-            tier === 'Ideal Match' ? 'bg-green-100 text-green-800' :
-            tier === 'Strong Match' ? 'bg-yellow-100 text-yellow-800' :
-            'bg-red-100 text-red-800'
+            tier === 'Ideal Match' ? 'bg-green-50 text-green-700' :
+            tier === 'Strong Match' ? 'bg-yellow-50 text-yellow-700' :
+            'bg-red-50 text-red-700'
           }`}>
             {score}% Match
           </div>
@@ -403,9 +461,50 @@ const DealRoomLayout = () => {
 
         <button 
           onClick={() => contactInvestor(investor.contactEmail)}
-          className="mt-4 w-full py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors"
+          className="mt-4 w-full py-2 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700 transition-colors"
         >
           Contact Investor
+        </button>
+      </div>
+    );
+  };
+
+  // Pitch Card Component
+  const PitchCard = ({ pitch }) => {
+    return (
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4 hover:shadow-md transition-shadow">
+        <div className="flex justify-between items-start">
+          <div>
+            <h3 className="font-bold text-lg">{pitch.title}</h3>
+            <p className="text-gray-600 text-sm">Presented to: {pitch.audience}</p>
+          </div>
+          <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+            pitch.status === 'Completed' ? 'bg-green-50 text-green-700' : 'bg-yellow-50 text-yellow-700'
+          }`}>
+            {pitch.status}
+          </div>
+        </div>
+        
+        <div className="mt-3 grid grid-cols-3 gap-2 text-sm">
+          <div className="flex items-center">
+            <Calendar size={14} className="mr-1 text-gray-500" />
+            <span>{pitch.date}</span>
+          </div>
+          <div className="flex items-center">
+            <FileText size={14} className="mr-1 text-gray-500" />
+            <span>{pitch.slides} slides</span>
+          </div>
+          <div className="flex items-center">
+            <Star size={14} className="mr-1 text-gray-500" />
+            <span>{pitch.feedback_score}% feedback</span>
+          </div>
+        </div>
+
+        <button 
+          onClick={() => viewPitch(pitch)}
+          className="mt-4 w-full py-2 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700 transition-colors"
+        >
+          View Pitch
         </button>
       </div>
     );
@@ -421,7 +520,7 @@ const DealRoomLayout = () => {
             type="checkbox" 
             checked={priorityFilters.isWomenLed}
             onChange={() => setPriorityFilters(prev => ({...prev, isWomenLed: !prev.isWomenLed}))}
-            className="rounded text-blue-600 focus:ring-blue-500"
+            className="rounded text-green-600 focus:ring-green-500"
           />
           <span className="text-sm flex items-center">
             <User size={14} className="mr-1" /> Women-led
@@ -432,7 +531,7 @@ const DealRoomLayout = () => {
             type="checkbox" 
             checked={priorityFilters.isYouthLed}
             onChange={() => setPriorityFilters(prev => ({...prev, isYouthLed: !prev.isYouthLed}))}
-            className="rounded text-blue-600 focus:ring-blue-500"
+            className="rounded text-green-600 focus:ring-green-500"
           />
           <span className="text-sm flex items-center">
             <Award size={14} className="mr-1" /> Youth-led
@@ -443,7 +542,7 @@ const DealRoomLayout = () => {
             type="checkbox" 
             checked={priorityFilters.isRuralBased}
             onChange={() => setPriorityFilters(prev => ({...prev, isRuralBased: !prev.isRuralBased}))}
-            className="rounded text-blue-600 focus:ring-blue-500"
+            className="rounded text-green-600 focus:ring-green-500"
           />
           <span className="text-sm flex items-center">
             <MapPin size={14} className="mr-1" /> Rural-based
@@ -454,7 +553,7 @@ const DealRoomLayout = () => {
             type="checkbox" 
             checked={priorityFilters.usesLocalSourcing}
             onChange={() => setPriorityFilters(prev => ({...prev, usesLocalSourcing: !prev.usesLocalSourcing}))}
-            className="rounded text-blue-600 focus:ring-blue-500"
+            className="rounded text-green-600 focus:ring-green-500"
           />
           <span className="text-sm flex items-center">
             <Leaf size={14} className="mr-1" /> Local sourcing
@@ -467,7 +566,7 @@ const DealRoomLayout = () => {
   if (!deal) return <div className="p-8 bg-gray-50 min-h-screen flex items-center justify-center">Loading...</div>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50 text-gray-900">
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 py-4">
@@ -484,7 +583,7 @@ const DealRoomLayout = () => {
               </div>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+              <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
                 Active
               </span>
               <button className="p-2 text-gray-500 hover:text-gray-700">
@@ -498,10 +597,11 @@ const DealRoomLayout = () => {
       {/* Navigation */}
       <div className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-4">
-          <nav className="flex space-x-8">
+          <nav className="flex space-x-8 overflow-x-auto">
             {[
               { name: 'overview', icon: BarChart2, label: 'Overview' },
               { name: 'investors', icon: Briefcase, label: 'Investors' },
+              { name: 'pitches', icon: Presentation, label: 'Pitches' },
               { name: 'documents', icon: FileText, label: 'Documents' },
               { name: 'team', icon: Users, label: 'Team' },
               { name: 'communication', icon: MessageSquare, label: 'Communication' }
@@ -511,7 +611,7 @@ const DealRoomLayout = () => {
                 onClick={() => setActiveTab(tab.name)}
                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
                   activeTab === tab.name 
-                  ? 'border-blue-500 text-blue-600' 
+                  ? 'border-green-500 text-green-600' 
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
@@ -583,7 +683,7 @@ const DealRoomLayout = () => {
                   {messages.slice(-2).reverse().map((msg) => (
                     <div key={msg.id} className="flex items-start">
                       <div className="mr-3 mt-1">
-                        <MessageSquare size={16} className="text-blue-500" />
+                        <MessageSquare size={16} className="text-green-500" />
                       </div>
                       <div>
                         <p className="text-sm font-medium">
@@ -603,91 +703,144 @@ const DealRoomLayout = () => {
 
         {/* Investors Tab */}
         {activeTab === 'investors' && (
-          <div>
+          <div className="space-y-6">
             <PriorityFilters />
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden p-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Recommended Investors</h3>
-              <div className="space-y-4">
-                {investors.map(investor => (
-                  <InvestorCard key={investor.id} investor={investor} />
-                ))}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {investors.map(investor => (
+                <InvestorCard key={investor.id} investor={investor} />
+              ))}
+            </div>
+            <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+              <h3 className="font-bold text-lg mb-4">Investment Matching Explanation</h3>
+              <div className="space-y-3 text-sm">
+                <p>Our SWSF (Sector-Weighted Smart Filtering) algorithm matches your venture with potential investors based on:</p>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li><strong>Sector Alignment (30%):</strong> How well your business sector matches investor focus</li>
+                  <li><strong>Geographic Fit (15%):</strong> Compatibility with investor's geographic preferences</li>
+                  <li><strong>Stage Compatibility (10%):</strong> If your stage matches what the investor typically funds</li>
+                  <li><strong>Revenue/Traction (10%):</strong> Meeting minimum revenue requirements</li>
+                  <li><strong>Team Experience (10%):</strong> Team expertise and track record</li>
+                  <li><strong>Impact Score (10%):</strong> Social/environmental impact rating</li>
+                  <li><strong>Milestone Success (10%):</strong> Track record of meeting business milestones</li>
+                  <li><strong>Documents Complete (5%):</strong> Having all required documentation</li>
+                </ul>
+                <p className="font-medium mt-3">Priority Filters can boost your match score by up to 20% with impact-focused investors.</p>
               </div>
             </div>
           </div>
         )}
 
-        {/* Documents Tab */}
-        {activeTab === 'documents' && (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-              <h3 className="text-lg font-medium text-gray-900">Documents</h3>
-              <button 
-                onClick={handleDocumentUpload}
-                disabled={uploading}
-                className={`px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium flex items-center space-x-2 ${
-                  uploading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
-                }`}
-              >
-                {uploading ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span>Uploading...</span>
-                  </>
-                ) : (
-                  <>
-                    <Upload size={16} />
-                    <span>Upload Document</span>
-                  </>
-                )}
-              </button>
-            </div>
-            <div className="divide-y divide-gray-200">
-              {documents.length === 0 ? (
-                <div className="p-8 text-center text-gray-500">
-                  <FileText size={32} className="mx-auto mb-4 text-gray-300" />
-                  <p>No documents uploaded yet</p>
+        {/* Pitches Tab */}
+        {activeTab === 'pitches' && (
+          <div className="space-y-6">
+            {isLoadingPitches ? (
+              <div className="flex justify-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
+              </div>
+            ) : (
+              <>
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-bold">Investor Pitches</h2>
                   <button 
-                    onClick={handleDocumentUpload}
-                    className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700"
+                    className="px-4 py-2 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700 transition-colors flex items-center"
                   >
-                    Upload your first document
+                    <Presentation size={16} className="mr-2" />
+                    Create New Pitch
                   </button>
                 </div>
-              ) : (
-                documents.map((doc) => (
-                  <div key={doc.id} className="p-4 hover:bg-gray-50 flex justify-between items-center">
-                    <div className="flex items-center space-x-4">
-                      <div className="p-2 bg-gray-100 rounded-lg">
-                        <FileText size={20} className="text-gray-500" />
-                      </div>
-                      <div>
-                        <p className="font-medium">{doc.name}</p>
-                        <p className="text-sm text-gray-500">
-                          Uploaded {doc.uploaded} • {doc.size}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex space-x-2">
-                      <button 
-                        onClick={() => handleDocumentDownload(doc)}
-                        className="p-2 text-gray-500 hover:text-blue-600"
-                        title="Download"
-                      >
-                        <Download size={16} />
-                      </button>
-                      <button 
-                        onClick={() => handleDocumentRemove(doc)}
-                        className="p-2 text-gray-500 hover:text-red-600"
-                        title="Remove"
-                      >
-                        <XCircle size={16} />
-                      </button>
-                    </div>
-                  </div>
-                ))
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {pitches.map(pitch => (
+                    <PitchCard key={pitch.id} pitch={pitch} />
+                  ))}
+                </div>
+              </>
+            )}
+            {pitches.length === 0 && !isLoadingPitches && (
+              <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-200 text-center">
+                <Presentation size={48} className="mx-auto text-gray-400 mb-3" />
+                <h3 className="text-lg font-medium mb-2">No Pitches Yet</h3>
+                <p className="text-gray-500 mb-4">Create your first investor pitch to track presentations and feedback.</p>
+                <button 
+                  className="px-4 py-2 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700 transition-colors"
+                >
+                  Create First Pitch
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Documents Tab */}
+        {activeTab === 'documents' && (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-medium">Deal Documents</h3>
+                <button 
+                  onClick={handleDocumentUpload}
+                  disabled={uploading}
+                  className={`px-4 py-2 ${
+                    uploading ? 'bg-gray-300 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'
+                  } text-white rounded-md text-sm font-medium transition-colors flex items-center`}
+                >
+                  {uploading ? (
+                    <><div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div> Uploading...</>
+                  ) : (
+                    <><Upload size={16} className="mr-2" /> Upload Document</>
+                  )}
+                </button>
+              </div>
+            </div>
+            <div className="p-6">
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead>
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Size</th>
+                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {documents.map((doc) => (
+                      <tr key={doc.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{doc.name}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 uppercase">{doc.type}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doc.uploaded}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doc.size}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                          <button 
+                            onClick={() => handleDocumentDownload(doc)}
+                            className="text-green-600 hover:text-green-900 mr-3"
+                          >
+                            <Download size={16} />
+                          </button>
+                          <button 
+                            onClick={() => handleDocumentRemove(doc)}
+                            className="text-red-600 hover:text-red-900"
+                          >
+                            <XCircle size={16} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                    
+                    {documents.length === 0 && (
+                      <tr>
+                        <td colSpan="5" className="px-6 py-4 text-center text-sm text-gray-500">
+                          No documents uploaded yet.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+              
+              {documents.length > 0 && (
+                <div className="mt-4 text-sm text-gray-500">
+</div>
               )}
             </div>
           </div>
@@ -695,109 +848,103 @@ const DealRoomLayout = () => {
 
         {/* Team Tab */}
         {activeTab === 'team' && (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-              <h3 className="text-lg font-medium text-gray-900">Team Members</h3>
-              <button 
-                onClick={addTeamMember}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700"
-              >
-                Add Member
-              </button>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-medium">Team Members</h3>
+                <button 
+                  onClick={addTeamMember}
+                  className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm font-medium transition-colors flex items-center"
+                >
+                  <Users size={16} className="mr-2" /> Add Team Member
+                </button>
+              </div>
             </div>
-            <div className="divide-y divide-gray-200">
-              {teamMembers.length === 0 ? (
-                <div className="p-8 text-center text-gray-500">
-                  <Users size={32} className="mx-auto mb-4 text-gray-300" />
-                  <p>No team members added yet</p>
-                </div>
-              ) : (
-                teamMembers.map((member) => (
-                  <div key={member.id} className="p-6 hover:bg-gray-50 flex items-center space-x-4">
-                    <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                      {member.name.charAt(0)}
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium">{member.name}</p>
-                      <p className="text-sm text-gray-500">{member.role}</p>
-                      <p className="text-xs text-gray-400 mt-1">{member.email}</p>
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      Joined {member.joined}
-                    </div>
-                  </div>
-                ))
-              )}
+            <div className="p-6">
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead>
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Join Date</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {teamMembers.map((member) => (
+                      <tr key={member.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <div className="h-8 w-8 rounded-full bg-green-200 flex items-center justify-center text-green-600 font-medium">
+                              {member.name.split(' ').map(name => name[0]).join('')}
+                            </div>
+                            <div className="ml-4">
+                              <div className="text-sm font-medium text-gray-900">{member.name}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{member.role}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{member.joined}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{member.email}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         )}
 
         {/* Communication Tab */}
         {activeTab === 'communication' && (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="p-6 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">Messages</h3>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 h-[600px] flex flex-col">
+            <div className="p-4 border-b border-gray-200">
+              <h3 className="text-lg font-medium">Deal Room Chat</h3>
             </div>
-            <div className="p-6">
-              <div className="border border-gray-200 rounded-lg p-4 min-h-[400px] max-h-[400px] overflow-y-auto">
-                {messages.length === 0 ? (
-                  <div className="text-center text-gray-500 py-16">
-                    <MessageSquare size={32} className="mx-auto mb-2 text-gray-300" />
-                    <p>Start a conversation with the team</p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {messages.map((msg) => (
-                      <div 
-                        key={msg.id} 
-                        className={`flex ${msg.sender === 'You' ? 'justify-end' : 'justify-start'}`}
-                      >
-                        <div 
-                          className={`
-                            max-w-[70%] p-3 rounded-lg 
-                            ${msg.sender === 'You' 
-                              ? 'bg-blue-500 text-white' 
-                              : msg.sender === 'System'
-                                ? 'bg-gray-100 text-gray-800 border border-gray-200'
-                                : 'bg-gray-200 text-gray-800'}
-                          `}
-                        >
-                          <div className="font-semibold text-xs mb-1">
-                            {msg.sender}
-                          </div>
-                          <div>{msg.text}</div>
-                          <div className="text-xs mt-1 opacity-70">
-                            {new Date(msg.timestamp).toLocaleString([], {
-                              hour: '2-digit',
-                              minute: '2-digit',
-                              month: 'short',
-                              day: 'numeric'
-                            })}
-                          </div>
-                        </div>
+            <div className="flex-1 overflow-y-auto p-4">
+              <div className="space-y-4">
+                {messages.map((msg) => (
+                  <div 
+                    key={msg.id} 
+                    className={`flex ${msg.sender === 'You' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div 
+                      className={`rounded-lg p-3 max-w-md ${
+                        msg.sender === 'System' 
+                          ? 'bg-gray-100 text-gray-700'
+                          : msg.sender === 'You'
+                            ? 'bg-green-600 text-white'
+                            : 'bg-gray-200 text-gray-800'
+                      }`}
+                    >
+                      {msg.sender !== 'You' && msg.sender !== 'System' && (
+                        <div className="font-bold text-sm">{msg.sender}</div>
+                      )}
+                      <p className="text-sm">{msg.text}</p>
+                      <div className="text-xs mt-1 opacity-70">
+                        {new Date(msg.timestamp).toLocaleTimeString()}
                       </div>
-                    ))}
+                    </div>
                   </div>
-                )}
+                ))}
               </div>
-              <div className="mt-4 flex space-x-2">
+            </div>
+            <div className="p-4 border-t border-gray-200">
+              <div className="flex">
                 <input
                   type="text"
+                  placeholder="Type your message..."
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                  placeholder="Type your message..."
-                  className="flex-1 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 border-gray-300 focus:ring-green-500 focus:border-green-500 block w-full rounded-md sm:text-sm border p-2"
                 />
-                <button 
+                <button
                   onClick={handleSendMessage}
-                  disabled={!newMessage.trim()}
-                  className={`px-4 py-2 bg-blue-600 text-white rounded-md flex items-center space-x-2 ${
-                    !newMessage.trim() ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
-                  }`}
+                  className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                 >
-                  <Send size={16} />
-                  <span>Send</span>
+                  <Send size={16} className="mr-1" /> Send
                 </button>
               </div>
             </div>
