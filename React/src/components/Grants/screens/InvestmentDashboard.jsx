@@ -1,15 +1,25 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { 
-  MapPin, Filter, ArrowUpRight, Eye, PlusCircle, Search, X,
-  BadgePercent, Venus, Clock, Home, LocateFixed,
-  RefreshCcw,
-  Trash
-} from 'lucide-react';
-import { Link } from 'react-router-dom';
-import InvestmentModal from '../Utils/Modals/Opportunityform';
+import React, { useState, useMemo, useEffect } from "react";
+import {
+    MapPin,
+    Filter,
+    ArrowUpRight,
+    Eye,
+    PlusCircle,
+    Search,
+    X,
+    BadgePercent,
+    Venus,
+    Clock,
+    Home,
+    LocateFixed,
+    RefreshCcw,
+    Trash,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import InvestmentModal from "../Utils/Modals/Opportunityform";
 import axiosClient from "../../../axiosClient";
 import { useStateContext } from "../../../contexts/contextProvider";
-import InvestmentApplicationModal from '../Utils/Modals/InvestmentModal';
+import InvestmentApplicationModal from "../Utils/Modals/InvestmentModal";
 
 const calculateMatchScore = (opportunity, investorPreferences) => {
     let score = 0;
@@ -70,44 +80,49 @@ const InvestmentOpportunities = () => {
     const [showModal, setShowModal] = useState(false);
     const handleSuccess = () => {
         // Handle successful submission (e.g., show success message)
-        console.log('Application submitted successfully!');
-      };
-    
+        console.log("Application submitted successfully!");
+    };
+
     const toggleModal = () => {
         setIsAddingOpportunity(!isAddingOpportunity);
     };
 
-
     const handleDelete = async (id) => {
-        const confirmDelete = window.confirm('Are you sure you want to delete this opportunity?');
+        const confirmDelete = window.confirm(
+            "Are you sure you want to delete this opportunity?"
+        );
         if (!confirmDelete) return;
-      
+
         setIsLoading(true);
         setError(null);
-      
+
         try {
-          const response = await axiosClient.get(`capital/delete-capital/${id}`, {
-            headers: {
-              'Content-Type': 'application/json',
-              // Add any required auth headers
+            const response = await axiosClient.get(
+                `capital/delete-capital/${id}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        // Add any required auth headers
+                    },
+                }
+            );
+
+            if (response.status === 200 || response.status === 204) {
+                setOpportunities((prev) => prev.filter((opp) => opp.id !== id));
+                console.log("Successfully deleted opportunity");
+            } else {
+                throw new Error("Unexpected response from server");
             }
-          });
-      
-          if (response.status === 200 || response.status === 204) {
-            setOpportunities(prev => prev.filter(opp => opp.id !== id));
-            console.log('Successfully deleted opportunity');
-          } else {
-            throw new Error('Unexpected response from server');
-          }
         } catch (err) {
-          console.error('Delete error:', err.response?.data || err.message);
-          setError(err.response?.data?.message || 'Failed to delete opportunity');
+            console.error("Delete error:", err.response?.data || err.message);
+            setError(
+                err.response?.data?.message || "Failed to delete opportunity"
+            );
         } finally {
-          setIsLoading(false);
+            setIsLoading(false);
         }
-      };
-      
-      
+    };
+
     // Fetch investor preferences
     useEffect(() => {
         const fetchPreferences = async () => {
@@ -300,7 +315,7 @@ const InvestmentOpportunities = () => {
         console.log("Available sectors:", sectorsArray);
         return sectorsArray;
     }, [opportunities]);
-        const { user } = useStateContext();
+    const { user } = useStateContext();
 
     const availableStages = useMemo(() => {
         const stages = new Set(["All"]);
@@ -352,8 +367,9 @@ const InvestmentOpportunities = () => {
                                 size={18}
                             />
                         </div>
-                        
-                           {user.investor && ( <button
+
+                        {user.investor && (
+                            <button
                                 onClick={toggleModal}
                                 className="px-4 py-2 bg-white border border-neutral-300 rounded-md text-neutral-700 hover:bg-neutral-50 transition-colors flex items-center gap-2 whitespace-nowrap shadow-sm"
                             >
@@ -366,8 +382,8 @@ const InvestmentOpportunities = () => {
                                         <PlusCircle size={18} /> Add Opportunity
                                     </>
                                 )}
-                            </button>)}
-                        
+                            </button>
+                        )}
                     </div>
                 </header>
 
@@ -651,15 +667,17 @@ const InvestmentOpportunities = () => {
                                     key={opp.id}
                                     className="bg-white border border-neutral-200 rounded-lg p-6 flex flex-col md:flex-row justify-between items-start hover:shadow-sm transition-shadow"
                                 >
-                                
-
                                     <div className="flex-grow w-full">
-                                    <button
-  onClick={() => handleDelete(opp.id)}
-  className="text-red-500  bg-neutral-100 rounded-full font-semibold py-4 px-4 rounded"
->
-<Trash/>
-</button>
+                                        {user?.investor && ( // Changed to proper conditional rendering
+                                            <button
+                                                onClick={() =>
+                                                    handleDelete(opp.id)
+                                                }
+                                                className="text-red-500 bg-neutral-100 rounded-full font-semibold py-4 px-4"
+                                            >
+                                                <Trash />
+                                            </button>
+                                        )}
                                         <div className="flex flex-col md:flex-row md:items-center mb-4 gap-2 md:gap-4">
                                             <h2 className="text-xl font-medium">
                                                 {opp.name}
@@ -782,35 +800,42 @@ const InvestmentOpportunities = () => {
                                             <button className="flex-1 text-neutral-700 whitespace-nowrap hover:text-neutral-900 transition-colors flex items-center justify-center gap-2 px-4 py-2 border border-neutral-300 rounded-md hover:bg-neutral-50">
                                                 <Eye size={16} /> View Details
                                             </button>
-                                            {user.investor === 2 ? (
-  <Link
-    to={`/grants-overview/funding/deals/${opp.id}`}
-    state={{ opportunity: opp }}
-    className="flex-1 text-white whitespace-nowrap bg-emerald-600 hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium"
-  >
-    <ArrowUpRight size={16} /> Open Deal Room
-  </Link>
-) : (
-  <div>
-    <button
-      onClick={() => setShowModal(true)}
-      className="px-4 py-2 bg-green-600 whitespace-nowrap  text-white rounded-md hover:bg-green-700"
-    >
-      Apply for Investment
-    </button>
+                                            {user.investor === 3 ? (
+                                                <Link
+                                                    to={`/grants-overview/funding/deals/${opp.id}`}
+                                                    state={{ opportunity: opp }}
+                                                    className="flex-1 text-white whitespace-nowrap bg-emerald-600 hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium"
+                                                >
+                                                    <ArrowUpRight size={16} />{" "}
+                                                    Open Deal Room
+                                                </Link>
+                                            ) : (
+                                                <div>
+                                                    <button
+                                                        onClick={() =>
+                                                            setShowModal(true)
+                                                        }
+                                                        className="px-4 py-2 bg-green-600 whitespace-nowrap  text-white rounded-md hover:bg-green-700"
+                                                    >
+                                                        Apply for Investment
+                                                    </button>
 
-    {showModal && (
-      <InvestmentApplicationModal
-        businessId={123} // Your business ID
-        capitalId={456} // The capital ID you're applying to
-        onClose={() => setShowModal(false)}
-        onSuccess={handleSuccess}
-      />
-    )}
-  </div>
-)}
-
-
+                                                    {showModal && (
+                                                        <InvestmentApplicationModal
+                                                            businessId={123} // Your business ID
+                                                            capitalId={456} // The capital ID you're applying to
+                                                            onClose={() =>
+                                                                setShowModal(
+                                                                    false
+                                                                )
+                                                            }
+                                                            onSuccess={
+                                                                handleSuccess
+                                                            }
+                                                        />
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
