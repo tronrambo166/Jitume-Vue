@@ -1376,16 +1376,18 @@ const TujitumeGrantPortal = () => {
                         >
                             Opportunities
                         </button>
-                        <button
-                            onClick={() => setActiveView("status")}
-                            className={`px-5 py-2.5 rounded-md text-sm font-medium flex-1 text-center ${
-                                activeView === "status"
-                                    ? "bg-white text-gray-900 shadow-sm"
-                                    : "text-gray-600 hover:text-gray-900"
-                            }`}
-                        >
-                            My Applications
-                        </button>
+                        {!user.investor && (
+                            <button
+                                onClick={() => setActiveView("status")}
+                                className={`px-5 py-2.5 rounded-md text-sm font-medium flex-1 text-center ${
+                                    activeView === "status"
+                                        ? "bg-white text-gray-900 shadow-sm"
+                                        : "text-gray-600 hover:text-gray-900"
+                                }`}
+                            >
+                                My Applications
+                            </button>
+                        )}
                     </div>
                 </header>
 

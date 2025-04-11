@@ -15,6 +15,7 @@ import {
     FaClipboardList,
     FaCopy,
 } from "react-icons/fa";
+import { BiSearch } from "react-icons/bi";
 import { BiFolder } from "react-icons/bi";
 import { BsQuestionCircle } from "react-icons/bs";
 import doc from "../../images/doc.png";
@@ -23,12 +24,14 @@ import BarIcon from "./BarIcon";
 import axiosClient from "../../axiosClient";
 import { AiOutlineBarChart, AiOutlineCalendar } from "react-icons/ai";
 import { BiCreditCard } from "react-icons/bi";
-  import { FiChevronRight, FiChevronLeft } from "react-icons/fi"; // Import icons
+import { FiChevronRight, FiChevronLeft } from "react-icons/fi"; // Import icons
+import { useStateContext } from "../../contexts/contextProvider";
 
 const Sidebar = ({ onToggle }) => {
     const [isOpen, setIsOpen] = useState(false);
     const sidebarRef = useRef(null);
     const [subId, setSubId] = useState(null);
+    const { user } = useStateContext();
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
@@ -75,7 +78,7 @@ const Sidebar = ({ onToggle }) => {
 
         return () => window.removeEventListener("resize", handleResize);
     }, []);
-    
+
     const toggleSidebar2 = () => {
         setIsShrunk((prev) => {
             const newShrunk = !prev;
@@ -478,6 +481,38 @@ const Sidebar = ({ onToggle }) => {
                                     )}
                                 </NavLink>
                             </li>
+                            {!user.investor && (
+                                <li className="nav-item mb-6 rounded-xl py-2">
+                                    {/* Added margin-bottom (mb-6) to move it up from the bottom */}
+                                    <NavLink
+                                        className={({ isActive }) =>
+                                            `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-all duration-300 ${
+                                                isActive
+                                                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md"
+                                                    : "hover:bg-gray-100 bg-gradient-to-r from-blue-50 to-purple-50 border border-gray-200"
+                                            }`
+                                        }
+                                        to="/grants-overview"
+                                        end
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        {({ isActive }) => (
+                                            <>
+                                                <BiSearch // Changed from BiCreditCard to BiSearch (more "exploration" themed)
+                                                    className={`text-[18px] ${
+                                                        isActive
+                                                            ? "text-white"
+                                                            : "text-green"
+                                                    }`}
+                                                />
+                                                {!isShrunk && (
+                                                    <span>Explore Grants</span>
+                                                )}
+                                            </>
+                                        )}
+                                    </NavLink>
+                                </li>
+                            )}
                             <hr />
 
                             {1 && (

@@ -365,10 +365,15 @@ const Navigation = {
                                   label: "Discover Grants",
                                   to: "/grants-overview/grants/discover",
                               },
-                              {
-                                  label: "Pitch-Deck",
-                                  to: "/grants-overview/pitch",
-                              },
+                              ...(user?.investor
+                                  ? [
+                                        // Only show Pitch-Deck if user.investor exists
+                                        {
+                                            label: "Pitch-Deck",
+                                            to: "/grants-overview/pitch",
+                                        },
+                                    ]
+                                  : []),
                           ],
                       },
                   ]
@@ -447,7 +452,6 @@ const Navigation = {
                             {/* Logo - Add your logo import and img tag if needed */}
                             <h2 className="text-2xl font-bold text-green-600">
                                 Tujitume
-                                
                             </h2>
                             {/* <div className="flex items-center justify-between p-2">
                                 <Link className="flex items-center" to="/">
@@ -563,80 +567,80 @@ const Navigation = {
             navigate("/");
         };
 
-      return (
-          <div className="bg-white shadow-sm p-4 flex justify-between items-center">
-              <div className="flex items-center space-x-4">
-                  <button
-                      className="text-gray-600 hover:text-blue-600 relative"
-                      onClick={() => addToast("No new notifications", "info")}
-                  >
-                      <Bell size={20} />
-                  </button>
-                  <div className="relative">
-                      <input
-                          type="text"
-                          placeholder="Search..."
-                          className="pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none w-full md:w-64"
-                      />
-                      <Search
-                          className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400"
-                          size={18}
-                      />
-                  </div>
-              </div>
-              <div className="flex items-center space-x-4" ref={profileRef}>
-                  <button
-                      className="flex items-center space-x-2 text-gray-700 hover:text-blue-700"
-                      onClick={() => setIsProfileOpen(!isProfileOpen)}
-                  >
-                      <div className="flex flex-col items-end">
-                          <span className="hidden md:inline text-sm font-medium">
-                              {user?.fname || "User"} {user?.lname || ""}
-                          </span>
-                          <span className="hidden md:inline text-xs text-gray-500">
-                              {user?.email || ""}
-                          </span>
-                      </div>
-                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600">
-                          {user?.fname ? user.fname.charAt(0) : "U"}
-                      </div>
-                  </button>
+        return (
+            <div className="bg-white shadow-sm p-4 flex justify-between items-center">
+                <div className="flex items-center space-x-4">
+                    <button
+                        className="text-gray-600 hover:text-blue-600 relative"
+                        onClick={() => addToast("No new notifications", "info")}
+                    >
+                        <Bell size={20} />
+                    </button>
+                    <div className="relative">
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            className="pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none w-full md:w-64"
+                        />
+                        <Search
+                            className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400"
+                            size={18}
+                        />
+                    </div>
+                </div>
+                <div className="flex items-center space-x-4" ref={profileRef}>
+                    <button
+                        className="flex items-center space-x-2 text-gray-700 hover:text-blue-700"
+                        onClick={() => setIsProfileOpen(!isProfileOpen)}
+                    >
+                        <div className="flex flex-col items-end">
+                            <span className="hidden md:inline text-sm font-medium">
+                                {user?.fname || "User"} {user?.lname || ""}
+                            </span>
+                            <span className="hidden md:inline text-xs text-gray-500">
+                                {user?.email || ""}
+                            </span>
+                        </div>
+                        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600">
+                            {user?.fname ? user.fname.charAt(0) : "U"}
+                        </div>
+                    </button>
 
-                  {isProfileOpen && (
-                      <div className="absolute right-4 top-16 bg-white shadow-lg rounded-lg p-2 w-48 z-50 border border-gray-100">
-                          <div className="px-4 py-2 border-b border-gray-100">
-                              <p className="text-sm font-medium">
-                                  {user?.fname || "User"}
-                              </p>
-                              <p className="text-xs text-gray-500 truncate">
-                                  {user?.email || ""}
-                              </p>
-                          </div>
-                          <Link
-                              to="/grants-overview/settings/profile"
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
-                              onClick={() => setIsProfileOpen(false)}
-                          >
-                              My Profile
-                          </Link>
-                          <Link
-                              to="/grants-overview/settings/notifications"
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
-                              onClick={() => setIsProfileOpen(false)}
-                          >
-                              Notifications
-                          </Link>
-                          <button
-                              onClick={handleLogout}
-                              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
-                          >
-                              Logout
-                          </button>
-                      </div>
-                  )}
-              </div>
-          </div>
-      );
+                    {isProfileOpen && (
+                        <div className="absolute right-4 top-16 bg-white shadow-lg rounded-lg p-2 w-48 z-50 border border-gray-100">
+                            <div className="px-4 py-2 border-b border-gray-100">
+                                <p className="text-sm font-medium">
+                                    {user?.fname || "User"}
+                                </p>
+                                <p className="text-xs text-gray-500 truncate">
+                                    {user?.email || ""}
+                                </p>
+                            </div>
+                            <Link
+                                to="/grants-overview/settings/profile"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                                onClick={() => setIsProfileOpen(false)}
+                            >
+                                My Profile
+                            </Link>
+                            <Link
+                                to="/grants-overview/settings/notifications"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                                onClick={() => setIsProfileOpen(false)}
+                            >
+                                Notifications
+                            </Link>
+                            <button
+                                onClick={handleLogout}
+                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                            >
+                                Logout
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
     },
 
     Breadcrumbs: () => {
@@ -697,7 +701,7 @@ const GrantsOverview = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
     const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
-    const { token ,user} = useStateContext();
+    const { token, user } = useStateContext();
     const navigate = useNavigate();
     const { addToast } = useToast();
 
