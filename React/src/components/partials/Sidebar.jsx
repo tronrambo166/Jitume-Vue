@@ -486,7 +486,7 @@ const Sidebar = ({ onToggle }) => {
                                     {/* Added margin-bottom (mb-6) to move it up from the bottom */}
                                     <NavLink
                                         className={({ isActive }) =>
-                                            `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-all duration-300 ${
+                                            `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[12px] transition-all duration-300 ${
                                                 isActive
                                                     ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md"
                                                     : "hover:bg-gray-100 bg-gradient-to-r from-blue-50 to-purple-50 border border-gray-200"
@@ -506,7 +506,7 @@ const Sidebar = ({ onToggle }) => {
                                                     }`}
                                                 />
                                                 {!isShrunk && (
-                                                    <span>Explore Grants</span>
+                                                    <span>Explore Grants & Capital Investments </span>
                                                 )}
                                             </>
                                         )}

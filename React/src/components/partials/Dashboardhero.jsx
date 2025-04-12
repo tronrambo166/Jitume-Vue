@@ -1,14 +1,15 @@
 import {
     FaUser,
     FaCog,
-    FaWrench,
     FaEnvelope,
     FaCopy,
     FaDollarSign,
     FaHome,
     FaDoorOpen,
-    FaBars,
+    FaQuestionCircle,
 } from "react-icons/fa";
+import { BsChevronDown } from "react-icons/bs";
+// import { MdDashboard } from "react-icons/md";
 import profile from "../../images/profile.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
@@ -35,6 +36,7 @@ const Dashboardhero = () => {
     const { showAlert } = useAlert();
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [wasModalOpened, setWasModalOpened] = useState(false); // Track if modal was opened before closing
+    const [showMore, setShowMore] = useState(false);
 
     // useEffect(() => {
     //     const fetchUserData = async () => {
@@ -83,7 +85,6 @@ const Dashboardhero = () => {
                 } else {
                     navigate("/dashboard");
                 }
-                
             } catch (error) {
                 if (!token) {
                     setIsAuthModalOpen(true);
@@ -96,7 +97,6 @@ const Dashboardhero = () => {
         };
 
         fetchUserData();
-
     }, []);
 
     useEffect(() => {
@@ -201,11 +201,10 @@ const Dashboardhero = () => {
         ev.preventDefault();
         navigate("./account", {
             state: {
-                user_id: id
+                user_id: id,
             },
         });
     };
-
 
     if (loading) {
         return (
@@ -232,7 +231,7 @@ const Dashboardhero = () => {
     return (
         <div
             id="dashbg"
-            className="relative max-w-[95%] mx-auto rounded-xl mb-[20px] h-[200px] mt-4 p-4"
+            className="relative max-w-[95%] mx-auto rounded-xl mb-[20px] h-[200px] mt-4 p-4 bg-gradient-to-r from-blue-600 to-purple-600"
         >
             <div className="flex justify-between items-center flex-wrap">
                 <div className="mb-4 md:mb-0">
@@ -244,7 +243,7 @@ const Dashboardhero = () => {
                 <div className="flex items-center gap-4">
                     <Link
                         to="/"
-                        className="flex text-sm gap-1 items-center text-white"
+                        className="flex text-sm gap-1 items-center text-white hover:text-gray-200 transition-colors duration-200"
                     >
                         <FaHome />
                         <span>Home</span>
@@ -252,16 +251,16 @@ const Dashboardhero = () => {
                     <div>
                         {!token ? (
                             <div
-                                onClick={() => navigate("/home")} // Adjust navigation logic as needed
-                                className="flex items-center text-sm gap-2 cursor-pointer text-white"
+                                onClick={() => navigate("/home")}
+                                className="flex items-center text-sm gap-2 cursor-pointer text-white hover:text-gray-200 transition-colors duration-200"
                             >
                                 <span>Sign In</span>
-                                <FaDoorOpen /> {/* Use the door icon here */}
+                                <FaDoorOpen />
                             </div>
                         ) : (
                             <div
                                 onClick={onLogout}
-                                className="flex items-center text-sm gap-2 cursor-pointer text-white"
+                                className="flex items-center text-sm gap-2 cursor-pointer text-white hover:text-gray-200 transition-colors duration-200"
                             >
                                 <FaUser />
                                 <span>Sign Out</span>
@@ -270,7 +269,7 @@ const Dashboardhero = () => {
                     </div>
                     <Link
                         to="/dashboard/settings"
-                        className="flex items-center space-x-2 hover:text-gray"
+                        className="flex items-center space-x-2 hover:text-gray-200 transition-colors duration-200"
                     >
                         <FaCog className="text-white text-xl" />
                         <span className="text-white text-sm">Settings</span>
@@ -280,68 +279,109 @@ const Dashboardhero = () => {
             </div>
 
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-full">
-                <div className="bg-gray-100/50 max-w-[95%] mx-auto px-4 md:px-6 py-3 rounded-lg shadow-lg">
+                <div className="bg-white/50 dark:bg-gray-800/90  max-w-[95%] mx-auto px-4 md:px-6 py-3 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
                     <div className="flex justify-between items-center flex-wrap gap-4">
                         <div className="flex gap-2 items-center">
                             <img
                                 src={user?.image ? user.image : userImage}
-                                className="rounded-xl w-16 h-16 md:w-20 md:h-20"
+                                className="rounded-xl w-16 h-16 md:w-20 md:h-20 object-cover border-2 border-white shadow-sm"
                                 alt="Profile"
                             />
                             <div className="flex flex-col">
-                                <h2 className="text-black text-sm md:text-lg font-bold">
+                                <h2 className="text-gray-900 dark:text-white text-sm md:text-lg font-bold">
                                     {user.fname} {user.lname}
                                 </h2>
-                                <h3 className="text-sm md:text-base">
+                                <h3 className="text-gray-600 dark:text-gray-300 text-sm md:text-base">
                                     {user.email || "test@email.com"}
                                 </h3>
                             </div>
                         </div>
-                        <div className="flex mt-5 text-sm md:text-[13px] gap-4 flex-wrap items-center">
+                        <div className="flex mt-5 text-sm md:text-[13px] gap-4 flex-wrap items-center relative">
                             <Link
                                 to=""
-                                className="flex items-center hover:text-green gap-1"
+                                className="flex items-center hover:text-green-600 dark:hover:text-green-400 gap-1 transition-colors duration-200 px-2 py-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                             >
                                 <MdDashboard />
                                 <span>Overview</span>
                             </Link>
+
                             <Link
                                 to="/dashboard/addbusiness"
-                                className="flex items-center hover:text-green gap-1"
+                                className="flex items-center hover:text-green-600 dark:hover:text-green-400 gap-1 transition-colors duration-200 px-2 py-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                             >
                                 <FaCopy />
                                 <span>Add Business</span>
                             </Link>
+
                             <Link
                                 to="/dashboard/add-service"
-                                className="flex items-center hover:text-green gap-1"
+                                className="flex items-center hover:text-green-600 dark:hover:text-green-400 gap-1 transition-colors duration-200 px-2 py-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                             >
                                 <FaCopy />
                                 <span>Add Service</span>
                             </Link>
+
                             <Link
                                 to="/dashboard/messages"
-                                className="flex items-center hover:text-green gap-1"
+                                className="flex items-center hover:text-green-600 dark:hover:text-green-400 gap-1 relative transition-colors duration-200 px-2 py-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                             >
-                                <div className="relative flex items-center gap-1 hover:text-green">
-                                    <FaEnvelope />
-                                    <span>Messages</span>
-                                    {count > 0 && (
-                                        <span className="absolute top-[-8px] right-[-10px] inline-flex items-center justify-center w-3 h-3 text-xs font-semibold text-green-200 bg-red-600 rounded-full pulse">
-                                            {count}
-                                        </span>
-                                    )}
-                                </div>
+                                <FaEnvelope />
+                                <span>Messages</span>
+                                {count > 0 && (
+                                    <span className="absolute top-[-8px] right-[-10px] inline-flex items-center justify-center w-4 h-4 text-xs font-semibold text-white bg-red-500 rounded-full animate-pulse">
+                                        {count}
+                                    </span>
+                                )}
                             </Link>
 
+                            {/* Modernized View More Dropdown */}
                             {id && (
-                                <button
-                                    onClick={account}
-                                    className="flex items-center hover:text-green gap-1"
-                                >
-                                    <FaDollarSign />
-                                    <span>Account</span>
-                                </button>
+                                <div className="relative">
+                                    <button
+                                        onClick={() => setShowMore(!showMore)}
+                                        className="flex items-center hover:text-green-600 dark:hover:text-green-400 gap-1 transition-all duration-200 px-2 py-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                                    >
+                                        <BsChevronDown
+                                            className={`transition-transform duration-200 ${
+                                                showMore ? "rotate-180" : ""
+                                            }`}
+                                        />
+                                        <span>View More</span>
+                                    </button>
+
+                                    {showMore && (
+                                        <div className="absolute z-20 mt-2 right-0 bg-white dark:bg-gray-800 shadow-xl rounded-lg py-1 w-48 border border-gray-200 dark:border-gray-700 animate-fade-in">
+                                            <button
+                                                onClick={account}
+                                                className="flex items-center w-full hover:bg-gray-100 dark:hover:bg-gray-700 gap-2 px-4 py-2 text-left transition-colors duration-150"
+                                            >
+                                                <FaDollarSign className="text-gray-500 dark:text-gray-400" />
+                                                <span className="text-gray-700 dark:text-gray-200">
+                                                    Account
+                                                </span>
+                                            </button>
+                                            <Link
+                                                to="/dashboard/grants"
+                                                className="flex items-center hover:bg-gray-100 dark:hover:bg-gray-700 gap-2 px-4 py-2 transition-colors duration-150"
+                                            >
+                                                <FaDollarSign className="text-gray-500 dark:text-gray-400" />
+                                                <span className="text-gray-700 dark:text-gray-200">
+                                                    Explore Grants
+                                                </span>
+                                            </Link>
+                                            <div className="border-t border-gray-200 dark:border-gray-700 my-1"></div>
+                                            <Link
+                                                to="/dashboard/support"
+                                                className="flex items-center hover:bg-gray-100 dark:hover:bg-gray-700 gap-2 px-4 py-2 transition-colors duration-150"
+                                            >
+                                                <FaQuestionCircle className="text-gray-500 dark:text-gray-400" />
+                                                <span className="text-gray-700 dark:text-gray-200">
+                                                    Support
+                                                </span>
+                                            </Link>
+                                        </div>
+                                    )}
+                                </div>
                             )}
                         </div>
                     </div>
