@@ -21,6 +21,7 @@
     "base-64": "^1.0.0",
     "bootstrap": "^5.3.3",
     "framer-motion": "^12.6.2",
+    "headlessui": "^0.0.0",
     "imask": "^7.6.1",
     "lucide-react": "^0.479.0",
     "nouislider": "^15.8.1",

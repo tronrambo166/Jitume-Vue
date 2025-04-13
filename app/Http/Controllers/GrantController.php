@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Notifications;
 use App\Models\Grant;
 use App\Models\GrantApplication;
+use App\Models\GrantMilestone;
 use Illuminate\Support\Facades\File;
 use Response;
 use Session;
@@ -112,23 +113,24 @@ class GrantController extends Controller
         try{
 
             $request->validate([
-            'grant_id' => 'nullable|numeric',
-            'business_id' => 'nullable|numeric',
-            'startup_name' => 'required|string|max:255',
-            'contact_name' => 'required|string|max:255',
-            'contact_email' => 'required|email|max:255',
-            'sector' => 'required|string|max:255',
-            'headquarters_location' => 'required|string|max:255',
-            'stage' => 'required|string|max:255',
-            'revenue_last_12_months' => 'nullable|numeric',
-            'team_experience_avg_years' => 'nullable|numeric',
-            'traction_kpis' => 'nullable|string',
-            'pitch_deck_file' => 'nullable|file|mimes:pdf,docx',
-            'pitch_video' => 'nullable|file|mimes:mp4,avi,mov,wmv|max:2048',
-            'business_plan_file' => 'nullable|file|mimes:pdf,docx',
-            'social_impact_areas' => 'nullable|string',
+                'grant_id' => 'nullable|numeric',
+                'business_id' => 'nullable|numeric',
+                'startup_name' => 'required|string|max:255',
+                'contact_name' => 'required|string|max:255',
+                'contact_email' => 'required|email|max:255',
+                'sector' => 'required|string|max:255',
+                'headquarters_location' => 'required|string|max:255',
+                'stage' => 'required|string|max:255',
+                'revenue_last_12_months' => 'nullable|numeric',
+                'team_experience_avg_years' => 'nullable|numeric',
+                'traction_kpis' => 'nullable|string',
+                'pitch_deck_file' => 'nullable|file|mimes:pdf,docx',
+                'pitch_video' => 'nullable|file|mimes:mp4,avi,mov,wmv|max:2048',
+                'business_plan_file' => 'nullable|file|mimes:pdf,docx',
+                'social_impact_areas' => 'nullable|string',
+                'milestones' => 'nullable|array',
 
-            ]);
+            ]); return $request->all();
 
             $grant = GrantApplication::create([
             'grant_id' => $request->grant_id,
@@ -189,6 +191,31 @@ class GrantController extends Controller
                 'pitch_video' => $pitch_video_path,
                 'business_plan_file' => $business_plan_path
             ]);
+
+            if (!file_exists('files/grantMiles/'.$grant->id))
+                mkdir('files/grantMiles/'.$grant->id, 0777, true);
+            $loc='files/grantMiles/'.$grant->id.'/';
+
+            // M I L E S T O N E S
+            $milestones = $request->milestones;
+            foreach($milestones as $milestone){
+                $document = $milestone->file('delivables')[0];
+                if($document) {
+                    $uniqid=hexdec(uniqid());
+                    $ext=strtolower($document->getClientOriginalExtension());
+                    $create_name=$uniqid.'.'.$ext;
+                    $document->move($loc, $create_name);
+                    $document=$loc.$create_name;
+                }
+                else $document='';
+                $mile = GrantMilestone::create([
+                    'app_id' => $grant->id,
+                    'title' => $milestone->title,
+                    'description' => $milestone->description,
+                    '$document' => $document
+                ]);
+            }
+
 
             return response()->json(['message' => 'Grant Application Successfull.'], 200);
         }

@@ -235,30 +235,30 @@ export default function GrantApplicationModal({ onClose, grantId }) {
             //       console.log(pair[0], pair[1]);
             //   }
 
-            //   console.log("Submitting to API...");
+            console.log("Submitting to API...", formDataToSend);
 
-            await axiosClient.post("grant/grant-application", formDataToSend, {
+            const { data } = await axiosClient.post("grant/grant-application", formDataToSend, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
-            console.log("Submission successful!");
+            console.log(data);
 
             setSubmissionSuccess(true);
-            toast.success(
-                <div className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-green-500" />
-                    <span>Application submitted successfully!</span>
-                </div>,
-                {
-                    position: "bottom-right",
-                    autoClose: 1700,
-                    hideProgressBar: true,
-                    closeButton: false,
-                    className:
-                        "!bg-white !text-gray-700 !shadow-sm !rounded-lg !border !border-gray-100 !px-3 !py-2",
-                    onClose: onClose, // Close modal when toast closes
-                }
-            );
+            // toast.success(
+            //     <div className="flex items-center gap-2">
+            //         <Check className="h-4 w-4 text-green-500" />
+            //         <span>Application submitted successfully!</span>
+            //     </div>,
+            //     {
+            //         position: "bottom-right",
+            //         autoClose: 1700,
+            //         hideProgressBar: true,
+            //         closeButton: false,
+            //         className:
+            //             "!bg-white !text-gray-700 !shadow-sm !rounded-lg !border !border-gray-100 !px-3 !py-2",
+            //         onClose: onClose, // Close modal when toast closes
+            //     }
+            // );
         } catch (error) {
             console.error("Submission error:", error);
             const errorMessage =
@@ -279,7 +279,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                 }
             );
         } finally {
-            setIsSubmitting(false);
+            //setIsSubmitting(false);
         }
     };
 
