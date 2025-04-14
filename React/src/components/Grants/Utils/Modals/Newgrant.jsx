@@ -148,212 +148,224 @@ export default function GrantApplicationModal({ onClose, grantId }) {
 
     // Submission handler
     const handleFinalSubmit = async () => {
-    setIsSubmitting(true);
-    setSubmissionError(null);
+        setIsSubmitting(true);
+        setSubmissionError(null);
+        setSubmissionSuccess(false);
 
-    try {
-        // 1. Log complete form state
-        console.groupCollapsed("📝 COMPLETE FORM STATE");
-        console.log("Raw formData state:", JSON.parse(JSON.stringify(formData)));
-        console.table({
-            startupName: formData.startupName,
-            contactPerson: formData.contactPerson,
-            contactEmail: formData.contactEmail,
-            sector: formData.sector,
-            location: formData.location,
-            stage: formData.stage,
-            revenue: formData.revenue,
-            teamExperience: formData.teamExperience,
-            traction: formData.traction,
-            impactAreas: formData.impactAreas.join(", "),
-            isGenderLed: formData.isGenderLed,
-            isYouthLed: formData.isYouthLed,
-            isRuralBased: formData.isRuralBased,
-            usesLocalSourcing: formData.usesLocalSourcing
-        });
-        console.groupEnd();
+        try {
+            // 1. Log complete form state
+            console.group("[FORM STATE]");
+            console.log(
+                "Complete form data:",
+                JSON.parse(JSON.stringify(formData))
+            );
+            console.groupEnd();
 
-        const formDataToSend = new FormData();
-        
-        // 2. Prepare and log request data
-        const requestData = {
-            grant_id: grantId,
-            startup_name: formData.startupName,
-            contact_name: formData.contactPerson,
-            contact_email: formData.contactEmail,
-            sector: formData.sector,
-            headquarters_location: formData.location,
-            stage: formData.stage,
-            revenue_last_12_months: formData.revenue,
-            team_experience_avg_years: formData.teamExperience,
-            traction_kpis: formData.traction,
-            social_impact_areas: formData.impactAreas.join(","),
-            is_gender_led: formData.isGenderLed,
-            is_youth_led: formData.isYouthLed,
-            is_rural_based: formData.isRuralBased,
-            uses_local_sourcing: formData.usesLocalSourcing,
-        };
+            const formDataToSend = new FormData();
 
-        console.groupCollapsed("📦 REQUEST DATA OBJECT");
-        console.table(requestData);
-        console.groupEnd();
-
-        // 3. Append all fields with logging
-        console.groupCollapsed("🔗 APPENDING FIELDS TO FORMDATA");
-        Object.entries(requestData).forEach(([key, value]) => {
-            formDataToSend.append(key, value);
-            console.log(`Appended: ${key} =`, value);
-        });
-        console.groupEnd();
-
-        // 4. Append and log files
-        console.groupCollapsed("📎 FILE ATTACHMENTS");
-        Object.entries(formData.documents).forEach(([key, file]) => {
-            if (file) {
-                formDataToSend.append(`${key}_file`, file);
-                console.log(`Appended file: ${key}_file =`, file.name, file);
-            } else {
-                console.log(`No file for: ${key}_file`);
-            }
-        });
-        console.groupEnd();
-
-        // 5. Append and log milestones
-        console.groupCollapsed("⏳ MILESTONES DATA");
-        formData.milestones.forEach((milestone, index) => {
-            console.group(`Milestone #${index + 1}`);
-            
-            const milestoneFields = {
-                title: milestone.title,
-                amount: milestone.amount,
-                description: milestone.description,
-                date: milestone.date,
-                requires_verification: milestone.requiresVerification
+            // 2. Prepare request data
+            const requestData = {
+                grant_id: grantId,
+                startup_name: formData.startupName,
+                contact_name: formData.contactPerson,
+                contact_email: formData.contactEmail,
+                sector: formData.sector,
+                headquarters_location: formData.location,
+                stage: formData.stage,
+                revenue_last_12_months: formData.revenue,
+                team_experience_avg_years: formData.teamExperience,
+                traction_kpis: formData.traction,
+                social_impact_areas: formData.impactAreas.join(","),
+                is_gender_led: formData.isGenderLed,
+                is_youth_led: formData.isYouthLed,
+                is_rural_based: formData.isRuralBased,
+                uses_local_sourcing: formData.usesLocalSourcing,
             };
 
-            Object.entries(milestoneFields).forEach(([field, value]) => {
-                formDataToSend.append(`milestones[${index}][${field}]`, value);
-                console.log(`Appended: milestones[${index}][${field}] =`, value);
-            });
-
-            if (milestone.deliverables?.length > 0) {
-                console.group(`Deliverables (${milestone.deliverables.length})`);
-                milestone.deliverables.forEach((file, fileIndex) => {
-                    formDataToSend.append(
-                        `milestones[${index}][deliverables][${fileIndex}]`, 
-                        file
-                    );
-                    console.log(`Appended deliverable ${fileIndex}:`, file.name, file);
-                });
-                console.groupEnd();
-            } else {
-                console.log("No deliverables for this milestone");
-            }
-            
+            console.group("[REQUEST DATA]");
+            console.table(requestData);
             console.groupEnd();
-        });
-        console.groupEnd();
 
-        // 6. Log complete FormData before sending
-        console.groupCollapsed("🚀 FINAL FORMDATA CONTENTS");
-        for (let [key, value] of formDataToSend.entries()) {
-            if (value instanceof File) {
-                console.log(`${key}:`, `File(${value.name}, ${value.type}, ${value.size} bytes)`);
-            } else if (value instanceof Blob) {
-                console.log(`${key}:`, `Blob(${value.type}, ${value.size} bytes)`);
+            // 3. Append all fields
+            console.group("[APPENDING FIELDS]");
+            Object.entries(requestData).forEach(([key, value]) => {
+                formDataToSend.append(key, value);
+                console.log(`Added field: ${key} = ${value}`);
+            });
+            console.groupEnd();
+
+            // 4. Append files
+            console.group("[FILE ATTACHMENTS]");
+            Object.entries(formData.documents).forEach(([key, file]) => {
+                if (file) {
+                    formDataToSend.append(`${key}_file`, file);
+                    console.log(
+                        `Added file: ${key}_file = ${file.name} (${file.size} bytes)`
+                    );
+                } else {
+                    console.log(`No file attached for: ${key}_file`);
+                }
+            });
+            console.groupEnd();
+
+            // 5. Append milestones
+            console.group("[MILESTONES]");
+            formData.milestones.forEach((milestone, index) => {
+                console.group(`Milestone ${index + 1}`);
+
+                const fields = {
+                    title: milestone.title,
+                    amount: milestone.amount,
+                    description: milestone.description,
+                    date: milestone.date,
+                    requires_verification: milestone.requiresVerification,
+                };
+
+                Object.entries(fields).forEach(([field, value]) => {
+                    formDataToSend.append(
+                        `milestones[${index}][${field}]`,
+                        value
+                    );
+                    console.log(
+                        `Added milestone field: milestones[${index}][${field}] = ${value}`
+                    );
+                });
+
+                if (milestone.deliverables?.length > 0) {
+                    milestone.deliverables.forEach((file, fileIndex) => {
+                        formDataToSend.append(
+                            `milestones[${index}][deliverables][${fileIndex}]`,
+                            file
+                        );
+                        console.log(
+                            `Added deliverable: milestones[${index}][deliverables][${fileIndex}] = ${file.name}`
+                        );
+                    });
+                } else {
+                    console.log("No deliverables for this milestone");
+                }
+
+                console.groupEnd();
+            });
+            console.groupEnd();
+
+            // 6. Verify FormData before sending
+            console.group("[FINAL PAYLOAD]");
+            for (let [key, value] of formDataToSend.entries()) {
+                if (value instanceof File || value instanceof Blob) {
+                    console.log(
+                        `${key}: FILE (${value.name || "blob"}, ${
+                            value.size
+                        } bytes)`
+                    );
+                } else {
+                    console.log(`${key}: ${value}`);
+                }
+            }
+            console.groupEnd();
+
+            // 7. Make API call with timeout
+            console.log("Attempting to submit to backend...");
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+            const response = await axiosClient.post(
+                "grant/grant-application",
+                formDataToSend,
+                {
+                    headers: { "Content-Type": "multipart/form-data" },
+                    signal: controller.signal,
+                    onUploadProgress: (progressEvent) => {
+                        const percentCompleted = Math.round(
+                            (progressEvent.loaded * 100) / progressEvent.total
+                        );
+                        console.log(`Upload progress: ${percentCompleted}%`);
+                    },
+                }
+            );
+
+            clearTimeout(timeoutId);
+
+            // 8. Verify backend response
+            if (!response.data) {
+                throw new Error("Received empty response from server");
+            }
+
+            console.group("[BACKEND RESPONSE]");
+            console.log("Status:", response.status);
+            console.log("Response data:", response.data);
+            console.groupEnd();
+
+            if (response.status !== 200 && response.status !== 201) {
+                throw new Error(
+                    `Server responded with status ${response.status}`
+                );
+            }
+
+            setSubmissionSuccess(true);
+            console.log("SUCCESS: Data was successfully posted to backend");
+
+            toast.success(
+                <div className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-green-500" />
+                    <span>Application submitted successfully!</span>
+                </div>,
+                {
+                    position: "bottom-right",
+                    autoClose: 1700,
+                    hideProgressBar: true,
+                    closeButton: false,
+                    className:
+                        "!bg-white !text-gray-700 !shadow-sm !rounded-lg !border !border-gray-100 !px-3 !py-2",
+                    onClose: onClose,
+                }
+            );
+        } catch (error) {
+            console.group("[SUBMISSION ERROR]");
+
+            let errorMessage = "Submission failed";
+
+            if (error.name === "AbortError") {
+                errorMessage = "Request timed out after 30 seconds";
+                console.error("Request timeout occurred");
+            } else if (error.response) {
+                console.error("Server response status:", error.response.status);
+                console.error("Server response data:", error.response.data);
+
+                errorMessage =
+                    error.response.data?.message ||
+                    error.response.data?.error ||
+                    `Server error: ${error.response.status}`;
+            } else if (error.request) {
+                console.error("No response received from server");
+                errorMessage = "Could not connect to server";
             } else {
-                console.log(`${key}:`, value);
+                console.error("Request error:", error.message);
+                errorMessage = error.message || "Request failed";
             }
+
+            console.groupEnd();
+
+            setSubmissionError(errorMessage);
+            toast.error(
+                <div className="flex items-center gap-2">
+                    <X className="h-4 w-4 text-red-500" />
+                    <span>{errorMessage}</span>
+                </div>,
+                {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeButton: false,
+                    className:
+                        "!bg-white !text-gray-700 !shadow-sm !rounded-lg !border !border-red-100 !px-3 !py-2",
+                }
+            );
+        } finally {
+            setIsSubmitting(false);
+            console.log("Submission process completed");
         }
-        console.groupEnd();
-
-        // 7. Make the API call with timeout
-        console.log("🌐 SENDING REQUEST TO API...");
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 30000);
-
-        const { data } = await axiosClient.post("grant/grant-application", formDataToSend, {
-            headers: { "Content-Type": "multipart/form-data" },
-            signal: controller.signal
-        });
-
-        clearTimeout(timeoutId);
-        
-        // 8. Log API response
-        console.groupCollapsed("✅ API RESPONSE");
-        console.log("Full response:", data);
-        if (data) {
-            console.table(Object.entries(data).map(([key, value]) => ({
-                Field: key,
-                Value: typeof value === 'object' ? JSON.stringify(value) : value
-            })));
-        }
-        console.groupEnd();
-
-        setSubmissionSuccess(true);
-        console.log("🎉 FORM SUBMITTED SUCCESSFULLY");
-
-        toast.success(
-            <div className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-green-500" />
-                <span>Application submitted successfully!</span>
-            </div>,
-            {
-                position: "bottom-right",
-                autoClose: 1700,
-                hideProgressBar: true,
-                closeButton: false,
-                className: "!bg-white !text-gray-700 !shadow-sm !rounded-lg !border !border-gray-100 !px-3 !py-2",
-                onClose: onClose,
-            }
-        );
-
-    } catch (error) {
-        // 9. Enhanced error logging
-        console.groupCollapsed("❌ SUBMISSION ERROR");
-        console.error("Error object:", error);
-        
-        let errorMessage = "Submission failed";
-        
-        if (error.name === 'AbortError') {
-            errorMessage = "Request timed out (30s)";
-            console.error("Request timed out");
-        } else if (error.response) {
-            console.error("Server responded with:", error.response.status);
-            console.error("Response data:", error.response.data);
-            
-            errorMessage = error.response.data?.message || 
-                         error.response.data?.error || 
-                         `Server error (${error.response.status})`;
-        } else if (error.request) {
-            console.error("No response received:", error.request);
-            errorMessage = "No response from server";
-        } else {
-            console.error("Request setup error:", error.message);
-            errorMessage = error.message || "Request configuration error";
-        }
-        
-        console.groupEnd();
-        
-        setSubmissionError(errorMessage);
-        toast.error(
-            <div className="flex items-center gap-2">
-                <X className="h-4 w-4 text-red-500" />
-                <span>{errorMessage}</span>
-            </div>,
-            {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeButton: false,
-                className: "!bg-white !text-gray-700 !shadow-sm !rounded-lg !border !border-red-100 !px-3 !py-2",
-            }
-        );
-    } finally {
-        setIsSubmitting(false);
-        console.log("🏁 Submission process completed");
-    }
-};
+    };
 
     useEffect(() => {
         let score = 0;
@@ -1446,7 +1458,6 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                                                                                         name={`file-upload-${index}`}
                                                                                         type="file"
                                                                                         className="sr-only"
-                                                                                        multiple
                                                                                         onChange={(
                                                                                             e
                                                                                         ) => {
@@ -1460,21 +1471,17 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                                                                                                     .length >
                                                                                                     0
                                                                                             ) {
-                                                                                                const newFiles =
-                                                                                                    Array.from(
-                                                                                                        e
-                                                                                                            .target
-                                                                                                            .files
-                                                                                                    );
-                                                                                                const newDeliverables =
-                                                                                                    [
-                                                                                                        ...milestone.deliverables,
-                                                                                                        ...newFiles,
-                                                                                                    ];
+                                                                                                // Only take the first file instead of all files
+                                                                                                const newFile =
+                                                                                                    e
+                                                                                                        .target
+                                                                                                        .files[0];
                                                                                                 updateMilestone(
                                                                                                     index,
                                                                                                     "deliverables",
-                                                                                                    newDeliverables
+                                                                                                    [
+                                                                                                        newFile,
+                                                                                                    ] // Wrap in array if your system expects an array
                                                                                                 );
                                                                                             }
                                                                                         }}
@@ -1494,9 +1501,6 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                                                                                 up
                                                                                 to
                                                                                 10MB
-                                                                                (multiple
-                                                                                files
-                                                                                allowed)
                                                                             </p>
                                                                         </div>
                                                                     ) : (
@@ -1563,54 +1567,35 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                                                                                     )
                                                                                 )}
                                                                             </div>
-                                                                            <div className="flex">
-                                                                                <label
-                                                                                    htmlFor={`file-upload-${index}`}
-                                                                                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200"
-                                                                                >
-                                                                                    <Plus className="-ml-0.5 mr-2 h-4 w-4" />
-                                                                                    Add
-                                                                                    More
-                                                                                    Files
-                                                                                    <input
-                                                                                        id={`file-upload-${index}`}
-                                                                                        type="file"
-                                                                                        className="sr-only"
-                                                                                        multiple
-                                                                                        onChange={(
-                                                                                            e
-                                                                                        ) => {
-                                                                                            if (
-                                                                                                e
-                                                                                                    .target
-                                                                                                    .files &&
-                                                                                                e
-                                                                                                    .target
-                                                                                                    .files
-                                                                                                    .length >
-                                                                                                    0
-                                                                                            ) {
-                                                                                                const newFiles =
-                                                                                                    Array.from(
-                                                                                                        e
-                                                                                                            .target
-                                                                                                            .files
-                                                                                                    );
-                                                                                                const newDeliverables =
-                                                                                                    [
-                                                                                                        ...milestone.deliverables,
-                                                                                                        ...newFiles,
-                                                                                                    ];
-                                                                                                updateMilestone(
-                                                                                                    index,
-                                                                                                    "deliverables",
-                                                                                                    newDeliverables
-                                                                                                );
-                                                                                            }
-                                                                                        }}
-                                                                                    />
-                                                                                </label>
-                                                                            </div>
+
+                                                                            {/* Commented out the "Add More Files" option - single file upload only */}
+                                                                            {/*
+  <div className="flex">
+    <label
+      htmlFor={`file-upload-${index}`}
+      className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200"
+    >
+      <Plus className="-ml-0.5 mr-2 h-4 w-4" />
+      Add More Files
+      <input
+        id={`file-upload-${index}`}
+        type="file"
+        className="sr-only"
+        multiple
+        onChange={(e) => {
+          if (e.target.files && e.target.files.length > 0) {
+            const newFiles = Array.from(e.target.files);
+            const newDeliverables = [
+              ...milestone.deliverables,
+              ...newFiles,
+            ];
+            updateMilestone(index, "deliverables", newDeliverables);
+          }
+        }}
+      />
+    </label>
+  </div>
+  */}
                                                                         </div>
                                                                     )}
                                                                 </div>
