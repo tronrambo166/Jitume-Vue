@@ -125,21 +125,24 @@ const PitchDashboard = () => {
 
   const filteredPitches = pitches.filter(pitch => {
     // Filter by search query
-    if (searchQuery && !pitch.name.toLowerCase().includes(searchQuery.toLowerCase()) && 
-        !pitch.sector.toLowerCase().includes(searchQuery.toLowerCase())) {
+    if (
+      searchQuery &&
+      !pitch.offer_title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      !pitch.sectors.toLowerCase().includes(searchQuery.toLowerCase())
+    ) {
       return false;
     }
-    
+  
     // Filter by selected tab
     if (selectedTab === 'favorites' && !pitch.favorite) return false;
     if (selectedTab === 'new' && pitch.status !== 'New') return false;
     if (selectedTab === 'review' && pitch.status !== 'In Review') return false;
     if (selectedTab === 'accepted' && pitch.status !== 'Accepted') return false;
     if (selectedTab === 'rejected' && pitch.status !== 'Rejected') return false;
-    
+  
     return true;
   });
-
+  
   // Status colors
   const getStatusColor = (status) => {
     switch(status) {

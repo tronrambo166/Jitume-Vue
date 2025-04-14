@@ -78,6 +78,8 @@ const InvestmentOpportunities = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [showModal2, setShowModal2] = useState(false);
+
     const handleSuccess = () => {
         // Handle successful submission (e.g., show success message)
         console.log("Application submitted successfully!");
@@ -91,7 +93,7 @@ const InvestmentOpportunities = () => {
     
     const handleDeleteClick = (id) => {
         setDeleteId(id);
-        setShowModal(true);
+        setShowModal2(true);
     };
     
     const handleConfirmDelete = async () => {
@@ -121,7 +123,7 @@ const InvestmentOpportunities = () => {
             setError(err.response?.data?.message || "Failed to delete opportunity");
         } finally {
             setIsLoading(false);
-            setShowModal(false);
+            setShowModal2(false);
             setDeleteId(null);
         }
     };
@@ -866,7 +868,7 @@ const InvestmentOpportunities = () => {
                     </div>
                 )}
             </div>
-            {showModal && (
+            {showModal2 && (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
         <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm">
             {isLoading ? (
@@ -900,7 +902,7 @@ const InvestmentOpportunities = () => {
                     </p>
                     <div className="flex justify-end space-x-4">
                         <button
-                            onClick={() => setShowModal(false)}
+                            onClick={() => setShowModal2(false)}
                             className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
                         >
                             Cancel

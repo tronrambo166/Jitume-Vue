@@ -47,6 +47,8 @@ const TujitumeGrantPortal = () => {
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [pendingDeleteId, setPendingDeleteId] = useState(null);
     const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
+    const [pitchCounts, setPitchCounts] = useState({});
+
 
     const [filters, setFilters] = useState({
         sectors: [],
@@ -190,6 +192,7 @@ const TujitumeGrantPortal = () => {
         setPendingDeleteId(null);
     };
 
+    
     // No dependencies needed since axiosClient handles token internally
     console.log("grantOpportunities", grantOpportunities);
     // Filter grants
@@ -369,6 +372,31 @@ const TujitumeGrantPortal = () => {
             });
         }
     };
+     
+    useEffect(() => {
+        const fetchAllPitchCounts = async () => {
+          const counts = {};
+      
+          await Promise.all(
+            filteredGrants.map(async (grant) => {
+              try {
+                const response = await axiosClient.get(`grant/pitches/${grant.id}`);
+                const pitchesData = response.data.pitches || response.data || [];
+                counts[grant.id] = Array.isArray(pitchesData) ? pitchesData.length : 0;
+              } catch (err) {
+                counts[grant.id] = 0;
+                console.error(`Failed to fetch pitches for grant ${grant.id}`, err);
+              }
+            })
+          );
+      
+          setPitchCounts(counts);
+        };
+      
+        fetchAllPitchCounts();
+      }, [filteredGrants]);
+      
+
 
     // Sample UI for loading state
     if (isLoading && grantOpportunities.length === 0) {
@@ -538,6 +566,11 @@ const TujitumeGrantPortal = () => {
                                                 </div>
                                             </div>
                                         </div>
+                                        {pitchCounts[grant.id] !== undefined && (
+  <div className="bg-green-50 px-3 py-1 rounded-full text-xs font-medium text-green-700">
+    {pitchCounts[grant.id]} {pitchCounts[grant.id] === 1 ? 'Pitch' : 'Pitches'}
+  </div>
+)}
 
                                         <div className="mt-4">
                                             <p className="text-sm text-gray-700 mb-3 line-clamp-2">
@@ -876,6 +909,12 @@ const TujitumeGrantPortal = () => {
                                                     )}
                                                 </div>
                                             </div>
+                                            {pitchCounts[grant.id] !== undefined && (
+  <div className="inline-flex items-center  text-green-800 text-xs font-semibold px-6 py-1 rounded-full   ">
+    {pitchCounts[grant.id]} {pitchCounts[grant.id] === 1 ? 'Pitch Available' : 'Pitches Available'}
+  </div>
+)}
+
 
                                             <div className="flex items-center space-x-3 flex-shrink-0">
                                                 {user.investor && (

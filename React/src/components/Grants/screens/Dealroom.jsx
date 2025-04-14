@@ -39,53 +39,59 @@ const DealRoomLayout = () => {
 
   // Fetch pitches from API
   const fetchPitches = async () => {
-    if (!opportunityId) return;
+    if (!opportunityId) {
+      console.warn("⛔ No opportunityId found in route params");
+      return;
+    }
   
+    console.log("🔍 Fetching pitches for opportunityId:", opportunityId);
     setIsLoadingPitches(true);
+  
     try {
-      const response = await axiosClient.get(`capital/pitches/${opportunityId}`);
-      
-      console.log('Fetched pitch data:', response.data);
+      const response = await axiosClient.get(`/capital/pitches/${opportunityId}`);
+  
+      // Log raw response
+      console.log("✅ Full response object:", response);
+      console.log("📦 Fetched pitch data:", response.data);
   
       const pitchesArray = response?.data?.pitches;
   
       if (Array.isArray(pitchesArray)) {
+        if (pitchesArray.length === 0) {
+          console.warn("⚠️ Pitches array is empty for opportunityId:", opportunityId);
+        } else {
+          console.log(`✅ ${pitchesArray.length} pitches loaded.`);
+        }
+  
         setPitches(pitchesArray);
       } else {
-        console.warn('Unexpected data structure:', response.data);
+        console.error("❌ Unexpected pitch response format. Data:", response.data);
         setPitches([]);
       }
   
     } catch (error) {
-      console.error('Error fetching pitches:', error);
+      console.error("🚨 Error fetching pitches:", error);
+  
+      // Fallback dummy data for development
       setPitches([
         {
           id: 1,
-          title: "Seed Funding Pitch",
+          offer_title: "Seed Funding Pitch",
+          sectors: "AI,Healthcare",
           date: "2023-04-15",
-          audience: "Angel Investors",
-          feedback_score: 85,
-          slides: 12,
-          status: "Completed"
+          matchScore: 85,
+          status: "New",
+          favorite: false,
         },
         {
           id: 2,
-          title: "Series A Investment Deck",
+          offer_title: "Series A Investment Deck",
+          sectors: "Fintech,SaaS",
           date: "2023-09-22",
-          audience: "VC Firms",
-          feedback_score: 92,
-          slides: 18,
-          status: "Upcoming"
+          matchScore: 92,
+          status: "In Review",
+          favorite: true,
         },
-        {
-          id: 3,
-          title: "Impact Investor Presentation",
-          date: "2023-06-30",
-          audience: "Impact Funds",
-          feedback_score: 78,
-          slides: 15,
-          status: "Completed"
-        }
       ]);
     } finally {
       setIsLoadingPitches(false);

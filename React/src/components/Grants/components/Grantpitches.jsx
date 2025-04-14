@@ -11,7 +11,11 @@ import {
   CheckCircle,
   RefreshCw,
   Code,
-  Loader
+  Loader,
+  X,
+  ExternalLink,
+  ThumbsUp,
+  ThumbsDown
 } from 'lucide-react';
 import axiosClient from '../../../axiosClient'; // Update with your actual path
 
@@ -23,6 +27,9 @@ const PitchesOutlet = ({ grantId }) => {
   const [openPitchId, setOpenPitchId] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
   const [showDebugInfo, setShowDebugInfo] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [modalAction, setModalAction] = useState(null);
+  const [selectedPitch, setSelectedPitch] = useState(null);
 
   useEffect(() => {
     fetchPitches();
@@ -92,6 +99,54 @@ const PitchesOutlet = ({ grantId }) => {
 
   const toggleDebugInfo = () => {
     setShowDebugInfo(!showDebugInfo);
+  };
+
+  const handleActionClick = (pitch, action) => {
+    setSelectedPitch(pitch);
+    setModalAction(action);
+    setShowConfirmModal(true);
+  };
+
+  const handleConfirmAction = async () => {
+    try {
+      setIsLoading(true);
+      
+      const endpoint = modalAction === 'accept' 
+        ? `grant/pitches/${grantId}/accept/${selectedPitch.id}`
+        : `grant/pitches/${grantId}/decline/${selectedPitch.id}`;
+      
+      await axiosClient.post(endpoint, {}, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      // Update local state to reflect the change
+      setPitches(prevPitches => 
+        prevPitches.map(pitch => 
+          pitch.id === selectedPitch.id 
+            ? { ...pitch, status: modalAction === 'accept' ? 'accepted' : 'declined' } 
+            : pitch
+        )
+      );
+      
+      setShowConfirmModal(false);
+      setSelectedPitch(null);
+      
+      // Optionally refresh the data
+      fetchPitches();
+      
+    } catch (err) {
+      console.error(`[PitchesOutlet] Error ${modalAction}ing pitch:`, err);
+      setError(`Failed to ${modalAction} pitch. Please try again.`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleContinueToPitchDeck = (pitchDeckUrl) => {
+    window.open(pitchDeckUrl, '_blank');
   };
 
   if (isLoading) {
@@ -181,183 +236,288 @@ const PitchesOutlet = ({ grantId }) => {
                 pitch={pitch}
                 isOpen={openPitchId === pitch.id}
                 onToggle={togglePitch}
+                onAccept={() => handleActionClick(pitch, 'accept')}
+                onDecline={() => handleActionClick(pitch, 'decline')}
+                onContinueToPitchDeck={() => handleContinueToPitchDeck(pitch.pitch_deck_file)}
               />
             ))}
           </div>
         )}
       </div>
+
+      {/* Confirmation Modal */}
+      {showConfirmModal && selectedPitch && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">
+                {modalAction === 'accept' ? 'Accept Pitch' : 'Decline Pitch'}
+              </h3>
+              <button 
+                onClick={() => setShowConfirmModal(false)}
+                className="p-1 rounded-full hover:bg-gray-100"
+              >
+                <X size={20} className="text-gray-500" />
+              </button>
+            </div>
+            <div className="mb-6">
+              <p className="text-gray-700">
+                Are you sure you want to {modalAction} the pitch from <strong>{selectedPitch.startup_name || 'this startup'}</strong>?
+              </p>
+              {modalAction === 'decline' && (
+                <p className="mt-2 text-gray-500 text-sm">
+                  This action cannot be undone and will notify the startup of your decision.
+                </p>
+              )}
+            </div>
+            <div className="flex space-x-3 justify-end">
+              <button
+                onClick={() => setShowConfirmModal(false)}
+                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-full text-sm hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmAction}
+                className={`px-4 py-2 rounded-full text-sm text-white ${
+                  modalAction === 'accept' 
+                    ? 'bg-green-600 hover:bg-green-700'
+                    : 'bg-red-600 hover:bg-red-700'
+                }`}
+              >
+                {modalAction === 'accept' ? 'Accept' : 'Decline'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 // Extracted PitchCard component for better readability
-const PitchCard = ({ pitch, isOpen, onToggle }) => (
-  <div className="border border-gray-100 rounded-xl hover:shadow-md transition-all duration-200 overflow-hidden">
-    <div 
-      onClick={() => onToggle(pitch.id)}
-      className="w-full p-5 text-left cursor-pointer group"
-    >
-      <div className="flex justify-between items-center">
-        <div>
-          <h3 className="font-medium text-gray-900">{pitch.startup_name || "Untitled Pitch"}</h3>
-          <div className="flex items-center mt-2 space-x-4 text-sm text-gray-500">
-            <span className="flex items-center">
-              <Briefcase size={14} className="mr-1.5 text-gray-400" />
-              {pitch.sector || "No sector"}
-            </span>
-            <span className="flex items-center">
-              <MapPin size={14} className="mr-1.5 text-gray-400" />
-              {pitch.headquarters_location || "Location not specified"}
-            </span>
+const PitchCard = ({ pitch, isOpen, onToggle, onAccept, onDecline, onContinueToPitchDeck }) => {
+  const isPitchStatusDefined = pitch.status === 'accepted' || pitch.status === 'declined';
+
+  return (
+    <div className={`border rounded-xl hover:shadow-md transition-all duration-200 overflow-hidden ${
+      isPitchStatusDefined ? 
+        pitch.status === 'accepted' ? 'border-green-200 bg-green-50/30' : 'border-red-200 bg-red-50/30'
+        : 'border-gray-100'
+    }`}>
+      <div className="p-5">
+        <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
+          {/* Left side - Pitch info */}
+          <div className="flex-grow">
+            <div className="flex items-center">
+              <h3 className="font-medium text-gray-900">{pitch.startup_name || "Untitled Pitch"}</h3>
+              {isPitchStatusDefined && (
+                <span className={`ml-3 px-2 py-0.5 text-xs font-medium rounded-full ${
+                  pitch.status === 'accepted' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                }`}>
+                  {pitch.status === 'accepted' ? 'Accepted' : 'Declined'}
+                </span>
+              )}
+            </div>
+            <div className="flex items-center mt-2 space-x-4 text-sm text-gray-500">
+              <span className="flex items-center">
+                <Briefcase size={14} className="mr-1.5 text-gray-400" />
+                {pitch.sector || "No sector"}
+              </span>
+              <span className="flex items-center">
+                <MapPin size={14} className="mr-1.5 text-gray-400" />
+                {pitch.headquarters_location || "Location not specified"}
+              </span>
+              {pitch.revenue_last_12_months && (
+                <span className="flex items-center">
+                  <DollarSign size={14} className="mr-1.5 text-gray-400" />
+                  ${parseFloat(pitch.revenue_last_12_months).toLocaleString()}
+                </span>
+              )}
+            </div>
+          </div>
+          
+          {/* Right side - Action buttons */}
+          <div className="flex items-center space-x-2 md:justify-end">
+            {!isPitchStatusDefined && (
+              <div className="flex space-x-2">
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDecline();
+                  }}
+                  className="px-3 py-1.5 border border-red-200 text-red-600 rounded-lg text-sm hover:bg-red-50 transition-colors flex items-center"
+                >
+                  <ThumbsDown size={14} className="mr-1.5" />
+                  Decline
+                </button>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onAccept();
+                  }}
+                  className="px-3 py-1.5 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700 transition-colors flex items-center"
+                >
+                  <ThumbsUp size={14} className="mr-1.5" />
+                  Accept
+                </button>
+              </div>
+            )}
+            {pitch.pitch_deck_file && (
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onContinueToPitchDeck(pitch.pitch_deck_file);
+                }}
+                className="px-3 py-1.5 bg-gray-100 text-gray-800 rounded-lg text-sm hover:bg-gray-200 transition-colors flex items-center whitespace-nowrap"
+              >
+                <FileText size={14} className="mr-1.5" />
+                View Pitch Deck
+              </button>
+            )}
+            <button 
+              onClick={() => onToggle(pitch.id)}
+              className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-50 hover:bg-green-50 transition-colors"
+            >
+              <ChevronDown
+                size={18}
+                className={`text-gray-400 hover:text-green-500 transition-transform duration-200 ${
+                  isOpen ? "transform rotate-180" : ""
+                }`}
+              />
+            </button>
           </div>
         </div>
-        <div className="flex items-center space-x-2">
-          {pitch.revenue_last_12_months && (
-            <div className="px-3 py-1 bg-gray-50 rounded-full text-xs font-medium text-gray-700 hidden md:block">
-              ${parseFloat(pitch.revenue_last_12_months).toLocaleString()}
+      </div>
+      
+      {isOpen && (
+        <div className="px-5 pb-5 border-t border-gray-100 pt-4">
+          <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+              <h4 className="text-sm font-medium text-gray-800 mb-3 flex items-center">
+                <div className="w-1 h-4 bg-green-400 rounded-full mr-2"></div>
+                Overview
+              </h4>
+              <p className="text-gray-600 text-sm">
+                <strong>Stage:</strong> {pitch.stage || "Not specified"}<br />
+                <strong>Social Impact:</strong> {pitch.social_impact_areas || "Not specified"}<br />
+                <strong>Traction KPIs:</strong> {pitch.traction_kpis || "Not specified"}<br />
+                <strong>Team Experience:</strong> {pitch.team_experience_avg_years} {pitch.team_experience_avg_years === 1 ? 'year' : 'years'} average
+              </p>
+            </div>
+            
+            <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+              <h4 className="text-sm font-medium text-gray-800 mb-3 flex items-center">
+                <div className="w-1 h-4 bg-black rounded-full mr-2"></div>
+                Financial Information
+              </h4>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-3 bg-white p-3 rounded-lg">
+                  <div className="p-1.5 bg-green-50 rounded-lg">
+                    <DollarSign className="text-green-600" size={16} />
+                  </div>
+                  <div>
+                    <span className="text-xs block text-gray-500">Revenue (Last 12 Months):</span>
+                    <span className="font-medium text-gray-900">
+                      ${pitch.revenue_last_12_months ? parseFloat(pitch.revenue_last_12_months).toLocaleString() : "Not specified"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+              <h4 className="text-sm font-medium text-gray-800 mb-3 flex items-center">
+                <div className="w-1 h-4 bg-gray-400 rounded-full mr-2"></div>
+                Contact
+              </h4>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-3 bg-white p-3 rounded-lg">
+                  <div className="p-1.5 bg-gray-50 rounded-lg">
+                    <Mail className="text-gray-600" size={16} />
+                  </div>
+                  <div>
+                    <span className="text-xs block text-gray-500">Contact Person:</span>
+                    <span className="font-medium text-gray-900 text-sm">{pitch.contact_person_name || "Not provided"}</span>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3 bg-white p-3 rounded-lg">
+                  <div className="p-1.5 bg-gray-50 rounded-lg">
+                    <Mail className="text-gray-600" size={16} />
+                  </div>
+                  <div>
+                    <span className="text-xs block text-gray-500">Email:</span>
+                    <span className="font-medium text-gray-900 text-sm">{pitch.contact_person_email || "Not provided"}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {(pitch.pitch_deck_file || pitch.business_plan_file || pitch.pitch_video) && (
+            <div className="mt-6">
+              <h4 className="text-sm font-medium text-gray-800 mb-3">Supporting Documents</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                {pitch.pitch_deck_file && (
+                  <div className="flex items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors group">
+                    <div className="p-2 bg-gray-50 rounded-lg mr-3 group-hover:bg-green-50 transition-colors">
+                      <FileText size={16} className="text-gray-500 group-hover:text-green-500 transition-colors" />
+                    </div>
+                    <div className="truncate flex-grow">
+                      <p className="text-sm font-medium text-gray-900 truncate">Pitch Deck</p>
+                      <p className="text-xs text-gray-500">PDF Document</p>
+                    </div>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onContinueToPitchDeck(pitch.pitch_deck_file);
+                      }}
+                      className="ml-2 text-sm text-green-600 hover:text-green-700 flex items-center"
+                    >
+                      <ExternalLink size={14} className="mr-1" />
+                      View
+                    </button>
+                  </div>
+                )}
+                {pitch.business_plan_file && (
+                  <a
+                    href={pitch.business_plan_file}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors group"
+                  >
+                    <div className="p-2 bg-gray-50 rounded-lg mr-3 group-hover:bg-green-50 transition-colors">
+                      <FileText size={16} className="text-gray-500 group-hover:text-green-500 transition-colors" />
+                    </div>
+                    <div className="truncate">
+                      <p className="text-sm font-medium text-gray-900 truncate">Business Plan</p>
+                      <p className="text-xs text-gray-500">PDF Document</p>
+                    </div>
+                  </a>
+                )}
+                {pitch.pitch_video && (
+                  <a
+                    href={pitch.pitch_video}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors group"
+                  >
+                    <div className="p-2 bg-gray-50 rounded-lg mr-3 group-hover:bg-green-50 transition-colors">
+                      <FileText size={16} className="text-gray-500 group-hover:text-green-500 transition-colors" />
+                    </div>
+                    <div className="truncate">
+                      <p className="text-sm font-medium text-gray-900 truncate">Pitch Video</p>
+                      <p className="text-xs text-gray-500">Video</p>
+                    </div>
+                  </a>
+                )}
+              </div>
             </div>
           )}
-          <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-50 group-hover:bg-green-50 transition-colors">
-            <ChevronDown
-              size={18}
-              className={`text-gray-400 group-hover:text-green-500 transition-transform duration-200 ${
-                isOpen ? "transform rotate-180" : ""
-              }`}
-            />
-          </div>
         </div>
-      </div>
+      )}
     </div>
-    
-    {isOpen && (
-      <div className="px-5 pb-5 border-t border-gray-100 pt-4">
-        <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
-            <h4 className="text-sm font-medium text-gray-800 mb-3 flex items-center">
-              <div className="w-1 h-4 bg-green-400 rounded-full mr-2"></div>
-              Overview
-            </h4>
-            <p className="text-gray-600 text-sm">
-              <strong>Stage:</strong> {pitch.stage || "Not specified"}<br />
-              <strong>Social Impact:</strong> {pitch.social_impact_areas || "Not specified"}<br />
-              <strong>Traction KPIs:</strong> {pitch.traction_kpis || "Not specified"}<br />
-              <strong>Team Experience:</strong> {pitch.team_experience_avg_years} {pitch.team_experience_avg_years === 1 ? 'year' : 'years'} average
-            </p>
-          </div>
-          
-          <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
-            <h4 className="text-sm font-medium text-gray-800 mb-3 flex items-center">
-              <div className="w-1 h-4 bg-black rounded-full mr-2"></div>
-              Financial Information
-            </h4>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-3 bg-white p-3 rounded-lg">
-                <div className="p-1.5 bg-green-50 rounded-lg">
-                  <DollarSign className="text-green-600" size={16} />
-                </div>
-                <div>
-                  <span className="text-xs block text-gray-500">Revenue (Last 12 Months):</span>
-                  <span className="font-medium text-gray-900">
-                    ${pitch.revenue_last_12_months ? parseFloat(pitch.revenue_last_12_months).toLocaleString() : "Not specified"}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
-            <h4 className="text-sm font-medium text-gray-800 mb-3 flex items-center">
-              <div className="w-1 h-4 bg-gray-400 rounded-full mr-2"></div>
-              Contact
-            </h4>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-3 bg-white p-3 rounded-lg">
-                <div className="p-1.5 bg-gray-50 rounded-lg">
-                  <Mail className="text-gray-600" size={16} />
-                </div>
-                <div>
-                  <span className="text-xs block text-gray-500">Contact Person:</span>
-                  <span className="font-medium text-gray-900 text-sm">{pitch.contact_person_name || "Not provided"}</span>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3 bg-white p-3 rounded-lg">
-                <div className="p-1.5 bg-gray-50 rounded-lg">
-                  <Mail className="text-gray-600" size={16} />
-                </div>
-                <div>
-                  <span className="text-xs block text-gray-500">Email:</span>
-                  <span className="font-medium text-gray-900 text-sm">{pitch.contact_person_email || "Not provided"}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {(pitch.pitch_deck_file || pitch.business_plan_file || pitch.pitch_video) && (
-          <div className="mt-6">
-            <h4 className="text-sm font-medium text-gray-800 mb-3">Supporting Documents</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-              {pitch.pitch_deck_file && (
-                <a
-                  href={pitch.pitch_deck_file}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors group"
-                >
-                  <div className="p-2 bg-gray-50 rounded-lg mr-3 group-hover:bg-green-50 transition-colors">
-                    <FileText size={16} className="text-gray-500 group-hover:text-green-500 transition-colors" />
-                  </div>
-                  <div className="truncate">
-                    <p className="text-sm font-medium text-gray-900 truncate">Pitch Deck</p>
-                    <p className="text-xs text-gray-500">PDF Document</p>
-                  </div>
-                </a>
-              )}
-              {pitch.business_plan_file && (
-                <a
-                  href={pitch.business_plan_file}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors group"
-                >
-                  <div className="p-2 bg-gray-50 rounded-lg mr-3 group-hover:bg-green-50 transition-colors">
-                    <FileText size={16} className="text-gray-500 group-hover:text-green-500 transition-colors" />
-                  </div>
-                  <div className="truncate">
-                    <p className="text-sm font-medium text-gray-900 truncate">Business Plan</p>
-                    <p className="text-xs text-gray-500">PDF Document</p>
-                  </div>
-                </a>
-              )}
-              {pitch.pitch_video && (
-                <a
-                  href={pitch.pitch_video}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors group"
-                >
-                  <div className="p-2 bg-gray-50 rounded-lg mr-3 group-hover:bg-green-50 transition-colors">
-                    <FileText size={16} className="text-gray-500 group-hover:text-green-500 transition-colors" />
-                  </div>
-                  <div className="truncate">
-                    <p className="text-sm font-medium text-gray-900 truncate">Pitch Video</p>
-                    <p className="text-xs text-gray-500">Video</p>
-                  </div>
-                </a>
-              )}
-            </div>
-          </div>
-        )}
-        
-        <div className="mt-6 flex justify-end space-x-3">
-          <button className="px-4 py-2 bg-green-50 text-green-700 rounded-full text-sm hover:bg-green-100 transition-colors">
-            <CheckCircle size={16} className="inline-block mr-1.5" />
-            Express Interest
-          </button>
-        </div>
-      </div>
-    )}
-  </div>
-);
+  );
+};
 
 export default PitchesOutlet;
