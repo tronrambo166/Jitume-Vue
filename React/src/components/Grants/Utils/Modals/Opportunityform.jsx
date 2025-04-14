@@ -133,9 +133,41 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
     }
   };
 
+  const validateAllFields = () => {
+    // Step 1 validation
+    if (!formData.offer_title || !formData.total_capital_available || !formData.per_startup_allocation || !formData.milestone_requirements) {
+      setNotification({
+        type: 'error',
+        message: 'Missing basic details. Please complete Step 1.'
+      });
+      return false;
+    }
+    
+    // Step 2 validation
+    if (!formData.startup_stage || formData.sectors.length === 0 || formData.regions.length === 0) {
+      setNotification({
+        type: 'error',
+        message: 'Missing targeting details. Please complete Step 2.'
+      });
+      return false;
+    }
+    
+    // Step 3 doesn't have required fields, but we need to ensure the user has gone through all steps
+    if (step < 3) {
+      setNotification({
+        type: 'error',
+        message: 'Please complete all steps before submitting.'
+      });
+      return false;
+    }
+    
+    return true;
+  };
+
+  // Also, enhance the validateStep function to be more thorough:
   const validateStep = (currentStep) => {
     if (currentStep === 1) {
-      if (!formData.offer_title || !formData.total_capital_available || !formData.per_startup_allocation) {
+      if (!formData.offer_title || !formData.total_capital_available || !formData.per_startup_allocation || !formData.milestone_requirements) {
         setNotification({
           type: 'error',
           message: 'Please complete all required fields'
@@ -165,8 +197,17 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
   const prevStep = () => {
     setStep(step - 1);
   };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+
+  // FIX: Use a separate function for submit button click to prevent immediate form submission
+  const handleSubmitClick = async (e) => {
+    e.preventDefault(); // Prevent the default form submission
+    
+    // Check if all steps are complete and required fields are filled
+    if (!validateAllFields()) {
+      setTimeout(() => setNotification(null), 5000);
+      return;
+    }
+    
     setIsSubmitting(true);
   
     try {
@@ -218,6 +259,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
         type: 'error',
         message: error.response?.data?.message || 'Failed to create investment opportunity'
       });
+      setTimeout(() => setNotification(null), 5000);
     } finally {
       setIsSubmitting(false);
     }
@@ -335,7 +377,8 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
         <div className="p-6 overflow-y-auto" style={{ maxHeight: 'calc(90vh - 190px)' }}>
           {renderNotification()}
           
-          <form onSubmit={handleSubmit} className="space-y-6">
+          {/* FIX: Changed onSubmit={handleSubmit} to avoid automatic form submission */}
+          <form className="space-y-6">
             {/* Step 1: Core Investment Details */}
             {step === 1 && (
               <div className="space-y-6">
@@ -625,6 +668,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                         onKeyDown={(e) => {
                           if (e.key === 'Enter') {
                             e.preventDefault();
+                            e.preventDefault();
                             const added = handleCustomOption('required_docs', e.target.value.trim());
                             if (added) e.target.value = '';
                           }
@@ -647,92 +691,93 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
               </div>
             )}
 
-            {/* Step 3: Market Analysis & Submit */}
+            {/* Step 3: Market Analysis & Finalize */}
             {step === 3 && (
               <div className="space-y-6">
                 {marketInsights && (
-                  <div>
-                    <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-lg font-semibold text-neutral-800">Market Intelligence</h3>
+                  <div className="mb-6">
+                    <div className="flex justify-between items-center mb-2">
+                      <h3 className="text-lg font-medium text-neutral-800">Market Analysis</h3>
                       <button
                         type="button"
                         onClick={() => setShowAnalytics(!showAnalytics)}
-                        className="text-sm text-neutral-600 hover:text-neutral-800 flex items-center"
+                        className="text-sm flex items-center text-neutral-600 hover:text-neutral-800"
                       >
-                        <BarChart4 size={18} className="mr-1" />
-                        {showAnalytics ? 'Hide Details' : 'Show Details'}
+                        {showAnalytics ? "Hide details" : "Show details"}
+                        <ChevronDown 
+                          size={16} 
+                          className={`ml-1 transition-transform ${showAnalytics ? 'rotate-180' : ''}`} 
+                        />
                       </button>
                     </div>
                     
-                    <div className="bg-neutral-50 p-5 rounded-xl border border-neutral-200 mb-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
-                        <div className="flex items-start gap-3">
-                          <div className="p-2 bg-neutral-200 rounded-full">
-                            <TrendingUp size={16} className="text-neutral-700" />
-                          </div>
-                          <div>
-                            <span className="block text-sm text-neutral-500">Average Growth Rate</span>
-                            <span className="text-lg font-medium text-neutral-800">{marketInsights.averageGrowth}</span>
-                          </div>
+                    <div className={`rounded-lg border border-neutral-200 overflow-hidden transition-all duration-300 ${
+                      showAnalytics ? 'max-h-[800px]' : 'max-h-16'
+                    }`}>
+                      <div className="p-4 bg-neutral-50 border-b border-neutral-200 flex items-center justify-between">
+                        <div className="flex items-center">
+                          <BarChart4 size={20} className="text-neutral-700 mr-2" />
+                          <span className="font-medium text-neutral-700">AI-Powered Investment Market Analysis</span>
                         </div>
-                        
-                        <div className="flex items-start gap-3">
-                          <div className="p-2 bg-neutral-200 rounded-full">
-                            <DollarSign size={16} className="text-neutral-700" />
-                          </div>
-                          <div>
-                            <span className="block text-sm text-neutral-500">Potential ROI</span>
-                            <span className="text-lg font-medium text-neutral-800">{marketInsights.potentialROI}</span>
-                          </div>
+                        <div className="text-xs px-2 py-1 bg-neutral-200 text-neutral-600 rounded-full">
+                          <Clock size={12} className="inline mr-1" /> Updated just now
                         </div>
-                        
-                        {showAnalytics && (
-                          <>
-                            <div className="flex items-start gap-3">
-                              <div className="p-2 bg-neutral-200 rounded-full">
-                                <Clock size={16} className="text-neutral-700" />
-                              </div>
-                              <div>
-                                <span className="block text-sm text-neutral-500">Est. Time to Exit</span>
-                                <span className="text-lg font-medium text-neutral-800">{marketInsights.timeToExit}</span>
-                              </div>
-                            </div>
-
-                            <div className="flex items-start gap-3">
-                              <div className="p-2 bg-neutral-200 rounded-full">
-                                <AlertTriangle size={16} className="text-neutral-700" />
-                              </div>
-                              <div>
-                                <span className="block text-sm text-neutral-500">Risk Level</span>
-                                <span className="text-lg font-medium text-neutral-800">{marketInsights.riskLevel}</span>
-                              </div>
-                            </div>
-
-                            <div className="flex items-start gap-3">
-                              <div className="p-2 bg-neutral-200 rounded-full">
-                                <Target size={16} className="text-neutral-700" />
-                              </div>
-                              <div>
-                                <span className="block text-sm text-neutral-500">Recommended Allocation</span>
-                                <span className="text-lg font-medium text-neutral-800">{marketInsights.recommendedAllocation}</span>
-                              </div>
+                      </div>
+                      
+                      <div className="p-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <h4 className="text-sm font-medium text-neutral-500 mb-1">Trending Sectors</h4>
+                            <div className="flex flex-wrap gap-2 mb-4">
+                              {marketInsights.trendingSectors.map(sector => (
+                                <div 
+                                  key={sector} 
+                                  className="flex items-center px-3 py-1 rounded-full text-sm bg-neutral-100 text-neutral-700"
+                                >
+                                  <Zap size={12} className="mr-1 text-amber-500" />
+                                  {sector}
+                                </div>
+                              ))}
                             </div>
                             
-                            {marketInsights.trendingSectors.length > 0 && (
-                              <div className="flex items-start gap-3">
-                                <div className="p-2 bg-neutral-200 rounded-full">
-                                  <Zap size={16} className="text-neutral-700" />
-                                </div>
-                                <div>
-                                  <span className="block text-sm text-neutral-500">Hot Sectors</span>
-                                  <span className="text-lg font-medium text-neutral-800">
-                                    {marketInsights.trendingSectors.join(', ')}
-                                  </span>
-                                </div>
+                            <h4 className="text-sm font-medium text-neutral-500 mb-1">Growth Projection</h4>
+                            <p className="text-lg font-medium text-neutral-800 mb-4">
+                              {marketInsights.averageGrowth} <span className="text-sm text-neutral-500">annual growth</span>
+                            </p>
+                            
+                            <h4 className="text-sm font-medium text-neutral-500 mb-1">Potential ROI</h4>
+                            <p className="text-lg font-medium text-neutral-800 mb-4">
+                              {marketInsights.potentialROI} <span className="text-sm text-neutral-500">expected return</span>
+                            </p>
+                          </div>
+                          
+                          <div>
+                            <h4 className="text-sm font-medium text-neutral-500 mb-1">Expected Capital Growth</h4>
+                            <p className="text-lg font-medium text-neutral-800 mb-4">
+                              {formatCurrency(marketInsights.expectedCapital)} <span className="text-sm text-neutral-500">by next year</span>
+                            </p>
+                            
+                            <h4 className="text-sm font-medium text-neutral-500 mb-1">Recommended Allocation</h4>
+                            <p className="text-lg font-medium text-neutral-800 mb-4">
+                              {marketInsights.recommendedAllocation} <span className="text-sm text-neutral-500">per startup</span>
+                            </p>
+                            
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <h4 className="text-sm font-medium text-neutral-500 mb-1">Risk Level</h4>
+                                <p className="text-base font-medium text-neutral-800">
+                                  {marketInsights.riskLevel}
+                                </p>
                               </div>
-                            )}
-                          </>
-                        )}
+                              <div>
+                                <h4 className="text-sm font-medium text-neutral-500 mb-1">Time to Exit</h4>
+                                <p className="text-base font-medium text-neutral-800">
+                                  {marketInsights.timeToExit}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -740,117 +785,109 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
 
                 <div>
                   <label className="block text-sm font-medium text-neutral-700 mb-2">
-                    Investment Brief (Optional)
+                    Upload Brief (Optional)
                   </label>
-                  <div className="border-2 border-dashed border-neutral-300 rounded-lg p-6 text-center">
+                  <div className="border border-dashed border-neutral-300 rounded-lg p-4 text-center hover:bg-neutral-50 cursor-pointer transition-colors">
                     <input
                       type="file"
-                      id="offer_brief_file"
+                      id="fileUpload"
                       className="hidden"
                       onChange={handleFileChange}
                       accept=".pdf,.doc,.docx"
                     />
-                    {!formData.offer_brief_file ? (
-                      <label 
-                        htmlFor="offer_brief_file" 
-                        className="cursor-pointer flex flex-col items-center text-neutral-600"
-                      >
-                        <Upload size={32} className="mb-2" />
-                        <span className="text-sm font-medium">Upload investment brief</span>
-                        <span className="text-xs text-neutral-500 mt-1">PDF, DOC or DOCX (max 5MB)</span>
-                      </label>
-                    ) : (
-                      <div className="flex items-center justify-between bg-neutral-50 p-3 rounded-lg">
-                        <div className="flex items-center">
-                          <FileText size={20} className="text-neutral-600 mr-2" />
-                          <span className="text-sm font-medium truncate max-w-xs">
-                            {formData.offer_brief_file.name}
-                          </span>
-                        </div>
-                        <button
-                          type="button"
-                          className="p-1 hover:bg-neutral-200 rounded-full"
-                          onClick={() => setFormData({...formData, offer_brief_file: null})}
-                        >
-                          <X size={16} />
-                        </button>
-                      </div>
-                    )}
+                    <label htmlFor="fileUpload" className="cursor-pointer flex flex-col items-center">
+                      <Upload size={32} className="text-neutral-400 mb-2" />
+                      <p className="text-neutral-700 font-medium">
+                        {formData.offer_brief_file ? formData.offer_brief_file.name : 'Upload detailed brief'}
+                      </p>
+                      <p className="text-sm text-neutral-500 mt-1">
+                        Supported formats: PDF, DOC, DOCX (max 5MB)
+                      </p>
+                    </label>
                   </div>
                 </div>
 
-                <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-                  <h3 className="text-lg font-medium mb-3">Investment Summary</h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-sm text-neutral-600">Opportunity Title</span>
-                      <span className="text-sm font-medium">{formData.offer_title}</span>
+                <div className="bg-neutral-50 p-4 rounded-lg border border-neutral-200">
+                  <h3 className="font-medium text-neutral-800 mb-2">Investment Opportunity Summary</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-neutral-600 mb-1">Opportunity Title</p>
+                      <p className="font-medium text-neutral-800">{formData.offer_title}</p>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-neutral-600">Total Capital</span>
-                      <span className="text-sm font-medium">{formatCurrency(formData.total_capital_available)}</span>
+                    <div>
+                      <p className="text-sm text-neutral-600 mb-1">Total Capital</p>
+                      <p className="font-medium text-neutral-800">{formatCurrency(formData.total_capital_available)}</p>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-neutral-600">Per Startup</span>
-                      <span className="text-sm font-medium">{formatCurrency(formData.per_startup_allocation)}</span>
+                    <div>
+                      <p className="text-sm text-neutral-600 mb-1">Per Startup</p>
+                      <p className="font-medium text-neutral-800">{formatCurrency(formData.per_startup_allocation)}</p>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-neutral-600">Stage</span>
-                      <span className="text-sm font-medium">{formData.startup_stage}</span>
+                    <div>
+                      <p className="text-sm text-neutral-600 mb-1">Startup Stage</p>
+                      <p className="font-medium text-neutral-800">{formData.startup_stage}</p>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-neutral-600">Sectors</span>
-                      <span className="text-sm font-medium">{formData.sectors.join(', ')}</span>
+                    <div>
+                      <p className="text-sm text-neutral-600 mb-1">Sectors</p>
+                      <p className="font-medium text-neutral-800">{formData.sectors.join(', ')}</p>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-neutral-600">Regions</span>
-                      <span className="text-sm font-medium">{formData.regions.join(', ')}</span>
+                    <div>
+                      <p className="text-sm text-neutral-600 mb-1">Regions</p>
+                      <p className="font-medium text-neutral-800">{formData.regions.join(', ')}</p>
                     </div>
                   </div>
                 </div>
               </div>
             )}
-
-            {/* Footer with navigation buttons */}
-            <div className="px-6 py-4 bg-neutral-50 border-t border-neutral-200 flex justify-between">
-              <div>
-                {step > 1 && (
-                  <button
-                    type="button"
-                    onClick={prevStep}
-                    disabled={isSubmitting}
-                    className="px-5 py-2.5 bg-white border border-neutral-300 rounded-lg text-neutral-700 font-medium hover:bg-neutral-50 transition-colors"
-                  >
-                    Previous
-                  </button>
-                )}
-              </div>
-              <div>
-                {step < 3 ? (
-                  <button
-                    type="button"
-                    onClick={nextStep}
-                    className="px-5 py-2.5 bg-neutral-800 text-white rounded-lg font-medium hover:bg-neutral-700 transition-colors"
-                  >
-                    Next
-                  </button>
-                ) : (
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="px-5 py-2.5 bg-green-800 text-white rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center gap-2"
-                  >
-                    {isSubmitting ? 'Publishing...' : 'Publish Opportunity'}
-                    {isSubmitting && (
-                      <div className="w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
-                    )}
-                  </button>
-                )}
-              </div>
-            </div>
           </form>
+              {/* Footer controls */}
+        <div className="flex justify-between items-center px-6 py-4 bg-neutral-50 border-t border-neutral-200">
+          {step > 1 ? (
+            <button
+              type="button"
+              onClick={prevStep}
+              className="px-4 py-2 text-neutral-600 border border-neutral-300 rounded-lg hover:bg-neutral-100 transition-colors"
+            >
+              Back
+            </button>
+          ) : (
+            <div></div>
+          )}
+          
+          {step < 3 ? (
+            <button
+              type="button"
+              onClick={nextStep}
+              className="px-6 py-2 bg-neutral-800 text-white rounded-lg hover:bg-neutral-700 transition-colors"
+            >
+              Continue
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={handleSubmitClick}
+              disabled={isSubmitting}
+              className={`px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center ${
+                isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
+              }`}
+            >
+              {isSubmitting ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Publishing...
+                </>
+              ) : (
+                'Publish Opportunity'
+              )}
+            </button>
+          )}
         </div>
       </div>
+        </div>
+
+    
     </div>
   );
 };

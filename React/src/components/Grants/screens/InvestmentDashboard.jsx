@@ -87,42 +87,45 @@ const InvestmentOpportunities = () => {
         setIsAddingOpportunity(!isAddingOpportunity);
     };
 
-    const handleDelete = async (id) => {
-        const confirmDelete = window.confirm(
-            "Are you sure you want to delete this opportunity?"
-        );
-        if (!confirmDelete) return;
-
+    const [deleteId, setDeleteId] = useState(null);
+    
+    const handleDeleteClick = (id) => {
+        setDeleteId(id);
+        setShowModal(true);
+    };
+    
+    const handleConfirmDelete = async () => {
+        if (!deleteId) return;
+    
         setIsLoading(true);
         setError(null);
-
+    
         try {
             const response = await axiosClient.get(
-                `capital/delete-capital/${id}`,
+                `capital/delete-capital/${deleteId}`,
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        // Add any required auth headers
                     },
                 }
             );
-
+    
             if (response.status === 200 || response.status === 204) {
-                setOpportunities((prev) => prev.filter((opp) => opp.id !== id));
+                setOpportunities((prev) => prev.filter((opp) => opp.id !== deleteId));
                 console.log("Successfully deleted opportunity");
             } else {
                 throw new Error("Unexpected response from server");
             }
         } catch (err) {
             console.error("Delete error:", err.response?.data || err.message);
-            setError(
-                err.response?.data?.message || "Failed to delete opportunity"
-            );
+            setError(err.response?.data?.message || "Failed to delete opportunity");
         } finally {
             setIsLoading(false);
+            setShowModal(false);
+            setDeleteId(null);
         }
     };
-
+    
     // Fetch investor preferences
     useEffect(() => {
         const fetchPreferences = async () => {
@@ -669,14 +672,13 @@ const InvestmentOpportunities = () => {
                                 >
                                     <div className="flex-grow w-full">
                                         {user?.investor && ( // Changed to proper conditional rendering
-                                            <button
-                                                onClick={() =>
-                                                    handleDelete(opp.id)
-                                                }
-                                                className="text-red-500 bg-neutral-100 rounded-full font-semibold py-4 px-4"
-                                            >
-                                                <Trash />
-                                            </button>
+                                           <button
+                                           onClick={() => handleDeleteClick(opp.id)}
+                                           className="text-red-500 bg-neutral-100 rounded-full font-semibold py-4 px-4"
+                                       >
+                                           <Trash />
+                                       </button>
+                                       
                                         )}
                                         <div className="flex flex-col md:flex-row md:items-center mb-4 gap-2 md:gap-4">
                                             <h2 className="text-xl font-medium">
@@ -864,6 +866,59 @@ const InvestmentOpportunities = () => {
                     </div>
                 )}
             </div>
+            {showModal && (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm">
+            {isLoading ? (
+                <div className="flex flex-col items-center">
+                    <svg
+                        className="animate-spin h-8 w-8 text-red-500 mb-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                        />
+                        <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v8H4z"
+                        />
+                    </svg>
+                    <p className="text-gray-700">Deleting opportunity...</p>
+                </div>
+            ) : (
+                <>
+                    <p className="text-gray-800 mb-4">
+                        Are you sure you want to delete this opportunity?
+                    </p>
+                    <div className="flex justify-end space-x-4">
+                        <button
+                            onClick={() => setShowModal(false)}
+                            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={handleConfirmDelete}
+                            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                        >
+                            Confirm
+                        </button>
+                    </div>
+                </>
+            )}
+        </div>
+    </div>
+)}
+
+
         </div>
     );
 };
