@@ -365,19 +365,27 @@ const Navigation = {
                           label: "Grants Funding",
                           to: "/grants-overview/grants",
                           children: [
-                              {
-                                  label: "Discover Grants",
-                                  to: "/grants-overview/grants/discover",
-                              },
+                              //   {
+                              //       label: "Discover Grants",
+                              //       to: "/grants-overview/grants/discover",
+                              //   },
                               ...(user?.investor
                                   ? [
-                                        // Only show Pitch-Deck if user.investor exists
+                                        {
+                                            label: "Add New Grant",
+                                            to: "/grants-overview/grants/discover",
+                                        },
                                         {
                                             label: "Pitch-Deck",
                                             to: "/grants-overview/pitch",
                                         },
                                     ]
-                                  : []),
+                                  : [
+                                        {
+                                            label: "Apply for Grant",
+                                            to: "/grants-overview/grants/discover",
+                                        },
+                                    ]),
                           ],
                       },
                   ]
@@ -390,10 +398,19 @@ const Navigation = {
                           label: "Investment Funding",
                           to: "/grants-overview/funding",
                           children: [
-                              {
-                                  label: "Investment Portal",
-                                  to: "/grants-overview/funding/investments",
-                              },
+                              ...(user?.investor
+                                  ? [
+                                        {
+                                            label: "Add New Capital",
+                                            to: "/grants-overview/funding/investments",
+                                        },
+                                    ]
+                                  : [
+                                        {
+                                            label: "Apply For Capital",
+                                            to: "/grants-overview/funding/investments",
+                                        },
+                                    ]),
                           ],
                       },
                   ]

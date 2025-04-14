@@ -31,7 +31,7 @@ const Sidebar = ({ onToggle }) => {
     const [isOpen, setIsOpen] = useState(false);
     const sidebarRef = useRef(null);
     const [subId, setSubId] = useState(null);
-    const { user } = useStateContext();
+    const [user, setUser] = useState({});
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
@@ -51,6 +51,21 @@ const Sidebar = ({ onToggle }) => {
         }
     };
 
+    useEffect(() => {
+        const fetchUserData = async () => {
+            // setLoading(true);
+            try {
+                const { data } = await axiosClient.get("/checkAuth");
+                setUser(data.user);
+            } catch (error) {
+            } finally {
+                // setLoading(false);
+            }
+        };
+
+        fetchUserData();
+    }, []);
+ 
     useEffect(() => {
         axiosClient.get("business/getCurrSubscription/").then((data) => {
             console.log(data);
@@ -481,6 +496,7 @@ const Sidebar = ({ onToggle }) => {
                                     )}
                                 </NavLink>
                             </li>
+                            <hr></hr>
                             {!user.investor && (
                                 <li className="nav-item mb-6 rounded-xl py-2">
                                     {/* Added margin-bottom (mb-6) to move it up from the bottom */}
@@ -506,7 +522,10 @@ const Sidebar = ({ onToggle }) => {
                                                     }`}
                                                 />
                                                 {!isShrunk && (
-                                                    <span>Explore Grants & Capital Investments </span>
+                                                    <span>
+                                                        Explore Grants & Capital
+                                                        Investments{" "}
+                                                    </span>
                                                 )}
                                             </>
                                         )}
