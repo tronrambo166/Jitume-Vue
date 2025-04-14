@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, ChevronDown, ChevronUp, Play, Download, Users, BarChart, FileText, Star, Search, Filter, Bell, Calendar, TrendingUp, Clock, Bookmark, CheckCircle, Trash2, Flag } from 'lucide-react';
+import axiosClient from "../../../axiosClient";
 
 const PitchDashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -10,6 +11,8 @@ const PitchDashboard = () => {
   const [selectedTab, setSelectedTab] = useState('all');
   const [pitches, setPitches] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   
   // Royalty-free images and video links
   const mediaAssets = {
@@ -26,35 +29,65 @@ const PitchDashboard = () => {
 
   // Sample data with image URLs
   useEffect(() => {
-    const samplePitches = [
-      { id: 1, name: "NeuralLink AI", sector: "Artificial Intelligence", matchScore: 94, status: "New", date: "2025-03-28", favorite: true, image: mediaAssets.thumbnails[0], team: [
-        { name: "Jane Doe", role: "CEO & Co-Founder", initials: "JD" },
-        { name: "John Smith", role: "CTO & Co-Founder", initials: "JS" }
-      ]},
-      { id: 2, name: "EcoSphere", sector: "CleanTech", matchScore: 87, status: "In Review", date: "2025-03-25", favorite: false, image: mediaAssets.thumbnails[1], team: [
-        { name: "Alice Rodriguez", role: "CEO", initials: "AR" },
-        { name: "Michael Chen", role: "CTO", initials: "MC" }
-      ]},
-      { id: 3, name: "QuantumVault", sector: "Fintech", matchScore: 82, status: "New", date: "2025-03-22", favorite: false, image: mediaAssets.thumbnails[2], team: [
-        { name: "David Wilson", role: "Founder", initials: "DW" },
-        { name: "Sarah Johnson", role: "Head of Product", initials: "SJ" }
-      ]},
-      { id: 4, name: "MediSync", sector: "HealthTech", matchScore: 91, status: "Accepted", date: "2025-03-20", favorite: true, image: mediaAssets.thumbnails[3], team: [
-        { name: "Robert Brown", role: "CEO", initials: "RB" },
-        { name: "Emily Davis", role: "CMO", initials: "ED" }
-      ]},
-      { id: 5, name: "SpaceX Vision", sector: "Space Technology", matchScore: 89, status: "In Review", date: "2025-03-18", favorite: false, image: mediaAssets.thumbnails[4], team: [
-        { name: "Thomas Lee", role: "Founder", initials: "TL" },
-        { name: "Jennifer Park", role: "Lead Engineer", initials: "JP" }
-      ]},
-      { id: 6, name: "GreenHarvest", sector: "AgriTech", matchScore: 78, status: "Rejected", date: "2025-03-15", favorite: false, image: mediaAssets.thumbnails[5], team: [
-        { name: "Daniel Kim", role: "CEO", initials: "DK" },
-        { name: "Lisa Wong", role: "Head of R&D", initials: "LW" }
-      ]},
-    ];
-    setPitches(samplePitches);
+    const fetchPitches = async () => {
+      setIsLoading(true);
+      setError(null);
+  
+      try {
+        const response = await axiosClient.get("/capital/capital-offers");
+  
+        // Log the response to check if it's available
+        console.log("API Response:", response);
+  
+        // Check if the response is valid
+        if (!response || !response.data || !Array.isArray(response.data.capital)) {
+          throw new Error("Invalid data structure from API");
+        }
+  
+        const rawData = response.data.capital || [];
+  
+        const cleanedData = rawData.map((pitch) => ({
+          ...pitch,
+          grantTitle: pitch.grant_title || "",
+          totalGrantAmount: pitch.total_grant_amount
+            ? Number(pitch.total_grant_amount).toLocaleString()
+            : "N/A",
+          applicationDeadline: pitch.application_deadline || "No deadline",
+          createdAt: pitch.created_at || "",
+          grantFocus: pitch.grant_focus || "",
+          eligibilityCriteria: pitch.eligibility_criteria || "",
+          evaluationCriteria: pitch.evaluation_criteria || "",
+          impactObjectives: pitch.impact_objectives || "",
+          grantBriefPdf: pitch.grant_brief_pdf || "",
+          fundingPerBusiness:
+            pitch.funding_per_business === "N/A"
+              ? "N/A"
+              : Number(pitch.funding_per_business).toLocaleString(),
+          requiredDocuments: pitch.documentsRequired?.length
+            ? pitch.documentsRequired.join(", ")
+            : "No documents required",
+        }));
+  
+        setPitches(cleanedData);
+        console.log("Cleaned Data:", cleanedData);
+  
+      } catch (err) {
+        console.error("Failed to fetch pitches:", err);
+        // Provide a more detailed error message
+        const errorMessage =
+          err.code === "ECONNABORTED"
+            ? "The request timed out. Please try again."
+            : err.message || "Failed to load pitch opportunities. Please try again later.";
+  
+        setError(errorMessage);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    fetchPitches();
   }, []);
-
+  
   // Check for mobile view
   useEffect(() => {
     const handleResize = () => {
@@ -390,59 +423,65 @@ const PitchDashboard = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {filteredPitches.map((pitch) => (
-                    <tr key={pitch.id} className="hover:bg-gray-50">
-                      <td className="px-4 md:px-6 py-3 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <button 
-                            onClick={() => toggleFavorite(pitch.id)}
-                            className={`mr-2 ${pitch.favorite ? 'text-green-500' : 'text-gray-300 hover:text-gray-400'}`}
-                          >
-                            <Bookmark size={14} fill={pitch.favorite ? "currentColor" : "none"} />
-                          </button>
-                          <div className="text-sm font-medium text-gray-900">{pitch.name}</div>
-                        </div>
-                      </td>
-                      <td className="px-4 md:px-6 py-3 whitespace-nowrap">
-                        <div className="text-sm text-gray-600">{pitch.sector}</div>
-                      </td>
-                      <td className="px-4 md:px-6 py-3 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className={`flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full ${getMatchColor(pitch.matchScore)}`}>
-                            <span className="text-xs md:text-sm font-medium">{pitch.matchScore}</span>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-4 md:px-6 py-3 whitespace-nowrap">
-                        <select 
-                          className={`text-xs md:text-sm rounded-full px-2 py-1 md:px-3 md:py-1 font-medium ${getStatusColor(pitch.status)}`}
-                          value={pitch.status}
-                          onChange={(e) => handleStatusChange(pitch.id, e.target.value)}
-                        >
-                          <option value="New">New</option>
-                          <option value="In Review">In Review</option>
-                          <option value="Accepted">Accepted</option>
-                          <option value="Rejected">Rejected</option>
-                        </select>
-                      </td>
-                      <td className="px-4 md:px-6 py-3 whitespace-nowrap">
-                        <div className="text-xs md:text-sm text-gray-500">{new Date(pitch.date).toLocaleDateString()}</div>
-                      </td>
-                      <td className="px-4 md:px-6 py-3 whitespace-nowrap text-right text-xs md:text-sm font-medium">
-                        <div className="flex items-center justify-end space-x-1 md:space-x-2">
-                          <button className="p-1 text-gray-400 hover:text-gray-600">
-                            <Flag size={14} />
-                          </button>
-                          <button 
-                            onClick={() => openModal(pitch)}
-                            className="text-white bg-gray-800 hover:bg-gray-900 px-2 py-1 md:px-4 md:py-2 rounded-lg transition-colors text-xs md:text-sm"
-                          >
-                            View Pitch
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                {filteredPitches.map((pitch) => (
+  <tr key={pitch.id} className="hover:bg-gray-50">
+    <td className="px-4 md:px-6 py-3 whitespace-nowrap">
+      <div className="flex items-center">
+        <button 
+          onClick={() => toggleFavorite(pitch.id)}
+          className={`mr-2 ${pitch.favorite ? 'text-green-500' : 'text-gray-300 hover:text-gray-400'}`}
+        >
+          <Bookmark size={14} fill={pitch.favorite ? "currentColor" : "none"} />
+        </button>
+        <div className="text-sm font-medium text-gray-900">{pitch.offer_title}</div>
+      </div>
+    </td>
+    <td className="px-4 md:px-6 py-3 whitespace-nowrap max-w-[200px] sm:max-w-[250px] lg:max-w-[400px] truncate">
+  <div 
+    className="text-sm text-gray-600 overflow-hidden text-ellipsis" 
+    title={pitch.sectors} // Tooltip on hover to show full text
+  >
+    {pitch.sectors.split(',').slice(0, 2).join(', ')}
+    {pitch.sectors.split(',').length > 2 && '...'}
+  </div>
+</td>
+
+    <td className="px-4 md:px-6 py-3 whitespace-nowrap">
+      <div className={`flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full ${getMatchColor(pitch.matchScore)}`}>
+        <span className="text-xs md:text-sm font-medium">{pitch.matchScore}</span>
+      </div>
+    </td>
+    <td className="px-4 md:px-6 py-3 whitespace-nowrap">
+      <select 
+        className={`text-xs md:text-sm rounded-full px-2 py-1 md:px-3 md:py-1 font-medium ${getStatusColor(pitch.status)}`}
+        value={pitch.status}
+        onChange={(e) => handleStatusChange(pitch.id, e.target.value)}
+      >
+        <option value="New">New</option>
+        <option value="In Review">In Review</option>
+        <option value="Accepted">Accepted</option>
+        <option value="Rejected">Rejected</option>
+      </select>
+    </td>
+    <td className="px-4 md:px-6 py-3 whitespace-nowrap">
+      <div className="text-xs md:text-sm text-gray-500">{new Date(pitch.createdAt).toLocaleDateString()}</div>
+    </td>
+    <td className="px-4 md:px-6 py-3 whitespace-nowrap text-right text-xs md:text-sm font-medium">
+      <div className="flex items-center justify-end space-x-1 md:space-x-2">
+        <button className="p-1 text-gray-400 hover:text-gray-600">
+          <Flag size={14} />
+        </button>
+        <button 
+          onClick={() => openModal(pitch)}
+          className="text-white bg-gray-800 hover:bg-gray-900 px-2 py-1 md:px-4 md:py-2 rounded-lg transition-colors text-xs md:text-sm"
+        >
+          View Pitch
+        </button>
+      </div>
+    </td>
+  </tr>
+))}
+
                 </tbody>
               </table>
             </div>
