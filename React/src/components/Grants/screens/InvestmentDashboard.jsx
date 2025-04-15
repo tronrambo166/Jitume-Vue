@@ -79,6 +79,9 @@ const InvestmentOpportunities = () => {
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
+    const [showModes, setshowModes] = useState(false);
+
+    const [selectedOpportunity, setSelectedOpportunity] = useState(null);
 
     const handleSuccess = () => {
         // Handle successful submission (e.g., show success message)
@@ -90,18 +93,18 @@ const InvestmentOpportunities = () => {
     };
 
     const [deleteId, setDeleteId] = useState(null);
-    
+
     const handleDeleteClick = (id) => {
         setDeleteId(id);
         setShowModal2(true);
     };
-    
+
     const handleConfirmDelete = async () => {
         if (!deleteId) return;
-    
+
         setIsLoading(true);
         setError(null);
-    
+
         try {
             const response = await axiosClient.get(
                 `capital/delete-capital/${deleteId}`,
@@ -111,23 +114,27 @@ const InvestmentOpportunities = () => {
                     },
                 }
             );
-    
+
             if (response.status === 200 || response.status === 204) {
-                setOpportunities((prev) => prev.filter((opp) => opp.id !== deleteId));
+                setOpportunities((prev) =>
+                    prev.filter((opp) => opp.id !== deleteId)
+                );
                 console.log("Successfully deleted opportunity");
             } else {
                 throw new Error("Unexpected response from server");
             }
         } catch (err) {
             console.error("Delete error:", err.response?.data || err.message);
-            setError(err.response?.data?.message || "Failed to delete opportunity");
+            setError(
+                err.response?.data?.message || "Failed to delete opportunity"
+            );
         } finally {
             setIsLoading(false);
             setShowModal2(false);
             setDeleteId(null);
         }
     };
-    
+
     // Fetch investor preferences
     useEffect(() => {
         const fetchPreferences = async () => {
@@ -674,13 +681,14 @@ const InvestmentOpportunities = () => {
                                 >
                                     <div className="flex-grow w-full">
                                         {user?.investor && ( // Changed to proper conditional rendering
-                                           <button
-                                           onClick={() => handleDeleteClick(opp.id)}
-                                           className="text-red-500 bg-neutral-100 rounded-full font-semibold py-4 px-4"
-                                       >
-                                           <Trash />
-                                       </button>
-                                       
+                                            <button
+                                                onClick={() =>
+                                                    handleDeleteClick(opp.id)
+                                                }
+                                                className="text-red-500 bg-neutral-100 rounded-full font-semibold py-4 px-4"
+                                            >
+                                                <Trash />
+                                            </button>
                                         )}
                                         <div className="flex flex-col md:flex-row md:items-center mb-4 gap-2 md:gap-4">
                                             <h2 className="text-xl font-medium">
@@ -816,28 +824,16 @@ const InvestmentOpportunities = () => {
                                             ) : (
                                                 <div>
                                                     <button
-                                                        onClick={() =>
-                                                            setShowModal(true)
-                                                        }
-                                                        className="px-4 py-2 bg-green-600 whitespace-nowrap  text-white rounded-md hover:bg-green-700"
+                                                        onClick={() => {
+                                                            setSelectedOpportunity(
+                                                                opp.id
+                                                            );
+                                                            setshowModes(true);
+                                                        }}
+                                                        className="px-4 py-2 bg-green-600 whitespace-nowrap text-white rounded-md hover:bg-green-700"
                                                     >
                                                         Apply for Investment
                                                     </button>
-
-                                                    {showModal && (
-                                                        <InvestmentApplicationModal
-                                                            businessId={123} // Your business ID
-                                                            capitalId={456} // The capital ID you're applying to
-                                                            onClose={() =>
-                                                                setShowModal(
-                                                                    false
-                                                                )
-                                                            }
-                                                            onSuccess={
-                                                                handleSuccess
-                                                            }
-                                                        />
-                                                    )}
                                                 </div>
                                             )}
                                         </div>
@@ -869,58 +865,69 @@ const InvestmentOpportunities = () => {
                 )}
             </div>
             {showModal2 && (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm">
-            {isLoading ? (
-                <div className="flex flex-col items-center">
-                    <svg
-                        className="animate-spin h-8 w-8 text-red-500 mb-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                    >
-                        <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                        />
-                        <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8v8H4z"
-                        />
-                    </svg>
-                    <p className="text-gray-700">Deleting opportunity...</p>
-                </div>
-            ) : (
-                <>
-                    <p className="text-gray-800 mb-4">
-                        Are you sure you want to delete this opportunity?
-                    </p>
-                    <div className="flex justify-end space-x-4">
-                        <button
-                            onClick={() => setShowModal2(false)}
-                            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            onClick={handleConfirmDelete}
-                            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                        >
-                            Confirm
-                        </button>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm">
+                        {isLoading ? (
+                            <div className="flex flex-col items-center">
+                                <svg
+                                    className="animate-spin h-8 w-8 text-red-500 mb-4"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <circle
+                                        className="opacity-25"
+                                        cx="12"
+                                        cy="12"
+                                        r="10"
+                                        stroke="currentColor"
+                                        strokeWidth="4"
+                                    />
+                                    <path
+                                        className="opacity-75"
+                                        fill="currentColor"
+                                        d="M4 12a8 8 0 018-8v8H4z"
+                                    />
+                                </svg>
+                                <p className="text-gray-700">
+                                    Deleting opportunity...
+                                </p>
+                            </div>
+                        ) : (
+                            <>
+                                <p className="text-gray-800 mb-4">
+                                    Are you sure you want to delete this
+                                    opportunity?
+                                </p>
+                                <div className="flex justify-end space-x-4">
+                                    <button
+                                        onClick={() => setShowModal2(false)}
+                                        className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onClick={handleConfirmDelete}
+                                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                                    >
+                                        Confirm
+                                    </button>
+                                </div>
+                            </>
+                        )}
                     </div>
-                </>
+                </div>
             )}
-        </div>
-    </div>
-)}
-
-
+            {showModes && selectedOpportunity && (
+                <InvestmentApplicationModal
+                    capitalId={selectedOpportunity}
+                    onClose={() => {
+                        setshowModes(false);
+                        setSelectedOpportunity(null);
+                    }}
+                    onSuccess={handleSuccess}
+                />
+            )}
         </div>
     );
 };

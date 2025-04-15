@@ -28,10 +28,13 @@ export default function GrantApplicationModal({ onClose, grantId }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submissionSuccess, setSubmissionSuccess] = useState(false);
     const [submissionError, setSubmissionError] = useState(null);
+    const [businessId, setBusinessId] = useState(null);
+    const [businessOptions, setBusinessOptions] = useState([]);
 
     const [matchPreview, setMatchPreview] = useState(null);
     const [formData, setFormData] = useState({
         startupName: "",
+        business_id: businessId,
         contactPerson: "",
         contactEmail: "",
         sector: "",
@@ -107,14 +110,15 @@ export default function GrantApplicationModal({ onClose, grantId }) {
             isComplete: areFieldsComplete && areDocumentsComplete,
         }));
     };
-
+  
+    console.log("businessId", businessId);
     // Run check whenever formData changes
     // useEffect(() => {
     //   checkIfComplete();
     // }, [formData]);
 
     const modalRef = useRef();
-
+    console.log("grantId", grantId);
     // Handle outside click
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -128,6 +132,23 @@ export default function GrantApplicationModal({ onClose, grantId }) {
             document.removeEventListener("mousedown", handleClickOutside);
     }, [onClose]);
 
+    useEffect(() => {
+        const id = "all";
+        axiosClient
+            .get("/business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf7E_-" + id)
+            .then(({ data }) => {
+                setBusinessOptions(data.business);
+            })
+            .catch((error) => {
+                console.error("Error fetching business options:", error);
+            });
+    }, []);
+
+    const handleBusinessChange = (e) => {
+        setBusinessId(parseInt(e.target.value, 10));
+;
+        
+    };
     // Form handlers
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -166,6 +187,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
             // 2. Prepare request data
             const requestData = {
                 grant_id: grantId,
+                business_id : businessId,
                 startup_name: formData.startupName,
                 contact_name: formData.contactPerson,
                 contact_email: formData.contactEmail,
@@ -265,7 +287,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
             console.groupEnd();
 
             // 7. Make API call with timeout
-            console.log("Attempting to submit to backend...",formDataToSend);
+            console.log("Attempting to submit to backend...", formDataToSend);
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 30000);
 
@@ -283,7 +305,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                     },
                 }
             );
-           // console.log("Response data:", response);
+            // console.log("Response data:", response);
 
             clearTimeout(timeoutId);
 
@@ -295,7 +317,8 @@ export default function GrantApplicationModal({ onClose, grantId }) {
             console.group("[BACKEND RESPONSE]");
             console.log("Status:", response.status);
             console.log("Response data:", response.data);
-            console.groupEnd(); return;
+            console.groupEnd();
+            return;
 
             if (response.status !== 200 && response.status !== 201) {
                 throw new Error(
@@ -402,67 +425,85 @@ export default function GrantApplicationModal({ onClose, grantId }) {
     const nextStep = () => {
         let canProceed = true;
 
-          if (step === 1) {
-            const requiredFields = ['startupName', 'contactPerson', 'contactEmail', 'sector', 'location'];
-            canProceed = requiredFields.every(field => formData[field]?.trim() !== '');
+        if (step === 1) {
+            const requiredFields = [
+                "startupName",
+                "contactPerson",
+                "contactEmail",
+                "sector",
+                "location",
+            ];
+            canProceed = requiredFields.every(
+                (field) => formData[field]?.trim() !== ""
+            );
             if (!canProceed) {
-              toast(
-                <div className="flex items-center gap-2">
-                  <AlertTriangle className="h-4 w-4 text-amber-500" />
-                  <span>Complete all fields to continue</span>
-                </div>,
-                {
-                  position: "top-center",
-                  autoClose: 1000,
-                  hideProgressBar: true,
-                  closeButton: false,
-                  className: "!bg-gray-700 !text-gray-200 !shadow-sm !rounded-lg !border !border-gray-100 !px-3 !py-2",
-                }
-              );
-              return;
+                toast(
+                    <div className="flex items-center gap-2">
+                        <AlertTriangle className="h-4 w-4 text-amber-500" />
+                        <span>Complete all fields to continue</span>
+                    </div>,
+                    {
+                        position: "top-center",
+                        autoClose: 1000,
+                        hideProgressBar: true,
+                        closeButton: false,
+                        className:
+                            "!bg-gray-700 !text-gray-200 !shadow-sm !rounded-lg !border !border-gray-100 !px-3 !py-2",
+                    }
+                );
+                return;
             }
-          } else if (step === 2) {
-            const requiredFields = ['stage', 'revenue', 'teamExperience', 'traction'];
-            canProceed = requiredFields.every(field => formData[field]?.trim() !== '');
+        } else if (step === 2) {
+            const requiredFields = [
+                "stage",
+                "revenue",
+                "teamExperience",
+                "traction",
+            ];
+            canProceed = requiredFields.every(
+                (field) => formData[field]?.trim() !== ""
+            );
             if (!canProceed) {
-              toast.warning(
-                <ValidationToast message="Please fill all required fields in Step 2 before proceeding" />,
-                {
-                  position: "top-center",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  className: '!bg-white !text-gray-800 !shadow-lg !border !border-yellow-200',
-                }
-              );
-              return;
+                toast.warning(
+                    <ValidationToast message="Please fill all required fields in Step 2 before proceeding" />,
+                    {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        className:
+                            "!bg-white !text-gray-800 !shadow-lg !border !border-yellow-200",
+                    }
+                );
+                return;
             }
-          } else if (step === 3) {
+        } else if (step === 3) {
             canProceed = formData.impactAreas?.length > 0;
             if (!canProceed) {
-              toast.warning(
-                <ValidationToast message="Please select at least one impact area before proceeding" />,
-                {
-                  position: "top-center",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  className: '!bg-white !text-gray-800 !shadow-lg !border !border-yellow-200',
-                }
-              );
-              return;
+                toast.warning(
+                    <ValidationToast message="Please select at least one impact area before proceeding" />,
+                    {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        className:
+                            "!bg-white !text-gray-800 !shadow-lg !border !border-yellow-200",
+                    }
+                );
+                return;
             }
-          } else if (step === 4) {
+        } else if (step === 4) {
             // Optional: Add step 4 validation here
             // Example:
             // canProceed = formData.confirmation === true;
-          }
+        }
 
         if (canProceed) {
             setStep((prev) => Math.min(prev + 1, 4));
@@ -733,6 +774,49 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                Business{" "}
+                                                <span className="text-green-500">
+                                                    *
+                                                </span>
+                                            </label>
+                                            <div className="relative">
+                                                <select
+                                                    name="business"
+                                                    value={formData.business}
+                                                    onChange={(e) => {
+                                                        handleBusinessChange(e); // Handle form data change
+                                                        
+                                                    }}
+                                                    className="w-full appearance-none bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
+                                                    required
+                                                >
+                                                    <option value="">
+                                                        Select Business
+                                                    </option>
+                                                    
+                                                    {businessOptions.map(
+                                                        (business) => (
+                                                            <option
+                                                                key={
+                                                                    business.id
+                                                                }
+                                                                value={
+                                                                    business.id
+                                                                }
+                                                            >
+                                                                {business.name}
+                                                            </option>
+                                                        )
+                                                    )}
+                                                </select>
+                                                <ChevronDown className="absolute right-3 top-3.5 w-5 h-5 text-gray-500" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">
                                                 Stage{" "}
                                                 <span className="text-green-500">
                                                     *
@@ -761,9 +845,6 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                                                 <ChevronDown className="absolute right-3 top-3.5 w-5 h-5 text-gray-500" />
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                                 Headquarters Location{" "}
@@ -796,6 +877,9 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                                                 <ChevronDown className="absolute right-3 top-3.5 w-5 h-5 text-gray-500" />
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                                 Revenue (Last 12 Months)
@@ -814,9 +898,6 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                                                 />
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                                 Team Experience (Avg. Years)
@@ -832,19 +913,20 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                                                 max="50"
                                             />
                                         </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                Traction / KPIs
-                                            </label>
-                                            <textarea
-                                                name="traction"
-                                                value={formData.traction}
-                                                onChange={handleChange}
-                                                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
-                                                placeholder="Key metrics that show your progress"
-                                                rows="3"
-                                            />
-                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                            Traction / KPIs
+                                        </label>
+                                        <textarea
+                                            name="traction"
+                                            value={formData.traction}
+                                            onChange={handleChange}
+                                            className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
+                                            placeholder="Key metrics that show your progress"
+                                            rows="3"
+                                        />
                                     </div>
                                 </div>
                             )}

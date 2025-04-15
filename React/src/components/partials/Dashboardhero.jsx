@@ -72,6 +72,20 @@ const Dashboardhero = () => {
     //         window.location.reload();
     //     }
     // }, [loading, isAuthModalOpen, wasModalOpened, token, navigate]);
+    const dropdownRef = useRef(null);
+
+     useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setShowMore(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -337,7 +351,7 @@ const Dashboardhero = () => {
 
                             {/* Modernized View More Dropdown */}
                             {id && (
-                                <div className="relative">
+                                <div className="relative" ref={dropdownRef}>
                                     <button
                                         onClick={() => setShowMore(!showMore)}
                                         className="flex items-center hover:text-green-600 dark:hover:text-green-400 gap-1 transition-all duration-200 px-2 py-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -364,6 +378,9 @@ const Dashboardhero = () => {
                                             {!user?.investor && (
                                                 <Link
                                                     to="/grants-overview/grants/discover"
+                                                    onClick={() =>
+                                                        setShowMore(false)
+                                                    }
                                                     className="flex items-center hover:bg-gray-100 dark:hover:bg-gray-700 gap-2 px-4 py-2 transition-colors duration-150"
                                                 >
                                                     <FaHandHoldingUsd className="text-gray-500 text-lg dark:text-gray-400" />
@@ -377,6 +394,9 @@ const Dashboardhero = () => {
                                             {user?.investor && (
                                                 <Link
                                                     to="/help-center"
+                                                    onClick={() =>
+                                                        setShowMore(false)
+                                                    }
                                                     className="flex items-center hover:bg-gray-100 dark:hover:bg-gray-700 gap-2 px-4 py-2 transition-colors duration-150"
                                                 >
                                                     <FaQuestionCircle className="text-gray-500 dark:text-gray-400" />

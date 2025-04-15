@@ -49,7 +49,6 @@ const TujitumeGrantPortal = () => {
     const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
     const [pitchCounts, setPitchCounts] = useState({});
 
-
     const [filters, setFilters] = useState({
         sectors: [],
         regions: [],
@@ -191,7 +190,6 @@ const TujitumeGrantPortal = () => {
         setShowConfirmModal(false);
         setPendingDeleteId(null);
     };
-
 
     // No dependencies needed since axiosClient handles token internally
     //console.log("grantOpportunities", grantOpportunities);
@@ -373,30 +371,28 @@ const TujitumeGrantPortal = () => {
         }
     };
 
-    useEffect(() => {
-        const fetchAllPitchCounts = async () => {
-          const counts = {};
+    // useEffect(() => {
+    //     const fetchAllPitchCounts = async () => {
+    //       const counts = {};
 
-          await Promise.all(
-            filteredGrants.map(async (grant) => {
-              try {
-                const response = await axiosClient.get(`grant/pitches/${grant.id}`);
-                const pitchesData = response.data.pitches || response.data || [];
-                counts[grant.id] = Array.isArray(pitchesData) ? pitchesData.length : 0;
-              } catch (err) {
-                counts[grant.id] = 0;
-                console.error(`Failed to fetch pitches for grant ${grant.id}`, err);
-              }
-            })
-          );
+    //       await Promise.all(
+    //         filteredGrants.map(async (grant) => {
+    //           try {
+    //             const response = await axiosClient.get(`grant/pitches/${grant.id}`);
+    //             const pitchesData = response.data.pitches || response.data || [];
+    //             counts[grant.id] = Array.isArray(pitchesData) ? pitchesData.length : 0;
+    //           } catch (err) {
+    //             counts[grant.id] = 0;
+    //             console.error(`Failed to fetch pitches for grant ${grant.id}`, err);
+    //           }
+    //         })
+    //       );
 
-          setPitchCounts(counts);
-        };
+    //       setPitchCounts(counts);
+    //     };
 
-        fetchAllPitchCounts();
-      }, [filteredGrants]);
-
-
+    //     fetchAllPitchCounts();
+    //   }, [filteredGrants]);
 
     // Sample UI for loading state
     if (isLoading && grantOpportunities.length === 0) {
@@ -566,11 +562,15 @@ const TujitumeGrantPortal = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        {pitchCounts[grant.id] !== undefined && (
-  <div className="bg-green-50 px-3 py-1 rounded-full text-xs font-medium text-green-700">
-    {pitchCounts[grant.id]} {pitchCounts[grant.id] === 1 ? 'Pitch' : 'Pitches'}
-  </div>
-)}
+                                        {pitchCounts[grant.id] !==
+                                            undefined && (
+                                            <div className="bg-green-50 px-3 py-1 rounded-full text-xs font-medium text-green-700">
+                                                {pitchCounts[grant.id]}{" "}
+                                                {pitchCounts[grant.id] === 1
+                                                    ? "Pitch"
+                                                    : "Pitches"}
+                                            </div>
+                                        )}
 
                                         <div className="mt-4">
                                             <p className="text-sm text-gray-700 mb-3 line-clamp-2">
@@ -644,6 +644,23 @@ const TujitumeGrantPortal = () => {
                                                 >
                                                     <FileText size={16} />
                                                     <span>Details</span>
+                                                </button>
+                                            )}
+                                            {user.investor && (
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setViewingPitchesForGrant(
+                                                            grant.id
+                                                        );
+                                                    }}
+                                                    className="flex-1 py-2 rounded-md transition-all flex items-center justify-center space-x-2
+                                                        bg-gradient-to-r from-gray-100 to-green-100
+                                                        hover:bg-gradient-to-r hover:from-gray-200 hover:to-green-200
+                                                        text-gray-800 hover:text-gray-900"
+                                                >
+                                                    <Eye size={16} />
+                                                    <span>View Pitches</span>
                                                 </button>
                                             )}
                                             <p>
@@ -909,12 +926,15 @@ const TujitumeGrantPortal = () => {
                                                     )}
                                                 </div>
                                             </div>
-                                            {pitchCounts[grant.id] !== undefined && (
-  <div className="inline-flex items-center  text-green-800 text-xs font-semibold px-6 py-1 rounded-full   ">
-    {pitchCounts[grant.id]} {pitchCounts[grant.id] === 1 ? 'Pitch Available' : 'Pitches Available'}
-  </div>
-)}
-
+                                            {pitchCounts[grant.id] !==
+                                                undefined && (
+                                                <div className="inline-flex items-center  text-green-800 text-xs font-semibold px-6 py-1 rounded-full   ">
+                                                    {pitchCounts[grant.id]}{" "}
+                                                    {pitchCounts[grant.id] === 1
+                                                        ? "Pitch Available"
+                                                        : "Pitches Available"}
+                                                </div>
+                                            )}
 
                                             <div className="flex items-center space-x-3 flex-shrink-0">
                                                 {user.investor && (
