@@ -10,6 +10,7 @@ import {
 import { useParams, Link, useLocation } from 'react-router-dom';
 import axiosClient from "../../../axiosClient";
 import { useStateContext } from "../../../contexts/contextProvider";
+import PitchCard from '../components/pitchCard';
 
 const DealRoomLayout = () => {
   const { opportunityId } = useParams();
@@ -43,35 +44,42 @@ const DealRoomLayout = () => {
       console.warn("⛔ No opportunityId found in route params");
       return;
     }
-  
+   
     console.log("🔍 Fetching pitches for opportunityId:", opportunityId);
     setIsLoadingPitches(true);
-  
+   
     try {
       const response = await axiosClient.get(`/capital/pitches/${opportunityId}`);
-  
+   
       // Log raw response
       console.log("✅ Full response object:", response);
       console.log("📦 Fetched pitch data:", response.data);
-  
-      const pitchesArray = response?.data?.pitches;
-  
+   
+      // Try multiple possible data structures while keeping the API endpoint the same
+      const pitchesArray = 
+        response?.data?.pitches ? response.data.pitches :
+        Array.isArray(response?.data) ? response.data :
+        response?.data?.data ? response.data.data :
+        [];
+   
+      console.log("📊 Extracted pitches array:", pitchesArray);
+   
       if (Array.isArray(pitchesArray)) {
         if (pitchesArray.length === 0) {
           console.warn("⚠️ Pitches array is empty for opportunityId:", opportunityId);
         } else {
           console.log(`✅ ${pitchesArray.length} pitches loaded.`);
         }
-  
+   
         setPitches(pitchesArray);
       } else {
         console.error("❌ Unexpected pitch response format. Data:", response.data);
         setPitches([]);
       }
-  
+   
     } catch (error) {
       console.error("🚨 Error fetching pitches:", error);
-  
+   
       // Fallback dummy data for development
       setPitches([
         {
