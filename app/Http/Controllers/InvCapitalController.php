@@ -122,7 +122,7 @@ class InvCapitalController extends Controller
                 'team_experience_avg_years' => 'nullable|integer',
                 'traction_kpis' => 'nullable|string',
                 'pitch_deck_file' => 'nullable|file|mimes:pdf,docx|max:2048',
-                'pitch_video' => 'nullable|file|mimes:mp4,avi,mkv|max:2048',
+                'pitch_video_file' => 'nullable|file|mimes:mp4,avi,mkv|max:2048',
                 'business_plan' => 'nullable|file|mimes:pdf,docx|max:2048',
                 'social_impact_areas' => 'nullable|string',
                 'cac_ltv' => 'nullable|numeric',
@@ -156,7 +156,7 @@ class InvCapitalController extends Controller
 
             //Upload Files
             $pitch_deck_file = $request->file('pitch_deck_file');
-            $pitch_video = $request->file('pitch_video');
+            $pitch_video = $request->file('pitch_video_file');
             $business_plan_file = $request->file('business_plan');
 
             if (!file_exists('files/capitalPitches/'.$capital->id))

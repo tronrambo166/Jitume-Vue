@@ -124,13 +124,13 @@ class GrantController extends Controller
                 'revenue_last_12_months' => 'nullable|numeric',
                 'team_experience_avg_years' => 'nullable|numeric',
                 'traction_kpis' => 'nullable|string',
-                'pitch_deck_file' => 'nullable|file|mimes:pdf,docx',
-                'pitch_video' => 'nullable|file|mimes:mp4,avi,mov,wmv|max:2048',
-                'business_plan_file' => 'nullable|file|mimes:pdf,docx',
+                'pitchDeck_file' => 'nullable|file|mimes:pdf,docx',
+                'pitchVideo_file' => 'nullable|file|mimes:mp4,avi,mov,wmv|max:3048',
+                'businessPlan_file' => 'nullable|file|mimes:pdf,docx',
                 'social_impact_areas' => 'nullable|string',
                 'milestones' => 'nullable|array',
 
-            ]); return $request->all();
+            ]);
 
             $grant = GrantApplication::create([
             'grant_id' => $request->grant_id,
@@ -151,9 +151,9 @@ class GrantController extends Controller
             ]);
 
             //Upload Files
-            $pitch_deck_file = $request->file('pitch_deck_file');
-            $pitch_video = $request->file('pitch_video');
-            $business_plan_file = $request->file('business_plan_file');
+            $pitch_deck_file = $request->file('pitchDeck_file');
+            $pitch_video = $request->file('pitchVideo_file');
+            $business_plan_file = $request->file('businessPlan_file');
 
             if (!file_exists('files/grantApps/'.$grant->id))
                 mkdir('files/grantApps/'.$grant->id, 0777, true);
@@ -199,7 +199,7 @@ class GrantController extends Controller
             // M I L E S T O N E S
             $milestones = $request->milestones;
             foreach($milestones as $milestone){
-                $document = $milestone->file('delivables')[0];
+                $document = $request->file($milestone['deliverables'][0]);
                 if($document) {
                     $uniqid=hexdec(uniqid());
                     $ext=strtolower($document->getClientOriginalExtension());
@@ -210,9 +210,10 @@ class GrantController extends Controller
                 else $document='';
                 $mile = GrantMilestone::create([
                     'app_id' => $grant->id,
-                    'title' => $milestone->title,
-                    'description' => $milestone->description,
-                    '$document' => $document
+                    'title' => $milestone['title'],
+                    'amount' => $milestone['amount'],
+                    'description' => $milestone['description'],
+                    'document' => $document
                 ]);
             }
 

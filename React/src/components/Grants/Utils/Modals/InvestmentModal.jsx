@@ -34,10 +34,10 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
   // Validate numeric fields to prevent negative values
   const validateNumericField = (name, value) => {
     if (value === '') return true;
-   
+
     const numValue = Number(value);
     if (isNaN(numValue)) return false;
-   
+
     // Specific validation for team_experience_avg_years - must be an integer
     if (name === 'team_experience_avg_years') {
       if (!Number.isInteger(numValue) || numValue < 0 || numValue > 50) {
@@ -52,7 +52,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
     } else if (name === 'irr_projection' && (numValue < -100 || numValue > 1000)) {
       return false;
     }
-   
+
     return true;
   };
 
@@ -67,7 +67,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
+
     // Special handling for team_experience_avg_years to enforce integers
     if (name === 'team_experience_avg_years') {
       // If value is empty, allow it
@@ -75,10 +75,10 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
         setFormData(prev => ({ ...prev, [name]: value }));
         return;
       }
-      
+
       // Only allow integer input
       const intValue = parseInt(value, 10);
-      
+
       if (isNaN(intValue)) {
         setFieldErrors(prev => ({
           ...prev,
@@ -86,7 +86,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
         }));
         return;
       }
-      
+
       if (intValue < 0 || intValue > 50) {
         setFieldErrors(prev => ({
           ...prev,
@@ -94,24 +94,24 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
         }));
         return;
       }
-      
+
       // Set the integer value
       setFormData(prev => ({ ...prev, [name]: intValue }));
       // Clear error
       setFieldErrors(prev => ({ ...prev, [name]: '' }));
       return;
     }
-    
+
     // Validate other numeric fields in real-time
     if (['revenue_last_12_months', 'cac_ltv', 'burn_rate', 'irr_projection'].includes(name)) {
       if (!validateNumericField(name, value)) {
         let errorMessage;
-        
+
         if (name === 'revenue_last_12_months') errorMessage = 'Revenue cannot be negative';
         else if (name === 'cac_ltv') errorMessage = 'CAC/LTV ratio cannot be negative';
         else if (name === 'burn_rate') errorMessage = 'Burn rate cannot be negative';
         else if (name === 'irr_projection') errorMessage = 'IRR must be between -100% and 1000%';
-        
+
         setFieldErrors(prev => ({
           ...prev,
           [name]: errorMessage
@@ -122,16 +122,16 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
         setFieldErrors(prev => ({ ...prev, [name]: '' }));
       }
     }
-  
+
     setFormData((prev) => ({
       ...prev,
       [name]: value
     }));
   };
-  
+
   const validateFile = (file, allowedTypes) => {
     if (!file) return true;
-   
+
     const fileExtension = file.name.split('.').pop().toLowerCase();
     if (!allowedTypes.includes(fileExtension)) {
       return {
@@ -139,28 +139,28 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
         message: `File must be one of: ${allowedTypes.join(', ')}`
       };
     }
-   
+
     if (file.size > 10 * 1024 * 1024) {
       return {
         valid: false,
         message: 'File size must be less than 10MB'
       };
     }
-   
+
     return { valid: true };
   };
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
     const file = files[0];
-   
+
     // Clear file if input is emptied
     if (!file) {
       setFormData(prev => ({ ...prev, [name]: null }));
       setFieldErrors(prev => ({ ...prev, [name]: '' }));
       return;
     }
-   
+
     let validationResult;
     if (name === 'pitch_deck_file') {
       validationResult = validateFile(file, ['pdf', 'docx']);
@@ -169,7 +169,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
     } else if (name === 'pitch_video_file') {
       validationResult = validateFile(file, ['mp4', 'mov', 'avi', 'wmv']);
     }
-   
+
     if (validationResult.valid) {
       setFormData(prev => ({
         ...prev,
@@ -194,7 +194,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
 
     if (step === 1) {
       requiredFields = ['startup_name', 'contact_person_name', 'contact_person_email', 'sector', 'headquarters_location', 'stage'];
-      
+
       // Email validation
       if (formData.contact_person_email) {
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.contact_person_email)) {
@@ -218,7 +218,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
       missingFields.forEach(field => {
         errors[field] = 'This field is required';
       });
-      
+
       const fieldNames = missingFields.map(field => field.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()));
       toast.error(`Please fill in all required fields`, {
         autoClose: 3000,
@@ -250,7 +250,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
     if (!validateStep(currentStep)) {
       return;
     }
-    
+
     setIsSubmitting(true);
 
     try {
@@ -261,13 +261,14 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
         }
       });
 
-      await axiosClient.post('capital/investment-application', formDataToSend, {
+      const response = await axiosClient.post('capital/investment-application', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
+      console.log(response); return;
 
-      setSuccess(true);
+      //setSuccess(true);
       toast.success('Application submitted successfully!');
       setTimeout(() => {
         onSuccess();
@@ -276,7 +277,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
     } catch (err) {
       const errorMessage = err.response?.data?.message || 'An error occurred. Please try again.';
       toast.error(errorMessage);
-      
+
       // Handle validation errors from the server
       if (err.response?.data?.errors) {
         const serverErrors = {};
@@ -343,7 +344,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
                 />
                 {renderFieldError('startup_name')}
               </div>
-              
+
               <div className="mb-4">
                 <label htmlFor="contact_person_name" className="block text-sm font-medium text-gray-700 mb-1">
                   Contact Person Name <span className="text-red-500">*</span>
@@ -361,7 +362,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
                 />
                 {renderFieldError('contact_person_name')}
               </div>
-              
+
               <div className="mb-4">
                 <label htmlFor="contact_person_email" className="block text-sm font-medium text-gray-700 mb-1">
                   Contact Email <span className="text-red-500">*</span>
@@ -379,7 +380,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
                 />
                 {renderFieldError('contact_person_email')}
               </div>
-              
+
               <div className="mb-4">
                 <label htmlFor="sector" className="block text-sm font-medium text-gray-700 mb-1">
                   Sector <span className="text-red-500">*</span>
@@ -403,7 +404,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
                 </select>
                 {renderFieldError('sector')}
               </div>
-              
+
               <div className="mb-4">
                 <label htmlFor="headquarters_location" className="block text-sm font-medium text-gray-700 mb-1">
                   Headquarters Location <span className="text-red-500">*</span>
@@ -421,7 +422,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
                 />
                 {renderFieldError('headquarters_location')}
               </div>
-              
+
               <div className="mb-4">
                 <label htmlFor="stage" className="block text-sm font-medium text-gray-700 mb-1">
                   Funding Stage <span className="text-red-500">*</span>
@@ -470,7 +471,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
                 />
                 {renderFieldError('revenue_last_12_months')}
               </div>
-              
+
               <div className="mb-4">
                 <label htmlFor="team_experience_avg_years" className="block text-sm font-medium text-gray-700 mb-1">
                   Team Avg. Experience (Years) <span className="text-red-500">*</span>
@@ -493,7 +494,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
                 <p className="mt-1 text-xs text-gray-500">Please enter whole numbers only (0-50)</p>
               </div>
             </div>
-            
+
             <div className="mb-4">
               <label htmlFor="traction_kpis" className="block text-sm font-medium text-gray-700 mb-1">
                 Traction KPIs <span className="text-red-500">*</span>
@@ -511,7 +512,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
               />
               {renderFieldError('traction_kpis')}
             </div>
-            
+
             <div className="mb-4">
               <label htmlFor="exit_strategy" className="block text-sm font-medium text-gray-700 mb-1">
                 Exit Strategy <span className="text-red-500">*</span>
@@ -556,7 +557,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
                 )}
                 {renderFieldError('pitch_deck_file')}
               </div>
-              
+
               <div className="mb-4">
                 <label htmlFor="pitch_video_file" className="block text-sm font-medium text-gray-700 mb-1">
                   Pitch Video (MP4/MOV/AVI)
@@ -577,7 +578,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
                 )}
                 {renderFieldError('pitch_video_file')}
               </div>
-              
+
               <div className="mb-4">
                 <label htmlFor="business_plan" className="block text-sm font-medium text-gray-700 mb-1">
                   Business Plan (PDF/DOCX/PPT)
@@ -598,7 +599,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
                 )}
                 {renderFieldError('business_plan')}
               </div>
-              
+
               <div className="mb-4">
                 <label htmlFor="social_impact_areas" className="block text-sm font-medium text-gray-700 mb-1">
                   Social Impact Areas
@@ -615,7 +616,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
                 />
                 {renderFieldError('social_impact_areas')}
               </div>
-              
+
               <div className="mb-4">
                 <label htmlFor="cac_ltv" className="block text-sm font-medium text-gray-700 mb-1">
                   CAC/LTV Ratio
@@ -634,7 +635,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
                 />
                 {renderFieldError('cac_ltv')}
               </div>
-              
+
               <div className="mb-4">
                 <label htmlFor="burn_rate" className="block text-sm font-medium text-gray-700 mb-1">
                   Monthly Burn Rate ($)
@@ -642,7 +643,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
                 <input
                   type="number"
                   id="burn_rate"
-                  name="burn_rate" 
+                  name="burn_rate"
                   value={formData.burn_rate}
                   onChange={handleChange}
                   onFocus={handleFocus}
@@ -652,7 +653,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
                 />
                 {renderFieldError('burn_rate')}
               </div>
-              
+
               <div className="mb-4">
                 <label htmlFor="irr_projection" className="block text-sm font-medium text-gray-700 mb-1">
                   Projected IRR (%)
@@ -717,13 +718,13 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
             </svg>
           </button>
         </div>
-        
+
         <div className="p-6">
           <form onSubmit={handleSubmit}>
             {renderStepIndicator()}
-            
+
             {renderStepContent()}
-            
+
             <div className="flex justify-between mt-8">
               {currentStep > 1 && (
                 <button
@@ -734,7 +735,7 @@ const InvestmentApplicationModal = ({ businessId, capitalId, onClose, onSuccess 
                   Back
                 </button>
               )}
-              
+
               {currentStep < 3 ? (
                 <button
                   type="button"
