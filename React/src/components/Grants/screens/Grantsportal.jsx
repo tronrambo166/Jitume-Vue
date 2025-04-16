@@ -47,7 +47,6 @@ const TujitumeGrantPortal = () => {
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [pendingDeleteId, setPendingDeleteId] = useState(null);
     const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
-    const [pitchCounts, setPitchCounts] = useState({});
 
     const [filters, setFilters] = useState({
         sectors: [],
@@ -63,6 +62,10 @@ const TujitumeGrantPortal = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [previewModalOpen, setPreviewModalOpen] = useState(false);
+      const [visibilityStates, setVisibilityStates] = useState({});
+        const [showDisclaimer, setShowDisclaimer] = useState(false);
+        const [pendingToggleId, setPendingToggleId] = useState(null);
+        
     const [currentPreviewFile, setCurrentPreviewFile] = useState(null);
     const [newGrant, setNewGrant] = useState({
         title: "",
@@ -78,6 +81,28 @@ const TujitumeGrantPortal = () => {
     });
     const { user, token, setUser, setToken } = useStateContext();
 
+
+
+       
+    const toggleVisibility = (id) => {
+        // Show disclaimer modal before toggling
+        setPendingToggleId(id);
+        setShowDisclaimer(true);
+      };
+      
+      const confirmToggle = () => {
+        setVisibilityStates(prev => ({
+          ...prev,
+          [pendingToggleId]: !prev[pendingToggleId],
+        }));
+        setShowDisclaimer(false);
+        setPendingToggleId(null);
+      };
+      
+      const cancelToggle = () => {
+        setShowDisclaimer(false);
+        setPendingToggleId(null);
+      };
     // Fetch grants from API
     useEffect(() => {
         const fetchGrants = async () => {
@@ -88,7 +113,7 @@ const TujitumeGrantPortal = () => {
                 const response = await axiosClient.get("/grant/grants");
 
                 // Log the entire response to inspect the structure
-                //console.log("API Response:", response);
+                console.log("API Response:", response);
 
                 // Access the grants array inside the response data
                 const rawData = Array.isArray(response.data?.grants)
@@ -137,10 +162,10 @@ const TujitumeGrantPortal = () => {
                 }));
 
                 setGrantOpportunities(cleanedData);
-                //console.log("cleanedData:", cleanedData);
+                console.log("cleanedData:", cleanedData);
 
                 setGrantOpportunities(cleanedData);
-                //console.log("cleanedData:", cleanedData);
+                console.log("cleanedData:", cleanedData);
             } catch (err) {
                 console.error("Failed to fetch grants:", err);
 
@@ -162,7 +187,7 @@ const TujitumeGrantPortal = () => {
     const mee = () => {
         console.log("Create Grant");
     };
-    //console.log("The status of showCreateModal is :", showCreateModal);
+    console.log("The status of showCreateModal is :", showCreateModal);
 
     // Delete Grant
     const handleDeleteGrant = (id) => {
@@ -192,7 +217,7 @@ const TujitumeGrantPortal = () => {
     };
 
     // No dependencies needed since axiosClient handles token internally
-    //console.log("grantOpportunities", grantOpportunities);
+    console.log("grantOpportunities", grantOpportunities);
     // Filter grants
     const filteredGrants = grantOpportunities
         .filter((grant) => {
@@ -238,7 +263,7 @@ const TujitumeGrantPortal = () => {
         })
         .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Newest first
         .slice(0, 6); // Limit to 10 results
-    //console.log("filteredGrants", filteredGrants);
+    console.log("filteredGrants", filteredGrants);
 
     // Dashboard metrics
     const dashboardMetrics = {
@@ -370,29 +395,6 @@ const TujitumeGrantPortal = () => {
             });
         }
     };
-
-    // useEffect(() => {
-    //     const fetchAllPitchCounts = async () => {
-    //       const counts = {};
-
-    //       await Promise.all(
-    //         filteredGrants.map(async (grant) => {
-    //           try {
-    //             const response = await axiosClient.get(`grant/pitches/${grant.id}`);
-    //             const pitchesData = response.data.pitches || response.data || [];
-    //             counts[grant.id] = Array.isArray(pitchesData) ? pitchesData.length : 0;
-    //           } catch (err) {
-    //             counts[grant.id] = 0;
-    //             console.error(`Failed to fetch pitches for grant ${grant.id}`, err);
-    //           }
-    //         })
-    //       );
-
-    //       setPitchCounts(counts);
-    //     };
-
-    //     fetchAllPitchCounts();
-    //   }, [filteredGrants]);
 
     // Sample UI for loading state
     if (isLoading && grantOpportunities.length === 0) {
@@ -562,15 +564,6 @@ const TujitumeGrantPortal = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        {pitchCounts[grant.id] !==
-                                            undefined && (
-                                            <div className="bg-green-50 px-3 py-1 rounded-full text-xs font-medium text-green-700">
-                                                {pitchCounts[grant.id]}{" "}
-                                                {pitchCounts[grant.id] === 1
-                                                    ? "Pitch"
-                                                    : "Pitches"}
-                                            </div>
-                                        )}
 
                                         <div className="mt-4">
                                             <p className="text-sm text-gray-700 mb-3 line-clamp-2">
@@ -644,23 +637,6 @@ const TujitumeGrantPortal = () => {
                                                 >
                                                     <FileText size={16} />
                                                     <span>Details</span>
-                                                </button>
-                                            )}
-                                            {user.investor && (
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        setViewingPitchesForGrant(
-                                                            grant.id
-                                                        );
-                                                    }}
-                                                    className="flex-1 py-2 rounded-md transition-all flex items-center justify-center space-x-2
-                                                        bg-gradient-to-r from-gray-100 to-green-100
-                                                        hover:bg-gradient-to-r hover:from-gray-200 hover:to-green-200
-                                                        text-gray-800 hover:text-gray-900"
-                                                >
-                                                    <Eye size={16} />
-                                                    <span>View Pitches</span>
                                                 </button>
                                             )}
                                             <p>
@@ -878,6 +854,7 @@ const TujitumeGrantPortal = () => {
                                                         {grant.title ||
                                                             grant.grant_title}
                                                     </h2>
+                                                    
                                                     {grant.techLevel ===
                                                         "cutting-edge" && (
                                                         <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full flex-shrink-0">
@@ -926,18 +903,28 @@ const TujitumeGrantPortal = () => {
                                                     )}
                                                 </div>
                                             </div>
-                                            {pitchCounts[grant.id] !==
-                                                undefined && (
-                                                <div className="inline-flex items-center  text-green-800 text-xs font-semibold px-6 py-1 rounded-full   ">
-                                                    {pitchCounts[grant.id]}{" "}
-                                                    {pitchCounts[grant.id] === 1
-                                                        ? "Pitch Available"
-                                                        : "Pitches Available"}
-                                                </div>
-                                            )}
 
+<label className="inline-flex items-center cursor-pointer">
+  <input
+    type="checkbox"
+    checked={visibilityStates[grant.id]}
+onChange={(e) => {
+  e.preventDefault();
+  toggleVisibility(grant.id);
+}}
+    className="sr-only peer"
+  />
+  <div className="w-11 h-6 bg-gray-200 peer-checked:bg-amber-400 rounded-full peer relative transition-colors">
+    <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
+  </div>
+  <span className="ml-3 text-sm text-gray-700">
+    {visibilityStates[grant.id] ? "Visible" : "Hidden"}
+  </span>
+</label>
                                             <div className="flex items-center space-x-3 flex-shrink-0">
                                                 {user.investor && (
+                                                    
+
                                                     <button
                                                         onClick={(e) => {
                                                             e.stopPropagation();
@@ -955,6 +942,8 @@ const TujitumeGrantPortal = () => {
                                                         <Eye size={16} />
                                                         <span>Pitches</span>
                                                     </button>
+
+                                                    
                                                 )}
 
                                                 {!user.investor && (
@@ -1614,6 +1603,31 @@ const TujitumeGrantPortal = () => {
                     }}
                 />
             )}
+
+{showDisclaimer && (
+  <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
+    <div className="bg-white p-6 rounded-xl shadow-md max-w-md w-full">
+      <h2 className="text-lg font-semibold mb-2">Visibility Disclaimer</h2>
+      <p className="text-sm text-gray-600 mb-4">
+        By toggling this listing’s visibility, you are allowing investors to see or hide it from their dashboard. Make sure this action is intentional.
+      </p>
+      <div className="flex justify-end gap-2">
+        <button
+          onClick={cancelToggle}
+          className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={confirmToggle}
+          className="px-4 py-2 text-sm bg-yellow-600 text-white rounded hover:bg-yellow-700"
+        >
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+)}
         </div>
     );
 };
