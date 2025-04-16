@@ -208,6 +208,8 @@ Route::prefix('/capital')->group(function(){
    Route::get('pitches/{capital_id}', [InvCapitalController::class, 'pitches']);
    Route::post('update-capital/{id}', [InvCapitalController::class, 'update']);
    Route::get('delete-capital/{id}', [InvCapitalController::class, 'destroy']);
+    Route::get('accept/{pitch_id}', [InvCapitalController::class, 'accept']);
+    Route::get('reject/{pitch_id}', [InvCapitalController::class, 'reject']);
 });
 
 // G R A N T S    P R O T E C T E D   ENDS
