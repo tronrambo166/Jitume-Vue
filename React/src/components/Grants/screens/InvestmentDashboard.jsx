@@ -80,9 +80,31 @@ const InvestmentOpportunities = () => {
     const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
     const [showModes, setshowModes] = useState(false);
-
+    const [visibilityStates, setVisibilityStates] = useState({});
     const [selectedOpportunity, setSelectedOpportunity] = useState(null);
-
+    const [showDisclaimer, setShowDisclaimer] = useState(false);
+    const [pendingToggleId, setPendingToggleId] = useState(null);
+    
+    const toggleVisibility = (id) => {
+      // Show disclaimer modal before toggling
+      setPendingToggleId(id);
+      setShowDisclaimer(true);
+    };
+    
+    const confirmToggle = () => {
+      setVisibilityStates(prev => ({
+        ...prev,
+        [pendingToggleId]: !prev[pendingToggleId],
+      }));
+      setShowDisclaimer(false);
+      setPendingToggleId(null);
+    };
+    
+    const cancelToggle = () => {
+      setShowDisclaimer(false);
+      setPendingToggleId(null);
+    };
+    
     const handleSuccess = () => {
         // Handle successful submission (e.g., show success message)
         console.log("Application submitted successfully!");
@@ -809,34 +831,51 @@ const InvestmentOpportunities = () => {
                                             </div>
                                         </div>
                                         <div className="flex gap-3 w-full">
-                                            <button className="flex-1 text-neutral-700 whitespace-nowrap hover:text-neutral-900 transition-colors flex items-center justify-center gap-2 px-4 py-2 border border-neutral-300 rounded-md hover:bg-neutral-50">
-                                                <Eye size={16} /> View Details
-                                            </button>
-                                            {user.investor === 3 ? (
-                                                <Link
-                                                    to={`/grants-overview/funding/deals/${opp.id}`}
-                                                    state={{ opportunity: opp }}
-                                                    className="flex-1 text-white whitespace-nowrap bg-emerald-600 hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium"
-                                                >
-                                                    <ArrowUpRight size={16} />{" "}
-                                                    Open Deal Room
-                                                </Link>
-                                            ) : (
-                                                <div>
-                                                    <button
-                                                        onClick={() => {
-                                                            setSelectedOpportunity(
-                                                                opp.id
-                                                            );
-                                                            setshowModes(true);
-                                                        }}
-                                                        className="px-4 py-2 bg-green-600 whitespace-nowrap text-white rounded-md hover:bg-green-700"
-                                                    >
-                                                        Apply for Investment
-                                                    </button>
-                                                </div>
-                                            )}
-                                        </div>
+  <button className="flex-1 text-neutral-700 whitespace-nowrap hover:text-neutral-900 transition-colors flex items-center justify-center gap-2 px-4 py-2 border border-neutral-300 rounded-md hover:bg-neutral-50">
+    <Eye size={16} /> View Details
+  </button>
+  {user.investor === 3 ? (
+    <>
+<label className="inline-flex items-center cursor-pointer">
+  <input
+    type="checkbox"
+    checked={visibilityStates[opp.id]}
+onChange={(e) => {
+  e.preventDefault();
+  toggleVisibility(opp.id);
+}}
+    className="sr-only peer"
+  />
+  <div className="w-11 h-6 bg-gray-200 peer-checked:bg-amber-400 rounded-full peer relative transition-colors">
+    <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
+  </div>
+  <span className="ml-3 text-sm text-gray-700">
+    {visibilityStates[opp.id] ? "Visible" : "Hidden"}
+  </span>
+</label>
+
+      <Link
+        to={`/grants-overview/funding/deals/${opp.id}`}
+        state={{ opportunity: opp }}
+        className="flex-1 text-white whitespace-nowrap bg-emerald-600 hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium"
+      >
+        <ArrowUpRight size={16} /> Open Deal Room
+      </Link>
+    </>
+  ) : (
+    <div>
+      <button
+        onClick={() => {
+          setSelectedOpportunity(opp.id);
+          setshowModes(true);
+        }}
+        className="px-4 py-2 bg-green-600 whitespace-nowrap text-white rounded-md hover:bg-green-700"
+      >
+        Apply for Investment
+      </button>
+    </div>
+  )}
+</div>
                                     </div>
                                 </div>
                             ))
@@ -928,6 +967,33 @@ const InvestmentOpportunities = () => {
                     onSuccess={handleSuccess}
                 />
             )}
+
+
+{showDisclaimer && (
+  <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
+    <div className="bg-white p-6 rounded-xl shadow-md max-w-md w-full">
+      <h2 className="text-lg font-semibold mb-2">Visibility Disclaimer</h2>
+      <p className="text-sm text-gray-600 mb-4">
+        By toggling this listing’s visibility, you are allowing investors to see or hide it from their dashboard. Make sure this action is intentional.
+      </p>
+      <div className="flex justify-end gap-2">
+        <button
+          onClick={cancelToggle}
+          className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={confirmToggle}
+          className="px-4 py-2 text-sm bg-yellow-600 text-white rounded hover:bg-blue-700"
+        >
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
         </div>
     );
 };
