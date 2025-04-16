@@ -26,6 +26,8 @@ import {
     Trash,
     Eye,
     PlusCircle,
+    Edit2,
+    Edit3,
 } from "lucide-react";
 import { useStateContext } from "../../../contexts/contextProvider";
 import axiosClient from "../../../axiosClient";
@@ -36,6 +38,7 @@ import OfferGrantModal from "../Utils/Modals/AddnewGrant";
 
 import PitchesOutlet from "../components/Grantpitches";
 import { CheckCircle, Star } from "lucide-react";
+import GrantEditModal from "../Utils/Modals/GranteditModal";
 
 const TujitumeGrantPortal = () => {
     const [viewingPitchesForGrant, setViewingPitchesForGrant] = useState(null);
@@ -80,7 +83,20 @@ const TujitumeGrantPortal = () => {
         documentsRequired: [],
     });
     const { user, token, setUser, setToken } = useStateContext();
-
+    const [isGrantEditModalOpen, setIsGrantEditModalOpen] = useState(false);
+    const [grantToEdit, setGrantToEdit] = useState(null);
+    
+    const handleEditGrantClick = (grant) => {
+      setGrantToEdit(grant);
+      setIsGrantEditModalOpen(true);
+    };
+    
+    const handleGrantUpdate = (updatedGrant) => {
+      // Handle the updated grant data
+      console.log('Grant updated:', updatedGrant);
+      // You might want to update your grants list state here
+      setIsGrantEditModalOpen(false);
+    };
 
 
        
@@ -850,10 +866,29 @@ const TujitumeGrantPortal = () => {
                                         <div className="flex flex-col md:flex-row md:justify-between gap-4">
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center flex-wrap gap-2 mb-1">
+                                                    <div>
                                                     <h2 className="text-lg font-bold text-gray-900 truncate">
                                                         {grant.title ||
                                                             grant.grant_title}
                                                     </h2>
+                                                    <div className="flex items-center">
+      
+      <button 
+        onClick={() => handleEditGrantClick(grant.id)}
+        className="px-4 py-2  text-green rounded "
+      >
+      <Edit3 className=" text-[10px]"/><span>Edit-grant</span>
+      </button>
+      
+      {isGrantEditModalOpen && (
+        <GrantEditModal
+          grantData={grantToEdit}
+          onClose={() => setIsGrantEditModalOpen(false)}
+          onSave={handleGrantUpdate}
+        />
+      )}
+    </div>
+    </div>
                                                     
                                                     {grant.techLevel ===
                                                         "cutting-edge" && (
@@ -922,8 +957,6 @@ onChange={(e) => {
   </span>
 </label>
                                             <div className="flex items-center space-x-3 flex-shrink-0">
-                                                {user.investor && (
-                                                    
 
                                                     <button
                                                         onClick={(e) => {
@@ -944,7 +977,8 @@ onChange={(e) => {
                                                     </button>
 
                                                     
-                                                )}
+
+
 
                                                 {!user.investor && (
                                                     <button

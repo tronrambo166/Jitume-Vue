@@ -14,12 +14,14 @@ import {
     LocateFixed,
     RefreshCcw,
     Trash,
+    Edit3,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import InvestmentModal from "../Utils/Modals/Opportunityform";
 import axiosClient from "../../../axiosClient";
 import { useStateContext } from "../../../contexts/contextProvider";
 import InvestmentApplicationModal from "../Utils/Modals/InvestmentModal";
+import CapitalEditModal from "../Utils/Modals/CapitalEditModal";
 
 const calculateMatchScore = (opportunity, investorPreferences) => {
     let score = 0;
@@ -84,7 +86,8 @@ const InvestmentOpportunities = () => {
     const [selectedOpportunity, setSelectedOpportunity] = useState(null);
     const [showDisclaimer, setShowDisclaimer] = useState(false);
     const [pendingToggleId, setPendingToggleId] = useState(null);
-    
+    const [isCapitalEditModalOpen, setIsCapitalEditModalOpen] = useState(false);
+    const [selectedCapital, setSelectedCapital] = useState(null);
     const toggleVisibility = (id) => {
       // Show disclaimer modal before toggling
       setPendingToggleId(id);
@@ -104,6 +107,18 @@ const InvestmentOpportunities = () => {
       setShowDisclaimer(false);
       setPendingToggleId(null);
     };
+    
+
+    const handleEditCapital = (capital) => {
+        setSelectedCapital(capital);
+        setIsCapitalEditModalOpen(true);
+      };
+    
+      const handleCapitalUpdate = (updatedCapital) => {
+        console.log('Capital updated:', updatedCapital);
+        // Update your state or make API call here
+        setIsCapitalEditModalOpen(false);
+      };
     
     const handleSuccess = () => {
         // Handle successful submission (e.g., show success message)
@@ -702,7 +717,29 @@ const InvestmentOpportunities = () => {
                                     className="bg-white border border-neutral-200 rounded-lg p-6 flex flex-col md:flex-row justify-between items-start hover:shadow-sm transition-shadow"
                                 >
                                     <div className="flex-grow w-full">
+                                  <div className="flex items-center">
+                                  {user?.investor && ( 
+                                    <div>
+      {/* Your capitals list rendering */}
+      <button
+  onClick={() => handleEditCapital(opp.id)}
+  className="text-yellow-500 bg-neutral-100 rounded-full mr-4 font-semibold py-4 px-4"
+  >
+       <Edit3 className=" text-[10px]"/>
+</button>
+
+
+      {isCapitalEditModalOpen && (
+        <CapitalEditModal
+          capitalData={selectedCapital}
+          onClose={() => setIsCapitalEditModalOpen(false)}
+          onSave={handleCapitalUpdate}
+        />
+      )}
+    </div>
+               )}
                                         {user?.investor && ( // Changed to proper conditional rendering
+                                            
                                             <button
                                                 onClick={() =>
                                                     handleDeleteClick(opp.id)
@@ -711,12 +748,14 @@ const InvestmentOpportunities = () => {
                                             >
                                                 <Trash />
                                             </button>
+                                            
                                         )}
+                                  </div>
                                         <div className="flex flex-col md:flex-row md:items-center mb-4 gap-2 md:gap-4">
                                             <h2 className="text-xl font-medium">
                                                 {opp.name}
                                             </h2>
-                                            <div className="flex items-center gap-2">
+                                 <div className="flex items-center gap-2">
                                                 <span
                                                     className={`px-2 py-1 rounded-full text-xs ${getStatusColor(
                                                         opp.status
