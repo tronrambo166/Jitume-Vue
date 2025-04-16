@@ -246,7 +246,7 @@ const Navigation = {
                     <button
                         onClick={handleLogout}
                         className={`
-              flex items-center px-4 py-3 rounded-lg transition-colors 
+              flex items-center px-4 py-3 rounded-lg transition-colors
               w-full text-left
               hover:bg-gray-100 text-gray-700 hover:text-green-700
             `}
@@ -258,7 +258,7 @@ const Navigation = {
                     <Link
                         to={to}
                         className={`
-              flex items-center px-4 py-3 rounded-lg transition-colors 
+              flex items-center px-4 py-3 rounded-lg transition-colors
               ${
                   isActive
                       ? "bg-gray-100 text-green-700"
@@ -455,7 +455,7 @@ const Navigation = {
                                   to: "/grants-overview/settings/profile",
                               },
                               {
-                                  label: "Notifications",
+                                  label: "Notification.php",
                                   to: "/grants-overview/settings/notifications",
                               },
                               {
@@ -471,7 +471,7 @@ const Navigation = {
             <>
                 <div
                     className={`
-        fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-50 
+        fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-50
         transform transition-transform duration-300 ease-in-out
         ${isMobile ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
       `}
@@ -882,7 +882,7 @@ const GrantsOverview = () => {
             )}
 
             {/* {isOfferModalOpen && (
-        <OfferGrantModal 
+        <OfferGrantModal
           isOpen={isOfferModalOpen}
           onClose={toggleOfferModal}
           onSubmit={(formData) => {

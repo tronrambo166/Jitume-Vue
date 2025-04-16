@@ -389,7 +389,7 @@ const NotificationBell = () => {
                         />
                     </div>
 
-                    {/* Scrollable Notifications */}
+                    {/* Scrollable Notification.php */}
                     <div className="max-h-72 overflow-y-auto scroll-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded-lg">
                         {notifications.length === 0 ? (
                             <div className="text-center text-gray-500 text-sm">

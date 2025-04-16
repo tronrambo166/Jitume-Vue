@@ -18,6 +18,7 @@ use Hash;
 use Auth;
 use Mail;
 use DateTime;
+use App\Service\Notification;
 
 class GrantController extends Controller
 {
@@ -291,5 +292,38 @@ class GrantController extends Controller
         $grant->delete();
 
         return response()->json(['message' => 'Grant deleted successfully']);
+    }
+
+    public function accept($pitch_id)
+    {
+        try{
+            $pitch = GrantApplication::where('id',$pitch_id)
+                ->update([
+                    'status' => 1
+                ]);
+
+            // $text = 'All milestones of business '.$list->name.'
+            //     is done.<br />You can now review the business?';
+            // $notification = new Notification();
+            // $notification->create($investor->id,$bid->owner_id,$text
+            //     ,'business_review',' business');
+
+            return response()->json(['message' => 'Pitch Accepted.'], 200);
+        }
+        catch(\Exception $e){
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+
+    public function reject($pitch_id)
+    {
+        try{
+            GrantApplication::where('id',$pitch_id)->delete();
+            return response()->json(['message' => 'Pitch Rejected.'], 200);
+        }
+        catch(\Exception $e){
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
     }
 }

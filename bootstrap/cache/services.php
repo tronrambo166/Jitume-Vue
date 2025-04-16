@@ -36,6 +36,7 @@
     32 => 'App\\Providers\\EventServiceProvider',
     33 => 'App\\Providers\\RouteServiceProvider',
     34 => 'Safaricom\\Mpesa\\MpesaServiceProvider',
+    35 => 'App\\Providers\\NotificationServiceProvider',
   ),
   'eager' => 
   array (
@@ -59,6 +60,7 @@
     17 => 'App\\Providers\\EventServiceProvider',
     18 => 'App\\Providers\\RouteServiceProvider',
     19 => 'Safaricom\\Mpesa\\MpesaServiceProvider',
+    20 => 'App\\Providers\\NotificationServiceProvider',
   ),
   'deferred' => 
   array (

@@ -23,7 +23,7 @@ use App\Models\serviceBook;
 
 use Stripe\StripeClient;
 use Response;
-use Session; 
+use Session;
 use Hash;
 use Auth;
 use Mail;
@@ -39,11 +39,11 @@ class BusinessController extends Controller
   protected $Client;
 
   public function __construct(StripeClient $client)
-  {   
+  {
         $this->Client = $client;
         $this->api_base_url = env('API_BASE_URL');
         //$this->middleware('business');
-  
+
   }
 
 public function auth_id(){
@@ -128,7 +128,7 @@ $investments = []; $active = []; $t_share = 0;
 //if ($investor_ck->investor == 1) {
   //$convs = Conversation::where('investor_id',Auth::id())->get();
   //foreach($convs as $conv){
-      
+
       $pending = BusinessBids::where('investor_id',Auth::id())
       ->latest()->get();
       $miles = AcceptedBids::where('investor_id',Auth::id())
@@ -138,7 +138,7 @@ $investments = []; $active = []; $t_share = 0;
       if($query == 'hasInvestment'){
          if(count($pending) > 0 || count($miles) > 0)
          return response()->json(['status' => true]);
-         else 
+         else
          return response()->json(['status' => false]);
       }
 
@@ -262,7 +262,7 @@ if($image) {
 
 
  $yeary_fin_statement=$request->file('yeary_fin_statement');
- if($yeary_fin_statement) {        
+ if($yeary_fin_statement) {
           $ext=strtolower($yeary_fin_statement->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
           {
@@ -271,7 +271,7 @@ if($image) {
 
 
  $document=$request->file('document');
- if($document) {        
+ if($document) {
           $ext=strtolower($document->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
           {
@@ -280,12 +280,12 @@ if($image) {
 
 
  $video=$request->file('video');
- if($video && $video !='') {     
+ if($video && $video !='') {
           $ext=strtolower($video->getClientOriginalExtension());
-          if($ext!='mpg' && $ext!= 'mpeg' && $ext!='webm' && $ext!= 'mp4' 
+          if($ext!='mpg' && $ext!= 'mpeg' && $ext!='webm' && $ext!= 'mp4'
             && $ext!='avi' && $ext!= 'wmv')
-          { 
-            return response()->json([ 'status' => 404, 'message' => 'For video, Only mpg || mpeg || webm || mp4 
+          {
+            return response()->json([ 'status' => 404, 'message' => 'For video, Only mpg || mpeg || webm || mp4
             avi || wmv are allowed!']);
           } }
 
@@ -310,9 +310,9 @@ if($image) {
             'y_turnover' => $y_turnover,
             'id_no' => $id_no,
             'tax_pin' => $tax_pin,
-            'investors_fee' => $investors_fee          
-           ]); 
-           $listing = $listing->id;      
+            'investors_fee' => $investors_fee
+           ]);
+           $listing = $listing->id;
 
 try{
 //FILES
@@ -336,7 +336,7 @@ try{
           $uniqid=hexdec(uniqid());
           $ext=strtolower($yeary_fin_statement->getClientOriginalExtension());
           $create_name=$uniqid.'.'.$ext;
-          if (!file_exists('files/business/'.$listing)) 
+          if (!file_exists('files/business/'.$listing))
           mkdir('files/business/'.$listing, 0777, true);
 
           //$loc='files/business/'.$listing.'/';
@@ -350,7 +350,7 @@ try{
           $uniqid=hexdec(uniqid());
           $ext=strtolower($pin->getClientOriginalExtension());
           $create_name=$uniqid.'.'.$ext;
-          if (!file_exists('files/business/'.$listing)) 
+          if (!file_exists('files/business/'.$listing))
           mkdir('files/business/'.$listing, 0777, true);
 
           //$loc='files/business/'.$listing.'/';
@@ -364,7 +364,7 @@ try{
           $uniqid=hexdec(uniqid());
           $ext=strtolower($identification->getClientOriginalExtension());
           $create_name=$uniqid.'.'.$ext;
-          if (!file_exists('files/business/'.$listing)) 
+          if (!file_exists('files/business/'.$listing))
           mkdir('files/business/'.$listing, 0777, true);
 
           //$loc='files/business/'.$listing.'/';
@@ -378,7 +378,7 @@ try{
           $uniqid=hexdec(uniqid());
           $ext=strtolower($document->getClientOriginalExtension());
           $create_name=$uniqid.'.'.$ext;
-          if (!file_exists('files/business/'.$listing)) 
+          if (!file_exists('files/business/'.$listing))
           mkdir('files/business/'.$listing, 0777, true);
 
           //$loc='files/business/'.$listing.'/';
@@ -386,33 +386,33 @@ try{
           $document->move($loc, $create_name);
           $final_document=$loc.$create_name;
              }else $final_document='';
-             
+
 
 
  if($video) {
           $uniqid=hexdec(uniqid());
           $ext=strtolower($video->getClientOriginalExtension());
           $create_name=$uniqid.'.'.$ext;
-          if (!file_exists('files/business/'.$listing)) 
+          if (!file_exists('files/business/'.$listing))
           mkdir('files/business/'.$listing, 0777, true);
 
           //$loc='files/business/'.$listing.'/';
           //Move uploaded file
           $video->move($loc, $create_name);
           $final_video=$loc.$create_name;
-             }else $final_video=$request->videoLink;                     
-      
+             }else $final_video=$request->videoLink;
+
 
 //FILES END
 
-$B = Listing::where('id',$listing)->update([          
-            'image' => $final_img,            
-            'pin' => $final_pin,  
-            'identification' => $final_identification,         
+$B = Listing::where('id',$listing)->update([
+            'image' => $final_img,
+            'pin' => $final_pin,
+            'identification' => $final_identification,
             'document' => $final_document,
             'video' => $final_video,
-            'yeary_fin_statement' => $final_statement         
-           ]);       
+            'yeary_fin_statement' => $final_statement
+           ]);
 
     if($B)
     return response()->json([ 'status' => 200, 'message' => 'Success!']);
@@ -477,7 +477,7 @@ $old_document = $current->document;
           }
 
           $create_name=$uniqid.'.'.$ext;
-          if (!file_exists('files/business/'.$listing)) 
+          if (!file_exists('files/business/'.$listing))
           mkdir('files/business/'.$listing, 0777, true);
 
           $loc='files/business/'.$listing.'/';
@@ -500,7 +500,7 @@ $old_document = $current->document;
           }
 
           $create_name=$uniqid.'.'.$ext;
-          if (!file_exists('files/business/'.$listing)) 
+          if (!file_exists('files/business/'.$listing))
           mkdir('files/business/'.$listing, 0777, true);
 
           $loc='files/business/'.$listing.'/';
@@ -523,7 +523,7 @@ $old_document = $current->document;
           }
 
           $create_name=$uniqid.'.'.$ext;
-          if (!file_exists('files/business/'.$listing)) 
+          if (!file_exists('files/business/'.$listing))
           mkdir('files/business/'.$listing, 0777, true);
 
           $loc='files/business/'.$listing.'/';
@@ -533,24 +533,24 @@ $old_document = $current->document;
           $data['document'] = $final_document;
           if($old_document!=null) unlink($old_document);
              }
-             
+
 
 
  $video=$request->file('video');
  if($video) {
           $uniqid=hexdec(uniqid());
           $ext=strtolower($video->getClientOriginalExtension());
-          if($ext!='mpg' && $ext!= 'mpeg' && $ext!='webm' && $ext!= 'mp4' 
+          if($ext!='mpg' && $ext!= 'mpeg' && $ext!='webm' && $ext!= 'mp4'
             && $ext!='avi' && $ext!= 'wmv')
-          { 
-            Session::put('error','For video, Only mpg || mpeg || webm || mp4 
+          {
+            Session::put('error','For video, Only mpg || mpeg || webm || mp4
             avi || wmv are allowed!');
-             
+
             return redirect()->back();
           }
 
           $create_name=$uniqid.'.'.$ext;
-          if (!file_exists('files/business/'.$listing)) 
+          if (!file_exists('files/business/'.$listing))
           mkdir('files/business/'.$listing, 0777, true);
 
           $loc='files/business/'.$listing.'/';
@@ -559,17 +559,17 @@ $old_document = $current->document;
           $final_video=$loc.$create_name;
           $data['video'] = $final_video;
           if($old_video!=null) unlink($old_video);
-             }                     
+             }
 
-          
+
 
 //FILES
 if(isset($request->link)) $data['video'] = $request->link;
-Listing::where('id',$id)->update($data); 
+Listing::where('id',$id)->update($data);
 
 if($data)
 return response()->json([ 'status' => 200, 'message' => 'Business Updated!']);
-else 
+else
 return response()->json([ 'status' => 400, 'message' => 'Something went wrong!']);
 
 }
@@ -578,9 +578,9 @@ return response()->json([ 'status' => 400, 'message' => 'Something went wrong!']
 public function delete_listing($id){
 
 // $milestone = Listing::where('id',$id)->first();
-// if($milestone->document!= null && file_exists($milestone->document)) 
-//   unlink($milestone->document);  
-  
+// if($milestone->document!= null && file_exists($milestone->document))
+//   unlink($milestone->document);
+
 $loc = public_path('files/business/'.$id);
 File::deleteDirectory($loc);
 
@@ -607,8 +607,8 @@ Equipments::create([
             'value' => $value,
             'amount' => $amount,
             'details' => $details,
-            'listing_id' => $listing_id  
-           ]);       
+            'listing_id' => $listing_id
+           ]);
         Session::put('success','Equipment added!');
         return redirect()->back();
 }
@@ -626,7 +626,7 @@ public function activate_milestone($id){
   if($total != $this_business->investment_needed){
     return response()->json([ 'status' => 404, 'message' => 'A business must have one or more milestones that cover the full amount requested before activation!']);
   }
-  
+
   $thisMile2 = Milestones::where('listing_id',$id)->first();
   $milestones = Milestones::where('id',$thisMile2->id)
   ->update([
@@ -658,7 +658,7 @@ public function getMilestones($id){
     if(Auth::check())
         $investor_id = Auth::id();
     else {
-        if(Session::has('investor_email')){   
+        if(Session::has('investor_email')){
         $mail = Session::get('investor_email');
         $investor = User::where('email',$mail)->first();
         $investor_id = $investor->id;
@@ -684,11 +684,11 @@ public function getMilestones($id){
   if($mile->investor_id == $investor_id)
     $mile->access = true;
   //Status Determine
-  if($mile->status == 'In Progress') 
+  if($mile->status == 'In Progress')
   $running = 1;
 
-  if($mile->status == 'Done') { 
-  $done++; 
+  if($mile->status == 'Done') {
+  $done++;
  }
 
   //SETTING Time Diffrence
@@ -739,7 +739,7 @@ return response()->json([ 'data' => $milestones, 'progress' => 0, 'length' => 0 
     $accepted = serviceBook::where('service_id',$listing_id)
     ->where('booker_id', Auth::id())->where('paid', 1)->first();
   }
-    
+
     if($accepted)
       $toDispute = true;
     else
@@ -749,7 +749,7 @@ return response()->json([ 'data' => $milestones, 'progress' => 0, 'length' => 0 
  }
 
  public function download_milestone_doc($id, $mile_id){
-    
+
     $doc = Milestones::where('id',$mile_id)->first();
     if($doc)
     $file=$doc->document;
@@ -757,7 +757,7 @@ return response()->json([ 'data' => $milestones, 'progress' => 0, 'length' => 0 
 
         return response('404');
     }
-    
+
     $headers = array('Content-Type'=> 'application/pdf');
     $url= public_path($file);
     $extension = pathinfo($url, PATHINFO_EXTENSION);
@@ -781,7 +781,7 @@ return response()->json([ 'data' => $milestones, 'progress' => 0, 'length' => 0 
 
         return response('404');
     }
-    
+
     $headers = array('Content-Type'=> 'application/pdf');
     $url= public_path($doc);
     $extension = pathinfo($url, PATHINFO_EXTENSION);
@@ -814,7 +814,7 @@ foreach($business as $b)
   foreach($milestones as $m)
      if($m->listing_id == $b->id)
       $m->business_name = $b->name;
-    
+
 return response()->json(['milestones' => $milestones, 'business'=>$business, 'business_name' =>$business_name ]);
 }
 
@@ -851,29 +851,29 @@ try{
     $total_share_amount = $total_share_amount+$amount;
     if($total_share_amount>$inv_need){
       return response()->json([ 'status' => 404, 'message' => 'The amount exceeds the total investment needed!']);
-    
+
     }
 
     $single_img=$request->file('file');
- 
+
           $uniqid=hexdec(uniqid());
           $ext=strtolower($single_img->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
           {
-            
+
             return response()->json([ 'status' => 404, 'message' => 'Only pdf & docx are allowed!']);
           }
 
           $create_name=$uniqid.'.'.$ext;
 
-          if (!file_exists('files/milestones/'.$business_id)) 
+          if (!file_exists('files/milestones/'.$business_id))
           mkdir('files/milestones/'.$business_id, 0777, true);
 
           $loc='files/milestones/'.$business_id.'/';
           //Move uploaded file
           $single_img->move($loc, $create_name);
           $final_file=$loc.$create_name;
-           
+
 
             Milestones::create([
             'user_id' => $user_id,
@@ -883,13 +883,13 @@ try{
             'document' => $final_file,
       			'n_o_days' => $n_o_days,
             'status' => $status,
-            'share'  => $share           
-           ]);  
+            'share'  => $share
+           ]);
 
             return response()->json([ 'status' => 200, 'message' => 'Success']);
-  
 
-    }   
+
+    }
 
     catch(\Exception $e){
     return response()->json([ 'status' => 404, 'message' => $e->getMessage() ]);
@@ -900,7 +900,7 @@ try{
 
 
 public function mile_status(Request $request){
-try{ 
+try{
   $mile_id = $request->id;
   $thisMile = Milestones::where('id',$mile_id)->first();
   $listing_id = $thisMile->listing_id;
@@ -909,7 +909,7 @@ try{
   'status' => $request->status
   ]);
 
-  if($request->status == 'Done'){ 
+  if($request->status == 'Done'){
     // Release this milestone payment from Escrow
 
     //Last Milestone Check
@@ -972,17 +972,17 @@ try{
         $this->createNotification($investor->id,$bid->owner_id,$text
                 ,'next_mile_agree',' business');
       //Email
-         
+
     }
     return response()->json(['status' => 200,'message' => 'Status set success, mail sent!']);
-      
+
   }
 
   else {
     return response()->json(['status' => 200,'message' => 'Status set success!']);
   }
 }
-catch(\Exception $e){ 
+catch(\Exception $e){
   return response()->json(['status' => 400,'message' => $e->getMessage()]);
  }
 
@@ -1012,11 +1012,11 @@ try {
     if($bid->photos) unlink($bid->photos);
   }
   //Refund
-         
+
   $bid_remove = BusinessBids::where('id',$id)->delete();
 
   $list = listing::select('name')->where('id',$bid->business_id)->first();
-  //Notifications
+  //Notification.php
          $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
          $addNoti = Notifications::create([
             'date' => $date,
@@ -1035,13 +1035,13 @@ try {
             'link' => 'investment-bids',
             'type' => 'business',
           ]);
-  //Notifications
+  //Notification.php
 
   //Email
-         
+
          $info=[ 'business_name'=>$list->name, 'investor' => $inv_name ];
          $user['to'] = $owner->email; //'tottenham266@gmail.com'; //
-         
+
          if($owner)
             Mail::send('bids.cancelled', $info, function($msg) use ($user){
              $msg->to($user['to']);
@@ -1080,9 +1080,9 @@ try {
     //if($bid->photos) unlink($bid->photos);
   }
   //Refund
-   
-   $list = listing::select('name')->where('id',$bid->business_id)->first();      
-  //Notifications
+
+   $list = listing::select('name')->where('id',$bid->business_id)->first();
+  //Notification.php
          $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
          $addNoti = Notifications::create([
             'date' => $date,
@@ -1092,13 +1092,13 @@ try {
             'link' => 'investment-bids',
             'type' => 'business',
           ]);
-  //Notifications
+  //Notification.php
 
   //Email
-         
+
          $info=[ 'business_name'=>$list->name, 'investor' => $inv_name ];
          $user['to'] = $owner->email; //'tottenham266@gmail.com'; //
-         
+
          if($owner)
             Mail::send('bids.cancelled', $info, function($msg) use ($user){
              $msg->to($user['to']);
@@ -1126,12 +1126,12 @@ public function askInvestorToVerify($id)
         }
 
         $investor = User::select('email')->where('id',$bid->investor_id)->first();
-        $list = listing::select('name')->where('id',$bid->business_id)->first(); 
-        
+        $list = listing::select('name')->where('id',$bid->business_id)->first();
+
         //Email
          $info=[ 'business_name'=>$list->name, 'bid_id' => base64_encode($id) ];
          $user['to'] = $investor->email; //'tottenham266@gmail.com'; //
-         
+
          if($investor)
             Mail::send('bids.askInvestorToVerify', $info, function($msg) use ($user){
              $msg->to($user['to']);
@@ -1148,7 +1148,7 @@ public function askInvestorToVerify($id)
 }
 
 public function requestOwnerToVerify($bid_id)
-{   
+{
     try{
         $bid = AcceptedBids::select('owner_id','investor_id','business_id')
         ->where('id',$bid_id)->first();
@@ -1163,7 +1163,7 @@ public function requestOwnerToVerify($bid_id)
         $owner = User::select('email')->where('id',$bid->owner_id)->first();
         //$inv_name = User::select('fname','lname')->where('id',$bid->business_id)->first();
 
-        //Notifications
+        //Notification.php
          $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
          $addNoti = Notifications::create([
             'date' => $date,
@@ -1174,13 +1174,13 @@ public function requestOwnerToVerify($bid_id)
             'link' => 'verify_request',
             'type' => 'investor',
           ]);
-        //Notifications
+        //Notification.php
 
         //Email
-         
+
          $info=[ 'business_name'=>$listing->name ];
          $user['to'] = $owner->email; //'tottenham266@gmail.com'; //
-         
+
          if($owner)
             Mail::send('bids.verify_request', $info, function($msg) use ($user){
              $msg->to($user['to']);
@@ -1206,7 +1206,7 @@ public function markAsVerified($id)
         $investor =User::select('email','id')->where('id',$bid->investor_id)
         ->first();
 
-          //Notifications
+          //Notification.php
           //EQP RELEASE
             $info=[ 'business_owner'=>$bid->business_id, 'manager'=>$bid->project_manager, 'bid_id'=> base64_encode($id)];
             $user['to'] = $investor->email;
@@ -1271,7 +1271,7 @@ foreach($res as $r){
   $r->photos = explode(',',$r->photos);
   $bids[] = $r;
   }
-} 
+}
 
 $remove_new = BusinessBids::where('owner_id', Auth::id())
 ->update(['new'=>0]);
@@ -1326,7 +1326,7 @@ public function confirmed_bids()
     $r->photos = explode(',',$r->photos);
     $bids[] = $r;
     }
-  } 
+  }
 
   foreach($underVerify as $r){
     $inv = User::where('id',$r->investor_id)->first();
@@ -1351,7 +1351,7 @@ public function confirmed_bids()
     $r->photos = explode(',',$r->photos);
     $under_verify[] = $r;
     }
-  } 
+  }
 
 return response()->json(['status'=>200, 'bids' => $bids, 'underVerify' => $under_verify]);
 }
@@ -1363,7 +1363,7 @@ return response()->json(['status'=>200, 'bids' => $bids, 'underVerify' => $under
 
 
 public function assetEquip_download($id, $type){
-    
+
    try {
       if($type == 'photos'){
         $id = str_replace('__','/',$id);
@@ -1399,13 +1399,13 @@ public function assetEquip_download($id, $type){
         return redirect()->back();
       }
       }
-      
+
 
   } catch (Exception $e) {
       Session::put('failed',$e->getMessage());
       return redirect()->back();
-    } 
-    
+    }
+
 
 
     }
@@ -1454,7 +1454,7 @@ public function assetEquip_download($id, $type){
     catch(\Exception $e){
       $count = 0;
       $results['subscribed'] = 0;
-      return response()->json([ 'data' => $results, 'conv'=>$conv, 'fee'=> $investors_fee, 'count' => $count, 'reviews' => $reviews, 
+      return response()->json([ 'data' => $results, 'conv'=>$conv, 'fee'=> $investors_fee, 'count' => $count, 'reviews' => $reviews,
         'error' => $e->getMessage(), 'isInvestor' => $isInvestor ] );
     }
       if($subs->plan == 'platinum' || $subs->plan == 'platinum-trial')
@@ -1492,7 +1492,7 @@ public function assetEquip_download($id, $type){
     }
 
 
-    return response()->json([ 'data' => $results, 'fee'=> $investors_fee, 'conv'=>$conv, 'count' => $count, 'reviews' => $reviews, 
+    return response()->json([ 'data' => $results, 'fee'=> $investors_fee, 'conv'=>$conv, 'count' => $count, 'reviews' => $reviews,
       'isInvestor' => $isInvestor] );
 }
 
@@ -1504,8 +1504,8 @@ $listing = $request->listing;
 $user_id = Auth::id();
 
           $files=$request->file('files'); //print_r($files);
- 
-          foreach ($files as $single_img) { 
+
+          foreach ($files as $single_img) {
             # code...
           $uniqid=hexdec(uniqid());
           $ext=strtolower($single_img->getClientOriginalExtension());
@@ -1517,21 +1517,21 @@ $user_id = Auth::id();
 
           $create_name=$uniqid.'.'.$ext;
 
-          if (!file_exists('files/business/'.$listing)) 
+          if (!file_exists('files/business/'.$listing))
           mkdir('files/business/'.$listing, 0777, true);
 
           $loc='files/business/'.$listing.'/';
           //Move uploaded file
           $single_img->move($loc, $create_name);
           $final_file=$loc.$create_name;
-           
+
            businessDocs::create([
             'user_id' => $user_id,
             'business_id' => $listing,
-            'file' => $final_file         
+            'file' => $final_file
            ]);
 
-             } 
+             }
 
         Session::put('success','Documents added!');
         return redirect('business');
@@ -1546,32 +1546,32 @@ $user_id = Auth::id();
 
 
           $single_img=$request->file('files'); //print_r($files);
- 
+
           $uniqid=hexdec(uniqid());
           $ext=strtolower($single_img->getClientOriginalExtension());
-          if($ext!='mpg' && $ext!= 'mpeg' && $ext!='webm' && $ext!= 'mp4' 
+          if($ext!='mpg' && $ext!= 'mpeg' && $ext!='webm' && $ext!= 'mp4'
             && $ext!='avi' && $ext!= 'wmv')
-          { 
-            Session::put('file_error','Only mpg || mpeg || webm || mp4 
+          {
+            Session::put('file_error','Only mpg || mpeg || webm || mp4
             avi || wmv are allowed!');
             return redirect('business');
           }
 
           $create_name=$uniqid.'.'.$ext;
-          if (!file_exists('files/business/'.$user_id)) 
+          if (!file_exists('files/business/'.$user_id))
           mkdir('files/business/'.$user_id, 0777, true);
 
           $loc='files/business/'.$user_id.'/';
           //Move uploaded file
           $single_img->move($loc, $create_name);
           $final_file=$loc.$create_name;
-           
+
            businessDocs::create([
             'user_id' => $user_id,
             'business_id' => $listing,
             'file' => $final_file,
             'media' => 1
-          
+
            ]);
 
         Session::put('success','Media added!');
@@ -1589,7 +1589,7 @@ $user_id = Auth::id();
             'user_id' => $user_id,
             'business_id' => $listing,
             'file' => $link,
-            'media' => 1        
+            'media' => 1
            ]);
 
         Session::put('success','Media Embedded!');
@@ -1648,7 +1648,7 @@ else if($plan == 'token'){
         'listing_id' => $listing_id,
         'price' => 'Subscription'
     ]);
-  
+
 }
 
 else{
@@ -1668,7 +1668,7 @@ else{
 public function FindProjectManagers($bid_id){
 $results = array();
 $this_bid = AcceptedBids::where('id',$bid_id)->first();
-if(!$this_bid) 
+if(!$this_bid)
   return response()->json(['status'=>400, 'data'=>false, 'message'=>'Bid does not exist!']);
 $this_business = Listing::where('id',$this_bid->business_id)->first();
 
@@ -1686,7 +1686,7 @@ else return response()->json(['status'=>400, 'data'=>false, 'message'=>'Business
 }
 
 
-public function notifications(){ 
+public function notifications(){
 $results = [];
 $notifications = Notifications::where('receiver_id',Auth::id())->latest()->get();
 foreach($notifications as $notice)
@@ -1698,19 +1698,19 @@ foreach($notifications as $notice)
   $name = $notifier->fname. ' '.$notifier->lname;
   else unset($notice);
   }
-  
+
   else if($notice->type == 'business'){
   $notifier =Listing::where('id',$notice->customer_id)->first();
   if($notifier)
   $name = $notifier->name;
   else unset($notice);
   }
-  
+
   else {
     $notifier =Services::where('id',$notice->customer_id)->first();
     if($notifier)$name = $notifier->name;
     else unset($notice);
-    
+
   }
 
   if(isset($notice))
@@ -1722,7 +1722,7 @@ return response()->json(['data' => $notifications]);
 }
 
 
-public function notifSetRead(){ 
+public function notifSetRead(){
 $myNotifications = Notifications::where('receiver_id',Auth::id())->update([
 'new' => 0]);
 return response()->json(['status' => 200]);
@@ -1747,20 +1747,20 @@ public function raiseDispute(Request $request)
             }
 
             //$disputant = User::where('id', Auth::id())->first();
-            
+
 
             //FILE
             $document=$request->file('document'); //return $document;
-            if($document) {        
+            if($document) {
             $ext=strtolower($document->getClientOriginalExtension());
             if($ext!='pdf' && $ext!= 'docx')
             {
               return response()->json([ 'status' => 400, 'message' => 'For document, Only pdf or docx are allowed!']);
-            } 
+            }
 
             $uniqid=hexdec(uniqid());
             $create_name=$uniqid.'.'.$ext;
-            if (!file_exists('files/disputes/'.$request->project_id)) 
+            if (!file_exists('files/disputes/'.$request->project_id))
             mkdir('files/disputes/'.$request->project_id, 0777, true);
 
             $loc='files/disputes/'.$request->project_id.'/';
@@ -1780,7 +1780,7 @@ public function raiseDispute(Request $request)
                 'details' => $request->details,
                 'document' => $final_document,
                 'type' => $request->type,
-            ]); 
+            ]);
 
             //MAIL
             $info=['business_name'=>$project->name,
@@ -1792,13 +1792,13 @@ public function raiseDispute(Request $request)
              });
             //MAIL
 
-            return response()->json(['status' => 200, 
+            return response()->json(['status' => 200,
               'message' => 'Dispute opened, we will get back to you after reviewing details!']);
-     
+
        }
         catch(\Exception $e){
             return response()->json(['status' => 400, 'message' => $e->getMessage()]);
-       }  
+       }
 
    }
 
@@ -1845,7 +1845,7 @@ public function findNearestServices($latitude, $longitude, $radius = 100)
             'link' => $link,
             'type' => $type,
         ]);
-    } 
+    }
 
 
 //Class Bracket

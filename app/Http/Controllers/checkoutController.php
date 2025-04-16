@@ -16,7 +16,7 @@ use App\Models\Milestones;
 use App\Models\Smilestones;
 use App\Models\serviceBook;
 use App\Models\ServiceMileStatus;
-use Session; 
+use Session;
 use Hash;
 use Auth;
 use Mail;
@@ -49,11 +49,11 @@ class checkoutController extends Controller
       //$ids=Crypt::decryptString($ids);
 
     Session::put('small_fee_new_price', $price);
-      
+
         return view('checkout.stripe',compact('price','listing'));
     }
 
-   
+
     /**
      * success response method.
      *
@@ -61,29 +61,29 @@ class checkoutController extends Controller
      */
 
      public function stripeConversation(Request $request)
-    {   
+    {
         $listing_id=$request->listing;
         $package=$request->package;
 
         //Stripe
-    try{ 
+    try{
 
-        $curr='USD'; //$request->currency; 
+        $curr='USD'; //$request->currency;
         $amount= $request->amount; //Session::get('small_fee_new_price'); //$request->price;
         $transferAmount= round($amount-($amount*.05),2);
 
 
         $this->validate($request, [
             'stripeToken' => ['required', 'string']
-        ]); 
-        $charge = $this->Client->charges->create ([ 
+        ]);
+        $charge = $this->Client->charges->create ([
                 //"billing_address_collection": null,
                 "amount" => $amount*100, //100 * 100,
                 "currency" => $curr,
                 "source" => $request->stripeToken,
                 "description" => "This payment is test purpose only!"
         ]);
-        
+
         }
       catch(\Exception $e){
       return response()->json(['status' => 400, 'message' => $e->getMessage()]);
@@ -98,8 +98,8 @@ class checkoutController extends Controller
 //Split
  try{
 
-        $curr='USD'; //$request->currency; 
-        $tranfer = $this->Client->transfers->create ([ 
+        $curr='USD'; //$request->currency;
+        $tranfer = $this->Client->transfers->create ([
                 //"billing_address_collection": null,
                 "amount" => $transferAmount*100, //100 * 100,
                 "currency" => $curr,
@@ -113,7 +113,7 @@ class checkoutController extends Controller
             'listing_id' => $listing_id,
             'package' => $package,
             'price' => $amount
-        ]); 
+        ]);
        return response()->json(['status' => 200, 'message' => 'success']);
       }
 
@@ -139,7 +139,7 @@ class checkoutController extends Controller
       $plan=base64_decode($plan);
       $base_price=base64_decode($amount);
       $price = round( $base_price+($base_price*0.05),2 );
-      Session::put('subscribe_price', $price); 
+      Session::put('subscribe_price', $price);
 
     //If trial
       $trial_price = 0;
@@ -206,7 +206,7 @@ class checkoutController extends Controller
             $sub = $this->Client->subscriptions->retrieve(
               $stripe_sub_id, []
         );
-          
+
         $transferAmount=0;
         $original_amount = ($sub->items->data[0]->plan->amount)/100;
         if($original_amount == 69.99) $plan = 'platinum-trial';
@@ -227,7 +227,7 @@ class checkoutController extends Controller
 
        //echo $investor_id; exit;
 
-       
+
         $start_date = date('Y-m-d');
         $expire_date = date('Y-m-d', strtotime($start_date. '+30 days'));
 
@@ -264,7 +264,7 @@ class checkoutController extends Controller
         'chosen_range' => $range,
         'trial' => $trial,
         'stripe_sub_id' => $stripe_sub_id
-        ]); 
+        ]);
 
         if($trial == 1)
         $message = 'Your trial expires in 7 days';
@@ -332,14 +332,14 @@ class checkoutController extends Controller
     //Stripe
     try{
 
-        $curr='USD'; //$request->currency; 
+        $curr='USD'; //$request->currency;
         $amount=$request->price;
         $transferAmount=$amount-($amount*.05);
 
         $this->validate($request, [
             'stripeToken' => ['required', 'string']
         ]);
-        $charge = $this->Client->charges->create ([ 
+        $charge = $this->Client->charges->create ([
                 //"billing_address_collection": null,
                 "amount" => $amount*100, //100 * 100,
                 "currency" => $curr,
@@ -359,8 +359,8 @@ class checkoutController extends Controller
 //Split
  try{
 
-        $curr='USD'; //$request->currency; 
-        $tranfer = $this->Client->transfers->create ([ 
+        $curr='USD'; //$request->currency;
+        $tranfer = $this->Client->transfers->create ([
                 //"billing_address_collection": null,
                 "amount" => $transferAmount*100, //100 * 100,
                 "currency" => $curr,
@@ -376,7 +376,7 @@ catch(\Exception $e){
 
  //Stripe
 
-   
+
 
 //DB INSERT
     $investor = User::where('id',Auth::id())->first();
@@ -396,18 +396,18 @@ catch(\Exception $e){
     listing::where('id',$listing_id)->update([
         'investment_needed' => $old_amount-$amount,
         'share' => $old_share-$new_share
-    ]); 
+    ]);
 
-        $info=['eq_name'=>$Equipment->eq_name, 
+        $info=['eq_name'=>$Equipment->eq_name,
             'Name'=>$investor->name,'amount'=>$amount,
-            'email' => $investor->email, 'type'=>'invest']; 
+            'email' => $investor->email, 'type'=>'invest'];
 
         $user['to'] = 'sohaankane@gmail.com';//$listing->contact_mail;
 
         Mail::send('invest_mail', $info, function($msg) use ($user){
             $msg->to($user['to']);
             $msg->subject('Test Invest Alert!');
-        });  
+        });
 
 
        Session::put('Stripe_pay','Invest request sent successfully!');
@@ -423,7 +423,7 @@ catch(\Exception $e){
     if(Auth::check())
                 $investor_id = Auth::id();
             else {
-                if(Session::has('investor_email')){   
+                if(Session::has('investor_email')){
                 $mail = Session::get('investor_email');
                 $investor = User::where('email',$mail)->first();
                 $investor_id = $investor->id;
@@ -441,24 +441,24 @@ catch(\Exception $e){
 
                 $conv = Conversation::where('investor_id',$investor_id)
                 ->where('listing_id',$request->lisitng_id)->first();
-                
+
                 if(!$first_ml && $conv){
                     $amount = $amount-15;
                     $discount = 'discount - $15! from '.($amount+15).' (conversation fee)';
-                    
+
                 }
                 //Frist ML check
- 
+
         return view('milestone.stripe',compact('amount','milestone_id','tax','discount'));
     }
 
-   
+
     public function milestoneStripePost(Request $request)
     {
             if(Auth::check())
                 $investor_id = Auth::id();
             else {
-                if(Session::has('investor_email')){   
+                if(Session::has('investor_email')){
                 $mail = Session::get('investor_email');
                 $investor = User::where('email',$mail)->first();
                 $investor_id = $investor->id;
@@ -468,7 +468,7 @@ catch(\Exception $e){
             try{
 
             $id = $request->milestone_id; //explode(',',$request->ids);
-            $mile = Milestones::where('id',$id)->first();    
+            $mile = Milestones::where('id',$id)->first();
             $tax = taxes::where('id',1)->first();$tax = $tax->tax+$tax->vat;
             $amount =($mile->amount)+($mile->amount)*($tax/100);
             $user_id = $mile->user_id;
@@ -484,12 +484,12 @@ catch(\Exception $e){
 
 
                 //STRIPE
-                 $curr='USD'; //$request->currency; 
+                 $curr='USD'; //$request->currency;
                  $amount=round($amount);
 
                 Stripe\Stripe::setApiKey('sk_test_51JFWrpJkjwNxIm6zcIxSq9meJlasHB3MpxJYepYx1RuQnVYpk0zmoXSXz22qS62PK5pryX4ptYGCHaudKePMfGyH00sO7Jwion');
 
-                Stripe\Charge::create ([ 
+                Stripe\Charge::create ([
 
                         //"billing_address_collection": null,
                         "amount" => $amount*100, //100 * 100,
@@ -497,19 +497,19 @@ catch(\Exception $e){
                         "source" => $request->stripeToken,
                         "description" => "This payment is tested purpose only!"
                 ]);
-           
+
 
 
            //MAIL
                 $business = listing::where('id',$mile->listing_id)->first();
 
-                $info=[  'name'=>$mile->title,  'amount'=>$mile->amount, 'business'=>$business->name, ]; 
+                $info=[  'name'=>$mile->title,  'amount'=>$mile->amount, 'business'=>$business->name, ];
                 $user['to'] = $request->email;//'sohaankane@gmail.com';
 
                  Mail::send('milestone.milestone_mail', $info, function($msg) use ($user){
                      $msg->to($user['to']);
                      $msg->subject('Milestone Status Changed!');
-                 });  
+                 });
 
 
         //DB INSERT
@@ -517,7 +517,7 @@ catch(\Exception $e){
             $new_investment = $old_investment - $mile->amount;
             listing::where('id',$mile->listing_id)->update(['investment_needed' => $new_investment]);
 
-            Milestones::where('id',$id)->update([ 
+            Milestones::where('id',$id)->update([
                 'status' => 'Done'
             ]);
 
@@ -557,19 +557,19 @@ catch(\Exception $e){
 
     Session::put('service_part_amount', $amount);
     Session::put('service_part_amount_real', $amountReal);
- 
+
         return view('milestoneS.stripe',compact('amount','milestone_id','tax'));
     }
 
-   
+
     public function milestoneStripePostS(Request $request)
-    { 
+    {
 
     if(Auth::check())
     {
         $investor_id = Auth::id();
         $investor = User::where('id',$investor_id)->first();
-    }    
+    }
     else {
 
         return response()->json(['message' =>  'Unauthorized!','status' => 400 ]);
@@ -579,11 +579,11 @@ catch(\Exception $e){
     $mileRep = ServiceMileStatus::select('id','mile_id','booking_id')
     ->where('id',$rep_id)->first();
 
-    $id = $mileRep->mile_id; 
-    $mile = Smilestones::where('id',$id)->first();    
+    $id = $mileRep->mile_id;
+    $mile = Smilestones::where('id',$id)->first();
     $tax = taxes::where('id',1)->first();$tax = $tax->tax+$tax->vat;
 
-    $amount= $request->amount; 
+    $amount= $request->amount;
     $transferAmount= round($amount-($amount*.05),2);
     $amountReal= $request->amountOriginal; //$request->amountReal;
     $transferAmount=round($amountReal,2);
@@ -592,16 +592,16 @@ catch(\Exception $e){
     $business_id = $mile->listing_id;
 
     //Stripe
-    try{ 
+    try{
 
-        $curr='USD'; //$request->currency; 
+        $curr='USD'; //$request->currency;
         $amount=round($amount,2);
         $transferAmount=round($transferAmount,2);
 
         $this->validate($request, [
             'stripeToken' => ['required', 'string']
         ]);
-        $charge = $this->Client->charges->create ([ 
+        $charge = $this->Client->charges->create ([
                 //"billing_address_collection": null,
                 "amount" => $amount*100, //100 * 100,
                 "currency" => $curr,
@@ -619,14 +619,14 @@ catch(\Exception $e){
     $ownerS = User::select('fname','lname','id','email','connect_id')->where('id', $Business->shop_id)
     ->first();
 
-    
+
     try{
         ServiceMileStatus::where('id',$rep_id)->update([ 'status' => 'In Progress']);
         $booking = serviceBook::where('id',$mileRep->booking_id)->first();
-        
+
         //Asset-related
         $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
-        if ($Business->category == '0') 
+        if ($Business->category == '0')
         {
             $investor = User::select('fname','lname','id','email')->where('id',$investor_id)->first();
 
@@ -642,14 +642,14 @@ catch(\Exception $e){
                 $investor_name = $investor->fname. ' '.$investor->lname;
                 $manager = $ownerS->fname. ' '.$ownerS->lname;
 
-                $info=['mail_to'=>'owner','manager_name'=>$manager, 'contact'=>$ownerS->email, 'investor_name' => $investor_name]; 
-                $user['to'] = $ownerB->email; 
+                $info=['mail_to'=>'owner','manager_name'=>$manager, 'contact'=>$ownerS->email, 'investor_name' => $investor_name];
+                $user['to'] = $ownerB->email;
                 $mail1 = Mail::send('bids.owner_manager_alert', $info, function($msg) use ($user){
                 $msg->to($user['to']);
                 $msg->subject('Project Manger Assigned!');
-            }); 
-             
-            //Notifications
+            });
+
+            //Notification.php
                 $addNoti = Notifications::create([
                 'date' => $date,
                 'receiver_id' => $ownerB->id,
@@ -671,8 +671,8 @@ catch(\Exception $e){
                 $msg->to($user['to']);
                 $msg->subject('Project Manger Assigned!');
             });
-             
-            //Notifications
+
+            //Notification.php
                 $addNoti = Notifications::create([
                 'date' => $date,
                 'receiver_id' => $ownerS->id,
@@ -689,15 +689,15 @@ catch(\Exception $e){
         //MAIL
         $business = Services::where('id',$mile->listing_id)->first();
         $customer = User::where('id',Auth::id())->first();
-        $info=[  'name'=>$mile->title,  'amount'=>$business->price, 'business'=>$business->name, 's_id' => $business_id, 'customer'=>$customer->fname. ' '.$customer->lname, 'id'=>$booking->id ]; 
+        $info=[  'name'=>$mile->title,  'amount'=>$business->price, 'business'=>$business->name, 's_id' => $business_id, 'customer'=>$customer->fname. ' '.$customer->lname, 'id'=>$booking->id ];
         $user['to'] = [$ownerS->email, $customer->email];//'sohaankane@gmail.com';
 
          Mail::send('milestoneS.milestone_mail', $info, function($msg) use ($user){
              $msg->to($user['to']);
              $msg->subject('Service Payment Received');
          });
-        //MAIL 
-        //Notifications
+        //MAIL
+        //Notification.php
                 $addNoti = Notifications::create([
                 'date' => $date,
                 'receiver_id' => $ownerS->id,
@@ -711,7 +711,7 @@ catch(\Exception $e){
             ->update(['paid' => 1]);
 
         $s_id = base64_encode(base64_encode($business->id));
-        return response()->json(['message' =>  'Success', 
+        return response()->json(['message' =>  'Success',
                         'service_id' => $s_id, 'status' => 200]);
 
         }
@@ -719,7 +719,7 @@ catch(\Exception $e){
     catch(\Exception $e){
         return response()->json(['error' => $e,'message' =>  $e->getMessage(),'status' => 400 ]);
     }
-   
+
   }
 
 
@@ -734,8 +734,8 @@ catch(\Exception $e){
         //MAIL
         try{
 
-        $info=[ 'mile_name'=>$mile->title, 
-        'inv_name'=>$investor_name, 
+        $info=[ 'mile_name'=>$mile->title,
+        'inv_name'=>$investor_name,
         'inv_contact'=>$investor->email ];
 
         $user['to'] =  $owner->email; //'tottenham266@gmail.com';
@@ -766,7 +766,7 @@ public function bidCommitsForm($amount,$business_id,$percent)
 
     Session::put('bid_new_price', $amount);
     Session::put('bid_original_price', $amountReal);
- 
+
         return view('bids.stripe',compact('amountReal','amount','business_id','percent'));
 }
 
@@ -784,7 +784,7 @@ public function bidCommits(Request $request){
     //Stripe
         $partialAmount = round($request->partialAmount,2);
         $curr='USD'; //$request->currency;
-        $amount= $request->amount; 
+        $amount= $request->amount;
         $amountReal= $request->amountOriginal; //$request->amountReal;
 
         $transferAmount=round($amountReal,2);
@@ -793,7 +793,7 @@ public function bidCommits(Request $request){
         $this->validate($request, [
             'stripeToken' => ['required', 'string']
         ]);
-        $charge = $this->Client->charges->create ([ 
+        $charge = $this->Client->charges->create ([
                 //"billing_address_collection": null,
                 "amount" => $partialAmount*100, //100 * 100,
                 "currency" => $curr,
@@ -851,7 +851,7 @@ public function bidCommits(Request $request){
                  $msg->subject('Fulfills a milestone!');
              });
 
-             //Notifications
+             //Notification.php
              $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
              $addNoti = Notifications::create([
                 'date' => $date,
@@ -862,7 +862,7 @@ public function bidCommits(Request $request){
                 'type' => 'investor',
 
               ]);
-            //Notifications
+            //Notification.php
         }
      // Milestone Fulfill check
 
@@ -880,7 +880,7 @@ public function bidCommits(Request $request){
     //Notification
 
     //Mail
-        $info=[ 'business_name'=>$Business->name, 'bid_id'=>$bids->id, 'type' => 
+        $info=[ 'business_name'=>$Business->name, 'bid_id'=>$bids->id, 'type' =>
         'Monetary' ];
         $user['to'] = $investor->email; //'tottenham266@gmail.com'; //
          if($investor)
@@ -917,7 +917,7 @@ public function bidCommitsAwaiting(Request $request){
     try{
         //Stripe
         $curr='USD'; //$request->currency;
-        $amount= $request->amount; 
+        $amount= $request->amount;
         $amountReal= $request->amountOriginal; //$request->amountReal;
 
         $transferAmount=round($amountReal,2);
@@ -926,7 +926,7 @@ public function bidCommitsAwaiting(Request $request){
         $this->validate($request, [
             'stripeToken' => ['required', 'string']
         ]);
-        $charge = $this->Client->charges->create ([ 
+        $charge = $this->Client->charges->create ([
                 //"billing_address_collection": null,
                 "amount" => $amount*100, //100 * 100,
                 "currency" => $curr,
@@ -939,7 +939,7 @@ public function bidCommitsAwaiting(Request $request){
         $bid_id = $request->bid_id;
         $bid = AcceptedBids::select('id','stripe_charge_id','business_id','type')
         ->where('id',$bid_id)->first();
-        
+
         $Business = listing::select('name','user_id')->where('id',$bid->business_id)->first();
         $owner = User::select('email')->where('id', $Business->user_id)->first();
 
@@ -949,7 +949,7 @@ public function bidCommitsAwaiting(Request $request){
           'stripe_charge_id' => $stripe_charge_id
         ]);
 
-        //Email & Notifications
+        //Email & Notification.php
         //Notification
          $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
          $addNoti = Notifications::create([
@@ -985,8 +985,8 @@ public function bidCommitsAwaiting(Request $request){
 }
 
 
-// Onboarding / Connect to stripe 
- public function connect($id) { 
+// Onboarding / Connect to stripe
+ public function connect($id) {
     $seller = User::where('id',$id)->first();
     if(!$seller->completed_onboarding){
         $token = hexdec(uniqid());
@@ -1006,8 +1006,8 @@ public function bidCommitsAwaiting(Request $request){
                   ],
                 ],
               ]);
-              
-$account_id=$account['id']; 
+
+$account_id=$account['id'];
 User::where('id',$id)->update(['connect_id'=>$account_id]);
 
 $account_links = $this->Client->accountLinks->create([
@@ -1015,7 +1015,7 @@ $account_links = $this->Client->accountLinks->create([
               'refresh_url' => route('connect.stripe',['id'=>$id]),
               'return_url' => route('return.stripe',['token'=>$token]),
               'type' => 'account_onboarding',
-            ]); 
+            ]);
 
     redirect()->to($account_links->url)->send();
     //echo "<script>window.location.href='$account_links->url'</script>";
@@ -1027,7 +1027,7 @@ $account_links = $this->Client->accountLinks->create([
     }
     }
 
-    
+
     try{
         $login_link = $this->Client->accounts->createLoginLink($seller->connect_id);
         return redirect($login_link->url);
@@ -1038,12 +1038,12 @@ $account_links = $this->Client->accountLinks->create([
               ->update(['completed_onboarding'=>0]);
               return response()->json(['message' =>  $e->getMessage(), 'status' => 400]);
 }
-    
+
 //echo '<pre>'; print_r($account_links); echo '<pre>';
 }
 
 
-//After return 
+//After return
 public function saveStripe($token) {
     $seller = User::where('token',$token)->first();
     if($seller){

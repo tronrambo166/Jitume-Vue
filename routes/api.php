@@ -26,13 +26,13 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('equipments/{id}', [PagesController::class, 'equipments'])->name('equipment');
     Route::get('invest/{listing_id}/{id}/{value}/{amount}/{type}', [PagesController::class, 'invest'])->name('equipments');
     Route::get('download_business/{id}', [PagesController::class, 'download_business'])->name('download_business');
-    Route::get('download_statement/{id}', [PagesController::class, 'download_statement'])->name('download_statement'); 
+    Route::get('download_statement/{id}', [PagesController::class, 'download_statement'])->name('download_statement');
     Route::get('searchResults/{ids}', [PagesController::class,'searchResults'])->name('searchResults');
-    
-    // --- MIDDLEWARE 
-    //Route::group(['middleware'=>['auth']], function(){ 
+
+    // --- MIDDLEWARE
+    //Route::group(['middleware'=>['auth']], function(){
     // <--milestones-->
- 
+
     Route::get('download_milestoneDoc/{id}/{mile_id}', [BusinessController::class, 'download_milestone_doc'])->name('download_milestoneDoc');
     Route::get('download_milestoneDocS/{id}/{mile_id}', [ServiceController::class, 'download_milestone_doc'])->name('download_milestoneDocS');
     Route::get('download_bids_doc/{id}', [BusinessController::class, 'download_bids_doc'])->name('download_bids_doc');
@@ -46,15 +46,15 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('bidCommits/{amount}/{business_id}/{percent}', [checkoutController::class, 'bidCommitsForm'])->name('bidCommits');
     Route::post('bidCommits', [checkoutController::class, 'bidCommits'])->name('bidCommits');
     Route::post('bidCommitsAwaiting', [checkoutController::class, 'bidCommitsAwaiting']);
-    
-    
+
+
     Route::post('bookingAccepted', [bidsEmailController::class, 'bookingAccepted'])->name('bookingAccepted');
     Route::post('bookingRejected', [bidsEmailController::class, 'bookingRejected'])->name('bookingRejected');
-    
+
     Route::get('FindProjectManagers/{bid_id}', [BusinessController::class, 'FindProjectManagers'])->name('FindProjectManagers');
     Route::get('releaseEquipment/{b_owner_id}/{manager_id}/{bid_id}', [bidsEmailController::class, 'releaseEquipment'])->name('releaseEquipment');
     Route::post('raise-dispute', [BusinessController::class, 'raiseDispute']);
-    
+
     //});
 
     // PAYMENT  ROUTES
@@ -70,11 +70,11 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('/initialize', [PayStackController::class, 'initialize']);
     Route::get('/create-subaccount', [PayStackController::class, 'create_subaccount']);
     Route::get('/paystackVerify/{business_id}/{percent}/{amountKFront}/{amountReal}/{ref}', [PayStackController::class, 'verify']);
-    
+
     Route::get('/paystackVerifySmallFee/{package}/{business_id}/{amountKFront}/{amountReal}/{ref}', [PayStackController::class, 'verifySmallFee']);
 
     Route::get('/paystackVerifyService/{true_mile_id}/{rep_id}/{amountKFront}/{amountReal}/{ref}', [PayStackController::class, 'verifyService']);
-    
+
     Route::get('/partiesInfo/{listing_id}', [AuthController::class,'partiesInfo']);
     Route::get('/partiesServiceMile/{rep_mile_id}', [AuthController::class,'PartiesServiceMile']);
 
@@ -91,7 +91,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('milestoneService', [checkoutController::class, 'milestoneStripePostS'])->name('milestoneService.post');
     // Route::get('milestoneInvestEQP/{listing_id}/{mile_id}/{investor_id}/{owner_id}', [checkoutController::class, 'milestoneInvestEQP'])->name('milestoneInvestEQP');
 
-   
+
     Route::post('bidsAccepted', [bidsEmailController::class, 'bidsAccepted'])->name('bidsAccepted');
 
     // Payment Routes
@@ -103,7 +103,7 @@ Route::middleware('auth:sanctum')->group(function() {
 
 // B U S I N E S S    P R O T E C T E D
 Route::prefix('/business')->group(function(){
-   
+
 Route::post('update-profile', [PagesController::class, 'update_profile'])->name('update-profile');
 
 Route::get('bBQhdsfE_WWe4Q-_f7ieh7Hdhf2E_', [BusinessController::class, 'add_listing'])->name('add-listing');
@@ -196,6 +196,8 @@ Route::prefix('/grant')->group(function(){
    Route::get('pitches/{grant_id}', [GrantController::class, 'pitches']);
    Route::post('update-grant/{id}', [GrantController::class, 'update']);
    Route::get('delete-grant/{id}', [GrantController::class, 'destroy']);
+   Route::get('accept/{pitch_id}', [GrantController::class, 'accept']);
+   Route::get('reject/{pitch_id}', [GrantController::class, 'reject']);
 });
 
 Route::prefix('/capital')->group(function(){
@@ -210,7 +212,7 @@ Route::prefix('/capital')->group(function(){
 
 // G R A N T S    P R O T E C T E D   ENDS
 
-Route::get('serviceResultsAuth/{ids}', [PagesController::class, 'serviceResultsAuth']); 
+Route::get('serviceResultsAuth/{ids}', [PagesController::class, 'serviceResultsAuth']);
 Route::get('getMilestonesS_Auth/{id}', [ServiceController::class, 'getMilestones'])->name('getMilestonesS');
 
 Route::get('getMilestonesAuth/{id}', [BusinessController::class ,'getMilestones'])->name('getMilestones');
@@ -223,7 +225,7 @@ Route::get('JitumeSubscribeEmail/{email}', [PagesController::class, 'JitumeSubsc
  Route::get('CancelAssetBid/{id}/{action}',[bidsEmailController::class,'CancelAssetBid']);
  Route::get('CancelEquipmentRelease/{id}/{action}',[bidsEmailController::class,'CancelEquipmentRelease']);
 Route::get('CancelBookingConfirm/{id}/{action}',[bidsEmailController::class,'CancelBookingConfirm']);
- 
+
 
 
 
@@ -239,7 +241,7 @@ Route::get('emailExists/{email}',[AuthController::class,'emailExists']);
 Route::get('latBusiness', [PagesController::class,'latBusiness'])->name('latBusiness');
 Route::get('latServices', [PagesController::class, 'latServices'])->name('latServices');
 Route::get('searchResults/{ids}', [PagesController::class,'searchResults'])->name('searchResults');
-Route::get('ServiceResults/{ids}', [PagesController::class, 'ServiceResults'])->name('ServiceResults'); 
+Route::get('ServiceResults/{ids}', [PagesController::class, 'ServiceResults'])->name('ServiceResults');
 Route::get('categoryResults/{catName}', [PagesController::class, 'categoryResults'])->name('categoryResults');
 
 Route::get('categoryCount', [PagesController::class, 'categoryCount'])->name('categoryCount');
@@ -260,7 +262,7 @@ Route::get('social_login',function (){ return view('social_types'); })->name('so
 Route::get('/google', function (){
 return Socialite::driver('google')->stateless()->redirect(); })->name('login.google');
 Route::get('google/callback',[socialController::class, 'google']);
- 
+
 Route::get('/facebook', function () {
 return Socialite::driver('facebook')->stateless()->redirect(); })->name('login.facebook');
 Route::get('facebook/callback', [socialController::class, 'facebook']);
@@ -296,7 +298,7 @@ Route::get('/clear', function() {
 //Login Routes
 Route::post('login',[AuthController::class,'login'])->name('login');
 Route::post('register', [AuthController::class,'register'])->name('register');
-Route::post('registerI', [PagesController::class, 'registerI'])->name('registerI'); 
+Route::post('registerI', [PagesController::class, 'registerI'])->name('registerI');
 
 //Default CRUD
 // Route::post('/create', [UserController::class, 'store']);

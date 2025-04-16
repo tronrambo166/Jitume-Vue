@@ -16,7 +16,7 @@ use App\Models\Milestones;
 use App\Models\Smilestones;
 use App\Models\AcceptedBids;
 use App\Models\serviceBook;
-use Session; 
+use Session;
 use Hash;
 use Auth;
 use Mail;
@@ -71,7 +71,7 @@ public function bidsAccepted(Request $request)
         $list = listing::where('id',$bid->business_id)->first();
         $info=[ 'business_name'=>$list->name ];
         $user['to'] = $investor_mail; //'tottenham266@gmail.com'; //
-         
+
          if($investor)
             Mail::send('bids.rejected', $info, function($msg) use ($user){
              $msg->to($user['to']);
@@ -90,11 +90,11 @@ public function bidsAccepted(Request $request)
          }
          //Refund
 
-         
+
          $bid_remove = BusinessBids::where('id',$id)->delete();
          //remove
 
-         //Notifications
+         //Notification.php
          $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
          $addNoti = Notifications::create([
             'date' => $date,
@@ -104,7 +104,7 @@ public function bidsAccepted(Request $request)
             'link' => '/',
             'type' => 'business',
           ]);
-         //Notifications
+         //Notification.php
 
            }
           }
@@ -138,8 +138,8 @@ public function bidsAccepted(Request $request)
          // if($bid->type == 'Monetary' && $bid->stripe_charge_id)
          // {
                 //Split
-                    // $curr='USD'; //$request->currency; 
-                    // $tranfer = $this->Client->transfers->create ([ 
+                    // $curr='USD'; //$request->currency;
+                    // $tranfer = $this->Client->transfers->create ([
                     //         //"billing_address_collection": null,
                     //         "amount" => $bid->amount*100, //100 * 100,
                     //         "currency" => $curr,
@@ -150,7 +150,7 @@ public function bidsAccepted(Request $request)
          //}
          //TRANSFERRING FUNDS
 
-            if($bid->type == 'Monetary') 
+            if($bid->type == 'Monetary')
               $status ='awaiting_payment'; else $status ='under_verification';
 
               $accepted =  AcceptedBids::create([
@@ -170,7 +170,7 @@ public function bidsAccepted(Request $request)
               'stripe_charge_id' => $bid->stripe_charge_id,
               'status' => $status,
             ]);
-            
+
             //After Bid is Accepted
             if($bid->type == 'Monetary'){
                 $amount_collected = $list->amount_collected + $bid->amount;
@@ -180,12 +180,12 @@ public function bidsAccepted(Request $request)
                     'invest_count' => $invest_count
                 ]);
             }
-              
+
 
 
             //Mail
                 $info=[ 'business_name'=>$list->name, 'bid_id'=>
-                base64_encode($accepted->id), 'type' => $bid->type, 
+                base64_encode($accepted->id), 'type' => $bid->type,
                 'amount' => base64_encode($bid->amount), 'id' => $list->id ];
 
                 $user['to'] = $investor_mail; //'tottenham266@gmail.com'; //
@@ -196,7 +196,7 @@ public function bidsAccepted(Request $request)
                  });
             //Mail
 
-         //Notifications
+         //Notification.php
          $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
          $addNoti = Notifications::create([
             'date' => $date,
@@ -206,31 +206,31 @@ public function bidsAccepted(Request $request)
             'link' => '/',
             'type' => 'business',
           ]);
-         //Notifications
+         //Notification.php
           $bid_remove = BusinessBids::where('id',$id)->delete();
          //remove
 
          }
        }
       return response()->json(['message' => 'Accepted!'], 200);
-     
+
        }
         catch(\Exception $e){
             return response()->json(['message' => $e->getMessage()],400);
-       }  
+       }
 
    }
 
 
 public function agreeToProgressWithMilestone($bidId)
-{   
+{
     $bidId = base64_decode($bidId);
-    try { 
+    try {
         $bid = AcceptedBids::select('ms_id','business_id','owner_id','investor_id')
         ->where('id',$bidId)->first();
         $agreeVote = AcceptedBids::where('id',$bidId)
         ->where('ms_id',$bid->ms_id)->update([
-            'investor_agree' => 1       
+            'investor_agree' => 1
         ]);//$business_id = base64_encode(base64_encode($bid->business_id));
 
         //Release Payment - VOTE COUNT
@@ -242,7 +242,7 @@ public function agreeToProgressWithMilestone($bidId)
 
         $investor_agree = AcceptedBids::where('business_id',$bid->business_id)
         ->where('ms_id',$bid->ms_id)->where('investor_agree',1)->get();
-        
+
         $owner = User::select('connect_id','email')->where('id',$listing->user_id)
         ->first();
 
@@ -261,15 +261,15 @@ public function agreeToProgressWithMilestone($bidId)
             if($Iagree->type == 'Monetary')
                 $t_mo_amount = $t_mo_amount+$bid_amount;
 
-        }  
-        
+        }
+
         if($t_rating >= 5.10)
-        {   
+        {
             //Release
             foreach ($release as $releasing) {
                 if($releasing['type'] == 'Monetary'){
-                $curr='USD'; //$request->currency; 
-                $tranfer = $this->Client->transfers->create ([ 
+                $curr='USD'; //$request->currency;
+                $tranfer = $this->Client->transfers->create ([
                         //"billing_address_collection": null,
                         "amount" => $releasing['amount']*100, //100*100,
                         "currency" => $curr,
@@ -277,10 +277,10 @@ public function agreeToProgressWithMilestone($bidId)
                         'destination' => $owner->connect_id
                 ]);
                 }
-                
+
             }
 
-             //Notifications
+             //Notification.php
              $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
              $milestone = Milestones::select('title')->where('id',$bid->ms_id)
              ->first()->title;
@@ -294,7 +294,7 @@ public function agreeToProgressWithMilestone($bidId)
                 'link' => '/',
                 'type' => 'investor',
               ]);
-            
+
              // //Email
              // $info=[ 'business_name'=>$listing->name ];
              // $user['to'] = $owner->email; //'tottenham266@gmail.com'; //
@@ -303,17 +303,17 @@ public function agreeToProgressWithMilestone($bidId)
              //     $msg->to($user['to']);
              //     $msg->subject('Equipment Verify request!');
              // });
-             //Notifications
+             //Notification.php
             //Release
         }
         //Release Payment - VOTE COUNT
        return redirect()->to(config('app.app_url').'?agreetobid=yes');
-     
+
        }
         catch(\Exception $e){
             return $e->getMessage();
             return redirect()->to(config('app.app_url'));
-       }  
+       }
 }
 
 
@@ -339,13 +339,13 @@ public function withdraw_investment($bidId)
                 'charge' => $bid->stripe_charge_id,
                 'amount' => $refund_amount*100
                  ]);
-            
+
             $new_amount_collected = ($business->amount_collected) - ($bid->amount);
             Listing::where('id',$bid->business_id)->update([
                 'amount_collected' => $new_amount_collected
             ]);
         }
-        
+
         //Notification and Transparency:
         $text = 'A bid to business '.$business->name.' was withdrawn by '.$inv_name;
         $this->createNotification($owner->id,$investor->id,$text,'/',' business');
@@ -353,21 +353,21 @@ public function withdraw_investment($bidId)
         $text = 'Your bid to business '.$business->name.' was withdrawn, you will get the refund in 7 business days';
         $this->createNotification($investor->id,$owner->id,$text,'/',' business');
 
-        
+
         AcceptedBids::where('id',$bidId)->delete();
         return response()->json(['status'=>200, 'message' =>'Bid Withdrawn!']);
-     
+
    }
     catch(\Exception $e){
         return response()->json(['status'=>400, 'message' => $e->getMessage()]);
-   }  
+   }
 }
 
 
 public function CancelAssetBid($bidId, $action)
-{   
-    $bidId = base64_decode($bidId); 
-    try { 
+{
+    $bidId = base64_decode($bidId);
+    try {
         $bid = AcceptedBids::where('id',$bidId)->first();
         $investor = User::select('fname','fname','email')->where('id',$bid->investor_id)->first();
         $inv_name = $investor->fname.' '.$investor->lname;
@@ -377,14 +377,14 @@ public function CancelAssetBid($bidId, $action)
         if($action == 'confirm')
         {
             $info=['inv_name'=>$inv_name,'type'=>$bid->type,'bid_id'=>base64_encode($bidId),'asset_name'=>$bid->serial,'business_name'=>$business->name];
-            
+
             $user['to'] = $investor->email;
             Mail::send('bids.cancel_confirm', $info, function($msg) use ($user){
                 $msg->to($user['to']);
                 $msg->subject('Bid Cancel Confirmation');
          });
 
-            //Notifications
+            //Notification.php
              $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
              $addNoti = Notifications::create([
                 'date' => $date,
@@ -395,7 +395,7 @@ public function CancelAssetBid($bidId, $action)
                 'link' => 'bid_cancel_confirm',
                 'type' => 'business',
               ]);
-          //Notifications
+          //Notification.php
         }
         else
         {
@@ -406,7 +406,7 @@ public function CancelAssetBid($bidId, $action)
                  $msg->subject('Bid Cancel');
              });
 
-            //Notifications
+            //Notification.php
              $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
              $addNoti = Notifications::create([
                 'date' => $date,
@@ -425,24 +425,24 @@ public function CancelAssetBid($bidId, $action)
                 'link' => 'investment-bids',
                 'type' => 'business',
               ]);
-            //Notifications
+            //Notification.php
               AcceptedBids::where('id',$bidId)->delete();
         }
-         
+
          return redirect()->to(config('app.app_url').'dashboard')->send();
-     
+
        }
         catch(\Exception $e){
             //return $e->getMessage();
             return redirect()->to(config('app.app_url').'dashboard')->send();
-       }  
+       }
 }
 
 
 public function CancelEquipmentRelease($bidId, $action)
-{   
-    $bidId = base64_decode($bidId); 
-    try { 
+{
+    $bidId = base64_decode($bidId);
+    try {
         $bid = AcceptedBids::where('id',$bidId)->first();
         $investor = User::select('fname','fname','email')->where('id',$bid->investor_id)->first();
         $inv_name = $investor->fname.' '.$investor->fname;
@@ -452,14 +452,14 @@ public function CancelEquipmentRelease($bidId, $action)
         if($action == 'confirm')
         {
             $info=[ 'business_name'=>$business->name, 'business_owner'=>$bid->business_id, 'manager'=>$bid->project_manager, 'bid_id'=> base64_encode($bidId)];
-            
+
             $user['to'] = $investor->email;
             Mail::send('bids.eqp_cancel_confirm', $info, function($msg) use ($user){
                 $msg->to($user['to']);
                 $msg->subject('Equipment Cancel Confirmation');
             });
 
-            //Notifications
+            //Notification.php
              $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
              $addNoti = Notifications::create([
                 'date' => $date,
@@ -470,7 +470,7 @@ public function CancelEquipmentRelease($bidId, $action)
                 'link' => 'eqp_cancel_confirm',
                 'type' => 'business',
               ]);
-          //Notifications
+          //Notification.php
         }
         else
         {
@@ -481,7 +481,7 @@ public function CancelEquipmentRelease($bidId, $action)
                  $msg->subject('Bid Cancel');
              });
 
-            //Notifications
+            //Notification.php
              $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
              $addNoti = Notifications::create([
                 'date' => $date,
@@ -500,26 +500,26 @@ public function CancelEquipmentRelease($bidId, $action)
                 'link' => 'investment-bids',
                 'type' => 'business',
               ]);
-            //Notifications
+            //Notification.php
               AcceptedBids::where('id',$bidId)->delete();
         }
 
          return redirect()->to(config('app.app_url').'dashboard')->send();
-     
+
        }
         catch(\Exception $e){
             //return $e->getMessage().config('app.app_url/dashboard');
             return redirect()->to(config('app.app_url').'dashboard')->send();
-       }  
+       }
 }
 
 
 public function CancelBookingConfirm($booking_id, $action)
-{   
-    $booking_id = base64_decode($booking_id); 
-    try { 
+{
+    $booking_id = base64_decode($booking_id);
+    try {
         $bid = serviceBook::where('id',$booking_id)->first();
-        if(!$bid) 
+        if(!$bid)
         return response()->json(['message'=>'Bid does not exist!', 'status'=>400]);
 
         $booker = User::select('fname','lname','email','id')
@@ -533,14 +533,14 @@ public function CancelBookingConfirm($booking_id, $action)
         {
             $info=[ 'business_name'=>$business->name, 'booking_id'=>
              base64_encode($booking_id), 's_id' => $s_id ];
-            
+
             $user['to'] = $booker->email;
             Mail::send('services.booking_cancel_confirm', $info, function($msg) use ($user){
                 $msg->to($user['to']);
                 $msg->subject('Booking Cancel Confirmation');
             });
 
-            //Notifications
+            //Notification.php
              $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
              $addNoti = Notifications::create([
                 'date' => $date,
@@ -551,7 +551,7 @@ public function CancelBookingConfirm($booking_id, $action)
                 'link' => 'booking_cancel_confirm',
                 'type' => 'service',
               ]);
-          //Notifications
+          //Notification.php
         }
         else
         {
@@ -562,7 +562,7 @@ public function CancelBookingConfirm($booking_id, $action)
                  $msg->subject('Booking Cancel');
              });
 
-            //Notifications
+            //Notification.php
              $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
              $addNoti = Notifications::create([
                 'date' => $date,
@@ -581,7 +581,7 @@ public function CancelBookingConfirm($booking_id, $action)
                 'link' => 'service-bookings',
                 'type' => 'service',
               ]);
-            //Notifications
+            //Notification.php
               ServiceBook::where('id',$booking_id)->delete();
 
               if($action == 'ok_response')
@@ -589,12 +589,12 @@ public function CancelBookingConfirm($booking_id, $action)
         }
 
          return redirect()->to(config('app.app_url').'dashboard')->send();
-     
+
        }
         catch(\Exception $e){
             return $e->getMessage();
             return redirect()->to(config('app.app_url').'dashboard')->send();
-       }  
+       }
 }
 
 
@@ -614,7 +614,7 @@ public function releaseEquipment($business_id, $manager_id, $bid_id){
     $investor_name = $investor->fname.' '.$investor->lname;
 
   try
-  {  
+  {
     //Voting
           $voting = $this->agreeToProgressWithReleaseEqp($bid_id);
 
@@ -647,7 +647,7 @@ public function releaseEquipment($business_id, $manager_id, $bid_id){
           //Update Status
              AcceptedBids::where('id',base64_decode($bid_id))->update([
               'status' => 'equipment_released']);
-             return response()->json(['status' => 200, 'message' 
+             return response()->json(['status' => 200, 'message'
                 =>'?agreetobid=equipment_released']);
 
 
@@ -656,12 +656,12 @@ public function releaseEquipment($business_id, $manager_id, $bid_id){
   catch(\Exception $e){
     return response()->json(['status' => 400, 'message' =>$e->getMessage()]);
   }
-    
+
 }
 
 
 public function agreeToMileS($rep_id,$booker_id)
-{   
+{
     $Arr1 = explode('.', base64_decode($rep_id));
     $Arr2 = explode('.', base64_decode($booker_id));
 
@@ -682,18 +682,18 @@ public function agreeToMileS($rep_id,$booker_id)
     $customer = User::select('fname','email')->where('id',$booker_id)->first();
 
     if($mileLat)
-    ServiceMileStatus::where('id',$mileLat->id)->update([ 
-        'active' => 1, 
+    ServiceMileStatus::where('id',$mileLat->id)->update([
+        'active' => 1,
         'status'=> 'In Progress'
     ]);
 
     $s_id = base64_encode(base64_encode($mileThis->service_id));
 
     $transferAmount = round($mileThis->amount,2);
-    
+
     //Release Milestone Payment
-        $curr='USD'; //$request->currency; 
-        $tranfer = $this->Client->transfers->create ([ 
+        $curr='USD'; //$request->currency;
+        $tranfer = $this->Client->transfers->create ([
                 "amount" => $transferAmount*100, //100 * 100,
                 "currency" => $curr,
                 //"source_transaction" => $charge->id,
@@ -720,27 +720,27 @@ public function agreeToMileS($rep_id,$booker_id)
 
 
         if(!$Last && !$Last2)
-        {   
+        {
             //Customer
-            $info=[ 's_id' => base64_encode(base64_encode($serv->id)), 
-            'service' => $serv->name, 'amount' => $serv->price, 'to'=>1, 'user_name'=> $customer->fname ]; 
+            $info=[ 's_id' => base64_encode(base64_encode($serv->id)),
+            'service' => $serv->name, 'amount' => $serv->price, 'to'=>1, 'user_name'=> $customer->fname ];
 
             $user['to'] = $customer->email;//'sohaankane@gmail.com';
              Mail::send('milestoneS.service_done_mail', $info, function($msg) use ($user){
                  $msg->to($user['to']);
-                 $msg->subject('Service Done'); 
-             }); 
+                 $msg->subject('Service Done');
+             });
 
 
             //Owner
-             $info=[ 's_id' => base64_encode(base64_encode($serv->id)), 
-            'service' => $serv->name, 'amount' => $serv->price, 'to'=>2, 'user_name'=> $owner->fname ]; 
+             $info=[ 's_id' => base64_encode(base64_encode($serv->id)),
+            'service' => $serv->name, 'amount' => $serv->price, 'to'=>2, 'user_name'=> $owner->fname ];
 
             $user['to'] = $customer->email;//'sohaankane@gmail.com';
              Mail::send('milestoneS.service_done_mail', $info, function($msg) use ($user){
                  $msg->to($user['to']);
-                 $msg->subject('Service Done'); 
-             }); 
+                 $msg->subject('Service Done');
+             });
 
              //Delete Booking
              //serviceBook::where('service_id',$mileThis->service_id)
@@ -752,16 +752,16 @@ public function agreeToMileS($rep_id,$booker_id)
    catch(\Exception $e){
         return $e->getMessage();
         return redirect()->to(config('app.app_url'));
-   }  
-    
+   }
+
 }
 
 
 public function agreeToNextmile($bidId)
 {
-    try { 
+    try {
         AcceptedBids::where('id',$bidId)->update([
-              'next_mile_agree' => 1       
+              'next_mile_agree' => 1
         ]);
 
         //VOTE COUNT
@@ -778,22 +778,22 @@ public function agreeToNextmile($bidId)
             $next_vote = $next_vote+1;
 
             $total_vote = $total_vote+$next_vote;
-        } 
-        
+        }
+
         if($total_vote >= 5.1)
-        {   
+        {
             $milestone = Milestones::where('listing_id',$bid->business_id)
             ->where('status','To Do')->first();
             Milestones::where('id',$milestone->id)
             ->update(['status' => 'In Progress']);
         }
         //VOTE COUNT
-        return redirect()->to(config('app.app_url').'?agreetonext=yes'); 
+        return redirect()->to(config('app.app_url').'?agreetonext=yes');
        }
         catch(\Exception $e){
             return redirect()->to(config('app.app_url'));
-       }  
-}  
+       }
+}
 
 
 public function milestoneCommits($amount,$business_id,$percent){
@@ -802,7 +802,7 @@ public function milestoneCommits($amount,$business_id,$percent){
    if(Auth::check())
         $investor_id = Auth::id();
     else {
-        if(Session::has('investor_email')){   
+        if(Session::has('investor_email')){
         $mail = Session::get('investor_email');
         $investor = User::where('email',$mail)->first();
         $investor_id = $investor->id;
@@ -829,14 +829,14 @@ catch(\Exception $e){
 
 }
 
-public function  bidCommitsEQP(Request $request){ 
+public function  bidCommitsEQP(Request $request){
   $obj = new testController();
-  try{ 
+  try{
 
    if(Auth::check())
         $investor_id = Auth::id();
     else {
-        if(Session::has('investor_email')){   
+        if(Session::has('investor_email')){
         $mail = Session::get('investor_email');
         $investor = User::where('email',$mail)->first();
         $investor_id = $investor->id;
@@ -855,10 +855,10 @@ public function  bidCommitsEQP(Request $request){
 // DOCS UPLOAD
         //$total_img='';
           if($photos !='') {
-          if (!file_exists('files/bidsEquip/'.$listing_id.'/'.$investor_id)) 
+          if (!file_exists('files/bidsEquip/'.$listing_id.'/'.$investor_id))
           mkdir('files/bidsEquip/'.$listing_id.'/'.$investor_id, 0777, true);
 
-            //foreach ($photos as $single_img) { 
+            //foreach ($photos as $single_img) {
           $uniqid=hexdec(uniqid());
           $ext=strtolower($photos->getClientOriginalExtension());
           $create_name=$uniqid.'.'.$ext;
@@ -872,17 +872,17 @@ public function  bidCommitsEQP(Request $request){
 
           //$total_img = $total_img.$final_img.',';
             //}
-           } 
+           }
 
-          if($legal_doc) { 
+          if($legal_doc) {
           $uniqid=hexdec(uniqid());
           $ext=strtolower($legal_doc->getClientOriginalExtension());
           if($ext!='pdf' && $ext!= 'docx')
           {
             return response()->json(['failed' => 'For business document, Only pdf & docx are allowed!']);
-          } 
+          }
           $create_name=$uniqid.'.'.$ext;
-          if (!file_exists('files/bidsEquip/'.$listing_id.'/'.$investor_id)) 
+          if (!file_exists('files/bidsEquip/'.$listing_id.'/'.$investor_id))
           mkdir('files/bidsEquip/'.$listing_id.'/'.$investor_id, 0777, true);
 
           $loc='files/bidsEquip/'.$listing_id.'/'.$investor_id.'/';
@@ -900,7 +900,7 @@ public function  bidCommitsEQP(Request $request){
             return response()->json(['status' => 400, 'message' => 'For business document, Only pdf & docx are allowed!']);
           }
           $create_name=$uniqid.'.'.$ext;
-          if (!file_exists('files/bidsEquip/'.$listing_id.'/'.$investor_id)) 
+          if (!file_exists('files/bidsEquip/'.$listing_id.'/'.$investor_id))
           mkdir('files/bidsEquip/'.$listing_id.'/'.$investor_id, 0777, true);
 
           $loc='files/bidsEquip/'.$listing_id.'/'.$investor_id.'/';
@@ -908,7 +908,7 @@ public function  bidCommitsEQP(Request $request){
           $optional_doc->move($loc, $create_name);
           $final_optional_doc=$loc.$create_name;
              }else $final_optional_doc='';
-                
+
 // DOCS UPLOAD
     $Business = listing::where('id',$listing_id)->first();
     $type = 'Asset';
@@ -948,7 +948,7 @@ public function  bidCommitsEQP(Request $request){
              $msg->subject('Fulfills a milestone');
          });
 
-        //Notifications
+        //Notification.php
          $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
          $addNoti = Notifications::create([
             'date' => $date,
@@ -959,11 +959,11 @@ public function  bidCommitsEQP(Request $request){
             'type' => 'investor',
 
           ]);
-        //Notifications
+        //Notification.php
      }
      // Milestone Fulfill check
 
-     //Notifications
+     //Notification.php
          $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
          $addNoti = Notifications::create([
             'date' => $date,
@@ -974,7 +974,7 @@ public function  bidCommitsEQP(Request $request){
             'type' => 'investor',
 
           ]);
-         //Notifications
+         //Notification.php
 
       return response()->json(['status' => 200, 'message' => 'Success! You will get a notifications if your bid is accepted!']);
     }
@@ -989,16 +989,16 @@ public function  bidCommitsEQP(Request $request){
 
 public function bookingAccepted(Request $request)
 {
-    
+
         $bid_ids = $request->bid_ids;
 
         try {
         foreach($bid_ids as $id){
         if($id !=''){
         $bid = serviceBook::where('id',$id)->first();
-        
+
         if($bid)
-        { 
+        {
         $investor = User::select('id','email')->where('id',$bid->booker_id)
         ->first();
         $investor_mail = $investor->email;
@@ -1025,12 +1025,12 @@ public function bookingAccepted(Request $request)
                 'status' => 'To Do',
                 'created_at' => $mile->created_at,
                 'n_o_days' => $mile->n_o_days
-                
+
             ]); $i++;
         }
         //Replicate Miles
 
-        //Notifications
+        //Notification.php
          $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
          $addNoti = Notifications::create([
             'date' => $date,
@@ -1041,9 +1041,9 @@ public function bookingAccepted(Request $request)
             'type' => 'service',
 
           ]);
-         //Notifications
+         //Notification.php
 
-        $info=['business_name'=>$list->name,'s_id'=>base64_encode(base64_encode($list->id)), 'booking_id'=>base64_encode($id), 'reason' => 0, 
+        $info=['business_name'=>$list->name,'s_id'=>base64_encode(base64_encode($list->id)), 'booking_id'=>base64_encode($id), 'reason' => 0,
         'id'=>$bid->id, 'date'=>$bid->date, 'amount'=>$list->price];
 
         $user['to'] = $investor_mail;
@@ -1058,12 +1058,12 @@ public function bookingAccepted(Request $request)
        }
         Session::put('success','Confirmed!');
         return response()->json(['status' => 200, 'message' => 'Success']);
-     
+
        }
         catch(\Exception $e){
             Session::put('failed',$e->getMessage());
             return response()->json(['status' => 400, 'message'=>$e->getMessage()]);
-       }  
+       }
 
    }
 
@@ -1071,7 +1071,7 @@ public function bookingAccepted(Request $request)
    //REJECT BOOKING
    public function bookingRejected(Request $request)
    {
-    
+
     $bid_ids = $request->bid_ids;
     try {
     foreach($bid_ids as $id){
@@ -1084,7 +1084,7 @@ public function bookingAccepted(Request $request)
         ->first(); $remove = serviceBook::where('id',$id)->delete();
         $reason = 'Unknown Reason';
 
-        //Notifications
+        //Notification.php
          $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
          $addNoti = Notifications::create([
             'date' => $date,
@@ -1095,35 +1095,35 @@ public function bookingAccepted(Request $request)
             'type' => 'service',
           ]);
 
-         $info=['business_name'=>$list->name,'s_id'=>base64_encode(base64_encode($list->id)), 'reason' => $reason, 'id'=>$bid->id, 'date'=>$bid->date ]; 
+         $info=['business_name'=>$list->name,'s_id'=>base64_encode(base64_encode($list->id)), 'reason' => $reason, 'id'=>$bid->id, 'date'=>$bid->date ];
          $user['to'] = $investor_mail;
          Mail::send('services.booking_mail', $info, function($msg) use ($user){
              $msg->to($user['to']);
              $msg->subject('Booking Rejected');
-         }); 
-        //Notifications   
+         });
+        //Notification.php
 
     }
     }
         return response()->json(['status' => 200, 'message' => 'Rejected, Success!']);
-     
+
     }
     catch(\Exception $e){
         return response()->json(['status' => 400, 'message'=>$e->getMessage()]);
-    }  
+    }
 
    }
 
 
    public function agreeToProgressWithReleaseEqp($bidId)
-   {   
+   {
     $bidId = base64_decode($bidId);
-    try { 
+    try {
         $bid = AcceptedBids::select('ms_id','business_id','owner_id','investor_id')
         ->where('id',$bidId)->first();
         $agreeVote = AcceptedBids::where('id',$bidId)
         ->where('ms_id',$bid->ms_id)->update([
-            'investor_agree' => 1       
+            'investor_agree' => 1
         ]);//$business_id = base64_encode(base64_encode($bid->business_id));
 
         //Release Payment - VOTE COUNT
@@ -1135,7 +1135,7 @@ public function bookingAccepted(Request $request)
 
         $investor_agree = AcceptedBids::where('business_id',$bid->business_id)
         ->where('ms_id',$bid->ms_id)->where('investor_agree',1)->get();
-        
+
         $owner = User::select('connect_id','email')->where('id',$listing->user_id)
         ->first();
         $milestone = Milestones::select('title','amount')->where('id',$bid->ms_id)
@@ -1156,15 +1156,15 @@ public function bookingAccepted(Request $request)
             if($Iagree->type == 'Monetary')
                 $t_mo_amount = $t_mo_amount+$bid_amount;
 
-        }  
-        
+        }
+
         if($t_rating >= 5.10)
-        {   
+        {
             //Release
             foreach ($release as $releasing) {
                 if($releasing['type'] == 'Monetary'){
-                $curr='USD'; //$request->currency; 
-                $tranfer = $this->Client->transfers->create ([ 
+                $curr='USD'; //$request->currency;
+                $tranfer = $this->Client->transfers->create ([
                         //"billing_address_collection": null,
                         "amount" => $releasing['amount']*100, //100*100,
                         "currency" => $curr,
@@ -1172,10 +1172,10 @@ public function bookingAccepted(Request $request)
                         'destination' => $owner->connect_id
                 ]);
                 }
-                
+
             }
 
-             //Notifications
+             //Notification.php
              $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
              $addNoti = Notifications::create([
                 'date' => $date,
@@ -1187,7 +1187,7 @@ public function bookingAccepted(Request $request)
                 'link' => '/',
                 'type' => 'investor',
               ]);
-            
+
              // //Email
              // $info=[ 'business_name'=>$listing->name ];
              // $user['to'] = $owner->email; //'tottenham266@gmail.com'; //
@@ -1196,7 +1196,7 @@ public function bookingAccepted(Request $request)
              //     $msg->to($user['to']);
              //     $msg->subject('Equipment Verify request!');
              // });
-             //Notifications
+             //Notification.php
             //Release
         }
         //Release Payment - VOTE COUNT
@@ -1205,12 +1205,12 @@ public function bookingAccepted(Request $request)
         else return $t_rating.'no';
 
        //return redirect()->to(config('app.app_url').'dashboard?agreetobid=equipment_released');
-     
+
        }
         catch(\Exception $e){
             return $e->getMessage();
             //return redirect()->to(config('app.app_url'));
-       }  
+       }
 }
 
 
