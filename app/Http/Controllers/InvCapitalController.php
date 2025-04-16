@@ -110,6 +110,7 @@ class InvCapitalController extends Controller
         try{
 
             $request->validate([
+                'user_id' => Auth::id(),
                 'business_id' => 'nullable|integer',
                 'capital_id' => 'nullable|integer',
                 'startup_name' => 'required|string|max:255',

@@ -114,6 +114,7 @@ class GrantController extends Controller
         try{
 
             $request->validate([
+                'user_id' => Auth::id(),
                 'grant_id' => 'nullable|numeric',
                 'business_id' => 'nullable|numeric',
                 'startup_name' => 'required|string|max:255',
