@@ -52,7 +52,7 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
     const [success, setSuccess] = useState(false);
     const [currentStep, setCurrentStep] = useState(1);
     const [fieldErrors, setFieldErrors] = useState({});
-   
+
     useEffect(() => {
         const id = "all";
         axiosClient

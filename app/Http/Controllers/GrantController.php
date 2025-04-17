@@ -298,16 +298,17 @@ class GrantController extends Controller
     public function accept($pitch_id)
     {
         try{
-            $pitch = GrantApplication::where('id',$pitch_id)
+            $pitch = GrantApplication::with('grant')->where('id',$pitch_id)->first();
+            $app = GrantApplication::where('id',$pitch_id)
                 ->update([
                     'status' => 1
                 ]);
 
-            // $text = 'All milestones of business '.$list->name.'
-            //     is done.<br />You can now review the business?';
-            // $notification = new Notification();
-            // $notification->create($investor->id,$bid->owner_id,$text
-            //     ,'business_review',' business');
+             $text = 'Your application to the Grant'.$pitch->grant->grant_title.'
+                 has been accepted.<br />You can now connect with the grant owner';
+             $notification = new Notification();
+             $notification->create($pitch->user_id,$pitch->grant->user_id,$text
+                 ,'grants-overview/grants/discover',' grant');
 
             return response()->json(['message' => 'Pitch Accepted.'], 200);
         }

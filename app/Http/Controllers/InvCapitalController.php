@@ -110,7 +110,6 @@ class InvCapitalController extends Controller
         try{
 
             $request->validate([
-                'user_id' => Auth::id(),
                 'business_id' => 'nullable|integer',
                 'capital_id' => 'nullable|integer',
                 'startup_name' => 'required|string|max:255',
@@ -133,6 +132,7 @@ class InvCapitalController extends Controller
             ]);
 
             $capital = StartupPitches::create([
+                'user_id' => Auth::id(),
                 'business_id' => $request->business_id,
                 'capital_id' => $request->capital_id,
                 'startup_name' => $request->startup_name,

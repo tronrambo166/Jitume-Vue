@@ -4,7 +4,7 @@ use App\Models\Notifications;
 
 class Notification
 {
-    public function createNotification($receiver_id,$customer_id,$text,$link,$type)
+    public function create($receiver_id,$customer_id,$text,$link,$type)
     {
         $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
         $addNoti = Notifications::create([
