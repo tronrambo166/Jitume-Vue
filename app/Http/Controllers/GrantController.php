@@ -114,7 +114,6 @@ class GrantController extends Controller
         try{
 
             $request->validate([
-                'user_id' => Auth::id(),
                 'grant_id' => 'nullable|numeric',
                 'business_id' => 'nullable|numeric',
                 'startup_name' => 'required|string|max:255',
@@ -135,21 +134,22 @@ class GrantController extends Controller
             ]);
 
             $grant = GrantApplication::create([
-            'grant_id' => $request->grant_id,
-            'business_id' => $request->business_id,
-            'startup_name' => $request->startup_name,
-            'contact_person_name' => $request->contact_name,
-            'contact_person_email' => $request->contact_email,
-            'sector' => $request->sector,
-            'headquarters_location' => $request->headquarters_location,
-            'stage' => $request->stage,
-            'revenue_last_12_months' => $request->revenue_last_12_months,
-            'team_experience_avg_years' => $request->team_experience_avg_years,
-            'traction_kpis' => $request->traction_kpis,
-            //'pitch_deck_file' => $pitchDeckFile ?? null,
-            //'pitch_video' => $pitchVideoFile ?? null,
-            //'business_plan_file' => $businessPlanFile ?? null,
-            'social_impact_areas' => $request->social_impact_areas
+                'user_id' => Auth::id(),
+                'grant_id' => $request->grant_id,
+                'business_id' => $request->business_id,
+                'startup_name' => $request->startup_name,
+                'contact_person_name' => $request->contact_name,
+                'contact_person_email' => $request->contact_email,
+                'sector' => $request->sector,
+                'headquarters_location' => $request->headquarters_location,
+                'stage' => $request->stage,
+                'revenue_last_12_months' => $request->revenue_last_12_months,
+                'team_experience_avg_years' => $request->team_experience_avg_years,
+                'traction_kpis' => $request->traction_kpis,
+                //'pitch_deck_file' => $pitchDeckFile ?? null,
+                //'pitch_video' => $pitchVideoFile ?? null,
+                //'business_plan_file' => $businessPlanFile ?? null,
+                'social_impact_areas' => $request->social_impact_areas
             ]);
 
             //Upload Files
