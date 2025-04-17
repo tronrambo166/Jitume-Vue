@@ -1485,7 +1485,7 @@ onChange={(e) => {
                     {activeView === "status" && (
                         <div className="bg-white rounded-xl border border-gray-200 p-6">
                             <h2 className="text-xl font-bold text-gray-900 mb-6">
-                                My Applications
+                                My Applications 3
                             </h2>
                             {grantApplications.length === 0 ? (
                                 <div className="text-center py-10">

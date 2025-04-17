@@ -107,44 +107,101 @@ const PitchesOutlet = ({ grantId }) => {
     setShowConfirmModal(true);
   };
 
-  const handleConfirmAction = async () => {
-    try {
-      setIsLoading(true);
-      
-      const endpoint = modalAction === 'accept' 
-        ? `grant/pitches/${grantId}/accept/${selectedPitch.id}`
-        : `grant/pitches/${grantId}/decline/${selectedPitch.id}`;
-      
-      await axiosClient.post(endpoint, {}, {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      // Update local state to reflect the change
-      setPitches(prevPitches => 
-        prevPitches.map(pitch => 
-          pitch.id === selectedPitch.id 
-            ? { ...pitch, status: modalAction === 'accept' ? 'accepted' : 'declined' } 
-            : pitch
-        )
-      );
-      
-      setShowConfirmModal(false);
-      setSelectedPitch(null);
-      
-      // Optionally refresh the data
-      fetchPitches();
-      
-    } catch (err) {
-      console.error(`[PitchesOutlet] Error ${modalAction}ing pitch:`, err);
-      setError(`Failed to ${modalAction} pitch. Please try again.`);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+ const handleConfirmAction = async () => {
+     try {
+         setIsLoading(true);
+         console.groupCollapsed(
+             `[Pitch Action] Starting ${modalAction} action for pitch ${selectedPitch.id}`
+         );
+         console.log("Action:", modalAction);
+         console.log("Pitch ID:", selectedPitch.id);
+         console.log("Current pitch data:", selectedPitch);
 
+         // Use the correct API endpoint based on the action
+         const endpoint =
+             modalAction === "accept"
+                 ? `grant/accept/${selectedPitch.id}`
+                 : `grant/reject/${selectedPitch.id}`;
+
+         console.log("Making GET request to:", endpoint);
+
+         const response = await axiosClient.get(endpoint, {
+             headers: {
+                 Accept: "application/json",
+                 "Content-Type": "application/json",
+             },
+         });
+
+         console.groupCollapsed("Backend Response");
+         console.log("Status:", response.status);
+         console.log("Headers:", response.headers);
+         console.log("Response Data:", response.data);
+         console.groupEnd();
+
+         // Update local state to reflect the change
+         setPitches((prevPitches) =>
+             prevPitches.map((pitch) =>
+                 pitch.id === selectedPitch.id
+                     ? {
+                           ...pitch,
+                           status:
+                               modalAction === "accept"
+                                   ? "accepted"
+                                   : "rejected",
+                           // Include any additional data from the backend response
+                           ...(response.data.updatedData || {}),
+                           updatedAt: new Date().toISOString(), // Add timestamp
+                       }
+                     : pitch
+             )
+         );
+
+         setShowConfirmModal(false);
+         setSelectedPitch(null);
+
+         if (response.data.message) {
+             console.log("Success message:", response.data.message);
+             // Uncomment if you have toast notifications
+             // toast.success(response.data.message);
+         }
+
+         // Refresh data to ensure consistency
+         console.log("Refreshing pitches data...");
+         await fetchPitches();
+
+         console.groupEnd();
+     } catch (err) {
+         console.groupCollapsed(
+             `[Pitch Action Error] ${modalAction} action failed`
+         );
+         console.error("Error details:", err);
+
+         if (err.response) {
+             console.log("Error response status:", err.response.status);
+             console.log("Error response data:", err.response.data);
+             console.log("Error response headers:", err.response.headers);
+         } else if (err.request) {
+             console.log("No response received:", err.request);
+         } else {
+             console.log("Request setup error:", err.message);
+         }
+
+         const errorMessage = err.response?.data?.message
+             ? `Failed to ${modalAction} pitch: ${err.response.data.message}`
+             : `Failed to ${modalAction} pitch. Please try again.`;
+
+         console.log("User error message:", errorMessage);
+         setError(errorMessage);
+
+         // Uncomment if you have toast notifications
+         // toast.error(errorMessage);
+
+         console.groupEnd();
+     } finally {
+         setIsLoading(false);
+         console.log("Loading state set to false");
+     }
+ };
   const handleContinueToPitchDeck = (pitchDeckUrl) => {
     window.open(pitchDeckUrl, '_blank');
   };
@@ -206,92 +263,118 @@ const PitchesOutlet = ({ grantId }) => {
   }
 
   return (
-    <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
-      <div className="p-6 md:p-8">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-1">Available Pitches</h2>
-            <p className="text-gray-500 text-sm">Browse through pitches submitted for this grant opportunity</p>
-          </div>
-          <div className="bg-green-50 px-3 py-1 rounded-full text-xs font-medium text-green-700">
-            {pitches.length} {pitches.length === 1 ? 'Pitch' : 'Pitches'}
-          </div>
-        </div>
-        
-        {pitches.length === 0 ? (
-          <div className="bg-gray-50 p-8 rounded-xl border border-gray-100 text-center">
-            <div className="flex flex-col items-center">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                <FileText size={24} className="text-gray-400" />
+      <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
+          <div className="p-6 md:p-8">
+              <div className="flex justify-between items-center mb-6">
+                  <div>
+                      <h2 className="text-xl font-bold text-gray-900 mb-1">
+                          Available Pitches
+                      </h2>
+                      <p className="text-gray-500 text-sm">
+                          Browse through pitches submitted for this grant
+                          opportunity
+                      </p>
+                  </div>
+                  <div className="bg-green-50 px-3 py-1 rounded-full text-xs font-medium text-green-700">
+                      {pitches.length}{" "}
+                      {pitches.length === 1 ? "Pitch" : "Pitches"}
+                  </div>
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-1">No Pitches Found</h3>
-              <p className="text-gray-600">No pitches have been submitted for this grant yet.</p>
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {pitches.map((pitch) => (
-              <PitchCard 
-                key={pitch.id}
-                pitch={pitch}
-                isOpen={openPitchId === pitch.id}
-                onToggle={togglePitch}
-                onAccept={() => handleActionClick(pitch, 'accept')}
-                onDecline={() => handleActionClick(pitch, 'decline')}
-                onContinueToPitchDeck={() => handleContinueToPitchDeck(pitch.pitch_deck_file)}
-              />
-            ))}
-          </div>
-        )}
-      </div>
 
-      {/* Confirmation Modal */}
-      {showConfirmModal && selectedPitch && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-          <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
-                {modalAction === 'accept' ? 'Accept Pitch' : 'Decline Pitch'}
-              </h3>
-              <button 
-                onClick={() => setShowConfirmModal(false)}
-                className="p-1 rounded-full hover:bg-gray-100"
-              >
-                <X size={20} className="text-gray-500" />
-              </button>
-            </div>
-            <div className="mb-6">
-              <p className="text-gray-700">
-                Are you sure you want to {modalAction} the pitch from <strong>{selectedPitch.startup_name || 'this startup'}</strong>?
-              </p>
-              {modalAction === 'decline' && (
-                <p className="mt-2 text-gray-500 text-sm">
-                  This action cannot be undone and will notify the startup of your decision.
-                </p>
+              {pitches.length === 0 ? (
+                  <div className="bg-gray-50 p-8 rounded-xl border border-gray-100 text-center">
+                      <div className="flex flex-col items-center">
+                          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                              <FileText size={24} className="text-gray-400" />
+                          </div>
+                          <h3 className="text-lg font-medium text-gray-900 mb-1">
+                              No Pitches Found
+                          </h3>
+                          <p className="text-gray-600">
+                              No pitches have been submitted for this grant yet.
+                          </p>
+                      </div>
+                  </div>
+              ) : (
+                  <div className="space-y-4">
+                      {pitches.map((pitch) => (
+                          <PitchCard
+                              key={pitch.id}
+                              pitch={pitch}
+                              isOpen={openPitchId === pitch.id}
+                              onToggle={togglePitch}
+                              onAccept={() =>
+                                  handleActionClick(pitch, "accept")
+                              }
+                              onDecline={() =>
+                                  handleActionClick(pitch, "decline")
+                              }
+                              onContinueToPitchDeck={() =>
+                                  handleContinueToPitchDeck(
+                                      pitch.pitch_deck_file
+                                  )
+                              }
+                          />
+                      ))}
+                  </div>
               )}
-            </div>
-            <div className="flex space-x-3 justify-end">
-              <button
-                onClick={() => setShowConfirmModal(false)}
-                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-full text-sm hover:bg-gray-50"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleConfirmAction}
-                className={`px-4 py-2 rounded-full text-sm text-white ${
-                  modalAction === 'accept' 
-                    ? 'bg-green-600 hover:bg-green-700'
-                    : 'bg-red-600 hover:bg-red-700'
-                }`}
-              >
-                {modalAction === 'accept' ? 'Accept' : 'Decline'}
-              </button>
-            </div>
           </div>
-        </div>
-      )}
-    </div>
+
+          {/* Confirmation Modal */}
+          {showConfirmModal && selectedPitch && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+                  <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+                      <div className="flex justify-between items-center mb-4">
+                          <h3 className="text-lg font-semibold text-gray-900">
+                              {modalAction === "accept"
+                                  ? "Accept Pitch"
+                                  : "Reject Pitch"}
+                          </h3>
+                          <button
+                              onClick={() => setShowConfirmModal(false)}
+                              className="p-1 rounded-full hover:bg-gray-100"
+                          >
+                              <X size={20} className="text-gray-500" />
+                          </button>
+                      </div>
+                      <div className="mb-6">
+                          <p className="text-gray-700">
+                              Are you sure you want to {modalAction} the pitch
+                              from{" "}
+                              <strong>
+                                  {selectedPitch.startup_name || "this startup"}
+                              </strong>
+                              ?
+                          </p>
+                          {modalAction === "decline" && (
+                              <p className="mt-2 text-gray-500 text-sm">
+                                  This action cannot be undone and will notify
+                                  the startup of your decision.
+                              </p>
+                          )}
+                      </div>
+                      <div className="flex space-x-3 justify-end">
+                          <button
+                              onClick={() => setShowConfirmModal(false)}
+                              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-full text-sm hover:bg-gray-50"
+                          >
+                              Cancel
+                          </button>
+                          <button
+                              onClick={handleConfirmAction}
+                              className={`px-4 py-2 rounded-full text-sm text-white ${
+                                  modalAction === "accept"
+                                      ? "bg-green-600 hover:bg-green-700"
+                                      : "bg-red-600 hover:bg-red-700"
+                              }`}
+                          >
+                              {modalAction === "accept" ? "Accept" : "Reject"}
+                          </button>
+                      </div>
+                  </div>
+              </div>
+          )}
+      </div>
   );
 };
 
