@@ -43,7 +43,7 @@ class GrantController extends Controller
 
     public function pitches($grant_id)
     {
-        $pitches = GrantApplication::where('grant_id',$grant_id)->latest()->get();
+        $pitches = GrantApplication::with('grant_milestone')->where('grant_id',$grant_id)->latest()->get();
         return response()->json(['pitches' => $pitches]);
     }
 
@@ -305,7 +305,7 @@ class GrantController extends Controller
                 ]);
 
              $text = 'Your application to the Grant'.$pitch->grant->grant_title.'
-                 has been accepted.<br />You can now connect with the grant owner';
+                 has been accepted. You can now connect with the grant owner';
              $notification = new Notification();
              $notification->create($pitch->user_id,$pitch->grant->user_id,$text
                  ,'grants-overview/grants/discover',' grant');
@@ -321,7 +321,14 @@ class GrantController extends Controller
     public function reject($pitch_id)
     {
         try{
+            $pitch = GrantApplication::with('grant')->where('id',$pitch_id)->first();
+            $text = 'Your application to the Grant'.$pitch->grant->grant_title.'
+                 has been rejected. Please read the application rejection reasons.';
+            $notification = new Notification();
+            $notification->create($pitch->user_id,$pitch->grant->user_id,$text
+                ,'grants-overview/grants/discover',' grant');
             GrantApplication::where('id',$pitch_id)->delete();
+
             return response()->json(['message' => 'Pitch Rejected.'], 200);
         }
         catch(\Exception $e){

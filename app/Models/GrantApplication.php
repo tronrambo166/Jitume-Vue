@@ -14,4 +14,9 @@ class GrantApplication extends Model
     {
         return $this->hasOne(Grant::class,'id','grant_id');
     }
+
+    public function grant_milestone()
+    {
+        return $this->hasMany(GrantMilestone::class,'app_id','id');
+    }
 }

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GrantApplication;
+use App\Models\GrantMilestone;
+use App\Service\Notification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\testController;
 use App\Models\Listing;
@@ -10,6 +13,7 @@ use App\Models\User;
 use App\Models\Notifications;
 use App\Models\CapitalOffer;
 use App\Models\StartupPitches;
+use App\Models\CapitalMilestone;
 use Illuminate\Support\Facades\File;
 use Response;
 use Session;
@@ -21,7 +25,7 @@ use DateTime;
 class InvCapitalController extends Controller
 {
     /**
-     * Display a listing of grants.
+     * Display a listing of capital.
      */
     public function index()
     {
@@ -40,7 +44,7 @@ class InvCapitalController extends Controller
 
     public function pitches($capital_id)
     {
-        $pitches = StartupPitches::where('capital_id',$capital_id)->latest()->get();
+        $pitches = StartupPitches::with('capital_milestone')->where('capital_id',$capital_id)->latest()->get();
         return response()->json(['pitches' => $pitches]);
     }
 
@@ -129,6 +133,7 @@ class InvCapitalController extends Controller
                 'burn_rate' => 'required|numeric',
                 'irr_projection' => 'nullable|numeric',
                 'exit_strategy' => 'nullable|string',
+                'milestones' => 'nullable|array',
             ]);
 
             $capital = StartupPitches::create([
@@ -197,6 +202,31 @@ class InvCapitalController extends Controller
                 'business_plan' => $business_plan_path
             ]);
 
+            if (!file_exists('files/capitalMiles/'.$capital->id))
+                mkdir('files/grantMiles/'.$capital->id, 0777, true);
+            $loc='files/grantMiles/'.$capital->id.'/';
+
+            // M I L E S T O N E S
+            $milestones = $request->milestones;
+            foreach($milestones as $milestone){
+                $document = $request->file($milestone['deliverables'][0]);
+                if($document) {
+                    $uniqid=hexdec(uniqid());
+                    $ext=strtolower($document->getClientOriginalExtension());
+                    $create_name=$uniqid.'.'.$ext;
+                    $document->move($loc, $create_name);
+                    $document=$loc.$create_name;
+                }
+                else $document='';
+                $mile = CapitalMilestone::create([
+                    'app_id' => $capital->id,
+                    'title' => $milestone['title'],
+                    'amount' => $milestone['amount'],
+                    'description' => $milestone['description'],
+                    'document' => $document
+                ]);
+            }
+
             return response()->json(['message' => 'Investment Application Successfull.'], 200);
         }
         catch(\Exception $e){
@@ -205,7 +235,7 @@ class InvCapitalController extends Controller
     }
 
 
-    // Display the specified grant.
+    // Display the specified capital.
 
     public function show($id)
     {
@@ -215,7 +245,7 @@ class InvCapitalController extends Controller
 
 
     /**
-     * Update the specified grant in storage.
+     * Update the specified capital in storage.
      */
     public function update(Request $request, $id)
     {
@@ -260,7 +290,7 @@ class InvCapitalController extends Controller
     }
 
     /**
-     * Remove the specified grant from storage.
+     * Remove the specified capital from storage.
      */
     public function destroy($id)
     {
@@ -273,16 +303,16 @@ class InvCapitalController extends Controller
     public function accept($pitch_id)
     {
         try{
-            $pitch = StartupPitches::where('id',$pitch_id)
+            $pitch = StartupPitches::with('capital_offer')->where('id',$pitch_id)->first();
+            $app = StartupPitches::where('id',$pitch_id)
                 ->update([
                     'status' => 1
                 ]);
-
-            // $text = 'All milestones of business '.$list->name.'
-            //     is done.<br />You can now review the business?';
-            // $notification = new Notification();
-            // $notification->create($investor->id,$bid->owner_id,$text
-            //     ,'business_review',' business');
+            $text = 'Your application to the Capital'.$pitch->capital_offer->offer_title.'
+                 has been accepted. You can now connect with the Capital owner';
+            $notification = new Notification();
+            $notification->create($pitch->user_id,$pitch->capital_offer->user_id,$text
+                ,'capital-overview/capital/discover',' capital');
 
             return response()->json(['message' => 'Pitch Accepted.'], 200);
         }
@@ -295,7 +325,14 @@ class InvCapitalController extends Controller
     public function reject($pitch_id)
     {
         try{
+            $pitch = StartupPitches::with('capital_offer')->where('id',$pitch_id)->first();
+            $text = 'Your application to the Capital'.$pitch->capital_offer->offer_title.'
+                 has been accepted. You can now connect with the Capital owner';
+            $notification = new Notification();
+            $notification->create($pitch->user_id,$pitch->capital_offer->user_id,$text
+                ,'capital-overview/capital/discover',' capital');
             StartupPitches::where('id',$pitch_id)->delete();
+
             return response()->json(['message' => 'Pitch Rejected.'], 200);
         }
         catch(\Exception $e){
