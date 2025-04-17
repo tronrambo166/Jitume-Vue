@@ -46,11 +46,20 @@ const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
                 `capital/accept/${pitch.id}`
             );
 
-            // On success
+            console.log("✅ ACCEPT RESPONSE:", {
+                status: response.status,
+                data: response.data,
+            });
+
             toast.success("Pitch accepted successfully");
-            onStatusChange(pitch.id, "accepted"); // Update parent component state
+            onStatusChange(pitch.id, "accepted");
         } catch (err) {
-            console.error("Accept error:", err);
+            console.error("❌ ACCEPT ERROR:", {
+                message: err.message,
+                status: err.response?.status,
+                data: err.response?.data,
+            });
+
             toast.error(
                 err.response?.data?.message || "Failed to accept pitch"
             );
@@ -58,12 +67,6 @@ const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
             setIsProcessing(false);
             setShowAcceptModal(false);
         }
-        
-    };
-
-
-    const handleDecline = () => {
-        setShowDeclineModal(true);
     };
 
     const handleReject = async () => {
@@ -73,11 +76,20 @@ const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
                 `capital/reject/${pitch.id}`
             );
 
-            // On success
+            console.log("✅ REJECT RESPONSE:", {
+                status: response.status,
+                data: response.data,
+            });
+
             toast.success("Pitch rejected successfully");
-            onStatusChange(pitch.id, "rejected"); // Update parent component state
+            onStatusChange(pitch.id, "rejected");
         } catch (err) {
-            console.error("Reject error:", err);
+            console.error("❌ REJECT ERROR:", {
+                message: err.message,
+                status: err.response?.status,
+                data: err.response?.data,
+            });
+
             toast.error(
                 err.response?.data?.message || "Failed to reject pitch"
             );
@@ -86,6 +98,12 @@ const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
             setShowDeclineModal(false);
         }
     };
+
+    const handleDecline = () => {
+        setShowDeclineModal(true);
+    };
+console.log("pitch", pitch);
+    
     // Ensure all necessary data exists to avoid runtime errors
     const ensureArray = (value) => {
         if (!value) return [];
