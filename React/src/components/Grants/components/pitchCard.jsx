@@ -10,8 +10,8 @@ import {
     Mail,
     Loader2,
 } from "lucide-react";
-import { toast } from "react-toastify"; // Assuming you're using react-toastify
-import axiosClient from "../../../axiosClient"; // Adjust the import path as needed
+import { toast } from "react-toastify";
+import axiosClient from "../../../axiosClient";
 
 const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
     const [expanded, setExpanded] = useState(false);
@@ -102,8 +102,7 @@ const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
     const handleDecline = () => {
         setShowDeclineModal(true);
     };
-console.log("pitch", pitch);
-    
+
     // Ensure all necessary data exists to avoid runtime errors
     const ensureArray = (value) => {
         if (!value) return [];
@@ -128,6 +127,16 @@ console.log("pitch", pitch);
                                     pitch.offer_title ||
                                     "Unnamed Pitch"}
                             </h2>
+                            {/* Status badge */}
+                            <span
+                                className={`px-2 py-0.5 text-xs font-medium rounded-full ${
+                                    pitch.status === 1
+                                        ? "bg-green-100 text-green-800"
+                                        : "bg-yellow-100 text-yellow-800"
+                                }`}
+                            >
+                                {pitch.status === 1 ? "Accepted" : "Pending"}
+                            </span>
                         </div>
                         <p className="text-sm text-gray-600 mt-1">
                             {pitch.sector || pitch.sectors || "Unlisted Sector"}
@@ -208,25 +217,29 @@ console.log("pitch", pitch);
                             "Location not specified"}
                     </div>
                 </div>
-                <div className="flex space-x-3 my-2">
-                    {/* Decline button */}
-                    <button
-                        onClick={handleDecline}
-                        className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg flex items-center font-medium text-sm transition-colors duration-200"
-                    >
-                        <X size={16} className="mr-2 text-gray-500" />
-                        Decline
-                    </button>
 
-                    {/* Accept button */}
-                    <button
-                        onClick={() => setShowAcceptModal(true)}
-                        className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center font-medium text-sm transition-colors duration-200"
-                    >
-                        <Check size={16} className="mr-2" />
-                        Accept Pitch
-                    </button>
-                </div>
+                {/* Action buttons - only show if status is pending (0) */}
+                {pitch.status === 0 && (
+                    <div className="flex space-x-3 my-2">
+                        {/* Decline button */}
+                        <button
+                            onClick={handleDecline}
+                            className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg flex items-center font-medium text-sm transition-colors duration-200"
+                        >
+                            <X size={16} className="mr-2 text-gray-500" />
+                            Decline
+                        </button>
+
+                        {/* Accept button */}
+                        <button
+                            onClick={() => setShowAcceptModal(true)}
+                            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center font-medium text-sm transition-colors duration-200"
+                        >
+                            <Check size={16} className="mr-2" />
+                            Accept Pitch
+                        </button>
+                    </div>
+                )}
             </div>
 
             {/* Expandable details section */}
