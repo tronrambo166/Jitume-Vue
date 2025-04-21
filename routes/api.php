@@ -196,6 +196,7 @@ Route::prefix('/grant')->group(function(){
    Route::get('pitches/{grant_id}', [GrantController::class, 'pitches']);
    Route::get('my_pitches', [GrantController::class, 'mypitches']);
    Route::post('update-grant', [GrantController::class, 'update']);
+   Route::get('visibility/{grant_id}', [GrantController::class, 'visibility']);
    Route::get('delete-grant/{id}', [GrantController::class, 'destroy']);
    Route::get('accept/{pitch_id}', [GrantController::class, 'accept']);
    Route::get('reject/{pitch_id}', [GrantController::class, 'reject']);
@@ -211,6 +212,7 @@ Route::prefix('/capital')->group(function(){
    Route::get('pitches/{capital_id}', [InvCapitalController::class, 'pitches']);
    Route::get('my_pitches', [GrantController::class, 'mypitches']);
    Route::post('update-capital', [InvCapitalController::class, 'update']);
+   Route::get('visibility/{capital_id}', [GrantController::class, 'visibility']);
    Route::get('delete-capital/{id}', [InvCapitalController::class, 'destroy']);
    Route::get('accept/{pitch_id}', [InvCapitalController::class, 'accept']);
    Route::get('reject/{pitch_id}', [InvCapitalController::class, 'reject']);

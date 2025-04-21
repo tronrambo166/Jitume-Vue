@@ -53,11 +53,33 @@ class GrantController extends Controller
         return response()->json(['grants' => $grants]);
     }
 
+    public function visibility($grant_id)
+    {
+        try {
+            $grant = Grant::where('id',$grant_id)->latest()->first();
+            if ($grant->visible == 1) {
+                Grant::where('id', $grant_id)->update([
+                    'visible' => 0
+                ]);
+            }
+            else{
+                Grant::where('id', $grant_id)->update([
+                    'visible' => 1
+                ]);
+            }
+            return response()->json(['message' => 'Visibility Changed.'], 200);
+        }
+        catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+
+    }
+
     public function pitches($grant_id)
     {
         $user_id = Auth::id();
         if($grant_id == 'latest'){
-            $grant = Grant::where('id',$user_id)->latest()->first();
+            $grant = Grant::where('user_id',$user_id)->latest()->first();
             $pitches = GrantApplication::with('grant_milestone')->where('grant_id',$grant->id)->latest()->get();
             return response()->json(['pitches' => $pitches]);
         }

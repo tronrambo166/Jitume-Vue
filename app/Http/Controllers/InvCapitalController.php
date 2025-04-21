@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Grant;
 use App\Models\GrantApplication;
 use App\Models\GrantMilestone;
 use App\Service\Notification;
@@ -42,8 +43,36 @@ class InvCapitalController extends Controller
         return response()->json(['capital' => $capital]);
     }
 
+    public function visibility($capital_id)
+    {
+        try {
+            $capital = CapitalOffer::where('id',$capital_id)->latest()->first();
+            if ($capital->visible == 1) {
+                CapitalOffer::update([
+                    'visible' => 0
+                ]);
+            }
+            else{
+                CapitalOffer::update([
+                    'visible' => 1
+                ]);
+            }
+            return response()->json(['message' => 'Visibility Changed.'], 200);
+        }
+        catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+
+    }
+
     public function pitches($capital_id)
     {
+        $user_id = Auth::id();
+        if($capital_id == 'latest'){
+            $capital = CapitalOffer::where('user_id',$user_id)->latest()->first();
+            $pitches = StartupPitches::with('capital_milestone')->where('capital_id',$capital->id)->latest()->get();
+            return response()->json(['pitches' => $pitches]);
+        }
         $pitches = StartupPitches::with('capital_milestone')->where('capital_id',$capital_id)->latest()->get();
         return response()->json(['pitches' => $pitches]);
     }
