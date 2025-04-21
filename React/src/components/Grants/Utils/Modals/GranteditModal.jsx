@@ -49,6 +49,7 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
     setError(null);
 
     try {
+      console.log("data before api :", formData);
       // Replace with your actual API endpoint
       const apiUrl = 'YOUR_API_BASE_URL_HERE/grants/' + grantData.id;
       

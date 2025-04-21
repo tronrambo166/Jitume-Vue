@@ -28,7 +28,13 @@ import {
     PlusCircle,
     Edit2,
     Edit3,
+    X,
+    Map,
+    Building,
+    Award,
+    ChevronRight,
 } from "lucide-react";
+
 import { useStateContext } from "../../../contexts/contextProvider";
 import axiosClient from "../../../axiosClient";
 import DocumentPreviewModal from "../components/DocumentPreviewModal";
@@ -40,6 +46,7 @@ import PitchesOutlet from "../components/Grantpitches";
 import { CheckCircle, Star } from "lucide-react";
 import GrantEditModal from "../Utils/Modals/GranteditModal";
 
+
 const TujitumeGrantPortal = () => {
     const [viewingPitchesForGrant, setViewingPitchesForGrant] = useState(null);
     const [activeView, setActiveView] = useState("dashboard");
@@ -50,6 +57,10 @@ const TujitumeGrantPortal = () => {
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [pendingDeleteId, setPendingDeleteId] = useState(null);
     const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
+
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [selectedApplication, setSelectedApplication] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const [filters, setFilters] = useState({
         sectors: [],
@@ -65,10 +76,11 @@ const TujitumeGrantPortal = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [previewModalOpen, setPreviewModalOpen] = useState(false);
-      const [visibilityStates, setVisibilityStates] = useState({});
-        const [showDisclaimer, setShowDisclaimer] = useState(false);
-        const [pendingToggleId, setPendingToggleId] = useState(null);
-        
+    const [visibilityStates, setVisibilityStates] = useState({});
+    const [showDisclaimer, setShowDisclaimer] = useState(false);
+    const [pendingToggleId, setPendingToggleId] = useState(null);
+    const [myApplications, setMyApplications] = useState([]);
+
     const [currentPreviewFile, setCurrentPreviewFile] = useState(null);
     const [newGrant, setNewGrant] = useState({
         title: "",
@@ -85,40 +97,51 @@ const TujitumeGrantPortal = () => {
     const { user, token, setUser, setToken } = useStateContext();
     const [isGrantEditModalOpen, setIsGrantEditModalOpen] = useState(false);
     const [grantToEdit, setGrantToEdit] = useState(null);
-    
+
     const handleEditGrantClick = (grant) => {
-      setGrantToEdit(grant);
-      setIsGrantEditModalOpen(true);
+        setGrantToEdit(grant);
+        setIsGrantEditModalOpen(true);
     };
-    
+
     const handleGrantUpdate = (updatedGrant) => {
-      // Handle the updated grant data
-      console.log('Grant updated:', updatedGrant);
-      // You might want to update your grants list state here
-      setIsGrantEditModalOpen(false);
+        // Handle the updated grant data
+        console.log("Grant updated:", updatedGrant);
+        // You might want to update your grants list state here
+        setIsGrantEditModalOpen(false);
     };
 
-
-       
     const toggleVisibility = (id) => {
         // Show disclaimer modal before toggling
         setPendingToggleId(id);
         setShowDisclaimer(true);
-      };
-      
-      const confirmToggle = () => {
-        setVisibilityStates(prev => ({
-          ...prev,
-          [pendingToggleId]: !prev[pendingToggleId],
+    };
+
+    const confirmToggle = () => {
+        setVisibilityStates((prev) => ({
+            ...prev,
+            [pendingToggleId]: !prev[pendingToggleId],
         }));
         setShowDisclaimer(false);
         setPendingToggleId(null);
-      };
-      
-      const cancelToggle = () => {
+    };
+     const [previewFile, setPreviewFile] = useState(null);
+     const [isModalOpen, setIsModalOpen] = useState(false);
+
+   
+     const handleViewFile = (file) => {
+         setPreviewFile(file);
+         setIsModalOpen(true);
+     };
+
+     const closeModal = () => {
+         setIsModalOpen(false);
+         setPreviewFile(null);
+     };
+
+    const cancelToggle = () => {
         setShowDisclaimer(false);
         setPendingToggleId(null);
-      };
+    };
     // Fetch grants from API
     useEffect(() => {
         const fetchGrants = async () => {
@@ -203,7 +226,106 @@ const TujitumeGrantPortal = () => {
     const mee = () => {
         console.log("Create Grant");
     };
-    console.log("The status of showCreateModal is :", showCreateModal);
+
+    // useEffect(() => {
+    //     const fetchApplications = async () => {
+    //         try {
+    //             const response = await fetch("/api/my-applications"); // your endpoint here
+    //              await axiosClient.get(
+    //                  `/grant/delete-grant/${pendingDeleteId}`
+    //              );
+
+    //             const data = await response.json();
+    //             setMyApplications(data);
+    //         } catch (error) {
+    //             console.error("Error fetching applications:", error);
+    //         }
+    //     };
+
+    //     fetchApplications();
+    // }, []); // empty array so it only runs on mount
+    useEffect(() => {
+        fetchApplications();
+    }, []);
+
+    const handleFundRequest = async (pitchId) => {
+        try {
+            const response = await axiosClient.post(
+                `/fund-release-request/${pitchId}`
+            );
+            console.log("Fund request success response:", {
+                status: response.status,
+                headers: response.headers,
+                data: response.data,
+            });
+        } catch (error) {
+            console.error("Error requesting funds:", {
+                message: error.message,
+                status: error.response?.status,
+                headers: error.response?.headers,
+                data: error.response?.data,
+            });
+
+            
+        }
+    };
+
+
+
+    const fetchApplications = () => {
+        setLoading(true);
+        axiosClient
+            .get("grant/my_pitches")
+            .then(({ data }) => {
+                setMyApplications(data.pitches);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error("Error fetching applications:", error);
+                setLoading(false);
+            });
+    };
+    console.log("myApplications", myApplications);
+
+    const openDrawer = (application) => {
+        setSelectedApplication(application);
+        setIsDrawerOpen(true);
+        // Optional: Add body class to prevent scrolling when drawer is open
+        document.body.classList.add("overflow-hidden");
+    };
+
+    const closeDrawer = () => {
+        setIsDrawerOpen(false);
+        // Remove body class when drawer is closed
+        document.body.classList.remove("overflow-hidden");
+    };
+
+    const getStatusClass = (status) => {
+        if (status === 1 || status === "Accepted")
+            return "bg-green-100 text-green-800";
+        if (status === 2 || status === "Rejected")
+            return "bg-red-100 text-red-800";
+        return "bg-yellow-100 text-yellow-800";
+    };
+
+    const getStatusText = (status) => {
+        if (status === 1) return "Accepted";
+        if (status === 2) return "Rejected";
+        return "Pending";
+    };
+
+    const formatDate = (dateString) => {
+        return new Date(dateString).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+        });
+    };
+
+    const getFileName = (path) => {
+        if (!path) return "No file";
+        return path.split("/").pop();
+    };
 
     // Delete Grant
     const handleDeleteGrant = (id) => {
@@ -656,28 +778,44 @@ const TujitumeGrantPortal = () => {
                                                 </button>
                                             )}
                                             <p>
-                                                {!user.investor && (
-                                                    <span className="text-sm text-gray-600">
-                                                        <button
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                setSelectedGrant(
-                                                                    grant
-                                                                );
-                                                                setShowCreateModal(
-                                                                    true
-                                                                );
-                                                            }}
-                                                            className={`flex-1 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center space-x-2 ${
-                                                                !grant.grant_brief_pdf
-                                                                    ? "w-full"
-                                                                    : ""
-                                                            }`}
-                                                        >
-                                                            <Upload size={16} />
-                                                            <span>Apply</span>
-                                                        </button>
-                                                    </span>
+                                                {!user.investor ? (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setSelectedGrant(
+                                                                grant
+                                                            );
+                                                            setShowCreateModal(
+                                                                true
+                                                            );
+                                                        }}
+                                                        className={`flex-1 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center space-x-2 ${
+                                                            !grant.grant_brief_pdf
+                                                                ? "w-full"
+                                                                : ""
+                                                        }`}
+                                                    >
+                                                        <Upload size={16} />
+                                                        <span>Apply</span>
+                                                    </button>
+                                                ) : (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setViewingPitchesForGrant(
+                                                                grant.id
+                                                            );
+                                                        }}
+                                                        className={`px-3 py-1.5 bg-gradient-to-r from-[rgb(253,224,71)] to-gray-100 text-black text-sm rounded-lg hover:from-[rgb(253,224,71)] hover:to-gray-100 transition-all flex items-center space-x-1.5 shadow-sm ${
+                                                            open
+                                                                ? "hidden md:flex"
+                                                                : "flex"
+                                                        }`}
+                                                        title="View pitches"
+                                                    >
+                                                        <Eye size={16} />
+                                                        <span>Pitches</span>
+                                                    </button>
                                                 )}
                                             </p>
                                         </div>
@@ -867,29 +1005,43 @@ const TujitumeGrantPortal = () => {
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center flex-wrap gap-2 mb-1">
                                                     <div>
-                                                    <h2 className="text-lg font-bold text-gray-900 truncate">
-                                                        {grant.title ||
-                                                            grant.grant_title}
-                                                    </h2>
-                                                    <div className="flex items-center">
-      
-      <button 
-        onClick={() => handleEditGrantClick(grant.id)}
-        className="px-4 py-2  text-green rounded "
-      >
-      <Edit3 className=" text-[10px]"/><span>Edit-grant</span>
-      </button>
-      
-      {isGrantEditModalOpen && (
-        <GrantEditModal
-          grantData={grantToEdit}
-          onClose={() => setIsGrantEditModalOpen(false)}
-          onSave={handleGrantUpdate}
-        />
-      )}
-    </div>
-    </div>
-                                                    
+                                                        <h2 className="text-lg font-bold text-gray-900 truncate">
+                                                            {grant.title ||
+                                                                grant.grant_title}
+                                                        </h2>
+                                                        <div className="flex items-center">
+                                                            <button
+                                                                onClick={() =>
+                                                                    handleEditGrantClick(
+                                                                        grant.id
+                                                                    )
+                                                                }
+                                                                className="px-4 py-2  text-green rounded "
+                                                            >
+                                                                <Edit3 className=" text-[10px]" />
+                                                                <span>
+                                                                    Edit-grant
+                                                                </span>
+                                                            </button>
+
+                                                            {isGrantEditModalOpen && (
+                                                                <GrantEditModal
+                                                                    grantData={
+                                                                        grantToEdit
+                                                                    }
+                                                                    onClose={() =>
+                                                                        setIsGrantEditModalOpen(
+                                                                            false
+                                                                        )
+                                                                    }
+                                                                    onSave={
+                                                                        handleGrantUpdate
+                                                                    }
+                                                                />
+                                                            )}
+                                                        </div>
+                                                    </div>
+
                                                     {grant.techLevel ===
                                                         "cutting-edge" && (
                                                         <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full flex-shrink-0">
@@ -939,46 +1091,49 @@ const TujitumeGrantPortal = () => {
                                                 </div>
                                             </div>
 
-<label className="inline-flex items-center cursor-pointer">
-  <input
-    type="checkbox"
-    checked={visibilityStates[grant.id]}
-onChange={(e) => {
-  e.preventDefault();
-  toggleVisibility(grant.id);
-}}
-    className="sr-only peer"
-  />
-  <div className="w-11 h-6 bg-gray-200 peer-checked:bg-amber-400 rounded-full peer relative transition-colors">
-    <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
-  </div>
-  <span className="ml-3 text-sm text-gray-700">
-    {visibilityStates[grant.id] ? "Visible" : "Hidden"}
-  </span>
-</label>
+                                            <label className="inline-flex items-center cursor-pointer">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={
+                                                        visibilityStates[
+                                                            grant.id
+                                                        ]
+                                                    }
+                                                    onChange={(e) => {
+                                                        e.preventDefault();
+                                                        toggleVisibility(
+                                                            grant.id
+                                                        );
+                                                    }}
+                                                    className="sr-only peer"
+                                                />
+                                                <div className="w-11 h-6 bg-gray-200 peer-checked:bg-amber-400 rounded-full peer relative transition-colors">
+                                                    <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
+                                                </div>
+                                                <span className="ml-3 text-sm text-gray-700">
+                                                    {visibilityStates[grant.id]
+                                                        ? "Visible"
+                                                        : "Hidden"}
+                                                </span>
+                                            </label>
                                             <div className="flex items-center space-x-3 flex-shrink-0">
-
-                                                    <button
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            setViewingPitchesForGrant(
-                                                                grant.id
-                                                            );
-                                                        }}
-                                                        className={`px-3 py-1.5 bg-gradient-to-r from-[rgb(253,224,71)] to-gray-100 text-black text-sm rounded-lg hover:from-[rgb(253,224,71)] hover:to-gray-100 transition-all flex items-center space-x-1.5 shadow-sm ${
-                                                            open
-                                                                ? "hidden md:flex"
-                                                                : "flex"
-                                                        }`}
-                                                        title="View pitches"
-                                                    >
-                                                        <Eye size={16} />
-                                                        <span>Pitches</span>
-                                                    </button>
-
-                                                    
-
-
+                                                {user.investor && (<button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setViewingPitchesForGrant(
+                                                            grant.id
+                                                        );
+                                                    }}
+                                                    className={`px-3 py-1.5 bg-gradient-to-r from-[rgb(253,224,71)] to-gray-100 text-black text-sm rounded-lg hover:from-[rgb(253,224,71)] hover:to-gray-100 transition-all flex items-center space-x-1.5 shadow-sm ${
+                                                        open
+                                                            ? "hidden md:flex"
+                                                            : "flex"
+                                                    }`}
+                                                    title="View pitches"
+                                                >
+                                                    <Eye size={16} />
+                                                    <span>Pitches</span>
+                                                </button>)}
 
                                                 {!user.investor && (
                                                     <button
@@ -1482,90 +1637,548 @@ onChange={(e) => {
                             {renderGrantOpportunities()}
                         </>
                     )}
-                    {activeView === "status" && (
-                        <div className="bg-white rounded-xl border border-gray-200 p-6">
-                            <h2 className="text-xl font-bold text-gray-900 mb-6">
-                                My Applications 3
-                            </h2>
-                            {grantApplications.length === 0 ? (
-                                <div className="text-center py-10">
-                                    <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                                        <FileText
-                                            className="text-gray-400"
-                                            size={32}
-                                        />
+                    <>
+                        {activeView === "status" && (
+                            <div className="bg-white rounded-xl border border-gray-200 p-6">
+                                <h2 className="text-xl font-bold text-gray-900 mb-6">
+                                    My Applications ({myApplications.length})
+                                </h2>
+
+                                {loading ? (
+                                    <div className="flex justify-center items-center py-16">
+                                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
                                     </div>
-                                    <h3 className="text-lg font-medium text-gray-900 mb-2">
-                                        No applications yet
-                                    </h3>
-                                    <p className="text-gray-600 mb-4">
-                                        You haven't applied to any grants yet
-                                    </p>
-                                    <button
-                                        onClick={() =>
-                                            setActiveView("opportunities")
-                                        }
-                                        className="px-5 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-                                    >
-                                        Browse Opportunities
-                                    </button>
-                                </div>
-                            ) : (
-                                <div className="space-y-4">
-                                    {grantApplications.map((application) => (
-                                        <div
-                                            key={application.id}
-                                            className="p-5 border border-gray-200 rounded-lg hover:shadow-md transition-all"
+                                ) : myApplications.length === 0 ? (
+                                    <div className="text-center py-10">
+                                        <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                            <FileText
+                                                className="text-gray-400"
+                                                size={32}
+                                            />
+                                        </div>
+                                        <h3 className="text-lg font-medium text-gray-900 mb-2">
+                                            No applications yet
+                                        </h3>
+                                        <p className="text-gray-600 mb-4">
+                                            You haven't applied to any grants
+                                            yet
+                                        </p>
+                                        <button
+                                            onClick={() =>
+                                                setActiveView("opportunities")
+                                            }
+                                            className="px-5 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
                                         >
-                                            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                            Browse Opportunities
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-4">
+                                        {myApplications.map((application) => (
+                                            <div
+                                                key={application.id}
+                                                className="p-5 border border-gray-200 rounded-lg hover:shadow-md transition-all"
+                                            >
+                                                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                                    <div>
+                                                        <h3 className="text-lg font-medium text-gray-900">
+                                                            {application.grant
+                                                                ?.grant_title ||
+                                                                application.startup_name}
+                                                        </h3>
+                                                        <div className="text-sm text-gray-600 mt-1 space-y-1">
+                                                            <p>
+                                                                <span className="font-medium">
+                                                                    Submitted:
+                                                                </span>{" "}
+                                                                {formatDate(
+                                                                    application.created_at
+                                                                )}
+                                                            </p>
+                                                            <p>
+                                                                <span className="font-medium">
+                                                                    Sector:
+                                                                </span>{" "}
+                                                                {
+                                                                    application.sector
+                                                                }
+                                                            </p>
+                                                            <p>
+                                                                <span className="font-medium">
+                                                                    Location:
+                                                                </span>{" "}
+                                                                {
+                                                                    application.headquarters_location
+                                                                }
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex flex-col items-end space-y-3">
+                                                        <span
+                                                            className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusClass(
+                                                                application.status
+                                                            )}`}
+                                                        >
+                                                            {getStatusText(
+                                                                application.status
+                                                            )}
+                                                        </span>
+                                                        <div className="flex space-x-2">
+                                                            <button
+                                                                onClick={() =>
+                                                                    openDrawer(
+                                                                        application
+                                                                    )
+                                                                }
+                                                                className="px-3 py-1 border border-gray-200 rounded-md text-gray-600 hover:bg-gray-50 text-sm flex items-center"
+                                                            >
+                                                                <Eye
+                                                                    size={16}
+                                                                    className="mr-1"
+                                                                />
+                                                                View
+                                                            </button>
+
+                                                            {application.status ===
+                                                                1 && (
+                                                                <button
+                                                                    onClick={() =>
+                                                                        handleFundRequest(
+                                                                            application.id
+                                                                        )
+                                                                    }
+                                                                    className="px-3 py-1 border border-green-200 rounded-md text-green-600 hover:bg-green-50 text-sm flex items-center"
+                                                                >
+                                                                    <ExternalLink
+                                                                        size={
+                                                                            16
+                                                                        }
+                                                                        className="mr-1"
+                                                                    />
+                                                                    Request for
+                                                                    Funds
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="mt-4 pt-3 border-t border-gray-100">
+                                                    <div className="flex flex-wrap gap-3">
+                                                        <span className="px-2.5 py-1 bg-blue-50 text-blue-700 rounded-md text-xs font-medium">
+                                                            {application.stage}
+                                                        </span>
+                                                        <span className="px-2.5 py-1 bg-purple-50 text-purple-700 rounded-md text-xs font-medium">
+                                                            {
+                                                                application.social_impact_areas
+                                                            }
+                                                        </span>
+                                                        <span className="px-2.5 py-1 bg-green-50 text-green-700 rounded-md text-xs font-medium">
+                                                            Revenue: $
+                                                            {Number(
+                                                                application.revenue_last_12_months
+                                                            ).toLocaleString()}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Drawer for Application Details */}
+                        {isDrawerOpen && selectedApplication && (
+                            <>
+                                {/* Backdrop */}
+                                <div
+                                    className="fixed inset-0 bg-black bg-opacity-30 z-40 transition-opacity"
+                                    onClick={closeDrawer}
+                                ></div>
+
+                                {/* Drawer */}
+                                <div className="fixed inset-y-0 right-0 max-w-lg w-full bg-white shadow-xl z-50 overflow-y-auto transform transition-transform duration-300">
+                                    {/* Header */}
+                                    <div className="sticky top-0 bg-white z-10 border-b border-gray-200">
+                                        <div className="flex items-center justify-between px-6 py-4">
+                                            <h3 className="text-xl font-bold text-gray-900">
+                                                Application Details
+                                            </h3>
+                                            <button
+                                                onClick={closeDrawer}
+                                                className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                                            >
+                                                <X
+                                                    size={20}
+                                                    className="text-gray-500"
+                                                />
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Content */}
+                                    <div className="px-6 py-4 space-y-6">
+                                        {/* Grant and status information */}
+                                        <div className="mb-6">
+                                            <div className="flex items-center justify-between">
+                                                <h2 className="text-2xl font-bold text-gray-900">
+                                                    {
+                                                        selectedApplication.startup_name
+                                                    }
+                                                </h2>
+                                                <span
+                                                    className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusClass(
+                                                        selectedApplication.status
+                                                    )}`}
+                                                >
+                                                    {getStatusText(
+                                                        selectedApplication.status
+                                                    )}
+                                                </span>
+                                            </div>
+                                            <p className="text-gray-600 mt-2">
+                                                Applied for:{" "}
+                                                <span className="font-medium">
+                                                    {selectedApplication.grant
+                                                        ?.grant_title ||
+                                                        "Unknown Grant"}
+                                                </span>
+                                            </p>
+                                        </div>
+
+                                        {/* Key Details */}
+                                        <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                                            <div className="flex items-center">
+                                                <Calendar
+                                                    size={18}
+                                                    className="text-gray-500 mr-3"
+                                                />
                                                 <div>
-                                                    <h3 className="text-lg font-medium text-gray-900">
-                                                        {
-                                                            application.grant
-                                                                .title
-                                                        }
-                                                    </h3>
-                                                    <p className="text-sm text-gray-600 mt-1">
-                                                        Submitted on{" "}
-                                                        {new Date(
-                                                            application.date
-                                                        ).toLocaleDateString()}{" "}
-                                                        • Estimated review:{" "}
-                                                        {
-                                                            application.estimatedReviewTime
-                                                        }{" "}
-                                                        days
+                                                    <p className="text-sm text-gray-600">
+                                                        Submitted on
+                                                    </p>
+                                                    <p className="font-medium">
+                                                        {formatDate(
+                                                            selectedApplication.created_at
+                                                        )}
                                                     </p>
                                                 </div>
-                                                <div className="flex items-center space-x-3">
-                                                    <span
-                                                        className={`px-3 py-1 rounded-full text-sm font-medium ${
-                                                            application.status ===
-                                                            "Accepted"
-                                                                ? "bg-green-100 text-green-800"
-                                                                : application.status ===
-                                                                  "Rejected"
-                                                                ? "bg-red-100 text-red-800"
-                                                                : "bg-yellow-100 text-yellow-800"
-                                                        }`}
-                                                    >
-                                                        {application.status}
-                                                    </span>
-                                                    <button className="text-green-600 hover:text-green-800 flex items-center text-sm">
-                                                        <ExternalLink
-                                                            size={16}
-                                                            className="mr-1"
-                                                        />
-                                                        View Details
-                                                    </button>
+                                            </div>
+
+                                            <div className="flex items-center">
+                                                <Map
+                                                    size={18}
+                                                    className="text-gray-500 mr-3"
+                                                />
+                                                <div>
+                                                    <p className="text-sm text-gray-600">
+                                                        Headquarters
+                                                    </p>
+                                                    <p className="font-medium">
+                                                        {
+                                                            selectedApplication.headquarters_location
+                                                        }
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center">
+                                                <Building
+                                                    size={18}
+                                                    className="text-gray-500 mr-3"
+                                                />
+                                                <div>
+                                                    <p className="text-sm text-gray-600">
+                                                        Sector
+                                                    </p>
+                                                    <p className="font-medium">
+                                                        {
+                                                            selectedApplication.sector
+                                                        }
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center">
+                                                <Users
+                                                    size={18}
+                                                    className="text-gray-500 mr-3"
+                                                />
+                                                <div>
+                                                    <p className="text-sm text-gray-600">
+                                                        Team Experience
+                                                    </p>
+                                                    <p className="font-medium">
+                                                        {
+                                                            selectedApplication.team_experience_avg_years
+                                                        }{" "}
+                                                        years average
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center">
+                                                <DollarSign
+                                                    size={18}
+                                                    className="text-gray-500 mr-3"
+                                                />
+                                                <div>
+                                                    <p className="text-sm text-gray-600">
+                                                        Revenue (Last 12 Months)
+                                                    </p>
+                                                    <p className="font-medium">
+                                                        $
+                                                        {Number(
+                                                            selectedApplication.revenue_last_12_months
+                                                        ).toLocaleString()}
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center">
+                                                <Award
+                                                    size={18}
+                                                    className="text-gray-500 mr-3"
+                                                />
+                                                <div>
+                                                    <p className="text-sm text-gray-600">
+                                                        Company Stage
+                                                    </p>
+                                                    <p className="font-medium">
+                                                        {
+                                                            selectedApplication.stage
+                                                        }
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
-                                    ))}
+
+                                        {/* Social Impact Areas */}
+                                        <div>
+                                            <h4 className="text-lg font-medium text-gray-900 mb-3">
+                                                Social Impact Areas
+                                            </h4>
+                                            <div className="flex flex-wrap gap-2">
+                                                {selectedApplication.social_impact_areas
+                                                    .split(",")
+                                                    .map((area, index) => (
+                                                        <span
+                                                            key={index}
+                                                            className="px-3 py-1 bg-purple-50 text-purple-700 rounded-md text-sm"
+                                                        >
+                                                            {area.trim()}
+                                                        </span>
+                                                    ))}
+                                            </div>
+                                        </div>
+
+                                        {/* KPIs and Traction */}
+                                        <div>
+                                            <h4 className="text-lg font-medium text-gray-900 mb-3">
+                                                Traction KPIs
+                                            </h4>
+                                            <div className="bg-gray-50 rounded-lg p-4">
+                                                <p className="text-gray-700">
+                                                    {
+                                                        selectedApplication.traction_kpis
+                                                    }
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        {/* Submitted Files */}
+                                        <div>
+                                            <h4 className="text-lg font-medium text-gray-900 mb-3">
+                                                Submitted Files
+                                            </h4>
+                                            <div className="space-y-3">
+                                                {/* Business Plan */}
+                                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                                    <div className="flex items-center">
+                                                        <div className="bg-blue-100 p-2 rounded-md mr-3">
+                                                            <FileText
+                                                                size={18}
+                                                                className="text-blue-600"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-medium text-gray-900">
+                                                                Business Plan
+                                                            </p>
+                                                            <p className="text-xs text-gray-500">
+                                                                {getFileName(
+                                                                    selectedApplication.business_plan_file
+                                                                )}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <button
+                                                        className="p-2 hover:bg-gray-200 rounded-full transition-colors"
+                                                        onClick={() =>
+                                                            handleViewFile(
+                                                                selectedApplication.business_plan_file
+                                                            )
+                                                        }
+                                                    >
+                                                        <Eye
+                                                            size={18}
+                                                            className="text-gray-600"
+                                                        />
+                                                    </button>
+                                                </div>
+
+                                                {/* Pitch Deck */}
+                                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                                    <div className="flex items-center">
+                                                        <div className="bg-green-100 p-2 rounded-md mr-3">
+                                                            <FileText
+                                                                size={18}
+                                                                className="text-green-600"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-medium text-gray-900">
+                                                                Pitch Deck
+                                                            </p>
+                                                            <p className="text-xs text-gray-500">
+                                                                {getFileName(
+                                                                    selectedApplication.pitch_deck_file
+                                                                )}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <button
+                                                        className="p-2 hover:bg-gray-200 rounded-full transition-colors"
+                                                        onClick={() =>
+                                                            handleViewFile(
+                                                                selectedApplication.pitch_deck_file
+                                                            )
+                                                        }
+                                                    >
+                                                        <Eye
+                                                            size={18}
+                                                            className="text-gray-600"
+                                                        />
+                                                    </button>
+                                                </div>
+
+                                                {/* Pitch Video */}
+                                                {selectedApplication.pitch_video && (
+                                                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                                        <div className="flex items-center">
+                                                            <div className="bg-red-100 p-2 rounded-md mr-3">
+                                                                <FileText
+                                                                    size={18}
+                                                                    className="text-red-600"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <p className="font-medium text-gray-900">
+                                                                    Pitch Video
+                                                                </p>
+                                                                <p className="text-xs text-gray-500">
+                                                                    {getFileName(
+                                                                        selectedApplication.pitch_video
+                                                                    )}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <button
+                                                            className="p-2 hover:bg-gray-200 rounded-full transition-colors"
+                                                            onClick={() =>
+                                                                handleViewFile(
+                                                                    selectedApplication.pitch_video
+                                                                )
+                                                            }
+                                                        >
+                                                            <Eye
+                                                                size={18}
+                                                                className="text-gray-600"
+                                                            />
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Contact Information */}
+                                        <div>
+                                            <h4 className="text-lg font-medium text-gray-900 mb-3">
+                                                Contact Information
+                                            </h4>
+                                            <div className="bg-gray-50 rounded-lg p-4 space-y-2">
+                                                <p className="text-gray-700">
+                                                    <span className="font-medium">
+                                                        Name:
+                                                    </span>{" "}
+                                                    {
+                                                        selectedApplication.contact_person_name
+                                                    }
+                                                </p>
+                                                <p className="text-gray-700">
+                                                    <span className="font-medium">
+                                                        Email:
+                                                    </span>{" "}
+                                                    {
+                                                        selectedApplication.contact_person_email
+                                                    }
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        {/* Grant Details */}
+                                        {selectedApplication.grant && (
+                                            <div>
+                                                <h4 className="text-lg font-medium text-gray-900 mb-3">
+                                                    Grant Details
+                                                </h4>
+                                                <div className="bg-gray-50 rounded-lg p-4 space-y-2">
+                                                    <p className="text-gray-700">
+                                                        <span className="font-medium">
+                                                            Total Grant Amount:
+                                                        </span>{" "}
+                                                        $
+                                                        {Number(
+                                                            selectedApplication
+                                                                .grant
+                                                                .total_grant_amount
+                                                        ).toLocaleString()}
+                                                    </p>
+                                                    <p className="text-gray-700">
+                                                        <span className="font-medium">
+                                                            Funding Per
+                                                            Business:
+                                                        </span>{" "}
+                                                        $
+                                                        {Number(
+                                                            selectedApplication
+                                                                .grant
+                                                                .funding_per_business
+                                                        ).toLocaleString()}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Footer Actions */}
+                                    <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4">
+                                        <button
+                                            onClick={closeDrawer}
+                                            className="w-full py-3 bg-green-600 text-white font-medium rounded-lg flex items-center justify-center hover:bg-green-700 transition-colors"
+                                        >
+                                            Close Details{" "}
+                                            <ChevronRight
+                                                size={18}
+                                                className="ml-2"
+                                            />
+                                        </button>
+                                    </div>
                                 </div>
-                            )}
-                        </div>
-                    )}
+                            </>
+                        )}
+                    </>
                 </main>
             </div>
             {viewingPitchesForGrant && (
@@ -1587,6 +2200,11 @@ onChange={(e) => {
                 </div>
             )}
             {/* Modals */}
+            <DocumentPreviewModal
+                file={previewFile}
+                isOpen={isModalOpen}
+                onClose={closeModal}
+            />
 
             {showConfirmModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -1638,30 +2256,34 @@ onChange={(e) => {
                 />
             )}
 
-{showDisclaimer && (
-  <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
-    <div className="bg-white p-6 rounded-xl shadow-md max-w-md w-full">
-      <h2 className="text-lg font-semibold mb-2">Visibility Disclaimer</h2>
-      <p className="text-sm text-gray-600 mb-4">
-        By toggling this listing’s visibility, you are allowing investors to see or hide it from their dashboard. Make sure this action is intentional.
-      </p>
-      <div className="flex justify-end gap-2">
-        <button
-          onClick={cancelToggle}
-          className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
-        >
-          Cancel
-        </button>
-        <button
-          onClick={confirmToggle}
-          className="px-4 py-2 text-sm bg-yellow-600 text-white rounded hover:bg-yellow-700"
-        >
-          Confirm
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+            {showDisclaimer && (
+                <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
+                    <div className="bg-white p-6 rounded-xl shadow-md max-w-md w-full">
+                        <h2 className="text-lg font-semibold mb-2">
+                            Visibility Disclaimer
+                        </h2>
+                        <p className="text-sm text-gray-600 mb-4">
+                            By toggling this listing’s visibility, you are
+                            allowing investors to see or hide it from their
+                            dashboard. Make sure this action is intentional.
+                        </p>
+                        <div className="flex justify-end gap-2">
+                            <button
+                                onClick={cancelToggle}
+                                className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={confirmToggle}
+                                className="px-4 py-2 text-sm bg-yellow-600 text-white rounded hover:bg-yellow-700"
+                            >
+                                Confirm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
