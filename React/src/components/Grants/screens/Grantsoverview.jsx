@@ -376,7 +376,7 @@ const Navigation = {
                                             to: "/grants-overview/grants/discover",
                                         },
                                         {
-                                            label: "Pitch-Deck",
+                                            label: "Pitches",
                                             to: "/grants-overview/pitch",
                                         },
                                     ]

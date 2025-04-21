@@ -328,37 +328,104 @@ const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
             </div>
 
             {/* Accept Modal */}
-            {showAcceptModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-6 max-w-md w-full">
-                        <h3 className="text-lg font-bold mb-4">
-                            Confirm Acceptance
-                        </h3>
-                        <p className="mb-6">{actionMessages.accept}</p>
-                        <div className="flex justify-end space-x-3">
-                            <button
-                                onClick={() => setShowAcceptModal(false)}
-                                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={handleAccept}
-                                disabled={isProcessing}
-                                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 flex items-center justify-center"
-                            >
-                                {isProcessing ? (
-                                    <Loader2
-                                        className="animate-spin mr-2"
-                                        size={18}
-                                    />
-                                ) : null}
-                                Confirm Acceptance
-                            </button>
-                        </div>
+            <div className="mt-5 space-y-5">
+                {/* Duration Selector Section */}
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                    <div className="space-y-2">
+                        <label
+                            htmlFor={`duration-${index}`}
+                            className="block text-sm font-medium text-gray-700"
+                        >
+                            Milestone Duration*
+                        </label>
+                        <select
+                            id={`duration-${index}`}
+                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm p-2.5 border"
+                            value={milestone.duration || ""}
+                            onChange={(e) =>
+                                updateMilestone(
+                                    index,
+                                    "duration",
+                                    e.target.value
+                                )
+                            }
+                        >
+                            <option value="">Select duration</option>
+                            <option value="1_week">1 Week</option>
+                            <option value="2_weeks">2 Weeks</option>
+                            <option value="1_month">1 Month</option>
+                            <option value="3_months">3 Months</option>
+                            <option value="6_months">6 Months</option>
+                            <option value="9_months">9 Months</option>
+                            <option value="12_months">12 Months</option>
+                            <option value="custom">Custom Duration</option>
+                        </select>
+
+                        {milestone.duration === "custom" && (
+                            <div className="flex gap-2">
+                                <input
+                                    type="number"
+                                    min="1"
+                                    className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm p-2.5 border"
+                                    placeholder="Number"
+                                    value={milestone.customDurationValue || ""}
+                                    onChange={(e) =>
+                                        updateMilestone(
+                                            index,
+                                            "customDurationValue",
+                                            e.target.value
+                                        )
+                                    }
+                                />
+                                <select
+                                    className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm p-2.5 border"
+                                    value={milestone.customDurationUnit || ""}
+                                    onChange={(e) =>
+                                        updateMilestone(
+                                            index,
+                                            "customDurationUnit",
+                                            e.target.value
+                                        )
+                                    }
+                                >
+                                    <option value="">Select unit</option>
+                                    <option value="days">Days</option>
+                                    <option value="weeks">Weeks</option>
+                                    <option value="months">Months</option>
+                                </select>
+                            </div>
+                        )}
                     </div>
+                    {/* Empty div to maintain grid structure */}
+                    <div></div>
                 </div>
-            )}
+
+                {/* Verification Checkbox Section - Now on its own line */}
+                <div className="flex items-start">
+                    <div className="flex items-center h-5">
+                        <input
+                            id={`verification-${index}`}
+                            name={`verification-${index}`}
+                            type="checkbox"
+                            className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                            checked={milestone.requiresVerification}
+                            onChange={(e) =>
+                                updateMilestone(
+                                    index,
+                                    "requiresVerification",
+                                    e.target.checked
+                                )
+                            }
+                        />
+                    </div>
+                    <label
+                        htmlFor={`verification-${index}`}
+                        className="ml-2 block text-sm text-gray-700"
+                    >
+                        Requires third-party verification
+                    </label>
+                </div>
+            </div>
 
             {/* Decline Modal */}
             {showDeclineModal && (

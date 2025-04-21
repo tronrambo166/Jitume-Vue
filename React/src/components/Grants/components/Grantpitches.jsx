@@ -19,6 +19,7 @@ import {
     Filter,
 } from "lucide-react";
 import axiosClient from "../../../axiosClient"; // Update with your actual path
+import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 const PitchesOutlet = ({ grantId }) => {
     const [pitches, setPitches] = useState([]);
@@ -367,13 +368,14 @@ const PitchesOutlet = ({ grantId }) => {
 
             {/* Confirmation Modal */}
             {showConfirmModal && selectedPitch && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-                    <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
-                        <div className="flex justify-between items-center mb-4">
+                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-xl shadow-xl max-w-md w-full flex flex-col max-h-[90vh]">
+                        {/* Header */}
+                        <div className="flex justify-between items-center p-6 border-b">
                             <h3 className="text-lg font-semibold text-gray-900">
                                 {modalAction === "accept"
-                                    ? "Accept Pitch"
-                                    : "Reject Pitch"}
+                                    ? "Accept Investment Proposal"
+                                    : "Reject Proposal"}
                             </h3>
                             <button
                                 onClick={() => setShowConfirmModal(false)}
@@ -382,40 +384,168 @@ const PitchesOutlet = ({ grantId }) => {
                                 <X size={20} className="text-gray-500" />
                             </button>
                         </div>
-                        <div className="mb-6">
-                            <p className="text-gray-700">
-                                Are you sure you want to {modalAction} the pitch
-                                from{" "}
-                                <strong>
-                                    {selectedPitch.startup_name ||
-                                        "this startup"}
-                                </strong>
-                                ?
-                            </p>
-                            {modalAction === "decline" && (
-                                <p className="mt-2 text-gray-500 text-sm">
-                                    This action cannot be undone and will notify
-                                    the startup of your decision.
-                                </p>
+
+                        {/* Scrollable Content */}
+                        <div className="overflow-y-auto p-6 flex-1">
+                            {modalAction === "accept" ? (
+                                <>
+                                    <p className="text-gray-700 mb-6">
+                                        You're approving funding for{" "}
+                                        <strong className="text-green-600">
+                                            {selectedPitch.startup_name ||
+                                                "this startup"}
+                                        </strong>
+                                        . Please select your preferred
+                                        disbursement method:
+                                    </p>
+
+                                    <div className="space-y-4 mb-6">
+                                        {/* Milestone Option */}
+                                        <div className="flex items-start p-4 border rounded-lg border-gray-200 hover:border-green-300 transition-colors">
+                                            <div className="flex items-center h-5 mt-0.5">
+                                                <input
+                                                    id="milestone-option"
+                                                    name="funding-option"
+                                                    type="radio"
+                                                    className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300"
+                                                    defaultChecked
+                                                />
+                                            </div>
+                                            <div className="ml-3 flex-1">
+                                                <div className="flex justify-between items-start">
+                                                    <label
+                                                        htmlFor="milestone-option"
+                                                        className="block font-medium text-gray-900"
+                                                    >
+                                                        Milestone-Based Funding
+                                                    </label>
+                                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                        Recommended
+                                                    </span>
+                                                </div>
+                                                <p className="text-sm text-gray-600 mt-1">
+                                                    Funds are released in
+                                                    predefined stages as the
+                                                    startup achieves specific
+                                                    business milestones.
+                                                </p>
+                                                <div className="mt-2 bg-green-50 p-3 rounded-md">
+                                                    <h4 className="text-xs font-semibold text-green-700 uppercase tracking-wider mb-1">
+                                                        Benefits
+                                                    </h4>
+                                                    <ul className="text-xs text-green-600 space-y-1 list-disc list-inside">
+                                                        <li>
+                                                            Reduces investment
+                                                            risk
+                                                        </li>
+                                                        <li>
+                                                            Ensures
+                                                            accountability
+                                                        </li>
+                                                        <li>
+                                                            Aligns funding with
+                                                            progress
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Lump Sum Option */}
+                                        <div className="flex items-start p-4 border rounded-lg border-gray-200 hover:border-green-300 transition-colors">
+                                            <div className="flex items-center h-5 mt-0.5">
+                                                <input
+                                                    id="lump-sum-option"
+                                                    name="funding-option"
+                                                    type="radio"
+                                                    className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300"
+                                                />
+                                            </div>
+                                            <div className="ml-3 flex-1">
+                                                <label
+                                                    htmlFor="lump-sum-option"
+                                                    className="block font-medium text-gray-900"
+                                                >
+                                                    Full Amount Disbursement
+                                                </label>
+                                                <p className="text-sm text-gray-600 mt-1">
+                                                    Transfer the entire
+                                                    investment amount
+                                                    immediately upon acceptance.
+                                                </p>
+                                                <div className="mt-2 bg-red-50 p-3 rounded-md">
+                                                    <h4 className="text-xs font-semibold text-red-700 uppercase tracking-wider mb-1">
+                                                        Risk Considerations
+                                                    </h4>
+                                                    <ul className="text-xs text-red-600 space-y-1 list-disc list-inside">
+                                                        <li>
+                                                            Higher exposure to
+                                                            execution risk
+                                                        </li>
+                                                        <li>
+                                                            Limited recourse if
+                                                            milestones aren't
+                                                            met
+                                                        </li>
+                                                        <li>
+                                                            Requires strong
+                                                            trust in the team
+                                                        </li>
+                                                    </ul>
+                                                    <p className="text-xs text-red-700 mt-2 font-medium">
+                                                        Only recommended for
+                                                        established teams with
+                                                        proven track records.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <p className="text-gray-700">
+                                        Reject the proposal from{" "}
+                                        <strong className="text-gray-900">
+                                            {selectedPitch.startup_name ||
+                                                "this startup"}
+                                        </strong>
+                                        ?
+                                    </p>
+                                    <div className="mt-4 bg-gray-50 p-3 rounded-md">
+                                        <p className="text-sm text-gray-600">
+                                            <ExclamationTriangleIcon className="h-4 w-4 text-gray-400 inline mr-1" />
+                                            This action cannot be undone. The
+                                            startup will be notified
+                                            automatically.
+                                        </p>
+                                    </div>
+                                </>
                             )}
                         </div>
-                        <div className="flex space-x-3 justify-end">
-                            <button
-                                onClick={() => setShowConfirmModal(false)}
-                                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-full text-sm hover:bg-gray-50"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={handleConfirmAction}
-                                className={`px-4 py-2 rounded-full text-sm text-white ${
-                                    modalAction === "accept"
-                                        ? "bg-green-600 hover:bg-green-700"
-                                        : "bg-red-600 hover:bg-red-700"
-                                }`}
-                            >
-                                {modalAction === "accept" ? "Accept" : "Reject"}
-                            </button>
+
+                        {/* Fixed Footer */}
+                        <div className="p-4 border-t bg-gray-50 rounded-b-xl">
+                            <div className="flex space-x-3 justify-end">
+                                <button
+                                    onClick={() => setShowConfirmModal(false)}
+                                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-100 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleConfirmAction}
+                                    className={`px-4 py-2 rounded-lg text-sm text-white shadow-sm transition-colors ${
+                                        modalAction === "accept"
+                                            ? "bg-green-600 hover:bg-green-700"
+                                            : "bg-red-600 hover:bg-red-700"
+                                    }`}
+                                >
+                                    {modalAction === "accept"
+                                        ? "Confirm Acceptance"
+                                        : "Confirm Rejection"}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

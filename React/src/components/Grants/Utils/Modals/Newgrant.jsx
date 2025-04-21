@@ -425,85 +425,85 @@ export default function GrantApplicationModal({ onClose, grantId }) {
     const nextStep = () => {
         let canProceed = true;
 
-        if (step === 1) {
-            const requiredFields = [
-                "startupName",
-                "contactPerson",
-                "contactEmail",
-                "sector",
-                "location",
-            ];
-            canProceed = requiredFields.every(
-                (field) => formData[field]?.trim() !== ""
-            );
-            if (!canProceed) {
-                toast(
-                    <div className="flex items-center gap-2">
-                        <AlertTriangle className="h-4 w-4 text-amber-500" />
-                        <span>Complete all fields to continue</span>
-                    </div>,
-                    {
-                        position: "top-center",
-                        autoClose: 1000,
-                        hideProgressBar: true,
-                        closeButton: false,
-                        className:
-                            "!bg-gray-700 !text-gray-200 !shadow-sm !rounded-lg !border !border-gray-100 !px-3 !py-2",
-                    }
-                );
-                return;
-            }
-        } else if (step === 2) {
-            const requiredFields = [
-                "stage",
-                "revenue",
-                "teamExperience",
-                "traction",
-            ];
-            canProceed = requiredFields.every(
-                (field) => formData[field]?.trim() !== ""
-            );
-            if (!canProceed) {
-                toast.warning(
-                    <ValidationToast message="Please fill all required fields in Step 2 before proceeding" />,
-                    {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        className:
-                            "!bg-white !text-gray-800 !shadow-lg !border !border-yellow-200",
-                    }
-                );
-                return;
-            }
-        } else if (step === 3) {
-            canProceed = formData.impactAreas?.length > 0;
-            if (!canProceed) {
-                toast.warning(
-                    <ValidationToast message="Please select at least one impact area before proceeding" />,
-                    {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        className:
-                            "!bg-white !text-gray-800 !shadow-lg !border !border-yellow-200",
-                    }
-                );
-                return;
-            }
-        } else if (step === 4) {
-            // Optional: Add step 4 validation here
-            // Example:
-            // canProceed = formData.confirmation === true;
-        }
+        // if (step === 1) {
+        //     const requiredFields = [
+        //         "startupName",
+        //         "contactPerson",
+        //         "contactEmail",
+        //         "sector",
+        //         "location",
+        //     ];
+        //     canProceed = requiredFields.every(
+        //         (field) => formData[field]?.trim() !== ""
+        //     );
+        //     if (!canProceed) {
+        //         toast(
+        //             <div className="flex items-center gap-2">
+        //                 <AlertTriangle className="h-4 w-4 text-amber-500" />
+        //                 <span>Complete all fields to continue</span>
+        //             </div>,
+        //             {
+        //                 position: "top-center",
+        //                 autoClose: 1000,
+        //                 hideProgressBar: true,
+        //                 closeButton: false,
+        //                 className:
+        //                     "!bg-gray-700 !text-gray-200 !shadow-sm !rounded-lg !border !border-gray-100 !px-3 !py-2",
+        //             }
+        //         );
+        //         return;
+        //     }
+        // } else if (step === 2) {
+        //     const requiredFields = [
+        //         "stage",
+        //         "revenue",
+        //         "teamExperience",
+        //         "traction",
+        //     ];
+        //     canProceed = requiredFields.every(
+        //         (field) => formData[field]?.trim() !== ""
+        //     );
+        //     if (!canProceed) {
+        //         toast.warning(
+        //             <ValidationToast message="Please fill all required fields in Step 2 before proceeding" />,
+        //             {
+        //                 position: "top-center",
+        //                 autoClose: 5000,
+        //                 hideProgressBar: false,
+        //                 closeOnClick: true,
+        //                 pauseOnHover: true,
+        //                 draggable: true,
+        //                 progress: undefined,
+        //                 className:
+        //                     "!bg-white !text-gray-800 !shadow-lg !border !border-yellow-200",
+        //             }
+        //         );
+        //         return;
+        //     }
+        // } else if (step === 3) {
+        //     canProceed = formData.impactAreas?.length > 0;
+        //     if (!canProceed) {
+        //         toast.warning(
+        //             <ValidationToast message="Please select at least one impact area before proceeding" />,
+        //             {
+        //                 position: "top-center",
+        //                 autoClose: 5000,
+        //                 hideProgressBar: false,
+        //                 closeOnClick: true,
+        //                 pauseOnHover: true,
+        //                 draggable: true,
+        //                 progress: undefined,
+        //                 className:
+        //                     "!bg-white !text-gray-800 !shadow-lg !border !border-yellow-200",
+        //             }
+        //         );
+        //         return;
+        //     }
+        // } else if (step === 4) {
+        //     // Optional: Add step 4 validation here
+        //     // Example:
+        //     // canProceed = formData.confirmation === true;
+        // }
 
         if (canProceed) {
             setStep((prev) => Math.min(prev + 1, 4));
@@ -785,7 +785,6 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                                                     value={formData.business}
                                                     onChange={(e) => {
                                                         handleBusinessChange(e); // Handle form data change
-                                                        
                                                     }}
                                                     className="w-full appearance-none bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
                                                     required
@@ -793,7 +792,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                                                     <option value="">
                                                         Select Business
                                                     </option>
-                                                    
+
                                                     {businessOptions.map(
                                                         (business) => (
                                                             <option
@@ -1429,28 +1428,117 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                                                     <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
                                                         <div>
                                                             <label
-                                                                htmlFor={`date-${index}`}
+                                                                htmlFor={`duration-${index}`}
                                                                 className="block text-sm font-medium text-gray-700 mb-1"
                                                             >
-                                                                Target
-                                                                Completion Date*
+                                                                Milestone
+                                                                Duration*
                                                             </label>
-                                                            <input
-                                                                type="date"
-                                                                id={`date-${index}`}
+                                                            <select
+                                                                id={`duration-${index}`}
                                                                 className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm p-2 border"
                                                                 value={
-                                                                    milestone.date
+                                                                    milestone.duration ||
+                                                                    ""
                                                                 }
                                                                 onChange={(e) =>
                                                                     updateMilestone(
                                                                         index,
-                                                                        "date",
+                                                                        "duration",
                                                                         e.target
                                                                             .value
                                                                     )
                                                                 }
-                                                            />
+                                                            >
+                                                                <option value="">
+                                                                    Select
+                                                                    duration
+                                                                </option>
+                                                                <option value="1_week">
+                                                                    1 Week
+                                                                </option>
+                                                                <option value="2_weeks">
+                                                                    2 Weeks
+                                                                </option>
+                                                                <option value="1_month">
+                                                                    1 Month
+                                                                </option>
+                                                                <option value="3_months">
+                                                                    3 Months
+                                                                </option>
+                                                                <option value="6_months">
+                                                                    6 Months
+                                                                </option>
+                                                                <option value="9_months">
+                                                                    9 Months
+                                                                </option>
+                                                                <option value="12_months">
+                                                                    12 Months
+                                                                </option>
+                                                                <option value="custom">
+                                                                    Custom
+                                                                    Duration
+                                                                </option>
+                                                            </select>
+
+                                                            {milestone.duration ===
+                                                                "custom" && (
+                                                                <div className="mt-2 flex items-center">
+                                                                    <input
+                                                                        type="number"
+                                                                        min="1"
+                                                                        className="block w-20 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm p-2 border mr-2"
+                                                                        placeholder="Number"
+                                                                        value={
+                                                                            milestone.customDurationValue ||
+                                                                            ""
+                                                                        }
+                                                                        onChange={(
+                                                                            e
+                                                                        ) =>
+                                                                            updateMilestone(
+                                                                                index,
+                                                                                "customDurationValue",
+                                                                                e
+                                                                                    .target
+                                                                                    .value
+                                                                            )
+                                                                        }
+                                                                    />
+                                                                    <select
+                                                                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm p-2 border"
+                                                                        value={
+                                                                            milestone.customDurationUnit ||
+                                                                            ""
+                                                                        }
+                                                                        onChange={(
+                                                                            e
+                                                                        ) =>
+                                                                            updateMilestone(
+                                                                                index,
+                                                                                "customDurationUnit",
+                                                                                e
+                                                                                    .target
+                                                                                    .value
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <option value="">
+                                                                            Select
+                                                                            unit
+                                                                        </option>
+                                                                        <option value="days">
+                                                                            Days
+                                                                        </option>
+                                                                        <option value="weeks">
+                                                                            Weeks
+                                                                        </option>
+                                                                        <option value="months">
+                                                                            Months
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            )}
                                                         </div>
 
                                                         <div className="flex items-end">
