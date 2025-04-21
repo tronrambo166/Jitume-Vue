@@ -55,6 +55,13 @@ class GrantController extends Controller
 
     public function pitches($grant_id)
     {
+        $user_id = Auth::id();
+        if($grant_id == 'latest'){
+            $grant = Grant::where('id',$user_id)->latest()->first();
+            $pitches = GrantApplication::with('grant_milestone')->where('grant_id',$grant->id)->latest()->get();
+            return response()->json(['pitches' => $pitches]);
+        }
+
         $pitches = GrantApplication::with('grant_milestone')->where('grant_id',$grant_id)->latest()->get();
         return response()->json(['pitches' => $pitches]);
     }
