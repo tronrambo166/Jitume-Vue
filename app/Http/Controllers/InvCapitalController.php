@@ -247,12 +247,13 @@ class InvCapitalController extends Controller
     /**
      * Update the specified capital in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         try{
-            $capital = CapitalOffer::findOrFail($id);
+            $capital = CapitalOffer::findOrFail($request->id);
 
             $request->validate([
+                "id" => "required|numeric",
                 'offer_title' => 'required|string|max:255',
                 'total_capital_available' => 'required|numeric',
                 'per_startup_allocation' => 'required|numeric',

@@ -11,20 +11,32 @@ use App\Models\Notifications;
 use App\Models\Grant;
 use App\Models\GrantApplication;
 use App\Models\GrantMilestone;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Response;
 use Session;
 use Hash;
-use Auth;
 use Mail;
 use DateTime;
 use App\Service\Notification;
+use Stripe\StripeClient;
 
 class GrantController extends Controller
 {
     /**
      * Display a listing of grants.
      */
+
+    protected $api_base_url;
+    protected $Client;
+
+    public function __construct(StripeClient $client)
+    {
+        $this->Client = $client;
+        $this->api_base_url = env('API_BASE_URL');
+        //$this->middleware('business');
+
+    }
     public function index()
     {
         if(Auth::check()){
@@ -44,6 +56,13 @@ class GrantController extends Controller
     public function pitches($grant_id)
     {
         $pitches = GrantApplication::with('grant_milestone')->where('grant_id',$grant_id)->latest()->get();
+        return response()->json(['pitches' => $pitches]);
+    }
+
+    public function mypitches()
+    {
+        $user_id = Auth::id();
+        $pitches = GrantApplication::with('grant')->where('user_id',$user_id)->latest()->get();
         return response()->json(['pitches' => $pitches]);
     }
 
@@ -240,27 +259,25 @@ class GrantController extends Controller
     /**
      * Update the specified grant in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         try{
-            $grant = Grant::findOrFail($id);
+            $grant = Grant::findOrFail($request->id);
 
             $request->validate([
-                'grant_title' => 'sometimes|string|max:255',
-                'total_grant_amount' => 'sometimes|numeric',
-                'funding_per_business' => 'sometimes|numeric',
-                'eligibility_criteria' => 'nullable|string',
-                'required_documents' => 'nullable|string',
-                'application_deadline' => 'sometimes|date',
-                'grant_focus' => 'sometimes|string',
-                'startup_stage_focus' => 'nullable|string',
-                'impact_objectives' => 'nullable|string',
-                'evaluation_criteria' => 'nullable|string',
-                //'grant_brief_pdf' => 'nullable|file|mimes:pdf|max:2048',
+                "id" => "required|numeric",
+                "grant_title" => "required|string|max:255",
+                "total_grant_amount" => "required|numeric",
+                "funding_per_business" => "required|numeric",
+                "eligibility_criteria" => "nullable|string",
+                "application_deadline" => "required|date",
+                "grant_focus" => "required|string",
+                "impact_objectives" => "nullable|string",
+                "evaluation_criteria" => "nullable|string",
             ]);
 
             //Upload File
-            $grant_brief_pdf = $request->file('grant_brief_pdf');
+            $grant_brief_pdf = $request->file('grantBriefPDF');
             if (!file_exists('files/grants/'.$grant->id))
                 mkdir('files/grants/'.$grant->id, 0777, true);
 
@@ -330,6 +347,72 @@ class GrantController extends Controller
             GrantApplication::where('id',$pitch_id)->delete();
 
             return response()->json(['message' => 'Pitch Rejected.'], 200);
+        }
+        catch(\Exception $e){
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+
+    public function fund_request($pitch_id)
+    {
+        try{
+            $pitch = GrantApplication::with('grant')->where('id',$pitch_id)->first();
+            $user = User::select('fname','lname')->where('id',$pitch->user_id)->first();
+
+            $text = $user->fname.' '.$user->lname. 'Has requested funding to the Grant'.$pitch->grant->grant_title;
+            $notification = new Notification();
+            $notification->create($pitch->grant->user_id,$pitch->user_id,$text
+                ,'grants-overview/grants/discover',' grant');
+
+            //MAIL
+            return response()->json(['message' => 'Fund Requested.'], 200);
+        }
+        catch(\Exception $e){
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+
+    public function release_milestone(Request $request)
+    {
+        try{
+            $milestone = GrantMilestone::where('id',$request->id)->first();
+            $pitch = GrantApplication::with('grant')->where('id',$milestone->app_id)->first();
+            $owner = User::select('fname','email','connect_id')->where('id',$pitch->user_id)->first();
+
+            //T r a n s f e r
+            $curr='USD'; //$request->currency;
+            $amount= $request->amount; //Session::get('small_fee_new_price');
+            $transferAmount= round($amount-($amount*.05),2);
+            $this->validate($request, [
+                'stripeToken' => ['required', 'string']
+            ]);
+            $charge = $this->Client->charges->create ([
+                //"billing_address_collection": null,
+                "amount" => $amount*100, //100 * 100,
+                "currency" => $curr,
+                "source" => $request->stripeToken,
+                "description" => "Release Milestone Funds"
+            ]);
+            $tranfer = $this->Client->transfers->create ([
+                //"billing_address_collection": null,
+                "amount" => $transferAmount*100, //100 * 100,
+                "currency" => $curr,
+                "source_transaction" => $charge->id,
+                'destination' => $owner->connect_id
+            ]);
+            //T r a n s f e r
+
+            $text = $milestone->title.' fund for '.$pitch->grant->grant_title.' has been released.';
+            $notification = new Notification();
+            $notification->create($pitch->user_id,$pitch->grant->user_id,$text
+                ,'grants-overview/grants/discover',' grant');
+
+            //MAIL
+
+            //MAIL
+            return response()->json(['message' => 'Fund Requested.'], 200);
         }
         catch(\Exception $e){
             return response()->json(['message' => $e->getMessage()], 400);
