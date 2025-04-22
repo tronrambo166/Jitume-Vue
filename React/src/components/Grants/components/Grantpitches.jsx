@@ -554,6 +554,7 @@ const PitchesOutlet = ({ grantId }) => {
     );
 };
 
+
 // Extracted PitchCard component for better readability
 const PitchCard = ({
     pitch,
@@ -563,7 +564,156 @@ const PitchCard = ({
     onDecline,
     onContinueToPitchDeck,
 }) => {
+    
     const isPitchStatusDefined = pitch.status === 1 || pitch.status === 2;
+      const [isReleasing, setIsReleasing] = useState(false);
+    const [releaseError, setReleaseError] = useState(null);
+
+    const handleReleaseFunds = async (milestoneId) => {
+        // Find the milestone details
+        const milestone = pitch.grant_milestone.find(
+            (m) => m.id === milestoneId
+        );
+
+        // Create confirmation dialog content
+        const content = `
+        <div class="space-y-4">
+            <div class="text-center">
+                <svg class="mx-auto h-12 w-12 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <h3 class="text-lg font-medium text-gray-900">Confirm Fund Release</h3>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-md">
+                <div class="flex justify-between">
+                    <span class="font-medium">Milestone:</span>
+                    <span>${milestone?.title || "Untitled Milestone"}</span>
+                </div>
+                <div class="flex justify-between mt-2">
+                    <span class="font-medium">Amount:</span>
+                    <span class="font-bold">$${
+                        milestone?.amount?.toLocaleString() || "0"
+                    }</span>
+                </div>
+                <div class="mt-3 text-sm text-gray-600">
+                    ${milestone?.description || "No description provided"}
+                </div>
+            </div>
+            <div class="text-sm text-gray-500">
+                Are you sure you want to release these funds? This action cannot be undone.
+            </div>
+        </div>
+    `;
+
+        // Show confirmation dialog
+        $.confirm({
+            title: false,
+            content: content,
+            type: "orange",
+            boxWidth: "500px",
+            useBootstrap: false,
+            buttons: {
+                confirm: {
+                    text: "Release Funds",
+                    btnClass: "btn-orange",
+                    action: async function () {
+                        setIsReleasing(true);
+                        setReleaseError(null);
+
+                        try {
+                            console.log(
+                                "Releasing funds for milestone:",
+                                milestoneId
+                            );
+                            const response = await axiosClient.post(
+                                `grant/release-funds/${milestoneId}`
+                            );
+
+                            console.log(
+                                "Funds released successfully:",
+                                response.data
+                            );
+
+                            // Show success message
+                            $.alert({
+                                title: false,
+                                content: `
+                                <div class="text-center">
+                                    <svg class="mx-auto h-12 w-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <h3 class="text-lg font-medium text-gray-900">Funds Released Successfully</h3>
+                                    <div class="mt-2 text-sm text-gray-600">
+                                        $${
+                                            milestone?.amount?.toLocaleString() ||
+                                            "0"
+                                        } has been released for "${
+                                    milestone?.title || "milestone"
+                                }".
+                                    </div>
+                                </div>
+                            `,
+                                type: "green",
+                                boxWidth: "400px",
+                                useBootstrap: false,
+                                buttons: {
+                                    ok: {
+                                        text: "Close",
+                                        btnClass: "btn-green",
+                                    },
+                                },
+                            });
+
+                            // Refresh the data or update local state
+                            // You might want to add:
+                            // fetchPitches(); // Or whatever your data refresh function is
+                            // Or update the specific milestone status locally
+                        } catch (error) {
+                            console.error("Error releasing funds:", error);
+                            $.alert({
+                                title: false,
+                                content: `
+                                <div class="text-center">
+                                    <svg class="mx-auto h-12 w-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                    <h3 class="text-lg font-medium text-gray-900">Release Failed</h3>
+                                    <div class="mt-2 text-sm text-gray-600">
+                                        ${
+                                            error.response?.data?.message ||
+                                            "Failed to release funds. Please try again."
+                                        }
+                                    </div>
+                                </div>
+                            `,
+                                type: "red",
+                                boxWidth: "400px",
+                                useBootstrap: false,
+                                buttons: {
+                                    ok: {
+                                        text: "Close",
+                                        btnClass: "btn-red",
+                                    },
+                                },
+                            });
+                        } finally {
+                            setIsReleasing(false);
+                        }
+                    },
+                },
+                cancel: {
+                    text: "Cancel",
+                    btnClass: "btn-default",
+                    action: function () {
+                        // Optional: You can add some feedback that the action was canceled
+                        console.log("Fund release canceled");
+                    },
+                },
+            },
+        });
+    };
+
+    
 
     return (
         <div
@@ -874,6 +1024,217 @@ const PitchCard = ({
                                     </a>
                                 )}
                             </div>
+                            {pitch.status === 1 &&
+                                pitch.grant_milestone &&
+                                pitch.grant_milestone.length > 0 && (
+                                    <div className="mt-8">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <h4 className="text-lg font-semibold text-gray-900 flex items-center">
+                                                <svg
+                                                    className="w-5 h-5 text-green-500 mr-2"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                    />
+                                                </svg>
+                                                Funding Milestones
+                                            </h4>
+                                            <span className="text-sm text-gray-500">
+                                                {pitch.grant_milestone.length}{" "}
+                                                milestone
+                                                {pitch.grant_milestone
+                                                    .length !== 1
+                                                    ? "s"
+                                                    : ""}
+                                            </span>
+                                        </div>
+
+                                        <div className="bg-gray-50 rounded-lg border border-gray-200 divide-y divide-gray-200">
+                                            {pitch.grant_milestone.map(
+                                                (milestone) => (
+                                                    <div
+                                                        key={milestone.id}
+                                                        className="p-5 hover:bg-white transition-colors duration-150"
+                                                    >
+                                                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                                            <div className="flex-1">
+                                                                <div className="flex items-start">
+                                                                    <div className="flex-shrink-0 mt-1">
+                                                                        {milestone.status ===
+                                                                        0 ? (
+                                                                            <div className="h-3 w-3 rounded-full bg-yellow-400"></div>
+                                                                        ) : (
+                                                                            <div className="h-3 w-3 rounded-full bg-green-500"></div>
+                                                                        )}
+                                                                    </div>
+                                                                    <div className="ml-3">
+                                                                        <h5 className="text-base font-medium text-gray-900">
+                                                                            {milestone.title ||
+                                                                                "Untitled Milestone"}
+                                                                        </h5>
+                                                                        <p className="text-sm text-gray-600 mt-1">
+                                                                            {milestone.description ||
+                                                                                "No description provided"}
+                                                                        </p>
+
+                                                                        {/* Document section */}
+                                                                        <div className="mt-3">
+                                                                            <div className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                                                                                Supporting
+                                                                                Document
+                                                                            </div>
+                                                                            {milestone.document ? (
+                                                                                <a
+                                                                                    href={
+                                                                                        milestone.document
+                                                                                    }
+                                                                                    target="_blank"
+                                                                                    rel="noopener noreferrer"
+                                                                                    className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800"
+                                                                                >
+                                                                                    <svg
+                                                                                        className="w-4 h-4 mr-1"
+                                                                                        fill="none"
+                                                                                        stroke="currentColor"
+                                                                                        viewBox="0 0 24 24"
+                                                                                    >
+                                                                                        <path
+                                                                                            strokeLinecap="round"
+                                                                                            strokeLinejoin="round"
+                                                                                            strokeWidth={
+                                                                                                2
+                                                                                            }
+                                                                                            d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                                                                                        />
+                                                                                    </svg>
+                                                                                    Download
+                                                                                    Document
+                                                                                </a>
+                                                                            ) : (
+                                                                                <div className="text-sm text-gray-500 italic">
+                                                                                    No
+                                                                                    document
+                                                                                    attached
+                                                                                </div>
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="flex flex-col items-end">
+                                                                <div className="text-xl font-bold text-green-600 mb-2">
+                                                                    $
+                                                                    {milestone.amount.toLocaleString()}
+                                                                </div>
+                                                                <div className="mb-3">
+                                                                    {milestone.status ===
+                                                                    0 ? (
+                                                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                                            Pending
+                                                                            Release
+                                                                        </span>
+                                                                    ) : (
+                                                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                                            Funds
+                                                                            Released
+                                                                        </span>
+                                                                    )}
+                                                                </div>
+                                                                {milestone.status ===
+                                                                    0 && (
+                                                                    <button
+                                                                        onClick={() =>
+                                                                            handleReleaseFunds(
+                                                                                milestone.id
+                                                                            )
+                                                                        }
+                                                                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                                                    >
+                                                                        {isReleasing ? (
+                                                                            <>
+                                                                                <svg
+                                                                                    className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                                    fill="none"
+                                                                                    viewBox="0 0 24 24"
+                                                                                >
+                                                                                    <circle
+                                                                                        className="opacity-25"
+                                                                                        cx="12"
+                                                                                        cy="12"
+                                                                                        r="10"
+                                                                                        stroke="currentColor"
+                                                                                        strokeWidth="4"
+                                                                                    ></circle>
+                                                                                    <path
+                                                                                        className="opacity-75"
+                                                                                        fill="currentColor"
+                                                                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                                                                    ></path>
+                                                                                </svg>
+                                                                                Processing...
+                                                                            </>
+                                                                        ) : (
+                                                                            <>
+                                                                                <svg
+                                                                                    className="-ml-1 mr-2 h-4 w-4"
+                                                                                    fill="none"
+                                                                                    stroke="currentColor"
+                                                                                    viewBox="0 0 24 24"
+                                                                                >
+                                                                                    <path
+                                                                                        strokeLinecap="round"
+                                                                                        strokeLinejoin="round"
+                                                                                        strokeWidth={
+                                                                                            2
+                                                                                        }
+                                                                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                                                    />
+                                                                                </svg>
+                                                                                Release
+                                                                                Funds
+                                                                            </>
+                                                                        )}
+                                                                    </button>
+                                                                )}
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Additional info */}
+                                                        <div className="mt-4 pt-4 border-t border-gray-100 text-xs text-gray-500">
+                                                            <div className="flex space-x-4">
+                                                                <div>
+                                                                    <span className="font-medium">
+                                                                        Created:
+                                                                    </span>{" "}
+                                                                    {new Date(
+                                                                        milestone.created_at
+                                                                    ).toLocaleDateString()}
+                                                                </div>
+                                                                <div>
+                                                                    <span className="font-medium">
+                                                                        Last
+                                                                        Updated:
+                                                                    </span>{" "}
+                                                                    {new Date(
+                                                                        milestone.updated_at
+                                                                    ).toLocaleDateString()}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                         </div>
                     )}
                 </div>

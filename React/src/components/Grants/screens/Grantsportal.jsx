@@ -227,23 +227,7 @@ const TujitumeGrantPortal = () => {
         console.log("Create Grant");
     };
 
-    // useEffect(() => {
-    //     const fetchApplications = async () => {
-    //         try {
-    //             const response = await fetch("/api/my-applications"); // your endpoint here
-    //              await axiosClient.get(
-    //                  `/grant/delete-grant/${pendingDeleteId}`
-    //              );
-
-    //             const data = await response.json();
-    //             setMyApplications(data);
-    //         } catch (error) {
-    //             console.error("Error fetching applications:", error);
-    //         }
-    //     };
-
-    //     fetchApplications();
-    // }, []); // empty array so it only runs on mount
+    
     useEffect(() => {
         fetchApplications();
     }, []);
@@ -252,8 +236,8 @@ const TujitumeGrantPortal = () => {
         console.log("Attempting to request funds for pitch:", pitchId); // logging before request
 
         try {
-            const response = await axiosClient.post(
-                `fund-release-request/${pitchId}`
+            const response = await axiosClient.get(
+                `grant/fund-release-request/${pitchId}`
             );
             console.log("Fund request success response:", {
                 status: response.status,
@@ -270,27 +254,7 @@ const TujitumeGrantPortal = () => {
         }
     };
 
-//  const handleFundRequest = async (pitchId) => {
-//      console.log("Attempting to request funds for pitch:", pitchId); // log before sending request
 
-//      try {
-//          const response = await axiosClient.get(
-//              `fund-release-request/${pitchId}`
-//          );
-//          console.log("Fund request success response:", {
-//              status: response.status,
-//              headers: response.headers,
-//              data: response.data,
-//          });
-//      } catch (error) {
-//          console.error("Error requesting funds:", {
-//              message: error.message,
-//              status: error.response?.status,
-//              headers: error.response?.headers,
-//              data: error.response?.data,
-//          });
-//      }
-//  };
 
 
     const fetchApplications = () => {

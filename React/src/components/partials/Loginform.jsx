@@ -105,7 +105,7 @@ const LoginForm = () => {
                     localStorage.removeItem("rememberMe");
                 }
 
-                const userName = `${data.user.fname} ${data.user.lname}`;
+                const userName = `${data.user.fname}`;
                 showAlert("success", `Login successful! Welcome, ${userName}`);
                 setUser(data.user);
                 setToken(data.token);
