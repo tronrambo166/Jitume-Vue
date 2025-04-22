@@ -879,11 +879,12 @@ const InvestmentOpportunities = () => {
   <input
     type="checkbox"
     checked={visibilityStates[opp.id]}
-onChange={(e) => {
-  e.preventDefault();
-  toggleVisibility(opp.id);
-}}
-    className="sr-only peer"
+    onChange={(e) => {
+      e.preventDefault();
+      toggleVisibility(opp.id);
+    }}
+    style={{ display: 'none' }} // Hides the checkbox entirely
+    className="peer"
   />
   <div className="w-11 h-6 bg-gray-200 peer-checked:bg-amber-400 rounded-full peer relative transition-colors">
     <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
