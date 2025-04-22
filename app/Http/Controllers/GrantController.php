@@ -405,18 +405,24 @@ class GrantController extends Controller
 
     public function release_milestone(Request $request)
     {
-        try{
-            $milestone = GrantMilestone::where('id',$request->id)->first();
+        try{ //return $request->all();
+            $milestone = GrantMilestone::where('id',$request->listing)->first();
             $pitch = GrantApplication::with('grant')->where('id',$milestone->app_id)->first();
             $owner = User::select('fname','email','connect_id')->where('id',$pitch->user_id)->first();
 
             //T r a n s f e r
             $curr='USD'; //$request->currency;
+            $db_amount= ($milestone->amount)+$milestone->amount*0.05;
             $amount= $request->amount; //Session::get('small_fee_new_price');
-            $transferAmount= round($amount-($amount*.05),2);
+            $amountOriginal= $request->amountOriginal;
+            $transferAmount= round($amount-($amountOriginal*.05),2);
             $this->validate($request, [
                 'stripeToken' => ['required', 'string']
             ]);
+            if($request->percent != 100 && $db_amount != $amount){
+                return response()->json(['message' => 'Amount does not match!'], 400);
+            }
+
             $charge = $this->Client->charges->create ([
                 //"billing_address_collection": null,
                 "amount" => $amount*100, //100 * 100,
@@ -437,6 +443,20 @@ class GrantController extends Controller
             $notification = new Notification();
             $notification->create($pitch->user_id,$pitch->grant->user_id,$text
                 ,'grants-overview/grants/discover',' grant');
+
+            //D a t a b a s e
+            if($request->percent != 100){
+                $milestone->update([
+                    'amount' => $transferAmount,
+                ]);
+            }
+            else{
+                GrantMilestone::where('app_id',$milestone->app_id)->update([
+                    'status' => 1,
+                ]);
+            }
+
+            //D a t a b a s e
 
             //MAIL
 

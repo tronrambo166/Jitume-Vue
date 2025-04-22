@@ -26,7 +26,7 @@ const PaymentForm = () => {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
         const { token } = useStateContext();
-    
+
     // Function to show success toast
     const showSuccessToast = (message) => {
         toast.success(message, {
@@ -130,7 +130,7 @@ const PaymentForm = () => {
     };
 
     const cancellationDate = getCancellationDate();
-    
+
 
     // Function to get the cancellation date
 
@@ -157,6 +157,8 @@ const PaymentForm = () => {
         p = "Pay Service milestone";
     } else if (purpos === "awaiting_payment") {
         p = "Remaining Bid Payment";
+    } else if (purpos === "grant_milestone") {
+        p = "Grant Milestone Release";
     } else {
         p = "Small Fee To Unlock Business";
     }
@@ -294,6 +296,45 @@ const PaymentForm = () => {
                     .finally(() => {
                         setLoading(false); // Stop loading spinner
                     });
+            } else if (purpos == "grant_milestone") {
+                axiosClient
+                    .post("/grant-milestone", payload)
+                    .then(({ data }) => {
+                        if (data.status == 200) {
+                            $.confirm({
+                                title: "Payment Successful",
+                                content:
+                                    "Go to Dashboard to see investment status.",
+                                buttons: {
+                                    yes: function () {
+                                        navigate("/grants-overview");
+                                    },
+                                    home: function () {
+                                        navigate("/");
+                                    },
+                                    cancel: function () {
+                                        $.alert("Canceled!");
+                                    },
+                                },
+                            });
+                        }
+                        if (data.status == 400)
+                            // alert(data.message);
+                            showErrorToast(data.message);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        setLoading(false);
+                        const response = err.response;
+                        showErrorToast(response.data.message);
+                        if (response && response.status === 422) {
+                            console.log(response.data.errors);
+                            showErrorToast(response.data.errors);
+                        }
+                    })
+                    .finally(() => {
+                        setLoading(false); // Stop loading spinner
+                    });
             } else {
                 const payloadS = {
                     milestone_id: atob(listing_id),
@@ -348,7 +389,7 @@ const PaymentForm = () => {
         //timeout
     };
 
-    //OTHER PAYMENTS
+    //O T H E R P A Y M E N T S
     let partiesInfo;
     const [user, setUser] = useState({});
     const [owner, setOwner] = useState({});
@@ -363,7 +404,7 @@ const PaymentForm = () => {
             setOwner(data.owner);
             //console.log(data);
             });
-            
+
 
     }, []);
 
@@ -524,7 +565,7 @@ const PaymentForm = () => {
             {!token ? (
   <div className="py-8  flex justify-center mx-6 my-8 space-x-8">
     {/* Your content for authenticated users */}
-    <button     
+    <button
                             onClick={() => setIsAuthModalOpen(true)}
  className="px-6 py-2 bg-green text-slate-100 rounded-lg">Login To Pay</button>
   </div>
@@ -567,7 +608,7 @@ const PaymentForm = () => {
                     >
                         <FaHome className="ml-1" /> Home
                     </a> */}
-                    {/* 
+                    {/*
                     <div className="card-body mt-4">
                         <div className="pb-3 pt-2 text-center">
                             <h6 className="text-xl font-bold text-green-800">
@@ -1183,7 +1224,7 @@ const PaymentForm = () => {
             {/* </div> */}
         </>
     );
-   
+
 };
 
 export default PaymentForm;

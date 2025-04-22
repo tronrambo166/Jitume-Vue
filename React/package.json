@@ -23,6 +23,7 @@
     "bootstrap": "^5.3.3",
     "framer-motion": "^12.6.2",
     "headlessui": "^0.0.0",
+    "heroicons": "^2.2.0",
     "imask": "^7.6.1",
     "lucide-react": "^0.479.0",
     "nouislider": "^15.8.1",

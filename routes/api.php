@@ -201,6 +201,8 @@ Route::prefix('/grant')->group(function(){
    Route::get('accept/{pitch_id}', [GrantController::class, 'accept']);
    Route::get('reject/{pitch_id}', [GrantController::class, 'reject']);
    Route::get('fund-release-request/{pitch_id}', [GrantController::class, 'fund_request']);
+   Route::post('grant-milestone', [GrantController::class, 'release_milestone']);
+
 
 });
 
