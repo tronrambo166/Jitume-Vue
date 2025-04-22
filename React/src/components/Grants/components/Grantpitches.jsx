@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     ChevronDown,
     Briefcase,
@@ -568,151 +569,123 @@ const PitchCard = ({
     const isPitchStatusDefined = pitch.status === 1 || pitch.status === 2;
       const [isReleasing, setIsReleasing] = useState(false);
     const [releaseError, setReleaseError] = useState(null);
+    const navigate = useNavigate();
 
-    const handleReleaseFunds = async (milestoneId) => {
-        // Find the milestone details
-        const milestone = pitch.grant_milestone.find(
-            (m) => m.id === milestoneId
-        );
+  const handleReleaseFunds = async (milestoneId) => {
+      // Find the milestone details
+      const milestone = pitch.grant_milestone.find((m) => m.id === milestoneId);
 
-        // Create confirmation dialog content
-        const content = `
-        <div class="space-y-4">
-            <div class="text-center">
-                <svg class="mx-auto h-12 w-12 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-                <h3 class="text-lg font-medium text-gray-900">Confirm Fund Release</h3>
+      // Create confirmation dialog content
+      const content = `
+    <div class="space-y-4">
+        <div class="text-center">
+            <svg class="mx-auto h-12 w-12 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <h3 class="text-lg font-medium text-gray-900">Confirm Fund Release</h3>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-md">
+            <div class="flex justify-between">
+                <span class="font-medium">Milestone:</span>
+                <span>${milestone?.title || "Untitled Milestone"}</span>
             </div>
-            <div class="bg-gray-50 p-4 rounded-md">
-                <div class="flex justify-between">
-                    <span class="font-medium">Milestone:</span>
-                    <span>${milestone?.title || "Untitled Milestone"}</span>
-                </div>
-                <div class="flex justify-between mt-2">
-                    <span class="font-medium">Amount:</span>
-                    <span class="font-bold">$${
-                        milestone?.amount?.toLocaleString() || "0"
-                    }</span>
-                </div>
-                <div class="mt-3 text-sm text-gray-600">
-                    ${milestone?.description || "No description provided"}
-                </div>
+            <div class="flex justify-between mt-2">
+                <span class="font-medium">Amount:</span>
+                <span class="font-bold">$${
+                    milestone?.amount?.toLocaleString() || "0"
+                }</span>
             </div>
-            <div class="text-sm text-gray-500">
-                Are you sure you want to release these funds? This action cannot be undone.
+            <div class="mt-3 text-sm text-gray-600">
+                ${milestone?.description || "No description provided"}
             </div>
         </div>
-    `;
+        <div class="text-sm text-gray-500">
+            Are you sure you want to release these funds? This action cannot be undone.
+        </div>
+    </div>
+`;
 
-        // Show confirmation dialog
-        $.confirm({
-            title: false,
-            content: content,
-            type: "orange",
-            boxWidth: "500px",
-            useBootstrap: false,
-            buttons: {
-                confirm: {
-                    text: "Release Funds",
-                    btnClass: "btn-orange",
-                    action: async function () {
-                        setIsReleasing(true);
-                        setReleaseError(null);
+      // Show confirmation dialog
+      $.confirm({
+          title: false,
+          content: content,
+          type: "orange",
+          boxWidth: "500px",
+          useBootstrap: false,
+          buttons: {
+              confirm: {
+                  text: "Release Funds",
+                  btnClass: "btn-orange",
+                  action: async function () {
+                      setIsReleasing(true);
+                      setReleaseError(null);
 
-                        try {
-                            console.log(
-                                "Releasing funds for milestone:",
-                                milestoneId
-                            );
-                            const response = await axiosClient.post(
-                                `grant/release-funds/${milestoneId}`
-                            );
+                      try {
+                          console.log(
+                              "Releasing funds for milestone:",
+                              milestoneId
+                          );
+                          const response = await axiosClient.post(
+                              `grant/release-funds/${milestoneId}`
+                          );
 
-                            console.log(
-                                "Funds released successfully:",
-                                response.data
-                            );
+                          console.log(
+                              "Funds released successfully:",
+                              response.data
+                          );
 
-                            // Show success message
-                            $.alert({
-                                title: false,
-                                content: `
-                                <div class="text-center">
-                                    <svg class="mx-auto h-12 w-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <h3 class="text-lg font-medium text-gray-900">Funds Released Successfully</h3>
-                                    <div class="mt-2 text-sm text-gray-600">
-                                        $${
-                                            milestone?.amount?.toLocaleString() ||
-                                            "0"
-                                        } has been released for "${
-                                    milestone?.title || "milestone"
-                                }".
-                                    </div>
+                          // Navigate to checkout with the specified parameters
+                          navigate("/checkout", {
+                              state: {
+                                  amount: milestone?.amount,
+                                  listing_id: milestoneId, 
+                                  percent: null, 
+                                  purpose: "grant_milestone", 
+                              },
+                          });
+                      } catch (error) {
+                          console.error("Error releasing funds:", error);
+                          $.alert({
+                              title: false,
+                              content: `
+                            <div class="text-center">
+                                <svg class="mx-auto h-12 w-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                                <h3 class="text-lg font-medium text-gray-900">Release Failed</h3>
+                                <div class="mt-2 text-sm text-gray-600">
+                                    ${
+                                        error.response?.data?.message ||
+                                        "Failed to release funds. Please try again."
+                                    }
                                 </div>
-                            `,
-                                type: "green",
-                                boxWidth: "400px",
-                                useBootstrap: false,
-                                buttons: {
-                                    ok: {
-                                        text: "Close",
-                                        btnClass: "btn-green",
-                                    },
-                                },
-                            });
-
-                            // Refresh the data or update local state
-                            // You might want to add:
-                            // fetchPitches(); // Or whatever your data refresh function is
-                            // Or update the specific milestone status locally
-                        } catch (error) {
-                            console.error("Error releasing funds:", error);
-                            $.alert({
-                                title: false,
-                                content: `
-                                <div class="text-center">
-                                    <svg class="mx-auto h-12 w-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                    </svg>
-                                    <h3 class="text-lg font-medium text-gray-900">Release Failed</h3>
-                                    <div class="mt-2 text-sm text-gray-600">
-                                        ${
-                                            error.response?.data?.message ||
-                                            "Failed to release funds. Please try again."
-                                        }
-                                    </div>
-                                </div>
-                            `,
-                                type: "red",
-                                boxWidth: "400px",
-                                useBootstrap: false,
-                                buttons: {
-                                    ok: {
-                                        text: "Close",
-                                        btnClass: "btn-red",
-                                    },
-                                },
-                            });
-                        } finally {
-                            setIsReleasing(false);
-                        }
-                    },
-                },
-                cancel: {
-                    text: "Cancel",
-                    btnClass: "btn-default",
-                    action: function () {
-                        // Optional: You can add some feedback that the action was canceled
-                        console.log("Fund release canceled");
-                    },
-                },
-            },
-        });
-    };
-
+                            </div>
+                        `,
+                              type: "red",
+                              boxWidth: "400px",
+                              useBootstrap: false,
+                              buttons: {
+                                  ok: {
+                                      text: "Close",
+                                      btnClass: "btn-red",
+                                  },
+                              },
+                          });
+                      } finally {
+                          setIsReleasing(false);
+                      }
+                  },
+              },
+              cancel: {
+                  text: "Cancel",
+                  btnClass: "btn-default",
+                  action: function () {
+                      console.log("Fund release canceled");
+                  },
+              },
+          },
+      });
+  };
     
 
     return (
