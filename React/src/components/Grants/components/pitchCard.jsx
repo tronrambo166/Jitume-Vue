@@ -18,6 +18,7 @@ const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
     const [showAcceptModal, setShowAcceptModal] = useState(false);
     const [showDeclineModal, setShowDeclineModal] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
+    const [fundingOption, setFundingOption] = useState("milestone"); // 'milestone' or 'lump-sum'
 
     // Format numbers with appropriate suffix
     const formatNumber = (num) => {
@@ -43,15 +44,23 @@ const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
         try {
             setIsProcessing(true);
             const response = await axiosClient.get(
-                `capital/accept/${pitch.id}`
+                `capital/accept/${pitch.id}`,
+                { params: { funding_type: fundingOption } }
             );
 
             console.log("✅ ACCEPT RESPONSE:", {
                 status: response.status,
                 data: response.data,
+                fundingOption,
             });
 
-            toast.success("Pitch accepted successfully");
+            toast.success(
+                `Pitch accepted with ${
+                    fundingOption === "milestone"
+                        ? "milestone-based"
+                        : "lump sum"
+                } funding`
+            );
             onStatusChange(pitch.id, "accepted");
         } catch (err) {
             console.error("❌ ACCEPT ERROR:", {
@@ -327,105 +336,172 @@ const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
                 </button>
             </div>
 
-            {/* Accept Modal */}
-            <div className="mt-5 space-y-5">
-                {/* Duration Selector Section */}
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                    <div className="space-y-2">
-                        <label
-                            htmlFor={`duration-${index}`}
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Milestone Duration*
-                        </label>
-                        <select
-                            id={`duration-${index}`}
-                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm p-2.5 border"
-                            value={milestone.duration || ""}
-                            onChange={(e) =>
-                                updateMilestone(
-                                    index,
-                                    "duration",
-                                    e.target.value
-                                )
-                            }
-                        >
-                            <option value="">Select duration</option>
-                            <option value="1_week">1 Week</option>
-                            <option value="2_weeks">2 Weeks</option>
-                            <option value="1_month">1 Month</option>
-                            <option value="3_months">3 Months</option>
-                            <option value="6_months">6 Months</option>
-                            <option value="9_months">9 Months</option>
-                            <option value="12_months">12 Months</option>
-                            <option value="custom">Custom Duration</option>
-                        </select>
+            {/* Enhanced Accept Modal */}
+            {showAcceptModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-xl shadow-xl max-w-md w-full flex flex-col max-h-[90vh]">
+                        {/* Header */}
+                        <div className="flex justify-between items-center p-6 border-b">
+                            <h3 className="text-lg font-semibold text-gray-900">
+                                Accept Investment Proposal
+                            </h3>
+                            <button
+                                onClick={() => setShowAcceptModal(false)}
+                                className="p-1 rounded-full hover:bg-gray-100"
+                            >
+                                <X size={20} className="text-gray-500" />
+                            </button>
+                        </div>
 
-                        {milestone.duration === "custom" && (
-                            <div className="flex gap-2">
-                                <input
-                                    type="number"
-                                    min="1"
-                                    className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm p-2.5 border"
-                                    placeholder="Number"
-                                    value={milestone.customDurationValue || ""}
-                                    onChange={(e) =>
-                                        updateMilestone(
-                                            index,
-                                            "customDurationValue",
-                                            e.target.value
-                                        )
-                                    }
-                                />
-                                <select
-                                    className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm p-2.5 border"
-                                    value={milestone.customDurationUnit || ""}
-                                    onChange={(e) =>
-                                        updateMilestone(
-                                            index,
-                                            "customDurationUnit",
-                                            e.target.value
-                                        )
+                        {/* Scrollable Content */}
+                        <div className="overflow-y-auto p-6 flex-1">
+                            <p className="text-gray-700 mb-6">
+                                You're approving funding for{" "}
+                                <strong className="text-green-600">
+                                    {pitch.startup_name || "this startup"}
+                                </strong>
+                                . Please select your preferred disbursement
+                                method:
+                            </p>
+
+                            <div className="space-y-4 mb-6">
+                                {/* Milestone Option */}
+                                <div
+                                    className={`flex items-start p-4 border rounded-lg transition-colors cursor-pointer ${
+                                        fundingOption === "milestone"
+                                            ? "border-green-300 bg-green-50"
+                                            : "border-gray-200 hover:border-green-300"
+                                    }`}
+                                    onClick={() =>
+                                        setFundingOption("milestone")
                                     }
                                 >
-                                    <option value="">Select unit</option>
-                                    <option value="days">Days</option>
-                                    <option value="weeks">Weeks</option>
-                                    <option value="months">Months</option>
-                                </select>
-                            </div>
-                        )}
-                    </div>
-                    {/* Empty div to maintain grid structure */}
-                    <div></div>
-                </div>
+                                    <div className="flex items-center h-5 mt-0.5">
+                                        <input
+                                            id="milestone-option"
+                                            name="funding-option"
+                                            type="radio"
+                                            className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300"
+                                            checked={
+                                                fundingOption === "milestone"
+                                            }
+                                            onChange={() =>
+                                                setFundingOption("milestone")
+                                            }
+                                        />
+                                    </div>
+                                    <div className="ml-3 flex-1">
+                                        <div className="flex justify-between items-start">
+                                            <label
+                                                htmlFor="milestone-option"
+                                                className="block font-medium text-gray-900"
+                                            >
+                                                Milestone-Based Funding
+                                            </label>
+                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Recommended
+                                            </span>
+                                        </div>
+                                        <p className="text-sm text-gray-600 mt-1">
+                                            Funds are released in predefined
+                                            stages as the startup achieves
+                                            specific business milestones.
+                                        </p>
+                                        <div className="mt-2 bg-green-50 p-3 rounded-md">
+                                            <h4 className="text-xs font-semibold text-green-700 uppercase tracking-wider mb-1">
+                                                Benefits
+                                            </h4>
+                                            <ul className="text-xs text-green-600 space-y-1 list-disc list-inside">
+                                                <li>Reduces investment risk</li>
+                                                <li>Ensures accountability</li>
+                                                <li>
+                                                    Aligns funding with progress
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
 
-                {/* Verification Checkbox Section - Now on its own line */}
-                <div className="flex items-start">
-                    <div className="flex items-center h-5">
-                        <input
-                            id={`verification-${index}`}
-                            name={`verification-${index}`}
-                            type="checkbox"
-                            className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
-                            checked={milestone.requiresVerification}
-                            onChange={(e) =>
-                                updateMilestone(
-                                    index,
-                                    "requiresVerification",
-                                    e.target.checked
-                                )
-                            }
-                        />
+                                {/* Lump Sum Option */}
+                                <div
+                                    className={`flex items-start p-4 border rounded-lg transition-colors cursor-pointer ${
+                                        fundingOption === "lump-sum"
+                                            ? "border-blue-300 bg-blue-50"
+                                            : "border-gray-200 hover:border-blue-300"
+                                    }`}
+                                    onClick={() => setFundingOption("lump-sum")}
+                                >
+                                    <div className="flex items-center h-5 mt-0.5">
+                                        <input
+                                            id="lump-sum-option"
+                                            name="funding-option"
+                                            type="radio"
+                                            className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
+                                            checked={
+                                                fundingOption === "lump-sum"
+                                            }
+                                            onChange={() =>
+                                                setFundingOption("lump-sum")
+                                            }
+                                        />
+                                    </div>
+                                    <div className="ml-3 flex-1">
+                                        <label
+                                            htmlFor="lump-sum-option"
+                                            className="block font-medium text-gray-900"
+                                        >
+                                            Full Amount Disbursement
+                                        </label>
+                                        <p className="text-sm text-gray-600 mt-1">
+                                            Transfer the entire investment
+                                            amount immediately upon acceptance.
+                                        </p>
+                                        <div className="mt-2 bg-blue-50 p-3 rounded-md">
+                                            <h4 className="text-xs font-semibold text-blue-700 uppercase tracking-wider mb-1">
+                                                Considerations
+                                            </h4>
+                                            <ul className="text-xs text-blue-600 space-y-1 list-disc list-inside">
+                                                <li>
+                                                    Immediate capital access
+                                                </li>
+                                                <li>Simpler administration</li>
+                                                <li>
+                                                    Shows strong trust in team
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Fixed Footer */}
+                        <div className="p-4 border-t bg-gray-50 rounded-b-xl">
+                            <div className="flex space-x-3 justify-end">
+                                <button
+                                    onClick={() => setShowAcceptModal(false)}
+                                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-100 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleAccept}
+                                    disabled={isProcessing}
+                                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm shadow-sm transition-colors flex items-center justify-center"
+                                >
+                                    {isProcessing ? (
+                                        <Loader2
+                                            className="animate-spin mr-2"
+                                            size={18}
+                                        />
+                                    ) : null}
+                                    Confirm Acceptance
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <label
-                        htmlFor={`verification-${index}`}
-                        className="ml-2 block text-sm text-gray-700"
-                    >
-                        Requires third-party verification
-                    </label>
                 </div>
-            </div>
+            )}
 
             {/* Decline Modal */}
             {showDeclineModal && (
@@ -464,3 +540,4 @@ const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
 };
 
 export default PitchCard;
+ 
