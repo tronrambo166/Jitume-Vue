@@ -37,7 +37,6 @@ import {
     Layers,
     Files,
 } from "lucide-react";
-
 import { useStateContext } from "../../../contexts/contextProvider";
 import axiosClient from "../../../axiosClient";
 import DocumentPreviewModal from "../components/DocumentPreviewModal";
@@ -48,6 +47,7 @@ import OfferGrantModal from "../Utils/Modals/AddnewGrant";
 import PitchesOutlet from "../components/Grantpitches";
 import { CheckCircle, Star } from "lucide-react";
 import GrantEditModal from "../Utils/Modals/GranteditModal";
+import { Link } from "react-router-dom";
 
 
 const TujitumeGrantPortal = () => {
@@ -733,28 +733,14 @@ const TujitumeGrantPortal = () => {
                                     </div>
                             
                                     <div className="mt-6 flex space-x-3">
-                                        {grant.grant_brief_pdf && (
-                                            <button
-                                                onClick={() => {
-                                                    const fileName =
-                                                        grant.grant_brief_pdf
-                                                            .split("/")
-                                                            .pop() ||
-                                                        "grant_details.pdf";
-                                                    setCurrentPreviewFile({
-                                                        name: fileName,
-                                                        url: grant.grant_brief_pdf,
-                                                    });
-                                                    setPreviewModalOpen(
-                                                        true
-                                                    );
-                                                }}
-                                                className="flex-1 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center space-x-2 text-gray-700"
-                                            >
-                                                <FileText size={16} />
-                                                <span>Details</span>
-                                            </button>
-                                        )}
+                                    {grant.grant_brief_pdf && (
+    <Link
+    to={`/grants-overview/grants/${grant.id}`}        className="flex-1 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center space-x-2 text-gray-700"
+    >
+        <FileText size={16} />
+        <span>Details</span>
+    </Link>
+)}
                                         <p>
                                             {!user.investor ? (
                                                 <button

@@ -89,24 +89,47 @@ const InvestmentOpportunities = () => {
     const [isCapitalEditModalOpen, setIsCapitalEditModalOpen] = useState(false);
     const [selectedCapital, setSelectedCapital] = useState(null);
     const toggleVisibility = (id) => {
-      // Show disclaimer modal before toggling
-      setPendingToggleId(id);
-      setShowDisclaimer(true);
-    };
-    
-    const confirmToggle = () => {
-      setVisibilityStates(prev => ({
-        ...prev,
-        [pendingToggleId]: !prev[pendingToggleId],
-      }));
-      setShowDisclaimer(false);
-      setPendingToggleId(null);
-    };
-    
-    const cancelToggle = () => {
-      setShowDisclaimer(false);
-      setPendingToggleId(null);
-    };
+        // Show disclaimer modal before toggling
+        setPendingToggleId(id);
+        setShowDisclaimer(true);
+      };
+      
+      const confirmToggle = async () => {
+        // Update visibility state locally
+        setVisibilityStates(prev => ({
+          ...prev,
+          [pendingToggleId]: !prev[pendingToggleId],
+        }));
+      
+        try {
+          // Send the request to the backend to persist visibility change
+          const response = await axiosClient.post(`visibility/${pendingToggleId}`, {
+            visibility: visibilityStates[pendingToggleId] ? 0 : 1,
+          });
+      
+          // Optionally, handle the response (like updating the UI or showing a success message)
+          console.log('Visibility toggled successfully:', response.data);
+      
+        } catch (error) {
+          console.error('Error toggling visibility:', error);
+          // Optionally, restore the previous state if the toggle fails
+          setVisibilityStates(prev => ({
+            ...prev,
+            [pendingToggleId]: !prev[pendingToggleId], // Revert the state
+          }));
+        }
+      
+        // Hide the disclaimer modal and reset pending toggle ID
+        setShowDisclaimer(false);
+        setPendingToggleId(null);
+      };
+      
+      const cancelToggle = () => {
+        // Cancel the toggle and close the disclaimer modal
+        setShowDisclaimer(false);
+        setPendingToggleId(null);
+      };
+      
     
 
     const handleEditCapital = (capital) => {
