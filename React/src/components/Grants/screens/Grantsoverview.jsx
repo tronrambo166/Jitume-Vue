@@ -404,6 +404,10 @@ const Navigation = {
                                             label: "Add New Capital",
                                             to: "/grants-overview/funding/investments",
                                         },
+                                        {
+                                            label: "Pitches",
+                                            to: "/grants-overview/capital-pitch",
+                                        },
                                     ]
                                   : [
                                         {
@@ -863,7 +867,7 @@ const GrantsOverview = () => {
                     </div>
 
                     {/* Main Content Area with Outlet */}
-                    <div className="bg-white rounded-lg shadow-sm">
+                    <div className="">
                         <Outlet />
                     </div>
                 </div>
