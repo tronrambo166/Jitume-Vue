@@ -93,23 +93,21 @@ const InvestmentOpportunities = () => {
         setPendingToggleId(id);
         setShowDisclaimer(true);
       };
-      
+
       const confirmToggle = async () => {
         // Update visibility state locally
         setVisibilityStates(prev => ({
           ...prev,
           [pendingToggleId]: !prev[pendingToggleId],
         }));
-      
+
         try {
           // Send the request to the backend to persist visibility change
-          const response = await axiosClient.post(`visibility/${pendingToggleId}`, {
-            visibility: visibilityStates[pendingToggleId] ? 0 : 1,
-          });
-      
+          const response = await axiosClient.get('capital/visibility/'+ pendingToggleId);
+
           // Optionally, handle the response (like updating the UI or showing a success message)
-          console.log('Visibility toggled successfully:', response.data);
-      
+          console.log('Visibility toggled successfully:', response);
+
         } catch (error) {
           console.error('Error toggling visibility:', error);
           // Optionally, restore the previous state if the toggle fails
@@ -118,31 +116,31 @@ const InvestmentOpportunities = () => {
             [pendingToggleId]: !prev[pendingToggleId], // Revert the state
           }));
         }
-      
+
         // Hide the disclaimer modal and reset pending toggle ID
         setShowDisclaimer(false);
         setPendingToggleId(null);
       };
-      
+
       const cancelToggle = () => {
         // Cancel the toggle and close the disclaimer modal
         setShowDisclaimer(false);
         setPendingToggleId(null);
       };
-      
-    
+
+
 
     const handleEditCapital = (capital) => {
         setSelectedCapital(capital);
         setIsCapitalEditModalOpen(true);
       };
-    
+
       const handleCapitalUpdate = (updatedCapital) => {
         console.log('Capital updated:', updatedCapital);
         // Update your state or make API call here
         setIsCapitalEditModalOpen(false);
       };
-    
+
     const handleSuccess = () => {
         // Handle successful submission (e.g., show success message)
         console.log("Application submitted successfully!");
@@ -741,7 +739,7 @@ const InvestmentOpportunities = () => {
                                 >
                                     <div className="flex-grow w-full">
                                   <div className="flex items-center">
-                                  {user?.investor && ( 
+                                  {user?.investor && (
                                     <div>
       {/* Your capitals list rendering */}
       <button
@@ -762,7 +760,7 @@ const InvestmentOpportunities = () => {
     </div>
                )}
                                         {user?.investor && ( // Changed to proper conditional rendering
-                                            
+
                                             <button
                                                 onClick={() =>
                                                     handleDeleteClick(opp.id)
@@ -771,7 +769,7 @@ const InvestmentOpportunities = () => {
                                             >
                                                 <Trash />
                                             </button>
-                                            
+
                                         )}
                                   </div>
                                         <div className="flex flex-col md:flex-row md:items-center mb-4 gap-2 md:gap-4">

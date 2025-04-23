@@ -298,8 +298,9 @@ const PaymentForm = () => {
                     });
             } else if (purpos == "grant_milestone") {
                 axiosClient
-                    .post("/grant-milestone", payload)
+                    .post("grant/grant-milestone", payload)
                     .then(({ data }) => {
+                        console.log(data);
                         if (data.status == 200) {
                             $.confirm({
                                 title: "Payment Successful",

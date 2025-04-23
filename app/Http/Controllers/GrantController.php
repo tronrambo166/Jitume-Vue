@@ -430,13 +430,13 @@ class GrantController extends Controller
                 "source" => $request->stripeToken,
                 "description" => "Release Milestone Funds"
             ]);
-            $tranfer = $this->Client->transfers->create ([
-                //"billing_address_collection": null,
-                "amount" => $transferAmount*100, //100 * 100,
-                "currency" => $curr,
-                "source_transaction" => $charge->id,
-                'destination' => $owner->connect_id
-            ]);
+//            $tranfer = $this->Client->transfers->create ([
+//                //"billing_address_collection": null,
+//                "amount" => $transferAmount*100, //100 * 100,
+//                "currency" => $curr,
+//                "source_transaction" => $charge->id,
+//                'destination' => $owner->connect_id
+//            ]);
             //T r a n s f e r
 
             $text = $milestone->title.' fund for '.$pitch->grant->grant_title.' has been released.';
@@ -447,7 +447,7 @@ class GrantController extends Controller
             //D a t a b a s e
             if($request->percent != 100){
                 $milestone->update([
-                    'amount' => $transferAmount,
+                    'status' => 1,
                 ]);
             }
             else{
@@ -461,7 +461,7 @@ class GrantController extends Controller
             //MAIL
 
             //MAIL
-            return response()->json(['message' => 'Fund Requested.'], 200);
+            return response()->json(['message' => 'Fund Release Success.', 'status' =>200]);
         }
         catch(\Exception $e){
             return response()->json(['message' => $e->getMessage()], 400);

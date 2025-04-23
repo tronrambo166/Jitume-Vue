@@ -212,9 +212,9 @@ Route::prefix('/capital')->group(function(){
    Route::post('investment-application',[InvCapitalController::class,'store_application']);
    Route::get('capital-offers', [InvCapitalController::class, 'index']);
    Route::get('pitches/{capital_id}', [InvCapitalController::class, 'pitches']);
-   Route::get('my_pitches', [GrantController::class, 'mypitches']);
+   Route::get('my_pitches', [InvCapitalController::class, 'mypitches']);
    Route::post('update-capital', [InvCapitalController::class, 'update']);
-   Route::get('visibility/{capital_id}', [GrantController::class, 'visibility']);
+   Route::get('visibility/{capital_id}', [InvCapitalController::class, 'visibility']);
    Route::get('delete-capital/{id}', [InvCapitalController::class, 'destroy']);
    Route::get('accept/{pitch_id}', [InvCapitalController::class, 'accept']);
    Route::get('reject/{pitch_id}', [InvCapitalController::class, 'reject']);

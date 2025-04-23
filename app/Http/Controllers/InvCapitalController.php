@@ -46,14 +46,14 @@ class InvCapitalController extends Controller
     public function visibility($capital_id)
     {
         try {
-            $capital = CapitalOffer::where('id',$capital_id)->latest()->first();
+            $capital = CapitalOffer::where('id',$capital_id)->first();
             if ($capital->visible == 1) {
-                CapitalOffer::update([
+                CapitalOffer::where('id',$capital_id)->update([
                     'visible' => 0
                 ]);
             }
             else{
-                CapitalOffer::update([
+                CapitalOffer::where('id',$capital_id)->update([
                     'visible' => 1
                 ]);
             }

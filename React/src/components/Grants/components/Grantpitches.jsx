@@ -565,7 +565,7 @@ const PitchCard = ({
     onDecline,
     onContinueToPitchDeck,
 }) => {
-    
+
     const isPitchStatusDefined = pitch.status === 1 || pitch.status === 2;
       const [isReleasing, setIsReleasing] = useState(false);
     const [releaseError, setReleaseError] = useState(null);
@@ -625,22 +625,15 @@ const PitchCard = ({
                               "Releasing funds for milestone:",
                               milestoneId
                           );
-                          const response = await axiosClient.post(
-                              `grant/release-funds/${milestoneId}`
-                          );
 
-                          console.log(
-                              "Funds released successfully:",
-                              response.data
-                          );
 
                           // Navigate to checkout with the specified parameters
                           navigate("/checkout", {
                               state: {
-                                  amount: milestone?.amount,
-                                  listing_id: milestoneId, 
-                                  percent: null, 
-                                  purpose: "grant_milestone", 
+                                  amount: btoa(milestone?.amount),
+                                  listing_id: btoa(milestoneId),
+                                  percent: btoa(0), // 100 if they select full amount
+                                  purpose: btoa("grant_milestone"),
                               },
                           });
                       } catch (error) {
@@ -686,7 +679,7 @@ const PitchCard = ({
           },
       });
   };
-    
+
 
     return (
         <div
