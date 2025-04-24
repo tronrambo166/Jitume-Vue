@@ -14,6 +14,7 @@ use App\Http\Controllers\PayStackController;
 use App\Http\Controllers\MpesaController;
 use App\Http\Controllers\GrantController;
 use App\Http\Controllers\InvCapitalController;
+use App\Http\Controllers\MatchController;
 
 //P R O T E C T E D    R O U T E S
 Route::middleware('auth:sanctum')->group(function() {
@@ -202,6 +203,7 @@ Route::prefix('/grant')->group(function(){
    Route::get('reject/{pitch_id}', [GrantController::class, 'reject']);
    Route::get('fund-release-request/{pitch_id}', [GrantController::class, 'fund_request']);
    Route::post('grant-milestone', [GrantController::class, 'release_milestone']);
+   Route::post('match-score/{grant_id}', [MatchController::class, 'score']);
 
 
 });

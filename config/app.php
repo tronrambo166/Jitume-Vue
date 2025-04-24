@@ -172,7 +172,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         \Safaricom\Mpesa\MpesaServiceProvider::class,
-        App\Providers\NotificationServiceProvider::class
+        App\Providers\NotificationServiceProvider::class,
+        App\Providers\MatchServiceProvider::class
     ])->toArray(),
 
     /*

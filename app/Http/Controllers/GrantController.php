@@ -108,6 +108,7 @@ class GrantController extends Controller
                 "eligibilityCriteria" => "nullable|string",
                 "applicationDeadline" => "required|date",
                 "grantFocus" => "required|string",
+                "regions" => "nullable|string",
                 "impactObjectives" => "nullable|string",
                 "evaluationCriteria" => "nullable|string",
                 "grantBriefPDF" => "nullable|file|mimes:pdf|max:2048",
@@ -124,6 +125,7 @@ class GrantController extends Controller
                 'required_documents' => $request->requiredDocuments,
                 'application_deadline' => $request->applicationDeadline,
                 'grant_focus' => $request->grantFocus,
+                'grant_focus' => $request->regions,
                 'startup_stage_focus' => $request->startupStageFocus,
                 'impact_objectives' => $request->impactObjectives,
                 'evaluation_criteria' => $request->evaluationCriteria,
@@ -177,6 +179,7 @@ class GrantController extends Controller
                 'pitchVideo_file' => 'nullable|file|mimes:mp4,avi,mov,wmv|max:3048',
                 'businessPlan_file' => 'nullable|file|mimes:pdf,docx',
                 'social_impact_areas' => 'nullable|string',
+                'bonus_points' => 'nullable|string',
                 'milestones' => 'nullable|array',
 
             ]);
@@ -197,7 +200,8 @@ class GrantController extends Controller
                 //'pitch_deck_file' => $pitchDeckFile ?? null,
                 //'pitch_video' => $pitchVideoFile ?? null,
                 //'business_plan_file' => $businessPlanFile ?? null,
-                'social_impact_areas' => $request->social_impact_areas
+                'social_impact_areas' => $request->social_impact_areas,
+                'bonus_points' => $request->social_impact_areas
             ]);
 
             //Upload Files
