@@ -1619,7 +1619,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                                                         </div>
 
                                                         <div className="flex items-end">
-                                                            <div className="flex items-center h-10">
+                                                            {/* <div className="flex items-center h-10">
                                                                 <input
                                                                     id={`verification-${index}`}
                                                                     name={`verification-${index}`}
@@ -1648,7 +1648,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                                                                     third-party
                                                                     verification
                                                                 </label>
-                                                            </div>
+                                                            </div> */}
                                                         </div>
                                                     </div>
 

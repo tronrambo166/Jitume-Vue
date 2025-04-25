@@ -2266,7 +2266,7 @@ const TujitumeGrantPortal = () => {
                     setNewGrant={setNewGrant}
                     setShowCreateModal={setShowCreateModal}
                     createNewGrant={createNewGrant}
-                    Amount={Amount}
+                    // Amount={Amount}
                     onClose={() => {
                         setShowCreateModal(false);
                         setSelectedGrant(null);

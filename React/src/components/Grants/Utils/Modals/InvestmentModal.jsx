@@ -843,7 +843,7 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                                 htmlFor="traction_kpis"
                                 className="block text-sm font-medium text-gray-700 mb-1"
                             >
-                                Traction KPIs{" "}
+                                Business Growth Metrics{" "}
                                 <span className="text-red-500">*</span>
                             </label>
                             <textarea
@@ -857,19 +857,30 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                                         ? "border-red-300 focus:ring-red-500"
                                         : "border-gray-300 focus:ring-green-500"
                                 } rounded-md focus:outline-none focus:ring-2`}
-                                placeholder="E.g., 5000+ users, $200K MRR"
-                                rows="3"
+                                placeholder="Examples:
+• Revenue: $200K MRR, 20% MoM growth
+• Users: 5,000 active, 30% retention
+• Engagement: 15 min daily usage
+• Efficiency: CAC $150, LTV $900
+• Milestones: Key partnerships secured"
+                                rows="4"
                                 required
                             />
                             {renderFieldError("traction_kpis")}
+                            <div className="mt-1 text-xs text-gray-500">
+                                <span className="font-medium">Tip:</span>{" "}
+                                Highlight metrics that demonstrate
+                                product-market fit and growth potential. Include
+                                numbers, timeframes, and comparisons to industry
+                                benchmarks where possible.
+                            </div>
                         </div>
-
                         <div className="mb-4">
                             <label
                                 htmlFor="exit_strategy"
                                 className="block text-sm font-medium text-gray-700 mb-1"
                             >
-                                Exit Strategy{" "}
+                                Planned Business Exit{" "}
                                 <span className="text-red-500">*</span>
                             </label>
                             <textarea
@@ -883,11 +894,20 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                                         ? "border-red-300 focus:ring-red-500"
                                         : "border-gray-300 focus:ring-green-500"
                                 } rounded-md focus:outline-none focus:ring-2`}
-                                placeholder="E.g., IPO within 5 years, acquisition, etc."
+                                placeholder="Example scenarios:
+- IPO target within 5 years
+- Acquisition by strategic buyer
+- Merger with complementary business
+- Secondary sale to private equity"
                                 rows="3"
                                 required
                             />
                             {renderFieldError("exit_strategy")}
+                            <div className="mt-1 text-xs text-gray-500">
+                                Describe your preferred exit path and timeline.
+                                Investors want to understand your long-term
+                                vision.
+                            </div>
                         </div>
                     </div>
                 );
@@ -1012,7 +1032,7 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                                     htmlFor="cac_ltv"
                                     className="block text-sm font-medium text-gray-700 mb-1"
                                 >
-                                    CAC/LTV Ratio
+                                    Customer Profitability Ratio (LTV:CAC)
                                 </label>
                                 <input
                                     type="number"
@@ -1026,11 +1046,35 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                                             ? "border-red-300 focus:ring-red-500"
                                             : "border-gray-300 focus:ring-green-500"
                                     } rounded-md focus:outline-none focus:ring-2`}
-                                    placeholder="Enter ratio (e.g. 3.5)"
+                                    placeholder="e.g., 3.0 (LTV is 3× CAC)"
                                     min="0"
                                     step="0.1"
                                 />
                                 {renderFieldError("cac_ltv")}
+                                <div className="mt-1 text-xs text-gray-500 flex items-start">
+                                    <svg
+                                        className="w-3 h-3 mt-0.5 mr-1 flex-shrink-0"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                    <span>
+                                        <span className="font-medium">
+                                            Healthy ratio is 3× or higher
+                                        </span>{" "}
+                                        (LTV should be at least 3× your CAC).
+                                        Example: Spending $100 to acquire a
+                                        customer worth $300+ over their
+                                        lifetime.
+                                    </span>
+                                </div>
                             </div>
 
                             <div className="mb-4">
@@ -1038,7 +1082,7 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                                     htmlFor="burn_rate"
                                     className="block text-sm font-medium text-gray-700 mb-1"
                                 >
-                                    Monthly Burn Rate ($)
+                                    Monthly Cash Burn ($)
                                 </label>
                                 <input
                                     type="number"
@@ -1052,10 +1096,30 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                                             ? "border-red-300 focus:ring-red-500"
                                             : "border-gray-300 focus:ring-green-500"
                                     } rounded-md focus:outline-none focus:ring-2`}
-                                    placeholder="Enter amount in USD"
+                                    placeholder="e.g., 50000 (for $50K/month)"
                                     min="0"
                                 />
                                 {renderFieldError("burn_rate")}
+                                <div className="mt-1 text-xs text-gray-500 flex items-start">
+                                    <svg
+                                        className="w-3 h-3 mt-0.5 mr-1 flex-shrink-0"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                    <span>
+                                        Burn rate is your monthly operating
+                                        expenses. Example: $50K/month burn with
+                                        $200K cash = 4 months runway.
+                                    </span>
+                                </div>
                             </div>
 
                             <div className="mb-4">
@@ -1063,7 +1127,7 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                                     htmlFor="irr_projection"
                                     className="block text-sm font-medium text-gray-700 mb-1"
                                 >
-                                    Projected IRR (%)
+                                    Projected Annual Return (IRR) %
                                 </label>
                                 <input
                                     type="number"
@@ -1077,12 +1141,33 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                                             ? "border-red-300 focus:ring-red-500"
                                             : "border-gray-300 focus:ring-green-500"
                                     } rounded-md focus:outline-none focus:ring-2`}
-                                    placeholder="Enter percentage (-100 to 1000)"
+                                    placeholder="e.g., 25 (for 25% annual return)"
                                     min="-100"
                                     max="1000"
                                     step="0.1"
                                 />
                                 {renderFieldError("irr_projection")}
+                                <div className="mt-1 text-xs text-gray-500 flex items-start">
+                                    <svg
+                                        className="w-3 h-3 mt-0.5 mr-1 flex-shrink-0"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                    <span>
+                                        IRR (Internal Rate of Return) estimates
+                                        your annualized return on investment.
+                                        Typical targets: 20-40% for VC, 10-15%
+                                        for mature businesses.
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
