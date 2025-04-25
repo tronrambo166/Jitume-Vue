@@ -133,94 +133,84 @@ const PitchesOutlet = ({ grantId }) => {
         setShowConfirmModal(true);
     };
 
-    const handleConfirmAction = async () => {
-        try {
-            setIsLoading(true);
-            console.groupCollapsed(
-                `[Pitch Action] Starting ${modalAction} action for pitch ${selectedPitch.id}`
-            );
-            console.log("Action:", modalAction);
-            console.log("Pitch ID:", selectedPitch.id);
-            console.log("Current pitch data:", selectedPitch);
+ const handleStatusChange = async (pitchId, newStatus) => {
+  setIsChanging(true);
+  const previousStatus = pitches.find(pitch => pitch.id === pitchId)?.status;
 
-            // Use the correct API endpoint based on the action
-            const endpoint =
-                modalAction === "accept"
-                    ? `grant/accept/${selectedPitch.id}`
-                    : `grant/reject/${selectedPitch.id}`;
+  console.groupCollapsed(`[Pitch Status Change] Starting status update for pitch ${pitchId}`);
+  console.log("New Status:", newStatus);
+  console.log("Pitch ID:", pitchId);
 
-            console.log("Making GET request to:", endpoint);
+  try {
+    // EXACT endpoint format from working function
+    const action = newStatus.toLowerCase() === "accepted" ? "accept" : "reject";
+    const endpoint = `grant/${action}/${pitchId}`; // No trailing slash!
 
-            const response = await axiosClient.get(endpoint, {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-            });
+    console.log("Making GET request to:", endpoint);
+    const response = await axiosClient.get(endpoint, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
 
-            console.groupCollapsed("Backend Response");
-            console.log("Status:", response.status);
-            console.log("Headers:", response.headers);
-            console.log("Response Data:", response.data);
-            console.groupEnd();
+    console.groupCollapsed("Backend Response");
+    console.log("Status:", response.status);
+    console.log("Response Data:", response.data);
+    console.groupEnd();
 
-            // Update local state to reflect the change
-            setPitches((prevPitches) =>
-                prevPitches.map((pitch) =>
-                    pitch.id === selectedPitch.id
-                        ? {
-                              ...pitch,
-                              status: modalAction === "accept" ? 1 : 2,
-                              // Include any additional data from the backend response
-                              ...(response.data.updatedData || {}),
-                              updatedAt: new Date().toISOString(), // Add timestamp
-                          }
-                        : pitch
-                )
-            );
+    // Numeric status codes (1=accept, 2=reject)
+    const statusCode = action === "accept" ? 1 : 2;
 
-            setShowConfirmModal(false);
-            setSelectedPitch(null);
+    // Update both selected pitch and main list
+    setSelectedPitch(prev => ({
+      ...prev,
+      status: statusCode
+    }));
 
-            if (response.data.message) {
-                console.log("Success message:", response.data.message);
+    setPitches(prevPitches => 
+      prevPitches.map(pitch => 
+        pitch.id === pitchId
+          ? {
+              ...pitch,
+              status: statusCode,
+              updatedAt: new Date().toISOString(),
+              ...(response.data.updatedData || {}),
             }
+          : pitch
+      )
+    );
 
-            // Refresh data to ensure consistency
-            console.log("Refreshing pitches data...");
-            await fetchPitches();
+    toast.success(`Status successfully updated to ${newStatus}`);
+    setLastChanged(newStatus);
+    console.groupEnd();
+  } catch (error) {
+    console.groupCollapsed(`[Pitch Status Change Error] ${newStatus} action failed`);
+    console.error("Error details:", error);
 
-            console.groupEnd();
-        } catch (err) {
-            console.groupCollapsed(
-                `[Pitch Action Error] ${modalAction} action failed`
-            );
-            console.error("Error details:", err);
+    // Revert changes
+    setSelectedPitch(prev => ({
+      ...prev,
+      status: previousStatus
+    }));
 
-            if (err.response) {
-                console.log("Error response status:", err.response.status);
-                console.log("Error response data:", err.response.data);
-                console.log("Error response headers:", err.response.headers);
-            } else if (err.request) {
-                console.log("No response received:", err.request);
-            } else {
-                console.log("Request setup error:", err.message);
-            }
+    setPitches(prevPitches => 
+      prevPitches.map(pitch => 
+        pitch.id === pitchId ? { ...pitch, status: previousStatus } : pitch
+      )
+    );
 
-            const errorMessage = err.response?.data?.message
-                ? `Failed to ${modalAction} pitch: ${err.response.data.message}`
-                : `Failed to ${modalAction} pitch. Please try again.`;
-
-            console.log("User error message:", errorMessage);
-            setError(errorMessage);
-
-            console.groupEnd();
-        } finally {
-            setIsLoading(false);
-            console.log("Loading state set to false");
-        }
-    };
-
+    const errorMessage = error.response?.data?.message
+      ? `Failed to update status: ${error.response.data.message}`
+      : 'Failed to update status. Please try again.';
+    
+    toast.error(errorMessage);
+    console.groupEnd();
+  } finally {
+    setIsChanging(false);
+    console.log("Loading state set to false");
+  }
+};
     const handleContinueToPitchDeck = (pitchDeckUrl) => {
         window.open(pitchDeckUrl, "_blank");
     };

@@ -13,6 +13,7 @@ const PitchDashboard = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isChanging, setIsChanging] = useState(false);
   
   // Royalty-free images and video links
   const mediaAssets = {
@@ -136,12 +137,80 @@ const PitchDashboard = () => {
     setSelectedPitch(null);
   };
 
-  const handleStatusChange = (id, newStatus) => {
-    setPitches(pitches.map(pitch => 
-      pitch.id === id ? { ...pitch, status: newStatus } : pitch
-    ));
-  };
-  
+ const handleStatusChange = async (pitchId, newStatus) => {
+   setIsChanging(true);
+   
+   // Get current pitch data for potential rollback
+   const currentPitch = pitches.find(pitch => pitch.id === pitchId);
+   const previousStatus = currentPitch?.status;
+   
+   console.groupCollapsed(`[Pitch Status Change] Starting status update for pitch ${pitchId}`);
+   console.log("New Status:", newStatus);
+   console.log("Pitch ID:", pitchId);
+ 
+   try {
+     // Determine numeric status value
+     const statusCode = newStatus === "Accepted" ? 1 : 2;
+     
+     // Update UI immediately (optimistic update)
+     if (selectedPitch && selectedPitch.id === pitchId) {
+       setSelectedPitch(prev => ({
+         ...prev,
+         status: statusCode,
+         processingStatus: newStatus
+       }));
+     }
+ 
+     // Update in main list
+     setPitches(prevPitches => 
+       prevPitches.map(pitch => 
+         pitch.id === pitchId
+           ? {
+               ...pitch,
+               status: statusCode,
+               updatedAt: new Date().toISOString()
+             }
+           : pitch
+       )
+     );
+ 
+     // Make API call
+     const action = newStatus === "Accepted" ? "accept" : "reject";
+     const endpoint = `capital/${action}/${pitchId}`;
+     
+     console.log("Making GET request to:", endpoint);
+     const response = await axiosClient.get(endpoint);
+ 
+     console.log("Backend Response:", response.data);
+     toast.success(`Pitch ${newStatus.toLowerCase()} successfully`);
+     setLastChanged(newStatus);
+     
+     // IMPORTANT: Prevent the data refetch from overriding our state
+     // by adding a debounce or flag that prevents status reset
+     
+   } catch (error) {
+     console.error("Error updating pitch status:", error);
+     
+     // Revert changes on error
+     if (selectedPitch && selectedPitch.id === pitchId) {
+       setSelectedPitch(prev => ({
+         ...prev,
+         status: previousStatus,
+         processingStatus: null
+       }));
+     }
+     
+     setPitches(prevPitches => 
+       prevPitches.map(pitch => 
+         pitch.id === pitchId ? { ...pitch, status: previousStatus } : pitch
+       )
+     );
+     
+     toast.error("Failed to update status. Please try again.");
+   } finally {
+     setIsChanging(false);
+   }
+ };
   const toggleFavorite = (id) => {
     setPitches(pitches.map(pitch => 
       pitch.id === id ? { ...pitch, favorite: !pitch.favorite } : pitch
@@ -196,7 +265,7 @@ const PitchDashboard = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
+        <div className=" px-4 sm:px-6 lg:px-8 py-4 md:py-6">
           <div className="flex justify-between items-center">
             <h1 className="text-2xl md:text-3xl font-light text-gray-900">Pitch<span className="font-bold">Flow</span></h1>
             <div className="flex items-center space-x-4 md:space-x-6">
@@ -218,7 +287,7 @@ const PitchDashboard = () => {
       {/* Main Content */}
       <main className="py-6 md:py-8">
         {/* Dashboard Stats */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className=" px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 md:p-4">
               <div className="flex items-center justify-between">
@@ -778,22 +847,23 @@ const PitchDashboard = () => {
                       </div>
                     </div>
                   </div>
-                  
-                  {hasVideo(selectedPitch) && (
-                    <div className="mb-6">
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">Pitch Video</h4>
-                      <div className="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg overflow-hidden">
-                        <video 
-                          controls
-                          poster={mediaAssets.thumbnails[0]}
-                          className="w-full h-full object-cover"
-                        >
-                          <source src={selectedPitch.pitch_video || mediaAssets.video} type="video/mp4" />
-                          Your browser does not support the video tag.
-                        </video>
-                      </div>
-                    </div>
-                  )}
+                  <div className="mb-6">
+  <h4 className="text-sm font-medium text-gray-700 mb-2">Pitch Video</h4>
+  <div className="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg overflow-hidden">
+    <video
+      controls
+      poster={mediaAssets.thumbnails[0] || '/path/to/default/thumbnail.jpg'} // Default thumbnail if not available
+      className="w-full h-full object-cover"
+    >
+      <source 
+        src={`/${selectedPitch.pitch_video}`} // Using relative path
+        type="video/mp4"
+      />
+      Your browser does not support the video tag.
+    </video>
+  </div>
+</div>
+
                 </div>
                 
                 <div className="md:col-span-1">
@@ -857,50 +927,101 @@ const PitchDashboard = () => {
                   </div>
                   
                   <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-700 mb-3">Change Status</h4>
-                    <div className="grid grid-cols-2 gap-2">
-                      <button
-                        onClick={() => {
-                          handleStatusChange(selectedPitch.id, 'New');
-                          // API call would go here
-                          // axiosClient.post(`/pitch/status/${selectedPitch.id}`, { status: 'New' });
-                        }}
-                        className={`px-2 py-1 text-xs rounded ${selectedPitch.status === 'New' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-800'}`}
-                      >
-                        New
-                      </button>
-                      <button
-                        onClick={() => {
-                          handleStatusChange(selectedPitch.id, 'In Review');
-                          // API call would go here
-                          // axiosClient.post(`/pitch/status/${selectedPitch.id}`, { status: 'In Review' });
-                        }}
-                        className={`px-2 py-1 text-xs rounded ${selectedPitch.status === 'In Review' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-800'}`}
-                      >
-                        Review
-                      </button>
-                      <button
-                        onClick={() => {
-                          handleStatusChange(selectedPitch.id, 'Accepted');
-                          // API call would go here
-                          // axiosClient.post(`/pitch/status/${selectedPitch.id}`, { status: 'Accepted' });
-                        }}
-                        className={`px-2 py-1 text-xs rounded ${selectedPitch.status === 'Accepted' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}
-                      >
-                        Accept
-                      </button>
-                      <button
-                        onClick={() => {
-                          handleStatusChange(selectedPitch.id, 'Rejected');
-                          // API call would go here
-                          // axiosClient.post(`/pitch/status/${selectedPitch.id}`, { status: 'Rejected' });
-                        }}
-                        className={`px-2 py-1 text-xs rounded ${selectedPitch.status === 'Rejected' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'}`}
-                      >
-                        Reject
-                      </button>
-                    </div>
-                  </div>
+  <h4 className="text-sm font-medium text-gray-700 mb-3">Change Pitch Status</h4>
+  <h1 className="text-xl font-semibold text-yellow-800 mb-4">
+    {selectedPitch.status === 1 ? "Accepted" : selectedPitch.status === 0 ? "Rejected" : selectedPitch.status === 2 ? "Milestone Released" : "Pending"}
+  </h1>
+
+  {/* Show buttons only if the pitch status is neither 1 (Accepted) nor 0 (Rejected) */}
+  {selectedPitch.status !== 1 && selectedPitch.status !== 0 && selectedPitch.status !== 2 ? (
+    <div className="grid grid-cols-2 gap-3">
+      {/* Accept Button */}
+      <button
+        onClick={() => handleStatusChange(selectedPitch.id, 'Accepted')}
+        disabled={isChanging}
+        className={`
+          px-3 py-2 text-sm rounded-md flex items-center justify-center transition-all
+          bg-white border border-gray-300 text-gray-700 hover:bg-green-50 hover:border-green-200 hover:text-green-700
+          ${isChanging ? 'opacity-70 cursor-not-allowed' : ''}
+          shadow-sm hover:shadow-md
+        `}
+      >
+        {isChanging && selectedPitch.processingStatus === 'Accepted' ? (
+          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        ) : (
+          <svg className="w-5 h-5 mr-1 text-gray-500 group-hover:text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+        )}
+        Accept
+      </button>
+
+      {/* Reject Button */}
+      <button
+        onClick={() => handleStatusChange(selectedPitch.id, 'Rejected')}
+        disabled={isChanging}
+        className={`
+          px-3 py-2 text-sm rounded-md flex items-center justify-center transition-all
+          bg-white border border-gray-300 text-gray-700 hover:bg-red-50 hover:border-red-200 hover:text-red-700
+          ${isChanging ? 'opacity-70 cursor-not-allowed' : ''}
+          shadow-sm hover:shadow-md
+        `}
+      >
+        {isChanging && selectedPitch.processingStatus === 'Rejected' ? (
+          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        ) : (
+          <svg className="w-5 h-5 mr-1 text-gray-500 group-hover:text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        )}
+        Reject
+      </button>
+    </div>
+  ) : (
+    /* Status display for already accepted/rejected pitches */
+    <div className="flex items-center justify-center border border-gray-200 bg-white p-3 rounded-md">
+      {selectedPitch.status === 1 ? (
+        <div className="flex items-center text-green-700">
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span className="font-medium">Pitch Accepted</span>
+        </div>
+      ) : selectedPitch.status === 0 ? (
+        <div className="flex items-center text-red-700">
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span className="font-medium">Pitch Pending</span>
+        </div>
+      ) : selectedPitch.status === 2 ? (
+        <div className="flex items-center text-blue-700">
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2v10m5-5l-5 5-5-5" />
+          </svg>
+          <span className="font-medium">Milestone Released</span>
+        </div>
+      ) : null}
+    </div>
+  )}
+
+  {/* Status message */}
+  {[1, 2].includes(selectedPitch.status) && (
+    <div className="mt-3 text-xs text-gray-500 italic">
+      {selectedPitch.status === 1 
+        ? "This pitch has been accepted and cannot be modified."
+        : selectedPitch.status === 0 
+        ? "This pitch has been rejected and cannot be modified."
+        : "This pitch's milestone has been released."}
+    </div>
+  )}
+</div>
                 </div>
               </div>
             </div>
