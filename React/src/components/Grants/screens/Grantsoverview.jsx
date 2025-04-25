@@ -372,7 +372,7 @@ const Navigation = {
                               ...(user?.investor
                                   ? [
                                         {
-                                            label: "Add New Grant",
+                                            label: "Grants",
                                             to: "/grants-overview/grants/discover",
                                         },
                                         {

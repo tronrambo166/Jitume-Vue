@@ -44,6 +44,7 @@ const DealRoomLayout = () => {
     const [investors, setInvestors] = useState([]);
     const [pitches, setPitches] = useState([]);
     const [isLoadingPitches, setIsLoadingPitches] = useState(false);
+    const [count,setCount] = useState(0)
     const { user } = useStateContext();
 
     const [priorityFilters, setPriorityFilters] = useState({
@@ -85,6 +86,8 @@ const DealRoomLayout = () => {
                 : [];
 
             console.log("📊 Extracted pitches array:", pitchesArray);
+            setCount(pitchesArray.length);
+
 
             if (Array.isArray(pitchesArray)) {
                 if (pitchesArray.length === 0) {
@@ -788,7 +791,14 @@ const DealRoomLayout = () => {
                             {
                                 name: "pitches",
                                 icon: Presentation,
-                                label: "Pitches",
+                                label: (
+                                    <>
+                                        Pitches{" "}
+                                        <span className="text-green-600 font-semibold">
+                                            {count}
+                                        </span>
+                                    </>
+                                ),
                             },
                             {
                                 name: "documents",

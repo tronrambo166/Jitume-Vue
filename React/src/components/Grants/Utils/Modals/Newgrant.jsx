@@ -48,6 +48,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
         isYouthLed: false,
         isRuralBased: false,
         usesLocalSourcing: false,
+        bonusPoints: [], // Add this array to track selected bonus points
         documents: {
             pitchDeck: null,
             businessPlan: null,
@@ -110,8 +111,9 @@ export default function GrantApplicationModal({ onClose, grantId }) {
             isComplete: areFieldsComplete && areDocumentsComplete,
         }));
     };
-  
+
     console.log("businessId", businessId);
+
     // Run check whenever formData changes
     // useEffect(() => {
     //   checkIfComplete();
@@ -146,8 +148,6 @@ export default function GrantApplicationModal({ onClose, grantId }) {
 
     const handleBusinessChange = (e) => {
         setBusinessId(parseInt(e.target.value, 10));
-;
-        
     };
     // Form handlers
     const handleChange = (e) => {
@@ -187,7 +187,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
             // 2. Prepare request data
             const requestData = {
                 grant_id: grantId,
-                business_id : businessId,
+                business_id: businessId,
                 startup_name: formData.startupName,
                 contact_name: formData.contactPerson,
                 contact_email: formData.contactEmail,
@@ -202,6 +202,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                 is_youth_led: formData.isYouthLed,
                 is_rural_based: formData.isRuralBased,
                 uses_local_sourcing: formData.usesLocalSourcing,
+                bonus_points: formData.bonusPoints.join(","), // Add bonus_points as comma-separated string
             };
 
             console.group("[REQUEST DATA]");
@@ -1268,6 +1269,82 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                                                         }
                                                     </p>
                                                 )}
+                                            </div>
+                                        </div>
+                                        <div className="mb-6">
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Bonus Points Eligibility
+                                            </label>
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <label className="inline-flex items-center">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={
+                                                            formData.isYouthLed
+                                                        }
+                                                        onChange={(e) => {
+                                                            setFormData({
+                                                                ...formData,
+                                                                isYouthLed:
+                                                                    e.target
+                                                                        .checked,
+                                                                bonusPoints: e
+                                                                    .target
+                                                                    .checked
+                                                                    ? [
+                                                                          ...formData.bonusPoints,
+                                                                          "youth_led",
+                                                                      ]
+                                                                    : formData.bonusPoints.filter(
+                                                                          (
+                                                                              item
+                                                                          ) =>
+                                                                              item !==
+                                                                              "youth_led"
+                                                                      ),
+                                                            });
+                                                        }}
+                                                        className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                                                    />
+                                                    <span className="ml-2 text-sm text-gray-700">
+                                                        Youth-led business
+                                                    </span>
+                                                </label>
+
+                                                <label className="inline-flex items-center">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={
+                                                            formData.isRuralBased
+                                                        }
+                                                        onChange={(e) => {
+                                                            setFormData({
+                                                                ...formData,
+                                                                isRuralBased:
+                                                                    e.target
+                                                                        .checked,
+                                                                bonusPoints: e
+                                                                    .target
+                                                                    .checked
+                                                                    ? [
+                                                                          ...formData.bonusPoints,
+                                                                          "rural_based",
+                                                                      ]
+                                                                    : formData.bonusPoints.filter(
+                                                                          (
+                                                                              item
+                                                                          ) =>
+                                                                              item !==
+                                                                              "rural_based"
+                                                                      ),
+                                                            });
+                                                        }}
+                                                        className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                                                    />
+                                                    <span className="ml-2 text-sm text-gray-700">
+                                                        Rural-based business
+                                                    </span>
+                                                </label>
                                             </div>
                                         </div>
                                     </div>

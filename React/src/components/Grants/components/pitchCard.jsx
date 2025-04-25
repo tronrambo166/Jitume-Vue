@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { toast } from "react-toastify";
 import axiosClient from "../../../axiosClient";
+import { useNavigate } from "react-router-dom";
 
 const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
     const [expanded, setExpanded] = useState(false);
@@ -19,6 +20,8 @@ const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
     const [showDeclineModal, setShowDeclineModal] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
     const [fundingOption, setFundingOption] = useState("milestone"); // 'milestone' or 'lump-sum'
+    const [showMilestones, setShowMilestones] = useState(false);
+    const navigate = useNavigate();
 
     // Format numbers with appropriate suffix
     const formatNumber = (num) => {
@@ -123,6 +126,125 @@ const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
     };
 
     const socialImpactAreas = ensureArray(pitch.social_impact_areas);
+    const getMilestoneStatusBadge = (status) => {
+        if (status === 1) {
+            return (
+                <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-800">
+                    Completed
+                </span>
+            );
+        } else {
+            return (
+                <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">
+                    Pending
+                </span>
+            );
+        }
+    };
+    const handleReleaseFunds = async (milestoneId) => {
+        // Find the milestone details from capital_milestone instead of grant_milestone
+        const milestone = pitch.capital_milestone.find(
+            (m) => m.id === milestoneId
+        );
+
+        // Create confirmation dialog content
+        const content = `
+    <div class="space-y-4">
+        <div class="text-center">
+            <svg class="mx-auto h-12 w-12 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <h3 class="text-lg font-medium text-gray-900">Confirm Fund Release</h3>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-md">
+            <div class="flex justify-between">
+                <span class="font-medium">Milestone:</span>
+                <span>${milestone?.title || "Untitled Milestone"}</span>
+            </div>
+            <div class="flex justify-between mt-2">
+                <span class="font-medium">Amount:</span>
+                <span class="font-bold">$${
+                    milestone?.amount?.toLocaleString() || "0"
+                }</span>
+            </div>
+            <div class="mt-3 text-sm text-gray-600">
+                ${milestone?.description || "No description provided"}
+            </div>
+        </div>
+        <div class="text-sm text-gray-500">
+            Are you sure you want to release these funds? This action cannot be undone.
+        </div>
+    </div>
+`;
+
+        // Show confirmation dialog
+        $.confirm({
+            title: false,
+            content: content,
+            type: "orange",
+            boxWidth: "500px",
+            useBootstrap: false,
+            buttons: {
+                confirm: {
+                    text: "Release Funds",
+                    btnClass: "btn-orange",
+                    action: async function () {
+                        try {
+                            console.log(
+                                "Releasing funds for milestone:",
+                                milestoneId
+                            );
+
+                            // Navigate to checkout with the specified parameters
+                            navigate("/checkout", {
+                                state: {
+                                    amount: btoa(milestone?.amount),
+                                    listing_id: btoa(milestoneId),
+                                    percent: btoa(0), // 100 if they select full amount
+                                    purpose: btoa("capital_milestone"), // Changed from grant_milestone to capital_milestone
+                                },
+                            });
+                        } catch (error) {
+                            console.error("Error releasing funds:", error);
+                            $.alert({
+                                title: false,
+                                content: `
+                        <div class="text-center">
+                            <svg class="mx-auto h-12 w-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <h3 class="text-lg font-medium text-gray-900">Release Failed</h3>
+                            <div class="mt-2 text-sm text-gray-600">
+                                ${
+                                    error.response?.data?.message ||
+                                    "Failed to release funds. Please try again."
+                                }
+                            </div>
+                        </div>
+                    `,
+                                type: "red",
+                                boxWidth: "400px",
+                                useBootstrap: false,
+                                buttons: {
+                                    ok: {
+                                        text: "Close",
+                                        btnClass: "btn-red",
+                                    },
+                                },
+                            });
+                        }
+                    },
+                },
+                cancel: {
+                    text: "Cancel",
+                    btnClass: "btn-default",
+                    action: function () {
+                        console.log("Fund release canceled");
+                    },
+                },
+            },
+        });
+    };
 
     return (
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden transition-all duration-300 shadow-md hover:shadow-lg">
@@ -247,6 +369,188 @@ const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
                             <Check size={16} className="mr-2" />
                             Accept Pitch
                         </button>
+                    </div>
+                )}
+
+                {/* Milestones Button */}
+                {pitch.status === 1 && (
+                    <div className="mt-4">
+                        <button
+                            onClick={() => setShowMilestones(!showMilestones)}
+                            className="flex items-center text-sm text-blue-600 hover:text-blue-800"
+                        >
+                            {showMilestones
+                                ? "Hide Milestones"
+                                : "View Milestones"}
+                            {showMilestones ? (
+                                <ChevronUp size={16} className="ml-1" />
+                            ) : (
+                                <ChevronDown size={16} className="ml-1" />
+                            )}
+                        </button>
+                    </div>
+                )}
+
+                {/* Milestones Display */}
+                {showMilestones && (
+                    <div className="mt-4 border-t pt-4">
+                        <h3 className="text-md font-semibold text-gray-900 mb-3 flex items-center">
+                            <span>Project Milestones</span>
+                            <span className="ml-2 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full">
+                                {pitch.capital_milestone
+                                    ? pitch.capital_milestone.length
+                                    : 0}{" "}
+                                Total
+                            </span>
+                        </h3>
+
+                        {pitch.capital_milestone &&
+                        pitch.capital_milestone.length > 0 ? (
+                            <div className="space-y-4">
+                                {pitch.capital_milestone.map((milestone) => (
+                                    <div
+                                        key={milestone.id}
+                                        className="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors"
+                                    >
+                                        <div className="flex justify-between items-start mb-2">
+                                            <div className="flex items-center space-x-2">
+                                                <h4 className="font-medium text-gray-800">
+                                                    {milestone.title}
+                                                </h4>
+                                                {getMilestoneStatusBadge(
+                                                    milestone.status
+                                                )}
+                                            </div>
+                                            <div className="text-lg font-semibold text-green-600">
+                                                $
+                                                {formatNumber(milestone.amount)}
+                                            </div>
+                                        </div>
+
+                                        <p className="text-sm text-gray-600 mb-3">
+                                            {milestone.description}
+                                        </p>
+
+                                        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-gray-200">
+                                            <div className="flex items-center space-x-4">
+                                                <div className="flex items-center text-xs text-gray-500">
+                                                    <Calendar
+                                                        size={14}
+                                                        className="mr-1"
+                                                    />
+                                                    {new Date(
+                                                        milestone.created_at
+                                                    ).toLocaleDateString()}
+                                                </div>
+
+                                                {/* Document section */}
+                                                <div className="flex items-center">
+                                                    {milestone.document ? (
+                                                        <a
+                                                            href={
+                                                                milestone.document
+                                                            }
+                                                            download
+                                                            className="flex items-center text-xs text-blue-600 hover:text-blue-800"
+                                                        >
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                className="h-4 w-4 mr-1"
+                                                                fill="none"
+                                                                viewBox="0 0 24 24"
+                                                                stroke="currentColor"
+                                                            >
+                                                                <path
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    strokeWidth={
+                                                                        2
+                                                                    }
+                                                                    d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+                                                                />
+                                                            </svg>
+                                                            Download Document
+                                                        </a>
+                                                    ) : (
+                                                        <span className="flex items-center text-xs text-gray-500">
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                className="h-4 w-4 mr-1"
+                                                                fill="none"
+                                                                viewBox="0 0 24 24"
+                                                                stroke="currentColor"
+                                                            >
+                                                                <path
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    strokeWidth={
+                                                                        2
+                                                                    }
+                                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                                                />
+                                                            </svg>
+                                                            No document provided
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            {/* Only show release funds button if milestone status is pending (0) */}
+                                            {milestone.status === 0 && (
+                                                <button
+                                                    onClick={() =>
+                                                        handleReleaseFunds(
+                                                            milestone.id
+                                                        )
+                                                    }
+                                                    className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-md flex items-center transition-colors shadow-sm"
+                                                >
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        className="h-4 w-4 mr-1.5"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        stroke="currentColor"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth={2}
+                                                            d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z"
+                                                        />
+                                                    </svg>
+                                                    Release Funds
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center p-6 text-gray-500 bg-gray-50 rounded-lg border border-gray-200">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-12 w-12 mx-auto text-gray-400 mb-3"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                                    />
+                                </svg>
+                                <p className="font-medium">
+                                    No milestones have been defined yet.
+                                </p>
+                                <p className="text-sm mt-1">
+                                    Milestones will appear here once they're
+                                    created.
+                                </p>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
@@ -540,4 +844,3 @@ const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
 };
 
 export default PitchCard;
- 

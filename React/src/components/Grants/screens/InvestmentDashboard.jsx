@@ -88,6 +88,7 @@ const InvestmentOpportunities = () => {
     const [pendingToggleId, setPendingToggleId] = useState(null);
     const [isCapitalEditModalOpen, setIsCapitalEditModalOpen] = useState(false);
     const [selectedCapital, setSelectedCapital] = useState(null);
+    const [pitchCounts, setPitchCount] = useState(0);
     const toggleVisibility = (id) => {
         // Show disclaimer modal before toggling
         setPendingToggleId(id);
@@ -738,45 +739,56 @@ const InvestmentOpportunities = () => {
                                     className="bg-white border border-neutral-200 rounded-lg p-6 flex flex-col md:flex-row justify-between items-start hover:shadow-sm transition-shadow"
                                 >
                                     <div className="flex-grow w-full">
-                                  <div className="flex items-center">
-                                  {user?.investor && (
-                                    <div>
-      {/* Your capitals list rendering */}
-      <button
-  onClick={() => handleEditCapital(opp.id)}
-  className="text-yellow-500 bg-neutral-100 rounded-full mr-4 font-semibold py-4 px-4"
-  >
-       <Edit3 className=" text-[10px]"/>
-</button>
+                                        <div className="flex items-center">
+                                            {user?.investor && (
+                                                <div>
+                                                    {/* Your capitals list rendering */}
+                                                    <button
+                                                        onClick={() =>
+                                                            handleEditCapital(
+                                                                opp.id
+                                                            )
+                                                        }
+                                                        className="text-yellow-500 bg-neutral-100 rounded-full mr-4 font-semibold py-4 px-4"
+                                                    >
+                                                        <Edit3 className=" text-[10px]" />
+                                                    </button>
 
-
-      {isCapitalEditModalOpen && (
-        <CapitalEditModal
-          capitalData={selectedCapital}
-          onClose={() => setIsCapitalEditModalOpen(false)}
-          onSave={handleCapitalUpdate}
-        />
-      )}
-    </div>
-               )}
-                                        {user?.investor && ( // Changed to proper conditional rendering
-
-                                            <button
-                                                onClick={() =>
-                                                    handleDeleteClick(opp.id)
-                                                }
-                                                className="text-red-500 bg-neutral-100 rounded-full font-semibold py-4 px-4"
-                                            >
-                                                <Trash />
-                                            </button>
-
-                                        )}
-                                  </div>
+                                                    {isCapitalEditModalOpen && (
+                                                        <CapitalEditModal
+                                                            capitalData={
+                                                                selectedCapital
+                                                            }
+                                                            onClose={() =>
+                                                                setIsCapitalEditModalOpen(
+                                                                    false
+                                                                )
+                                                            }
+                                                            onSave={
+                                                                handleCapitalUpdate
+                                                            }
+                                                        />
+                                                    )}
+                                                </div>
+                                            )}
+                                            {user?.investor && ( // Changed to proper conditional rendering
+                                                <button
+                                                    onClick={() =>
+                                                        handleDeleteClick(
+                                                            opp.id
+                                                        )
+                                                    }
+                                                    className="text-red-500 bg-neutral-100 rounded-full font-semibold py-4 px-4"
+                                                >
+                                                    <Trash />
+                                                </button>
+                                            )}
+                                        </div>
                                         <div className="flex flex-col md:flex-row md:items-center mb-4 gap-2 md:gap-4">
                                             <h2 className="text-xl font-medium">
                                                 {opp.name}
                                             </h2>
-                                 <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-2">
                                                 <span
                                                     className={`px-2 py-1 rounded-full text-xs ${getStatusColor(
                                                         opp.status
@@ -795,6 +807,16 @@ const InvestmentOpportunities = () => {
                                         </div>
 
                                         <div className="flex flex-wrap gap-x-4 gap-y-2 text-neutral-600 mb-4">
+                                            <span className="flex items-center gap-1 text-emerald-700">
+                                                <span className="bg-emerald-100 p-1 rounded-full">
+                                                    <Eye
+                                                        size={12}
+                                                        className="text-emerald-600"
+                                                    />
+                                                </span>
+                                                {pitchCounts[opp.id] || 0}{" "}
+                                                Pitches
+                                            </span>
                                             <span className="flex items-center gap-1">
                                                 <BadgePercent size={14} />{" "}
                                                 {opp.sector}
@@ -891,52 +913,71 @@ const InvestmentOpportunities = () => {
                                             </div>
                                         </div>
                                         <div className="flex gap-3 w-full">
-  <button className="flex-1 text-neutral-700 whitespace-nowrap hover:text-neutral-900 transition-colors flex items-center justify-center gap-2 px-4 py-2 border border-neutral-300 rounded-md hover:bg-neutral-50">
-    <Eye size={16} /> View Details
-  </button>
-  {user.investor === 3 ? (
-    <>
-<label className="inline-flex items-center cursor-pointer">
-  <input
-    type="checkbox"
-    checked={visibilityStates[opp.id]}
-    onChange={(e) => {
-      e.preventDefault();
-      toggleVisibility(opp.id);
-    }}
-    style={{ display: 'none' }} // Hides the checkbox entirely
-    className="peer"
-  />
-  <div className="w-11 h-6 bg-gray-200 peer-checked:bg-amber-400 rounded-full peer relative transition-colors">
-    <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
-  </div>
-  <span className="ml-3 text-sm text-gray-700">
-    {visibilityStates[opp.id] ? "Visible" : "Hidden"}
-  </span>
-</label>
+                                            <button className="flex-1 text-neutral-700 whitespace-nowrap hover:text-neutral-900 transition-colors flex items-center justify-center gap-2 px-4 py-2 border border-neutral-300 rounded-md hover:bg-neutral-50">
+                                                <Eye size={16} /> View Details
+                                            </button>
+                                            {user.investor === 3 ? (
+                                                <>
+                                                    <label className="inline-flex items-center cursor-pointer">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={
+                                                                visibilityStates[
+                                                                    opp.id
+                                                                ]
+                                                            }
+                                                            onChange={(e) => {
+                                                                e.preventDefault();
+                                                                toggleVisibility(
+                                                                    opp.id
+                                                                );
+                                                            }}
+                                                            style={{
+                                                                display: "none",
+                                                            }} // Hides the checkbox entirely
+                                                            className="peer"
+                                                        />
+                                                        <div className="w-11 h-6 bg-gray-200 peer-checked:bg-amber-400 rounded-full peer relative transition-colors">
+                                                            <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
+                                                        </div>
+                                                        <span className="ml-3 text-sm text-gray-700">
+                                                            {visibilityStates[
+                                                                opp.id
+                                                            ]
+                                                                ? "Visible"
+                                                                : "Hidden"}
+                                                        </span>
+                                                    </label>
 
-      <Link
-        to={`/grants-overview/funding/deals/${opp.id}`}
-        state={{ opportunity: opp }}
-        className="flex-1 text-white whitespace-nowrap bg-emerald-600 hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium"
-      >
-        <ArrowUpRight size={16} /> Open Deal Room
-      </Link>
-    </>
-  ) : (
-    <div>
-      <button
-        onClick={() => {
-          setSelectedOpportunity(opp.id);
-          setshowModes(true);
-        }}
-        className="px-4 py-2 bg-green-600 whitespace-nowrap text-white rounded-md hover:bg-green-700"
-      >
-        Apply for Investment
-      </button>
-    </div>
-  )}
-</div>
+                                                    <Link
+                                                        to={`/grants-overview/funding/deals/${opp.id}`}
+                                                        state={{
+                                                            opportunity: opp,
+                                                        }}
+                                                        className="flex-1 text-white whitespace-nowrap bg-emerald-600 hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium"
+                                                    >
+                                                        <ArrowUpRight
+                                                            size={16}
+                                                        />{" "}
+                                                        Open Deal Room
+                                                    </Link>
+                                                </>
+                                            ) : (
+                                                <div>
+                                                    <button
+                                                        onClick={() => {
+                                                            setSelectedOpportunity(
+                                                                opp.id
+                                                            );
+                                                            setshowModes(true);
+                                                        }}
+                                                        className="px-4 py-2 bg-green-600 whitespace-nowrap text-white rounded-md hover:bg-green-700"
+                                                    >
+                                                        Apply for Investment
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             ))
@@ -1029,32 +1070,34 @@ const InvestmentOpportunities = () => {
                 />
             )}
 
-
-{showDisclaimer && (
-  <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
-    <div className="bg-white p-6 rounded-xl shadow-md max-w-md w-full">
-      <h2 className="text-lg font-semibold mb-2">Visibility Disclaimer</h2>
-      <p className="text-sm text-gray-600 mb-4">
-        By toggling this listing’s visibility, you are allowing investors to see or hide it from their dashboard. Make sure this action is intentional.
-      </p>
-      <div className="flex justify-end gap-2">
-        <button
-          onClick={cancelToggle}
-          className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
-        >
-          Cancel
-        </button>
-        <button
-          onClick={confirmToggle}
-          className="px-4 py-2 text-sm bg-yellow-600 text-white rounded hover:bg-yellow-500"
-        >
-          Confirm
-        </button>
-      </div>
-    </div>
-  </div>
-)}
-
+            {showDisclaimer && (
+                <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
+                    <div className="bg-white p-6 rounded-xl shadow-md max-w-md w-full">
+                        <h2 className="text-lg font-semibold mb-2">
+                            Visibility Disclaimer
+                        </h2>
+                        <p className="text-sm text-gray-600 mb-4">
+                            By toggling this listing’s visibility, you are
+                            allowing investors to see or hide it from their
+                            dashboard. Make sure this action is intentional.
+                        </p>
+                        <div className="flex justify-end gap-2">
+                            <button
+                                onClick={cancelToggle}
+                                className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={confirmToggle}
+                                className="px-4 py-2 text-sm bg-yellow-600 text-white rounded hover:bg-yellow-500"
+                            >
+                                Confirm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
