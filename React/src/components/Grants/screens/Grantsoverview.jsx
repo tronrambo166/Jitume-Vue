@@ -372,7 +372,7 @@ const Navigation = {
                               ...(user?.investor
                                   ? [
                                         {
-                                            label: "Grants",
+                                            label: "Add New Grant",
                                             to: "/grants-overview/grants/discover",
                                         },
                                         {
@@ -1052,7 +1052,7 @@ const GrantsList = () => {
     const grants = [
         {
             id: 1,
-            title: "Agricultural Innovation Grant",
+            title: "Agriculturals Innovation Grant",
             organization: "Green Future Foundation",
             amount: 50000,
             deadline: "May 30, 2024",
