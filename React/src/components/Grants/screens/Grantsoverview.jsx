@@ -9,6 +9,8 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
+import { UserOutlined, BellOutlined, LogoutOutlined } from "@ant-design/icons";
+
 import {
     Briefcase,
     PlusCircle,
@@ -37,6 +39,8 @@ import {
 import GrantApplicationModal from "../Utils/Modals/Newgrant";
 // import OfferGrantModal from "../Utils/Modals/AddnewGrant";
 import TujitumeLogo from "../../../images/Tujitumelogo.svg";
+import NotificationDropdown from "../components/NotificationDropdown"; // adjust path if needed
+
 
 // Toast Notification Component
 const ToastNotification = ({ message, type = "info", onClose }) => {
@@ -44,21 +48,21 @@ const ToastNotification = ({ message, type = "info", onClose }) => {
         success: "bg-green-100 border-green-300",
         error: "bg-red-100 border-red-300",
         warning: "bg-yellow-100 border-yellow-300",
-        info: "bg-blue-100 border-blue-300",
+        info: "bg-green-100 border-green-300",
     }[type];
 
     const textColor = {
         success: "text-green-700",
         error: "text-red-700",
         warning: "text-yellow-700",
-        info: "text-blue-700",
+        info: "text-green-700",
     }[type];
 
     const icon = {
         success: <CheckCircle className="text-green-500" size={18} />,
         error: <XCircle className="text-red-500" size={18} />,
         warning: <AlertTriangle className="text-yellow-500" size={18} />,
-        info: <Info className="text-blue-500" size={18} />,
+        info: <Info className="text-green-500" size={18} />,
     }[type];
 
     return (
@@ -603,17 +607,11 @@ const Navigation = {
         return (
             <div className="bg-white shadow-sm p-4 flex justify-between items-center">
                 <div className="flex items-center space-x-4">
-                    <button
-                        className="text-gray-600 hover:text-blue-600 relative"
-                        onClick={() => addToast("No new notifications", "info")}
-                    >
-                        <Bell size={20} />
-                    </button>
                     <div className="relative">
                         <input
                             type="text"
                             placeholder="Search..."
-                            className="pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none w-full md:w-64"
+                            className="pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 outline-none w-full md:w-64"
                         />
                         <Search
                             className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -621,56 +619,101 @@ const Navigation = {
                         />
                     </div>
                 </div>
+
                 <div className="flex items-center space-x-4" ref={profileRef}>
+                    <NotificationDropdown />
+
                     <button
-                        className="flex items-center space-x-2 text-gray-700 hover:text-blue-700"
+                        className="flex items-center space-x-2 text-gray-700 hover:text-green-700 relative"
                         onClick={() => setIsProfileOpen(!isProfileOpen)}
                     >
-                        <div className="flex flex-col items-end">
-                            <span className="hidden md:inline text-sm font-medium">
-                                {user?.fname || "User"} {user?.lname || ""}
-                            </span>
-                            <span className="hidden md:inline text-xs text-gray-500">
-                                {user?.email || ""}
-                            </span>
-                        </div>
-                        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600">
-                            {user?.fname ? user.fname.charAt(0) : "U"}
-                        </div>
-                    </button>
-
-                    {isProfileOpen && (
-                        <div className="absolute right-4 top-16 bg-white shadow-lg rounded-lg p-2 w-48 z-50 border border-gray-100">
-                            <div className="px-4 py-2 border-b border-gray-100">
-                                <p className="text-sm font-medium">
-                                    {user?.fname || "User"}
-                                </p>
-                                <p className="text-xs text-gray-500 truncate">
+                        <div className="flex items-center space-x-2 text-gray-700 hover:text-green-700 relative">
+                            <div className="flex flex-col items-end">
+                                <span className="hidden md:inline text-sm font-medium">
+                                    {user?.fname || "User"} {user?.lname || ""}
+                                </span>
+                                <span className="hidden md:inline text-xs text-gray-500">
                                     {user?.email || ""}
-                                </p>
+                                </span>
                             </div>
-                            <Link
-                                to="/grants-overview/settings/profile"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
-                                onClick={() => setIsProfileOpen(false)}
-                            >
-                                My Profile
-                            </Link>
-                            <Link
-                                to="/grants-overview/settings/notifications"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
-                                onClick={() => setIsProfileOpen(false)}
-                            >
-                                Notifications
-                            </Link>
-                            <button
-                                onClick={handleLogout}
-                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
-                            >
-                                Logout
-                            </button>
+                            <div className="flex items-center justify-center w-8 h-8 rounded-full overflow-hidden">
+                                {user?.image ? (
+                                    <img
+                                        src={user.image}
+                                        alt="Profile"
+                                        className="w-full h-full object-cover"
+                                    />
+                                ) : (
+                                    <img
+                                        src={`https://ui-avatars.com/api/?name=${
+                                            user?.fname || "User"
+                                        }+${
+                                            user?.lname || ""
+                                        }&background=random&length=1&size=64`}
+                                        alt="Profile"
+                                        className="w-full h-full"
+                                    />
+                                )}
+                            </div>
                         </div>
-                    )}
+
+                        {/* Dropdown positioned directly below */}
+                        {isProfileOpen && (
+                            <div className="absolute right-0 top-12 bg-white shadow-xl rounded-lg p-2 w-56 z-50 border border-gray-200">
+                                <div className="flex items-center px-3 py-3 border-b border-gray-100 gap-3">
+                                    <img
+                                        src={
+                                            user?.image ||
+                                            `https://ui-avatars.com/api/?name=${
+                                                user?.investor
+                                                    ? user.fname
+                                                    : `${user.fname}+${user.lname}`
+                                            }&background=random&size=128`
+                                        }
+                                        className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm"
+                                        alt="Profile"
+                                    />
+                                    <div className="min-w-0">
+                                        <p className="text-sm font-semibold text-gray-800 truncate">
+                                            {user?.fname || "User"}
+                                            {!user?.investor &&
+                                                user?.lname &&
+                                                ` ${user.lname}`}
+                                        </p>
+                                        <p className="text-xs text-gray-500 truncate">
+                                            {user?.email || "No email provided"}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-1 mt-2">
+                                    <Link
+                                        to="/grants-overview/settings/profile"
+                                        className="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 rounded transition-colors"
+                                        onClick={() => setIsProfileOpen(false)}
+                                    >
+                                        <UserOutlined className="mr-2 text-base" />
+                                        My Profile
+                                    </Link>
+                                    <Link
+                                        to="/grants-overview/settings/notifications"
+                                        className="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 rounded transition-colors"
+                                        onClick={() => setIsProfileOpen(false)}
+                                    >
+                                        <BellOutlined className="mr-2 text-base" />
+                                        Notifications
+                                    </Link>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="flex items-center w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 rounded transition-colors"
+                                    >
+                                        <LogoutOutlined className="mr-2 text-base" />
+                                        Logout
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </button>
                 </div>
             </div>
         );
@@ -919,10 +962,10 @@ const DashboardHome = () => {
             color: "bg-purple-50",
         },
         {
-            icon: <DollarSign className="text-blue-500" />,
+            icon: <DollarSign className="text-green-500" />,
             title: "Total Funding Received",
             value: "$225,000",
-            color: "bg-blue-50",
+            color: "bg-green-50",
         },
         {
             icon: <TrendingUp className="text-indigo-500" />,
@@ -966,7 +1009,7 @@ const DashboardHome = () => {
                 <span
                     className={`px-2 py-1 rounded-full text-xs ${
                         status === "Open"
-                            ? "bg-blue-100 text-blue-700"
+                            ? "bg-green-100 text-green-700"
                             : status === "Closed"
                             ? "bg-red-100 text-red-700"
                             : "bg-yellow-100 text-yellow-700"
@@ -977,7 +1020,7 @@ const DashboardHome = () => {
             </div>
             <div className="grid grid-cols-2 gap-2">
                 <div className="flex items-center">
-                    <DollarSign className="mr-2 text-blue-500" size={16} />
+                    <DollarSign className="mr-2 text-green-500" size={16} />
                     <span className="text-sm text-gray-600">
                         ${amount.toLocaleString()}
                     </span>
@@ -1100,7 +1143,7 @@ const GrantsList = () => {
                             <div className="mt-2 flex items-center space-x-4">
                                 <div className="flex items-center">
                                     <DollarSign
-                                        className="mr-2 text-blue-500"
+                                        className="mr-2 text-green-500"
                                         size={16}
                                     />
                                     <span className="text-sm text-gray-600">
@@ -1121,7 +1164,7 @@ const GrantsList = () => {
                         <span
                             className={`px-2 py-1 rounded-full text-xs ${
                                 grant.status === "Open"
-                                    ? "bg-blue-100 text-blue-700"
+                                    ? "bg-green-100 text-green-700"
                                     : grant.status === "Closed"
                                     ? "bg-red-100 text-red-700"
                                     : "bg-yellow-100 text-yellow-700"
@@ -1185,7 +1228,7 @@ const GrantApplication = () => {
                         name="title"
                         value={formData.title}
                         onChange={handleChange}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
                         required
                     />
                 </div>
@@ -1198,7 +1241,7 @@ const GrantApplication = () => {
                         name="organization"
                         value={formData.organization}
                         onChange={handleChange}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
                         required
                     />
                 </div>
@@ -1211,7 +1254,7 @@ const GrantApplication = () => {
                         value={formData.description}
                         onChange={handleChange}
                         rows={4}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
                         required
                     />
                 </div>
@@ -1225,7 +1268,7 @@ const GrantApplication = () => {
                             name="amount"
                             value={formData.amount}
                             onChange={handleChange}
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
                             required
                         />
                     </div>
@@ -1237,7 +1280,7 @@ const GrantApplication = () => {
                             name="category"
                             value={formData.category}
                             onChange={handleChange}
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
                             required
                         >
                             <option value="">Select Category</option>
@@ -1250,7 +1293,7 @@ const GrantApplication = () => {
                 <div>
                     <button
                         type="submit"
-                        className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition"
+                        className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition"
                     >
                         Submit Grant Application
                     </button>

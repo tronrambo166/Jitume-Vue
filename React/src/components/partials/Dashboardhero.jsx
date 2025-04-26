@@ -298,7 +298,10 @@ const Dashboardhero = () => {
                     <div className="flex justify-between items-center flex-wrap gap-4">
                         <div className="flex gap-2 items-center">
                             <img
-                                src={user?.image ? user.image : userImage}
+                                src={
+                                    user?.image ||
+                                    `https://ui-avatars.com/api/?name=${user.fname}+${user.lname}&background=random`
+                                }
                                 className="rounded-xl w-16 h-16 md:w-20 md:h-20 object-cover border-2 border-white shadow-sm"
                                 alt="Profile"
                             />
@@ -311,6 +314,21 @@ const Dashboardhero = () => {
                                 </h3>
                             </div>
                         </div>
+                        {/* <div className="flex gap-2 items-center">
+                            <img
+                                src={user?.image ? user.image : userImage}
+                                className="rounded-xl w-16 h-16 md:w-20 md:h-20 object-cover border-2 border-white shadow-sm"
+                                alt="Profile"
+                            />
+                            <div className="flex flex-col">
+                                <h2 className="text-gray-900 dark:text-white text-sm md:text-lg font-bold">
+                                    {user.fname} {user.lname}
+                                </h2>
+                                <h3 className="text-gray-600 dark:text-gray-300 text-sm md:text-base">
+                                    {user.email || "test@email.com"}
+                                </h3>
+                            </div>
+                        </div> */}
                         <div className="flex mt-5 text-sm md:text-[13px] gap-4 flex-wrap items-center relative">
                             <Link
                                 to=""

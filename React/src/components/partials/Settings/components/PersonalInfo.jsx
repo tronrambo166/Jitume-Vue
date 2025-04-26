@@ -49,7 +49,7 @@ const PersonalInfo = () => {
             [name]: value,
         }));
     };
-
+   console.log("tempData",tempData)
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -173,7 +173,7 @@ const PersonalInfo = () => {
             </div>
 
             <div className="relative w-36 h-36 mb-8">
-                <div className="w-36 h-36 rounded-lg overflow-hidden group">
+                {/* <div className="w-36 h-36 rounded-lg overflow-hidden group">
                     {imagePreview ? (
                         <img id="img1"
                         src={ imagePreview }
@@ -209,6 +209,45 @@ const PersonalInfo = () => {
                         disabled={!isEditing}
                         onChange={handleImageChange}
                     />
+                </div> */}
+
+                <div className="w-36 h-36 rounded-lg overflow-hidden group">
+                    {imagePreview ? (
+                        <img
+                            id="img1"
+                            src={imagePreview}
+                            alt="Avatar"
+                            className="w-full h-full object-cover"
+                        />
+                    ) : (
+                        <img
+                            id="img2"
+                            src={
+                                tempData.image
+                                    ? tempData.image
+                                    : `https://ui-avatars.com/api/?name=${tempData.fname}+${tempData.lname}&background=random`
+                            }
+                            alt="Avatar"
+                            className="w-full h-full object-cover"
+                        />
+                    )}
+
+                    <label
+                        htmlFor="avatar-upload"
+                        className={`absolute inset-0 bg-black bg-opacity-10 backdrop-filter backdrop-blur-md opacity-0 group-hover:opacity-100 rounded-lg flex justify-center items-center transition-opacity duration-300 cursor-pointer ${
+                            isEditing ? "" : "hidden"
+                        }`}
+                    >
+                        <FaCamera className="text-white text-3xl" />
+                    </label>
+                    <input
+                        id="avatar-upload"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        disabled={!isEditing}
+                        onChange={handleImageChange}
+                    />
                 </div>
             </div>
 
@@ -217,34 +256,22 @@ const PersonalInfo = () => {
                     {
                         label: "First Name",
                         name: "fname",
-                        value: handleNullValue(
-                            tempData.fname,
-                            ""
-                        ),
+                        value: handleNullValue(tempData.fname, ""),
                     },
                     {
                         label: "Middle Name",
                         name: "mname",
-                        value: handleNullValue(
-                            tempData.mname,
-                            ""
-                        ),
+                        value: handleNullValue(tempData.mname, ""),
                     },
                     {
                         label: "Last Name",
                         name: "lname",
-                        value: handleNullValue(
-                            tempData.lname,
-                            ""
-                        ),
+                        value: handleNullValue(tempData.lname, ""),
                     },
                     {
                         label: "Email",
                         name: "email",
-                        value: handleNullValue(
-                            tempData.email,
-                            ""
-                        ),
+                        value: handleNullValue(tempData.email, ""),
                     },
                 ].map((field) => (
                     <div key={field.name} className="flex flex-col">
@@ -280,7 +307,9 @@ const PersonalInfo = () => {
                         className="mt-1 w-full rounded-lg p-3 bg-white border border-gray-300 text-gray-900 shadow-sm focus:ring-2 focus:ring-green-500 focus:outline-none transition"
                         disabled={!isEditing}
                     >
-                        <option value={tempData.gender}>{tempData.gender}</option>
+                        <option value={tempData.gender}>
+                            {tempData.gender}
+                        </option>
                         <option value="M">M</option>
                         <option value="F">F</option>
                     </select>
