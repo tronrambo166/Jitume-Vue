@@ -248,12 +248,30 @@ const ProfilePage = () => {
                             }
                             offset={[-10, 100]}
                         >
-                            <Avatar
-                                size={120}
-                                src={user.image}
-                                icon={<UserOutlined />}
-                                className="border-2 border-white shadow"
-                            />
+                            {user?.image ? ( // Check if user.image exists
+                                <Avatar
+                                    size={120}
+                                    src={user.image} // Use the actual image URL
+                                    className="border-2 border-white shadow"
+                                />
+                            ) : user?.fname || user?.lname ? ( // If no image but has name
+                                <Avatar
+                                    size={120}
+                                    src={`https://ui-avatars.com/api/?name=${
+                                        user.fname || ""
+                                    }${
+                                        user.lname ? `+${user.lname}` : ""
+                                    }&background=random&size=128`}
+                                    className="bg-gray-200 border-2 border-white shadow"
+                                />
+                            ) : (
+                                // Fallback for no image and no name
+                                <Avatar
+                                    size={120}
+                                    icon={<UserOutlined />}
+                                    className="bg-gray-200 border-2 border-white shadow"
+                                />
+                            )}
                         </Badge>
                         <input
                             type="file"

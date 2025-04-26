@@ -415,7 +415,7 @@ const Navigation = {
                                     ]
                                   : [
                                         {
-                                            label: "Apply For Capital",
+                                            label: "Apply for Investment",
                                             to: "/grants-overview/funding/investments",
                                         },
                                     ]),
