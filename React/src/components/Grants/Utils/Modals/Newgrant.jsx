@@ -263,6 +263,23 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                         console.log(
                             `Added deliverable: milestones[${index}][deliverables][${fileIndex}] = ${file.name}`
                         );
+                        //Match Score API
+                        const response =  axiosClient.post(
+                            "grant/match-score/"+grantId,
+                            formDataToSend,
+                            {
+                                headers: { "Content-Type": "multipart/form-data" },
+                                signal: controller.signal,
+                                onUploadProgress: (progressEvent) => {
+                                    const percentCompleted = Math.round(
+                                        (progressEvent.loaded * 100) / progressEvent.total
+                                    );
+                                    console.log(`Upload progress: ${percentCompleted}%`);
+                                },
+                            }
+                        );
+                        console.log("Response Score:", response);
+                        //Match Score API
                     });
                 } else {
                     console.log("No deliverables for this milestone");
@@ -288,7 +305,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
             console.groupEnd();
 
             // 7. Make API call with timeout
-            console.log("Attempting to submit to backend...", formDataToSend);
+            console.log("Attempting to submit to backend...", formDataToSend); return;
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 30000);
 
