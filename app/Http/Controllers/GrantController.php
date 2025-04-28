@@ -44,6 +44,11 @@ class GrantController extends Controller
             $user = User::select('investor','id')->where('id',$user_id)->first();
             if($user->investor == 2){
                 $grants = Grant::where('user_id',$user_id)->get();
+                foreach ($grants as $grant){
+                    $pitches = GrantApplication::where('grant_id',$grant->id)->count();
+                    $grant->pitch_count = $pitches;
+                }
+
                 return response()->json(['grants' => $grants]);
             }
 
