@@ -171,7 +171,7 @@
 
 .noUi-connect {
     background: #15803d !important;
-     height: 10px !important;
+    height: 10px !important;
 }
 
 .noUi-horizontal .noUi-handle {
@@ -615,36 +615,31 @@ select::-ms-expand {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
 }
 
-
-
 @keyframes slide-in-left-to-right {
-  from {
-    transform: translateX(-100%); /* Start off-screen to the left */
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0); /* Slide into place */
-    opacity: 1;
-  }
+    from {
+        transform: translateX(-100%); /* Start off-screen to the left */
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0); /* Slide into place */
+        opacity: 1;
+    }
 }
 
 /* Sidebar transition when shrinking */
 .scroll-container {
-  transition: width 0.5s ease-in-out; /* Transition takes 0.5 seconds */
+    transition: width 0.5s ease-in-out; /* Transition takes 0.5 seconds */
 }
-
 
 /* Shrunk state: when sidebar is in the shrunk state */
 .scroll-container.shrunk {
-  width: 4rem; /* Shrunk width */
+    width: 4rem; /* Shrunk width */
 }
 
 /* Expanded state: when sidebar is in the expanded state */
 .scroll-container.expanded {
-  width: 16rem; /* Expanded width */
+    width: 16rem; /* Expanded width */
 }
-
-
 
 /* Default styling (100% zoom) */
 .dynamic-max-width {
@@ -653,13 +648,13 @@ select::-ms-expand {
 /* Apply max-w-[1010px] at zoom levels between 130% and 180% */
 
 /* For 130% to 180% zoom on Windows and macOS */
-@media screen and (min-resolution: 123dpi) and (max-resolution: 172dpi), /* For Windows browsers */
-    screen and (min-resolution: 1.3dppx) and (max-resolution: 1.8dppx) {  /* For macOS and others */
+@media screen and (min-resolution: 123dpi) and (max-resolution: 172dpi),
+    /* For Windows browsers */ screen and (min-resolution: 1.3dppx) and (max-resolution: 1.8dppx) {
+    /* For macOS and others */
     .dynamic-max-width {
         max-width: 1000px;
     }
 }
-
 
 @media print {
     .watermark {
@@ -697,32 +692,32 @@ select::-ms-expand {
 
 /* Hide the default radio button */
 input[type="radio"] {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #ccc;
-  border-radius: 50%;
-  outline: none;
-  cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
 }
 
 /* Style the radio button when checked */
 input[type="radio"]:checked {
-  background-color: green;
-  border-color: green;
+    background-color: green;
+    border-color: green;
 }
 
 /* Optional: Add a hover effect */
 input[type="radio"]:hover {
-  border-color: green;
+    border-color: green;
 }
 
 /* Optional: Style the label for better UX */
 label {
-  margin-left: 8px;
-  cursor: pointer;
+    margin-left: 8px;
+    cursor: pointer;
 }
 
 /* React Select Custom Styles */
@@ -753,4 +748,64 @@ label {
 
 .basic-multi-select .select__dropdown-indicator {
     @apply text-gray-400 hover:text-gray-600;
+}
+
+@keyframes bubble-rise {
+    0% {
+        transform: translateY(100%) scale(0.5);
+        opacity: 0.2;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(-100px) scale(1.2);
+        opacity: 0;
+    }
+}
+
+.bubble-sm {
+    position: absolute;
+    bottom: -10px;
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    animation: bubble-rise 3s infinite ease-in;
+}
+
+.bubble-md {
+    position: absolute;
+    bottom: -15px;
+    width: 12px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    animation: bubble-rise 4s infinite ease-in;
+}
+
+.bubble-lg {
+    position: absolute;
+    bottom: -20px;
+    width: 15px;
+    height: 15px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    animation: bubble-rise 5s infinite ease-in;
+}
+
+@keyframes animate-ping {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    75%,
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.animate-ping {
+    animation: animate-ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
 }

@@ -30,6 +30,10 @@ export default function GrantApplicationModal({ onClose, grantId }) {
     const [submissionError, setSubmissionError] = useState(null);
     const [businessId, setBusinessId] = useState(null);
     const [businessOptions, setBusinessOptions] = useState([]);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [isUploading, setIsUploading] = useState(false);
+    const [matchScore, setMatchScore] = useState(null);
+    const [scoreBreakdown, setScoreBreakdown] = useState(null);
 
     const [matchPreview, setMatchPreview] = useState(null);
     const [formData, setFormData] = useState({
@@ -112,7 +116,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
         }));
     };
 
-    console.log("businessId", businessId);
+    // console.log("businessId", businessId);
 
     // Run check whenever formData changes
     // useEffect(() => {
@@ -120,7 +124,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
     // }, [formData]);
 
     const modalRef = useRef();
-    console.log("grantId", grantId);
+    // console.log("grantId", grantId);
     // Handle outside click
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -198,9 +202,9 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                 team_experience_avg_years: formData.teamExperience,
                 traction_kpis: formData.traction,
                 social_impact_areas: formData.impactAreas.join(","),
-                is_gender_led: formData.isGenderLed,
-                is_youth_led: formData.isYouthLed,
-                is_rural_based: formData.isRuralBased,
+                gender_led: formData.isGenderLed,
+                youth_led: formData.isYouthLed,
+                rural_based: formData.isRuralBased,
                 uses_local_sourcing: formData.usesLocalSourcing,
                 bonus_points: formData.bonusPoints.join(","), // Add bonus_points as comma-separated string
             };
@@ -264,20 +268,20 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                             `Added deliverable: milestones[${index}][deliverables][${fileIndex}] = ${file.name}`
                         );
                         //Match Score API
-                        const response =  axiosClient.post(
-                            "grant/match-score/"+grantId,
-                            formDataToSend,
-                            {
-                                headers: { "Content-Type": "multipart/form-data" },
-                                signal: controller.signal,
-                                onUploadProgress: (progressEvent) => {
-                                    const percentCompleted = Math.round(
-                                        (progressEvent.loaded * 100) / progressEvent.total
-                                    );
-                                    console.log(`Upload progress: ${percentCompleted}%`);
-                                },
-                            }
-                        );
+                        // const response =  axiosClient.post(
+                        //     "grant/match-score/"+grantId,
+                        //     formDataToSend,
+                        //     {
+                        //         headers: { "Content-Type": "multipart/form-data" },
+                        //         signal: controller.signal,
+                        //         onUploadProgress: (progressEvent) => {
+                        //             const percentCompleted = Math.round(
+                        //                 (progressEvent.loaded * 100) / progressEvent.total
+                        //             );
+                        //             console.log(`Upload progress: ${percentCompleted}%`);
+                        //         },
+                        //     }
+                        // );
                         console.log("Response Score:", response);
                         //Match Score API
                     });
@@ -305,7 +309,8 @@ export default function GrantApplicationModal({ onClose, grantId }) {
             console.groupEnd();
 
             // 7. Make API call with timeout
-            console.log("Attempting to submit to backend...", formDataToSend); return;
+            console.log("Attempting to submit to backend...", formDataToSend);
+            return;
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 30000);
 
@@ -603,13 +608,175 @@ export default function GrantApplicationModal({ onClose, grantId }) {
         }
     };
 
-    const updateMilestone = (index, field, value) => {
+    const updateMilestone = async (
+        index,
+        field,
+        value,
+        isFileUpload = false
+    ) => {
         const updatedMilestones = [...formData.milestones];
-        updatedMilestones[index][field] = value;
-        setFormData({
+
+        if (isFileUpload) {
+            updatedMilestones[index].deliverables = [value];
+        } else {
+            updatedMilestones[index][field] = value;
+        }
+
+        const updatedFormData = {
             ...formData,
             milestones: updatedMilestones,
+        };
+
+        setFormData(updatedFormData);
+
+        if (isFileUpload) {
+            await sendFormDataToAPI(updatedFormData);
+        }
+    };
+
+    const sendFormDataToAPI = async (currentFormData) => {
+        const formDataToSend = new FormData();
+        setIsUploading(true);
+        setUploadProgress(0);
+
+        // Append all fields
+        formDataToSend.append("grant_id", grantId);
+        formDataToSend.append("business_id", currentFormData.business_id);
+        formDataToSend.append("startup_name", currentFormData.startupName);
+        formDataToSend.append("contact_name", currentFormData.contactPerson);
+        formDataToSend.append("contact_email", currentFormData.contactEmail);
+        formDataToSend.append("sector", currentFormData.sector);
+        formDataToSend.append(
+            "headquarters_location",
+            currentFormData.location
+        );
+        formDataToSend.append("stage", currentFormData.stage);
+        formDataToSend.append(
+            "revenue_last_12_months",
+            currentFormData.revenue
+        );
+        formDataToSend.append(
+            "team_experience_avg_years",
+            currentFormData.teamExperience
+        );
+        formDataToSend.append("traction_kpis", currentFormData.traction);
+        formDataToSend.append(
+            "social_impact_areas",
+            currentFormData.impactAreas.join(", ")
+        );
+        formDataToSend.append(
+            "bonus_points",
+            currentFormData.bonusPoints.join(", ")
+        );
+
+        // Handle documents
+        if (currentFormData.documents.pitchDeck) {
+            formDataToSend.append(
+                "pitchDeck_file",
+                currentFormData.documents.pitchDeck
+            );
+        } else {
+            formDataToSend.append("pitchDeck_file", null);
+        }
+
+        if (currentFormData.documents.pitchVideo) {
+            formDataToSend.append(
+                "pitchVideo_file",
+                currentFormData.documents.pitchVideo
+            );
+        } else {
+            formDataToSend.append("pitchVideo_file", null);
+        }
+
+        if (currentFormData.documents.businessPlan) {
+            formDataToSend.append(
+                "businessPlan_file",
+                currentFormData.documents.businessPlan
+            );
+        } else {
+            formDataToSend.append("businessPlan_file", null);
+        }
+
+        // Handle milestones
+        currentFormData.milestones.forEach((milestone, index) => {
+            formDataToSend.append(
+                `milestones[${index}][title]`,
+                milestone.title
+            );
+            formDataToSend.append(
+                `milestones[${index}][amount]`,
+                milestone.amount
+            );
+            formDataToSend.append(
+                `milestones[${index}][description]`,
+                milestone.description
+            );
+            formDataToSend.append(
+                `milestones[${index}][duration]`,
+                milestone.duration
+            );
+
+            if (milestone.deliverables && milestone.deliverables.length > 0) {
+                formDataToSend.append(
+                    `milestones[${index}][deliverable]`,
+                    milestone.deliverables[0]
+                );
+            }
         });
+
+        try {
+            const response = await axiosClient.post(
+                `grant/match-score/${grantId}`,
+                formDataToSend,
+                {
+                    headers: { "Content-Type": "multipart/form-data" },
+                    onUploadProgress: (progressEvent) => {
+                        const percentCompleted = Math.round(
+                            (progressEvent.loaded * 100) / progressEvent.total
+                        );
+                        setUploadProgress(percentCompleted);
+                    },
+                }
+            );
+
+            console.log("Upload successful:", response.data);
+            setMatchScore(response.data.original.score);
+            setScoreBreakdown(response.data.original.score_breakdown);
+            return response.data;
+        } catch (error) {
+            console.error("Upload failed:", error);
+            throw error;
+        } finally {
+            setIsUploading(false);
+        }
+    };
+
+    const getMatchLevel = (score) => {
+        if (!score) return "Needs Revision";
+        if (score >= 80) return "Ideal Match";
+        if (score >= 60) return "Strong Match";
+        return "Needs Revision";
+    };
+
+    const getMatchColor = (score) => {
+        if (!score) return "bg-gray-200";
+        if (score >= 80) return "bg-green-500";
+        if (score >= 60) return "bg-yellow-500";
+        return "bg-red-400";
+    };
+
+    const getMatchLevelColor = (score) => {
+        if (!score) return "bg-gray-100 text-gray-800";
+        if (score >= 80) return "bg-green-100 text-green-800";
+        if (score >= 60) return "bg-yellow-100 text-yellow-800";
+        return "bg-red-100 text-red-800";
+    };
+
+    const getMatchIcon = (score) => {
+        if (!score) return <AlertTriangle className="w-4 h-4" />;
+        if (score >= 80) return <Check className="w-4 h-4" />;
+        if (score >= 60) return <AlertTriangle className="w-4 h-4" />;
+        return <X className="w-4 h-4" />;
     };
 
     return (
@@ -1736,17 +1903,13 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                                                                                                     .length >
                                                                                                     0
                                                                                             ) {
-                                                                                                // Only take the first file instead of all files
-                                                                                                const newFile =
-                                                                                                    e
-                                                                                                        .target
-                                                                                                        .files[0];
                                                                                                 updateMilestone(
                                                                                                     index,
                                                                                                     "deliverables",
-                                                                                                    [
-                                                                                                        newFile,
-                                                                                                    ] // Wrap in array if your system expects an array
+                                                                                                    e
+                                                                                                        .target
+                                                                                                        .files[0],
+                                                                                                    true // This indicates it's a file upload
                                                                                                 );
                                                                                             }
                                                                                         }}
@@ -1948,143 +2111,320 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                         </div>
                     </div>
 
-                    <div className="hidden lg:block w-80 bg-gray-50 border-l border-gray-100 p-6 overflow-y-auto">
+                    <div className="hidden lg:block w-80 bg-gradient-to-br from-blue-50 to-emerald-50 border-l border-emerald-100 p-6 overflow-y-auto">
                         <div className="text-center mb-6">
-                            <h3 className="text-lg font-medium text-gray-800 mb-1">
-                                Match Score Preview
-                            </h3>
-                            <p className="text-sm text-gray-500">
-                                Real-time compatibility analysis
-                            </p>
+                            <div className="flex items-center justify-center gap-2 mb-2">
+                                <div className="h-5 w-5 bg-emerald-500 rounded-full animate-pulse"></div>
+                                <h3 className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-yellow-600">
+                                    Match Score Analysis
+                                </h3>
+                            </div>
+                            <div className="flex items-center justify-center gap-1">
+                                <span className="text-xs font-medium px-2 py-1 bg-emerald-100 text-emerald-600 rounded-full">
+                                    Powered by Tujitume AI
+                                </span>
+                            </div>
                         </div>
 
-                        {matchPreview ? (
-                            <div className="flex flex-col items-center">
-                                <div className="relative mb-4">
-                                    <div className="w-32 h-32 rounded-full flex items-center justify-center border-8 border-gray-100">
+                        {isUploading ? (
+                            <div className="flex flex-col items-center py-8">
+                                <div className="relative mb-6 w-36 h-36">
+                                    {/* Container with glass effect */}
+                                    <div className="absolute inset-0 rounded-full border-4 border-emerald-100 bg-white bg-opacity-30 backdrop-blur-sm overflow-hidden">
+                                        {/* Filling liquid effect */}
                                         <div
-                                            className={`w-24 h-24 rounded-full ${getMatchScoreColor()} flex items-center justify-center text-white text-2xl font-bold`}
+                                            className="absolute bottom-0 w-full bg-gradient-to-t from-emerald-500 to-yellow-400 transition-all duration-1000 ease-in-out"
+                                            style={{
+                                                height: `${uploadProgress}%`,
+                                                boxShadow:
+                                                    "0 -5px 15px rgba(99, 102, 241, 0.5)",
+                                                borderTopLeftRadius:
+                                                    uploadProgress < 95
+                                                        ? "100%"
+                                                        : "0",
+                                                borderTopRightRadius:
+                                                    uploadProgress < 95
+                                                        ? "100%"
+                                                        : "0",
+                                            }}
                                         >
-                                            {matchPreview.score}%
+                                            {/* Bubbles effect */}
+                                            <div className="absolute inset-0 overflow-hidden">
+                                                <div
+                                                    className="bubble-sm"
+                                                    style={{
+                                                        left: "15%",
+                                                        animationDelay: "0.5s",
+                                                    }}
+                                                ></div>
+                                                <div
+                                                    className="bubble-md"
+                                                    style={{
+                                                        left: "55%",
+                                                        animationDelay: "1.2s",
+                                                    }}
+                                                ></div>
+                                                <div
+                                                    className="bubble-sm"
+                                                    style={{
+                                                        left: "80%",
+                                                        animationDelay: "0.8s",
+                                                    }}
+                                                ></div>
+                                                <div
+                                                    className="bubble-lg"
+                                                    style={{
+                                                        left: "30%",
+                                                        animationDelay: "1.7s",
+                                                    }}
+                                                ></div>
+                                                <div
+                                                    className="bubble-md"
+                                                    style={{
+                                                        left: "70%",
+                                                        animationDelay: "2.1s",
+                                                    }}
+                                                ></div>
+                                            </div>
+                                        </div>
+
+                                        {/* Shine effect on glass */}
+                                        <div className="absolute top-0 left-0 w-full h-12 bg-white bg-opacity-20 transform -skew-y-12"></div>
+                                    </div>
+
+                                    {/* Percentage display */}
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <div className="bg-white bg-opacity-80 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
+                                            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-yellow-600">
+                                                {uploadProgress}%
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {/* Decorative elements */}
+                                    <div className="absolute -right-2 top-1/2 transform -translate-y-1/2 w-3 h-10 bg-emerald-200 rounded-full"></div>
+                                    <div className="absolute -left-2 top-1/2 transform -translate-y-1/2 w-3 h-10 bg-emerald-200 rounded-full"></div>
+                                </div>
+
+                                {/* Status messages that change with progress */}
+                                <div className="text-center space-y-1">
+                                    <p className="text-sm font-bold text-emerald-700">
+                                        {uploadProgress < 30
+                                            ? "Initializing Quantum Analysis..."
+                                            : uploadProgress < 60
+                                            ? "Processing Smart Data Points..."
+                                            : uploadProgress < 90
+                                            ? "Calculating Match Parameters..."
+                                            : "Finalizing Tujitume Analysis..."}
+                                    </p>
+                                    <p className="text-xs text-emerald-500 flex items-center justify-center gap-2">
+                                        <span className="flex space-x-1">
+                                            <span
+                                                className="inline-block w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping"
+                                                style={{ animationDelay: "0s" }}
+                                            ></span>
+                                            <span
+                                                className="inline-block w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping"
+                                                style={{
+                                                    animationDelay: "0.2s",
+                                                }}
+                                            ></span>
+                                            <span
+                                                className="inline-block w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping"
+                                                style={{
+                                                    animationDelay: "0.4s",
+                                                }}
+                                            ></span>
+                                        </span>
+                                        Jitume data verification in progress
+                                    </p>
+                                </div>
+
+                                {/* Processing steps */}
+                                <div className="w-full mt-6 space-y-2">
+                                    <div className="flex items-center text-xs">
+                                        <div
+                                            className={`w-4 h-4 rounded-full flex items-center justify-center ${
+                                                uploadProgress >= 25
+                                                    ? "bg-emerald-500"
+                                                    : "bg-emerald-200"
+                                            }`}
+                                        >
+                                            {uploadProgress >= 25 && (
+                                                <div className="w-2 h-2 bg-white rounded-full"></div>
+                                            )}
+                                        </div>
+                                        <div
+                                            className={`h-0.5 flex-1 mx-1 ${
+                                                uploadProgress >= 50
+                                                    ? "bg-emerald-500"
+                                                    : "bg-emerald-200"
+                                            }`}
+                                        ></div>
+                                        <div
+                                            className={`w-4 h-4 rounded-full flex items-center justify-center ${
+                                                uploadProgress >= 50
+                                                    ? "bg-emerald-500"
+                                                    : "bg-emerald-200"
+                                            }`}
+                                        >
+                                            {uploadProgress >= 50 && (
+                                                <div className="w-2 h-2 bg-white rounded-full"></div>
+                                            )}
+                                        </div>
+                                        <div
+                                            className={`h-0.5 flex-1 mx-1 ${
+                                                uploadProgress >= 75
+                                                    ? "bg-emerald-500"
+                                                    : "bg-emerald-200"
+                                            }`}
+                                        ></div>
+                                        <div
+                                            className={`w-4 h-4 rounded-full flex items-center justify-center ${
+                                                uploadProgress >= 75
+                                                    ? "bg-emerald-500"
+                                                    : "bg-emerald-200"
+                                            }`}
+                                        >
+                                            {uploadProgress >= 75 && (
+                                                <div className="w-2 h-2 bg-white rounded-full"></div>
+                                            )}
+                                        </div>
+                                        <div
+                                            className={`h-0.5 flex-1 mx-1 ${
+                                                uploadProgress >= 100
+                                                    ? "bg-emerald-500"
+                                                    : "bg-emerald-200"
+                                            }`}
+                                        ></div>
+                                        <div
+                                            className={`w-4 h-4 rounded-full flex items-center justify-center ${
+                                                uploadProgress >= 100
+                                                    ? "bg-emerald-500"
+                                                    : "bg-emerald-200"
+                                            }`}
+                                        >
+                                            {uploadProgress >= 100 && (
+                                                <div className="w-2 h-2 bg-white rounded-full"></div>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between text-xs text-emerald-600">
+                                        <span>Upload</span>
+                                        <span>Analyze</span>
+                                        <span>Match</span>
+                                        <span>Score</span>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : matchScore ? (
+                            <div className="flex flex-col items-center">
+                                <div className="relative mb-6">
+                                    <div className="w-36 h-36 rounded-2xl flex items-center justify-center bg-gradient-to-br from-emerald-50 to-yellow-50 border border-emerald-100">
+                                        <div
+                                            className={`w-28 h-28 rounded-xl ${getMatchColor(
+                                                matchScore
+                                            )} flex items-center justify-center text-white text-3xl font-bold backdrop-blur-sm bg-opacity-90 shadow-lg`}
+                                        >
+                                            {matchScore}%
                                         </div>
                                     </div>
                                     <div
-                                        className={`absolute -right-2 -top-2 rounded-full p-2 ${
-                                            matchPreview.matchLevel ===
-                                            "Ideal Match"
-                                                ? "bg-green-500"
-                                                : matchPreview.matchLevel ===
-                                                  "Strong Match"
-                                                ? "bg-yellow-500"
-                                                : "bg-red-400"
-                                        } text-white shadow`}
+                                        className={`absolute -right-2 -top-2 rounded-full p-2 ${getMatchColor(
+                                            matchScore
+                                        )} text-white shadow-lg`}
                                     >
-                                        {matchPreview.matchLevel ===
-                                        "Ideal Match" ? (
-                                            <Check className="w-4 h-4" />
-                                        ) : matchPreview.matchLevel ===
-                                          "Strong Match" ? (
-                                            <AlertTriangle className="w-4 h-4" />
-                                        ) : (
-                                            <X className="w-4 h-4" />
-                                        )}
+                                        {getMatchIcon(matchScore)}
+                                    </div>
+                                    <div className="absolute -left-1 -bottom-1 h-8 w-8 rounded-lg bg-emerald-600 flex items-center justify-center rotate-12 shadow-lg">
+                                        <span className="text-white text-xs font-bold">
+                                            T
+                                        </span>
                                     </div>
                                 </div>
 
                                 <div
-                                    className={`text-center mb-6 py-2 px-4 rounded-full ${
-                                        matchPreview.matchLevel ===
-                                        "Ideal Match"
-                                            ? "bg-green-100 text-green-800"
-                                            : matchPreview.matchLevel ===
-                                              "Strong Match"
-                                            ? "bg-yellow-100 text-yellow-800"
-                                            : "bg-red-100 text-red-800"
-                                    }`}
+                                    className={`text-center mb-6 py-2 px-6 rounded-xl backdrop-blur-sm ${getMatchLevelColor(
+                                        matchScore
+                                    )} shadow-sm border border-emerald-100`}
                                 >
-                                    <span className="font-medium">
-                                        {matchPreview.matchLevel}
+                                    <span className="font-bold text-sm">
+                                        {getMatchLevel(matchScore)}
                                     </span>
                                 </div>
 
                                 <div className="w-full space-y-4">
-                                    <div className="bg-white p-4 rounded-lg border border-gray-100">
-                                        <h4 className="text-sm font-medium text-gray-700 mb-2">
-                                            Score Breakdown
+                                    <div className="bg-white p-4 rounded-xl border border-emerald-100 shadow-sm backdrop-blur-sm">
+                                        <h4 className="text-sm font-bold text-emerald-700 mb-3 flex items-center">
+                                            <span className="w-1 h-4 bg-emerald-500 rounded-sm mr-2"></span>
+                                            Smart Score Breakdown
                                         </h4>
-                                        <div className="space-y-2">
-                                            <div className="flex justify-between items-center text-sm">
-                                                <span className="text-gray-600">
-                                                    Basic Information
-                                                </span>
-                                                <span className="font-medium">
-                                                    60%
-                                                </span>
-                                            </div>
-                                            <div className="flex justify-between items-center text-sm">
-                                                <span className="text-gray-600">
-                                                    Impact Areas
-                                                </span>
-                                                <span className="font-medium">
-                                                    {formData.impactAreas
-                                                        .length > 0
-                                                        ? "5%"
-                                                        : "0%"}
-                                                </span>
-                                            </div>
-                                            <div className="flex justify-between items-center text-sm">
-                                                <span className="text-gray-600">
-                                                    Bonus
-                                                </span>
-                                                <span className="font-medium">
-                                                    {(formData.isGenderLed
-                                                        ? 5
-                                                        : 0) +
-                                                        (formData.isYouthLed
-                                                            ? 5
-                                                            : 0) +
-                                                        (formData.isRuralBased
-                                                            ? 5
-                                                            : 0) +
-                                                        (formData.usesLocalSourcing
-                                                            ? 5
-                                                            : 0)}
-                                                    %
-                                                </span>
-                                            </div>
+                                        <div className="space-y-3">
+                                            {scoreBreakdown &&
+                                                Object.entries(
+                                                    scoreBreakdown
+                                                ).map(([key, value]) => (
+                                                    <div
+                                                        key={key}
+                                                        className="flex justify-between items-center text-sm"
+                                                    >
+                                                        <span className="text-gray-600 capitalize font-medium">
+                                                            {key}
+                                                        </span>
+                                                        <div className="flex items-center">
+                                                            <div className="h-2 w-16 bg-emerald-100 rounded-full mr-2">
+                                                                <div
+                                                                    className="h-2 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600"
+                                                                    style={{
+                                                                        width: `${value}%`,
+                                                                    }}
+                                                                ></div>
+                                                            </div>
+                                                            <span className="font-bold text-emerald-700">
+                                                                {value}%
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                ))}
                                         </div>
                                     </div>
 
-                                    <div className="bg-white p-4 rounded-lg border border-gray-100">
-                                        <h4 className="text-sm font-medium text-gray-700 mb-2">
-                                            Potential Matches
-                                        </h4>
-                                        {matchPreview.score >= 60 ? (
+                                    <div className="bg-white p-4 rounded-xl border border-emerald-100 shadow-sm backdrop-blur-sm">
+                                        <div className="flex justify-between items-center mb-3">
+                                            <h4 className="text-sm font-bold text-emerald-700 flex items-center">
+                                                <span className="w-1 h-4 bg-emerald-500 rounded-sm mr-2"></span>
+                                                Tujitume Matches
+                                            </h4>
+                                            <span className="text-xs px-2 py-0.5 bg-gradient-to-r from-emerald-100 to-yellow-100 text-emerald-600 rounded-lg font-medium">
+                                                Tujitume
+                                            </span>
+                                        </div>
+                                        {matchScore >= 60 ? (
                                             <div className="space-y-3">
-                                                <div className="flex items-start">
-                                                    <div className="bg-green-100 rounded p-1 mr-2">
-                                                        <Zap className="w-3 h-3 text-green-600" />
+                                                <div className="flex items-start p-2 rounded-lg bg-gradient-to-r from-emerald-50 to-transparent border border-emerald-100">
+                                                    <div className="bg-gradient-to-r from-emerald-500 to-yellow-500 rounded-lg p-1.5 mr-3 shadow-sm">
+                                                        <Zap className="w-3 h-3 text-white" />
                                                     </div>
                                                     <div>
-                                                        <p className="text-sm font-medium text-gray-700">
+                                                        <p className="text-sm font-bold text-emerald-700">
                                                             Green Growth Fund
                                                         </p>
-                                                        <p className="text-xs text-gray-500">
+                                                        <p className="text-xs text-emerald-500">
                                                             $25k-75k grant
                                                         </p>
                                                     </div>
                                                 </div>
-                                                {matchPreview.score >= 80 && (
-                                                    <div className="flex items-start">
-                                                        <div className="bg-green-100 rounded p-1 mr-2">
-                                                            <Globe className="w-3 h-3 text-green-600" />
+                                                {matchScore >= 80 && (
+                                                    <div className="flex items-start p-2 rounded-lg bg-gradient-to-r from-emerald-50 to-transparent border border-emerald-100">
+                                                        <div className="bg-gradient-to-r from-emerald-500 to-yellow-500 rounded-lg p-1.5 mr-3 shadow-sm">
+                                                            <Globe className="w-3 h-3 text-white" />
                                                         </div>
                                                         <div>
-                                                            <p className="text-sm font-medium text-gray-700">
+                                                            <p className="text-sm font-bold text-emerald-700">
                                                                 Climate Tech
                                                                 Initiative
                                                             </p>
-                                                            <p className="text-xs text-gray-500">
+                                                            <p className="text-xs text-emerald-500">
                                                                 $50k-100k
                                                                 equity-free
                                                             </p>
@@ -2093,45 +2433,47 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                                                 )}
                                             </div>
                                         ) : (
-                                            <p className="text-sm text-gray-500">
-                                                Complete more fields to see
-                                                potential matches
-                                            </p>
+                                            <div className="text-sm text-emerald-500 p-2 rounded-lg bg-emerald-50 flex items-center">
+                                                <div className="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse"></div>
+                                                Complete more fields for
+                                                Tujitume matches
+                                            </div>
                                         )}
                                     </div>
 
-                                    <div className="bg-white p-4 rounded-lg border border-gray-100">
-                                        <div className="flex justify-between items-center mb-2">
-                                            <h4 className="text-sm font-medium text-gray-700">
-                                                Upcoming Deadlines
+                                    <div className="bg-white p-4 rounded-xl border border-emerald-100 shadow-sm backdrop-blur-sm">
+                                        <div className="flex justify-between items-center mb-3">
+                                            <h4 className="text-sm font-bold text-emerald-700 flex items-center">
+                                                <span className="w-1 h-4 bg-emerald-500 rounded-sm mr-2"></span>
+                                                Smart Deadlines
                                             </h4>
-                                            <span className="text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                                            <span className="text-xs font-medium px-2 py-0.5 bg-gradient-to-r from-green-50 to-emerald-100 text-emerald-600 rounded-lg">
                                                 2 matches
                                             </span>
                                         </div>
                                         <div className="space-y-3">
-                                            <div className="flex items-start">
-                                                <div className="bg-gray-100 rounded p-1 mr-2">
-                                                    <Calendar className="w-3 h-3 text-gray-600" />
+                                            <div className="flex items-start p-2 rounded-lg bg-gradient-to-r from-emerald-50 to-transparent border border-emerald-100">
+                                                <div className="bg-gradient-to-r from-emerald-500 to-yellow-500 rounded-lg p-1.5 mr-3 shadow-sm">
+                                                    <Calendar className="w-3 h-3 text-white" />
                                                 </div>
                                                 <div>
-                                                    <p className="text-sm font-medium text-gray-700">
+                                                    <p className="text-sm font-bold text-emerald-700">
                                                         May 15, 2025
                                                     </p>
-                                                    <p className="text-xs text-gray-500">
+                                                    <p className="text-xs text-emerald-500">
                                                         Clean Energy Fund
                                                     </p>
                                                 </div>
                                             </div>
-                                            <div className="flex items-start">
-                                                <div className="bg-gray-100 rounded p-1 mr-2">
-                                                    <Calendar className="w-3 h-3 text-gray-600" />
+                                            <div className="flex items-start p-2 rounded-lg bg-gradient-to-r from-emerald-50 to-transparent border border-emerald-100">
+                                                <div className="bg-gradient-to-r from-emerald-500 to-yellow-500 rounded-lg p-1.5 mr-3 shadow-sm">
+                                                    <Calendar className="w-3 h-3 text-white" />
                                                 </div>
                                                 <div>
-                                                    <p className="text-sm font-medium text-gray-700">
+                                                    <p className="text-sm font-bold text-emerald-700">
                                                         June 30, 2025
                                                     </p>
-                                                    <p className="text-xs text-gray-500">
+                                                    <p className="text-xs text-emerald-500">
                                                         AgTech Innovation Grant
                                                     </p>
                                                 </div>
@@ -2142,16 +2484,22 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                             </div>
                         ) : (
                             <div className="text-center p-6">
-                                <div className="w-16 h-16 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
-                                    <AlertTriangle className="w-6 h-6 text-gray-400" />
+                                <div className="w-20 h-20 mx-auto mb-4 relative">
+                                    <div className="absolute inset-0 bg-emerald-100 rounded-xl rotate-6"></div>
+                                    <div className="absolute inset-0 bg-emerald-200 rounded-xl -rotate-3"></div>
+                                    <div className="relative w-full h-full bg-white rounded-xl flex items-center justify-center border border-emerald-100">
+                                        <AlertTriangle className="w-8 h-8 text-emerald-400" />
+                                    </div>
                                 </div>
-                                <p className="text-gray-500">
-                                    Complete required fields to see your match
-                                    score
+                                <p className="text-emerald-600 font-medium bg-emerald-50 py-2 px-4 rounded-lg inline-block">
+                                    Complete fields for Tujitume analysis
                                 </p>
                             </div>
                         )}
                     </div>
+
+                    {/* Add this CSS to your global styles */}
+                   
                 </div>
             </div>
         </div>
