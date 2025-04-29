@@ -36,7 +36,7 @@ class InvCapitalController extends Controller
             if($user->investor == 3){
                 $capitals = CapitalOffer::where('user_id',$user_id)->get();
                 foreach ($capitals as $capital){
-                    $pitches = StartupPitches::where('$capital_id',$capital->id)->count();
+                    $pitches = StartupPitches::where('capital_id',$capital->id)->count();
                     $capital->pitch_count = $pitches;
                 }
                 return response()->json(['capital' => $capitals]);
