@@ -55,6 +55,10 @@ class GrantController extends Controller
         }
 
         $grants = Grant::all();
+        foreach ($grants as $grant){
+            $pitches = GrantApplication::where('grant_id',$grant->id)->count();
+            $grant->pitch_count = $pitches;
+        }
         return response()->json(['grants' => $grants]);
     }
 
