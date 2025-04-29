@@ -60,15 +60,21 @@ const OfferGrantModal = ({ onClose, refreshGrants }) => {
 
     const focusOptions = [
         "Agriculture",
-        "Renewable Energy",
-        "Tech",
-        "Healthcare",
-        "Education",
-        "Manufacturing",
-        "AI & Robotics",
-        "Blockchain",
-        "Biotech",
-        "Space Tech",
+        "Arts Culture",
+        "Auto",
+        "Domestic",
+        "Fashion",
+        "Finance Accounting",
+        "Food",
+        "Legal",
+        "Media-Internet",
+        "Other",
+        "Pets",
+        "Real State",
+        "Retail",
+        "Security",
+        "Sports Gaming",
+        "Technology Communications",
     ];
 
     const stageOptions = [
@@ -275,6 +281,63 @@ const OfferGrantModal = ({ onClose, refreshGrants }) => {
             setIsSubmitting(false);
         }
     };
+
+     const countries = [
+         "Algeria",
+         "Angola",
+         "Benin",
+         "Botswana",
+         "Burkina Faso",
+         "Burundi",
+         "Cabo Verde",
+         "Cameroon",
+         "Central African Republic",
+         "Chad",
+         "Comoros",
+         "Congo",
+         // "Côte d'Ivoire",
+         "Djibouti",
+         "Democratic Republic of the Congo",
+         "Egypt",
+         "Equatorial Guinea",
+         "Eritrea",
+         "Eswatini",
+         "Ethiopia",
+         "Gabon",
+         "Gambia",
+         "Ghana",
+         "Guinea",
+         "Guinea-Bissau",
+         "Kenya",
+         "Lesotho",
+         "Liberia",
+         "Libya",
+         "Madagascar",
+         "Malawi",
+         "Mali",
+         "Mauritania",
+         "Mauritius",
+         "Morocco",
+         "Mozambique",
+         "Namibia",
+         "Niger",
+         "Nigeria",
+         "Rwanda",
+         "Sao Tome and Principe",
+         "Senegal",
+         "Seychelles",
+         "Sierra Leone",
+         "Somalia",
+         "South Africa",
+         "South Sudan",
+         "Sudan",
+         "Tanzania",
+         "Togo",
+         "Tunisia",
+         "Uganda",
+         "Zambia",
+         "Zimbabwe",
+     ];
 
     // Reset form to initial state
     const resetForm = () => {
@@ -727,46 +790,88 @@ const OfferGrantModal = ({ onClose, refreshGrants }) => {
                         </div>
                         <div className="relative">
                             <label className="block text-sm font-medium text-gray-600 mb-1.5">
-                                Target Regions{" "}
+                                Target Countries{" "}
                                 <span className="text-red-500">*</span>
                             </label>
-                            <Select
-                                isMulti
-                                options={[
-                                    { value: "North", label: "North" },
-                                    { value: "South", label: "South" },
-                                    { value: "East", label: "East" },
-                                    { value: "West", label: "West" },
-                                    { value: "Central", label: "Central" },
-                                ]}
-                                value={formData.regions.map((region) => ({
-                                    value: region,
-                                    label: region,
-                                }))}
-                                onChange={(selectedOptions) => {
-                                    setFormData({
-                                        ...formData,
-                                        regions: selectedOptions
-                                            ? selectedOptions.map(
-                                                  (option) => option.value
-                                              )
-                                            : [],
-                                    });
-                                }}
-                                className={`basic-multi-select ${
-                                    activeField === "regions"
-                                        ? "border-green-500 ring-1 ring-green-500"
-                                        : validationErrors.regions
-                                        ? "border-red-500"
-                                        : "border-gray-200"
-                                }`}
-                                classNamePrefix="select"
-                                onFocus={() => setActiveField("regions")}
-                                onBlur={() => setActiveField(null)}
-                            />
-                            {validationErrors.regions && (
+
+                            {/* Country selection pills */}
+                            <div className="flex flex-wrap gap-2 mb-2">
+                                {countries.map((country) => (
+                                    <button
+                                        key={country}
+                                        type="button"
+                                        onClick={() => {
+                                            const currentCountries =
+                                                formData.countries || [];
+                                            const newCountries =
+                                                currentCountries.includes(
+                                                    country
+                                                )
+                                                    ? currentCountries.filter(
+                                                          (c) => c !== country
+                                                      )
+                                                    : [
+                                                          ...currentCountries,
+                                                          country,
+                                                      ];
+
+                                            setFormData({
+                                                ...formData,
+                                                countries: newCountries,
+                                            });
+                                        }}
+                                        className={`px-3 py-1 text-sm rounded-full border ${
+                                            (formData.countries || []).includes(
+                                                country
+                                            )
+                                                ? "bg-emerald-100 border-emerald-500 text-emerald-700"
+                                                : "bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100"
+                                        }`}
+                                    >
+                                        {country}
+                                    </button>
+                                ))}
+                            </div>
+
+                            {/* Selected countries display */}
+                            {(formData.countries?.length || 0) > 0 && (
+                                <div className="mt-2">
+                                    <p className="text-sm text-gray-500 mb-1">
+                                        Selected countries:
+                                    </p>
+                                    <div className="flex flex-wrap gap-2">
+                                        {formData.countries.map((country) => (
+                                            <span
+                                                key={country}
+                                                className="px-2.5 py-1 bg-emerald-100 text-emerald-700 text-xs rounded-full flex items-center"
+                                            >
+                                                {country}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setFormData({
+                                                            ...formData,
+                                                            countries:
+                                                                formData.countries.filter(
+                                                                    (c) =>
+                                                                        c !==
+                                                                        country
+                                                                ),
+                                                        });
+                                                    }}
+                                                    className="ml-1.5 text-emerald-500 hover:text-emerald-700"
+                                                >
+                                                    ×
+                                                </button>
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {validationErrors.countries && (
                                 <p className="mt-1.5 text-sm text-red-500">
-                                    {validationErrors.regions}
+                                    {validationErrors.countries}
                                 </p>
                             )}
                         </div>

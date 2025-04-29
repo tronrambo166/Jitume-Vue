@@ -746,7 +746,7 @@ const TujitumeGrantPortal = () => {
                                                     />
                                                     <span className="font-medium">
                                                         {formatNumber(
-                                                            grant.pitchCount ||
+                                                            grant.pitch_count ||
                                                                 0
                                                         )}
                                                     </span>
@@ -1142,7 +1142,9 @@ const TujitumeGrantPortal = () => {
                                             <div className="flex items-center space-x-3 flex-shrink-0">
                                                 <span className="bg-green-100 text-green-800 text-md px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
                                                     <Eye size={16} />
-                                                    {grantCount}{" "}
+                                                    {formatNumber(
+                                                        grant.pitch_count || 0
+                                                    )}
                                                     {/* Replace with your actual count variable */}
                                                 </span>
 

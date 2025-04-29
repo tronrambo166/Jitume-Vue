@@ -782,7 +782,8 @@ const TujitumeDashboard = () => {
         </section>
 
         {/* Quick Actions Footer */}
-        <section className="mt-8 pb-8">
+        {user.investor !== 1 && user.investor !== 2 && user.investor !== 3 && (
+          <section className="mt-8 pb-8">
           <div className="bg-gradient-to-r from-slate-800 to-green-800 text-white rounded-xl p-5 shadow-md">
             <div className="flex flex-wrap items-center justify-between">
               <div className="mb-4 md:mb-0 md:w-1/2">
@@ -803,7 +804,7 @@ const TujitumeDashboard = () => {
               </div>
             </div>
           </div>
-        </section>
+        </section>)}
       </div>
     </div>
   );

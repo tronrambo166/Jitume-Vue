@@ -41,7 +41,6 @@ import GrantApplicationModal from "../Utils/Modals/Newgrant";
 import TujitumeLogo from "../../../images/Tujitumelogo.svg";
 import NotificationDropdown from "../components/NotificationDropdown"; // adjust path if needed
 
-
 // Toast Notification Component
 const ToastNotification = ({ message, type = "info", onClose }) => {
     const bgColor = {
@@ -687,14 +686,19 @@ const Navigation = {
                                 </div>
 
                                 <div className="space-y-1 mt-2">
-                                    <Link
-                                        to="/grants-overview/settings/profile"
-                                        className="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 rounded transition-colors"
-                                        onClick={() => setIsProfileOpen(false)}
-                                    >
-                                        <UserOutlined className="mr-2 text-base" />
-                                        My Profile
-                                    </Link>
+                                    {user?.investor && (
+                                        <Link
+                                            to="/grants-overview/profile"
+                                            className="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 rounded transition-colors"
+                                            onClick={() =>
+                                                setIsProfileOpen(false)
+                                            }
+                                        >
+                                            <UserOutlined className="mr-2 text-base" />
+                                            My Profile
+                                        </Link>
+                                    )}
+
                                     <Link
                                         to="/grants-overview/settings/notifications"
                                         className="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 rounded transition-colors"

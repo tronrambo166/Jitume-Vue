@@ -814,8 +814,7 @@ const InvestmentOpportunities = () => {
                                                         className="text-emerald-600"
                                                     />
                                                 </span>
-                                                {pitchCounts[opp.id] || 0}{" "}
-                                                Pitches
+                                                {[opp.pitch_count] || 0} Pitches
                                             </span>
                                             <span className="flex items-center gap-1">
                                                 <BadgePercent size={14} />{" "}

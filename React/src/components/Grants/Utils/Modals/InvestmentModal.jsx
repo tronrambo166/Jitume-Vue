@@ -73,6 +73,25 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
             business_id: selectedId,
         }));
     };
+
+     const sectors = [
+        "Agriculture",
+        "Arts Culture",
+        "Auto",
+        "Domestic",
+        "Fashion",
+        "Finance Accounting",
+        "Food",
+        "Legal",
+        "Media-Internet",
+        "Other",
+        "Pets",
+        "Real State",
+        "Retail",
+        "Security",
+        "Sports Gaming",
+        "Technology Communications",
+    ];
     // Validate numeric fields to prevent negative values
     const validateNumericField = (name, value) => {
         if (value === "") return true;
@@ -696,22 +715,14 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                                     required
                                 >
                                     <option value="">Select Sector</option>
-                                    <option value="Technology">
-                                        Technology
-                                    </option>
-                                    <option value="Healthcare">
-                                        Healthcare
-                                    </option>
-                                    <option value="Finance">Finance</option>
-                                    <option value="Education">Education</option>
-                                    <option value="Consumer Goods">
-                                        Consumer Goods
-                                    </option>
-                                    <option value="Other">Other</option>
+                                    {sectors.map((sector) => (
+                                        <option key={sector} value={sector}>
+                                            {sector}
+                                        </option>
+                                    ))}
                                 </select>
                                 {renderFieldError("sector")}
                             </div>
-
                             <div className="mb-4">
                                 <label
                                     htmlFor="headquarters_location"
