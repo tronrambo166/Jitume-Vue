@@ -189,8 +189,9 @@ class GrantController extends Controller
                 'businessPlan_file' => 'nullable|file|mimes:pdf,docx',
                 'social_impact_areas' => 'nullable|string',
                 'bonus_points' => 'nullable|string',
+                'score' => 'nullable|numeric',
+                'score_breakdown' => 'nullable|string',
                 'milestones' => 'nullable|array',
-
             ]);
 
             $grant = GrantApplication::create([
@@ -210,7 +211,9 @@ class GrantController extends Controller
                 //'pitch_video' => $pitchVideoFile ?? null,
                 //'business_plan_file' => $businessPlanFile ?? null,
                 'social_impact_areas' => $request->social_impact_areas,
-                'bonus_points' => $request->social_impact_areas
+                'bonus_points' => $request->social_impact_areas,
+                'score' => $request->score,
+                'score_breakdown' => $request->score_breakdown
             ]);
 
             //Upload Files
