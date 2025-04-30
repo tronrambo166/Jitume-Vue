@@ -440,10 +440,13 @@ const InvestmentOpportunities = () => {
                         </div>
 
                         {user.investor && (
-                            <button
-                                onClick={toggleModal}
-                                className="px-4 py-2 bg-white border border-neutral-300 rounded-md text-neutral-700 hover:bg-neutral-50 transition-colors flex items-center gap-2 whitespace-nowrap shadow-sm"
-                            >
+                           <button
+                           onClick={toggleModal}
+                           className="px-4 py-2 bg-gradient-to-r from-green-700 to-yellow-500
+         text-white font-medium rounded-md hover:brightness-110
+         transition-all duration-200 flex items-center gap-2
+         shadow-md hover:shadow-green-200/30 active:scale-[0.98]"
+                         >
                                 {isAddingOpportunity ? (
                                     <>
                                         <X size={18} /> Cancel
