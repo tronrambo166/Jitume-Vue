@@ -29,7 +29,7 @@ class AnalyticsController extends Controller
             $pitches = GrantApplication::where('user_id',$user_id)->get();
             $pitches_funded = GrantApplication::where('user_id',$user_id)->where('status',1)->count();
             $pitches_count = GrantApplication::where('user_id',$user_id)->count();
-            $score = 0;
+            $score = 0;$avg_score = 0;
             $break = [
                 'sector' => 0,
                 'geo' => 0,
@@ -99,10 +99,15 @@ class AnalyticsController extends Controller
                 $break['team'] = (float) $breakdown[4] + $break['team'];
                 $break['impact'] = (float) $breakdown[5] + $break['impact'];
             }
+
+            if($pitches_count > 0)
             $avg_score = round($score/$pitches_count,2);
 
             $break_avg = collect($break)->map(function ($value, $key) use ($pitches_count) {
-                return $value = round($value/$pitches_count,2);
+                if($pitches_count > 0)
+                    return $value = round($value/$pitches_count,2);
+                else
+                    return $value = 0;
             })->toArray();
 
             return response()->json([
