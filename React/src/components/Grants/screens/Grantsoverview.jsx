@@ -39,7 +39,12 @@ import {
 import GrantApplicationModal from "../Utils/Modals/Newgrant";
 // import OfferGrantModal from "../Utils/Modals/AddnewGrant";
 import TujitumeLogo from "../../../images/Tujitumelogo.svg";
+
 import NotificationDropdown from "../components/NotificationDropdown"; // adjust path if needed
+import OfferGrantModal from "../Utils/Modals/AddnewGrant";
+
+
+
 
 // Toast Notification Component
 const ToastNotification = ({ message, type = "info", onClose }) => {
@@ -355,7 +360,7 @@ const Navigation = {
                       {
                           icon: Home,
                           label: "Dashboard",
-                          to: "/grants-overview",
+                          to: "/Dashboard",
                           exact: true,
                       },
                   ]
@@ -366,7 +371,7 @@ const Navigation = {
                       {
                           icon: Briefcase,
                           label: "Grants Funding",
-                          to: "/grants-overview/grants",
+                          to: "/Dashboard/grants",
                           children: [
                               //   {
                               //       label: "Discover Grants",
@@ -375,18 +380,18 @@ const Navigation = {
                               ...(user?.investor
                                   ? [
                                         {
-                                            label: "Add New Grant",
-                                            to: "/grants-overview/grants/discover",
+                                            label: "Add New Grants",
+                                            to: "/Dashboard/grants/discover",
                                         },
                                         {
                                             label: "Pitches",
-                                            to: "/grants-overview/pitch",
+                                            to: "/Dashboard/pitch",
                                         },
                                     ]
                                   : [
                                         {
                                             label: "Apply for Grant",
-                                            to: "/grants-overview/grants/discover",
+                                            to: "/Dashboard/grants/discover",
                                         },
                                     ]),
                           ],
@@ -399,23 +404,23 @@ const Navigation = {
                       {
                           icon: CreditCard,
                           label: "Investment Funding",
-                          to: "/grants-overview/funding",
+                          to: "/Dashboard/funding",
                           children: [
                               ...(user?.investor
                                   ? [
                                         {
-                                            label: "Add New Capital",
-                                            to: "/grants-overview/funding/investments",
+                                            label: "Add New Investment",
+                                            to: "/Dashboard/funding/investments",
                                         },
                                         {
                                             label: "Pitches",
-                                            to: "/grants-overview/capital-pitch",
+                                            to: "/Dashboard/capital-pitch",
                                         },
                                     ]
                                   : [
                                         {
                                             label: "Apply for Investment",
-                                            to: "/grants-overview/funding/investments",
+                                            to: "/Dashboard/funding/investments",
                                         },
                                     ]),
                           ],
@@ -428,46 +433,46 @@ const Navigation = {
                       {
                           icon: BarChart2,
                           label: "Analytics",
-                          to: "/grants-overview/impact",
+                          to: "/Dashboard/impact",
                           children: [
                               {
                                   label: "Metrics Dashboard",
-                                  to: "/grants-overview/analytics",
+                                  to: "/Dashboard/analytics",
                               },
                           ],
                       },
                       {
                           icon: Users,
                           label: "Profile",
-                          to: "/grants-overview/network",
+                          to: "/Dashboard/network",
                           children: [
                               {
                                   label: "Profile",
-                                  to: "/grants-overview/profile",
+                                  to: "/Dashboard/profile",
                               },
                           ],
                       },
                       {
                           icon: Clock,
                           label: "Office Hours",
-                          to: "/grants-overview/office-hours",
+                          to: "/Dashboard/office-hours",
                       },
                       {
                           icon: Settings,
                           label: "Schedule",
-                          to: "/grants-overview/settings",
+                          to: "/Dashboard/settings",
                           children: [
                               {
                                   label: "Profile",
-                                  to: "/grants-overview/settings/profile",
+                                  to: "/Dashboard/settings/profile",
                               },
                               {
                                   label: "Notification.php",
-                                  to: "/grants-overview/settings/notifications",
+                                  to: "/Dashboard/settings/notifications",
                               },
                               {
                                   label: "Security",
-                                  to: "/grants-overview/settings/security",
+                                  to: "/Dashboard/settings/security",
                               },
                           ],
                       },
@@ -783,8 +788,12 @@ const GrantsOverview = () => {
     const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
     const { token, user } = useStateContext();
     const navigate = useNavigate();
+
     const { addToast } = useToast();
 
+    const toggleOfferModal = () => {
+      setIsOfferModalOpen(prev => !prev);
+    };
     useEffect(() => {
         if (!token) {
             navigate("/");
@@ -795,9 +804,12 @@ const GrantsOverview = () => {
         setIsApplicationModalOpen((prev) => !prev);
     };
 
-    const toggleOfferModal = () => {
-        setIsOfferModalOpen((prev) => !prev);
-    };
+    // const toggleOfferModal = () => {
+    //     setIsOfferModalOpen((prev) => !prev);
+    // };
+
+    const location = useLocation();
+
 
     const sidebarRef = React.useRef(null);
 
@@ -875,49 +887,54 @@ const GrantsOverview = () => {
                 <Navigation.TopNavigation />
 
                 <div className="p-6 bg-gray-50 min-h-screen">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-                        <div>
-                            <Navigation.Breadcrumbs />
-                            <h1 className="text-2xl md:text-3xl font-bold text-gray-800 flex items-center">
-                                <Briefcase className="mr-3 text-black" />
-                                {user.investor === 2
-                                    ? "Grant Funding Dashboard"
-                                    : user.investor === 3
-                                    ? "Investment Capital Dashboard"
-                                    : "Entrepreneur Dashboard"}
-                            </h1>
-                            <div className="text-gray-500 mt-2">
-                                {user.investor === 2
-                                    ? "Track your funding applications and matches"
-                                    : user.investor === 3
-                                    ? "Discover and negotiate investment opportunities"
-                                    : "Explore and manage grant opportunities"}
-                            </div>
-                        </div>
-                        <div className="flex space-x-4">
-                            {/* <button
-                onClick={toggleOfferModal}
-                className="bg-gray-800 text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-700 transition w-full md:w-auto justify-center"
-              >
-                <PlusCircle className="mr-2" />
-                Offer Grant
-              </button> */}
-                            {/* <button
-                onClick={toggleApplicationModal}
-                className="bg-green-600 whitespace-nowrap text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-700 transition w-full md:w-auto justify-center"
-              >
-                <PlusCircle className="mr-2" />
-                Apply For Grant
-              </button>
-              */}
-                        </div>
-                    </div>
-
-                    {/* Main Content Area with Outlet */}
-                    <div className="">
-                        <Outlet />
-                    </div>
+    {/* Header Section */}
+    <div className="mb-6">
+        <Navigation.Breadcrumbs />
+        
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mt-2">
+            {/* Left side - Title and description */}
+            <div className="flex-1">
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-800 flex items-center">
+                    <Briefcase className="mr-3 text-black" />
+                    {user.investor === 2
+                        ? "Grant Funding Dashboard"
+                        : user.investor === 3
+                        ? "Investment Capitals Dashboard"
+                        : "Entrepreneur Dashboard"}
+                </h1>
+                <div className="text-gray-500 mt-2">
+                    {user.investor === 2
+                        ? "Track your funding applications and matches"
+                        : user.investor === 3
+                        ? "Discover and negotiate investment opportunities"
+                        : "Explore and manage grant opportunities"}
                 </div>
+            </div>
+
+            {/* Right side - Button (only for investor 2) */}
+            {user.investor === 2 && location.pathname !== "/Dashboard/grants/discover" && (
+  <button
+    onClick={toggleOfferModal}
+    className="px-4 py-2 bg-gradient-to-r from-green-700 to-yellow-500
+    text-white font-medium rounded-md hover:brightness-110
+    transition-all duration-200 flex items-center gap-2
+    shadow-md hover:shadow-green-200/30 active:scale-[0.98]"  >
+    <PlusCircle className="mr-2" />
+    Add New Grant
+  </button>
+)}
+
+        </div>
+    </div>
+
+    {/* Main Content Area */}
+    <div className="">
+        <Outlet />
+    </div>
+
+    {/* Modal */}
+    {isOfferModalOpen && <OfferGrantModal onClose={toggleOfferModal} />}
+</div>
             </div>
 
             {/* Modal Components */}
@@ -942,7 +959,10 @@ const GrantsOverview = () => {
           }}
         />
       )} */}
+              {isOfferModalOpen && <OfferGrantModal onClose={toggleOfferModal} />}
+
         </div>
+
     );
 };
 
@@ -1182,6 +1202,7 @@ const GrantsList = () => {
         </div>
     );
 };
+
 
 const GrantApplication = () => {
     const { token } = useStateContext();

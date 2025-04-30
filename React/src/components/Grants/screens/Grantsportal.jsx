@@ -793,7 +793,7 @@ const TujitumeGrantPortal = () => {
                                         <div className="mt-6 flex space-x-3">
                                             {grant.grant_brief_pdf && (
                                                 <Link
-                                                    to={`/grants-overview/grants/${grant.id}`}
+                                                    to={`/Dashboard/grants/${grant.id}`}
                                                     className="flex-1 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center space-x-2 text-gray-700"
                                                 >
                                                     <FileText size={16} />
@@ -1614,7 +1614,7 @@ const TujitumeGrantPortal = () => {
                                     className="bg-black text-slate-100 px-4 py-2 rounded-lg flex items-center hover:bg-green-700 transition w-full md:w-auto justify-center"
                                 >
                                     <PlusCircle className="mr-2" />
-                                    Offer Grants
+                                    Add New Grant
                                 </button>
                             </div>
                         )}
