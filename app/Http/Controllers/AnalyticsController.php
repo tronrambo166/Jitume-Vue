@@ -45,9 +45,40 @@ class AnalyticsController extends Controller
                 '60-69' => 0,
                 '<60' => 0
             ];
+            $currentMonth = now()->month;$i=0;
+            $monthData = [];
+
+            //Performance Last 6 Months
+            $applicationsByMonth = GrantApplication::
+            selectRaw('
+                MONTH(created_at) as month,
+                COUNT(*) as total,
+                SUM(CASE WHEN score >= 60 THEN 1 ELSE 0 END) as passed
+            ')
+                ->where('user_id', $user_id)
+                ->groupBy('month')->get();
+
+            foreach ($applicationsByMonth as $row) {
+                $monthName = DateTime::createFromFormat('!m', $row->month)->format('M'); // e.g., "Apr"
+                $monthData[$monthName] = [
+                'applications' => $row->total,
+                'match' => $row->passed,
+                'conversion' => round(($row->passed/$row->total) * 100)
+                ];
+                //$matches = GrantApplication::select('score')->where('score', '>=', 60)->get();
+            }
 
             foreach ($pitches as $pitch){
                 $score = $pitch->score+$score;
+
+                //Matching Condition
+                if($pitch->score >= 60){
+                    $created = $pitch->created_at;
+                    $createdMonth = (new DateTime($created))->format('M');
+
+                }
+
+                //Distribution
                 if($pitch->score >= 90)
                     $dist['90-100'] += 1;
                 else if ($pitch->score >= 80 && $pitch->score < 90)
@@ -59,6 +90,7 @@ class AnalyticsController extends Controller
                 else
                     $dist['<60'] += 1;
 
+                //Scroe Breakdown
                 $breakdown = explode(',',$pitch->score_breakdown);
                 $break['sector'] = (float) $breakdown[0] + $break['sector'];
                 $break['geo'] = (float) $breakdown[1] + $break['geo'];
@@ -73,7 +105,14 @@ class AnalyticsController extends Controller
                 return $value = round($value/$pitches_count,2);
             })->toArray();
 
-            return response()->json(['avg_score' => $avg_score, 'distribution' => $dist, 'funded' => $pitches_funded, 'breakdown' => $break_avg],200);
+            return response()->json([
+                'avg_score' => $avg_score,
+                'funded' => $pitches_funded,
+                'total_match' => $pitches_count,
+                'distribution' => $dist,
+                'breakdown' => $break_avg,
+                'performance_month' => $monthData
+            ],200);
         }
         catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
