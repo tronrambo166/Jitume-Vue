@@ -22,7 +22,7 @@ use App\Service\Notification;
 use Stripe\StripeClient;
 class AnalyticsController extends Controller
 {
-    public function efficiency()
+    public function index()
     {
         try {
             $user_id = Auth::id();

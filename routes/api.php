@@ -205,7 +205,7 @@ Route::prefix('/grant')->group(function(){
    Route::get('fund-release-request/{pitch_id}', [GrantController::class, 'fund_request']);
    Route::post('grant-milestone', [GrantController::class, 'release_milestone']);
    Route::post('match-score/{grant_id}', [MatchController::class, 'score']);
-   Route::get('efficiency', [AnalyticsController::class, 'efficiency']);
+   Route::get('analytics', [AnalyticsController::class, 'index']);
 
 
 });
