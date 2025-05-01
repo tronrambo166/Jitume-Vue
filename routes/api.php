@@ -223,6 +223,7 @@ Route::prefix('/capital')->group(function(){
    Route::get('accept/{pitch_id}', [InvCapitalController::class, 'accept']);
    Route::get('reject/{pitch_id}', [InvCapitalController::class, 'reject']);
    Route::get('fund-release-request/{pitch_id}', [InvCapitalController::class, 'fund_request']);
+   Route::get('analytics', [AnalyticsController::class, 'index_capital']);
 });
 
 // G R A N T S    P R O T E C T E D   ENDS

@@ -153,6 +153,7 @@ class InvCapitalController extends Controller
                 'contact_person_name' => 'required|string|max:100',
                 'contact_person_email' => 'required|email|max:100',
                 'sector' => 'required|string|max:255',
+                'regions' => 'required|string|max:255',
                 'headquarters_location' => 'required|string|max:255',
                 'stage' => 'required|string|max:200',
                 'revenue_last_12_months' => 'nullable|numeric',
@@ -167,6 +168,8 @@ class InvCapitalController extends Controller
                 'irr_projection' => 'nullable|numeric',
                 'exit_strategy' => 'nullable|string',
                 'milestones' => 'nullable|array',
+                'score' => 'nullable|numeric',
+                'score_breakdown' => 'nullable|numeric',
             ]);
 
             $capital = StartupPitches::create([
@@ -177,6 +180,7 @@ class InvCapitalController extends Controller
                 'contact_person_name' => $request->contact_person_name,
                 'contact_person_email' => $request->contact_person_email,
                 'sector' => $request->sector,
+                'regions' => $request->regions,
                 'headquarters_location' => $request->headquarters_location,
                 'stage' => $request->stage,
                 'revenue_last_12_months' => $request->revenue_last_12_months,
@@ -190,7 +194,8 @@ class InvCapitalController extends Controller
                 'burn_rate' => $request->burn_rate,
                 'irr_projection' => $request->irr_projection,
                 'exit_strategy' => $request->exit_strategy,
-
+                'score' => $request->score,
+                'score_breakdown' => $request->score_breakdown
             ]);
 
             //Upload Files

@@ -134,7 +134,7 @@ class GrantController extends Controller
                 'required_documents' => $request->requiredDocuments,
                 'application_deadline' => $request->applicationDeadline,
                 'grant_focus' => $request->grantFocus,
-                'grant_focus' => $request->regions,
+                'regions' => $request->regions,
                 'startup_stage_focus' => $request->startupStageFocus,
                 'impact_objectives' => $request->impactObjectives,
                 'evaluation_criteria' => $request->evaluationCriteria,
