@@ -6,6 +6,7 @@ import {
   Search, Bell, Filter, Zap, ArrowRight, Download, ChevronRight, MoreHorizontal, 
   TrendingUp, Award, DollarSign, ChevronDown, ChevronLeft, List, X 
 } from 'lucide-react';
+import axiosClient from "../../../axiosClient";
 
 const TujitumeWhiteThemeDashboard = () => {
   const [activeTab, setActiveTab] = useState('grants');
@@ -19,6 +20,15 @@ const TujitumeWhiteThemeDashboard = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [selectedSectors, setSelectedSectors] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(true); // This was missing
+  const [error, setError] = useState(null); //
+  const [avgScore, setAvgScore] = useState(0);
+  const [fundedCount, setFundedCount] = useState(0);
+const [totalMatch, setTotalMatch] = useState(0);
+const [distributionData, setDistributionData] = useState([]);
+const [breakdown, setBreakdown] = useState({});
+// Add to your component's state declarations
+const [highPotential, setHighPotential] = useState(0);
 
   // Updated color palette - Sophisticated neutrals with green accents
   const COLORS = {
@@ -52,9 +62,89 @@ const TujitumeWhiteThemeDashboard = () => {
     chart3: '#616161',   // Even darker gray
     chartHighlight: '#4caf50'  // Green
   };
+  const fetchMatches = async () => {
+    try {
+      const response = await axiosClient.get('/grant/analytics');
+      const data = response.data;
+      console.log('Fetched Analytics:', data);
+  
+      // Update important metrics with fallback to 0 if null/undefined
+      setAvgScore(data.avg_score?.toFixed(1) || '0.0'); // Format to 1 decimal place
+      setFundedCount(data.funded || 0);
+      setTotalMatch(data.total_match || 0);
+      
+      // Start animation for score value
+      animateScoreValue(data.avg_score || 0);
+  
+      // Prepare distribution data for charts
+      const distributionData = Object.entries(data.distribution || {}).map(([range, count]) => ({
+        label: range,
+        value: Number(count)
+      }));
+      
+      // Calculate high potential matches count
+const highPotentialCount = Object.entries(data.distribution || {})
+.filter(([range]) => range >= "80")
+.reduce((sum, [, count]) => sum + Number(count), 0);
 
-  // Data arrays
-  const allMatches = [
+setHighPotential(highPotentialCount);
+      setDistributionData(distributionData);
+      
+      // Set the breakdown data
+      setBreakdown(data.breakdown || {});
+  
+      // Prepare Matching Metrics from Breakdown
+      const matchingMetrics = [
+        { metric: 'Sector Fit', value: data.breakdown?.sector ?? 0 },
+        { metric: 'Geographic Fit', value: data.breakdown?.geo ?? 0 },
+        { metric: 'Stage Match', value: data.breakdown?.stage ?? 0 },
+        { metric: 'Revenue', value: data.breakdown?.revenue ?? 0 },
+        { metric: 'Team', value: data.breakdown?.team ?? 0 },
+        { metric: 'Impact', value: data.breakdown?.impact ?? 0 },
+      ];
+      setMatchingMetrics(matchingMetrics);
+  
+      // Prepare Performance Data from Monthly Stats
+      const performanceMonth = data.performance_month || {};
+      const performanceData = Object.entries(performanceMonth).map(
+        ([month, values]) => ({
+          month,
+          applications: values?.applications ?? 0,
+          matches: Number(values?.match ?? 0),
+          conversion: values?.conversion ?? 0,
+        })
+      );
+      setPerformanceData(performanceData);
+  
+    } catch (err) {
+      console.error('Failed to fetch grant analytics:', err);
+      setError('Something went wrong fetching analytics data.');
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  
+  // Function to animate score value with smooth transition
+  const animateScoreValue = (targetScore) => {
+    let start = 0;
+    const interval = setInterval(() => {
+      start += 2;
+      setAnimateValue(start);
+      if (start >= targetScore) {
+        setAnimateValue(targetScore);
+        clearInterval(interval);
+      }
+    }, 40);
+  };
+  
+  
+  useEffect(() => {
+    fetchMatches();
+  }, []);
+  
+  // Mock data declarations (will be overridden by API data if available)
+  const [allMatches, setAllMatches] = useState([
     { id: 1, name: 'AgriTech Solutions', sector: 'Agriculture', score: 94, funding: '$250K', employees: 24, contact: 'mary@agritech.com', stage: 'Series A', location: 'Nairobi' },
     { id: 2, name: 'Renewa Energy', sector: 'Energy', score: 91, funding: '$1.8M', employees: 42, contact: 'james@renewa.com', stage: 'Seed', location: 'Kampala' },
     { id: 3, name: 'AquaPure Systems', sector: 'Water', score: 89, funding: '$750K', employees: 18, contact: 'david@aquapure.com', stage: 'Pre-Seed', location: 'Dar es Salaam' },
@@ -65,25 +155,25 @@ const TujitumeWhiteThemeDashboard = () => {
     { id: 8, name: 'SolarGrid', sector: 'Energy', score: 81, funding: '$3.5M', employees: 64, contact: 'michael@solar.com', stage: 'Series C', location: 'Accra' },
     { id: 9, name: 'CleanWater', sector: 'Water', score: 80, funding: '$900K', employees: 22, contact: 'linda@cleanwater.com', stage: 'Series A', location: 'Kigali' },
     { id: 10, name: 'AgroFinance', sector: 'Agriculture', score: 79, funding: '$1.5M', employees: 38, contact: 'robert@agro.com', stage: 'Series B', location: 'Nairobi' }
-  ];
-
-  const matchingMetrics = [
+  ]);
+  
+  const [matchingMetrics, setMatchingMetrics] = useState([
     { metric: 'Sector Fit', value: 82 },
     { metric: 'Stage Match', value: 75 },
     { metric: 'Revenue', value: 68 },
     { metric: 'Team', value: 79 },
     { metric: 'Impact', value: 88 }
-  ];
-
-  const performanceData = [
+  ]);
+  
+  const [performanceData, setPerformanceData] = useState([
     { month: 'Jan', applications: 18, matches: 12, conversion: 67 },
     { month: 'Feb', applications: 22, matches: 15, conversion: 68 },
     { month: 'Mar', applications: 25, matches: 18, conversion: 72 },
     { month: 'Apr', applications: 28, matches: 20, conversion: 71 },
     { month: 'May', applications: 30, matches: 22, conversion: 73 },
     { month: 'Jun', applications: 32, matches: 25, conversion: 78 }
-  ];
-
+  ]);
+  
   // Filtering and pagination logic
   const filteredMatches = allMatches.filter(match => {
     const matchesSearch = match.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -91,17 +181,17 @@ const TujitumeWhiteThemeDashboard = () => {
     const matchesSector = selectedSectors.length === 0 || selectedSectors.includes(match.sector);
     return matchesSearch && matchesSector;
   });
-
+  
   const matchesPerPage = 5;
   const totalPages = Math.ceil(filteredMatches.length / matchesPerPage);
   const currentMatches = showAllMatches 
     ? filteredMatches 
     : filteredMatches.slice((currentPage - 1) * matchesPerPage, currentPage * matchesPerPage);
-
+  
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery, selectedSectors]);
-
+  
   useEffect(() => {
     const timer = setTimeout(() => {
       setPulsing(true);
@@ -109,7 +199,7 @@ const TujitumeWhiteThemeDashboard = () => {
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
-
+  
   useEffect(() => {
     const targetAvgScore = 83.5;
     const timer = setTimeout(() => {
@@ -563,36 +653,37 @@ const TujitumeWhiteThemeDashboard = () => {
         )}
         
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
-          <Card 
-            title="Total Matches" 
-            value={filteredMatches.length} 
-            change="+12.7%" 
-            icon={<TrendingUp size={16} />} 
-            color={COLORS.primary} 
-          />
-          <Card 
-            title="Average Score" 
-            value="83.5%" 
-            change="+3.2%" 
-            icon={<Award size={16} />} 
-            color={COLORS.primary}
-          />
-          <Card 
-            title="High Potential" 
-            value={filteredMatches.filter(m => m.score >= 85).length} 
-            change="+9.1%" 
-            icon={<Zap size={16} />} 
-            color={COLORS.primary}
-          />
-          <Card 
-            title="Funded" 
-            value="24" 
-            change="+6.8%" 
-            icon={<DollarSign size={16} />} 
-            color={COLORS.primary}
-          />
-        </div>
+   
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+  <Card 
+    title="Total Matches" 
+    value={totalMatch}  // Using the actual total_match from API
+    change="+12.7%" 
+    icon={<TrendingUp size={16} />} 
+    color={COLORS.primary} 
+  />
+  <Card 
+    title="Average Score" 
+    value={`${avgScore}%`}  // Using the actual avg_score from API
+    change="+3.2%" 
+    icon={<Award size={16} />} 
+    color={COLORS.primary}
+  />
+  <Card 
+    title="High Potential" 
+    value={distributionData.find(d => d.label === '80-89')?.value || 0}  // Using distribution data
+    change="+9.1%" 
+    icon={<Zap size={16} />} 
+    color={COLORS.primary}
+  />
+  <Card 
+    title="Funded" 
+    value={fundedCount}  // Using the actual funded count from API
+    change="+6.8%" 
+    icon={<DollarSign size={16} />} 
+    color={COLORS.primary}
+  />
+</div>
         
         {/* Visualization Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-5">
@@ -616,33 +707,36 @@ const TujitumeWhiteThemeDashboard = () => {
               </button>
             </div>
             <div className="flex flex-col items-center justify-center py-4">
-              <Speedometer 
-                value={Math.round(animateValue)} 
-                color={COLORS.primary} 
-                label="Average Match Score" 
-              />
-              
-              <div className="mt-6 w-full grid grid-cols-3 gap-2">
-                <LEDIndicator 
-                  value={38} 
-                  threshold={{ medium: 20, high: 30 }} 
-                  label="High Potential" 
-                  size={60}
-                />
-                <LEDIndicator 
-                  value={76} 
-                  threshold={{ medium: 50, high: 70 }} 
-                  label="Stage Alignment" 
-                  size={60}
-                />
-                <LEDIndicator 
-                  value={92} 
-                  threshold={{ medium: 60, high: 80 }} 
-                  label="Sector Matching" 
-                  size={60}
-                />
-              </div>
-            </div>
+  {/* Main Speedometer - Uses your API's avg_score */}
+  <Speedometer 
+    value={Math.round(avgScore)} // From API: data.avg_score (61.8)
+    color={COLORS.primary} 
+    label="Average Match Score" 
+  />
+  
+  {/* LED Indicators - Derived from your API data */}
+  <div className="mt-6 w-full grid grid-cols-3 gap-2">
+    <LEDIndicator 
+      value={distributionData.find(d => d.label === "80-89")?.value || 0} // High Potential (count of 80-89 scores)
+      threshold={{ medium: 1, high: 2 }} // Adjust based on your needs
+      label="High Potential" 
+      size={60}
+    />
+    <LEDIndicator 
+      value={breakdown?.stage ?? 0} // From API: data.breakdown.stage (55)
+      threshold={{ medium: 50, high: 70 }} 
+      className='text-center'
+      label="Stage Alignment" 
+      size={60}
+    />
+    <LEDIndicator 
+      value={breakdown?.sector ?? 0} // From API: data.breakdown.sector (30)
+      threshold={{ medium: 40, high: 60 }} 
+      label="Sector Fit" 
+      size={60}
+    />
+  </div>
+</div>
           </div>
           
           {/* Performance Trend Chart */}
@@ -759,113 +853,133 @@ const TujitumeWhiteThemeDashboard = () => {
             </div>
             
             <div className="grid grid-cols-1 gap-2 mt-4">
-              {[
-                { label: '90-100%', count: filteredMatches.filter(m => m.score >= 90).length, color: COLORS.primary },
-                { label: '80-89%', count: filteredMatches.filter(m => m.score >= 80 && m.score < 90).length, color: COLORS.chart1 },
-                { label: '70-79%', count: filteredMatches.filter(m => m.score >= 70 && m.score < 80).length, color: COLORS.chart2 },
-                { label: '60-69%', count: filteredMatches.filter(m => m.score >= 60 && m.score < 70).length, color: COLORS.warning },
-                { label: '<60%', count: filteredMatches.filter(m => m.score < 60).length, color: COLORS.danger }
-              ].map((item, index) => (
-                <div key={index} className="flex items-center">
-                  <div className="w-16 text-xs" style={{ color: COLORS.dimText }}>{item.label}</div>
-                  <div className="flex-1 h-8 rounded-md overflow-hidden relative" style={{ backgroundColor: COLORS.panelBg }}>
-                    <div 
-                      className="h-full absolute left-0 top-0 flex items-center px-2 justify-end transition-all duration-1000 ease-out rounded-md"
-                      style={{ 
-                        width: `${(item.count / Math.max(1, filteredMatches.length)) * 100}%`, 
-                        backgroundColor: item.color,
-                        boxShadow: `0 0 6px ${item.color}40`
-                      }}
-                    >
-                      <span className="text-xs font-medium text-white">{item.count}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+  {distributionData.length > 0 ? (
+    distributionData.map((item, index) => {
+      // Determine color based on score range
+      const color = 
+        item.label.includes('90') ? COLORS.primary :
+        item.label.includes('80') ? COLORS.chart1 :
+        item.label.includes('70') ? COLORS.chart2 :
+        item.label.includes('60') ? COLORS.warning :
+        COLORS.danger;
+      
+      return (
+        <div key={index} className="flex items-center">
+          <div className="w-16 text-xs" style={{ color: COLORS.dimText }}>{item.label}</div>
+          <div className="flex-1 h-8 rounded-md overflow-hidden relative" style={{ backgroundColor: COLORS.panelBg }}>
+            <div 
+              className="h-full absolute left-0 top-0 flex items-center px-2 justify-end transition-all duration-1000 ease-out rounded-md"
+              style={{ 
+                width: `${(item.value / Math.max(1, totalMatch)) * 100}%`, 
+                backgroundColor: color,
+                boxShadow: `0 0 6px ${color}40`
+              }}
+            >
+              <span className="text-xs font-medium text-white">{item.value}</span>
             </div>
+          </div>
+        </div>
+      );
+    })
+  ) : (
+    <div className="text-center py-4 text-sm" style={{ color: COLORS.dimText }}>
+      No distribution data available
+    </div>
+  )}
+</div>
           </div>
           
           {/* Sector Focus */}
           <div 
-            className="p-4 rounded-xl border"
-            style={{ 
+  className="p-4 rounded-xl border"
+  style={{ 
+    backgroundColor: COLORS.background,
+    borderColor: COLORS.border,
+    boxShadow: '0 4px 12px rgba(0,0,0,0.03)'
+  }}
+>
+  <div className="flex justify-between items-center mb-3">
+    <h3 className="text-xs font-semibold uppercase tracking-wider" style={{ color: COLORS.dimText }}>Sector Focus</h3>
+    <button 
+      className="text-xs font-medium flex items-center hover:underline"
+      style={{ color: COLORS.primary }}
+      onClick={() => setShowFilters(true)}
+    >
+      Filter <Filter size={14} className="ml-0.5" />
+    </button>
+  </div>
+  
+  <div className="h-48 flex justify-center items-center">
+    {loading ? (
+      <div className="text-center text-sm" style={{ color: COLORS.dimText }}>
+        Loading sector data...
+      </div>
+    ) : error ? (
+      <div className="text-center text-sm" style={{ color: COLORS.danger }}>
+        {error}
+      </div>
+    ) : (
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart>
+          <Pie
+            data={[
+              { name: 'Agriculture', value: breakdown.sector || 0 },
+              { name: 'Energy', value: breakdown.geo || 0 },
+              { name: 'Water', value: breakdown.stage || 0 },
+              { name: 'Construction', value: breakdown.revenue || 0 },
+              { name: 'Other', value: breakdown.team || 0 }
+            ]}
+            cx="50%"
+            cy="50%"
+            innerRadius={40}
+            outerRadius={80}
+            paddingAngle={2}
+            dataKey="value"
+          >
+            <Cell key="agriculture" fill={COLORS.primary} />
+            <Cell key="energy" fill={COLORS.chart1} />
+            <Cell key="water" fill={COLORS.chart2} />
+            <Cell key="construction" fill={COLORS.chart3} />
+            <Cell key="other" fill={COLORS.highlight} />
+          </Pie>
+          <Tooltip 
+            formatter={(value, name) => [`${value}% match`, name]}
+            contentStyle={{ 
               backgroundColor: COLORS.background,
               borderColor: COLORS.border,
-              boxShadow: '0 4px 12px rgba(0,0,0,0.03)'
+              borderRadius: '0.5rem',
+              color: COLORS.text
             }}
-          >
-            <div className="flex justify-between items-center mb-3">
-              <h3 className="text-xs font-semibold uppercase tracking-wider" style={{ color: COLORS.dimText }}>Sector Focus</h3>
-              <button 
-                className="text-xs font-medium flex items-center hover:underline"
-                style={{ color: COLORS.primary }}
-                onClick={() => setShowFilters(true)}
-              >
-                Filter <Filter size={14} className="ml-0.5" />
-              </button>
-            </div>
-            
-            <div className="h-48 flex justify-center items-center">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={[
-                      { name: 'Agriculture', value: filteredMatches.filter(m => m.sector === 'Agriculture').length },
-                      { name: 'Energy', value: filteredMatches.filter(m => m.sector === 'Energy').length },
-                      { name: 'Water', value: filteredMatches.filter(m => m.sector === 'Water').length },
-                      { name: 'Construction', value: filteredMatches.filter(m => m.sector === 'Construction').length },
-                      { name: 'Other', value: filteredMatches.filter(m => !['Agriculture', 'Energy', 'Water', 'Construction'].includes(m.sector)).length }
-                    ]}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={40}
-                    outerRadius={80}
-                    paddingAngle={2}
-                    dataKey="value"
-                  >
-                    <Cell key="agriculture" fill={COLORS.primary} />
-                    <Cell key="energy" fill={COLORS.chart1} />
-                    <Cell key="water" fill={COLORS.chart2} />
-                    <Cell key="construction" fill={COLORS.chart3} />
-                    <Cell key="other" fill={COLORS.highlight} />
-                  </Pie>
-                  <Tooltip 
-                    formatter={(value, name) => [`${value} matches`, name]}
-                    contentStyle={{ 
-                      backgroundColor: COLORS.background,
-                      borderColor: COLORS.border,
-                      borderRadius: '0.5rem',
-                      color: COLORS.text
-                    }}
-                    itemStyle={{ color: COLORS.text }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-            
-            <div className="flex flex-wrap justify-center gap-2 mt-2">
-              <div className="flex items-center text-xs">
-                <div className="w-3 h-3 rounded-full mr-1" style={{ backgroundColor: COLORS.primary }}></div>
-                <span style={{ color: COLORS.dimText }}>Agriculture</span>
-              </div>
-              <div className="flex items-center text-xs">
-                <div className="w-3 h-3 rounded-full mr-1" style={{ backgroundColor: COLORS.chart1 }}></div>
-                <span style={{ color: COLORS.dimText }}>Energy</span>
-              </div>
-              <div className="flex items-center text-xs">
-                <div className="w-3 h-3 rounded-full mr-1" style={{ backgroundColor: COLORS.chart2 }}></div>
-                <span style={{ color: COLORS.dimText }}>Water</span>
-              </div>
-              <div className="flex items-center text-xs">
-                <div className="w-3 h-3 rounded-full mr-1" style={{ backgroundColor: COLORS.chart3 }}></div>
-                <span style={{ color: COLORS.dimText }}>Construction</span>
-              </div>
-              <div className="flex items-center text-xs">
-                <div className="w-3 h-3 rounded-full mr-1" style={{ backgroundColor: COLORS.highlight }}></div>
-                <span style={{ color: COLORS.dimText }}>Other</span>
-              </div>
-            </div>
-          </div>
+            itemStyle={{ color: COLORS.text }}
+          />
+        </PieChart>
+      </ResponsiveContainer>
+    )}
+  </div>
+  
+  <div className="flex flex-wrap justify-center gap-2 mt-2">
+    <div className="flex items-center text-xs">
+      <div className="w-3 h-3 rounded-full mr-1" style={{ backgroundColor: COLORS.primary }}></div>
+      <span style={{ color: COLORS.dimText }}>Agriculture: {breakdown.sector || 0}%</span>
+    </div>
+    <div className="flex items-center text-xs">
+      <div className="w-3 h-3 rounded-full mr-1" style={{ backgroundColor: COLORS.chart1 }}></div>
+      <span style={{ color: COLORS.dimText }}>Energy: {breakdown.geo || 0}%</span>
+    </div>
+    <div className="flex items-center text-xs">
+      <div className="w-3 h-3 rounded-full mr-1" style={{ backgroundColor: COLORS.chart2 }}></div>
+      <span style={{ color: COLORS.dimText }}>Water: {breakdown.stage || 0}%</span>
+    </div>
+    <div className="flex items-center text-xs">
+      <div className="w-3 h-3 rounded-full mr-1" style={{ backgroundColor: COLORS.chart3 }}></div>
+      <span style={{ color: COLORS.dimText }}>Construction: {breakdown.revenue || 0}%</span>
+    </div>
+    <div className="flex items-center text-xs">
+      <div className="w-3 h-3 rounded-full mr-1" style={{ backgroundColor: COLORS.highlight }}></div>
+      <span style={{ color: COLORS.dimText }}>Other: {breakdown.team || 0}%</span>
+    </div>
+  </div>
+</div>
         </div>
         
         {/* Top Matches Table */}
