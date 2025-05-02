@@ -7,6 +7,7 @@ import {
   TrendingUp, Award, DollarSign, ChevronDown, ChevronLeft, List, X 
 } from 'lucide-react';
 import axiosClient from "../../../axiosClient";
+import { useStateContext } from "../../../contexts/contextProvider";
 
 const TujitumeWhiteThemeDashboard = () => {
   const [activeTab, setActiveTab] = useState('grants');
@@ -29,6 +30,7 @@ const [distributionData, setDistributionData] = useState([]);
 const [breakdown, setBreakdown] = useState({});
 // Add to your component's state declarations
 const [highPotential, setHighPotential] = useState(0);
+        const { user, setUser } = useStateContext();
 
   // Updated color palette - Sophisticated neutrals with green accents
   const COLORS = {
@@ -62,68 +64,114 @@ const [highPotential, setHighPotential] = useState(0);
     chart3: '#616161',   // Even darker gray
     chartHighlight: '#4caf50'  // Green
   };
-  const fetchMatches = async () => {
-    try {
-      const response = await axiosClient.get('/grant/analytics');
-      const data = response.data;
-      console.log('Fetched Analytics:', data);
-  
-      // Update important metrics with fallback to 0 if null/undefined
-      setAvgScore(data.avg_score?.toFixed(1) || '0.0'); // Format to 1 decimal place
-      setFundedCount(data.funded || 0);
-      setTotalMatch(data.total_match || 0);
-      
-      // Start animation for score value
-      animateScoreValue(data.avg_score || 0);
-  
-      // Prepare distribution data for charts
-      const distributionData = Object.entries(data.distribution || {}).map(([range, count]) => ({
-        label: range,
-        value: Number(count)
-      }));
-      
-      // Calculate high potential matches count
-const highPotentialCount = Object.entries(data.distribution || {})
-.filter(([range]) => range >= "80")
-.reduce((sum, [, count]) => sum + Number(count), 0);
 
-setHighPotential(highPotentialCount);
-      setDistributionData(distributionData);
-      
-      // Set the breakdown data
-      setBreakdown(data.breakdown || {});
-  
-      // Prepare Matching Metrics from Breakdown
-      const matchingMetrics = [
-        { metric: 'Sector Fit', value: data.breakdown?.sector ?? 0 },
-        { metric: 'Geographic Fit', value: data.breakdown?.geo ?? 0 },
-        { metric: 'Stage Match', value: data.breakdown?.stage ?? 0 },
-        { metric: 'Revenue', value: data.breakdown?.revenue ?? 0 },
-        { metric: 'Team', value: data.breakdown?.team ?? 0 },
-        { metric: 'Impact', value: data.breakdown?.impact ?? 0 },
-      ];
-      setMatchingMetrics(matchingMetrics);
-  
-      // Prepare Performance Data from Monthly Stats
-      const performanceMonth = data.performance_month || {};
-      const performanceData = Object.entries(performanceMonth).map(
-        ([month, values]) => ({
-          month,
-          applications: values?.applications ?? 0,
-          matches: Number(values?.match ?? 0),
-          conversion: values?.conversion ?? 0,
-        })
-      );
-      setPerformanceData(performanceData);
-  
-    } catch (err) {
-      console.error('Failed to fetch grant analytics:', err);
-      setError('Something went wrong fetching analytics data.');
-    } finally {
-      setLoading(false);
+  // Define role-based API fetching functions - Insert these before your fetchMatches function
+  const fetchDashboardData = async (user) => {
+    console.log('Fetching dashboard data for user role:', user?.investor);
+    
+    // Add a small delay to ensure user context is loaded (if needed)
+    if (!user || user.investor === undefined) {
+      console.log('User or investor role not available yet, using default API');
+      return await fetchGrantsData();
+    }
+    
+    if (user.investor === 2) {
+      return await fetchGrantsData();
+    } else if (user.investor === 3) {
+      return await fetchInvestmentsData();
+    } else {
+      // Default case or fallback
+      console.log('Unknown investor role, defaulting to grants API');
+      return await fetchGrantsData();
     }
   };
-  
+
+// Function to fetch grants data
+const fetchGrantsData = async () => {
+  try {
+    console.log('Fetching grants data');
+    const response = await axiosClient.get('/grant/analytics');
+    console.log('Grants data received:', response.data);
+    return response.data;
+  } catch (err) {
+    console.error('Failed to fetch grant analytics:', err);
+    throw err;
+  }
+};
+
+// Function to fetch investments data
+const fetchInvestmentsData = async () => {
+  try {
+    console.log('Fetching investments data');
+    const response = await axiosClient.get('/capital/analytics');
+    console.log('Investments data received:', response.data);
+    return response.data;
+  } catch (err) {
+    console.error('Failed to fetch investment analytics:', err);
+    throw err;
+  }
+};
+const fetchMatches = async () => {
+  try {
+    // Use the role-based function to get the appropriate data
+    const data = await fetchDashboardData(user);
+    console.log('Fetched Analytics:', data);
+
+    // Update important metrics with fallback to 0 if null/undefined
+    setAvgScore(data.avg_score?.toFixed(1) || '0.0'); // Format to 1 decimal place
+    setFundedCount(data.funded || 0);
+    setTotalMatch(data.total_match || 0);
+    
+    // Start animation for score value
+    animateScoreValue(data.avg_score || 0);
+
+    // Prepare distribution data for charts
+    const distributionData = Object.entries(data.distribution || {}).map(([range, count]) => ({
+      label: range,
+      value: Number(count)
+    }));
+    
+    // Calculate high potential matches count
+    const highPotentialCount = Object.entries(data.distribution || {})
+      .filter(([range]) => range >= "80")
+      .reduce((sum, [, count]) => sum + Number(count), 0);
+
+    setHighPotential(highPotentialCount);
+    setDistributionData(distributionData);
+    
+    // Set the breakdown data
+    setBreakdown(data.breakdown || {});
+
+    // Prepare Matching Metrics from Breakdown
+    const matchingMetrics = [
+      { metric: 'Sector Fit', value: data.breakdown?.sector ?? 0 },
+      { metric: 'Geographic Fit', value: data.breakdown?.geo ?? 0 },
+      { metric: 'Stage Match', value: data.breakdown?.stage ?? 0 },
+      { metric: 'Revenue', value: data.breakdown?.revenue ?? 0 },
+      { metric: 'Team', value: data.breakdown?.team ?? 0 },
+      { metric: 'Impact', value: data.breakdown?.impact ?? 0 },
+    ];
+    setMatchingMetrics(matchingMetrics);
+
+    // Prepare Performance Data from Monthly Stats
+    const performanceMonth = data.performance_month || {};
+    const performanceData = Object.entries(performanceMonth).map(
+      ([month, values]) => ({
+        month,
+        applications: values?.applications ?? 0,
+        matches: Number(values?.match ?? 0),
+        conversion: values?.conversion ?? 0,
+      })
+    );
+    setPerformanceData(performanceData);
+
+  } catch (err) {
+    console.error('Failed to fetch analytics data:', err);
+    setError('Something went wrong fetching analytics data.');
+  } finally {
+    setLoading(false);
+  }
+};
   
   // Function to animate score value with smooth transition
   const animateScoreValue = (targetScore) => {
@@ -354,7 +402,17 @@ setHighPotential(highPotentialCount);
   };
 
   const handleExport = () => {
-    alert(`Exporting ${activeTab === 'grants' ? 'Grant' : 'Investment'} data...`);
+    // Determine export type based on user role rather than activeTab
+    if (user?.investor === 2) {
+      alert('Exporting Grant data...');
+      // Your grant export logic here
+    } else if (user?.investor === 3) {
+      alert('Exporting Investment data...');
+      // Your investment export logic here
+    } else {
+      // Default fallback
+      alert(`Exporting ${activeTab === 'grants' ? 'Grant' : 'Investment'} data...`);
+    }
   };
 
   const renderPagination = () => {
@@ -478,35 +536,42 @@ setHighPotential(highPotentialCount);
               Tujitume AI Match Engine
             </h1>
             <div className="hidden md:flex space-x-1 p-0.5 rounded-md" style={{ backgroundColor: COLORS.panelBg }}>
-              <button 
-                className={`px-3 py-1 text-sm rounded-md transition-all ${
-                  activeTab === 'grants' 
-                    ? 'text-white shadow-md' 
-                    : 'hover:text-gray-900'
-                }`}
-                style={{ 
-                  backgroundColor: activeTab === 'grants' ? COLORS.primary : 'transparent',
-                  color: activeTab === 'grants' ? 'white' : COLORS.dimText
-                }}
-                onClick={() => setActiveTab('grants')}
-              >
-                Grants
-              </button>
-              <button 
-                className={`px-3 py-1 text-sm rounded-md transition-all ${
-                  activeTab === 'investments' 
-                    ? 'text-white shadow-md' 
-                    : 'hover:text-gray-900'
-                }`}
-                style={{ 
-                  backgroundColor: activeTab === 'investments' ? COLORS.primary : 'transparent',
-                  color: activeTab === 'investments' ? 'white' : COLORS.dimText
-                }}
-                onClick={() => setActiveTab('investments')}
-              >
-                Investments
-              </button>
-            </div>
+  {/* Only show Grants tab for investor type 2 or if no specific role */}
+  {(user?.investor === 2 || !user?.investor) && (
+    <button
+      className={`px-3 py-1 text-sm rounded-md transition-all ${
+        activeTab === 'grants'
+          ? 'text-white shadow-md'
+          : 'hover:text-gray-900'
+      }`}
+      style={{
+        backgroundColor: activeTab === 'grants' ? COLORS.primary : 'transparent',
+        color: activeTab === 'grants' ? 'white' : COLORS.dimText
+      }}
+      onClick={() => setActiveTab('grants')}
+    >
+      Grants
+    </button>
+  )}
+  
+  {/* Only show Investments tab for investor type 3 or if no specific role */}
+  {(user?.investor === 3 || !user?.investor) && (
+    <button
+      className={`px-3 py-1 text-sm rounded-md transition-all ${
+        activeTab === 'investments'
+          ? 'text-white shadow-md'
+          : 'hover:text-gray-900'
+      }`}
+      style={{
+        backgroundColor: activeTab === 'investments' ? COLORS.primary : 'transparent',
+        color: activeTab === 'investments' ? 'white' : COLORS.dimText
+      }}
+      onClick={() => setActiveTab('investments')}
+    >
+      Investments
+    </button>
+  )}
+</div>
           </div>
           
           <div className="flex items-center space-x-3">
