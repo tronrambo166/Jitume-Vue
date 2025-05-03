@@ -61,6 +61,9 @@ import ProfilePage from "./components/Grants/screens/Investorprofile";
 import PitchDashboard from "./components/Grants/screens/PitchDeck";
 import Capitalpitch from "./components/Grants/screens/Capital-pitch";
 import GrantDetailsDashboard from "./components/Grants/screens/GrantDetails";
+import OfficeHours from "./components/Grants/screens/OfficeHours";
+import NotificationSettingsPage from "./components/Grants/screens/NotificationSettings";
+import MeetingsComponent from "./components/Grants/screens/Meetings";
 
 const router = createBrowserRouter([
     {
@@ -134,29 +137,33 @@ const router = createBrowserRouter([
         path: "/Dashboard",
         element: <GrantsOverview />,
         children: [
-          { index: true, element: <DashboardHome /> },
-          { path: "funding/investments", element: <InvestmentDashboard /> },
-          {
-            path: "funding/deals",
-            children: [{ path: ":opportunityId", element: <DealRoom /> }],
-          },
-          { path: "grants/discover", element: <TujitumeGrantPortal /> },
-          { path: "grants/:id", element: <GrantDetailsDashboard/>},
-          // Add analytics as a child route
-          { path: "analytics", element: <TujitumeDashboard /> },
-          { path: "profile", element: <ProfilePage /> },
-          { path: "pitch", element: <PitchDashboard /> },
-          { path: "capital-pitch", element: <Capitalpitch/> }
-
-
-
+            { index: true, element: <DashboardHome /> },
+            { path: "funding/investments", element: <InvestmentDashboard /> },
+            {
+                path: "funding/deals",
+                children: [{ path: ":opportunityId", element: <DealRoom /> }],
+            },
+            { path: "grants/discover", element: <TujitumeGrantPortal /> },
+            { path: "grants/:id", element: <GrantDetailsDashboard /> },
+            { path: "analytics", element: <TujitumeDashboard /> },
+            { path: "profile", element: <ProfilePage /> },
+            {
+                path: "settings",
+                children: [
+                    { path: "profile", element: <OfficeHours /> },
+                    {
+                        path: "notifications",
+                        element: <NotificationSettingsPage />,
+                    }, // Added
+                    { path: "security", element: <MeetingsComponent /> }, // Added
+                ],
+            },
+            { path: "pitch", element: <PitchDashboard /> },
+            { path: "capital-pitch", element: <Capitalpitch /> },
         ],
-      },
-      // Remove the standalone analytics route
-      // { path: "/analytics", element: <TujitumeDashboard /> },
+    },
     { path: "/investment-capital", element: <InvestmentCapital /> },
     { path: "/grant-funding", element: <GrantFunding /> },
-
     {
         path: "/dashboard",
         element: <Dashboard />, // This ensures the Dashboard doesn't use the DefaultLayout

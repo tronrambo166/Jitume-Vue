@@ -452,26 +452,26 @@ const Navigation = {
                               },
                           ],
                       },
-                      {
-                          icon: Clock,
-                          label: "Office Hours",
-                          to: "/Dashboard/office-hours",
-                      },
+                      //   {
+                      //       icon: Clock,
+                      //       label: "Office Hours",
+                      //       to: "/Dashboard/office-hours",
+                      //   },
                       {
                           icon: Settings,
                           label: "Schedule",
                           to: "/Dashboard/settings",
                           children: [
                               {
-                                  label: "Profile",
+                                  label: "Office-Hours",
                                   to: "/Dashboard/settings/profile",
                               },
                               {
-                                  label: "Notification.php",
-                                  to: "/Dashboard/settings/notifications",
+                                  label: "Calenda",
+                                  to: "#/Dashboard/settings/notifications",
                               },
                               {
-                                  label: "Security",
+                                  label: "Meetings",
                                   to: "/Dashboard/settings/security",
                               },
                           ],
@@ -575,11 +575,11 @@ const Navigation = {
         const navigate = useNavigate();
         const { addToast } = useToast();
 
-        // useEffect(() => {
-        //   if (user.incestor) {
-        //     navigate('/');
-        //   }
-        // }, [token, navigate]);
+        useEffect(() => {
+          if (user.incestor) {
+            navigate('/');
+          }
+        }, [token, navigate]);
 
         // console.log("user",user)
 
