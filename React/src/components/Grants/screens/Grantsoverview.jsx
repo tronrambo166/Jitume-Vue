@@ -354,131 +354,122 @@ const Navigation = {
         }, []);
         console.log("user", user);
 
-        const navItems = [
-            ...(user?.investor
-                ? [
-                      {
-                          icon: Home,
-                          label: "Dashboard",
-                          to: "/Dashboard",
-                          exact: true,
-                      },
-                  ]
-                : []),
-            // Hide if user.investor === 3
-            ...(user?.investor !== 3
-                ? [
-                      {
-                          icon: Briefcase,
-                          label: "Grants Funding",
-                          to: "/Dashboard/grants",
-                          children: [
-                              //   {
-                              //       label: "Discover Grants",
-                              //       to: "/grants-overview/grants/discover",
-                              //   },
-                              ...(user?.investor
-                                  ? [
-                                        {
-                                            label: "Add New Grants",
-                                            to: "/Dashboard/grants/discover",
-                                        },
-                                        {
-                                            label: "Pitches",
-                                            to: "/Dashboard/pitch",
-                                        },
-                                    ]
-                                  : [
-                                        {
-                                            label: "Apply for Grant",
-                                            to: "/Dashboard/grants/discover",
-                                        },
-                                    ]),
-                          ],
-                      },
-                  ]
-                : []),
-            // Hide if user.investor === 2
-            ...(user?.investor !== 2
-                ? [
-                      {
-                          icon: CreditCard,
-                          label: "Investment Funding",
-                          to: "/Dashboard/funding",
-                          children: [
-                              ...(user?.investor
-                                  ? [
-                                        {
-                                            label: "Add New Investment",
-                                            to: "/Dashboard/funding/investments",
-                                        },
-                                        {
-                                            label: "Pitches",
-                                            to: "/Dashboard/capital-pitch",
-                                        },
-                                    ]
-                                  : [
-                                        {
-                                            label: "Apply for Investment",
-                                            to: "/Dashboard/funding/investments",
-                                        },
-                                    ]),
-                          ],
-                      },
-                  ]
-                : []),
+       const navItems = [
+           ...(user?.investor
+               ? [
+                     {
+                         icon: Home,
+                         label: "Dashboard",
+                         to: "/Dashboard/overview",
+                         exact: true,
+                     },
+                 ]
+               : []),
+           // Hide if user.investor === 3
+           ...(user?.investor !== 3
+               ? [
+                     {
+                         icon: Briefcase,
+                         label: "Grants Funding",
+                         to: "/Dashboard/overview/grants",
+                         children: [
+                             ...(user?.investor
+                                 ? [
+                                       {
+                                           label: "Add New Grants",
+                                           to: "/Dashboard/overview/grants/discover",
+                                       },
+                                       {
+                                           label: "Pitches",
+                                           to: "/Dashboard/overview/pitch",
+                                       },
+                                   ]
+                                 : [
+                                       {
+                                           label: "Apply for Grant",
+                                           to: "/Dashboard/overview/grants/discover",
+                                       },
+                                   ]),
+                         ],
+                     },
+                 ]
+               : []),
+           // Hide if user.investor === 2
+           ...(user?.investor !== 2
+               ? [
+                     {
+                         icon: CreditCard,
+                         label: "Investment Funding",
+                         to: "/Dashboard/overview/funding",
+                         children: [
+                             ...(user?.investor
+                                 ? [
+                                       {
+                                           label: "Add New Investment",
+                                           to: "/Dashboard/overview/funding/investments",
+                                       },
+                                       {
+                                           label: "Pitches",
+                                           to: "/Dashboard/overview/capital-pitch",
+                                       },
+                                   ]
+                                 : [
+                                       {
+                                           label: "Apply for Investment",
+                                           to: "/Dashboard/overview/funding/investments",
+                                       },
+                                   ]),
+                         ],
+                     },
+                 ]
+               : []),
 
-            ...(user?.investor
-                ? [
-                      {
-                          icon: BarChart2,
-                          label: "Analytics",
-                          to: "/Dashboard/impact",
-                          children: [
-                              {
-                                  label: "Metrics Dashboard",
-                                  to: "/Dashboard/analytics",
-                              },
-                          ],
-                      },
-                      {
-                          icon: Users,
-                          label: "Profile",
-                          to: "/Dashboard/network",
-                          children: [
-                              {
-                                  label: "Profile",
-                                  to: "/Dashboard/profile",
-                              },
-                          ],
-                      },
-                      //   {
-                      //       icon: Clock,
-                      //       label: "Office Hours",
-                      //       to: "/Dashboard/office-hours",
-                      //   },
-                      {
-                          icon: Settings,
-                          label: "Schedule",
-                          to: "/Dashboard/settings",
-                          children: [
-                              {
-                                  label: "Office-Hours",
-                                  to: "/Dashboard/settings/profile",
-                              },
-                              {
-                                  label: "Calenda",
-                                  to: "#/Dashboard/settings/notifications",
-                              },
-                              {
-                                  label: "Meetings",
-                                  to: "/Dashboard/settings/security",
-                              },
-                          ],
-                      },
-                  ]
-                : []),
-        ].filter(Boolean); // Remove any undefined entries
+           ...(user?.investor
+               ? [
+                     {
+                         icon: BarChart2,
+                         label: "Analytics",
+                         to: "/Dashboard/overview/analytics",
+                         children: [
+                             {
+                                 label: "Metrics Dashboard",
+                                 to: "/Dashboard/overview/analytics",
+                             },
+                         ],
+                     },
+                     {
+                         icon: Users,
+                         label: "Profile",
+                         to: "/Dashboard/overview/profile",
+                         children: [
+                             {
+                                 label: "Profile",
+                                 to: "/Dashboard/overview/profile",
+                             },
+                         ],
+                     },
+                     {
+                         icon: Settings,
+                         label: "Schedule",
+                         to: "/Dashboard/overview/settings",
+                         children: [
+                             {
+                                 label: "Office-Hours",
+                                 to: "/Dashboard/overview/settings/profile",
+                             },
+                            //  {
+                            //      label: "Calendar",
+                            //      to: "/Dashboard/overview/settings/notifications",
+                            //  },
+                             {
+                                 label: "Meetings",
+                                 to: "/Dashboard/overview/settings/security",
+                             },
+                         ],
+                     },
+                 ]
+               : []),
+       ].filter(Boolean);// Remove any undefined entries
         return (
             <>
                 <div

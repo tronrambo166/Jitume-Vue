@@ -96,7 +96,7 @@ const Dashboardhero = () => {
                 setId(data.user.id);
 
                 if (data.user.investor == 3 || data.user.investor === 2) {
-                    navigate("/grants-overview");
+                    navigate("/dashboard/overview");
                 } else {
                     navigate("/dashboard");
                 }
@@ -395,7 +395,7 @@ const Dashboardhero = () => {
                                             </button>
                                             {!user?.investor && (
                                                 <Link
-                                                    to="/grants-overview/grants/discover"
+                                                    to="/Dashboard/overview"
                                                     onClick={() =>
                                                         setShowMore(false)
                                                     }
