@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\Models\Listing;
+use App\Models\Grant;
+use App\Models\CapitalOffer;
 use App\Models\Services;
 use App\Models\Cart;
 use App\Models\Shop;
@@ -15,7 +17,7 @@ use App\Models\Conversation;
 use App\Models\serviceBook;
 use App\Models\Prospects;
 use App\Models\Reports;
-use Session; 
+use Session;
 use Hash;
 use Auth;
 use Mail;
@@ -29,27 +31,27 @@ class PagesController extends Controller
 {
     protected $api_base_url;
     public function __construct()
-    {   
+    {
         $this->api_base_url = env('API_BASE_URL');
     }
-	
+
 
     public function skip(){
         Session::put('investor_auth',true);
         return redirect('/');
     }
 
-    public function loginB(Request $request){   
-    $email = $request->email;  
-    $password = $request->password;    
+    public function loginB(Request $request){
+    $email = $request->email;
+    $password = $request->password;
     $user = User::where('email',$email)->where('business',1)->first();
     if($user!=''){
     if(password_verify($password, $user->password)){
         Session::put('business_email', $email);
         Session::put('business_auth',true);
         return redirect('business');// view('business.index');
-    }    
-    
+    }
+
     else {
         Session::put('login_err','Incorrect Credentials!');
         return redirect('home');
@@ -58,23 +60,23 @@ class PagesController extends Controller
         Session::put('login_err','Business User do not exist!');
         return redirect('home');
     }
-    	
+
     }
 
 
-    public function loginI(Request $request){   
-    $email = $request->email; 
-    $password = $request->password;    
+    public function loginI(Request $request){
+    $email = $request->email;
+    $password = $request->password;
     $user = User::where('email',$email)->first();
     if($user!=''){
     if(password_verify($password, $user->password)){
-    Session::put('investor_email', $user->email);    
+    Session::put('investor_email', $user->email);
         Session::put('investor_auth',true);
     return redirect('home');
     }
 
     else
-    {    
+    {
         Session::put('login_err','Incorrect Credentials!');
         return redirect('home');
     } }
@@ -83,7 +85,7 @@ class PagesController extends Controller
         Session::put('login_err','Service Provider do not exist!');
         return redirect('home');
     }
-        
+
     }
 
 public function registerS(Request $request){
@@ -92,16 +94,16 @@ $user = User::latest()->first();
 
 try {
  User::where('id',$user->id)->update([
-            'service' => $service           
+            'service' => $service
            ]);
-        Session::put('service_email', $user->email);       
+        Session::put('service_email', $user->email);
         Session::put('auth_service','Registration Success! Please Log In to continue.');
 
         if (Session::has('social_reg')) {
-         Session::put('service_auth',true);   
+         Session::put('service_auth',true);
          return redirect('services');
 
-          } 
+          }
 
         Auth::logout();
         session_unset();
@@ -110,7 +112,7 @@ try {
 } catch (\Exception $e) {
 
 Session::put('login_err',$e->getMessage());
-    return redirect()->back(); 
+    return redirect()->back();
 }
 }
 
@@ -122,17 +124,17 @@ $user = User::latest()->first();
 
 try {
  User::where('id',$user->id)->update([
-            'business' => $business           
-           ]); 
+            'business' => $business
+           ]);
 
-        Session::put('business_email', $user->email); 
+        Session::put('business_email', $user->email);
         Session::put('auth_business','Registration Success! Please Log In to continue!');
 
         if (Session::has('social_reg')){
             Session::put('business_auth',true);
             return redirect('business');
-        } 
-        
+        }
+
 
         Auth::logout();
         session_unset();
@@ -141,7 +143,7 @@ try {
 } catch (\Exception $e) {
 
 Session::put('login_err',$e->getMessage());
-    return redirect()->back(); 
+    return redirect()->back();
 }
 }
 
@@ -158,19 +160,19 @@ public function registerI(Request $request){
  Session::put('old_website',$request->website);
 //Session
 
-$investor = 1; 
+$investor = 1;
 $user = User::where('email',$request->email)->first();
-    if($user!=''){ 
+    if($user!=''){
     Session::put('login_err','User already exists!');
      return redirect('/');
-     } 
+     }
 
  $inv_range = $request->inv_range;
- $interested_cats = $request->interested_cats;  
+ $interested_cats = $request->interested_cats;
  $past_investment = $request->past_investment;
  $website = $request->website;
  $id_no = $request->id_no;
- $tax_pin = $request->tax_pin;  
+ $tax_pin = $request->tax_pin;
 
 //Upload
 $user = User::latest()->first();
@@ -181,7 +183,7 @@ try {
  if(isset($request->pin))
  $pin=$request->file('pin');
 
- if (!file_exists('files/investor/'.$inv_id)) 
+ if (!file_exists('files/investor/'.$inv_id))
           mkdir('files/investor/'.$inv_id, 0777, true);
           $loc='files/investor/'.$inv_id.'/';
 
@@ -194,7 +196,7 @@ try {
             return redirect('/');
           }
 
-          $create_name=$uniqid.'.'.$ext;    
+          $create_name=$uniqid.'.'.$ext;
           //Move uploaded file
           $pin->move($loc, $create_name);
           $final_pin=$loc.$create_name;
@@ -212,7 +214,7 @@ try {
           $create_name=$uniqid.'.'.$ext;
           $passport->move($loc, $create_name);
           $final_passport=$loc.$create_name;
-             }else $final_passport=''; 
+             }else $final_passport='';
 //Upload
 
             User::create([
@@ -227,23 +229,23 @@ try {
             'id_no' => $id_no,
             'tax_pin' => $tax_pin,
             'inv_range' =>  json_encode($inv_range),
-            'interested_cats' =>  json_encode($interested_cats), 
+            'interested_cats' =>  json_encode($interested_cats),
             'past_investment' => $past_investment,
-            'website' => $website         
-           ]);  
-       
+            'website' => $website
+           ]);
+
        Session::put('login_success','Registration successfull! Please login to continue.');
        return redirect('/');
 
-        Session::put('investor_email', $user->email);    
+        Session::put('investor_email', $user->email);
         Session::put('investor_auth',true);
-         return redirect('/');             
+         return redirect('/');
 
 
 } catch (\Exception $e) {
    return $e->getMessage();
     Session::put('login_err',$e->getMessage());
-     return redirect('/'); 
+     return redirect('/');
 }
 
 }
@@ -251,16 +253,16 @@ try {
 //-------------------Login-Register
 //public function clear(){ \Artisan::call('config:cache'); return redirect('home'); }
 
- public function home(){ 
- 
+ public function home(){
+
          $app_url = config('app.url');
-         $auth_user = auth()->user(); 
+         $auth_user = auth()->user();
          $business=0;
          if($auth_user){
-         $auth_user = true; 
+         $auth_user = true;
          }
          else {
-         if(Session::has('investor_email')){   
+         if(Session::has('investor_email')){
          $mail = Session::get('investor_email');
          $user = User::where('email',$mail)->first();
          if($user->investor == 1 )
@@ -269,14 +271,14 @@ try {
     }
 
          return view('home',compact('auth_user','app_url','business'));
-        
+
     }
 
 
 public function getAddress($search){
 // Read the JSON file
 $json = file_get_contents("js/airports.json");
-  
+
 // Decode the JSON file
 $array = json_decode($json, true);
 // Display data
@@ -296,7 +298,7 @@ foreach ($array as $loc) {
 }
 }
 return response()->json(['data'=>$results]);
-        
+
     }
 
 
@@ -345,10 +347,10 @@ $results = array();
 if($ids==0)
     return response()->json([ 'data' => $results, 'count'=>0] );
 
-$ids = explode(',',$ids); 
+$ids = explode(',',$ids);
 $max_range = 0;
 $store_range = array();
-foreach($ids as $id){ 
+foreach($ids as $id){
 
      //if(strlen($id) > 3) $id = dechex($id); return $id;
     if($id!=''){
@@ -362,7 +364,7 @@ foreach($ids as $id){
     if($listing){
     if(isset($files->file))
     $listing->file = $files->file;
-    else 
+    else
       $listing->file = false;
     $listing->investment_needed = $listing->investment_needed;
 
@@ -392,22 +394,31 @@ return response()->json([ 'data' => $results, 'count'=>count($results), 'max_ran
 public function latBusiness(){
 $results = array();
 
-    $listingSpecial = Listing::where('category','Agriculture')
-    ->orWhere('category','Renewable/Energy')
-    ->where('active',1)->latest()->get();
-    $results = $listingSpecial;
+    try{
+        $listingSpecial = Listing::where('category','Agriculture')
+            ->orWhere('category','Renewable/Energy')
+            ->where('active',1)->latest()->get();
+        $results = $listingSpecial;
 
-    $listings = Listing::where('active',1)->latest()->get();$i=1;
-    foreach($listings as $listing){
-        if(strlen($listing->location) > 30)
-        $listing->location = substr($listing->location,0,30).'...';
-        $listing->investment_needed = number_format($listing->investment_needed);
-        $listing->file=null;
-        if($i<11 && ($listing->category!='Agriculture' && $listing->category!='Renewable/Energy') )
-         $results[] = $listing;$i++;
-     }
+        $listings = Listing::where('active',1)->latest()->get();$i=1;
+        foreach($listings as $listing){
+            if(strlen($listing->location) > 30)
+                $listing->location = substr($listing->location,0,30).'...';
+            $listing->investment_needed = number_format($listing->investment_needed);
+            $listing->file=null;
+            if($i<11 && ($listing->category!='Agriculture' && $listing->category!='Renewable/Energy') )
+                $results[] = $listing;$i++;
+        }
 
-return response()->json([ 'data' => $results] );
+        $grants = Grant::where('visible',1)->latest()->get();
+        $capitals = CapitalOffer::where('visible',1)->latest()->get();
+
+        return response()->json([ 'data' => $results, 'grants' => $grants, 'capitals' => $capitals],200 );
+    }
+    catch (\Exception $e){
+        return response()->json([ 'mesasge' => $e->getMessage()],400 );
+    }
+
 }
 
 public function latServices(){
@@ -437,28 +448,28 @@ $loc = false;
 
 if($location != ''){
     $check_listing = $this->findNearestServices($lat,$lng,100);
-    $loc = true; 
+    $loc = true;
 }
 
 else if($listing_name !='' ){
   $check_listing = Services::where('name', 'like', '%'.$listing_name.'%')->get();
-  return response()->json(['results'=>$check_listing,'loc'=>$loc, 'success' => "Success", 'count'=>count($check_listing)]);  
+  return response()->json(['results'=>$check_listing,'loc'=>$loc, 'success' => "Success", 'count'=>count($check_listing)]);
 }
 
 else if($listing_name =='' && $location == '' && $category == ''){
   $check_listing = Services::get();
-  return response()->json(['results'=>$check_listing,'loc'=>$loc, 'success' => "Success", 'count'=>count($check_listing)]);  
+  return response()->json(['results'=>$check_listing,'loc'=>$loc, 'success' => "Success", 'count'=>count($check_listing)]);
 }
 
 else
 $check_listing = Services::where('category',$category)->get();
 
-// foreach($check_listing as $service){ 
+// foreach($check_listing as $service){
 //     if (str_contains(strtolower($service->name), $listing_name)) {
 //         $results[] = $service;
 // } }
 
-// foreach($check_listing as $service){ 
+// foreach($check_listing as $service){
 //     if (!str_contains(strtolower($service->name), $listing_name)) {
 //         $results[] = $service;
 // } }
@@ -470,8 +481,8 @@ return response()->json(['results'=>$listings,'loc'=>$loc, 'success' => "Success
 
 public function serviceResults($ids){
 $results = array();$count = 0;
-$ids = explode(',',$ids); 
-foreach($ids as $id){ 
+$ids = explode(',',$ids);
+foreach($ids as $id){
     if($id!='' && $id != 'no-results'){
     $listing = Services::where('id',$id)->first();
 
@@ -499,8 +510,8 @@ return response()->json([ 'data' => $results, 'count'=>$count] );
 
 public function serviceResultsAuth($ids){
 $results = array();$count = 0;
-$ids = explode(',',$ids); 
-foreach($ids as $id){ 
+$ids = explode(',',$ids);
+foreach($ids as $id){
     if($id!='' && $id != 'no-results'){
     $listing = Services::where('id',$id)->first();
 
@@ -534,7 +545,7 @@ $name = str_replace('-','/',$name);
 $name = str_replace('_',' ',$name);
 
 $listing = Listing::where('active',1)->where('category',$name)->get();
-foreach($listing as $list){ 
+foreach($listing as $list){
 
     $files = businessDocs::where('business_id',$list->id)
     ->where('media',1)->first();
@@ -590,18 +601,18 @@ public function invest($listing_id,$id,$amount,$realAmount,$type){
     listing::where('id',$listing_id)->update([
         'investment_needed' => $old_amount-$amount,
         'share' => $old_share-$new_share
-    ]); 
+    ]);
 
-        $info=['eq_name'=>$Equipment->eq_name, 
+        $info=['eq_name'=>$Equipment->eq_name,
             'Name'=>$investor->name,'amount'=>$amount,
-            'email' => $investor->email, 'type'=>$type]; 
+            'email' => $investor->email, 'type'=>$type];
 
         $user['to'] = 'sohaankane@gmail.com';//$listing->contact_mail;
 
         Mail::send('invest_mail', $info, function($msg) use ($user){
             $msg->to($user['to']);
             $msg->subject('Test Invest Alert!');
-        });  
+        });
 
     if($type=='donate')
     return response()->json(['response' => 'Donate request sent successfully!'] );
@@ -612,9 +623,9 @@ public function invest($listing_id,$id,$amount,$realAmount,$type){
 
 public function priceFilter($min, $max, $ids){
     $results = array();
-    $ids = explode(',',$ids); 
-    foreach($ids as $id){ 
-    if($id!=''){ 
+    $ids = explode(',',$ids);
+    foreach($ids as $id){
+    if($id!=''){
     $listing = Listing::where('id',$id)->first();
     $range = explode('-',$listing->y_turnover);
     $db_min = $range[0];$db_max = $range[1];
@@ -625,16 +636,16 @@ public function priceFilter($min, $max, $ids){
     if(isset($files->file))
     $listing->file = $files->file;
     else $listing->file = false;
-//Video check  
+//Video check
 
     $listing->lat = (float)$listing->lat;
     $listing->lng = (float)$listing->lng;
-    
+
     $listing->investment_needed = number_format($listing->investment_needed);
 
     $range[0] = number_format($range[0]); $range[1] = number_format($range[1]);
     $listing->y_turnover = implode('-', $range);
-    
+
     if((int)$min <= $db_max && (int)$max >= $db_max)
         //return response()->json([ 'data' => (int)$min .'<='. $db_min .'//'.(int)$max .'>='. $db_max]);
     //if($db_max >= (int)$max)
@@ -652,26 +663,26 @@ public function priceFilterS($min, $max, $ids){  //return $ids;
     $ids = explode(',',$ids);
 
     try {
-    foreach($ids as $id){ 
+    foreach($ids as $id){
     if($id!=''){
     $listing = Services::where('id',$id)->first();
         if($listing){
         $range = $listing->price;
-        $db_price = $range;  
+        $db_price = $range;
 
         $listing->lat = (float)$listing->lat;
         $listing->lng = (float)$listing->lng;
 
         $listing->price = number_format($listing->price);
         if((int)$min <= $db_price && (int)$max >= $db_price)
-        $results[] = $listing; 
+        $results[] = $listing;
     }
 }
-} 
-} 
+}
+}
 catch (Exception $e) {
        return response()->json($e->getMessage());
-} 
+}
 
     return response()->json([ 'data' => $results]);
 }
@@ -679,9 +690,9 @@ catch (Exception $e) {
 
 public function priceFilter_amount($min, $max, $ids){
     $results = array();
-    $ids = explode(',',$ids); 
-    foreach($ids as $id){ 
-    if($id!=''){ 
+    $ids = explode(',',$ids);
+    foreach($ids as $id){
+    if($id!=''){
     $listing = Listing::where('id',$id)->first();
     $range = $listing->investment_needed;
     //$db_min = $range[0];$db_max = $range[1];
@@ -692,14 +703,14 @@ public function priceFilter_amount($min, $max, $ids){
     if(isset($files->file))
     $listing->file = $files->file;
     else $listing->file = false;
-//Video check  
+//Video check
 
     $listing->lat = (float)$listing->lat;
     $listing->lng = (float)$listing->lng;
-    
+
     $listing->investment_needed = number_format($listing->investment_needed);
     $turnover = explode('-', $listing->y_turnover);
-    $turnover[0] = number_format($turnover[0]); 
+    $turnover[0] = number_format($turnover[0]);
     $turnover[1] = number_format($turnover[1]);
     $listing->y_turnover = implode('-', $turnover);
 
@@ -751,7 +762,7 @@ public function cart(){
         $total = $total + ($c->price*$c->qty);
 
     $cartCount = count($cart);
-    return response()->json(['data'=>$cart, 'cart' => $cartCount, 
+    return response()->json(['data'=>$cart, 'cart' => $cartCount,
         'total'=>$total] );
     }
 
@@ -765,7 +776,7 @@ public function removeCart($id){
     }
 
 
-  public function download_business($id){ 
+  public function download_business($id){
     $doc = Listing::where('id',$id)->first();
     $file=$doc->document;
     if( $file == null || !file_exists(public_path($file)) ){
@@ -777,12 +788,12 @@ public function removeCart($id){
     $extension = pathinfo($url, PATHINFO_EXTENSION);
 
     response()->json(['type'=>$extension]);
-    return response()->download($url); 
+    return response()->download($url);
     //return response()->json(['data'=>'success']);
 
     }
 
-    public function download_statement($id){ 
+    public function download_statement($id){
     $doc = Listing::where('id',$id)->first();
     $file=$doc->yeary_fin_statement;
     if( $file == null || !file_exists(public_path($file)) ){
@@ -799,9 +810,9 @@ public function removeCart($id){
     response()->json(['type'=>$extension]);
     return response()->download($url);
     }
-    //return Response::download($file, 'business_statement.pdf', $headers); 
+    //return Response::download($file, 'business_statement.pdf', $headers);
 
-    } 
+    }
 
 
 public function update_profile(Request $req)
@@ -809,7 +820,7 @@ public function update_profile(Request $req)
     $obj = new testController();
     try{
          $user_id=Auth::id();
-         $current = User::where('id',$user_id)->first();     
+         $current = User::where('id',$user_id)->first();
          $data['fname'] = $req->fname;
          $data['lname'] = $req->lname;
          $data['mname'] =  $req->mname;
@@ -817,10 +828,10 @@ public function update_profile(Request $req)
          $data['dob'] = $req->dob;
          $data['gender'] = $req->gender;
          $old_cover = $current->image;
-         
+
          // if($req->password!=null)
          // $data['password'] = password_hash($req->password,PASSWORD_DEFAULT)
-         
+
          //FILE
           $image=$req->file('image');
           if($image) {
@@ -839,7 +850,7 @@ public function update_profile(Request $req)
            unlink($old_cover);
 
           }
-        
+
          $Update = User::where('id',$user_id)->update($data);
 
          if($Update)
@@ -848,9 +859,9 @@ public function update_profile(Request $req)
         catch(\Exception $e){
             return response()->json([ 'status' => 404, 'message' => $e->getMessage() ]);
         }
-       
+
 }
-    
+
 
 
 public function profile(){
@@ -860,7 +871,7 @@ return view('profile',compact('user'));
 
 }
 
-public function JitumeSubscribeEmail($email){ 
+public function JitumeSubscribeEmail($email){
     $user['to'] = $email;
     $info = [];
     $prospect = Prospects::create([
@@ -874,9 +885,9 @@ public function JitumeSubscribeEmail($email){
 
 }
 
-public function submitReport(Request $request){ 
-    
-    try{ 
+public function submitReport(Request $request){
+
+    try{
         $listing_id = $request->listing_id;
 
         if($request->type == 1){
@@ -888,12 +899,12 @@ public function submitReport(Request $request){
 
           $user = User::select('fname','email')->where('id', Auth::id())->first();
           $document=$request->file('document');
-          if($document) {        
+          if($document) {
           $ext=strtolower($document->getClientOriginalExtension());
           // if($ext!='pdf' && $ext!= 'docx')
           // {
           //   return response()->json([ 'status' => 404, 'message' => 'Only pdf & docx are allowed!']);
-          // } 
+          // }
           }
 
         $report = Reports::create([
@@ -913,7 +924,7 @@ public function submitReport(Request $request){
           $uniqid=hexdec(uniqid());
           $ext=strtolower($document->getClientOriginalExtension());
           $create_name=$uniqid.'.'.$ext;
-          if(!file_exists('files/reports/'.$report_id)) 
+          if(!file_exists('files/reports/'.$report_id))
           mkdir('files/reports/'.$report_id, 0777, true);
 
           $loc='files/reports/'.$report_id.'/';
@@ -985,7 +996,7 @@ public function findNearestListings($latitude, $longitude, $radius = 100)
             ->get();
 
         return $listings;
-    } 
+    }
 
 
 //Class closes
