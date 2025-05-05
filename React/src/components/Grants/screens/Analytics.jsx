@@ -735,7 +735,7 @@ const fetchMatches = async () => {
     color={COLORS.primary}
   />
   <Card 
-    title="High Potential" 
+    title="Top Matches" 
     value={distributionData.find(d => d.label === '80-89')?.value || 0}  // Using distribution data
     change="+9.1%" 
     icon={<Zap size={16} />} 
@@ -784,7 +784,7 @@ const fetchMatches = async () => {
     <LEDIndicator 
       value={distributionData.find(d => d.label === "80-89")?.value || 0} // High Potential (count of 80-89 scores)
       threshold={{ medium: 1, high: 2 }} // Adjust based on your needs
-      label="High Potential" 
+      label="Top Matches" 
       size={60}
     />
     <LEDIndicator 
