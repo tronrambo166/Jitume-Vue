@@ -19,7 +19,7 @@ export const mockEngagements = [
     },
     {
         id: 3,
-        name: "Sarah Williams",
+        name: "Tottenham Hotspur",
         role: "Grant Owner",
         description:
             "Sarah is a grant owner with a focus on supporting startups in the renewable energy sector. She has a background in environmental science and is passionate about making a positive impact.",
