@@ -64,6 +64,7 @@ import GrantDetailsDashboard from "./components/Grants/screens/GrantDetails";
 import OfficeHours from "./components/Grants/screens/OfficeHours";
 import NotificationSettingsPage from "./components/Grants/screens/NotificationSettings";
 import MeetingsComponent from "./components/Grants/screens/Meetings";
+import UserManagement from "./components/Grants/screens/UserManagement";
 
 const router = createBrowserRouter([
     {
@@ -147,6 +148,7 @@ const router = createBrowserRouter([
             { path: "grants/:id", element: <GrantDetailsDashboard /> },
             { path: "analytics", element: <TujitumeDashboard /> },
             { path: "profile", element: <ProfilePage /> },
+            { path: "usermanagement", element: <UserManagement /> },
             {
                 path: "settings",
                 children: [

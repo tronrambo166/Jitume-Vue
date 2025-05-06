@@ -3,9 +3,12 @@ import { Link } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import axiosClient from "../../axiosClient";
 import SkeletonCard from "./SkeletonCard";
-
+import Image from "../../assets/emaillogo.png";
 const Invest = () => {
-    const [cards, setCards] = useState([]);
+    const [activeTab, setActiveTab] = useState("businesses"); // 'businesses', 'grants', or 'capitals'
+    const [businesses, setBusinesses] = useState([]);
+    const [grants, setGrants] = useState([]);
+    const [capitals, setCapitals] = useState([]);
     const [loading, setLoading] = useState(false);
     const scrollRef = useRef(null);
     const [canScrollBack, setCanScrollBack] = useState(false);
@@ -13,33 +16,32 @@ const Invest = () => {
     const [currentCount, setCurrentCount] = useState(0);
 
     useEffect(() => {
-        const getCards = () => {
+        const fetchData = async () => {
             setLoading(true);
-            axiosClient
-                .get("/latBusiness")
-                .then(({ data }) => {
-                    setLoading(false);
-                    setCards(data.data);
-                    setCurrentCount(data.data.length - 1);
-                    setTimeout(checkScrollConditions, 0); // Ensure scroll conditions are checked after the DOM updates
-                    console.log(data);
-                })
-                .catch((err) => {
-                    console.log(err);
-                    setLoading(false);
-                });
+            try {
+                const { data } = await axiosClient.get("/latBusiness");
+                setBusinesses(data.data);
+                setGrants(data.grants || []);
+                setCapitals(data.capitals || []);
+                setCurrentCount(data.data.length - 1);
+                setTimeout(checkScrollConditions, 0);
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setLoading(false);
+            }
         };
-        getCards();
+        fetchData();
     }, []);
 
     const checkScrollConditions = () => {
         if (scrollRef.current) {
             const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-            const isAtStart = scrollLeft <= 0; // If scrolled to the start
-            const isAtEnd = scrollLeft + clientWidth >= scrollWidth; // If scrolled to the end
+            const isAtStart = scrollLeft <= 0;
+            const isAtEnd = scrollLeft + clientWidth >= scrollWidth;
 
-            setCanScrollBack(!isAtStart); // Enable left button if not at the start
-            setCanScrollForward(!isAtEnd); // Enable right button if not at the end
+            setCanScrollBack(!isAtStart);
+            setCanScrollForward(!isAtEnd);
         }
     };
 
@@ -47,7 +49,7 @@ const Invest = () => {
         if (scrollRef.current) {
             const { scrollLeft, clientWidth } = scrollRef.current;
             scrollRef.current.scrollLeft = scrollLeft + clientWidth;
-            setTimeout(checkScrollConditions, 100); // Recheck scroll status after scrolling
+            setTimeout(checkScrollConditions, 100);
         }
     };
 
@@ -55,7 +57,7 @@ const Invest = () => {
         if (scrollRef.current) {
             const { scrollLeft, clientWidth } = scrollRef.current;
             scrollRef.current.scrollLeft = scrollLeft - clientWidth;
-            setTimeout(checkScrollConditions, 100); // Recheck scroll status after scrolling
+            setTimeout(checkScrollConditions, 100);
         }
     };
 
@@ -72,7 +74,225 @@ const Invest = () => {
                 }
             };
         }
-    }, []);
+    }, [activeTab]); // Re-check when tab changes
+
+    const renderBusinessCards = () => {
+        return businesses.map((business) => (
+            <Link
+                to={`/listing/${btoa(btoa(business.id))}`}
+                key={business.id}
+                onClick={() => window.scrollTo(0, 0)}
+            >
+                <div className="flex-shrink-0 w-[260px] sm:w-[320px] md:w-[350px] lg:w-[390px] bg-white border border-gray-200 rounded-2xl p-3 sm:p-4 flex flex-col justify-between">
+                    <img
+                        src={business.image}
+                        alt={business.name}
+                        className="w-full h-40 sm:h-48 object-cover rounded-lg"
+                        loading="lazy"
+                    />
+                    <div className="mt-3 flex-grow">
+                        <p className="text-sm sm:text-base text-gray-500">
+                            {business.category}
+                        </p>
+                        <h3 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold">
+                            {business.name}
+                        </h3>
+                        <p className="text-sm sm:text-base text-gray-600 mt-2 truncate">
+                            {business.details}
+                        </p>
+                    </div>
+                    <div className="mt-4 bg-sky-50 p-3 rounded-lg">
+                        <div className="text-sm text-gray-800 flex justify-between mb-2">
+                            <span>
+                                <span className="font-semibold">
+                                    $
+                                    {business.investment_needed.toLocaleString()}
+                                </span>
+                                <br />
+                                Goal
+                            </span>
+                            <span>
+                                <span className="font-semibold">
+                                    {business.invest_count}
+                                </span>
+                                <br />
+                                Invested
+                            </span>
+                        </div>
+                        <div className="h-2 bg-gray-200 rounded-full mt-2">
+                            <div
+                                className="bg-green-600 h-full rounded-full"
+                                style={{
+                                    width: `${
+                                        (business.amount_collected /
+                                            parseInt(
+                                                business.investment_needed
+                                                    .toString()
+                                                    .replace(",", "")
+                                            )) *
+                                        100
+                                    }%`,
+                                }}
+                            ></div>
+                        </div>
+                        <div className="text-sm text-gray-800 flex justify-between mt-2">
+                            <span>
+                                Collected:{" "}
+                                <strong>
+                                    ${business.amount_collected / 1000}K
+                                </strong>
+                            </span>
+                            <span>
+                                Need:{" "}
+                                <strong>
+                                    $
+                                    {(parseInt(
+                                        business.investment_needed
+                                            .toString()
+                                            .replace(",", "")
+                                    ) -
+                                        parseInt(business.amount_collected)) /
+                                        1000}
+                                    K
+                                </strong>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </Link>
+        ));
+    };
+
+    const renderGrantCards = () => {
+        return grants.map((grant) => (
+            <div
+                key={grant.id}
+                className="flex-shrink-0 w-[260px] sm:w-[320px] md:w-[350px] lg:w-[390px] bg-white border border-gray-200 rounded-2xl p-3 sm:p-4 flex flex-col justify-between"
+            >
+                <div className="bg-blue-100 w-full h-40 sm:h-48 flex items-center justify-center rounded-lg">
+                    <span className="text-blue-600 font-bold">
+                        <img
+                            src={grant.logo || Image}
+                            className="w-20 h-20"
+                        />
+                    </span>
+                </div>
+                <div className="mt-3 flex-grow">
+                    <p className="text-sm sm:text-base text-gray-500">
+                        {grant.grant_focus}
+                    </p>
+                    <h3 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold">
+                        {grant.grant_title}
+                    </h3>
+                    <p className="text-sm sm:text-base text-gray-600 mt-2 truncate">
+                        {grant.eligibility_criteria}
+                    </p>
+                </div>
+                <div className="mt-4 bg-blue-50 p-3 rounded-lg">
+                    <div className="text-sm text-gray-800 flex justify-between mb-2">
+                        <span>
+                            <span className="font-semibold">
+                                ${grant.total_grant_amount}
+                            </span>
+                            <br />
+                            Total Grant
+                        </span>
+                        <span>
+                            <span className="font-semibold">
+                                ${grant.funding_per_business}
+                            </span>
+                            <br />
+                            Per Business
+                        </span>
+                    </div>
+                    <div className="text-sm text-gray-800">
+                        <p className="font-semibold">Deadline:</p>
+                        <p>
+                            {new Date(
+                                grant.application_deadline
+                            ).toLocaleDateString()}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        ));
+    };
+
+    const renderCapitalCards = () => {
+        return capitals.map((capital) => (
+            <div
+                key={capital.id}
+                className="flex-shrink-0 w-[260px] sm:w-[320px] md:w-[350px] lg:w-[390px] bg-white border border-gray-200 rounded-2xl p-3 sm:p-4 flex flex-col justify-between"
+            >
+                <div className="bg-purple-100 w-full h-40 sm:h-48 flex items-center justify-center rounded-lg">
+                    <span className="text-purple-600 font-bold">
+                        <img
+                            src={capital.logo || Image}
+                            className="w-20 h-20"
+                        />
+                    </span>
+                </div>
+                <div className="mt-3 flex-grow">
+                    <p className="text-sm sm:text-base text-gray-500">
+                        {capital.sectors}
+                    </p>
+                    <h3 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold">
+                        {capital.offer_title}
+                    </h3>
+                    <p className="text-sm sm:text-base text-gray-600 mt-2 truncate">
+                        {capital.milestone_requirements}
+                    </p>
+                </div>
+                <div className="mt-4 bg-purple-50 p-3 rounded-lg">
+                    <div className="text-sm text-gray-800 flex justify-between mb-2">
+                        <span>
+                            <span className="font-semibold">
+                                ${capital.total_capital_available}
+                            </span>
+                            <br />
+                            Total Capital
+                        </span>
+                        <span>
+                            <span className="font-semibold">
+                                ${capital.per_startup_allocation}
+                            </span>
+                            <br />
+                            Per Startup
+                        </span>
+                    </div>
+                    <div className="text-sm text-gray-800">
+                        <p className="font-semibold">Stage Focus:</p>
+                        <p>{capital.startup_stage}</p>
+                    </div>
+                </div>
+            </div>
+        ));
+    };
+
+    const getActiveCards = () => {
+        switch (activeTab) {
+            case "grants":
+                return grants.length > 0 ? (
+                    renderGrantCards()
+                ) : (
+                    <p className="text-gray-500">No grants available</p>
+                );
+            case "capitals":
+                return capitals.length > 0 ? (
+                    renderCapitalCards()
+                ) : (
+                    <p className="text-gray-500">
+                        No capital offerings available
+                    </p>
+                );
+            default:
+                return businesses.length > 0 ? (
+                    renderBusinessCards()
+                ) : (
+                    <p className="text-gray-500">No businesses available</p>
+                );
+        }
+    };
 
     return (
         <>
@@ -85,9 +305,47 @@ const Invest = () => {
 
                 <div className="flex justify-between items-center my-4">
                     <h2 className="text-[28px] sm:text-[44px] font-bold text-slate-700 leading-snug sm:leading-tight">
-                        Invest In Promising
-                        <br /> New Ventures
+                        {activeTab === "businesses" &&
+                            "Invest In Promising New Ventures"}
+                        {activeTab === "grants" &&
+                            "Available Grant Opportunities"}
+                        {activeTab === "capitals" &&
+                            "Capital Investment Offers"}
                     </h2>
+                </div>
+
+                {/* Tab switcher */}
+                <div className="flex mb-6 border-b border-gray-200">
+                    <button
+                        onClick={() => setActiveTab("businesses")}
+                        className={`py-2 px-4 font-medium text-sm sm:text-base ${
+                            activeTab === "businesses"
+                                ? "text-green-600 border-b-2 border-green-600"
+                                : "text-gray-500 hover:text-gray-700"
+                        }`}
+                    >
+                        Businesses
+                    </button>
+                    <button
+                        onClick={() => setActiveTab("grants")}
+                        className={`py-2 px-4 font-medium text-sm sm:text-base ${
+                            activeTab === "grants"
+                                ? "text-blue-600 border-b-2 border-blue-600"
+                                : "text-gray-500 hover:text-gray-700"
+                        }`}
+                    >
+                        Grants
+                    </button>
+                    <button
+                        onClick={() => setActiveTab("capitals")}
+                        className={`py-2 px-4 font-medium text-sm sm:text-base ${
+                            activeTab === "capitals"
+                                ? "text-purple-600 border-b-2 border-purple-600"
+                                : "text-gray-500 hover:text-gray-700"
+                        }`}
+                    >
+                        Capital
+                    </button>
                 </div>
 
                 <div className="flex justify-end space-x-1 mb-2">
@@ -125,102 +383,7 @@ const Invest = () => {
                         ? Array(4)
                               .fill()
                               .map((_, index) => <SkeletonCard key={index} />)
-                        : cards.map((card, index) => (
-                              <Link
-                                  to={`/listing/${btoa(btoa(card.id))}`}
-                                  key={card.id}
-                                  onClick={() => window.scrollTo(0, 0)}
-                              >
-                                  <div
-                                      key={index}
-                                      className="flex-shrink-0 w-[260px] sm:w-[320px] md:w-[350px] lg:w-[390px] bg-white border border-gray-200 rounded-2xl p-3 sm:p-4 flex flex-col justify-between"
-                                  >
-                                      <img
-                                          src={card.image}
-                                          alt={card.name}
-                                          className="w-full h-40 sm:h-48 object-cover rounded-lg"
-                                          loading="lazy"
-                                      />
-                                      <div className="mt-3 flex-grow">
-                                          <p className="text-sm sm:text-base text-gray-500">
-                                              {card.tags}
-                                          </p>
-                                          <h3 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold">
-                                              {card.name}
-                                          </h3>
-                                          <p className="text-sm sm:text-base text-gray-600 mt-2 truncate">
-                                              {card.details}
-                                          </p>
-                                      </div>
-                                      <div className="mt-4 bg-sky-50 p-3 rounded-lg">
-                                          <div className="text-sm text-gray-800 flex justify-between mb-2">
-                                              <span>
-                                                  <span className="font-semibold">
-                                                      $
-                                                      {card.investment_needed.toLocaleString()}
-                                                  </span>
-                                                  <br />
-                                                  Goal
-                                              </span>
-                                              <span>
-                                                  <span className="font-semibold">
-                                                      {card.invest_count}
-                                                  </span>
-                                                  <br />
-                                                  Invested
-                                              </span>
-                                          </div>
-                                          <div className="h-2 bg-gray-200 rounded-full mt-2">
-                                              <div
-                                                  className="bg-green-600 h-full rounded-full"
-                                                  style={{
-                                                      width: `${
-                                                          (card.amount_collected /
-                                                              parseInt(
-                                                                  card.investment_needed
-                                                                      .toString()
-                                                                      .replace(
-                                                                          ",",
-                                                                          ""
-                                                                      )
-                                                              )) *
-                                                          100
-                                                      }%`,
-                                                  }}
-                                              ></div>
-                                          </div>
-
-                                          <div className="text-sm text-gray-800 flex justify-between mt-2">
-                                              <span>
-                                                  Collected:{" "}
-                                                  <strong>
-                                                      $
-                                                      {card.amount_collected /
-                                                          1000}
-                                                      K
-                                                  </strong>
-                                              </span>
-                                              <span>
-                                                  Need:{" "}
-                                                  <strong>
-                                                      $
-                                                      {(parseInt(
-                                                          card.investment_needed
-                                                              .toString()
-                                                              .replace(",", "")
-                                                      ) -
-                                                          parseInt(
-                                                              card.amount_collected
-                                                          )) /
-                                                          1000}
-                                                      K
-                                                  </strong>
-                                              </span>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </Link>
-                          ))}
+                        : getActiveCards()}
                 </div>
             </div>
         </>

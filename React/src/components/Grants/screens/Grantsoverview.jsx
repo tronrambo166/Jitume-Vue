@@ -376,7 +376,7 @@ const Navigation = {
                              ...(user?.investor
                                  ? [
                                        {
-                                           label: "Add New Grants",
+                                           label: "Grants",
                                            to: "/Dashboard/overview/grants/discover",
                                        },
                                        {
@@ -386,7 +386,7 @@ const Navigation = {
                                    ]
                                  : [
                                        {
-                                           label: "Apply for Grant",
+                                           label: "Apply for Grants",
                                            to: "/Dashboard/overview/grants/discover",
                                        },
                                    ]),
@@ -415,7 +415,7 @@ const Navigation = {
                                    ]
                                  : [
                                        {
-                                           label: "Apply for Investment",
+                                           label: "Apply for Investments",
                                            to: "/Dashboard/overview/funding/investments",
                                        },
                                    ]),
@@ -446,6 +446,10 @@ const Navigation = {
                                  label: "Profile",
                                  to: "/Dashboard/overview/profile",
                              },
+                             {
+                                 label: "User-Management",
+                                 to: "/Dashboard/overview/usermanagement",
+                             },
                          ],
                      },
                      {
@@ -457,10 +461,10 @@ const Navigation = {
                                  label: "Office-Hours",
                                  to: "/Dashboard/overview/settings/profile",
                              },
-                            //  {
-                            //      label: "Calendar",
-                            //      to: "/Dashboard/overview/settings/notifications",
-                            //  },
+                             //  {
+                             //      label: "Calendar",
+                             //      to: "/Dashboard/overview/settings/notifications",
+                             //  },
                              {
                                  label: "Meetings",
                                  to: "/Dashboard/overview/settings/security",
@@ -878,54 +882,58 @@ const GrantsOverview = () => {
                 <Navigation.TopNavigation />
 
                 <div className="p-6 bg-gray-50 min-h-screen">
-    {/* Header Section */}
-    <div className="mb-6">
-        <Navigation.Breadcrumbs />
-        
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mt-2">
-            {/* Left side - Title and description */}
-            <div className="flex-1">
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-800 flex items-center">
-                    <Briefcase className="mr-3 text-black" />
-                    {user.investor === 2
-                        ? "Grant Funding Dashboard"
-                        : user.investor === 3
-                        ? "Investment Capitals Dashboard"
-                        : "Entrepreneur Dashboard"}
-                </h1>
-                <div className="text-gray-500 mt-2">
-                    {user.investor === 2
-                        ? "Track your funding applications and matches"
-                        : user.investor === 3
-                        ? "Discover and negotiate investment opportunities"
-                        : "Explore and manage grant opportunities"}
-                </div>
-            </div>
+                    {/* Header Section */}
+                    <div className="mb-6">
+                        <Navigation.Breadcrumbs />
 
-            {/* Right side - Button (only for investor 2) */}
-            {user.investor === 2 && location.pathname !== "/Dashboard/grants/discover" && (
-  <button
-    onClick={toggleOfferModal}
-    className="px-4 py-2 bg-gradient-to-r from-green-700 to-yellow-500
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mt-2">
+                            {/* Left side - Title and description */}
+                            <div className="flex-1">
+                                <h1 className="text-2xl md:text-3xl font-bold text-gray-800 flex items-center">
+                                    <Briefcase className="mr-3 text-black" />
+                                    {user.investor === 2
+                                        ? "Grant Funding Dashboard"
+                                        : user.investor === 3
+                                        ? "Investment Capitals Dashboard"
+                                        : "Business Dashboard"}
+                                </h1>
+                                <div className="text-gray-500 mt-2">
+                                    {user.investor === 2
+                                        ? "Track your funding applications and matches"
+                                        : user.investor === 3
+                                        ? "Discover and negotiate investment opportunities"
+                                        : "Explore and manage grant opportunities"}
+                                </div>
+                            </div>
+
+                            {/* Right side - Button (only for investor 2) */}
+                            {user.investor === 2 &&
+                                location.pathname !==
+                                    "/Dashboard/grants/discover" && (
+                                    <button
+                                        onClick={toggleOfferModal}
+                                        className="px-4 py-2 bg-gradient-to-r from-green-700 to-yellow-500
     text-white font-medium rounded-md hover:brightness-110
     transition-all duration-200 flex items-center gap-2
-    shadow-md hover:shadow-green-200/30 active:scale-[0.98]"  >
-    <PlusCircle className="mr-2" />
-    Add New Grant
-  </button>
-)}
+    shadow-md hover:shadow-green-200/30 active:scale-[0.98]"
+                                    >
+                                        <PlusCircle className="mr-2" />
+                                        Add New Grant
+                                    </button>
+                                )}
+                        </div>
+                    </div>
 
-        </div>
-    </div>
+                    {/* Main Content Area */}
+                    <div className="">
+                        <Outlet />
+                    </div>
 
-    {/* Main Content Area */}
-    <div className="">
-        <Outlet />
-    </div>
-
-    {/* Modal */}
-    {isOfferModalOpen && <OfferGrantModal onClose={toggleOfferModal} />}
-</div>
+                    {/* Modal */}
+                    {isOfferModalOpen && (
+                        <OfferGrantModal onClose={toggleOfferModal} />
+                    )}
+                </div>
             </div>
 
             {/* Modal Components */}
@@ -950,10 +958,8 @@ const GrantsOverview = () => {
           }}
         />
       )} */}
-              {isOfferModalOpen && <OfferGrantModal onClose={toggleOfferModal} />}
-
+            {isOfferModalOpen && <OfferGrantModal onClose={toggleOfferModal} />}
         </div>
-
     );
 };
 
@@ -1232,7 +1238,7 @@ const GrantApplication = () => {
     return (
         <div className="p-6">
             <h1 className="text-2xl font-bold mb-6 text-gray-800">
-                Apply for a Grant
+                Apply for a Grants
             </h1>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
