@@ -163,111 +163,109 @@ const Invest = () => {
         ));
     };
 
-    const renderGrantCards = () => {
-        return grants.map((grant) => (
-            <div
-                key={grant.id}
-                className="flex-shrink-0 w-[260px] sm:w-[320px] md:w-[350px] lg:w-[390px] bg-white border border-gray-200 rounded-2xl p-3 sm:p-4 flex flex-col justify-between"
-            >
-                <div className="bg-blue-100 w-full h-40 sm:h-48 flex items-center justify-center rounded-lg">
-                    <span className="text-blue-600 font-bold">
-                        <img
-                            src={grant.logo || Image}
-                            className="w-20 h-20"
-                        />
-                    </span>
-                </div>
-                <div className="mt-3 flex-grow">
-                    <p className="text-sm sm:text-base text-gray-500">
-                        {grant.grant_focus}
-                    </p>
-                    <h3 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold">
-                        {grant.grant_title}
-                    </h3>
-                    <p className="text-sm sm:text-base text-gray-600 mt-2 truncate">
-                        {grant.eligibility_criteria}
-                    </p>
-                </div>
-                <div className="mt-4 bg-blue-50 p-3 rounded-lg">
-                    <div className="text-sm text-gray-800 flex justify-between mb-2">
-                        <span>
-                            <span className="font-semibold">
-                                ${grant.total_grant_amount}
-                            </span>
-                            <br />
-                            Total Grant
-                        </span>
-                        <span>
-                            <span className="font-semibold">
-                                ${grant.funding_per_business}
-                            </span>
-                            <br />
-                            Per Business
-                        </span>
-                    </div>
-                    <div className="text-sm text-gray-800">
-                        <p className="font-semibold">Deadline:</p>
-                        <p>
-                            {new Date(
-                                grant.application_deadline
-                            ).toLocaleDateString()}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        ));
-    };
+   const renderGrantCards = () => {
+       return grants.map((grant) => (
+           <div
+               key={grant.id}
+               className="flex-shrink-0 w-[260px] sm:w-[320px] md:w-[350px] lg:w-[390px] bg-white border border-gray-200 rounded-2xl p-3 sm:p-4 flex flex-col justify-between"
+           >
+               <div className="bg-emerald-100 w-full h-40 sm:h-48 flex items-center justify-center rounded-lg overflow-hidden p-4">
+                   <img
+                       src={grant.logo || Image}
+                       className="object-contain w-auto h-auto max-w-[80%] max-h-[80%] min-w-[60px] min-h-[60px]"
+                       alt="Grant logo"
+                   />
+               </div>
+               <div className="mt-3 flex-grow">
+                   <p className="text-sm sm:text-base text-gray-500 line-clamp-1">
+                       {grant.grant_focus}
+                   </p>
+                   <h3 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold line-clamp-2">
+                       {grant.grant_title}
+                   </h3>
+                   <p className="text-sm sm:text-base text-gray-600 mt-2 line-clamp-3">
+                       {grant.eligibility_criteria}
+                   </p>
+               </div>
+               <div className="mt-4 bg-emerald-50 p-3 rounded-lg">
+                   <div className="text-sm text-gray-800 flex justify-between mb-2">
+                       <span className="line-clamp-2">
+                           <span className="font-semibold">
+                               ${grant.total_grant_amount}
+                           </span>
+                           <br />
+                           Total Grant
+                       </span>
+                       <span className="line-clamp-2">
+                           <span className="font-semibold">
+                               ${grant.funding_per_business}
+                           </span>
+                           <br />
+                           Per Business
+                       </span>
+                   </div>
+                   <div className="text-sm text-gray-800">
+                       <p className="font-semibold">Deadline:</p>
+                       <p className="line-clamp-1">
+                           {new Date(
+                               grant.application_deadline
+                           ).toLocaleDateString()}
+                       </p>
+                   </div>
+               </div>
+           </div>
+       ));
+   };
 
-    const renderCapitalCards = () => {
-        return capitals.map((capital) => (
-            <div
-                key={capital.id}
-                className="flex-shrink-0 w-[260px] sm:w-[320px] md:w-[350px] lg:w-[390px] bg-white border border-gray-200 rounded-2xl p-3 sm:p-4 flex flex-col justify-between"
-            >
-                <div className="bg-purple-100 w-full h-40 sm:h-48 flex items-center justify-center rounded-lg">
-                    <span className="text-purple-600 font-bold">
-                        <img
-                            src={capital.logo || Image}
-                            className="w-20 h-20"
-                        />
-                    </span>
-                </div>
-                <div className="mt-3 flex-grow">
-                    <p className="text-sm sm:text-base text-gray-500">
-                        {capital.sectors}
-                    </p>
-                    <h3 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold">
-                        {capital.offer_title}
-                    </h3>
-                    <p className="text-sm sm:text-base text-gray-600 mt-2 truncate">
-                        {capital.milestone_requirements}
-                    </p>
-                </div>
-                <div className="mt-4 bg-purple-50 p-3 rounded-lg">
-                    <div className="text-sm text-gray-800 flex justify-between mb-2">
-                        <span>
-                            <span className="font-semibold">
-                                ${capital.total_capital_available}
-                            </span>
-                            <br />
-                            Total Capital
-                        </span>
-                        <span>
-                            <span className="font-semibold">
-                                ${capital.per_startup_allocation}
-                            </span>
-                            <br />
-                            Per Startup
-                        </span>
-                    </div>
-                    <div className="text-sm text-gray-800">
-                        <p className="font-semibold">Stage Focus:</p>
-                        <p>{capital.startup_stage}</p>
-                    </div>
-                </div>
-            </div>
-        ));
-    };
+   const renderCapitalCards = () => {
+       return capitals.map((capital) => (
+           <div
+               key={capital.id}
+               className="flex-shrink-0 w-[260px] sm:w-[320px] md:w-[350px] lg:w-[390px] bg-white border border-gray-200 rounded-2xl p-3 sm:p-4 flex flex-col justify-between"
+           >
+               <div className="bg-yellow-100 w-full h-40 sm:h-48 flex items-center justify-center rounded-lg overflow-hidden p-4">
+                   <img
+                       src={capital.logo || Image}
+                       className="object-contain w-auto h-auto max-w-[80%] max-h-[80%] min-w-[60px] min-h-[60px]"
+                       alt="Grant logo"
+                   />
+               </div>
+               <div className="mt-3 flex-grow">
+                   <p className="text-sm sm:text-base text-gray-500 line-clamp-1">
+                       {capital.sectors}
+                   </p>
+                   <h3 className="text-lg sm:text-xl mt-1 text-slate-800 font-semibold line-clamp-2">
+                       {capital.offer_title}
+                   </h3>
+                   <p className="text-sm sm:text-base text-gray-600 mt-2 line-clamp-3">
+                       {capital.milestone_requirements}
+                   </p>
+               </div>
+               <div className="mt-4 bg-yellow-50 p-3 rounded-lg">
+                   <div className="text-sm text-gray-800 flex justify-between mb-2">
+                       <span className="line-clamp-2">
+                           <span className="font-semibold">
+                               ${capital.total_capital_available}
+                           </span>
+                           <br />
+                           Total Capital
+                       </span>
+                       <span className="line-clamp-2">
+                           <span className="font-semibold">
+                               ${capital.per_startup_allocation}
+                           </span>
+                           <br />
+                           Per Startup
+                       </span>
+                   </div>
+                   <div className="text-sm text-gray-800">
+                       <p className="font-semibold">Stage Focus:</p>
+                       <p className="line-clamp-2">{capital.startup_stage}</p>
+                   </div>
+               </div>
+           </div>
+       ));
+   };
 
     const getActiveCards = () => {
         switch (activeTab) {
@@ -330,7 +328,7 @@ const Invest = () => {
                         onClick={() => setActiveTab("grants")}
                         className={`py-2 px-4 font-medium text-sm sm:text-base ${
                             activeTab === "grants"
-                                ? "text-blue-600 border-b-2 border-blue-600"
+                                ? "text-green-600 border-b-2 border-green-600"
                                 : "text-gray-500 hover:text-gray-700"
                         }`}
                     >
@@ -340,7 +338,7 @@ const Invest = () => {
                         onClick={() => setActiveTab("capitals")}
                         className={`py-2 px-4 font-medium text-sm sm:text-base ${
                             activeTab === "capitals"
-                                ? "text-purple-600 border-b-2 border-purple-600"
+                                ? "text-yellow-600 border-b-2 border-yellow-600"
                                 : "text-gray-500 hover:text-gray-700"
                         }`}
                     >
