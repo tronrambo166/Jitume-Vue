@@ -65,7 +65,7 @@ const Sidebar = ({ onToggle }) => {
 
         fetchUserData();
     }, []);
- 
+
     useEffect(() => {
         axiosClient.get("business/getCurrSubscription/").then((data) => {
             console.log(data);
@@ -498,6 +498,69 @@ const Sidebar = ({ onToggle }) => {
                             </li>
                             <hr></hr>
                             {!user.investor && (
+                                <>
+                                    <li className="nav-item mb-6 rounded-xl py-2">
+                                        <NavLink
+                                            className={({ isActive }) =>
+                                                `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
+                                                    isActive
+                                                        ? "bg-green-800 text-white"
+                                                        : "hover:bg-gray-200 text-gray-400"
+                                                }`
+                                            }
+                                            to="/dashboard/schedule"
+                                            end
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            {({ isActive }) => (
+                                                <>
+                                                    <FaClipboardList
+                                                        className={`text-[18px] ${
+                                                            isActive
+                                                                ? "text-white"
+                                                                : "text-green"
+                                                        }`}
+                                                    />
+                                                    {!isShrunk && (
+                                                        <span>Schedule</span>
+                                                    )}
+                                                </>
+                                            )}
+                                        </NavLink>
+                                    </li>
+
+                                    <li className="nav-item mb-6 rounded-xl py-2">
+                                        <NavLink
+                                            className={({ isActive }) =>
+                                                `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
+                                                    isActive
+                                                        ? "bg-green text-white"
+                                                        : "hover:bg-gray-200 text-gray-400"
+                                                }`
+                                            }
+                                            to="/dashboard/meeting"
+                                            end
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            {({ isActive }) => (
+                                                <>
+                                                    <FaUsers
+                                                        className={`text-[18px] ${
+                                                            isActive
+                                                                ? "text-white"
+                                                                : "text-green"
+                                                        }`}
+                                                    />
+                                                    {!isShrunk && (
+                                                        <span>Meeting</span>
+                                                    )}
+                                                </>
+                                            )}
+                                        </NavLink>
+                                    </li>
+                                </>
+                            )}
+                            {!user.investor && (
                                 <li className="nav-item mb-6 rounded-xl py-2">
                                     {/* Added margin-bottom (mb-6) to move it up from the bottom */}
                                     <NavLink
@@ -557,7 +620,9 @@ const Sidebar = ({ onToggle }) => {
                                                         }`}
                                                     />
                                                     {!isShrunk && (
-                                                        <span>Schedule</span>
+                                                        <span>
+                                                            Office Hours
+                                                        </span>
                                                     )}
                                                 </>
                                             )}
