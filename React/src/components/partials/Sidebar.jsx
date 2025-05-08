@@ -13,7 +13,7 @@ import {
     FaFileAlt,
     FaHandshake,
     FaClipboardList,
-    FaCopy,
+    FaUsers,
 } from "react-icons/fa";
 import { BiSearch } from "react-icons/bi";
 import { BiFolder } from "react-icons/bi";
@@ -532,6 +532,70 @@ const Sidebar = ({ onToggle }) => {
                                     </NavLink>
                                 </li>
                             )}
+                            {user.investor === 1 && (
+                                <>
+                                    <li className="nav-item mb-6 rounded-xl py-2">
+                                        <NavLink
+                                            className={({ isActive }) =>
+                                                `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
+                                                    isActive
+                                                        ? "bg-green-800 text-white"
+                                                        : "hover:bg-gray-200 text-gray-400"
+                                                }`
+                                            }
+                                            to="/dashboard/schedule"
+                                            end
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            {({ isActive }) => (
+                                                <>
+                                                    <FaClipboardList
+                                                        className={`text-[18px] ${
+                                                            isActive
+                                                                ? "text-white"
+                                                                : "text-green"
+                                                        }`}
+                                                    />
+                                                    {!isShrunk && (
+                                                        <span>Schedule</span>
+                                                    )}
+                                                </>
+                                            )}
+                                        </NavLink>
+                                    </li>
+
+                                    <li className="nav-item mb-6 rounded-xl py-2">
+                                        <NavLink
+                                            className={({ isActive }) =>
+                                                `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300 ${
+                                                    isActive
+                                                        ? "bg-green text-white"
+                                                        : "hover:bg-gray-200 text-gray-400"
+                                                }`
+                                            }
+                                            to="/dashboard/meeting"
+                                            end
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            {({ isActive }) => (
+                                                <>
+                                                    <FaUsers
+                                                        className={`text-[18px] ${
+                                                            isActive
+                                                                ? "text-white"
+                                                                : "text-green"
+                                                        }`}
+                                                    />
+                                                    {!isShrunk && (
+                                                        <span>Meeting</span>
+                                                    )}
+                                                </>
+                                            )}
+                                        </NavLink>
+                                    </li>
+                                </>
+                            )}
+
                             <hr />
 
                             {1 && (

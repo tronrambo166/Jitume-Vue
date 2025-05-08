@@ -168,7 +168,7 @@ const router = createBrowserRouter([
     { path: "/grant-funding", element: <GrantFunding /> },
     {
         path: "/dashboard",
-        element: <Dashboard />, // This ensures the Dashboard doesn't use the DefaultLayout
+        element: <Dashboard />,
         children: [
             { path: "", element: <Dashhome /> },
             { path: "my-businesses", element: <MyBusinesses /> },
@@ -187,6 +187,10 @@ const router = createBrowserRouter([
             { path: "my-subscription", element: <MySubscription /> },
             { path: "addbusiness", element: <AddBusinesS /> },
             { path: "settings/", element: <Settings /> },
+
+            // ✅ New routes added below
+            { path: "schedule", element: <OfficeHours /> },
+            { path: "meeting", element: <MeetingsComponent /> },
         ],
     },
 ]);

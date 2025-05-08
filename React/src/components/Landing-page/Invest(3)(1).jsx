@@ -328,7 +328,7 @@ const Invest = () => {
                         onClick={() => setActiveTab("grants")}
                         className={`py-2 px-4 font-medium text-sm sm:text-base ${
                             activeTab === "grants"
-                                ? "text-green-600 border-b-2 border-green-600"
+                                ? "text-[#164822] border-b-2 border-[#164822]"
                                 : "text-gray-500 hover:text-gray-700"
                         }`}
                     >
