@@ -35,17 +35,17 @@ class MpesaController extends Controller
         //$this->Bearer = $this->secret;
     }
 
-     public function authorizes()
+     public function auth()
     {
         //Auth
         try {
 
             $url = "https://dev-api.lipr.io/merchant/api/v1/sessions";
             $fields = [
-                'api_key' => $this->public,
-                'api_secret' => $this->secret,
+                'api_key' => 'a52b00aa0de1cc4fc742876b92e480e9',
+                'api_secret' => '9c87f7c6d71312d89a86473eeefec46f',
             ];
-            $fields_string = http_build_query($fields);
+            $fields_string = json_encode($fields);
             //open connection
             $ch = curl_init();
             curl_setopt($ch,CURLOPT_URL, $url);
@@ -58,7 +58,9 @@ class MpesaController extends Controller
             curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
             $result = curl_exec($ch);
             $resultArray = json_decode($result, true);
-            return response($resultArray);
+            return $token = $resultArray['data']['token'];
+            //echo '<pre>'; print_r($resultArray); echo '<pre>'; return $result;
+
 
         } catch (\Exception $e) {
             return response()->json(['status' => 400, 'message' => $e->getMessage()]);
@@ -93,7 +95,7 @@ class MpesaController extends Controller
             curl_close($curl);
 
             if($err)
-                return $err
+                return $err;
             echo '<pre>'; print_r($response); echo '<pre>';
         } catch (\Exception $e) {
             return response()->json(['status' => 400, 'message' => $e->getMessage()]);
@@ -104,16 +106,17 @@ class MpesaController extends Controller
     public function collect_payment()
     {
         try {
-            $token = $this->authorizes();
+            $token = $this->auth();
             $url = "https://dev-api.lipr.io/merchant/api/v1/payments/collect_via_mobile";
             $fields = [
-                "phone_number" => "254721601031",
-                "amount"=> 100.00,
-                "currency"=> "KES",
-                "description"=> "Payment for order #1234",
-                "wallet_id"=> 104
+                "wallet_account" => "3e391f4b-26c9-4aa1-86b0-55ed92a85ba8",
+                "customer_account_number" => "254721601031", //Owen
+                "amount" => "20",
+                "narration" => "collect money",
+                "callback_url" => "https://beta.tujitume.com"
             ];
-            $fields_string = http_build_query($fields);
+
+            $fields_string = json_encode($fields);
             //open connection
             $ch = curl_init();
             curl_setopt($ch,CURLOPT_URL, $url);

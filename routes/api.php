@@ -17,6 +17,10 @@ use App\Http\Controllers\InvCapitalController;
 use App\Http\Controllers\MatchController;
 use App\Http\Controllers\AnalyticsController;
 
+// PayStack/LIPA  ROUTES
+Route::get('/lipa-authorize', [MpesaController::class,'auth']);
+Route::get('/collect_payment', [MpesaController::class,'collect_payment']);
+Route::get('/wallets', [MpesaController::class,'wallets']);
 //P R O T E C T E D    R O U T E S
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('logout',[AuthController::class,'logout']);
@@ -65,10 +69,7 @@ Route::middleware('auth:sanctum')->group(function() {
     //Unlock small fee
     Route::post('/stripe.post.coversation', [checkoutController::class, 'stripeConversation'])->name('stripe.post.coversation');
 
-    // PayStack/LIPA  ROUTES
-    Route::post('/lipa-authorize', [MpesaController::class,'authorize']);
-    Route::post('/collect_payment', [MpesaController::class,'collect_payment']);
-    Route::get('/wallets', [MpesaController::class,'wallets']);
+
 
     Route::post('/initialize', [PayStackController::class, 'initialize']);
     Route::get('/create-subaccount', [PayStackController::class, 'create_subaccount']);
