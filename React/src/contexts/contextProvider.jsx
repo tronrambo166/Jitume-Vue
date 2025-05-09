@@ -1,8 +1,8 @@
 // src/contexts/contextProvider.js
 import { useContext, useState, useEffect, createContext } from "react";
 import { useIdleTimer } from "react-idle-timer";
-//import PaymentForm from '../components/partials/PaymentForm';
-import { MessageProvider } from "../components/dashboard/Service/msgcontext"
+import { MessageProvider } from "../components/dashboard/Service/msgcontext";
+
 const StateContext = createContext({
     user: null,
     token: null,
@@ -34,19 +34,67 @@ export const ContextProvider = ({ children }) => {
     const [listing_id, setListing_id] = useState({});
     const [purpose, setPurpose] = useState({});
     const [percent, setPercent] = useState({});
+    const [deviceId, setDeviceId] = useState(localStorage.getItem("DEVICE_ID") || generateDeviceId());
+
+    // Generate a unique device ID
+    function generateDeviceId() {
+        const id = 'device_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem("DEVICE_ID", id);
+        return id;
+    }
 
     const setToken = (token) => {
         _setToken(token);
         if (token) {
             localStorage.setItem("ACCESS_TOKEN", token);
+            // Store the current device ID when setting token
+            localStorage.setItem("CURRENT_DEVICE", deviceId);
+            // Start checking for device changes
+            startDeviceCheck();
         } else {
             localStorage.removeItem("ACCESS_TOKEN");
+            localStorage.removeItem("CURRENT_DEVICE");
+            stopDeviceCheck();
         }
     };
 
     const setAmounts = (amounts) => {
         _setAmounts(amounts);
         console.log("From the context we have", amounts);
+    };
+
+    // Device check interval
+    let deviceCheckInterval = null;
+
+    const startDeviceCheck = () => {
+        // Check every 5 seconds if we're still the active device
+        deviceCheckInterval = setInterval(() => {
+            const currentDevice = localStorage.getItem("CURRENT_DEVICE");
+            if (currentDevice && currentDevice !== deviceId) {
+                // Another device has taken over, log out
+                handleLogout();
+            }
+        }, 5000);
+    };
+
+    const stopDeviceCheck = () => {
+        if (deviceCheckInterval) {
+            clearInterval(deviceCheckInterval);
+            deviceCheckInterval = null;
+        }
+    };
+
+    const handleLogout = () => {
+        stopDeviceCheck();
+        localStorage.removeItem("ACCESS_TOKEN");
+        setToken(null);
+        setUser(null);
+        setAuth(null);
+        // Show logout message
+        $.alert({
+            title: "Session Ended",
+            content: "You've been logged out because you logged in from another device.",
+        });
     };
 
     useEffect(() => {
@@ -81,10 +129,16 @@ export const ContextProvider = ({ children }) => {
         // Add listeners for tab close
         window.addEventListener("beforeunload", handleTabClose);
 
+        // Start device check if token exists
+        if (token) {
+            startDeviceCheck();
+        }
+
         return () => {
             window.removeEventListener("beforeunload", handleTabClose);
+            stopDeviceCheck();
         };
-    }, []);
+    }, [token, deviceId]);
 
     // Idle timer logic
     const TEN_SECONDS = 30 * 60 * 1000; // Idle timeout (10 seconds for testing) 5min
