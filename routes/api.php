@@ -65,9 +65,10 @@ Route::middleware('auth:sanctum')->group(function() {
     //Unlock small fee
     Route::post('/stripe.post.coversation', [checkoutController::class, 'stripeConversation'])->name('stripe.post.coversation');
 
-    // PayStack/Mpesa  ROUTES
-    Route::get('/mpesaStk', [MpesaController::class,'stk']);
-    Route::get('/mpesaCallback', [MpesaController::class,'mpesaCallback']);
+    // PayStack/LIPA  ROUTES
+    Route::post('/lipa-authorize', [MpesaController::class,'authorize']);
+    Route::post('/collect_payment', [MpesaController::class,'collect_payment']);
+    Route::get('/wallets', [MpesaController::class,'wallets']);
 
     Route::post('/initialize', [PayStackController::class, 'initialize']);
     Route::get('/create-subaccount', [PayStackController::class, 'create_subaccount']);
