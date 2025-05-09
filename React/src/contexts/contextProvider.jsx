@@ -2,6 +2,7 @@
 import { useContext, useState, useEffect, createContext } from "react";
 import { useIdleTimer } from "react-idle-timer";
 import { MessageProvider } from "../components/dashboard/Service/msgcontext";
+import { v4 as uuidv4 } from 'uuid';
 
 const StateContext = createContext({
     user: null,
@@ -31,25 +32,92 @@ export const ContextProvider = ({ children }) => {
     const [listing_id, setListing_id] = useState({});
     const [purpose, setPurpose] = useState({});
     const [percent, setPercent] = useState({});
-    const [sessionId, setSessionId] = useState(localStorage.getItem("SESSION_ID") || generateSessionId());
+    const [networkActive, setNetworkActive] = useState(true);
+    const [lastActivity, setLastActivity] = useState(Date.now());
 
-    // Generate a unique session ID
-    function generateSessionId() {
-        const id = 'session_' + Math.random().toString(36).substr(2, 16) + '_' + Date.now();
-        localStorage.setItem("SESSION_ID", id);
-        return id;
-    }
+    // Network status detection
+    useEffect(() => {
+        const handleOnline = () => setNetworkActive(true);
+        const handleOffline = () => setNetworkActive(false);
+
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+
+        return () => {
+            window.removeEventListener('online', handleOnline);
+            window.removeEventListener('offline', handleOffline);
+        };
+    }, []);
+
+    // Session heartbeat system
+    useEffect(() => {
+        if (!token) return;
+
+        const SESSION_KEY = `SESSION_${token}`;
+        const HEARTBEAT_INTERVAL = 5000; // 5 seconds
+        const ACTIVITY_THRESHOLD = 10000; // 10 seconds
+
+        // Update last activity on user interaction
+        const updateActivity = () => setLastActivity(Date.now());
+        window.addEventListener('mousemove', updateActivity);
+        window.addEventListener('keydown', updateActivity);
+        window.addEventListener('click', updateActivity);
+
+        const checkSession = () => {
+            if (!networkActive) return;
+
+            const currentSession = {
+                token,
+                lastActive: Date.now(),
+                sessionId: uuidv4()
+            };
+
+            // Store our activity
+            localStorage.setItem(SESSION_KEY, JSON.stringify(currentSession));
+
+            // Check for other sessions
+            const allSessions = Object.entries(localStorage)
+                .filter(([key]) => key.startsWith('SESSION_'))
+                .map(([_, value]) => JSON.parse(value));
+
+            // Find the most recent session with our token
+            const latestSession = allSessions
+                .filter(s => s.token === token)
+                .sort((a, b) => b.lastActive - a.lastActive)[0];
+
+            // If we're not the latest session, log out
+            if (latestSession && latestSession.lastActive > currentSession.lastActive) {
+                logout("You've been logged in from another device.");
+            }
+
+            // Clean up old sessions
+            allSessions.forEach(session => {
+                if (Date.now() - session.lastActive > ACTIVITY_THRESHOLD * 3) {
+                    localStorage.removeItem(`SESSION_${session.token}`);
+                }
+            });
+        };
+
+        // Immediate check and then periodic checks
+        checkSession();
+        const interval = setInterval(checkSession, HEARTBEAT_INTERVAL);
+
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener('mousemove', updateActivity);
+            window.removeEventListener('keydown', updateActivity);
+            window.removeEventListener('click', updateActivity);
+        };
+    }, [token, networkActive]);
 
     const setToken = (token) => {
         _setToken(token);
         if (token) {
             localStorage.setItem("ACCESS_TOKEN", token);
-            // Store session info when setting token
-            updateSessionInfo();
-            // Start checking for session conflicts
-            startSessionCheck();
+            // Force immediate session check
+            setLastActivity(Date.now());
         } else {
-            clearSession();
+            logout();
         }
     };
 
@@ -58,87 +126,23 @@ export const ContextProvider = ({ children }) => {
         console.log("From the context we have", amounts);
     };
 
-    // Session management
-    const updateSessionInfo = () => {
-        const sessionInfo = {
-            id: sessionId,
-            lastActive: Date.now(),
-            token: localStorage.getItem("ACCESS_TOKEN"),
-        };
-        localStorage.setItem("ACTIVE_SESSION", JSON.stringify(sessionInfo));
-    };
-
-    const clearSession = () => {
+    const logout = (message = "You've been logged out.") => {
         localStorage.removeItem("ACCESS_TOKEN");
-        localStorage.removeItem("ACTIVE_SESSION");
-        stopSessionCheck();
+        _setToken(null);
         setUser(null);
         setAuth(null);
-    };
-
-    // Session check interval
-    let sessionCheckInterval = null;
-
-    const startSessionCheck = () => {
-        // Check every 3 seconds for session conflicts
-        sessionCheckInterval = setInterval(() => {
-            const storedSession = localStorage.getItem("ACTIVE_SESSION");
-            
-            if (!storedSession) return;
-            
-            const parsedSession = JSON.parse(storedSession);
-            
-            // If another session has taken over
-            if (parsedSession.id !== sessionId) {
-                // Check if the other session is newer
-                if (parsedSession.lastActive > Date.now() - 5000) { // 5-second grace period
-                    handleSessionConflict();
-                }
-            } else {
-                // Update our session activity
-                updateSessionInfo();
-            }
-        }, 3000);
-    };
-
-    const stopSessionCheck = () => {
-        if (sessionCheckInterval) {
-            clearInterval(sessionCheckInterval);
-            sessionCheckInterval = null;
-        }
-    };
-
-    const handleSessionConflict = () => {
-        stopSessionCheck();
-        clearSession();
+        
         $.alert({
             title: "Session Ended",
-            content: "You've been logged out because you logged in from another device.",
+            content: message,
         });
     };
-
-    useEffect(() => {
-        // Initialize session check if token exists
-        if (token) {
-            updateSessionInfo();
-            startSessionCheck();
-        }
-
-        // Clean up on unmount
-        return () => {
-            stopSessionCheck();
-        };
-    }, [token, sessionId]);
 
     // Idle timer logic
     const IDLE_TIMEOUT = 30 * 60 * 1000; // 30 minutes
     const handleOnUserIdle = () => {
         if (token) {
-            clearSession();
-            $.alert({
-                title: "Session Expired",
-                content: "You've been logged out due to inactivity.",
-            });
+            logout("You've been logged out due to inactivity.");
         }
     };
 
