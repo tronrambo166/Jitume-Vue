@@ -12,8 +12,6 @@ const StateContext = createContext({
     setAuth: () => {},
     setUser: () => {},
     setToken: () => {},
-
-    //CHECKOUT data
     listing_id: null,
     amounts: null,
     purpose: null,
@@ -22,7 +20,6 @@ const StateContext = createContext({
     setAmounts: () => {},
     setPurpose: () => {},
     setPercent: () => {},
-    //CHECKOUT data
 });
 
 export const ContextProvider = ({ children }) => {
@@ -34,12 +31,12 @@ export const ContextProvider = ({ children }) => {
     const [listing_id, setListing_id] = useState({});
     const [purpose, setPurpose] = useState({});
     const [percent, setPercent] = useState({});
-    const [deviceId, setDeviceId] = useState(localStorage.getItem("DEVICE_ID") || generateDeviceId());
+    const [sessionId, setSessionId] = useState(localStorage.getItem("SESSION_ID") || generateSessionId());
 
-    // Generate a unique device ID
-    function generateDeviceId() {
-        const id = 'device_' + Math.random().toString(36).substr(2, 9);
-        localStorage.setItem("DEVICE_ID", id);
+    // Generate a unique session ID
+    function generateSessionId() {
+        const id = 'session_' + Math.random().toString(36).substr(2, 16) + '_' + Date.now();
+        localStorage.setItem("SESSION_ID", id);
         return id;
     }
 
@@ -47,14 +44,12 @@ export const ContextProvider = ({ children }) => {
         _setToken(token);
         if (token) {
             localStorage.setItem("ACCESS_TOKEN", token);
-            // Store the current device ID when setting token
-            localStorage.setItem("CURRENT_DEVICE", deviceId);
-            // Start checking for device changes
-            startDeviceCheck();
+            // Store session info when setting token
+            updateSessionInfo();
+            // Start checking for session conflicts
+            startSessionCheck();
         } else {
-            localStorage.removeItem("ACCESS_TOKEN");
-            localStorage.removeItem("CURRENT_DEVICE");
-            stopDeviceCheck();
+            clearSession();
         }
     };
 
@@ -63,34 +58,59 @@ export const ContextProvider = ({ children }) => {
         console.log("From the context we have", amounts);
     };
 
-    // Device check interval
-    let deviceCheckInterval = null;
-
-    const startDeviceCheck = () => {
-        // Check every 5 seconds if we're still the active device
-        deviceCheckInterval = setInterval(() => {
-            const currentDevice = localStorage.getItem("CURRENT_DEVICE");
-            if (currentDevice && currentDevice !== deviceId) {
-                // Another device has taken over, log out
-                handleLogout();
-            }
-        }, 5000);
+    // Session management
+    const updateSessionInfo = () => {
+        const sessionInfo = {
+            id: sessionId,
+            lastActive: Date.now(),
+            token: localStorage.getItem("ACCESS_TOKEN"),
+        };
+        localStorage.setItem("ACTIVE_SESSION", JSON.stringify(sessionInfo));
     };
 
-    const stopDeviceCheck = () => {
-        if (deviceCheckInterval) {
-            clearInterval(deviceCheckInterval);
-            deviceCheckInterval = null;
+    const clearSession = () => {
+        localStorage.removeItem("ACCESS_TOKEN");
+        localStorage.removeItem("ACTIVE_SESSION");
+        stopSessionCheck();
+        setUser(null);
+        setAuth(null);
+    };
+
+    // Session check interval
+    let sessionCheckInterval = null;
+
+    const startSessionCheck = () => {
+        // Check every 3 seconds for session conflicts
+        sessionCheckInterval = setInterval(() => {
+            const storedSession = localStorage.getItem("ACTIVE_SESSION");
+            
+            if (!storedSession) return;
+            
+            const parsedSession = JSON.parse(storedSession);
+            
+            // If another session has taken over
+            if (parsedSession.id !== sessionId) {
+                // Check if the other session is newer
+                if (parsedSession.lastActive > Date.now() - 5000) { // 5-second grace period
+                    handleSessionConflict();
+                }
+            } else {
+                // Update our session activity
+                updateSessionInfo();
+            }
+        }, 3000);
+    };
+
+    const stopSessionCheck = () => {
+        if (sessionCheckInterval) {
+            clearInterval(sessionCheckInterval);
+            sessionCheckInterval = null;
         }
     };
 
-    const handleLogout = () => {
-        stopDeviceCheck();
-        localStorage.removeItem("ACCESS_TOKEN");
-        setToken(null);
-        setUser(null);
-        setAuth(null);
-        // Show logout message
+    const handleSessionConflict = () => {
+        stopSessionCheck();
+        clearSession();
         $.alert({
             title: "Session Ended",
             content: "You've been logged out because you logged in from another device.",
@@ -98,69 +118,35 @@ export const ContextProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        // Check if 20 seconds have elapsed since last tab close
-        const checkTokenExpiry = () => {
-            const logoutTime = localStorage.getItem("LOGOUT_TIME");
-            const fiveMinutes = 8 * 60 * 1000; // 8 minutes in milliseconds
-
-            if (logoutTime) {
-                const elapsed = Date.now() - parseInt(logoutTime, 10);
-
-                // If 20+ seconds have passed, clear token and reset state
-                if (elapsed >= fiveMinutes) {
-                    localStorage.removeItem("ACCESS_TOKEN");
-                    localStorage.removeItem("LOGOUT_TIME");
-                    setUser(null);
-                    setAuth(null);
-                    setToken(null);
-                }
-            }
-        };
-
-        // Save the timestamp when the tab is closed
-        const handleTabClose = () => {
-            const logoutTime = Date.now();
-            localStorage.setItem("LOGOUT_TIME", logoutTime);
-        };
-
-        // When the app starts/reopens, check if the token should be removed
-        checkTokenExpiry();
-
-        // Add listeners for tab close
-        window.addEventListener("beforeunload", handleTabClose);
-
-        // Start device check if token exists
+        // Initialize session check if token exists
         if (token) {
-            startDeviceCheck();
+            updateSessionInfo();
+            startSessionCheck();
         }
 
+        // Clean up on unmount
         return () => {
-            window.removeEventListener("beforeunload", handleTabClose);
-            stopDeviceCheck();
+            stopSessionCheck();
         };
-    }, [token, deviceId]);
+    }, [token, sessionId]);
 
     // Idle timer logic
-    const TEN_SECONDS = 30 * 60 * 1000; // Idle timeout (10 seconds for testing) 5min
-    const DEBOUNCE_TIME = 1000; // Wait 1 second before checking idle state
-
+    const IDLE_TIMEOUT = 30 * 60 * 1000; // 30 minutes
     const handleOnUserIdle = () => {
-        if (token && token !== "false") {
-            localStorage.clear(); // Clear stored session data
-            localStorage.setItem("userLoggedOut", "true"); // Set a flag for logged out
-            setToken(null);
+        if (token) {
+            clearSession();
             $.alert({
-                title: "Please Log In!",
-                content: "You're Logged Out.",
+                title: "Session Expired",
+                content: "You've been logged out due to inactivity.",
             });
         }
     };
 
     useIdleTimer({
-        timeout: TEN_SECONDS, // Set to 10 seconds for accurate idle detection
+        timeout: IDLE_TIMEOUT,
         onIdle: handleOnUserIdle,
-        debounce: DEBOUNCE_TIME, // 1 second debounce time to prevent premature triggering
-        enabled: !!token && token !== "false", // Only enable if the user is logged in
+        debounce: 1000,
+        enabled: !!token,
     });
 
     return (
@@ -175,7 +161,6 @@ export const ContextProvider = ({ children }) => {
                     auth,
                     cards,
                     setCards,
-                    //PAYMENT PAGE
                     listing_id,
                     amounts,
                     purpose,
