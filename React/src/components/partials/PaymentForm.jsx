@@ -409,27 +409,25 @@ const PaymentForm = () => {
 
     }, []);
 
-    //MPESA
-    const MpesaInit = () => {
+    //M P E S A
+    const LiprInit = () => {
         const usdToKen = 100 * 128.5;
-
         const business_id = atob(listing_id);
         //const share= atob(percent);
         const amountKFront = (parseFloat(price) * usdToKen).toFixed();
         const amountReal = amount_real;
         const purpose = purpos;
-        //const subaccount = owner.paystack_acc_id;//'ACCT_n9mpmg5jdy7nit2';
-        //const JitumeAmount  = ((price - parseFloat(amount_real))*usdToKen).toFixed();
-        //const packages = $("#package").val();
+
 
         setTimeout(() => {
             if (purpos == "bids") {
                 axiosClient
-                    .get("/mpesaStk")
+                    .get("/initiate_payment")
                     .then((data) => {
                         console.log(data);
                         if (data.status == 200) {
                             //navigate("/");
+                            console.log(data);
                         }
                         if (data.status == 400) showErrorToast(data.message);
                     })
@@ -493,7 +491,7 @@ const PaymentForm = () => {
             //Timeout Ends below
         }, 500);
     };
-    //MPESA
+    //M P E S A
 
     const bankSubmit = (event) => {
         event.preventDefault();
@@ -706,12 +704,12 @@ const PaymentForm = () => {
                                             or Pay With &nbsp;{" "}
                                         </span>
                                         <a
-                                            onClick={MpesaInit}
+                                            onClick={LiprInit}
                                             style={{
                                                 maxHeight: "45px",
                                                 cursor: "pointer",
                                             }}
-                                            className="grid grid-rows-3 grid-flow-col gap-2 bg-neutral-300 p-3 rounded text-[#041a31f0] font-bold"
+                                            className="grid grid-rows-3 grid-flow-col gap-2 bg-green-300 p-3 rounded text-[#041a31f0] font-bold"
                                         >
                                             <img
                                                 clasName="rounded row-start-1 row"
@@ -719,7 +717,7 @@ const PaymentForm = () => {
                                             />
                                             <span className="row-start-1 row">
                                                 {" "}
-                                                Mpesa{" "}
+                                                Lipr{" "}
                                             </span>{" "}
                                         </a>
                                     </div>

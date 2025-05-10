@@ -317,7 +317,7 @@ const AddBusiness = () => {
                 ) : !Con ? (
                     <div className="flex flex-col items-center justify-center ">
                         <p className="text-center bg-light  ">
-                            You must onboard to Tujitume Stripe platform to
+                            You must onboard to Tujitume Stripe platform or Create Lipr Wallet to
                             receive business milestone payments.
                         </p>
                         <div className="mt-4">
@@ -326,6 +326,15 @@ const AddBusiness = () => {
                                 className="btn-primary flex py-2 px-6 rounded-lg text-white focus:outline-none"
                             >
                                 Connect to Stripe
+                            </button>
+
+                            <span> Or </span>
+
+                            <button
+                                onClick={connectToStripe}
+                                className="btn-primary flex py-2 px-6 rounded-lg text-white focus:outline-none"
+                            >
+                                Create Lipr Wallet
                             </button>
                         </div>
                     </div>
