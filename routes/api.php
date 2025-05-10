@@ -22,7 +22,7 @@ Route::get('/lipr-authorize', [MpesaController::class,'auth']);
 Route::get('/initiate_payment', [MpesaController::class,'initiate_payment']);
 Route::get('/wallets', [MpesaController::class,'wallets']);
 Route::get('/create-wallet', [MpesaController::class,'create_wallet']);
-Route::get('/lipr-callback', [MpesaController::class,'callback']);
+Route::post('/lipr-callback', [MpesaController::class,'callback']);
 //P R O T E C T E D    R O U T E S
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('logout',[AuthController::class,'logout']);
