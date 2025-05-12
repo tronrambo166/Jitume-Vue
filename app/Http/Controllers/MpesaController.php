@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Service\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Models\Listing;
 use App\Models\Services;
 use App\Models\Shop;
@@ -113,7 +115,7 @@ class MpesaController extends Controller
                 "customer_account_number" => "254712836398", //Owen
                 "amount" => "20",
                 "narration" => "collect money",
-                "callback_url" => "https://tujitume.com/api/lipr-callback"
+                "callback_url" => "127.0.0.1:8000/api/lipr-callback"
             ];
 
             $fields_string = json_encode($fields);
@@ -178,32 +180,20 @@ class MpesaController extends Controller
 
     }
 
-    public function callback()
+    public function callback(Request $request)
     {
         try {
-            return 'This is the callback url!';//$token = $_GET['token'];
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://dev-api.lipr.io/merchant/api/v1/wallets",
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 30,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => "GET",
-                CURLOPT_HTTPHEADER => array(
-                    "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImV4cCI6MTc0NjcxMzY2NX0.4Ymdr-E0pWFIzJ8imlFi6vn4PnnojvnS6SfoUw_e6Wg",
-                    "Cache-Control: no-cache",
-                ),
-            ));
+            Log::info('Lipr Callback Received:', $request->all());
 
-            $response = curl_exec($curl);
-            $response = json_decode($response, true);
-            $err = curl_error($curl);
-            curl_close($curl);
+            // Extract necessary data from the request
+            //$transactionId = $request->input('transaction_id');
+            //$status = $request->input('status'); // e.g., 'success' or 'failure'
+            $text = $request->all();
+            $notification = new Notification();
+            $notification->create(71,71,$text
+                ,'grants-overview/grants/discover',' grant');
 
-            if($err)
-                return $err;
-            echo '<pre>'; print_r($response); echo '<pre>';
+            return response()->json(['message' => 'Callback received'], 200);
         } catch (\Exception $e) {
             return response()->json(['status' => 400, 'message' => $e->getMessage()]);
         }
