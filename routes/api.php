@@ -18,6 +18,10 @@ use App\Http\Controllers\MatchController;
 use App\Http\Controllers\AnalyticsController;
 
 // PayStack/LIPA  ROUTES
+Route::get('/log-test', function () {
+    Log::info('Test log message');
+    return 'Log written';
+});
 Route::get('/lipr-authorize', [MpesaController::class,'auth']);
 Route::get('/initiate_payment', [MpesaController::class,'initiate_payment']);
 Route::get('/wallets', [MpesaController::class,'wallets']);
