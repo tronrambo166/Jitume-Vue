@@ -112,10 +112,11 @@ class MpesaController extends Controller
             $url = "https://dev-api.lipr.io/merchant/api/v1/payments/collect_via_mobile";
             $fields = [
                 "wallet_account" => "3e391f4b-26c9-4aa1-86b0-55ed92a85ba8",
-                "customer_account_number" => "254712836398", //Owen
-                "amount" => "20",
+                //"customer_account_number" => "254712836398", //Kelvo
+                "customer_account_number" => "254721601031", //Owen 721 601031
+                "amount" => "10",
                 "narration" => "collect money",
-                "callback_url" => "127.0.0.1:8000/api/lipr-callback"
+                "callback_url" => "https://tujitume.com/api/lipr-callback"
             ];
 
             $fields_string = json_encode($fields);
@@ -151,7 +152,7 @@ class MpesaController extends Controller
             $fields = [
                 "wallet_account" => "3e391f4b-26c9-4aa1-86b0-55ed92a85ba8",
                 "customer_account_number" => "254721601031", //Owen
-                "amount" => "20",
+                "amount" => "10",
                 "narration" => "collect money",
                 "callback_url" => "https://beta.tujitume.com"
             ];
