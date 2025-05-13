@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LiprPayment;
 use App\Service\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -187,17 +188,35 @@ class MpesaController extends Controller
             Log::info('Lipr Callback Received:', $request->all());
 
             // Extract necessary data from the request
-            //$transactionId = $request->input('transaction_id');
-            //$status = $request->input('status'); // e.g., 'success' or 'failure'
-            $text = $request->all();
-            $notification = new Notification();
-            $notification->create(71,71,$text
-                ,'grants-overview/grants/discover',' grant');
-
+            $transactionId = $request->input('transaction_id');
+            $status = $request->input('status'); // e.g., 'success' or 'failure'
+            $amount = $request->amount;
+            //$amount = $request->input('amount');
+            //$amount = $request->input('amount');
+            $lipr = LiprPayment::create([
+                'reference_id' => $transactionId,
+                'status' => $status,
+                'amount' => $amount,
+                //'purpose' => $purpose,
+                //'listing_id' => $listing_id,
+            ]);
             return response()->json(['message' => 'Callback received'], 200);
         } catch (\Exception $e) {
             return response()->json(['status' => 400, 'message' => $e->getMessage()]);
         }
+    }
+
+    public function checkStatus($referenceId)
+    {
+        $payment = LiprPayment::where('reference_id', $referenceId)->first();
+        if (!$payment) {
+            return response()->json(['error' => 'Payment not found'], 404);
+        }
+
+        return response()->json([
+            'status' => $payment->status,
+            'updated_at' => $payment->updated_at,
+        ],200);
     }
 
 

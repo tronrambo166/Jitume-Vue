@@ -410,6 +410,7 @@ const PaymentForm = () => {
     }, []);
 
     //M P E S A
+    const [status, setStatus] = useState('pending');
     const LiprInit = () => {
         const usdToKen = 100 * 128.5;
         const business_id = atob(listing_id);
@@ -428,6 +429,21 @@ const PaymentForm = () => {
                         if (data.status == 200) {
                             //navigate("/");
                             console.log(data);
+                            //C h e c k  S t a t u s
+                            const interval = setInterval(() => {
+                                axios.get(`/lipr-status/${referenceId}`)
+                                    .then(res => {
+                                        const result = res.data.status;
+                                        setStatus(result);
+
+                                        if (['processed', 'failed'].includes(result)) {
+                                            clearInterval(interval);
+                                            alert(`Payment ${result}`);
+                                        }
+                                    })
+                                    .catch(console.error);
+                            }, 10000); // every 10 sec
+                            //C h e c k  S t a t u s
                         }
                         if (data.status == 400) showErrorToast(data.message);
                     })
