@@ -417,6 +417,7 @@ const PaymentForm = () => {
         const amountKFront = (parseFloat(price) * usdToKen).toFixed();
         const amountReal = amount_real;
         const purpose = purpos;
+        const referenceId = data?.data?.data?.transaction?.id;
 
         setTimeout(() => {
             if (purpos == "bids") {
@@ -735,7 +736,7 @@ const PaymentForm = () => {
                                                 className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold shadow-md transition-colors ${
                                                     mpesaloading
                                                         ? "bg-gray-400 cursor-not-allowed"
-                                                        : "bg-emerald-500 hover:bg-emerald-600 cursor-pointer"
+                                                        : "bg-lime-700 hover:bg-lime-500 cursor-pointer"
                                                 } text-white`}
                                             >
                                                 <img
