@@ -8,7 +8,7 @@ function ConversationsList({
 }) {
     return (
         <div
-            className={`w-full md:w-1/3 bg-white border-r overflow-y-auto ${
+            className={`w-full md:w-1/3 bg-white sm-mt-10 border-r overflow-y-auto ${
                 isMobileView && selectedMessage ? "hidden" : ""
             }`}
         >

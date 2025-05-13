@@ -469,6 +469,10 @@ const Navigation = {
                                  label: "Meetings",
                                  to: "/Dashboard/overview/settings/security",
                              },
+                             {
+                                 label: "Messages",
+                                 to: "/Dashboard/overview/settings/messages",
+                             },
                          ],
                      },
                  ]
@@ -907,7 +911,7 @@ const GrantsOverview = () => {
                             </div>
 
                             {/* Right side - Button (only for investor 2) */}
-                            {user.investor === 2 &&
+                            {/* {user.investor === 2 &&
                                 location.pathname !==
                                     "/Dashboard/grants/discover" && (
                                     <button
@@ -920,7 +924,7 @@ const GrantsOverview = () => {
                                         <PlusCircle className="mr-2" />
                                         Add New Grant
                                     </button>
-                                )}
+                                )} */}
                         </div>
                     </div>
 
