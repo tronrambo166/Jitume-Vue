@@ -207,7 +207,7 @@ class MpesaController extends Controller
         }
     }
 
-    public function checkStatus($referenceId, $business_id, $percent)
+    public function checkStatus($referenceId, $business_id)
     {
         if(Auth::check()){
             $investor_id = Auth::id();

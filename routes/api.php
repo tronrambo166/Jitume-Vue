@@ -27,7 +27,7 @@ Route::get('/initiate_payment', [MpesaController::class,'initiate_payment']);
 Route::get('/wallets', [MpesaController::class,'wallets']);
 Route::get('/create-wallet', [MpesaController::class,'create_wallet']);
 Route::post('/lipr-callback', [MpesaController::class,'callback']);
-Route::get('/lipr-status/{reference_id}', [MpesaController::class,'checkStatus']);
+Route::get('/lipr-status/{reference_id}/{listing_id}', [MpesaController::class,'checkStatus']);
 //P R O T E C T E D    R O U T E S
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('logout',[AuthController::class,'logout']);
