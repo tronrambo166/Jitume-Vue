@@ -24,7 +24,6 @@ const PaymentForm = () => {
     const [selectedPayment, setSelectedPayment] = useState("card");
     const [loading, setLoading] = useState(false); // Loader state
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-    const [liprAcc, setLiprAcc] = useState(null);
 
     const { token } = useStateContext();
 
@@ -39,9 +38,6 @@ const PaymentForm = () => {
             draggable: true,
             progress: undefined,
         });
-    };
-    const onLirpAccChange = (event) => {
-        setLiprAcc(event.target.value);
     };
 
     // Function to show error toast
@@ -111,8 +107,8 @@ const PaymentForm = () => {
                 $form.find("input[type=text]").empty();
                 $form.append(
                     "<input type='hidden' id='stripeToken' name='stripeToken' value='" +
-                        token +
-                        "'/>"
+                    token +
+                    "'/>"
                 );
                 //$form.get(0).submit();
             }
@@ -134,6 +130,7 @@ const PaymentForm = () => {
     };
 
     const cancellationDate = getCancellationDate();
+
 
     // Function to get the cancellation date
 
@@ -357,7 +354,7 @@ const PaymentForm = () => {
                                     yes: function () {
                                         navigate(
                                             "/service-milestones/" +
-                                                data.service_id
+                                            data.service_id
                                         );
                                     },
                                     home: function () {
@@ -401,19 +398,21 @@ const PaymentForm = () => {
     if (purpos == "s_mile") partiesInfo = "/partiesServiceMile/";
     else partiesInfo = "/partiesInfo/";
     useEffect(() => {
+
         // $(".card-number").mask("9999 9999 9999 9999");
         axiosClient.get(partiesInfo + atob(listing_id)).then(({ data }) => {
             setUser(data.user);
             setOwner(data.owner);
             //console.log(data);
         });
+
+
     }, []);
 
     //M P E S A
-    const [status, setStatus] = useState("pending");
+    const [status, setStatus] = useState('pending');
     const [mpesaloading, mpesasetLoading] = useState(false);
-
-    const LiprInit = () => { return liprAcc;
+    const LiprInit = () => {
         mpesasetLoading(true);
         const usdToKen = 100 * 128.5;
         const business_id = atob(listing_id);
@@ -421,6 +420,7 @@ const PaymentForm = () => {
         const amountKFront = (parseFloat(price) * usdToKen).toFixed();
         const amountReal = amount_real;
         const purpose = purpos;
+
 
         setTimeout(() => {
             if (purpos == "bids") {
@@ -431,22 +431,19 @@ const PaymentForm = () => {
                         if (data.status == 200) {
                             //navigate("/");
                             console.log(data);
-                            const refId = data.data.data.data.transaction.id;
                             //C h e c k  S t a t u s
+                            const referenceId = data.data.data.data.transaction.id;
                             const interval = setInterval(() => {
-                                axiosClient
-                                    .get("/lipr-status/"+refId)
-                                    .then((res) => {
+                                axiosClient.get(`/lipr-status/${referenceId}/${business_id}`)
+                                    .then(res => {
                                         const result = res.data.status;
                                         setStatus(result);
+                                        console.log(res)
 
-                                        if (
-                                            ["processed", "failed"].includes(
-                                                result
-                                            )
-                                        ) {
+                                        if (['processed', 'failed'].includes(result)) {
                                             clearInterval(interval);
                                             alert(`Payment ${result}`);
+                                            mpesasetLoading(false);
                                         }
                                     })
                                     .catch(console.error);
@@ -462,15 +459,15 @@ const PaymentForm = () => {
                 axiosClient
                     .get(
                         "/paystackVerifySmallFee/" +
-                            packages +
-                            "/" +
-                            business_id +
-                            "/" +
-                            amountKFront +
-                            "/" +
-                            amountReal +
-                            "/" +
-                            ref
+                        packages +
+                        "/" +
+                        business_id +
+                        "/" +
+                        amountKFront +
+                        "/" +
+                        amountReal +
+                        "/" +
+                        ref
                     )
                     .then(({ data }) => {
                         console.log(data);
@@ -488,15 +485,15 @@ const PaymentForm = () => {
                 axiosClient
                     .get(
                         "/paystackVerifyService/" +
-                            true_mile_id +
-                            "/" +
-                            business_id +
-                            "/" +
-                            amountKFront +
-                            "/" +
-                            amountReal +
-                            "/" +
-                            ref
+                        true_mile_id +
+                        "/" +
+                        business_id +
+                        "/" +
+                        amountKFront +
+                        "/" +
+                        amountReal +
+                        "/" +
+                        ref
                     )
                     .then(({ data }) => {
                         console.log(data);
@@ -504,44 +501,18 @@ const PaymentForm = () => {
                             showSuccessToast(data.message);
                             navigate(
                                 "/service-milestones/" +
-                                    btoa(btao(data.service_id))
+                                btoa(btao(data.service_id))
                             );
                         } else showErrorToast(data.message);
                     })
                     .catch((err) => {
                         console.log(err);
-                        mpesasetLoading(false);
                     });
             }
             //Timeout Ends below
         }, 500);
     };
     //M P E S A
-
-    const bankSubmit = (event) => {
-        event.preventDefault();
-        setLoading(true);
-        alert("bank");
-        return;
-        setTimeout(() => {
-            const payload = {
-                listing: atob(listing_id),
-                //percent: atob(percent),
-                package: $("#package").val(),
-                amount: price,
-                amountOriginal: amount_real,
-                stripeToken: $("#stripeToken").val(),
-            };
-            //console.log(payload);
-            axiosClient
-                .post("/stripe.post.coversation", payload)
-                .then(({ data }) => {
-                    console.log(data);
-                    if (data.status === 200) {
-                    }
-                });
-        }, 1000);
-    };
 
 
     //OTHER PAYMENTS
@@ -568,10 +539,7 @@ const PaymentForm = () => {
                     {/* Your content for authenticated users */}
                     <button
                         onClick={() => setIsAuthModalOpen(true)}
-                        className="px-6 py-2 bg-green text-slate-100 rounded-lg"
-                    >
-                        Login To Pay
-                    </button>
+                        className="px-6 py-2 bg-green text-slate-100 rounded-lg">Login To Pay</button>
                 </div>
             ) : (
                 <div className=" py-8  mx-6 my-8  space-x-8">
@@ -629,12 +597,12 @@ const PaymentForm = () => {
                             onSubmit={
                                 selectedPayment === "card"
                                     ? handleSubmit
-                                    : selectedPayment === "lipr"
-                                    ? LiprInit
-                                    : bankSubmit
+                                    : selectedPayment === "bank"
+                                        ? bankSubmit
+                                        : paypalSubmit
                             }
                             method="post"
-                            className="class2  require-validation m-auto"
+                            class="class2  require-validation m-auto"
                             data-cc-on-file="false"
                             data-stripe-publishable-key="pk_test_51JFWrpJkjwNxIm6zf1BN9frgMmLdlGWlSjkcdVpgVueYK5fosCf1fAKlMpGrkfGoiXGMb0PpcMEOdINTEVcJoCNa00tJop21w6"
                             id="payment-form"
@@ -645,80 +613,124 @@ const PaymentForm = () => {
                                         Payment
                                     </h2>
 
-                                    <div className="row error mx-1 text-center collapse">
+                                    <div class="row error mx-1 text-center collapse">
                                         <p
                                             style={{
                                                 color: "#e31313",
                                                 background: "#cfcfcf82",
                                                 fontWeight: "600",
                                             }}
-                                            className="alert my-2 py-1 w-100"
+                                            class="alert my-2 py-1 w-100"
                                         ></p>
                                     </div>
 
                                     <hr className="my-4" />
-                                    <div className="bg-white rounded p-4">
-                                        <label className="text-[#0F172A] text-sm font-bold block mb-3">
+                                    <div className="bg-white rounded">
+                                        <label
+                                            className="text-[#0F172A] text-sm font-bold pt-3"
+                                            htmlFor=""
+                                        >
                                             Pay With
                                         </label>
 
-                                        <div className="flex flex-wrap items-center gap-4 jakarta">
-                                            {["card", "lipr"].map(
-                                                (method) => (
-                                                    <label
-                                                        key={method}
-                                                        className="flex items-center cursor-pointer"
-                                                    >
-                                                        <div
-                                                            className={`relative flex items-center justify-center h-5 w-5 border rounded-full ${
-                                                                selectedPayment ===
+                                        <div className="flex jakarta space-x-4">
+                                            {["card", "paypal"].map((method) => (
+                                                <label
+                                                    key={method}
+                                                    className="flex items-center cursor-pointer"
+                                                >
+                                                    <div
+                                                        className={`relative flex items-center justify-center h-5 w-5 border rounded-full ${
+                                                            selectedPayment ===
+                                                            method
+                                                                ? "border-green-500 bg-white border-2"
+                                                                : "border-gray-300"
+                                                        }`}
+                                                        onClick={() =>
+                                                            setSelectedPayment(
                                                                 method
-                                                                    ? "border-green-500 bg-white border-2"
-                                                                    : "border-gray-300"
-                                                            }`}
-                                                            onClick={() =>
-                                                                setSelectedPayment(
-                                                                    method
-                                                                )
-                                                            }
-                                                        >
-                                                            {selectedPayment ===
-                                                                method && (
+                                                            )
+                                                        }
+                                                    >
+                                                        {selectedPayment ===
+                                                            method && (
                                                                 <div className="h-2 w-2 bg-green-500 rounded-full" />
                                                             )}
-                                                        </div>
-                                                        <span
-                                                            className={`ml-2 text-[13px] ${
-                                                                selectedPayment ===
-                                                                method
-                                                                    ? "text-black"
-                                                                    : "text-[#ACACAC]"
-                                                            }`}
-                                                        >
-                                                            {method
-                                                                .charAt(0)
-                                                                .toUpperCase() +
-                                                                method.slice(1)}
-                                                        </span>
-                                                    </label>
-                                                )
-                                            )}
-
-                                            {/*<span className="text-[#ACACAC]">*/}
-                                            {/*    or Pay With*/}
-                                            {/*</span>*/}
-
-
+                                                    </div>
+                                                    <span
+                                                        className={`ml-2 text-[13px] ${
+                                                            selectedPayment ===
+                                                            method
+                                                                ? "text-black"
+                                                                : "text-[#ACACAC]"
+                                                        }`}
+                                                    >
+                                                    {method
+                                                            .charAt(0)
+                                                            .toUpperCase() +
+                                                        method.slice(1)}
+                                                </span>
+                                                </label>
+                                            ))}{" "}
+                                            &nbsp;&nbsp;{" "}
+                                            <span className="mt-3">
+                                            or Pay With &nbsp;{" "}
+                                        </span>
+                                            <a
+                                                onClick={
+                                                    !mpesaloading
+                                                        ? LiprInit
+                                                        : null
+                                                }
+                                                className={`flex items-center mt-3 gap-2 px-4 py-2 rounded-lg font-semibold shadow-md transition-colors ${
+                                                    mpesaloading
+                                                        ? "bg-gray-400 cursor-not-allowed"
+                                                        : "bg-lime-700 hover:bg-lime-500 cursor-pointer"
+                                                } text-white`}
+                                            >
+                                                <img
+                                                    src={Mpesa}
+                                                    alt="Mpesa"
+                                                    className="w-6 h-6 rounded object-contain"
+                                                />
+                                                <span className="text-sm">
+                                                    {mpesaloading
+                                                        ? "Processing..."
+                                                        : "Proceed"}
+                                                </span>
+                                                {mpesaloading && (
+                                                    <svg
+                                                        className="animate-spin h-4 w-4 text-white"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                    >
+                                                        <circle
+                                                            className="opacity-25"
+                                                            cx="12"
+                                                            cy="12"
+                                                            r="10"
+                                                            stroke="currentColor"
+                                                            strokeWidth="4"
+                                                        />
+                                                        <path
+                                                            className="opacity-75"
+                                                            fill="currentColor"
+                                                            d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16 8 8 0 01-8-8z"
+                                                        />
+                                                    </svg>
+                                                )}
+                                            </a>
                                         </div>
 
                                         {/* Conditional Rendering for Card Payment */}
                                         {selectedPayment === "card" && (
-                                            <div className="mt-4 space-y-4">
-                                                <div>
+                                            <div className="space-y-4">
+                                                <div className="py-4">
                                                     <label className="block text-sm font-semibold mb-2">
                                                         Card Number
                                                     </label>
-                                                    <div className="flex items-center w-full border rounded-lg border-[#ACACAC] overflow-hidden">
+                                                    <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
                                                         <InputMask
                                                             mask="9999 9999 9999 9999"
                                                             maskChar=""
@@ -726,7 +738,7 @@ const PaymentForm = () => {
                                                             autoComplete="cc-number"
                                                             inputMode="numeric"
                                                             size="20"
-                                                            className="card-number flex-1 py-2 px-4 border-0 outline-none"
+                                                            className="card-number flex-1 py-2 px-6 border-0 outline-none"
                                                             type="text"
                                                             placeholder="1234 5678 9012 3456"
                                                             aria-label="Credit card number"
@@ -735,8 +747,8 @@ const PaymentForm = () => {
                                                     </div>
                                                 </div>
 
-                                                <div className="grid grid-cols-3 gap-3">
-                                                    <div>
+                                                <div className="flex gap-[10px] w-full max-w-[480px]">
+                                                    <div className="w-full">
                                                         <label className="block text-sm font-semibold mb-2">
                                                             Exp. Month
                                                         </label>
@@ -748,7 +760,7 @@ const PaymentForm = () => {
                                                         />
                                                     </div>
 
-                                                    <div>
+                                                    <div className="w-full">
                                                         <label className="block text-sm font-semibold mb-2">
                                                             Exp. Year
                                                         </label>
@@ -760,7 +772,7 @@ const PaymentForm = () => {
                                                         />
                                                     </div>
 
-                                                    <div>
+                                                    <div className="w-full">
                                                         <label className="block text-sm font-semibold mb-2">
                                                             CVC
                                                         </label>
@@ -778,33 +790,33 @@ const PaymentForm = () => {
 
                                         {/* Conditional Rendering for Bank Payment */}
                                         {selectedPayment === "bank" && (
-                                            <div className="mt-4 space-y-4">
-                                                <div>
+                                            <div className="space-y-4">
+                                                <div className="py-4">
                                                     <label className="block text-sm font-semibold mb-2">
                                                         Bank Name
                                                     </label>
-                                                    <div className="flex items-center w-full border rounded-lg border-[#ACACAC] overflow-hidden">
+                                                    <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
                                                         <input
                                                             id="bank_name"
-                                                            autoComplete="on"
+                                                            autocomplete="on"
                                                             size="20"
-                                                            className="bank-name flex-1 py-2 px-4 border-0 outline-none"
+                                                            className="bank-name flex-1 py-2 px-6 border-0 outline-none"
                                                             type="text"
                                                             placeholder="Enter Your Bank Name"
                                                         />
                                                     </div>
                                                 </div>
 
-                                                <div>
+                                                <div className="py-4">
                                                     <label className="block text-sm font-semibold mb-2">
                                                         Bank Account Number
                                                     </label>
-                                                    <div className="flex items-center w-full border rounded-lg border-[#ACACAC] overflow-hidden">
+                                                    <div className="flex items-center w-full max-w-[480px] border rounded-lg border-[#ACACAC] overflow-hidden">
                                                         <input
                                                             id="bank_acc"
-                                                            autoComplete="on"
+                                                            autocomplete="on"
                                                             size="20"
-                                                            className="bank-account-number flex-1 py-2 px-4 border-0 outline-none"
+                                                            className="bank-account-number flex-1 py-2 px-6 border-0 outline-none"
                                                             type="text"
                                                             placeholder="Enter Your Bank Account Number"
                                                         />
@@ -813,7 +825,12 @@ const PaymentForm = () => {
                                             </div>
                                         )}
 
-                                        {/*<div className="flex items-center jakarta mt-6 text-[#ACACAC]">
+                                        {/* Conditional Rendering for Paypal Payment */}
+                                        {selectedPayment === "paypal" && (
+                                            <div className="space-y-4"></div>
+                                        )}
+
+                                        <div className="flex items-center jakarta py-6 text-[#ACACAC]">
                                             <input
                                                 type="checkbox"
                                                 required
@@ -827,80 +844,30 @@ const PaymentForm = () => {
                                                 I HAVE READ AND AGREE TO THE
                                                 <a
                                                     href="#"
-                                                    className="ml-1 text-[#ACACAC] hover:underline"
+                                                    className="ml-1 text-[#ACACAC]"
+                                                    style={{
+                                                        textDecoration: "none",
+                                                    }}
                                                 >
                                                     TERMS AND CONDITIONS
                                                 </a>
                                             </label>
-                                        </div> */}
+                                        </div>
 
-                                        <div className="mt-6 w-full text-center">
-                                            {selectedPayment === "lipr" ? (
-
-                                                <div>
-                                                        <label className="text-left block text-sm font-semibold mb-2">
-                                                            Customer Account Number
-                                                        </label>
-                                                        <input
-                                                            className="card-expiry-month w-full p-2 border border-gray-300 rounded"
-                                                            type="number"
-                                                            placeholder="Ex: 254 721601031"
-                                                            onKeyUp={onLirpAccChange}
-
-                                                        />
-
-
+                                        <div className="mt-6 w-full sm:w-[480px] text-center">
+                                            {selectedPayment === "paypal" ? (
                                                 <button
-                                                    onClick={
-                                                        !mpesaloading
-                                                            ? LiprInit
-                                                            : null
-                                                    }
-                                                    className={`flex items-center mt-3 gap-2 px-4 py-2 rounded-lg font-semibold shadow-md transition-colors ${
-                                                        mpesaloading
-                                                            ? "bg-gray-400 cursor-not-allowed"
-                                                            : "bg-lime-700 hover:bg-lime-500 cursor-pointer"
-                                                    } text-white`}
+                                                    type=""
+                                                    className="w-full py-2 my-4 text-white btn-primary rounded focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50"
                                                 >
-                                                    <img
-                                                        src={Mpesa}
-                                                        alt="Mpesa"
-                                                        className="w-6 h-6 rounded object-contain"
-                                                    />
-                                                    <span className="text-sm">
-                                                    {mpesaloading
-                                                        ? "Processing..."
-                                                        : "Proceed"}
-                                                </span>
-                                                    {mpesaloading && (
-                                                        <svg
-                                                            className="animate-spin h-4 w-4 text-white"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                        >
-                                                            <circle
-                                                                className="opacity-25"
-                                                                cx="12"
-                                                                cy="12"
-                                                                r="10"
-                                                                stroke="currentColor"
-                                                                strokeWidth="4"
-                                                            />
-                                                            <path
-                                                                className="opacity-75"
-                                                                fill="currentColor"
-                                                                d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16 8 8 0 01-8-8z"
-                                                            />
-                                                        </svg>
-                                                    )}
+                                                    <a href="http://127.0.0.1:8000/paypal-payment">
+                                                        Continue to PayPal
+                                                    </a>
                                                 </button>
-                                                </div>
-
                                             ) : (
                                                 <button
                                                     type="submit"
-                                                    className="w-full py-2 px-4 my-4 text-white bg-green-500 hover:bg-green-600 rounded focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50"
+                                                    className="w-full py-2 my-4 text-white btn-primary rounded focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50"
                                                     disabled={loading}
                                                 >
                                                     {loading ? (
@@ -915,13 +882,13 @@ const PaymentForm = () => {
                                             )}
                                         </div>
 
-                                        <div className="mt-4">
-                                            <p className="text-[#ACACAC] jakarta text-xs">
-                                                Your personal data will be used
-                                                to process your order, support
-                                                your experience throughout this
-                                                website, and for other purposes
-                                                described in our privacy policy.
+                                        <div>
+                                            <p className="text-[#ACACAC] jakarta text-sm">
+                                                Your personal data will be used to
+                                                process your order, support your
+                                                experience throughout this website,
+                                                and for other purposes described
+                                                <br /> in our privacy policy.
                                             </p>
                                         </div>
                                     </div>
@@ -931,9 +898,7 @@ const PaymentForm = () => {
                                     <div className="purpose ">
                                         <h2 className="ml-1 mb-2 text-xl text-[#0A0D13] font-bold mb-1">
                                             Purpose -{" "}
-                                            <span className="font-light">
-                                                {p}
-                                            </span>
+                                            <span className="font-light">{p}</span>
                                         </h2>
                                         <div className="bg-[#FFC107] jakarta rounded-lg p-3">
                                             <h2 className="font-bold">
@@ -1259,6 +1224,7 @@ const PaymentForm = () => {
             {/* </div> */}
         </>
     );
+
 };
 
 export default PaymentForm;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\LiprPayment;
 use App\Service\Notification;
+use App\Models\Notifications;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\Listing;
@@ -207,8 +208,16 @@ class MpesaController extends Controller
         }
     }
 
-    public function checkStatus($referenceId)
+    public function checkStatus($referenceId, $business_id, $percent)
     {
+        if(Auth::check()){
+            $investor_id = Auth::id();
+            $investor = User::select('email','id')->where('id',$investor_id)->first();
+        }
+        else {
+            return response()->json(['message' => 'Unauthorized!','status' => 401 ]);
+        }
+
         $payment = LiprPayment::where('reference_id', $referenceId)->first();
         if (!$payment) {
             return response()->json(['error' => 'Payment not found','status' => 404]);
@@ -218,6 +227,91 @@ class MpesaController extends Controller
             'status' => $payment->status,
             'updated_at' => $payment->updated_at,
         ],200);
+
+        try{
+            $Business = listing::where('id',$business_id)->first();
+            $owner = User::where('id', $Business->user_id)->first();
+
+            try{
+                $type = 'Monetary';
+                $bids = BusinessBids::create([
+                    'date' => date('Y-m-d'),
+                    'investor_id' => $investor_id,
+                    'business_id' => $business_id,
+                    'owner_id' => $Business->user_id,
+                    'type' => $type,
+                    'amount' => $transferAmount,
+                    'representation' => $percent,
+                    'lipr_transaction_id' => $referenceId
+                ]);
+
+                // Milestone Fulfill check
+                $total_bid_amount = 0;
+                $mile1 = Milestones::where('listing_id',$business_id)
+                    ->where('status','In Progress')->first();
+                $this_bids = BusinessBids::where('business_id',$business_id)->get();
+                foreach($this_bids as $b)
+                    if($b)
+                        $total_bid_amount = $total_bid_amount+($b->amount);
+
+                if($mile1)
+                    if($total_bid_amount >= $mile1->amount){
+                        listing::where('id',$business_id)->update(['threshold_met' => 1]);
+
+                        $list = listing::select('id','user_id','name')->where('id',$business_id)->first();
+                        $owner = User::select('id','email')->where('id',$list->user_id)->first();
+                        $info=[ 'business_name'=>$list->name ];
+                        $user['to'] = $owner->email; //'tottenham266@gmail.com'; //
+                        Mail::send('bids.mile_fulfill', $info, function($msg) use ($user){
+                            $msg->to($user['to']);
+                            $msg->subject('Fulfills a milestone!');
+                        });
+
+                        //Notification.php
+                        $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+                        $addNoti = Notifications::create([
+                            'date' => $date,
+                            'receiver_id' => $owner->id,
+                            'customer_id' => $investor_id,
+                            'text' => 'A milestone for your business '.$Business->name.' can now be fulfilled. You can start reviewing/accepting bids as well.',
+                            'link' => 'investment-bids',
+                            'type' => 'investor',
+
+                        ]);
+                        //Notification.php
+                    }
+                // Milestone Fulfill check
+
+                //Notification
+                $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
+                $addNoti = Notifications::create([
+                    'date' => $date,
+                    'receiver_id' => $Business->user_id,
+                    'customer_id' => $investor_id,
+                    'text' => 'You have a new bid from _name!',
+                    'link' => 'investment-bids',
+                    'type' => 'investor',
+
+                ]);
+                //Notification
+
+                //Mail
+                $info=[ 'business_name'=>$Business->name, 'bid_id'=>$bids->id, 'type' =>
+                    'Monetary' ];
+                $user['to'] = $investor->email; //'tottenham266@gmail.com'; //
+                if($investor)
+                    Mail::send('bids.under_review', $info, function($msg) use ($user){
+                        $msg->to($user['to']);
+                        $msg->subject('Bid Under Review!');
+                    });
+                //Mail
+
+            }
+
+            catch(\Exception $e){
+                return response()->json(['message' =>  $e->getMessage(), 'status' => 400]);
+
+        }
     }
 
 
