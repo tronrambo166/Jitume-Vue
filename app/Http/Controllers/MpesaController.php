@@ -189,8 +189,8 @@ class MpesaController extends Controller
             //Log::info('Lipr Callback Received:', $request->all());
 
             // Extract necessary data from the request
-            $transactionId = $request->input('transaction_id');
-            $status = $request->input('status'); // e.g., 'success' or 'failure'
+            $transactionId = $request->transaction_id;
+            $status = $request->status; // e.g., 'success' or 'failure'
             $amount = $request->amount;
             //$amount = $request->input('amount');
             //$amount = $request->input('amount');
