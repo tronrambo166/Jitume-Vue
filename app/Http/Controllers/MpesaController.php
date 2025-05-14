@@ -186,7 +186,7 @@ class MpesaController extends Controller
     public function callback(Request $request)
     {
         try {
-            Log::info('Lipr Callback Received:', $request->all());
+            //Log::info('Lipr Callback Received:', $request->all());
 
             // Extract necessary data from the request
             $transactionId = $request->input('transaction_id');
