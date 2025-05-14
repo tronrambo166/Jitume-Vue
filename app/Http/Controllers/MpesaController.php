@@ -209,13 +209,13 @@ class MpesaController extends Controller
 
     public function checkStatus($referenceId, $business_id)
     {
-        if(Auth::check()){
-            $investor_id = Auth::id();
-            $investor = User::select('email','id')->where('id',$investor_id)->first();
-        }
-        else {
-            return response()->json(['message' => 'Unauthorized!','status' => 401 ]);
-        }
+//        if(Auth::check()){
+//            $investor_id = Auth::id();
+//            $investor = User::select('email','id')->where('id',$investor_id)->first();
+//        }
+//        else {
+//            return response()->json(['message' => 'Unauthorized!','status' => 401 ]);
+//        }
 
         $payment = LiprPayment::where('reference_id', $referenceId)->first();
         if (!$payment) {
