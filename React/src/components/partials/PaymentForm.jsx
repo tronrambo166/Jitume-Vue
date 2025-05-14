@@ -24,6 +24,7 @@ const PaymentForm = () => {
     const [selectedPayment, setSelectedPayment] = useState("card");
     const [loading, setLoading] = useState(false); // Loader state
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+    const [liprAcc, setLiprAcc] = useState(null);
 
     const { token } = useStateContext();
 
@@ -38,6 +39,9 @@ const PaymentForm = () => {
             draggable: true,
             progress: undefined,
         });
+    };
+    const onLirpAccChange = (event) => {
+        setLiprAcc(event.target.value);
     };
 
     // Function to show error toast
@@ -409,7 +413,7 @@ const PaymentForm = () => {
     const [status, setStatus] = useState("pending");
     const [mpesaloading, mpesasetLoading] = useState(false);
 
-    const LiprInit = () => {
+    const LiprInit = () => { return liprAcc;
         mpesasetLoading(true);
         const usdToKen = 100 * 128.5;
         const business_id = atob(listing_id);
@@ -417,7 +421,6 @@ const PaymentForm = () => {
         const amountKFront = (parseFloat(price) * usdToKen).toFixed();
         const amountReal = amount_real;
         const purpose = purpos;
-        const referenceId = data?.data?.data?.transaction?.id;
 
         setTimeout(() => {
             if (purpos == "bids") {
@@ -428,10 +431,11 @@ const PaymentForm = () => {
                         if (data.status == 200) {
                             //navigate("/");
                             console.log(data);
+                            const refId = data.data.data.data.transaction.id;
                             //C h e c k  S t a t u s
                             const interval = setInterval(() => {
                                 axiosClient
-                                    .get(`/lipr-status/${referenceId}`)
+                                    .get("/lipr-status/"+refId)
                                     .then((res) => {
                                         const result = res.data.status;
                                         setStatus(result);
@@ -539,30 +543,7 @@ const PaymentForm = () => {
         }, 1000);
     };
 
-    const paypalSubmit = (event) => {
-        event.preventDefault();
-        setLoading(true);
-        alert("paypal");
-        return;
-        setTimeout(() => {
-            const payload = {
-                listing: atob(listing_id),
-                //percent: atob(percent),
-                package: $("#package").val(),
-                amount: price,
-                amountOriginal: amount_real,
-                stripeToken: $("#stripeToken").val(),
-            };
-            //console.log(payload);
-            axiosClient
-                .post("/stripe.post.coversation", payload)
-                .then(({ data }) => {
-                    console.log(data);
-                    if (data.status === 200) {
-                    }
-                });
-        }, 1000);
-    };
+
     //OTHER PAYMENTS
 
     const popupClose = () => {
@@ -648,12 +629,12 @@ const PaymentForm = () => {
                             onSubmit={
                                 selectedPayment === "card"
                                     ? handleSubmit
-                                    : selectedPayment === "bank"
-                                    ? bankSubmit
-                                    : paypalSubmit
+                                    : selectedPayment === "lipr"
+                                    ? LiprInit
+                                    : bankSubmit
                             }
                             method="post"
-                            class="class2  require-validation m-auto"
+                            className="class2  require-validation m-auto"
                             data-cc-on-file="false"
                             data-stripe-publishable-key="pk_test_51JFWrpJkjwNxIm6zf1BN9frgMmLdlGWlSjkcdVpgVueYK5fosCf1fAKlMpGrkfGoiXGMb0PpcMEOdINTEVcJoCNa00tJop21w6"
                             id="payment-form"
@@ -664,14 +645,14 @@ const PaymentForm = () => {
                                         Payment
                                     </h2>
 
-                                    <div class="row error mx-1 text-center collapse">
+                                    <div className="row error mx-1 text-center collapse">
                                         <p
                                             style={{
                                                 color: "#e31313",
                                                 background: "#cfcfcf82",
                                                 fontWeight: "600",
                                             }}
-                                            class="alert my-2 py-1 w-100"
+                                            className="alert my-2 py-1 w-100"
                                         ></p>
                                     </div>
 
@@ -682,7 +663,7 @@ const PaymentForm = () => {
                                         </label>
 
                                         <div className="flex flex-wrap items-center gap-4 jakarta">
-                                            {["card", "paypal"].map(
+                                            {["card", "lipr"].map(
                                                 (method) => (
                                                     <label
                                                         key={method}
@@ -723,55 +704,11 @@ const PaymentForm = () => {
                                                 )
                                             )}
 
-                                            <span className="text-[#ACACAC]">
-                                                or Pay With
-                                            </span>
+                                            {/*<span className="text-[#ACACAC]">*/}
+                                            {/*    or Pay With*/}
+                                            {/*</span>*/}
 
-                                            <button
-                                                onClick={
-                                                    !mpesaloading
-                                                        ? LiprInit
-                                                        : null
-                                                }
-                                                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold shadow-md transition-colors ${
-                                                    mpesaloading
-                                                        ? "bg-gray-400 cursor-not-allowed"
-                                                        : "bg-lime-700 hover:bg-lime-500 cursor-pointer"
-                                                } text-white`}
-                                            >
-                                                <img
-                                                    src={Mpesa}
-                                                    alt="Mpesa"
-                                                    className="w-6 h-6 rounded object-contain"
-                                                />
-                                                <span className="text-sm">
-                                                    {mpesaloading
-                                                        ? "Processing..."
-                                                        : "Lipr"}
-                                                </span>
-                                                {mpesaloading && (
-                                                    <svg
-                                                        className="animate-spin h-4 w-4 text-white"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        fill="none"
-                                                        viewBox="0 0 24 24"
-                                                    >
-                                                        <circle
-                                                            className="opacity-25"
-                                                            cx="12"
-                                                            cy="12"
-                                                            r="10"
-                                                            stroke="currentColor"
-                                                            strokeWidth="4"
-                                                        />
-                                                        <path
-                                                            className="opacity-75"
-                                                            fill="currentColor"
-                                                            d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16 8 8 0 01-8-8z"
-                                                        />
-                                                    </svg>
-                                                )}
-                                            </button>
+
                                         </div>
 
                                         {/* Conditional Rendering for Card Payment */}
@@ -876,7 +813,7 @@ const PaymentForm = () => {
                                             </div>
                                         )}
 
-                                        <div className="flex items-center jakarta mt-6 text-[#ACACAC]">
+                                        {/*<div className="flex items-center jakarta mt-6 text-[#ACACAC]">
                                             <input
                                                 type="checkbox"
                                                 required
@@ -895,16 +832,71 @@ const PaymentForm = () => {
                                                     TERMS AND CONDITIONS
                                                 </a>
                                             </label>
-                                        </div>
+                                        </div> */}
 
                                         <div className="mt-6 w-full text-center">
-                                            {selectedPayment === "paypal" ? (
-                                                <a
-                                                    href="http://127.0.0.1:8000/paypal-payment"
-                                                    className="block w-full py-2 px-4 my-4 text-white bg-green-500 hover:bg-green-600 rounded focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50"
+                                            {selectedPayment === "lipr" ? (
+
+                                                <div>
+                                                        <label className="text-left block text-sm font-semibold mb-2">
+                                                            Customer Account Number
+                                                        </label>
+                                                        <input
+                                                            className="card-expiry-month w-full p-2 border border-gray-300 rounded"
+                                                            type="number"
+                                                            placeholder="Ex: 254 721601031"
+                                                            onKeyUp={onLirpAccChange}
+
+                                                        />
+
+
+                                                <button
+                                                    onClick={
+                                                        !mpesaloading
+                                                            ? LiprInit
+                                                            : null
+                                                    }
+                                                    className={`flex items-center mt-3 gap-2 px-4 py-2 rounded-lg font-semibold shadow-md transition-colors ${
+                                                        mpesaloading
+                                                            ? "bg-gray-400 cursor-not-allowed"
+                                                            : "bg-lime-700 hover:bg-lime-500 cursor-pointer"
+                                                    } text-white`}
                                                 >
-                                                    Continue to PayPal
-                                                </a>
+                                                    <img
+                                                        src={Mpesa}
+                                                        alt="Mpesa"
+                                                        className="w-6 h-6 rounded object-contain"
+                                                    />
+                                                    <span className="text-sm">
+                                                    {mpesaloading
+                                                        ? "Processing..."
+                                                        : "Proceed"}
+                                                </span>
+                                                    {mpesaloading && (
+                                                        <svg
+                                                            className="animate-spin h-4 w-4 text-white"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                        >
+                                                            <circle
+                                                                className="opacity-25"
+                                                                cx="12"
+                                                                cy="12"
+                                                                r="10"
+                                                                stroke="currentColor"
+                                                                strokeWidth="4"
+                                                            />
+                                                            <path
+                                                                className="opacity-75"
+                                                                fill="currentColor"
+                                                                d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16 8 8 0 01-8-8z"
+                                                            />
+                                                        </svg>
+                                                    )}
+                                                </button>
+                                                </div>
+
                                             ) : (
                                                 <button
                                                     type="submit"

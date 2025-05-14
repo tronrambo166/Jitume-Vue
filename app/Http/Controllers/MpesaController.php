@@ -116,6 +116,7 @@ class MpesaController extends Controller
                 //"customer_account_number" => "254712836398", //Kelvo
                 "customer_account_number" => "254721601031", //Owen 721 601031
                 "amount" => "10",
+                "receiver_business_number" => "22",
                 "narration" => "collect money",
                 "callback_url" => "https://tujitume.com/api/lipr-callback"
             ];
@@ -210,7 +211,7 @@ class MpesaController extends Controller
     {
         $payment = LiprPayment::where('reference_id', $referenceId)->first();
         if (!$payment) {
-            return response()->json(['error' => 'Payment not found'], 404);
+            return response()->json(['error' => 'Payment not found','status' => 404]);
         }
 
         return response()->json([
