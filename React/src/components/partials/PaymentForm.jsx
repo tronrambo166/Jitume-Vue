@@ -14,7 +14,9 @@ import { useStateContext } from "../../contexts/contextProvider";
 import { useLocation } from "react-router-dom";
 import Mpesa from "../../images/randomIcons/mpesa.png";
 import Modal from "../partials/Authmodal";
-
+import { BarLoader } from "react-spinners";
+import UsdToLocalCurrency from "./UsdToLocalCurrency";
+import PaymentStatusModal from "./PaymentStatusModal";
 //import { mask } from "../../js/jquery.maskedinput";
 import InputMask from "react-input-mask";
 
@@ -407,14 +409,167 @@ const PaymentForm = () => {
     //M P E S A
     const [status, setStatus] = useState("pending");
     const [mpesaloading, mpesasetLoading] = useState(false);
+    const [mpesaPhoneNumber, setMpesaPhoneNumber] = useState("");
+    const [paymentStatus, setPaymentStatus] = useState(null);
+    const [transactionId, setTransactionId] = useState(null);
+    const [showMpesaModal, setShowMpesaModal] = useState(false);
+
+    // const LiprInit = () => {
+    //     if (
+    //         !mpesaPhoneNumber.startsWith("254") ||
+    //         mpesaPhoneNumber.length !== 12
+    //     ) {
+    //         showErrorToast(
+    //             "Please enter a valid Kenyan phone number starting with 254"
+    //         );
+    //         return;
+    //     }
+    //     setPaymentStatus("processing");
+    //     mpesasetLoading(true);
+
+    //     mpesasetLoading(true);
+    //     const usdToKen = 128.5;
+    //     const business_id = atob(listing_id);
+    //     percent: percent ? atob(percent) : 0;
+    //     const amountKES = Math.round(parseFloat(temp_price_total) * usdToKen);
+    //     const amountReal = amount_real;
+    //     const amountToSend = amount_real + "_" + 10; //amount_real+'_'+amountKES;
+    //     const purpose = purpos;
+    //     console.log(amountToSend);
+
+    //     setTimeout(() => {
+    //         if (purpos == "bids") {
+    //             const payload = {
+    //                 amount: amountKES,
+    //                 // acc_number: '254721601031' //acc_number
+    //                 acc_number: mpesaPhoneNumber,
+    //             };
+    //             axiosClient
+    //                 .post("/initiate_payment", payload)
+    //                 .then(({ data }) => {
+    //                     console.log(data);
+    //                     if (data.status == 200) {
+    //                         //navigate("/");
+    //                         console.log(data);
+    //                         //C h e c k  S t a t u s
+    //                         const referenceId = data.data.data.transaction.id;
+    //                         const interval = setInterval(() => {
+    //                             axiosClient
+    //                                 .get(
+    //                                     `/lipr-status/${referenceId}/${business_id}/${amountToSend}`
+    //                                 )
+    //                                 .then((res) => {
+    //                                     const result = res.data.status;
+    //                                     setStatus(result);
+    //                                     console.log(res);
+
+    //                                     if (
+    //                                         ["processed", "failed"].includes(
+    //                                             result
+    //                                         )
+    //                                     ) {
+    //                                         clearInterval(interval);
+    //                                         $.confirm({
+    //                                             title: "Payment " + result,
+    //                                             content: "Go to Home?",
+    //                                             buttons: {
+    //                                                 home: function () {
+    //                                                     navigate("/");
+    //                                                 },
+    //                                                 cancel: function () {
+    //                                                     $.alert("Canceled!");
+    //                                                 },
+    //                                             },
+    //                                         });
+    //                                         mpesasetLoading(false);
+    //                                     }
+    //                                 })
+    //                                 .catch(console.error);
+    //                         }, 10000); // every 10 sec
+    //                         //C h e c k  S t a t u s
+    //                     }
+    //                     if (data.status == 400) showErrorToast(data.message);
+    //                 })
+    //                 .catch((err) => {
+    //                     console.log(err);
+    //                 });
+    //         } else if (purpos === "small_fee") {
+    //             axiosClient
+    //                 .get(
+    //                     "/paystackVerifySmallFee/" +
+    //                         packages +
+    //                         "/" +
+    //                         business_id +
+    //                         "/" +
+    //                         amountKFront +
+    //                         "/" +
+    //                         amountReal +
+    //                         "/" +
+    //                         ref
+    //                 )
+    //                 .then(({ data }) => {
+    //                     console.log(data);
+    //                     if (data.status == 200)
+    //                         setTimeout(() => {
+    //                             navigate("/listing/" + btoa(listing_id));
+    //                         }, 2000);
+    //                     else showErrorToast(data.message);
+    //                 })
+    //                 .catch((err) => {
+    //                     console.log(err);
+    //                 });
+    //         } else {
+    //             const true_mile_id = owner.true_mile_id;
+    //             axiosClient
+    //                 .get(
+    //                     "/paystackVerifyService/" +
+    //                         true_mile_id +
+    //                         "/" +
+    //                         business_id +
+    //                         "/" +
+    //                         amountKFront +
+    //                         "/" +
+    //                         amountReal +
+    //                         "/" +
+    //                         ref
+    //                 )
+    //                 .then(({ data }) => {
+    //                     console.log(data);
+    //                     if (data.status == 200) {
+    //                         showSuccessToast(data.message);
+    //                         navigate(
+    //                             "/service-milestones/" +
+    //                                 btoa(btao(data.service_id))
+    //                         );
+    //                     } else showErrorToast(data.message);
+    //                 })
+    //                 .catch((err) => {
+    //                     console.log(err);
+    //                 });
+    //         }
+    //         //Timeout Ends below
+    //     }, 500);
+    // };
     const LiprInit = () => {
+        if (
+            !mpesaPhoneNumber.startsWith("254") ||
+            mpesaPhoneNumber.length !== 12
+        ) {
+            showErrorToast(
+                "Please enter a valid Kenyan phone number starting with 254"
+            );
+            return;
+        }
+        setPaymentStatus("processing");
+        mpesasetLoading(true);
+
         mpesasetLoading(true);
         const usdToKen = 128.5;
         const business_id = atob(listing_id);
         percent: percent ? atob(percent) : 0;
         const amountKES = Math.round(parseFloat(temp_price_total) * usdToKen);
         const amountReal = amount_real;
-        const amountToSend = amount_real + "_" + 10; //amount_real+'_'+amountKES;
+        const amountToSend = amount_real + "_" + 10;
         const purpose = purpos;
         console.log(amountToSend);
 
@@ -422,17 +577,20 @@ const PaymentForm = () => {
             if (purpos == "bids") {
                 const payload = {
                     amount: amountKES,
-                    acc_number: "254721601031", //acc_number
+                    acc_number: mpesaPhoneNumber,
                 };
                 axiosClient
                     .post("/initiate_payment", payload)
                     .then(({ data }) => {
                         console.log(data);
                         if (data.status == 200) {
-                            //navigate("/");
-                            console.log(data);
-                            //C h e c k  S t a t u s
                             const referenceId = data.data.data.transaction.id;
+                            setTransactionId(referenceId);
+
+                            // Show processing modal
+                            setPaymentStatus("processing");
+
+                            // Start polling for payment status
                             const interval = setInterval(() => {
                                 axiosClient
                                     .get(
@@ -443,35 +601,63 @@ const PaymentForm = () => {
                                         setStatus(result);
                                         console.log(res);
 
-                                        if (
-                                            ["processed", "failed"].includes(
-                                                result
-                                            )
+                                        // if (result === "processed") {
+                                        //     clearInterval(interval);
+                                        //     setPaymentStatus("success");
+                                        //     mpesasetLoading(false);
+                                        //     setTimeout(
+                                        //         () => navigate("/dashboard"),
+                                        //         3000
+                                        //     );
+                                        // } else if (
+                                        //     result === "failed" ||
+                                        //     result === 404 ||
+                                        //     res.data.error ===
+                                        //         "Payment not found"
+                                        // ) {
+                                        //     clearInterval(interval);
+                                        //     setPaymentStatus("failed");
+                                        //     mpesasetLoading(false);
+                                        // }
+                                        if (result === "processed") {
+                                            clearInterval(interval);
+                                            setPaymentStatus("success");
+                                            mpesasetLoading(false);
+                                        } else if (
+                                            result === "failed" ||
+                                            result === 404 ||
+                                            res.data.error ===
+                                                "Payment not found"
                                         ) {
                                             clearInterval(interval);
-                                            $.confirm({
-                                                title: "Payment " + result,
-                                                content: "Go to Home?",
-                                                buttons: {
-                                                    home: function () {
-                                                        navigate("/");
-                                                    },
-                                                    cancel: function () {
-                                                        $.alert("Canceled!");
-                                                    },
-                                                },
-                                            });
+                                            setPaymentStatus("failed");
                                             mpesasetLoading(false);
                                         }
                                     })
-                                    .catch(console.error);
-                            }, 10000); // every 10 sec
-                            //C h e c k  S t a t u s
+                                    .catch((err) => {
+                                        console.error(err);
+                                        clearInterval(interval);
+                                        setPaymentStatus("failed");
+                                        mpesasetLoading(false);
+                                        showErrorToast(
+                                            "Error checking payment status"
+                                        );
+                                    });
+                            }, 60000);
+                            // every 60 sec because mpesa gives you 60 sec to pay if not it fails  so let me put 60 second
+                        } else {
+                            setPaymentStatus("failed");
+                            mpesasetLoading(false);
+                            showErrorToast(
+                                data.message || "Payment initiation failed"
+                            );
                         }
-                        if (data.status == 400) showErrorToast(data.message);
                     })
                     .catch((err) => {
                         console.log(err);
+                        setPaymentStatus("failed");
+                        mpesasetLoading(false);
+                        showErrorToast("Payment processing error");
                     });
             } else if (purpos === "small_fee") {
                 axiosClient
@@ -489,14 +675,19 @@ const PaymentForm = () => {
                     )
                     .then(({ data }) => {
                         console.log(data);
-                        if (data.status == 200)
+                        if (data.status == 200) {
+                            setPaymentStatus("success");
                             setTimeout(() => {
                                 navigate("/listing/" + btoa(listing_id));
                             }, 2000);
-                        else showErrorToast(data.message);
+                        } else {
+                            setPaymentStatus("failed");
+                            showErrorToast(data.message);
+                        }
                     })
                     .catch((err) => {
                         console.log(err);
+                        setPaymentStatus("failed");
                     });
             } else {
                 const true_mile_id = owner.true_mile_id;
@@ -516,18 +707,22 @@ const PaymentForm = () => {
                     .then(({ data }) => {
                         console.log(data);
                         if (data.status == 200) {
+                            setPaymentStatus("success");
                             showSuccessToast(data.message);
                             navigate(
                                 "/service-milestones/" +
                                     btoa(btao(data.service_id))
                             );
-                        } else showErrorToast(data.message);
+                        } else {
+                            setPaymentStatus("failed");
+                            showErrorToast(data.message);
+                        }
                     })
                     .catch((err) => {
                         console.log(err);
+                        setPaymentStatus("failed");
                     });
             }
-            //Timeout Ends below
         }, 500);
     };
     //M P E S A
@@ -698,7 +893,7 @@ const PaymentForm = () => {
                                             <span className="mt-3">
                                                 or Pay With &nbsp;{" "}
                                             </span>
-                                            <a
+                                            {/* <a
                                                 onClick={
                                                     !mpesaloading
                                                         ? LiprInit
@@ -719,6 +914,51 @@ const PaymentForm = () => {
                                                     {mpesaloading
                                                         ? "Processing..."
                                                         : "Lipr"}
+                                                </span>
+                                                {mpesaloading && (
+                                                    <svg
+                                                        className="animate-spin h-4 w-4 text-white"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                    >
+                                                        <circle
+                                                            className="opacity-25"
+                                                            cx="12"
+                                                            cy="12"
+                                                            r="10"
+                                                            stroke="currentColor"
+                                                            strokeWidth="4"
+                                                        />
+                                                        <path
+                                                            className="opacity-75"
+                                                            fill="currentColor"
+                                                            d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16 8 8 0 01-8-8z"
+                                                        />
+                                                    </svg>
+                                                )}
+                                            </a> */}
+                                            <a
+                                                onClick={() => {
+                                                    if (!mpesaloading) {
+                                                        setShowMpesaModal(true);
+                                                    }
+                                                }}
+                                                className={`flex items-center mt-3 gap-2 px-4 py-2 rounded-lg font-semibold shadow-md transition-colors ${
+                                                    mpesaloading
+                                                        ? "bg-gray-400 cursor-not-allowed"
+                                                        : "bg-lime-700 hover:bg-lime-500 cursor-pointer"
+                                                } text-white`}
+                                            >
+                                                <img
+                                                    src={Mpesa}
+                                                    alt="Mpesa"
+                                                    className="w-6 h-6 rounded object-contain"
+                                                />
+                                                <span className="text-sm">
+                                                    {mpesaloading
+                                                        ? "Processing..."
+                                                        : "Lipr Na Mpesa"}
                                                 </span>
                                                 {mpesaloading && (
                                                     <svg
@@ -961,7 +1201,7 @@ const PaymentForm = () => {
                                                     (purpos === "bids"
                                                         ? temp_price
                                                         : amount_real) * 0.05
-                                                ).toFixed()}{" "}
+                                                ).toFixed(2)}{" "}
                                             </h3>
                                         </div>
                                         {/* <label className="block text-sm font-semibold">
@@ -1246,7 +1486,81 @@ const PaymentForm = () => {
                 onClose={() => setIsAuthModalOpen(false)}
             />
             {/* Form right */}
+            {paymentStatus && (
+                <PaymentStatusModal
+                    status={paymentStatus}
+                    transactionId={transactionId}
+                    onClose={() => setPaymentStatus(null)}
+                    onRetry={() => {
+                        setPaymentStatus(null);
+                        setShowMpesaModal(true);
+                    }}
+                />
+            )}
             {/* </div> */}
+            {showMpesaModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-75">
+                    <div className="bg-white p-6 rounded-lg max-w-md w-full shadow-lg">
+                        <h2 className="text-xl font-bold mb-2 text-gray-800">
+                            Mpesa Payment
+                        </h2>
+                        <p className="text-sm text-gray-600 mb-1">
+                            Please enter your **Safaricom phone number**
+                            starting with{" "}
+                            <span className="font-semibold text-gray-800">
+                                254
+                            </span>{" "}
+                            (e.g., 254712345678).
+                        </p>
+                        <InputMask
+                            mask="254999999999"
+                            maskChar=""
+                            value={mpesaPhoneNumber}
+                            onChange={(e) =>
+                                setMpesaPhoneNumber(e.target.value)
+                            }
+                            className="w-full p-2 border border-gray-300 rounded mb-3"
+                            placeholder="2547XXXXXXXX"
+                        />
+                        <p className="text-sm text-gray-600 mb-1">
+                            You’ll receive an <strong>STK Push</strong> prompt
+                            on your phone to authorize the payment.
+                        </p>
+
+                        <p className="text-sm text-gray-600 mb-4">
+                            <strong>Total amount:</strong>{" "}
+                            <UsdToLocalCurrency amount={temp_price_total} />
+                            <span className="text-gray-400">
+                                {" "}
+                                (${parseFloat(temp_price_total)} USD)
+                            </span>
+                        </p>
+                        <div className="flex justify-between items-center mt-4">
+                            <span className="text-xs text-gray-400">
+                                Powered by{" "}
+                                <strong>Lipr Technologies Ltd</strong>
+                            </span>
+                            <div className="flex space-x-2">
+                                <button
+                                    onClick={() => setShowMpesaModal(false)}
+                                    className="px-4 py-2 bg-gray-300 text-sm rounded hover:bg-gray-400"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setShowMpesaModal(false);
+                                        LiprInit();
+                                    }}
+                                    className="px-4 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700"
+                                >
+                                    Confirm
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 };
