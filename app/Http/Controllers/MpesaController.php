@@ -45,8 +45,8 @@ class MpesaController extends Controller
 
             $url = "https://dev-api.lipr.io/merchant/api/v1/sessions";
             $fields = [
-                'api_key' => $this->public,
-                'api_secret' => $this->secret,
+                'api_key' => 'a52b00aa0de1cc4fc742876b92e480e9',
+                'api_secret' => '9c87f7c6d71312d89a86473eeefec46f',
             ];
             $fields_string = json_encode($fields);
             //open connection
