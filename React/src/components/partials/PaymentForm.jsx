@@ -1201,7 +1201,7 @@ const PaymentForm = () => {
                                                     (purpos === "bids"
                                                         ? temp_price
                                                         : amount_real) * 0.05
-                                                ).toFixed()}{" "}
+                                                ).toFixed(2)}{" "}
                                             </h3>
                                         </div>
                                         {/* <label className="block text-sm font-semibold">

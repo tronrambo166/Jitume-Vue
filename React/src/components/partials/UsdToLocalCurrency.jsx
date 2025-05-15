@@ -91,6 +91,17 @@ const convertUsdToLocal = async (usdAmount) => {
     }
 };
 
+const SkeletonLoader = () => {
+    return (
+        <div className="skeleton-loader">
+            <div
+                className="skeleton-line"
+                style={{ width: "100px", height: "24px" }}
+            ></div>
+        </div>
+    );
+};
+
 const UsdToLocalCurrency = ({ amount }) => {
     const [conversion, setConversion] = useState({
         loading: true,
@@ -133,7 +144,7 @@ const UsdToLocalCurrency = ({ amount }) => {
         convert();
     }, [amount]);
 
-    if (conversion.loading) return <span>Loading...</span>;
+    if (conversion.loading) return <SkeletonLoader />;
 
     return (
         <div className="currency-converter">
