@@ -194,7 +194,7 @@ class MpesaController extends Controller
     public function callback(Request $request)
     {
         try {
-            //Log::info('Lipr Callback Received:', $request->all());
+            Log::info('Lipr Callback Received:', $request->all());
 
             // Extract necessary data from the request
             $transactionId = $request->transaction_id;
@@ -204,7 +204,7 @@ class MpesaController extends Controller
             $lipr = LiprPayment::create([
                 'reference_id' => $transactionId,
                 'status' => $status,
-                'amount' => $amount,
+                'amount' => 10,//$amount,
                 //'purpose' => $purpose,
                 //'listing_id' => $listing_id,
             ]);

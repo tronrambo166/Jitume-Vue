@@ -418,7 +418,7 @@ const PaymentForm = () => {
         percent: percent ? atob(percent) : 0;
         const amountKES = Math.round((parseFloat(temp_price_total) * usdToKen));
         const amountReal = amount_real;
-        const amountToSend = amount_real+'_'+amountKES;
+        const amountToSend = amount_real+'_'+ 10; //amount_real+'_'+amountKES;
         const purpose = purpos;
         console.log(amountToSend)
 
@@ -712,7 +712,7 @@ const PaymentForm = () => {
                                                 <span className="text-sm">
                                                     {mpesaloading
                                                         ? "Processing..."
-                                                        : "Proceed"}
+                                                        : "Lipr"}
                                                 </span>
                                                 {mpesaloading && (
                                                     <svg
