@@ -123,7 +123,7 @@ class MpesaController extends Controller
                 "wallet_account" => "3e391f4b-26c9-4aa1-86b0-55ed92a85ba8", //$investor->lipr_wallet
                 //"customer_account_number" => "254712836398", //Kelvo
                 "customer_account_number" => $request->acc_number, // "254721601031",Owen
-                "amount" => $request->amount, //KES
+                "amount" => 10, //$request->amount, //KES
                 "receiver_business_number" => "22",
                 "narration" => "collect money",
                 "callback_url" => "https://tujitume.com/api/lipr-callback"
