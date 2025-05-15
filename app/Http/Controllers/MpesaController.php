@@ -45,8 +45,8 @@ class MpesaController extends Controller
 
             $url = "https://dev-api.lipr.io/merchant/api/v1/sessions";
             $fields = [
-                'api_key' => 'a52b00aa0de1cc4fc742876b92e480e9',
-                'api_secret' => '9c87f7c6d71312d89a86473eeefec46f',
+                'api_key' => $this->public,
+                'api_secret' => $this->secret,
             ];
             $fields_string = json_encode($fields);
             //open connection
@@ -106,16 +106,24 @@ class MpesaController extends Controller
     }
 
 
-    public function initiate_payment()
+    public function initiate_payment(Request $request)
     {
+        if(Auth::check()){
+            $investor_id = Auth::id();
+            $investor = User::select('email','id')->where('id',$investor_id)->first();
+        }
+        else
+            return response()->json(['message' => 'Unauthorized!','status' => 401 ]);
+
+
         try {
             $token = $this->auth();
             $url = "https://dev-api.lipr.io/merchant/api/v1/payments/collect_via_mobile";
             $fields = [
-                "wallet_account" => "3e391f4b-26c9-4aa1-86b0-55ed92a85ba8",
+                "wallet_account" => "3e391f4b-26c9-4aa1-86b0-55ed92a85ba8", //$investor->lipr_wallet
                 //"customer_account_number" => "254712836398", //Kelvo
-                "customer_account_number" => "254721601031", //Owen 721 601031
-                "amount" => "10",
+                "customer_account_number" => $request->acc_number, // "254721601031",Owen
+                "amount" => $request->amount, //KES
                 "receiver_business_number" => "22",
                 "narration" => "collect money",
                 "callback_url" => "https://tujitume.com/api/lipr-callback"
@@ -192,8 +200,7 @@ class MpesaController extends Controller
             $transactionId = $request->transaction_id;
             $status = $request->status; // e.g., 'success' or 'failure'
             $amount = $request->amount;
-            //$amount = $request->input('amount');
-            //$amount = $request->input('amount');
+
             $lipr = LiprPayment::create([
                 'reference_id' => $transactionId,
                 'status' => $status,
@@ -207,41 +214,46 @@ class MpesaController extends Controller
         }
     }
 
-    public function checkStatus($referenceId, $business_id)
+    public function checkStatus($referenceId, $business_id,$amounts_passed)
     {
-//        if(Auth::check()){
-//            $investor_id = Auth::id();
-//            $investor = User::select('email','id')->where('id',$investor_id)->first();
-//        }
-//        else {
-//            return response()->json(['message' => 'Unauthorized!','status' => 401 ]);
-//        }
-
+        if(Auth::check()){
+            $investor_id = Auth::id();
+            $investor = User::select('email','id')->where('id',$investor_id)->first();
+        }
+        else {
+            return response()->json(['message' => 'Unauthorized!','status' => 401 ]);
+        }
+        $investor_id = 112;
         $payment = LiprPayment::where('reference_id', $referenceId)->first();
         if (!$payment) {
             return response()->json(['error' => 'Payment not found','status' => 404]);
         }
 
-        return response()->json([
-            'status' => $payment->status,
-            'updated_at' => $payment->updated_at,
-        ],200);
-
-
-
         try{
+            $notification = new Notification();
+            $amountsPassed = explode('_',$amounts_passed);
+            $amountRealUSD = $amountsPassed[0];
+            $amountPaid = (int)$amountsPassed[1];
+            $amountPaidDB = $payment->amount;
             $Business = listing::where('id',$business_id)->first();
             $owner = User::where('id', $Business->user_id)->first();
+
+            if($amountPaid != $amountPaidDB)
+            return response()->json([
+                'error_in' => $amountPaid .'!='. $amountPaidDB,
+                'message' => 'Amount does not match the original amount!',
+                'status' => 400,
+            ]);
 
             $type = 'Monetary';
             $bids = BusinessBids::create([
                 'date' => date('Y-m-d'),
                 'investor_id' => $investor_id,
                 'business_id' => $business_id,
-                'owner_id' => $Business->user_id,
+                'owner_id' => $owner->id,
                 'type' => $type,
-                'amount' => $transferAmount,
-                'representation' => $percent,
+                'amount' => $amountRealUSD,
+                'representation' => $payment->share,
                 'lipr_transaction_id' => $referenceId
             ]);
 
@@ -268,31 +280,14 @@ class MpesaController extends Controller
                     });
 
                     //Notification.php
-                    $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
-                    $addNoti = Notifications::create([
-                        'date' => $date,
-                        'receiver_id' => $owner->id,
-                        'customer_id' => $investor_id,
-                        'text' => 'A milestone for your business '.$Business->name.' can now be fulfilled. You can start reviewing/accepting bids as well.',
-                        'link' => 'investment-bids',
-                        'type' => 'investor',
-
-                    ]);
+                    $text = 'A milestone for your business '.$Business->name.' can now be fulfilled. You can start reviewing/accepting bids as well.';
+                    $notification->createNotification($owner->id,$investor_id,$text,'investment-bids','investor');
                     //Notification.php
                 }
             // Milestone Fulfill check
 
-            //Notification
-            $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
-            $addNoti = Notifications::create([
-                'date' => $date,
-                'receiver_id' => $Business->user_id,
-                'customer_id' => $investor_id,
-                'text' => 'You have a new bid from _name!',
-                'link' => 'investment-bids',
-                'type' => 'investor',
-
-            ]);
+            $text = 'You have a new bid from _name.';
+            $notification->create($Business->user_id,$investor_id,$text,'investment-bids','investor');
             //Notification
 
             //Mail
@@ -306,10 +301,15 @@ class MpesaController extends Controller
                 });
             //Mail
 
+            return response()->json([
+                'status' => $payment->status,
+                'updated_at' => $payment->updated_at,
+            ],200);
+
         }
 
-            catch(\Exception $e){
-                return response()->json(['message' =>  $e->getMessage(), 'status' => 400]);
+        catch(\Exception $e){
+            return response()->json(['message' =>  $e->getMessage(), 'status' => 400]);
 
         }
     }

@@ -23,11 +23,10 @@ Route::get('/log-test', function () {
     return 'Log written';
 });
 Route::get('/lipr-authorize', [MpesaController::class,'auth']);
-Route::get('/initiate_payment', [MpesaController::class,'initiate_payment']);
 Route::get('/wallets', [MpesaController::class,'wallets']);
 Route::get('/create-wallet', [MpesaController::class,'create_wallet']);
 Route::post('/lipr-callback', [MpesaController::class,'callback']);
-Route::get('/lipr-status/{reference_id}/{listing_id}', [MpesaController::class,'checkStatus']);
+
 //P R O T E C T E D    R O U T E S
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('logout',[AuthController::class,'logout']);
@@ -70,13 +69,15 @@ Route::middleware('auth:sanctum')->group(function() {
 
     //});
 
-    // PAYMENT  ROUTES
+    // P A Y M E N T  R O U T E S
     Route::get('/stripe/{amount}/{business_id}', [checkoutController::class, 'goCheckout'])->name('stripe');
     Route::post('/stripe', [checkoutController::class, 'stripePost'])->name('stripe.post');
     //Unlock small fee
     Route::post('/stripe.post.coversation', [checkoutController::class, 'stripeConversation'])->name('stripe.post.coversation');
 
-
+    // L I P R
+    Route::get('/lipr-status/{reference_id}/{listing_id}/{amountReal}', [MpesaController::class,'checkStatus']);
+    Route::post('/initiate_payment', [MpesaController::class,'initiate_payment']);
 
     Route::post('/initialize', [PayStackController::class, 'initialize']);
     Route::get('/create-subaccount', [PayStackController::class, 'create_subaccount']);

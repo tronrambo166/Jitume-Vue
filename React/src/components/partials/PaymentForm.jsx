@@ -139,7 +139,6 @@ const PaymentForm = () => {
     const { listing_id } = location.state || { listing_id: 0 };
     const { purpose } = location.state || { purpose: btoa(1) };
     const { percent } = location.state || { percent: btoa(1) };
-    //console.log(percent);
 
     const purpos = base64_decode(purpose);
     var p = "";
@@ -414,27 +413,33 @@ const PaymentForm = () => {
     const [mpesaloading, mpesasetLoading] = useState(false);
     const LiprInit = () => {
         mpesasetLoading(true);
-        const usdToKen = 100 * 128.5;
+        const usdToKen = 128.5;
         const business_id = atob(listing_id);
-        //const share= atob(percent);
-        const amountKFront = (parseFloat(price) * usdToKen).toFixed();
+        percent: percent ? atob(percent) : 0;
+        const amountKES = Math.round((parseFloat(temp_price_total) * usdToKen));
         const amountReal = amount_real;
+        const amountToSend = amount_real+'_'+amountKES;
         const purpose = purpos;
+        console.log(amountToSend)
 
 
         setTimeout(() => {
             if (purpos == "bids") {
+                const payload = {
+                    amount: amountKES,
+                    acc_number: '254721601031' //acc_number
+                };
                 axiosClient
-                    .get("/initiate_payment")
-                    .then((data) => {
+                    .post("/initiate_payment", payload)
+                    .then(({data}) => {
                         console.log(data);
                         if (data.status == 200) {
                             //navigate("/");
                             console.log(data);
                             //C h e c k  S t a t u s
-                            const referenceId = data.data.data.data.transaction.id;
+                            const referenceId = data.data.data.transaction.id;
                             const interval = setInterval(() => {
-                                axiosClient.get(`/lipr-status/${referenceId}/${business_id}`)
+                                axiosClient.get(`/lipr-status/${referenceId}/${business_id}/${amountToSend}`)
                                     .then(res => {
                                         const result = res.data.status;
                                         setStatus(result);
@@ -442,7 +447,18 @@ const PaymentForm = () => {
 
                                         if (['processed', 'failed'].includes(result)) {
                                             clearInterval(interval);
-                                            alert(`Payment ${result}`);
+                                            $.confirm({
+                                                title: "Payment "+result,
+                                                content: "Go to Home?",
+                                                buttons: {
+                                                    home: function () {
+                                                        navigate("/");
+                                                    },
+                                                    cancel: function () {
+                                                        $.alert("Canceled!");
+                                                    },
+                                                },
+                                            });
                                             mpesasetLoading(false);
                                         }
                                     })

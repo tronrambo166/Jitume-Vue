@@ -496,7 +496,7 @@ public function CancelEquipmentRelease($bidId, $action)
                 'date' => $date,
                 'receiver_id' => $bid->investor_id,
                 'customer_id' => $owner->id,
-                'text' => 'Your bid to business '.$list->name.' was cancelled.',
+                'text' => 'Your bid to business '.$business->name.' was cancelled.',
                 'link' => 'investment-bids',
                 'type' => 'business',
               ]);
