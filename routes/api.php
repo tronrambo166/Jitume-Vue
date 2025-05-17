@@ -76,7 +76,9 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('/stripe.post.coversation', [checkoutController::class, 'stripeConversation'])->name('stripe.post.coversation');
 
     // L I P R
-    Route::get('/lipr-status/{reference_id}/{listing_id}/{amountReal}', [MpesaController::class,'checkStatus']);
+    Route::get('/lipr-status-bids/{reference_id}/{listing_id}/{amountReal}', [MpesaController::class,'status_bids']);
+    Route::get('/lipr-status-service/{reference_id}/{listing_id}/{amountReal}', [MpesaController::class,'status_service']);
+    Route::get('/lipr-status-smallFee/{reference_id}/{listing_id}/{amountReal}', [MpesaController::class,'status_smallFee']);
     Route::post('/initiate_payment', [MpesaController::class,'initiate_payment']);
 
     Route::post('/initialize', [PayStackController::class, 'initialize']);

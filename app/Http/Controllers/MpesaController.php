@@ -125,7 +125,7 @@ class MpesaController extends Controller
                 "customer_account_number" => $request->acc_number, // "254721601031",Owen
                 "amount" => 10, //$request->amount, //KES
                 "receiver_business_number" => "22",
-                "narration" => "collect money",
+                "narration" => $request->purpose,
                 "callback_url" => "https://tujitume.com/api/lipr-callback"
             ];
 
@@ -214,7 +214,9 @@ class MpesaController extends Controller
         }
     }
 
-    public function checkStatus($referenceId, $business_id,$amounts_passed)
+
+    // C H E C K  P A Y M E N T  S T A T U S   &   U P D A T E  D A T A B A S E
+    public function status_bids($referenceId, $business_id,$amounts_passed)
     {
         if(Auth::check()){
             $investor_id = Auth::id();
@@ -307,7 +309,6 @@ class MpesaController extends Controller
             ],200);
 
         }
-
         catch(\Exception $e){
             return response()->json(['message' =>  $e->getMessage(), 'status' => 400]);
 

@@ -567,7 +567,10 @@ const PaymentForm = () => {
         const usdToKen = 128.5;
         const business_id = atob(listing_id);
         percent: percent ? atob(percent) : 0;
-        const amountKES = Math.round(parseFloat(temp_price_total) * usdToKen);
+        const amountKES = purpos == 'bids'
+            ?Math.round(parseFloat(temp_price_total) * usdToKen)
+            :Math.round(parseFloat(price) * usdToKen);
+
         const amountReal = amount_real;
         const amountToSend = amount_real + "_" + 10;
         const purpose = purpos;
@@ -578,6 +581,7 @@ const PaymentForm = () => {
                 const payload = {
                     amount: amountKES,
                     acc_number: mpesaPhoneNumber,
+                    purpose: purpos
                 };
                 axiosClient
                     .post("/initiate_payment", payload)
@@ -594,7 +598,7 @@ const PaymentForm = () => {
                             const interval = setInterval(() => {
                                 axiosClient
                                     .get(
-                                        `/lipr-status/${referenceId}/${business_id}/${amountToSend}`
+                                        `/lipr-status-bids/${referenceId}/${business_id}/${amountToSend}`
                                     )
                                     .then((res) => {
                                         const result = res.data.status;
@@ -622,6 +626,7 @@ const PaymentForm = () => {
                                         if (result === "processed") {
                                             clearInterval(interval);
                                             setPaymentStatus("success");
+                                            //setPaymentStatus(result === "processed"?"success":"failed");
                                             mpesasetLoading(false);
                                         } else if (
                                             result === "failed" ||
