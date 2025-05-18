@@ -950,7 +950,6 @@ public function bidCommitsAwaiting(Request $request){
         ]);
 
         //Email & Notification.php
-        //Notification
          $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
          $addNoti = Notifications::create([
             'date' => $date,

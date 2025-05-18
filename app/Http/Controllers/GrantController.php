@@ -446,14 +446,6 @@ class GrantController extends Controller
                 "source" => $request->stripeToken,
                 "description" => "Release Milestone Funds"
             ]);
-//            $tranfer = $this->Client->transfers->create ([
-//                //"billing_address_collection": null,
-//                "amount" => $transferAmount*100, //100 * 100,
-//                "currency" => $curr,
-//                "source_transaction" => $charge->id,
-//                'destination' => $owner->connect_id
-//            ]);
-            //T r a n s f e r
 
             $text = $milestone->title.' fund for '.$pitch->grant->grant_title.' has been released.';
             $notification = new Notification();

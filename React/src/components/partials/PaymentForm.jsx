@@ -1,14 +1,12 @@
-import { useState, useRef, useEffect } from "react";
-import { decode as base64_decode, encode as base64_encode } from "base-64";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { decode as base64_decode } from "base-64";
+import { useNavigate, Link } from "react-router-dom";
 import { FaCreditCard, FaHome } from "react-icons/fa";
 import axiosClient from "../../axiosClient";
 import { ClipLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BackBtn from "./BackBtn";
-import PaystackPop from "@paystack/inline-js";
-import Paystack from "@paystack/inline-js";
 import PaymentHero from "../Heros/PaymentHero";
 import { useStateContext } from "../../contexts/contextProvider";
 import { useLocation } from "react-router-dom";
@@ -165,7 +163,6 @@ const PaymentForm = () => {
     // GETTING Parameters
 
     const [showModal, setShowModal] = useState(false);
-    const [paystackRef, setPaystackRef] = useState(null);
     const price = parseFloat(amount_real) + parseFloat(0.05 * amount_real); // Fixed price value
 
     const handleSubmit = (event) => {
@@ -390,21 +387,22 @@ const PaymentForm = () => {
         //timeout
     };
 
-    //O T H E R P A Y M E N T S
-    let partiesInfo;
-    const [user, setUser] = useState({});
-    const [owner, setOwner] = useState({});
+    //S T R I P E  E N D S
 
-    if (purpos == "s_mile") partiesInfo = "/partiesServiceMile/";
-    else partiesInfo = "/partiesInfo/";
-    useEffect(() => {
-        // $(".card-number").mask("9999 9999 9999 9999");
-        axiosClient.get(partiesInfo + atob(listing_id)).then(({ data }) => {
-            setUser(data.user);
-            setOwner(data.owner);
-            //console.log(data);
-        });
-    }, []);
+    //O T H E R P A Y M E N T S
+    // let partiesInfo;
+    // const [user, setUser] = useState({});
+    // const [owner, setOwner] = useState({});
+    // if (purpos == "s_mile") partiesInfo = "/partiesServiceMile/";
+    // else partiesInfo = "/partiesInfo/";
+    // useEffect(() => {
+    //     // $(".card-number").mask("9999 9999 9999 9999");
+    //     axiosClient.get(partiesInfo + atob(listing_id)).then(({ data }) => {
+    //         setUser(data.user);
+    //         setOwner(data.owner);
+    //         //console.log(data);
+    //     });
+    // }, []);
 
     //M P E S A
     const [status, setStatus] = useState("pending");
@@ -414,142 +412,6 @@ const PaymentForm = () => {
     const [transactionId, setTransactionId] = useState(null);
     const [showMpesaModal, setShowMpesaModal] = useState(false);
 
-    // const LiprInit = () => {
-    //     if (
-    //         !mpesaPhoneNumber.startsWith("254") ||
-    //         mpesaPhoneNumber.length !== 12
-    //     ) {
-    //         showErrorToast(
-    //             "Please enter a valid Kenyan phone number starting with 254"
-    //         );
-    //         return;
-    //     }
-    //     setPaymentStatus("processing");
-    //     mpesasetLoading(true);
-
-    //     mpesasetLoading(true);
-    //     const usdToKen = 128.5;
-    //     const business_id = atob(listing_id);
-    //     percent: percent ? atob(percent) : 0;
-    //     const amountKES = Math.round(parseFloat(temp_price_total) * usdToKen);
-    //     const amountReal = amount_real;
-    //     const amountToSend = amount_real + "_" + 10; //amount_real+'_'+amountKES;
-    //     const purpose = purpos;
-    //     console.log(amountToSend);
-
-    //     setTimeout(() => {
-    //         if (purpos == "bids") {
-    //             const payload = {
-    //                 amount: amountKES,
-    //                 // acc_number: '254721601031' //acc_number
-    //                 acc_number: mpesaPhoneNumber,
-    //             };
-    //             axiosClient
-    //                 .post("/initiate_payment", payload)
-    //                 .then(({ data }) => {
-    //                     console.log(data);
-    //                     if (data.status == 200) {
-    //                         //navigate("/");
-    //                         console.log(data);
-    //                         //C h e c k  S t a t u s
-    //                         const referenceId = data.data.data.transaction.id;
-    //                         const interval = setInterval(() => {
-    //                             axiosClient
-    //                                 .get(
-    //                                     `/lipr-status/${referenceId}/${business_id}/${amountToSend}`
-    //                                 )
-    //                                 .then((res) => {
-    //                                     const result = res.data.status;
-    //                                     setStatus(result);
-    //                                     console.log(res);
-
-    //                                     if (
-    //                                         ["processed", "failed"].includes(
-    //                                             result
-    //                                         )
-    //                                     ) {
-    //                                         clearInterval(interval);
-    //                                         $.confirm({
-    //                                             title: "Payment " + result,
-    //                                             content: "Go to Home?",
-    //                                             buttons: {
-    //                                                 home: function () {
-    //                                                     navigate("/");
-    //                                                 },
-    //                                                 cancel: function () {
-    //                                                     $.alert("Canceled!");
-    //                                                 },
-    //                                             },
-    //                                         });
-    //                                         mpesasetLoading(false);
-    //                                     }
-    //                                 })
-    //                                 .catch(console.error);
-    //                         }, 10000); // every 10 sec
-    //                         //C h e c k  S t a t u s
-    //                     }
-    //                     if (data.status == 400) showErrorToast(data.message);
-    //                 })
-    //                 .catch((err) => {
-    //                     console.log(err);
-    //                 });
-    //         } else if (purpos === "small_fee") {
-    //             axiosClient
-    //                 .get(
-    //                     "/paystackVerifySmallFee/" +
-    //                         packages +
-    //                         "/" +
-    //                         business_id +
-    //                         "/" +
-    //                         amountKFront +
-    //                         "/" +
-    //                         amountReal +
-    //                         "/" +
-    //                         ref
-    //                 )
-    //                 .then(({ data }) => {
-    //                     console.log(data);
-    //                     if (data.status == 200)
-    //                         setTimeout(() => {
-    //                             navigate("/listing/" + btoa(listing_id));
-    //                         }, 2000);
-    //                     else showErrorToast(data.message);
-    //                 })
-    //                 .catch((err) => {
-    //                     console.log(err);
-    //                 });
-    //         } else {
-    //             const true_mile_id = owner.true_mile_id;
-    //             axiosClient
-    //                 .get(
-    //                     "/paystackVerifyService/" +
-    //                         true_mile_id +
-    //                         "/" +
-    //                         business_id +
-    //                         "/" +
-    //                         amountKFront +
-    //                         "/" +
-    //                         amountReal +
-    //                         "/" +
-    //                         ref
-    //                 )
-    //                 .then(({ data }) => {
-    //                     console.log(data);
-    //                     if (data.status == 200) {
-    //                         showSuccessToast(data.message);
-    //                         navigate(
-    //                             "/service-milestones/" +
-    //                                 btoa(btao(data.service_id))
-    //                         );
-    //                     } else showErrorToast(data.message);
-    //                 })
-    //                 .catch((err) => {
-    //                     console.log(err);
-    //                 });
-    //         }
-    //         //Timeout Ends below
-    //     }, 500);
-    // };
     const LiprInit = () => {
         if (
             !mpesaPhoneNumber.startsWith("254") ||
@@ -570,164 +432,124 @@ const PaymentForm = () => {
         const amountKES = purpos == 'bids'
             ?Math.round(parseFloat(temp_price_total) * usdToKen)
             :Math.round(parseFloat(price) * usdToKen);
-
-        const amountReal = amount_real;
         const amountToSend = amount_real + "_" + 10;
-        const purpose = purpos;
-        console.log(amountToSend);
+       // console.log(amountToSend);
+
+        let status_url = ''; let redirect_url = '';
+        if (purpos == "bids") {
+            status_url = `/lipr-status-bids/${business_id}/${amountToSend}`;
+            redirect_url = 'dashboard/';
+        }
+        else if (purpos === "s_mile") {
+            status_url = `/lipr-status-service/${business_id}/${amountToSend}`;
+            redirect_url = '/service-milestones/'+btoa(listing_id);
+        }
+        else if (purpos === "awaiting_payment") {
+            status_url = `/lipr-status-bidsAwaiting/${business_id}/${amountToSend}`;
+            redirect_url = 'dashboard/';
+        }
+        else if (purpos === "grant_milestone") {
+            status_url = `/lipr-status-grant/${business_id}/${amountToSend}/${percent}`;
+            redirect_url = 'grants-overview/';
+        }
+        else if (purpos === "capital_milestone") {
+            status_url = `/lipr-status-capital/${business_id}/${amountToSend}/${percent}`;
+            redirect_url = 'capital-overview/';
+        }
+        else {
+            status_url = `/lipr-status-smallFee/${business_id}/${amountToSend}`;
+            redirect_url = '/listing/' + btoa(listing_id);
+        }
+
+        const payload = {
+            amount: amountKES,
+            acc_number: mpesaPhoneNumber,
+            purpose: p
+        };
 
         setTimeout(() => {
-            if (purpos == "bids") {
-                const payload = {
-                    amount: amountKES,
-                    acc_number: mpesaPhoneNumber,
-                    purpose: purpos
-                };
-                axiosClient
-                    .post("/initiate_payment", payload)
-                    .then(({ data }) => {
-                        console.log(data);
-                        if (data.status == 200) {
-                            const referenceId = data.data.data.transaction.id;
-                            setTransactionId(referenceId);
+            axiosClient
+                .post("/initiate_payment", payload)
+                .then(({ data }) => {
+                    console.log(data);
+                    if (data.status == 200) {
+                        const referenceId = data.data.data.transaction.id;
+                        setTransactionId(referenceId);
 
-                            // Show processing modal
-                            setPaymentStatus("processing");
+                        // Show processing modal
+                        setPaymentStatus("processing");
 
-                            // Start polling for payment status
-                            const interval = setInterval(() => {
-                                axiosClient
-                                    .get(
-                                        `/lipr-status-bids/${referenceId}/${business_id}/${amountToSend}`
-                                    )
-                                    .then((res) => {
-                                        const result = res.data.status;
-                                        setStatus(result);
-                                        console.log(res);
+                        // Start polling for payment status
+                        const interval = setInterval(() => {
+                            axiosClient
+                                .get(
+                                    status_url+`/${referenceId}`
+                                )
+                                .then((res) => {
+                                    const result = res.data.status;
+                                    setStatus(result);
+                                    console.log(res);
 
-                                        // if (result === "processed") {
-                                        //     clearInterval(interval);
-                                        //     setPaymentStatus("success");
-                                        //     mpesasetLoading(false);
-                                        //     setTimeout(
-                                        //         () => navigate("/dashboard"),
-                                        //         3000
-                                        //     );
-                                        // } else if (
-                                        //     result === "failed" ||
-                                        //     result === 404 ||
-                                        //     res.data.error ===
-                                        //         "Payment not found"
-                                        // ) {
-                                        //     clearInterval(interval);
-                                        //     setPaymentStatus("failed");
-                                        //     mpesasetLoading(false);
-                                        // }
-                                        if (result === "processed") {
-                                            clearInterval(interval);
-                                            setPaymentStatus("success");
-                                            //setPaymentStatus(result === "processed"?"success":"failed");
-                                            mpesasetLoading(false);
-                                        } else if (
-                                            result === "failed" ||
-                                            result === 404 ||
-                                            res.data.error ===
-                                                "Payment not found"
-                                        ) {
-                                            clearInterval(interval);
-                                            setPaymentStatus("failed");
-                                            mpesasetLoading(false);
-                                        }
-                                    })
-                                    .catch((err) => {
-                                        console.error(err);
+                                    // if (result === "processed") {
+                                    //     clearInterval(interval);
+                                    //     setPaymentStatus("success");
+                                    //     mpesasetLoading(false);
+                                    //     setTimeout(
+                                    //         () => navigate("/dashboard"),
+                                    //         3000
+                                    //     );
+                                    // } else if (
+                                    //     result === "failed" ||
+                                    //     result === 404 ||
+                                    //     res.data.error ===
+                                    //         "Payment not found"
+                                    // ) {
+                                    //     clearInterval(interval);
+                                    //     setPaymentStatus("failed");
+                                    //     mpesasetLoading(false);
+                                    // }
+                                    if (result === "processed") {
+                                        clearInterval(interval);
+                                        setPaymentStatus("success");
+                                        //setPaymentStatus(result === "processed"?"success":"failed");
+                                        mpesasetLoading(false);
+                                    } else if (
+                                        result === "failed" ||
+                                        result === 404 ||
+                                        res.data.error ===
+                                            "Payment not found"
+                                    ) {
                                         clearInterval(interval);
                                         setPaymentStatus("failed");
                                         mpesasetLoading(false);
-                                        showErrorToast(
-                                            "Error checking payment status"
-                                        );
-                                    });
-                            }, 60000);
-                            // every 60 sec because mpesa gives you 60 sec to pay if not it fails  so let me put 60 second
-                        } else {
-                            setPaymentStatus("failed");
-                            mpesasetLoading(false);
-                            showErrorToast(
-                                data.message || "Payment initiation failed"
-                            );
-                        }
-                    })
-                    .catch((err) => {
-                        console.log(err);
+                                    }
+                                })
+                                .catch((err) => {
+                                    console.error(err);
+                                    clearInterval(interval);
+                                    setPaymentStatus("failed");
+                                    mpesasetLoading(false);
+                                    showErrorToast(
+                                        "Error checking payment status"
+                                    );
+                                });
+                        }, 60000);
+                        // every 60 sec because mpesa gives you 60 sec to pay if not it fails  so let me put 60 second
+                    } else {
                         setPaymentStatus("failed");
                         mpesasetLoading(false);
-                        showErrorToast("Payment processing error");
-                    });
-            } else if (purpos === "small_fee") {
-                axiosClient
-                    .get(
-                        "/paystackVerifySmallFee/" +
-                            packages +
-                            "/" +
-                            business_id +
-                            "/" +
-                            amountKFront +
-                            "/" +
-                            amountReal +
-                            "/" +
-                            ref
-                    )
-                    .then(({ data }) => {
-                        console.log(data);
-                        if (data.status == 200) {
-                            setPaymentStatus("success");
-                            setTimeout(() => {
-                                navigate("/listing/" + btoa(listing_id));
-                            }, 2000);
-                        } else {
-                            setPaymentStatus("failed");
-                            showErrorToast(data.message);
-                        }
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                        setPaymentStatus("failed");
-                    });
-            } else {
-                const true_mile_id = owner.true_mile_id;
-                axiosClient
-                    .get(
-                        "/paystackVerifyService/" +
-                            true_mile_id +
-                            "/" +
-                            business_id +
-                            "/" +
-                            amountKFront +
-                            "/" +
-                            amountReal +
-                            "/" +
-                            ref
-                    )
-                    .then(({ data }) => {
-                        console.log(data);
-                        if (data.status == 200) {
-                            setPaymentStatus("success");
-                            showSuccessToast(data.message);
-                            navigate(
-                                "/service-milestones/" +
-                                    btoa(btao(data.service_id))
-                            );
-                        } else {
-                            setPaymentStatus("failed");
-                            showErrorToast(data.message);
-                        }
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                        setPaymentStatus("failed");
-                    });
-            }
+                        showErrorToast(
+                            data.message || "Payment initiation failed"
+                        );
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    setPaymentStatus("failed");
+                    mpesasetLoading(false);
+                    showErrorToast("Payment processing error");
+                });
+
         }, 500);
     };
     //M P E S A

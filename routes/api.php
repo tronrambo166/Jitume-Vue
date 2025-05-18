@@ -56,9 +56,6 @@ Route::middleware('auth:sanctum')->group(function() {
     //B I D S
     Route::post('bidCommitsEQP', [bidsEmailController::class, 'bidCommitsEQP'])->name('bidCommitsEQP');
     Route::get('bidCommits/{amount}/{business_id}/{percent}', [checkoutController::class, 'bidCommitsForm'])->name('bidCommits');
-    Route::post('bidCommits', [checkoutController::class, 'bidCommits'])->name('bidCommits');
-    Route::post('bidCommitsAwaiting', [checkoutController::class, 'bidCommitsAwaiting']);
-
 
     Route::post('bookingAccepted', [bidsEmailController::class, 'bookingAccepted'])->name('bookingAccepted');
     Route::post('bookingRejected', [bidsEmailController::class, 'bookingRejected'])->name('bookingRejected');
@@ -74,21 +71,29 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('/stripe', [checkoutController::class, 'stripePost'])->name('stripe.post');
     //Unlock small fee
     Route::post('/stripe.post.coversation', [checkoutController::class, 'stripeConversation'])->name('stripe.post.coversation');
+    Route::post('milestoneService', [checkoutController::class, 'milestoneStripePostS'])->name('milestoneService.post');
+    Route::post('bidCommits', [checkoutController::class, 'bidCommits'])->name('bidCommits');
+    Route::post('bidCommitsAwaiting', [checkoutController::class, 'bidCommitsAwaiting']);
+    //Stripe-Connect
+    Route::get('/connect/{id}', [checkoutController::class, 'connect'])->name('connect.stripe');
+    Route::get('/saveStripe/{token}', [checkoutController::class, 'saveStripe'])->name('return.stripe');
+    Route::get('/checkAuth', [AuthController::class,'checkAuth']);
 
     // L I P R
     Route::get('/lipr-status-bids/{reference_id}/{listing_id}/{amountReal}', [MpesaController::class,'status_bids']);
+    Route::get('/lipr-status-bidsAwaiting/{reference_id}/{listing_id}/{amountReal}', [MpesaController::class,'status_bids']);
     Route::get('/lipr-status-service/{reference_id}/{listing_id}/{amountReal}', [MpesaController::class,'status_service']);
     Route::get('/lipr-status-smallFee/{reference_id}/{listing_id}/{amountReal}', [MpesaController::class,'status_smallFee']);
+    Route::get('/lipr-status-grant/{reference_id}/{listing_id}/{amountReal}', [MpesaController::class,'release_grant_milestone']);
+    Route::get('/lipr-status-capital/{reference_id}/{listing_id}/{amountReal}', [MpesaController::class,'release_capital_milestone']);
     Route::post('/initiate_payment', [MpesaController::class,'initiate_payment']);
+    // P A Y M E N T  R O U T E S  E N D S
 
-    Route::post('/initialize', [PayStackController::class, 'initialize']);
-    Route::get('/create-subaccount', [PayStackController::class, 'create_subaccount']);
-    Route::get('/paystackVerify/{business_id}/{percent}/{amountKFront}/{amountReal}/{ref}', [PayStackController::class, 'verify']);
-
-    Route::get('/paystackVerifySmallFee/{package}/{business_id}/{amountKFront}/{amountReal}/{ref}', [PayStackController::class, 'verifySmallFee']);
-
-    Route::get('/paystackVerifyService/{true_mile_id}/{rep_id}/{amountKFront}/{amountReal}/{ref}', [PayStackController::class, 'verifyService']);
-
+    // Route::post('/initialize', [PayStackController::class, 'initialize']);
+    // Route::get('/create-subaccount', [PayStackController::class, 'create_subaccount']);
+    // Route::get('/paystackVerify/{business_id}/{percent}/{amountKFront}/{amountReal}/{ref}', [PayStackController::class, 'verify']);
+    // Route::get('/paystackVerifySmallFee/{package}/{business_id}/{amountKFront}/{amountReal}/{ref}', [PayStackController::class, 'verifySmallFee']);
+    // Route::get('/paystackVerifyService/{true_mile_id}/{rep_id}/{amountKFront}/{amountReal}/{ref}', [PayStackController::class, 'verifyService']);
     Route::get('/partiesInfo/{listing_id}', [AuthController::class,'partiesInfo']);
     Route::get('/partiesServiceMile/{rep_mile_id}', [AuthController::class,'PartiesServiceMile']);
 
@@ -102,17 +107,11 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('milestonestripe', [checkoutController::class, 'milestoneStripePost'])->name('milestonestripe.post');
 
     Route::get('milestoneService/{milestone_id}/{amount}', [checkoutController::class, 'milestoneCheckoutS'])->name('milestoneService');
-    Route::post('milestoneService', [checkoutController::class, 'milestoneStripePostS'])->name('milestoneService.post');
     // Route::get('milestoneInvestEQP/{listing_id}/{mile_id}/{investor_id}/{owner_id}', [checkoutController::class, 'milestoneInvestEQP'])->name('milestoneInvestEQP');
 
 
     Route::post('bidsAccepted', [bidsEmailController::class, 'bidsAccepted'])->name('bidsAccepted');
 
-    // Payment Routes
-    //Stripe-Connect
-    Route::get('/connect/{id}', [checkoutController::class, 'connect'])->name('connect.stripe');
-    Route::get('/saveStripe/{token}', [checkoutController::class, 'saveStripe'])->name('return.stripe');
-    Route::get('/checkAuth', [AuthController::class,'checkAuth']);
 
 
 // B U S I N E S S    P R O T E C T E D
