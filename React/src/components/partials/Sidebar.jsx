@@ -562,10 +562,9 @@ const Sidebar = ({ onToggle }) => {
                             )}
                             {!user.investor && (
                                 <li className="nav-item mb-6 rounded-xl py-2">
-                                    {/* Added margin-bottom (mb-6) to move it up from the bottom */}
                                     <NavLink
                                         className={({ isActive }) =>
-                                            `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[12px] transition-all duration-300 ${
+                                            `navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-all duration-300 ${
                                                 isActive
                                                     ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md"
                                                     : "hover:bg-gray-100 bg-gradient-to-r from-blue-50 to-purple-50 border border-gray-200"
@@ -577,7 +576,7 @@ const Sidebar = ({ onToggle }) => {
                                     >
                                         {({ isActive }) => (
                                             <>
-                                                <BiSearch // Changed from BiCreditCard to BiSearch (more "exploration" themed)
+                                                <BiSearch
                                                     className={`text-[18px] ${
                                                         isActive
                                                             ? "text-white"
@@ -595,6 +594,7 @@ const Sidebar = ({ onToggle }) => {
                                     </NavLink>
                                 </li>
                             )}
+
                             {user.investor === 1 && (
                                 <>
                                     <li className="nav-item mb-6 rounded-xl py-2">

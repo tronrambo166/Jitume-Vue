@@ -36,6 +36,7 @@ import {
     Target,
     Layers,
     Files,
+    MessageSquare,
 } from "lucide-react";
 import { useStateContext } from "../../../contexts/contextProvider";
 import axiosClient from "../../../axiosClient";
@@ -143,6 +144,16 @@ const TujitumeGrantPortal = () => {
         setShowDisclaimer(false);
         setPendingToggleId(null);
     };
+
+
+    const handleMessageOwner = (ownerId) => {
+        // Implement your messaging logic here
+        // This could open a chat modal, navigate to a messaging page, etc.
+        console.log(`Initiating message to business owner `);
+        // For now, we'll just show an alert
+        alert(`Messaging feature would open for business owner ID: `);
+    };
+
     // Fetch grants from API
     useEffect(() => {
         const fetchGrants = async () => {
@@ -1770,23 +1781,43 @@ const TujitumeGrantPortal = () => {
 
                                                             {application.status ===
                                                                 1 && (
-                                                                <button
-                                                                    onClick={() =>
-                                                                        handleFundRequest(
-                                                                            application.id
-                                                                        )
-                                                                    }
-                                                                    className="px-3 py-1 border border-green-200 rounded-md text-green-600 hover:bg-green-50 text-sm flex items-center"
-                                                                >
-                                                                    <ExternalLink
-                                                                        size={
-                                                                            16
+                                                                <>
+                                                                    <button
+                                                                        onClick={() =>
+                                                                            handleFundRequest(
+                                                                                application.id
+                                                                            )
                                                                         }
-                                                                        className="mr-1"
-                                                                    />
-                                                                    Request for
-                                                                    Funds
-                                                                </button>
+                                                                        className="px-3 py-1 border border-green-200 rounded-md text-green-600 hover:bg-green-50 text-sm flex items-center"
+                                                                    >
+                                                                        <ExternalLink
+                                                                            size={
+                                                                                16
+                                                                            }
+                                                                            className="mr-1"
+                                                                        />
+                                                                        Request
+                                                                        Funds
+                                                                    </button>
+
+                                                                    <button
+                                                                        onClick={() =>
+                                                                            handleMessageOwner(
+                                                                                application.businessOwnerId
+                                                                            )
+                                                                        }
+                                                                        className="px-3 py-1 border border-orange-200 rounded-md text-orange-600 hover:bg-blue-50 text-sm flex items-center"
+                                                                    >
+                                                                        <MessageSquare
+                                                                            size={
+                                                                                16
+                                                                            }
+                                                                            className="mr-1"
+                                                                        />
+                                                                        Message
+                                                                        Owner
+                                                                    </button>
+                                                                </>
                                                             )}
                                                         </div>
                                                     </div>

@@ -7,7 +7,7 @@ import {
     FileText,
     DollarSign,
     Mail,
-    Phone,
+    MessageSquare,
     AlertCircle,
     CheckCircle,
     RefreshCw,
@@ -844,6 +844,24 @@ const PitchCard = ({
                                                 : "Not specified"}
                                         </span>
                                     </div>
+                                </div>
+                            </div>
+                            <h4 className="text-sm font-medium text-gray-800 mb-3 flex items-center">
+                                <div className="w-1 h-4 bg-black rounded-full mr-2"></div>
+                                Message The Business Owner
+                            </h4>
+                            <div className="space-y-2">
+                                <div
+                                    className="flex items-center space-x-3 bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-50"
+                                    onClick={() => alert("Hello")}
+                                >
+                                    <div className="p-1.5 bg-green-50 rounded-lg">
+                                        <MessageSquare
+                                            className="text-green-600"
+                                            size={16}
+                                        />
+                                    </div>
+                                    <span>Massaging</span>
                                 </div>
                             </div>
                         </div>

@@ -81,14 +81,14 @@ const MyInvest = () => {
                         setMyInvest(data.pending);
                         setActiveInvest(data.active);
                         setallInvest(data);
-                        console.log("myInvestmen both active and pending", data);
+                        // console.log("myInvestmen both active and pending", data);
                         //setName(data.user_name);
                         //SetInvestname(data.results[0].name);
                         //setUserId(data.results[0].user_id);
                         setIsLoading(false);
                     })
                     .catch((err) => {
-                        console.error(err);
+                        // console.error(err);
                         setIsLoading(false);
                     });
             }, 500);
@@ -96,7 +96,7 @@ const MyInvest = () => {
         getInvestments();
     }, []);
     
-    console.log("allInvest", allInvest);
+    // console.log("allInvest", allInvest);
 
     // Cance logic here
     const handleCancel = (id) => {
@@ -115,7 +115,7 @@ const MyInvest = () => {
                         .get("business/remove_bids/" + id)
                         .then(({ data }) => {
                             setLoading(false);
-                            console.log(data); // Log response data
+                            // console.log(data); // Log response data
                             if (data.status == 200)
                                 showAlert("success", data.message);
                             else showAlert("success", data.message);
@@ -123,7 +123,7 @@ const MyInvest = () => {
                         .catch((err) => {
                             setLoading(false);
                             const response = err.response;
-                            console.log(response);
+                            // console.log(response);
                         });
                 },
                 cancel: function () {
@@ -156,12 +156,12 @@ const MyInvest = () => {
                                 showAlert("success", data.message);
                             else 
                                 showAlert("success", data.message);
-                            console.log(data); // Log response data
+                            // console.log(data); // Log response data
                         })
                         .catch((err) => {
                             setLoading(false);
                             const response = err.response;
-                            console.log(err);
+                            // console.log(err);
                         });
                 },
                 cancel: function () {
@@ -183,7 +183,7 @@ const MyInvest = () => {
                         const [index, row] = entry;
                         ids = ids + row.id + ",";
                     });
-                    console.log(data.results);
+                    // console.log(data.results);
                     if (!ids) ids = 0;
 
                     sessionStorage.setItem("queryLat", data.lat);
@@ -199,7 +199,7 @@ const MyInvest = () => {
                     );
                     if (locationUrl.pathname.includes("serviceResults"))
                         window.scrollTo(0, 0);
-                } else console.log(data);
+                } else console.log();
             })
             .catch((err) => {
                 console.log(err);
@@ -244,7 +244,7 @@ const MyInvest = () => {
                         axiosClient
                             .get("business/requestOwnerToVerify/" + bid_id)
                             .then(({ data }) => {
-                                console.log(data);
+                                // console.log(data);
                                 if (data.status === 200) {
                                     showAlert("success", data.message);
                                 } else {
@@ -253,7 +253,7 @@ const MyInvest = () => {
                             })
                             .catch((err) => {
                                 const response = err.response;
-                                console.log(response);
+                                // console.log(response);
                                 showAlert(
                                     "error",
                                     "An error occurred. Please try again."
@@ -458,9 +458,9 @@ const MyInvest = () => {
         return true; // Default: show all investments
     });
 
-    console.log("pending we have :", filteredInvestments);
+    // console.log("pending we have :", filteredInvestments);
 
-    console.log("active we have :", filteredInvestments2);
+    // console.log("active we have :", filteredInvestments2);
 
 
     // Map the filtered investments to the table data format

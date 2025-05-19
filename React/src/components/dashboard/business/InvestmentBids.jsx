@@ -473,7 +473,7 @@ function InvestmentBids() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {bids.map((bid) => (
+                                  {Array.isArray(bids) && bids.map((bid) => (
                                         <tr
                                             key={bid.id}
                                             className="text-gray-500 hover:bg-gray-50 transition-colors"

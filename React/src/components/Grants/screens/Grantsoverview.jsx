@@ -469,11 +469,16 @@ const Navigation = {
                                  label: "Meetings",
                                  to: "/Dashboard/overview/settings/security",
                              },
-                             {
-                                 label: "Messages",
-                                 to: "/Dashboard/overview/settings/messages",
-                             },
+                             //  {
+                             //      label: "Messages",
+                             //      to: "/Dashboard/overview/settings/messages",
+                             //  },
                          ],
+                     },
+                     {
+                         icon: MessageSquare, // Make sure to import this
+                         label: "Messages",
+                         to: "/Dashboard/overview/messages",
                      },
                  ]
                : []),

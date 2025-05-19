@@ -158,10 +158,10 @@ const router = createBrowserRouter([
                         element: <NotificationSettingsPage />,
                     }, // Added
                     { path: "security", element: <MeetingsComponent /> }, // Added
-                    { path: "messages", element: <Messages /> }, // Added
-
                 ],
             },
+            { path: "messages", element: <Messages /> }, // Added
+
             { path: "pitch", element: <PitchDashboard /> },
             { path: "capital-pitch", element: <Capitalpitch /> },
         ],
