@@ -435,30 +435,36 @@ const PaymentForm = () => {
         const amountToSend = amount_real + "_" + 10;
        // console.log(amountToSend);
 
-        let status_url = ''; let redirect_url = '';
+        let status_url = ''; let redirect_url = ''; let content = '';
         if (purpos == "bids") {
             status_url = `/lipr-status-bids/${business_id}/${amountToSend}`;
             redirect_url = 'dashboard/';
+            content = "Go to Dashboard to see bid status.";
         }
         else if (purpos === "s_mile") {
             status_url = `/lipr-status-service/${business_id}/${amountToSend}`;
-            redirect_url = '/service-milestones/'+btoa(listing_id);
+            //redirect_url = '/service-milestones/'+btoa(listing_id);
+            content = "Go to Milestone page to see status.";
         }
         else if (purpos === "awaiting_payment") {
             status_url = `/lipr-status-bidsAwaiting/${business_id}/${amountToSend}`;
             redirect_url = 'dashboard/';
+            content = "Go to Dashboard to see bid status.";
         }
         else if (purpos === "grant_milestone") {
             status_url = `/lipr-status-grant/${business_id}/${amountToSend}/${percent}`;
             redirect_url = 'grants-overview/';
+            content = "Go to Grants Dashboard to see bid status.";
         }
         else if (purpos === "capital_milestone") {
             status_url = `/lipr-status-capital/${business_id}/${amountToSend}/${percent}`;
             redirect_url = 'capital-overview/';
+            content = "Go to Capital Dashboard to see bid status.";
         }
         else {
             status_url = `/lipr-status-smallFee/${business_id}/${amountToSend}`;
             redirect_url = '/listing/' + btoa(listing_id);
+            content = "Go to the Listing page.";
         }
 
         const payload = {
@@ -513,6 +519,20 @@ const PaymentForm = () => {
                                         setPaymentStatus("success");
                                         //setPaymentStatus(result === "processed"?"success":"failed");
                                         mpesasetLoading(false);
+
+                                        $.confirm({
+                                            title: "Payment Successful",
+                                            content: content,
+                                            buttons: {
+                                                yes: function () {
+                                                    navigate(redirect_url);
+                                                },
+                                                cancel: function () {
+                                                    $.alert("Canceled!");
+                                                },
+                                            },
+                                        });
+
                                     } else if (
                                         result === "failed" ||
                                         result === 404 ||

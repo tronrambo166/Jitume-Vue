@@ -398,9 +398,9 @@ class MpesaController extends Controller
         }
         $investor_id = 112;
         $payment = LiprPayment::where('reference_id', $referenceId)->first();
-//        if (!$payment) {
-//            return response()->json(['error' => 'Payment not found', 'status' => 404]);
-//        }
+        if (!$payment) {
+            return response()->json(['error' => 'Payment not found', 'status' => 404]);
+        }
 
         try {
             //$notification = new Notification();
