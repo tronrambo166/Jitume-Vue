@@ -293,6 +293,7 @@ const InvestmentOpportunities = () => {
                         opp.milestone_requirements || "None specified",
                     createdAt: opp.created_at || new Date().toISOString(),
                     updatedAt: opp.updated_at || new Date().toISOString(),
+                    pitch_count: opp.pitch_count ?? 0,
                 };
             });
     }, [opportunities]);
@@ -440,13 +441,13 @@ const InvestmentOpportunities = () => {
                         </div>
 
                         {user.investor && (
-                           <button
-                           onClick={toggleModal}
-                           className="px-4 py-2 bg-gradient-to-r from-green-700 to-yellow-500
+                            <button
+                                onClick={toggleModal}
+                                className="px-4 py-2 bg-gradient-to-r from-green-700 to-yellow-500
          text-white font-medium rounded-md hover:brightness-110
          transition-all duration-200 flex items-center gap-2
          shadow-md hover:shadow-green-200/30 active:scale-[0.98]"
-                         >
+                            >
                                 {isAddingOpportunity ? (
                                     <>
                                         <X size={18} /> Cancel
@@ -817,7 +818,7 @@ const InvestmentOpportunities = () => {
                                                         className="text-emerald-600"
                                                     />
                                                 </span>
-                                                {[opp.pitch_count] || 0} Pitches
+                                                {opp.pitch_count ?? 0} Pitches
                                             </span>
                                             <span className="flex items-center gap-1">
                                                 <BadgePercent size={14} />{" "}
@@ -952,7 +953,7 @@ const InvestmentOpportunities = () => {
                                                     </label>
 
                                                     <Link
-                                                        to={`/grants-overview/funding/deals/${opp.id}`}
+                                                        to={`/Dashboard/overview/funding/deals/${opp.id}`}
                                                         state={{
                                                             opportunity: opp,
                                                         }}

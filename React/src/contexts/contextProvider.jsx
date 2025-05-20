@@ -22,6 +22,11 @@ const StateContext = createContext({
     setAmounts: () => {},
     setPurpose: () => {},
     setPercent: () => {},
+    // NEW
+    totalFunds: 0,
+    availableFunds: 0,
+    setTotalFunds: () => {},
+    setAvailableFunds: () => {},
     //CHECKOUT data
 });
 
@@ -34,6 +39,9 @@ export const ContextProvider = ({ children }) => {
     const [listing_id, setListing_id] = useState({});
     const [purpose, setPurpose] = useState({});
     const [percent, setPercent] = useState({});
+    const [totalFunds, setTotalFunds] = useState(0);
+    const [availableFunds, setAvailableFunds] = useState(0);
+
 
     const setToken = (token) => {
         _setToken(token);
@@ -130,6 +138,10 @@ export const ContextProvider = ({ children }) => {
                     setAmounts,
                     setPurpose,
                     setPercent,
+                    totalFunds,
+                    availableFunds,
+                    setTotalFunds,
+                    setAvailableFunds,
                 }}
             >
                 {children}
