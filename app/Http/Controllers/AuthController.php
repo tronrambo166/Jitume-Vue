@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Models\CapitalOffer;
+use App\Models\Grant;
+use App\Models\GrantApplication;
 use App\Models\User;
 use App\Models\Listing;
 use App\Models\ServiceMileStatus;
@@ -17,9 +20,27 @@ class AuthController extends Controller
     public function checkAuth() {
          $user = User::select('email','id', 'fname', 'lname', 'gender','image','investor')
          ->where('id', Auth::id())->first();
+
+        $total_funds = 0; $available_funds = 0;
+        if($user->investor == 2){
+            $grants = Grant::where('user_id',$user->id)->get();
+            foreach ($grants as $grant){
+                $total_funds = $total_funds + $grant->total_grant_amount;
+                $available_funds = $total_funds + $grant->available_amount;
+            }
+        }
+        else if($user->investor == 3){
+            $grants = CapitalOffer::where('user_id',$user->id)->get();
+            foreach ($grants as $grant){
+                $total_funds = $total_funds + $grant->total_capital_available;
+                $available_funds = $total_funds + $grant->available_amount;
+            }
+        }
          return response()->json([
-            'user' => $user
-        ]);
+             'user' => $user,
+             'total_funds' => $total_funds,
+             'available_funds' => $available_funds,
+         ]);
     }
 
     public function fetchUser($id) {

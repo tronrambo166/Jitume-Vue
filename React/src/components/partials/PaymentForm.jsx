@@ -495,6 +495,8 @@ const PaymentForm = () => {
                                     const result = res.data.status;
                                     setStatus(result);
                                     console.log(res);
+                                    if(purpos == 's_mile')
+                                        redirect_url = '/service-milestones/'+res.data.service_id;
 
                                     // if (result === "processed") {
                                     //     clearInterval(interval);
