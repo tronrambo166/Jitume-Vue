@@ -32,8 +32,19 @@ const TujitumeDashboard = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [animateStats, setAnimateStats] = useState(false);
     const [animateHeader, setAnimateHeader] = useState(false);
-    const { totalFunds, availableFunds, setTotalFunds, setAvailableFunds,user } =
-        useStateContext();
+    const {
+        totalFunds,
+        availableFunds,
+        setTotalFunds,
+        setAvailableFunds,
+        user,
+        setSuccessrate,
+        successrate,
+        setAvgmatchscore,
+        avgmatchscore,
+        totalfunds,
+        setTotalfunds,
+    } = useStateContext();
 
     const [grants, setGrants] = useState([]);
     const [showMenu, setShowMenu] = useState(false);
@@ -98,6 +109,9 @@ const TujitumeDashboard = () => {
                 if (data?.user) {
                     setTotalFunds(data.total_funds || 0);
                     setAvailableFunds(data.available_funds || 0);
+                    setSuccessrate(data.success_rate || 0);
+                    setAvgmatchscore(data.avg_match_score || 0);
+                    setTotalfunds(data.total_funds || 0);
 
                     if (data.user.investor === 1) {
                         navigate("/dashboard");
@@ -162,6 +176,7 @@ const TujitumeDashboard = () => {
         try {
             const response = await axiosClient.get("capital/capital-offers");
             const data = response.data?.capital || [];
+            console.log("Raw Grants API Data:", response.data);
 
             if (Array.isArray(data)) {
                 const cleanedData = data.map((opportunity) => ({
@@ -196,6 +211,7 @@ const TujitumeDashboard = () => {
         () => [...grants, ...capitalOpportunities],
         [grants, capitalOpportunities]
     );
+    console.log("Opportunities:", opportunities);
 
     // Process opportunities for dashboard metrics
     useEffect(() => {
@@ -256,6 +272,7 @@ const TujitumeDashboard = () => {
             )
             .slice(0, 3);
     }, [filter, searchTerm, grants, capitalOpportunities, user.investor]);
+    console.log("Filtered Opportunities:", filteredOpportunities);
 
     // Extract sectors from opportunities for impact statistics
     const sectors = useMemo(() => {
@@ -340,9 +357,9 @@ const TujitumeDashboard = () => {
         {
             icon: <Star className="text-yellow-600" />,
             title: "Success Rate",
-            value: `${dashboardMetrics.successRate}%`,
+            value: `${successrate}%`,
             subtext: "Average Match Score",
-            trend: `${dashboardMetrics.avgMatchScore}% match`,
+            trend: `${avgmatchscore}% match`,
             trendUp: dashboardMetrics.avgMatchScore > 70,
         },
     ];

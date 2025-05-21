@@ -861,7 +861,7 @@ const PitchCard = ({
                                             size={16}
                                         />
                                     </div>
-                                    <span>Massaging</span>
+                                    <span>Messaging</span>
                                 </div>
                             </div>
                         </div>

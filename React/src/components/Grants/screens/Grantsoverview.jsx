@@ -43,9 +43,6 @@ import TujitumeLogo from "../../../images/Tujitumelogo.svg";
 import NotificationDropdown from "../components/NotificationDropdown"; // adjust path if needed
 import OfferGrantModal from "../Utils/Modals/AddnewGrant";
 
-
-
-
 // Toast Notification Component
 const ToastNotification = ({ message, type = "info", onClose }) => {
     const bgColor = {
@@ -354,135 +351,131 @@ const Navigation = {
         }, []);
         console.log("user", user);
 
-       const navItems = [
-           ...(user?.investor
-               ? [
-                     {
-                         icon: Home,
-                         label: "Dashboard",
-                         to: "/Dashboard/overview",
-                         exact: true,
-                     },
-                 ]
-               : []),
-           // Hide if user.investor === 3
-           ...(user?.investor !== 3
-               ? [
-                     {
-                         icon: Briefcase,
-                         label: "Grants Funding",
-                         to: "/Dashboard/overview/grants",
-                         children: [
-                             ...(user?.investor
-                                 ? [
-                                       {
-                                           label: "Grants",
-                                           to: "/Dashboard/overview/grants/discover",
-                                       },
-                                       {
-                                           label: "Pitches",
-                                           to: "/Dashboard/overview/pitch",
-                                       },
-                                   ]
-                                 : [
-                                       {
-                                           label: "Apply for Grants",
-                                           to: "/Dashboard/overview/grants/discover",
-                                       },
-                                   ]),
-                         ],
-                     },
-                 ]
-               : []),
-           // Hide if user.investor === 2
-           ...(user?.investor !== 2
-               ? [
-                     {
-                         icon: CreditCard,
-                         label: "Investment Funding",
-                         to: "/Dashboard/overview/funding",
-                         children: [
-                             ...(user?.investor
-                                 ? [
-                                       {
-                                           label: "Add New Investment",
-                                           to: "/Dashboard/overview/funding/investments",
-                                       },
-                                       {
-                                           label: "Pitches",
-                                           to: "/Dashboard/overview/capital-pitch",
-                                       },
-                                   ]
-                                 : [
-                                       {
-                                           label: "Apply for Investments",
-                                           to: "/Dashboard/overview/funding/investments",
-                                       },
-                                   ]),
-                         ],
-                     },
-                 ]
-               : []),
+        const navItems = [
+            {
+                icon: Home,
+                label: "Dashboard",
+                to: "/Dashboard/overview",
+                exact: true,
+            },
+            // Hide if user.investor === 3
+            ...(user?.investor !== 3
+                ? [
+                      {
+                          icon: Briefcase,
+                          label: "Grants Funding",
+                          to: "/Dashboard/overview/grants",
+                          children: [
+                              ...(user?.investor
+                                  ? [
+                                        {
+                                            label: "Grants",
+                                            to: "/Dashboard/overview/grants/discover",
+                                        },
+                                        {
+                                            label: "Pitches",
+                                            to: "/Dashboard/overview/pitch",
+                                        },
+                                    ]
+                                  : [
+                                        {
+                                            label: "Apply for Grants",
+                                            to: "/Dashboard/overview/grants/discover",
+                                        },
+                                    ]),
+                          ],
+                      },
+                  ]
+                : []),
+            // Hide if user.investor === 2
+            ...(user?.investor !== 2
+                ? [
+                      {
+                          icon: CreditCard,
+                          label: "Investment Funding",
+                          to: "/Dashboard/overview/funding",
+                          children: [
+                              ...(user?.investor
+                                  ? [
+                                        {
+                                            label: "Add New Investment",
+                                            to: "/Dashboard/overview/funding/investments",
+                                        },
+                                        {
+                                            label: "Pitches",
+                                            to: "/Dashboard/overview/capital-pitch",
+                                        },
+                                    ]
+                                  : [
+                                        {
+                                            label: "Apply for Investments",
+                                            to: "/Dashboard/overview/funding/investments",
+                                        },
+                                    ]),
+                          ],
+                      },
+                  ]
+                : []),
 
-           ...(user?.investor
-               ? [
-                     {
-                         icon: BarChart2,
-                         label: "Analytics",
-                         to: "/Dashboard/overview/analytics",
-                         children: [
-                             {
-                                 label: "Metrics Dashboard",
-                                 to: "/Dashboard/overview/analytics",
-                             },
-                         ],
-                     },
-                     {
-                         icon: Users,
-                         label: "Profile",
-                         to: "/Dashboard/overview/profile",
-                         children: [
-                             {
-                                 label: "Profile",
-                                 to: "/Dashboard/overview/profile",
-                             },
-                             {
-                                 label: "User-Management",
-                                 to: "/Dashboard/overview/usermanagement",
-                             },
-                         ],
-                     },
-                     {
-                         icon: Settings,
-                         label: "Schedule",
-                         to: "/Dashboard/overview/settings",
-                         children: [
-                             {
-                                 label: "Office-Hours",
-                                 to: "/Dashboard/overview/settings/profile",
-                             },
-                             //  {
-                             //      label: "Calendar",
-                             //      to: "/Dashboard/overview/settings/notifications",
-                             //  },
-                             {
-                                 label: "Meetings",
-                                 to: "/Dashboard/overview/settings/security",
-                             },
-                             //  {
-                             //      label: "Messages",
-                             //      to: "/Dashboard/overview/settings/messages",
-                             //  },
-                         ],
-                     },
-                     {
-                         icon: MessageSquare, // Make sure to import this
-                         label: "Messages",
-                         to: "/Dashboard/overview/messages",
-                     },
-                 ]
-               : []),
-       ].filter(Boolean);// Remove any undefined entries
+            ...(user?.investor
+                ? [
+                      {
+                          icon: BarChart2,
+                          label: "Analytics",
+                          to: "/Dashboard/overview/analytics",
+                          children: [
+                              {
+                                  label: "Metrics Dashboard",
+                                  to: "/Dashboard/overview/analytics",
+                              },
+                          ],
+                      },
+                      {
+                          icon: Users,
+                          label: "Profile",
+                          to: "/Dashboard/overview/profile",
+                          children: [
+                              {
+                                  label: "Profile",
+                                  to: "/Dashboard/overview/profile",
+                              },
+                              {
+                                  label: "User-Management",
+                                  to: "/Dashboard/overview/usermanagement",
+                              },
+                          ],
+                      },
+                      {
+                          icon: Settings,
+                          label: "Schedule",
+                          to: "/Dashboard/overview/settings",
+                          children: [
+                              {
+                                  label: "Office-Hours",
+                                  to: "/Dashboard/overview/settings/profile",
+                              },
+                              //  {
+                              //      label: "Calendar",
+                              //      to: "/Dashboard/overview/settings/notifications",
+                              //  },
+                              {
+                                  label: "Meetings",
+                                  to: "/Dashboard/overview/settings/security",
+                              },
+                              //  {
+                              //      label: "Messages",
+                              //      to: "/Dashboard/overview/settings/messages",
+                              //  },
+                          ],
+                      },
+                      {
+                          icon: MessageSquare, // Make sure to import this
+                          label: "Messages",
+                          to: "/Dashboard/overview/messages",
+                      },
+                  ]
+                : []),
+        ].filter(Boolean); // Remove any undefined entries
         return (
             <>
                 <div
@@ -580,9 +573,9 @@ const Navigation = {
         const { addToast } = useToast();
 
         useEffect(() => {
-          if (user.incestor) {
-            navigate('/');
-          }
+            if (user.incestor) {
+                navigate("/");
+            }
         }, [token, navigate]);
 
         // console.log("user",user)
@@ -735,7 +728,55 @@ const Navigation = {
     Breadcrumbs: () => {
         const location = useLocation();
         const navigate = useNavigate();
-        const pathnames = location.pathname.split("/").filter((x) => x);
+
+        // Process the path to handle the route structure correctly
+        const fullPath = location.pathname;
+        let pathSegments = [];
+
+        // Handle dashboard routes specially
+        if (fullPath.startsWith("/Dashboard")) {
+            const segments = fullPath.split("/").filter((x) => x);
+
+            // Add Dashboard as first segment
+            pathSegments.push({
+                name: "Dashboard",
+                path: "/Dashboard/overview",
+                icon: <Grid size={16} />,
+            });
+
+            // Skip the "overview" segment in the breadcrumb display but keep for path construction
+            if (segments.length > 1) {
+                // Process remaining segments
+                for (let i = 1; i < segments.length; i++) {
+                    const segment = segments[i];
+                    // Skip the second "overview" in the breadcrumb display
+                    if (i === 1 && segment === "overview") continue;
+
+                    // Skip "funding" and "grants" segments
+                    if (segment === "funding" || segment === "grants") continue;
+
+                    // Get the full path up to this segment (including hidden segments for correct navigation)
+                    const path = "/" + segments.slice(0, i + 1).join("/");
+                    pathSegments.push({
+                        name: segment.replace(/-/g, " "),
+                        path: path,
+                    });
+                }
+            }
+        } else {
+            // For non-dashboard routes
+            const segments = fullPath.split("/").filter((x) => x);
+            segments.forEach((segment, index) => {
+                // Skip "funding" and "grants" segments
+                if (segment === "funding" || segment === "grants") return;
+
+                const path = "/" + segments.slice(0, index + 1).join("/");
+                pathSegments.push({
+                    name: segment.replace(/-/g, " "),
+                    path: path,
+                });
+            });
+        }
 
         return (
             <div className="flex items-center gap-2 text-sm mb-4">
@@ -746,24 +787,15 @@ const Navigation = {
                     <Home className="mr-1" size={16} />
                     Home
                 </Link>
-                <Link
-                    to="/grants-overview"
-                    className="text-gray-500 hover:text-green-600 flex items-center"
-                >
-                    <Grid className="mr-1" size={16} />
-                    Overview
-                </Link>
-                {pathnames.map((name, index) => {
-                    const routeTo = `/${pathnames
-                        .slice(0, index + 1)
-                        .join("/")}`;
-                    const isLast = index === pathnames.length - 1;
-                    const displayName = name
-                        .replace(/-/g, " ")
-                        .replace("grantsoverview", "");
+
+                {pathSegments.map((segment, index) => {
+                    const isLast = index === pathSegments.length - 1;
+                    const displayName =
+                        segment.name.charAt(0).toUpperCase() +
+                        segment.name.slice(1);
 
                     return (
-                        <span key={routeTo} className="flex items-center">
+                        <span key={segment.path} className="flex items-center">
                             <span className="mx-2 text-gray-400">/</span>
                             {isLast ? (
                                 <span className="text-green-600 capitalize">
@@ -771,9 +803,14 @@ const Navigation = {
                                 </span>
                             ) : (
                                 <Link
-                                    to={routeTo}
-                                    className="text-gray-500 hover:text-green-600 capitalize"
+                                    to={segment.path}
+                                    className="text-gray-500 hover:text-green-600 capitalize flex items-center"
                                 >
+                                    {segment.icon && (
+                                        <span className="mr-1">
+                                            {segment.icon}
+                                        </span>
+                                    )}
                                     {displayName}
                                 </Link>
                             )}
@@ -796,7 +833,7 @@ const GrantsOverview = () => {
     const { addToast } = useToast();
 
     const toggleOfferModal = () => {
-      setIsOfferModalOpen(prev => !prev);
+        setIsOfferModalOpen((prev) => !prev);
     };
     useEffect(() => {
         if (!token) {
@@ -813,7 +850,6 @@ const GrantsOverview = () => {
     // };
 
     const location = useLocation();
-
 
     const sidebarRef = React.useRef(null);
 
@@ -1208,7 +1244,6 @@ const GrantsList = () => {
         </div>
     );
 };
-
 
 const GrantApplication = () => {
     const { token } = useStateContext();
