@@ -74,7 +74,6 @@ class AnalyticsController extends Controller
 
             foreach ($pitches as $pitch){
                 $score = $pitch->score+$score;
-
                 //Matching Condition
                 if($pitch->score >= 60){
                     $created = $pitch->created_at;
@@ -104,7 +103,6 @@ class AnalyticsController extends Controller
                     $break['team'] = (float) $breakdown[4] + $break['team'];
                     $break['impact'] = (float) $breakdown[5] + $break['impact'];
                 }
-
 
             }
 
@@ -137,9 +135,9 @@ class AnalyticsController extends Controller
     public function index_capital(){
         try {
             $user_id = Auth::id();
-            $pitches = StartupPitches::where('user_id',$user_id)->get();
-            $pitches_funded = StartupPitches::where('user_id',$user_id)->where('status',1)->count();
-            $pitches_count = StartupPitches::where('user_id',$user_id)->count();
+            $pitches = StartupPitches::where('capital_owner_id',$user_id)->get();
+            $pitches_funded = StartupPitches::where('capital_owner_id',$user_id)->where('status',1)->count();
+            $pitches_count = StartupPitches::where('capital_owner_id',$user_id)->count();
             $score = 0;$avg_score = 0;
             $break = [
             'sector' => 0,
@@ -158,6 +156,9 @@ class AnalyticsController extends Controller
             ];
             $currentMonth = now()->month;$i=0;
             $monthData = [];
+
+            //Top Matching StartUps (10)
+            $topPitches  = StartupPitches::where('capital_owner_id',$user_id)->orderByDesc('score')->limit(10)->get();
 
                 //Performance Last 6 Months
             $applicationsByMonth = StartupPitches::
@@ -227,7 +228,8 @@ class AnalyticsController extends Controller
                 'total_match' => $pitches_count,
                 'distribution' => $dist,
                 'breakdown' => $break_avg,
-                'performance_month' => $monthData
+                'performance_month' => $monthData,
+                'top_startups' => $topPitches
             ],200);
         }
         catch (\Exception $e) {
