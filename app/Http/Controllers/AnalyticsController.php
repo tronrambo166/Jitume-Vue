@@ -27,9 +27,9 @@ class AnalyticsController extends Controller
     {
         try {
             $user_id = Auth::id();
-            $pitches = GrantApplication::where('user_id',$user_id)->get();
-            $pitches_funded = GrantApplication::where('user_id',$user_id)->where('status',1)->count();
-            $pitches_count = GrantApplication::where('user_id',$user_id)->count();
+            $pitches = GrantApplication::where('grant_owner_id',$user_id)->get();
+            $pitches_funded = GrantApplication::where('grant_owner_id',$user_id)->where('status',1)->count();
+            $pitches_count = GrantApplication::where('grant_owner_id',$user_id)->count();
             $score = 0;$avg_score = 0;
             $break = [
                 'sector' => 0,
@@ -49,6 +49,9 @@ class AnalyticsController extends Controller
             $currentMonth = now()->month;$i=0;
             $monthData = [];
 
+            //Top Matching StartUps (10)
+            $topPitches  = GrantApplication::where('grant_owner_id',$user_id)->orderByDesc('score')->limit(10)->get();
+
             //Performance Last 6 Months
             $applicationsByMonth = GrantApplication::
             selectRaw('
@@ -56,7 +59,7 @@ class AnalyticsController extends Controller
                 COUNT(*) as total,
                 SUM(CASE WHEN score >= 60 THEN 1 ELSE 0 END) as passed
             ')
-                ->where('user_id', $user_id)
+                ->where('grant_owner_id', $user_id)
                 ->groupBy('month')->get();
 
             foreach ($applicationsByMonth as $row) {
@@ -91,14 +94,18 @@ class AnalyticsController extends Controller
                 else
                     $dist['<60'] += 1;
 
-                //Scroe Breakdown
-                $breakdown = explode(',',$pitch->score_breakdown);
-                $break['sector'] = (float) $breakdown[0] + $break['sector'];
-                $break['geo'] = (float) $breakdown[1] + $break['geo'];
-                $break['stage'] = (float) $breakdown[2] + $break['stage'];
-                $break['revenue'] = (float) $breakdown[3] + $break['revenue'];
-                $break['team'] = (float) $breakdown[4] + $break['team'];
-                $break['impact'] = (float) $breakdown[5] + $break['impact'];
+                //Score Breakdown
+                if($pitch->score_breakdown){
+                    $breakdown = explode(',',$pitch->score_breakdown);
+                    $break['sector'] = (float) $breakdown[0] + $break['sector'];
+                    $break['geo'] = (float) $breakdown[1] + $break['geo'];
+                    $break['stage'] = (float) $breakdown[2] + $break['stage'];
+                    $break['revenue'] = (float) $breakdown[3] + $break['revenue'];
+                    $break['team'] = (float) $breakdown[4] + $break['team'];
+                    $break['impact'] = (float) $breakdown[5] + $break['impact'];
+                }
+
+
             }
 
             if($pitches_count > 0)
@@ -117,7 +124,8 @@ class AnalyticsController extends Controller
                 'total_match' => $pitches_count,
                 'distribution' => $dist,
                 'breakdown' => $break_avg,
-                'performance_month' => $monthData
+                'performance_month' => $monthData,
+                'top_startups' => $topPitches
             ],200);
         }
         catch (\Exception $e) {
@@ -125,6 +133,7 @@ class AnalyticsController extends Controller
         }
 
     }
+
     public function index_capital(){
         try {
             $user_id = Auth::id();
@@ -167,7 +176,7 @@ class AnalyticsController extends Controller
             'match' => $row->passed,
             'conversion' => round(($row->passed/$row->total) * 100)
             ];
-                //$matches = GrantApplication::select('score')->where('score', '>=', 60)->get();
+            //$matches = GrantApplication::select('score')->where('score', '>=', 60)->get();
             }
 
             foreach ($pitches as $pitch){
@@ -192,7 +201,7 @@ class AnalyticsController extends Controller
                 else
                     $dist['<60'] += 1;
 
-                //Scroe Breakdown
+                //Score Breakdown
                 $breakdown = explode(',',$pitch->score_breakdown);
                 $break['sector'] = (float) $breakdown[0] + $break['sector'];
                 $break['geo'] = (float) $breakdown[1] + $break['geo'];

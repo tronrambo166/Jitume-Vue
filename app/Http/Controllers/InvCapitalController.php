@@ -106,6 +106,7 @@ class InvCapitalController extends Controller
                 'user_id' => Auth::id(),
                 'offer_title' => $request->offer_title,
                 'total_capital_available' => $request->total_capital_available,
+                'available_amount' => $request->total_capital_available,
                 'per_startup_allocation' => $request->per_startup_allocation,
                 'milestone_requirements' => $request->milestone_requirements,
                 'startup_stage' => $request->startup_stage,
@@ -171,11 +172,13 @@ class InvCapitalController extends Controller
                 'score' => 'nullable|numeric',
                 'score_breakdown' => 'nullable|numeric',
             ]);
+            $capital_owner_id = StartupPitches::where('id',$request->capital_id)->first()->user_id;
 
             $capital = StartupPitches::create([
                 'user_id' => Auth::id(),
                 'business_id' => $request->business_id,
                 'capital_id' => $request->capital_id,
+                'capital_owner_id' => $capital_owner_id,
                 'startup_name' => $request->startup_name,
                 'contact_person_name' => $request->contact_person_name,
                 'contact_person_email' => $request->contact_person_email,

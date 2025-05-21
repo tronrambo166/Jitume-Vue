@@ -7,6 +7,8 @@ use App\Http\Requests\RegisterRequest;
 use App\Models\CapitalOffer;
 use App\Models\Grant;
 use App\Models\GrantApplication;
+use App\Models\GrantMilestone;
+use App\Models\StartupPitches;
 use App\Models\User;
 use App\Models\Listing;
 use App\Models\ServiceMileStatus;
@@ -22,20 +24,61 @@ class AuthController extends Controller
          ->where('id', Auth::id())->first();
 
         $total_funds = 0; $available_funds = 0;
+        $cntG = 0; $cntC = 0; $match_score = 0;
         if($user->investor == 2){
             $grants = Grant::where('user_id',$user->id)->get();
             foreach ($grants as $grant){
                 $total_funds = $total_funds + $grant->total_grant_amount;
-                $available_funds = $total_funds + $grant->available_amount;
+                $available_funds = $available_funds + $grant->available_amount;
             }
         }
         else if($user->investor == 3){
             $grants = CapitalOffer::where('user_id',$user->id)->get();
             foreach ($grants as $grant){
                 $total_funds = $total_funds + $grant->total_capital_available;
-                $available_funds = $total_funds + $grant->available_amount;
+                $available_funds = $available_funds + $grant->available_amount;
             }
         }
+        // For SMEs and Businesses
+        else if ($user->investor == null){
+            //$grants = GrantApplication::where('user_id',$user->id)->get();
+            $pitches = GrantApplication::with('grant_milestone')->where('user_id',$user->id)->latest()->get();
+            $capital_pitches = StartupPitches::with('capital_milestone')->where('user_id',$user->id)->latest()->get();
+
+            foreach ($pitches as $pitch){
+                $match_score = $match_score + $pitch->score;
+                $available_funds = $available_funds + $pitch->total_amount_requested;
+                foreach($pitch->grant_milestone as $mile){
+                    if($mile->status == 1)
+                        $total_funds = $total_funds + $mile->amount;
+                }
+                if($pitch->status == 1) $cntG++;
+            }
+            foreach ($capital_pitches as $pitch){
+                $match_score = $match_score + $pitch->score;
+                $available_funds = $available_funds + $pitch->total_amount_requested;
+                foreach($pitch->capital_milestone as $mile){
+                    if($mile->status == 1)
+                        $total_funds = $total_funds + $mile->amount;
+                }
+                if($pitch->status == 1) $cntC++;
+            }
+            $total_pitches_count = $pitches->count()+$capital_pitches->count();
+            $avg_match_score = $total_pitches_count > 0 ? $match_score/$total_pitches_count : 0;
+
+            $success_G = $pitches->count() > 0? ($cntG/$pitches->count())*100 : 0;
+            $success_C = $capital_pitches->count() > 0? ($cntC/$capital_pitches->count())*100 : 0;
+            $success_rate = round((($success_G+$success_C)/2), 2);
+
+            return response()->json([
+                'user' => $user,
+                'total_funds' => $total_funds,
+                'available_funds' => $available_funds,
+                'success_rate' => $success_rate,
+                'avg_match_score' => $avg_match_score,
+            ]);
+        }
+
          return response()->json([
              'user' => $user,
              'total_funds' => $total_funds,

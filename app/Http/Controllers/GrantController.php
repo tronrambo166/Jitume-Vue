@@ -129,6 +129,7 @@ class GrantController extends Controller
                 'user_id' => Auth::id(),
                 'grant_title' => $request->grantTitle,
                 'total_grant_amount' => $request->totalGrantAmount,
+                'available_amount' => $request->totalGrantAmount,
                 'funding_per_business' => $request->fundingPerBusiness,
                 'eligibility_criteria' => $request->eligibilityCriteria,
                 'required_documents' => $request->requiredDocuments,
@@ -193,10 +194,12 @@ class GrantController extends Controller
                 'score_breakdown' => 'nullable|string',
                 'milestones' => 'nullable|array',
             ]);
+            $grant_owner_id = Grant::where('id',$request->grant_id)->first()->user_id;
 
             $grant = GrantApplication::create([
                 'user_id' => Auth::id(),
                 'grant_id' => $request->grant_id,
+                'grant_owner_id' => $grant_owner_id,
                 'business_id' => $request->business_id,
                 'startup_name' => $request->startup_name,
                 'contact_person_name' => $request->contact_name,
@@ -439,32 +442,44 @@ class GrantController extends Controller
                 return response()->json(['message' => 'Amount does not match!'], 400);
             }
 
-            $charge = $this->Client->charges->create ([
-                //"billing_address_collection": null,
-                "amount" => $amount*100, //100 * 100,
-                "currency" => $curr,
-                "source" => $request->stripeToken,
-                "description" => "Release Milestone Funds"
-            ]);
+
+            if($request->percent != 100){
+                $charge = $this->Client->charges->create ([
+                    //"billing_address_collection": null,
+                    "amount" => $amount*100, //100 * 100,
+                    "currency" => $curr,
+                    "source" => $request->stripeToken,
+                    "description" => "Release Milestone Funds"
+                ]);
+                //D a t a b a s e
+                $milestone->update([
+                    'status' => 1,
+                ]);
+                $grantUp = Grant::where('id', $pitch->grant_id)->update([
+                    'available_amount' => DB::raw("available_amount - {$amount}")
+                ]);
+            }
+            else{
+                $charge = $this->Client->charges->create ([
+                    //"billing_address_collection": null,
+                    "amount" => $pitch->total_amount_requested*100, //100 * 100,
+                    "currency" => $curr,
+                    "source" => $request->stripeToken,
+                    "description" => "Release Milestone Funds"
+                ]);
+                //D a t a b a s e
+                GrantMilestone::where('app_id',$milestone->app_id)->update([
+                    'status' => 1,
+                ]);
+                $grantUp = Grant::where('id', $pitch->grant_id)->update([
+                    'available_amount' => DB::raw("available_amount - {$pitch->total_amount_requested}")
+                ]);
+            }
 
             $text = $milestone->title.' fund for '.$pitch->grant->grant_title.' has been released.';
             $notification = new Notification();
             $notification->create($pitch->user_id,$pitch->grant->user_id,$text
                 ,'grants-overview/grants/discover',' grant');
-
-            //D a t a b a s e
-            if($request->percent != 100){
-                $milestone->update([
-                    'status' => 1,
-                ]);
-            }
-            else{
-                GrantMilestone::where('app_id',$milestone->app_id)->update([
-                    'status' => 1,
-                ]);
-            }
-
-            //D a t a b a s e
 
             //MAIL
 
