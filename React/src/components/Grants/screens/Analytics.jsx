@@ -30,7 +30,7 @@ const [distributionData, setDistributionData] = useState([]);
 const [breakdown, setBreakdown] = useState({});
 // Add to your component's state declarations
 const [highPotential, setHighPotential] = useState(0);
-        const { user, setUser } = useStateContext();
+        const { user, setUser,  setAvgscore } = useStateContext();
 
   // Updated color palette - Sophisticated neutrals with green accents
   const COLORS = {
@@ -92,6 +92,9 @@ const fetchGrantsData = async () => {
     console.log('Fetching grants data');
     const response = await axiosClient.get('/grant/analytics');
     console.log('Grants data received:', response.data);
+    // Set the avgscore in context
+    setAvgscore(response.data.avg_score);
+    // Set the user in context
     return response.data;
   } catch (err) {
     console.error('Failed to fetch grant analytics:', err);
@@ -590,7 +593,7 @@ const fetchMatches = async () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <button 
+            {/* <button 
               className="p-1.5 rounded-lg hover:bg-gray-100 relative border" 
               style={{ 
                 backgroundColor: COLORS.background,
@@ -600,7 +603,7 @@ const fetchMatches = async () => {
             >
               <Bell size={18} />
               <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full" style={{ backgroundColor: COLORS.primary }}></span>
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
@@ -628,7 +631,7 @@ const fetchMatches = async () => {
               </p>
             </div>
             <div className="mt-2 sm:mt-0 flex space-x-2">
-              <button 
+              {/* <button 
                 className="flex items-center text-xs px-2.5 py-1 border rounded-lg transition-colors hover:bg-gray-50"
                 style={{ 
                   borderColor: COLORS.border,
@@ -638,7 +641,7 @@ const fetchMatches = async () => {
                 onClick={handleExport}
               >
                 <Download size={14} className="mr-1.5" />Export
-              </button>
+              </button> */}
               <button 
                 className="flex items-center text-xs px-2.5 py-1 border rounded-lg transition-colors hover:bg-gray-50"
                 style={{ 
@@ -906,7 +909,7 @@ const fetchMatches = async () => {
               boxShadow: '0 4px 12px rgba(0,0,0,0.03)'
             }}
           >
-            <div className="flex justify-between items-center mb-3">
+            {/* <div className="flex justify-between items-center mb-3">
               <h3 className="text-xs font-semibold uppercase tracking-wider" style={{ color: COLORS.dimText }}>Match Score Distribution</h3>
               <button 
                 className="text-xs font-medium flex items-center hover:underline"
@@ -915,7 +918,7 @@ const fetchMatches = async () => {
               >
                 Details <ChevronRight size={14} className="ml-0.5" />
               </button>
-            </div>
+            </div> */}
             
             <div className="grid grid-cols-1 gap-2 mt-4">
   {distributionData.length > 0 ? (
@@ -963,7 +966,7 @@ const fetchMatches = async () => {
     boxShadow: '0 4px 12px rgba(0,0,0,0.03)'
   }}
 >
-  <div className="flex justify-between items-center mb-3">
+  {/* <div className="flex justify-between items-center mb-3">
     <h3 className="text-xs font-semibold uppercase tracking-wider" style={{ color: COLORS.dimText }}>Sector Focus</h3>
     <button 
       className="text-xs font-medium flex items-center hover:underline"
@@ -972,7 +975,7 @@ const fetchMatches = async () => {
     >
       Filter <Filter size={14} className="ml-0.5" />
     </button>
-  </div>
+  </div> */}
   
   <div className="h-48 flex justify-center items-center">
     {loading ? (
@@ -1064,7 +1067,7 @@ const fetchMatches = async () => {
               <Zap size={14} className="mr-2" style={{ color: COLORS.primary }} />
               {showAllMatches ? 'All Matching Startups' : 'Top Matching Startups'}
             </h3>
-            <button 
+            {/* <button 
               className="text-xs font-medium flex items-center hover:underline"
               style={{ color: COLORS.primary }}
               onClick={() => {
@@ -1073,7 +1076,7 @@ const fetchMatches = async () => {
               }}
             >
               {showAllMatches ? 'Show less' : 'View all'} <ChevronRight size={14} className="ml-0.5" />
-            </button>
+            </button> */}
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y" style={{ borderColor: COLORS.border }}>
@@ -1192,7 +1195,7 @@ const fetchMatches = async () => {
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-sm" style={{ color: COLORS.text }}>
                           <div className="flex space-x-2">
-                            <button 
+                            {/* <button 
                               className="p-1 rounded-md hover:bg-gray-100 transition-colors"
                               style={{ 
                                 backgroundColor: hoveredItem === match.id ? COLORS.primaryLight : 'transparent',
@@ -1202,7 +1205,7 @@ const fetchMatches = async () => {
                               onClick={(e) => { e.stopPropagation(); alert(`Viewing details for ${match.name}`); }}
                             >
                               <ChevronRight size={16} />
-                            </button>
+                            </button> */}
                             <button 
                               className="p-1 rounded-md hover:bg-gray-100 transition-colors"
                               style={{ color: COLORS.dimText }}

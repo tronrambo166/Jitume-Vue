@@ -44,6 +44,8 @@ const TujitumeDashboard = () => {
         avgmatchscore,
         totalfunds,
         setTotalfunds,
+        avgscore,
+        setAvgscore,
     } = useStateContext();
 
     const [grants, setGrants] = useState([]);
@@ -67,12 +69,76 @@ const TujitumeDashboard = () => {
     // Refs for animation
     const headerRef = useRef(null);
     const dropdownRef = useRef(null);
-        const navigate = useNavigate();
-    
+    const navigate = useNavigate();
+
     const handleNavigate = (path) => {
         navigate(path);
         setShowMenu(false); // close dropdown after clicking
     };
+    const [grantsData, setGrantsData] = useState(null);
+    const [investmentsData, setInvestmentsData] = useState(null);
+
+    // You can use this to trigger re-fetching manually if needed
+    const [refreshTrigger, setRefreshTrigger] = useState(false);
+
+    const fetchGrantsData = async () => {
+        try {
+            const response = await axiosClient.get("/grant/analytics");
+            return response.data;
+        } catch (err) {
+            //console.error("Failed to fetch grant analytics:", err);
+            throw err;
+        }
+    };
+
+    const fetchInvestmentsData = async () => {
+        try {
+            const response = await axiosClient.get("/capital/analytics");
+            return response.data;
+        } catch (err) {
+            //console.error("Failed to fetch investment analytics:", err);
+            throw err;
+        }
+    };
+
+    const fetchAllData = async () => {
+        try {
+            const grants = await fetchGrantsData();
+            const investments = await fetchInvestmentsData();
+            setGrantsData(grants);
+            setInvestmentsData(investments);
+
+            if (user.investor === 2) {
+                setAvgscore(grants?.avg_score || 0);
+            } else if (user.investor === 3) {
+                setAvgscore(investments?.avg_score || 0);
+            }
+
+            // console.log("silewitena:", grants?.breakdown);
+            // console.log("Investments Data:", investments);
+        } catch (err) {
+            // console.error("Error fetching data:", err);
+        }
+    };
+
+    useEffect(() => {
+        fetchAllData();
+    }, [refreshTrigger]); // Only runs on mount or when `refreshTrigger` changes
+
+    // OR use conditional logging
+    useEffect(() => {
+        if (grantsData) {
+            //console.log("silewitena:", grantsData.breakdown);
+        }
+        if (investmentsData) {
+            //console.log("Investments Data:", investmentsData);
+        }
+    }, [grantsData, investmentsData]);
+
+    // Remove these lines that are causing the error:
+    // //console.log("silewitena:", grantsData.breakdown);
+    // //console.log("Investments Data:", investmentsData);
+
     useEffect(() => {
         // Trigger animations
         const statsTimer = setTimeout(() => {
@@ -98,13 +164,12 @@ const TujitumeDashboard = () => {
             clearTimeout(headerTimer);
         };
     }, []);
+    //console.log("GRANTHEFTAOUTO:", grantsData);
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
                 const { data } = await axiosClient.get("/checkAuth");
-
-                
 
                 if (data?.user) {
                     setTotalFunds(data.total_funds || 0);
@@ -118,17 +183,15 @@ const TujitumeDashboard = () => {
                     }
                 }
             } catch (error) {
-                console.error("Auth fetch error:", error);
+                //console.error("Auth fetch error:", error);
             }
         };
 
         fetchUserData();
     }, []);
-    console.log("Total funds:", totalFunds);
-    console.log("Available funds:", availableFunds);
 
-// Fetch user data
-   
+    // Fetch user data
+
     const fetchGrants = async () => {
         setIsLoading((prev) => ({ ...prev, grants: true }));
         try {
@@ -165,7 +228,7 @@ const TujitumeDashboard = () => {
 
             setGrants(cleanedData);
         } catch (err) {
-            console.error("Failed to fetch grants:", err);
+            //console.error("Failed to fetch grants:", err);
         } finally {
             setIsLoading((prev) => ({ ...prev, grants: false }));
         }
@@ -176,7 +239,7 @@ const TujitumeDashboard = () => {
         try {
             const response = await axiosClient.get("capital/capital-offers");
             const data = response.data?.capital || [];
-            console.log("Raw Grants API Data:", response.data);
+            //console.log("Raw Grants API Data:", response.data);
 
             if (Array.isArray(data)) {
                 const cleanedData = data.map((opportunity) => ({
@@ -201,7 +264,7 @@ const TujitumeDashboard = () => {
                 setCapitalOpportunities(cleanedData);
             }
         } catch (err) {
-            console.error("Failed to fetch capital offers:", err);
+            //console.error("Failed to fetch capital offers:", err);
         } finally {
             setIsLoading((prev) => ({ ...prev, capital: false }));
         }
@@ -211,7 +274,7 @@ const TujitumeDashboard = () => {
         () => [...grants, ...capitalOpportunities],
         [grants, capitalOpportunities]
     );
-    console.log("Opportunities:", opportunities);
+    //console.log("Opportunities:", opportunities);
 
     // Process opportunities for dashboard metrics
     useEffect(() => {
@@ -272,7 +335,7 @@ const TujitumeDashboard = () => {
             )
             .slice(0, 3);
     }, [filter, searchTerm, grants, capitalOpportunities, user.investor]);
-    console.log("Filtered Opportunities:", filteredOpportunities);
+    //console.log("Filtered Opportunities:", filteredOpportunities);
 
     // Extract sectors from opportunities for impact statistics
     const sectors = useMemo(() => {
@@ -348,20 +411,34 @@ const TujitumeDashboard = () => {
         },
         {
             icon: <DollarSign className="text-green-600" />,
-            title: "Total Funding",
-            value: `$${totalFunds.toLocaleString()}`,
+            title: !user.investor ? "Total Funds Received" : "Total Funding",
+
+            value: `$${(!user.investor
+                ? totalfunds
+                : totalFunds
+            ).toLocaleString()}`, // Show relevant total based on user type
+
             subtext: "Available Capital",
             trend: `+${dashboardMetrics.growthRate}%`,
             trendUp: dashboardMetrics.growthRate > 0,
         },
-        {
-            icon: <Star className="text-yellow-600" />,
-            title: "Success Rate",
-            value: `${successrate}%`,
-            subtext: "Average Match Score",
-            trend: `${avgmatchscore}% match`,
-            trendUp: dashboardMetrics.avgMatchScore > 70,
-        },
+        !user.investor
+            ? {
+                  icon: <Star className="text-yellow-600" />,
+                  title: "Success Rate",
+                  value: `${successrate}%`,
+                  subtext: "Average Match Score",
+                  trend: `${avgmatchscore}% match`,
+                  trendUp: dashboardMetrics.avgMatchScore > 70,
+              }
+            : {
+                  icon: <Star className="text-emerald-600" />,
+                  title: "Match Score",
+                  value: `${avgscore}%`,
+                  subtext: "Your Average Match",
+                  trend: `${avgscore}% match`,
+                  trendUp: dashboardMetrics.avgMatchScore > 70,
+              },
     ];
 
     // Skeleton loaders
@@ -844,14 +921,14 @@ const TujitumeDashboard = () => {
                             </div>
 
                             <div className="flex items-center space-x-2">
-                                <div className="text-xs text-gray-500 flex items-center">
+                                {/* <div className="text-xs text-gray-500 flex items-center">
                                     <div className="w-3 h-3 rounded-full bg-green-500 mr-1"></div>
                                     Grants
                                 </div>
                                 <div className="text-xs text-gray-500 flex items-center">
                                     <div className="w-3 h-3 rounded-full bg-blue-500 mr-1"></div>
                                     Investments
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 
@@ -864,95 +941,272 @@ const TujitumeDashboard = () => {
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
                                 {/* Sector Impact */}
+                                {/* First Performance Metrics Section */}
                                 <div className="border border-gray-100 rounded-lg p-4 bg-gradient-to-br from-white to-gray-50">
                                     <h3 className="text-sm font-medium text-gray-700 mb-4 flex items-center">
                                         <PieChart
                                             className="mr-2 text-blue-500"
                                             size={16}
                                         />
-                                        Top Impact Sectors
+                                        Performance Metrics
                                     </h3>
 
                                     <div className="space-y-3">
-                                        {sectors.map((sector, idx) => (
-                                            <div
-                                                key={idx}
-                                                className="flex items-center"
-                                            >
-                                                <div className="w-full">
-                                                    <div className="flex justify-between text-xs mb-1">
-                                                        <span className="font-medium text-gray-700">
-                                                            {sector.name}
-                                                        </span>
-                                                        <span className="text-gray-500">
-                                                            {sector.percentage}%
-                                                        </span>
-                                                    </div>
-                                                    <div className="bg-gray-200 rounded-full h-2">
-                                                        <div
-                                                            className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full"
-                                                            style={{
-                                                                width: `${sector.percentage}%`,
-                                                            }}
-                                                        ></div>
-                                                    </div>
+                                        {/* Sector */}
+                                        <div className="flex items-center">
+                                            <div className="w-full">
+                                                <div className="flex justify-between text-xs mb-1">
+                                                    <span className="font-medium text-gray-700">
+                                                        Sector
+                                                    </span>
+                                                    <span className="text-gray-500">
+                                                        {user.investor === 2
+                                                            ? grantsData
+                                                                  ?.breakdown
+                                                                  ?.sector || 0
+                                                            : investmentsData
+                                                                  ?.breakdown
+                                                                  ?.sector || 0}
+                                                        %
+                                                    </span>
+                                                </div>
+                                                <div className="bg-gray-200 rounded-full h-2">
+                                                    <div
+                                                        className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full"
+                                                        style={{
+                                                            width: `${
+                                                                user.investor ===
+                                                                2
+                                                                    ? grantsData
+                                                                          ?.breakdown
+                                                                          ?.sector ||
+                                                                      0
+                                                                    : investmentsData
+                                                                          ?.breakdown
+                                                                          ?.sector ||
+                                                                      0
+                                                            }%`,
+                                                        }}
+                                                    ></div>
                                                 </div>
                                             </div>
-                                        ))}
+                                        </div>
+
+                                        {/* Geography */}
+                                        <div className="flex items-center">
+                                            <div className="w-full">
+                                                <div className="flex justify-between text-xs mb-1">
+                                                    <span className="font-medium text-gray-700">
+                                                        Geography
+                                                    </span>
+                                                    <span className="text-gray-500">
+                                                        {user.investor === 2
+                                                            ? grantsData
+                                                                  ?.breakdown
+                                                                  ?.geo || 0
+                                                            : investmentsData
+                                                                  ?.breakdown
+                                                                  ?.geo || 0}
+                                                        %
+                                                    </span>
+                                                </div>
+                                                <div className="bg-gray-200 rounded-full h-2">
+                                                    <div
+                                                        className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full"
+                                                        style={{
+                                                            width: `${
+                                                                user.investor ===
+                                                                2
+                                                                    ? grantsData
+                                                                          ?.breakdown
+                                                                          ?.geo ||
+                                                                      0
+                                                                    : investmentsData
+                                                                          ?.breakdown
+                                                                          ?.geo ||
+                                                                      0
+                                                            }%`,
+                                                        }}
+                                                    ></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Stage */}
+                                        <div className="flex items-center">
+                                            <div className="w-full">
+                                                <div className="flex justify-between text-xs mb-1">
+                                                    <span className="font-medium text-gray-700">
+                                                        Stage
+                                                    </span>
+                                                    <span className="text-gray-500">
+                                                        {user.investor === 2
+                                                            ? grantsData
+                                                                  ?.breakdown
+                                                                  ?.stage || 0
+                                                            : investmentsData
+                                                                  ?.breakdown
+                                                                  ?.stage || 0}
+                                                        %
+                                                    </span>
+                                                </div>
+                                                <div className="bg-gray-200 rounded-full h-2">
+                                                    <div
+                                                        className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full"
+                                                        style={{
+                                                            width: `${
+                                                                user.investor ===
+                                                                2
+                                                                    ? grantsData
+                                                                          ?.breakdown
+                                                                          ?.stage ||
+                                                                      0
+                                                                    : investmentsData
+                                                                          ?.breakdown
+                                                                          ?.stage ||
+                                                                      0
+                                                            }%`,
+                                                        }}
+                                                    ></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                {/* Regional Distribution */}
+                                {/* Second Performance Metrics Section */}
                                 <div className="border border-gray-100 rounded-lg p-4 bg-gradient-to-br from-white to-gray-50">
                                     <h3 className="text-sm font-medium text-gray-700 mb-4 flex items-center">
-                                        <Compass
-                                            className="mr-2 text-green-500"
+                                        <PieChart
+                                            className="mr-2 text-blue-500"
                                             size={16}
                                         />
-                                        Regional Distribution
+                                        Performance Metrics
                                     </h3>
 
                                     <div className="space-y-3">
-                                        {regions.map((region, idx) => (
-                                            <div
-                                                key={idx}
-                                                className="flex items-center"
-                                            >
-                                                <div className="w-full">
-                                                    <div className="flex justify-between text-xs mb-1">
-                                                        <span className="font-medium text-gray-700">
-                                                            {region.name}
-                                                        </span>
-                                                        <span className="text-gray-500">
-                                                            {region.count}{" "}
-                                                            opportunities
-                                                        </span>
-                                                    </div>
-                                                    <div className="bg-gray-200 rounded-full h-2">
-                                                        <div
-                                                            className="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full"
-                                                            style={{
-                                                                width: `${
-                                                                    (region.count /
-                                                                        Math.max(
-                                                                            ...regions.map(
-                                                                                (
-                                                                                    r
-                                                                                ) =>
-                                                                                    r.count
-                                                                            )
-                                                                        )) *
-                                                                    100
-                                                                }%`,
-                                                            }}
-                                                        ></div>
-                                                    </div>
+                                        {/* Revenue */}
+                                        <div className="flex items-center">
+                                            <div className="w-full">
+                                                <div className="flex justify-between text-xs mb-1">
+                                                    <span className="font-medium text-gray-700">
+                                                        Revenue
+                                                    </span>
+                                                    <span className="text-gray-500">
+                                                        {user.investor === 2
+                                                            ? grantsData
+                                                                  ?.breakdown
+                                                                  ?.revenue || 0
+                                                            : investmentsData
+                                                                  ?.breakdown
+                                                                  ?.revenue ||
+                                                              0}
+                                                        %
+                                                    </span>
+                                                </div>
+                                                <div className="bg-gray-200 rounded-full h-2">
+                                                    <div
+                                                        className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full"
+                                                        style={{
+                                                            width: `${
+                                                                user.investor ===
+                                                                2
+                                                                    ? grantsData
+                                                                          ?.breakdown
+                                                                          ?.revenue ||
+                                                                      0
+                                                                    : investmentsData
+                                                                          ?.breakdown
+                                                                          ?.revenue ||
+                                                                      0
+                                                            }%`,
+                                                        }}
+                                                    ></div>
                                                 </div>
                                             </div>
-                                        ))}
+                                        </div>
+
+                                        {/* Team */}
+                                        <div className="flex items-center">
+                                            <div className="w-full">
+                                                <div className="flex justify-between text-xs mb-1">
+                                                    <span className="font-medium text-gray-700">
+                                                        Team
+                                                    </span>
+                                                    <span className="text-gray-500">
+                                                        {user.investor === 2
+                                                            ? grantsData
+                                                                  ?.breakdown
+                                                                  ?.team || 0
+                                                            : investmentsData
+                                                                  ?.breakdown
+                                                                  ?.team || 0}
+                                                        %
+                                                    </span>
+                                                </div>
+                                                <div className="bg-gray-200 rounded-full h-2">
+                                                    <div
+                                                        className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full"
+                                                        style={{
+                                                            width: `${
+                                                                user.investor ===
+                                                                2
+                                                                    ? grantsData
+                                                                          ?.breakdown
+                                                                          ?.team ||
+                                                                      0
+                                                                    : investmentsData
+                                                                          ?.breakdown
+                                                                          ?.team ||
+                                                                      0
+                                                            }%`,
+                                                        }}
+                                                    ></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Impact */}
+                                        <div className="flex items-center">
+                                            <div className="w-full">
+                                                <div className="flex justify-between text-xs mb-1">
+                                                    <span className="font-medium text-gray-700">
+                                                        Impact
+                                                    </span>
+                                                    <span className="text-gray-500">
+                                                        {user.investor === 2
+                                                            ? grantsData
+                                                                  ?.breakdown
+                                                                  ?.impact || 0
+                                                            : investmentsData
+                                                                  ?.breakdown
+                                                                  ?.impact || 0}
+                                                        %
+                                                    </span>
+                                                </div>
+                                                <div className="bg-gray-200 rounded-full h-2">
+                                                    <div
+                                                        className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full"
+                                                        style={{
+                                                            width: `${
+                                                                user.investor ===
+                                                                2
+                                                                    ? grantsData
+                                                                          ?.breakdown
+                                                                          ?.impact ||
+                                                                      0
+                                                                    : investmentsData
+                                                                          ?.breakdown
+                                                                          ?.impact ||
+                                                                      0
+                                                            }%`,
+                                                        }}
+                                                    ></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-
                                 {/* Upcoming Deadlines */}
                                 <div className="border border-gray-100 rounded-lg p-4 bg-gradient-to-br from-white to-gray-50">
                                     <h3 className="text-sm font-medium text-gray-700 mb-4 flex items-center">

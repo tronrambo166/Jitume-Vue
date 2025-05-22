@@ -33,6 +33,8 @@ const StateContext = createContext({
     setAvgmatchscore: () => {},
     totalfunds: 0,
     setTotalfunds: () => {},
+    avgscore: 0,
+    setAvgscore: () => {},
     //CHECKOUT data
 });
 
@@ -50,6 +52,7 @@ export const ContextProvider = ({ children }) => {
     const [successrate, setSuccessrate] = useState(0);
     const [avgmatchscore, setAvgmatchscore] = useState(0);
     const [totalfunds, setTotalfunds] = useState(0);
+    const [avgscore, setAvgscore] = useState(0);
 
 
     const setToken = (token) => {
@@ -157,6 +160,8 @@ export const ContextProvider = ({ children }) => {
                     setAvgmatchscore,
                     totalfunds,
                     setTotalfunds,
+                    avgscore,
+                    setAvgscore,
                 }}
             >
                 {children}
