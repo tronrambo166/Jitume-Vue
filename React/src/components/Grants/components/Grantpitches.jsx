@@ -22,6 +22,8 @@ import {
 import axiosClient from "../../../axiosClient"; // Update with your actual path
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
+import { useMessage } from "../../dashboard/Service/msgcontext"; // Adjust path as needed
+
 const PitchesOutlet = ({ grantId }) => {
     const [pitches, setPitches] = useState([]);
     const [filteredPitches, setFilteredPitches] = useState([]);
@@ -40,6 +42,10 @@ const PitchesOutlet = ({ grantId }) => {
         fetchPitches();
     }, [grantId, retryCount]);
 
+    const handleContinueToPitchDeck = (pitchDeckUrl) => {
+        window.open(pitchDeckUrl, "_blank");
+    };
+
     useEffect(() => {
         // Filter pitches based on status filter
         if (statusFilter === "all") {
@@ -50,6 +56,8 @@ const PitchesOutlet = ({ grantId }) => {
             setFilteredPitches(pitches.filter((pitch) => pitch.status === 0));
         }
     }, [statusFilter, pitches]);
+
+    console.log("pitches", pitches);
 
     const fetchPitches = async () => {
         console.log(`[PitchesOutlet] Fetching pitches for grant ID:`, grantId);
@@ -133,86 +141,92 @@ const PitchesOutlet = ({ grantId }) => {
         setShowConfirmModal(true);
     };
 
- const handleStatusChange = async (pitchId, newStatus) => {
-  setIsChanging(true);
-  const previousStatus = pitches.find(pitch => pitch.id === pitchId)?.status;
+    const handleStatusChange = async (pitchId, newStatus) => {
+        setIsChanging(true);
+        const previousStatus = pitches.find(
+            (pitch) => pitch.id === pitchId
+        )?.status;
 
-  console.groupCollapsed(`[Pitch Status Change] Starting status update for pitch ${pitchId}`);
-  console.log("New Status:", newStatus);
-  console.log("Pitch ID:", pitchId);
+        console.groupCollapsed(
+            `[Pitch Status Change] Starting status update for pitch ${pitchId}`
+        );
+        console.log("New Status:", newStatus);
+        console.log("Pitch ID:", pitchId);
 
-  try {
-    // EXACT endpoint format from working function
-    const action = newStatus.toLowerCase() === "accepted" ? "accept" : "reject";
-    const endpoint = `grant/${action}/${pitchId}`; // No trailing slash!
+        try {
+            // EXACT endpoint format from working function
+            const action =
+                newStatus.toLowerCase() === "accepted" ? "accept" : "reject";
+            const endpoint = `grant/${action}/${pitchId}`; // No trailing slash!
 
-    console.log("Making GET request to:", endpoint);
-    const response = await axiosClient.get(endpoint, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
+            console.log("Making GET request to:", endpoint);
+            const response = await axiosClient.get(endpoint, {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+            });
 
-    console.groupCollapsed("Backend Response");
-    console.log("Status:", response.status);
-    console.log("Response Data:", response.data);
-    console.groupEnd();
+            console.groupCollapsed("Backend Response");
+            console.log("Status:", response.status);
+            console.log("Response Data:", response.data);
+            console.groupEnd();
 
-    // Numeric status codes (1=accept, 2=reject)
-    const statusCode = action === "accept" ? 1 : 2;
+            // Numeric status codes (1=accept, 2=reject)
+            const statusCode = action === "accept" ? 1 : 2;
 
-    // Update both selected pitch and main list
-    setSelectedPitch(prev => ({
-      ...prev,
-      status: statusCode
-    }));
+            // Update both selected pitch and main list
+            setSelectedPitch((prev) => ({
+                ...prev,
+                status: statusCode,
+            }));
 
-    setPitches(prevPitches => 
-      prevPitches.map(pitch => 
-        pitch.id === pitchId
-          ? {
-              ...pitch,
-              status: statusCode,
-              updatedAt: new Date().toISOString(),
-              ...(response.data.updatedData || {}),
-            }
-          : pitch
-      )
-    );
+            setPitches((prevPitches) =>
+                prevPitches.map((pitch) =>
+                    pitch.id === pitchId
+                        ? {
+                              ...pitch,
+                              status: statusCode,
+                              updatedAt: new Date().toISOString(),
+                              ...(response.data.updatedData || {}),
+                          }
+                        : pitch
+                )
+            );
 
-    toast.success(`Status successfully updated to ${newStatus}`);
-    setLastChanged(newStatus);
-    console.groupEnd();
-  } catch (error) {
-    console.groupCollapsed(`[Pitch Status Change Error] ${newStatus} action failed`);
-    console.error("Error details:", error);
+            toast.success(`Status successfully updated to ${newStatus}`);
+            setLastChanged(newStatus);
+            console.groupEnd();
+        } catch (error) {
+            console.groupCollapsed(
+                `[Pitch Status Change Error] ${newStatus} action failed`
+            );
+            console.error("Error details:", error);
 
-    // Revert changes
-    setSelectedPitch(prev => ({
-      ...prev,
-      status: previousStatus
-    }));
+            // Revert changes
+            setSelectedPitch((prev) => ({
+                ...prev,
+                status: previousStatus,
+            }));
 
-    setPitches(prevPitches => 
-      prevPitches.map(pitch => 
-        pitch.id === pitchId ? { ...pitch, status: previousStatus } : pitch
-      )
-    );
+            setPitches((prevPitches) =>
+                prevPitches.map((pitch) =>
+                    pitch.id === pitchId
+                        ? { ...pitch, status: previousStatus }
+                        : pitch
+                )
+            );
 
-    const errorMessage = error.response?.data?.message
-      ? `Failed to update status: ${error.response.data.message}`
-      : 'Failed to update status. Please try again.';
-    
-    toast.error(errorMessage);
-    console.groupEnd();
-  } finally {
-    setIsChanging(false);
-    console.log("Loading state set to false");
-  }
-};
-    const handleContinueToPitchDeck = (pitchDeckUrl) => {
-        window.open(pitchDeckUrl, "_blank");
+            const errorMessage = error.response?.data?.message
+                ? `Failed to update status: ${error.response.data.message}`
+                : "Failed to update status. Please try again.";
+
+            toast.error(errorMessage);
+            console.groupEnd();
+        } finally {
+            setIsChanging(false);
+            console.log("Loading state set to false");
+        }
     };
 
     if (isLoading) {
@@ -545,7 +559,6 @@ const PitchesOutlet = ({ grantId }) => {
     );
 };
 
-
 // Extracted PitchCard component for better readability
 const PitchCard = ({
     pitch,
@@ -555,18 +568,38 @@ const PitchCard = ({
     onDecline,
     onContinueToPitchDeck,
 }) => {
-
     const isPitchStatusDefined = pitch.status === 1 || pitch.status === 2;
-      const [isReleasing, setIsReleasing] = useState(false);
+    const [isReleasing, setIsReleasing] = useState(false);
     const [releaseError, setReleaseError] = useState(null);
+
     const navigate = useNavigate();
+    const { setdashmsg } = useMessage();
 
-  const handleReleaseFunds = async (milestoneId) => {
-      // Find the milestone details
-      const milestone = pitch.grant_milestone.find((m) => m.id === milestoneId);
+    const initiateBusinessOwnerMessage = (businessOwnerId) => {
+        // Validate the business owner ID
+        if (!businessOwnerId) {
+            console.error("No business owner ID provided");
+            alert("Error: Unable to message - no business owner ID found");
+            return;
+        }
 
-      // Create confirmation dialog content
-      const content = `
+        const initialMessage =
+            "Hello, I'm interested in your business and would like to discuss further.";
+        setdashmsg(initialMessage);
+
+        navigate("/dashboard/overview/messages", {
+            state: { customer_id: businessOwnerId },
+        });
+    };
+
+    const handleReleaseFunds = async (milestoneId) => {
+        // Find the milestone details
+        const milestone = pitch.grant_milestone.find(
+            (m) => m.id === milestoneId
+        );
+
+        // Create confirmation dialog content
+        const content = `
     <div class="space-y-4">
         <div class="text-center">
             <svg class="mx-auto h-12 w-12 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -595,42 +628,41 @@ const PitchCard = ({
     </div>
 `;
 
-      // Show confirmation dialog
-      $.confirm({
-          title: false,
-          content: content,
-          type: "orange",
-          boxWidth: "500px",
-          useBootstrap: false,
-          buttons: {
-              confirm: {
-                  text: "Release Funds",
-                  btnClass: "btn-orange",
-                  action: async function () {
-                      setIsReleasing(true);
-                      setReleaseError(null);
+        // Show confirmation dialog
+        $.confirm({
+            title: false,
+            content: content,
+            type: "orange",
+            boxWidth: "500px",
+            useBootstrap: false,
+            buttons: {
+                confirm: {
+                    text: "Release Funds",
+                    btnClass: "btn-orange",
+                    action: async function () {
+                        setIsReleasing(true);
+                        setReleaseError(null);
 
-                      try {
-                          console.log(
-                              "Releasing funds for milestone:",
-                              milestoneId
-                          );
+                        try {
+                            console.log(
+                                "Releasing funds for milestone:",
+                                milestoneId
+                            );
 
-
-                          // Navigate to checkout with the specified parameters
-                          navigate("/checkout", {
-                              state: {
-                                  amount: btoa(milestone?.amount),
-                                  listing_id: btoa(milestoneId),
-                                  percent: btoa(0), // 100 if they select full amount
-                                  purpose: btoa("grant_milestone"),
-                              },
-                          });
-                      } catch (error) {
-                          console.error("Error releasing funds:", error);
-                          $.alert({
-                              title: false,
-                              content: `
+                            // Navigate to checkout with the specified parameters
+                            navigate("/checkout", {
+                                state: {
+                                    amount: btoa(milestone?.amount),
+                                    listing_id: btoa(milestoneId),
+                                    percent: btoa(0), // 100 if they select full amount
+                                    purpose: btoa("grant_milestone"),
+                                },
+                            });
+                        } catch (error) {
+                            console.error("Error releasing funds:", error);
+                            $.alert({
+                                title: false,
+                                content: `
                             <div class="text-center">
                                 <svg class="mx-auto h-12 w-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -644,32 +676,31 @@ const PitchCard = ({
                                 </div>
                             </div>
                         `,
-                              type: "red",
-                              boxWidth: "400px",
-                              useBootstrap: false,
-                              buttons: {
-                                  ok: {
-                                      text: "Close",
-                                      btnClass: "btn-red",
-                                  },
-                              },
-                          });
-                      } finally {
-                          setIsReleasing(false);
-                      }
-                  },
-              },
-              cancel: {
-                  text: "Cancel",
-                  btnClass: "btn-default",
-                  action: function () {
-                      console.log("Fund release canceled");
-                  },
-              },
-          },
-      });
-  };
-
+                                type: "red",
+                                boxWidth: "400px",
+                                useBootstrap: false,
+                                buttons: {
+                                    ok: {
+                                        text: "Close",
+                                        btnClass: "btn-red",
+                                    },
+                                },
+                            });
+                        } finally {
+                            setIsReleasing(false);
+                        }
+                    },
+                },
+                cancel: {
+                    text: "Cancel",
+                    btnClass: "btn-default",
+                    action: function () {
+                        console.log("Fund release canceled");
+                    },
+                },
+            },
+        });
+    };
 
     return (
         <div
@@ -851,17 +882,23 @@ const PitchCard = ({
                                 Message The Business Owner
                             </h4>
                             <div className="space-y-2">
-                                <div
-                                    className="flex items-center space-x-3 bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-50"
-                                    onClick={() => alert("Hello")}
-                                >
-                                    <div className="p-1.5 bg-green-50 rounded-lg">
-                                        <MessageSquare
-                                            className="text-green-600"
-                                            size={16}
-                                        />
-                                    </div>
-                                    <span>Messaging</span>
+                                <div className="space-y-2">
+                                    <button
+                                        onClick={() =>
+                                            initiateBusinessOwnerMessage(
+                                                pitch.user_id
+                                            )
+                                        }
+                                        className="flex items-center space-x-3 bg-white p-3 rounded-lg w-full text-left hover:bg-gray-50 transition-colors"
+                                    >
+                                        <div className="p-1.5 bg-green-50 rounded-lg">
+                                            <MessageSquare
+                                                className="text-green-600"
+                                                size={16}
+                                            />
+                                        </div>
+                                        <span>Message Owner</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>

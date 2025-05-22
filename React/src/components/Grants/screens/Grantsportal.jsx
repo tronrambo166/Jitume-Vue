@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useMessage } from "../../dashboard/Service/msgcontext"; // Adjust path as needed
+
+
 import {
     MapPin,
     Rocket,
@@ -145,13 +149,25 @@ const TujitumeGrantPortal = () => {
         setPendingToggleId(null);
     };
 
+    // Handler function - fixed to accept businessOwnerId parameter
+    const navigate = useNavigate();
+    const { setdashmsg } = useMessage();
 
-    const handleMessageOwner = (ownerId) => {
-        // Implement your messaging logic here
-        // This could open a chat modal, navigate to a messaging page, etc.
-        console.log(`Initiating message to business owner `);
-        // For now, we'll just show an alert
-        alert(`Messaging feature would open for business owner ID: `);
+    const handleMessageOwner = (grantOwnerId) => {
+        // Make sure we have a grant owner ID
+        if (!grantOwnerId) {
+            console.error("No grant owner ID found in application data");
+            alert("Unable to message - no grant owner ID found");
+            return;
+        }
+        console.log("Grant owner ID:", grantOwnerId);
+
+        const initialMessage =
+            "Hello, I am interested in your grant opportunity. Can we connect?";
+        setdashmsg(initialMessage);
+        navigate("/dashboard/overview/messages", {
+            state: { customer_id: grantOwnerId },
+        });
     };
 
     // Fetch grants from API
@@ -1799,11 +1815,11 @@ const TujitumeGrantPortal = () => {
                                                                         Request
                                                                         Funds
                                                                     </button>
-
+                                                                    
                                                                     <button
                                                                         onClick={() =>
                                                                             handleMessageOwner(
-                                                                                application.businessOwnerId
+                                                                                application.grant_owner_id
                                                                             )
                                                                         }
                                                                         className="px-3 py-1 border border-orange-200 rounded-md text-orange-600 hover:bg-blue-50 text-sm flex items-center"

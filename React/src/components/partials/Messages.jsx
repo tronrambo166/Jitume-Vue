@@ -31,31 +31,35 @@ function Messages() {
     useEffect(() => {
         let isMounted = true;
 
-        const fetchMessages = (from) => {
+        const fetchMessages = async (from) => {
             if (check === 0) {
                 console.log("Fetching messages..." + messages.length);
             }
 
-            axiosClient
-                .get("/business/service_messages/" + from)
-                .then(({ data }) => {
-                    if (isMounted) {
-                        console.log("Messages fetched successfully:", data);
-                        setMessages(data.messages || []);
-                        setLoading(false);
+            try {
+                const { data } = await axiosClient.get(
+                    "/business/service_messages/" + from
+                );
+                if (isMounted) {
+                    console.log("Messages fetched successfully:", data);
+                    setMessages(data.messages || []);
+
+                    // After fetching messages, check if we need to fetch a specific user
+                    if (customer_id != null && customer_id != 0) {
+                        await fetchUser(customer_id, data.messages || []);
                     }
-                })
-                .catch((err) => {
-                    if (isMounted) {
-                        console.error("Error fetching messages:", err);
-                        setLoading(false);
-                    }
-                });
+
+                    setLoading(false);
+                }
+            } catch (err) {
+                if (isMounted) {
+                    console.error("Error fetching messages:", err);
+                    setLoading(false);
+                }
+            }
         };
 
         fetchMessages(0);
-
-        if (customer_id != null && customer_id != 0) fetchUser(customer_id);
 
         const handleResize = () => {
             setIsMobileView(window.innerWidth < 768);
@@ -67,22 +71,50 @@ function Messages() {
             isMounted = false;
             window.removeEventListener("resize", handleResize);
         };
-    }, []);
+    }, [customer_id]); // Add customer_id as dependency
 
-    const fetchUser = (investor_id) => {
-        axiosClient
-            .get("/business/fetchUser/" + investor_id)
-            .then(({ data }) => {
-                if (data.status == 200) {
-                    setCustomer(data.user || []);
-                    console.log("New User", data);
-                    setMessages((oldArray) => [...oldArray, data.user]);
-                    handleSelectMessage(data.user);
-                } else console.log(data.messages);
-            })
-            .catch((err) => {
-                console.error("Error fetching messages:", err);
-            });
+    const fetchUser = async (investor_id, existingMessages = []) => {
+        try {
+            const { data } = await axiosClient.get(
+                "/business/fetchUser/" + investor_id
+            );
+
+            if (data.status == 200 && data.user) {
+                console.log("New User", data);
+
+                // Check if user already exists in messages to avoid duplication
+                const userExists = existingMessages.find(
+                    (msg) => msg.id === data.user.id
+                );
+
+                if (!userExists) {
+                    setMessages((oldArray) => {
+                        // Double check to avoid race conditions
+                        const userAlreadyExists = oldArray.find(
+                            (msg) => msg.id === data.user.id
+                        );
+                        if (userAlreadyExists) {
+                            return oldArray;
+                        }
+                        return [...oldArray, data.user];
+                    });
+                }
+
+                // Always select the user regardless of whether they were added
+                setCustomer(data.user);
+                handleSelectMessage(data.user);
+
+                // Set the initial message if it exists
+                if (dashmsg) {
+                    setNewMessage(dashmsg);
+                }
+            } else {
+                console.log(data.messages);
+            }
+        } catch (err) {
+            console.error("Error fetching user:", err);
+            showAlert("error", "Failed to fetch user information");
+        }
     };
 
     useEffect(() => {
