@@ -310,7 +310,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
 
             // 7. Make API call with timeout
             console.log("Attempting to submit to backend...", formDataToSend);
-            return;
+            
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 30000);
 
@@ -341,7 +341,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
             console.log("Status:", response.status);
             console.log("Response data:", response.data);
             console.groupEnd();
-            return;
+            
 
             if (response.status !== 200 && response.status !== 201) {
                 throw new Error(

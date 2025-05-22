@@ -820,7 +820,7 @@ const TujitumeGrantPortal = () => {
                                         <div className="mt-6 flex space-x-3">
                                             {grant.grant_brief_pdf && (
                                                 <Link
-                                                    to={`/Dashboard/grants/${grant.id}`}
+                                                    to={`/dashboard/overview/grants/${grant.id}`}
                                                     className="flex-1 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center space-x-2 text-gray-700"
                                                 >
                                                     <FileText size={16} />

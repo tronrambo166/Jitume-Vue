@@ -335,7 +335,7 @@ const TujitumeDashboard = () => {
             )
             .slice(0, 3);
     }, [filter, searchTerm, grants, capitalOpportunities, user.investor]);
-    //console.log("Filtered Opportunities:", filteredOpportunities);
+    console.log("Filtered Opportunities:", filteredOpportunities);
 
     // Extract sectors from opportunities for impact statistics
     const sectors = useMemo(() => {
@@ -387,16 +387,63 @@ const TujitumeDashboard = () => {
     }, [opportunities]);
 
     // Upcoming deadlines
-    const upcomingDeadlines = useMemo(() => {
-        const today = new Date();
-        return grants
-            .filter(
-                (grant) =>
-                    grant.deadlineDate && new Date(grant.deadlineDate) > today
-            )
-            .sort((a, b) => new Date(a.deadlineDate) - new Date(b.deadlineDate))
-            .slice(0, 2);
-    }, [grants]);
+    // const upcomingDeadlines = useMemo(() => {
+    //     const today = new Date();
+    //     return grants
+    //         .filter(
+    //             (grant) =>
+    //                 grant.deadlineDate && new Date(grant.deadlineDate) > today
+    //         )
+    //         .sort((a, b) => new Date(a.deadlineDate) - new Date(b.deadlineDate))
+    //         .slice(0, 2);
+    // }, [grants]);
+   
+
+    
+    const upcomingDeadlines = [
+        {
+            title: "AgriFund 2025",
+            deadlineDate: "2025-07-10",
+            organization: "Kenya AgriCapital",
+            amount: 15000,
+            link: "https://example.com/agri-fund",
+        },
+        {
+            title: "Youth Empowerment Grant",
+            deadlineDate: "2025-07-15",
+            organization: "YouthBank Africa",
+            amount: 10000,
+            link: "https://example.com/youth-grant",
+        },
+    ];
+    
+
+    const sortedDeadlines = [...upcomingDeadlines].sort(
+        (a, b) =>
+            new Date(a.deadlineDate).getTime() -
+            new Date(b.deadlineDate).getTime()
+    );
+
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const futureDeadlines = upcomingDeadlines
+        .filter((d) => new Date(d.deadlineDate) > new Date())
+        .sort((a, b) => new Date(a.deadlineDate) - new Date(b.deadlineDate));
+
+    useEffect(() => {
+        if (futureDeadlines.length === 0) return;
+
+        const interval = setInterval(() => {
+            setCurrentIndex(
+                (prevIndex) => (prevIndex + 1) % futureDeadlines.length
+            );
+        }, 15000);
+
+        return () => clearInterval(interval);
+    }, [futureDeadlines]);
+
+    const current = futureDeadlines[currentIndex];
+  
 
     const statsCards = [
         {
@@ -411,7 +458,9 @@ const TujitumeDashboard = () => {
         },
         {
             icon: <DollarSign className="text-green-600" />,
-            title: !user.investor ? "Total Funds Received" : "Total Funding",
+            title: !user.investor
+                ? "Total Funding Accepted"
+                : "Total Funding Disbursed",
 
             value: `$${(!user.investor
                 ? totalfunds
@@ -479,6 +528,7 @@ const TujitumeDashboard = () => {
             </div>
         </div>
     );
+    
 
     const ImpactSectionSkeleton = () => (
         <div className="p-4 rounded-lg border border-gray-100 animate-pulse">
@@ -617,18 +667,56 @@ const TujitumeDashboard = () => {
                             </div>
                         </div>
 
-                        <div className="bg-white bg-opacity-5 backdrop-filter backdrop-blur-md rounded-lg p-3 border border-white border-opacity-10 flex items-center">
+                        <div className="bg-white bg-opacity-5 backdrop-filter backdrop-blur-md rounded-lg p-3 border border-white border-opacity-10 flex items-center relative">
                             <div className="bg-white bg-opacity-10 p-2 rounded-lg mr-3">
                                 <Calendar size={16} className="text-blue-400" />
                             </div>
                             <div>
                                 <div className="text-xs text-slate-300">
-                                    Upcoming Deadlines
+                                    Upcoming Deadline
                                 </div>
-                                <div className="text-lg font-semibold text-white">
-                                    {upcomingDeadlines.length}
-                                </div>
+                                {current ? (
+                                    <>
+                                        <div className="text-sm font-semibold text-white line-clamp-1">
+                                            {current.title}
+                                        </div>
+                                        <div className="text-xs text-blue-200 mt-0.5">
+                                            {new Date(
+                                                current.deadlineDate
+                                            ).toLocaleDateString(undefined, {
+                                                month: "short",
+                                                day: "numeric",
+                                            })}{" "}
+                                            —{" "}
+                                            {Math.ceil(
+                                                (new Date(
+                                                    current.deadlineDate
+                                                ) -
+                                                    new Date()) /
+                                                    (1000 * 60 * 60 * 24)
+                                            )}{" "}
+                                            day
+                                            {Math.ceil(
+                                                (new Date(
+                                                    current.deadlineDate
+                                                ) -
+                                                    new Date()) /
+                                                    (1000 * 60 * 60 * 24)
+                                            ) !== 1
+                                                ? "s"
+                                                : ""}{" "}
+                                            left
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="text-white text-sm mt-1">
+                                        No upcoming deadlines
+                                    </div>
+                                )}
                             </div>
+
+                            {/* Dotted separator at the bottom */}
+                            <div className="absolute bottom-0 left-3 right-3 border-t border-dotted border-white/30 mt-2"></div>
                         </div>
                     </div>
                 </div>
@@ -1208,7 +1296,7 @@ const TujitumeDashboard = () => {
                                     </div>
                                 </div>
                                 {/* Upcoming Deadlines */}
-                                <div className="border border-gray-100 rounded-lg p-4 bg-gradient-to-br from-white to-gray-50">
+                                <div className="border border-gray-100 rounded-lg p-4 bg-gradient-to-br from-white to-gray-50 shadow-sm">
                                     <h3 className="text-sm font-medium text-gray-700 mb-4 flex items-center">
                                         <Clock
                                             className="mr-2 text-yellow-500"
@@ -1217,49 +1305,96 @@ const TujitumeDashboard = () => {
                                         Upcoming Deadlines
                                     </h3>
 
-                                    {upcomingDeadlines.length > 0 ? (
-                                        <div className="space-y-4">
-                                            {upcomingDeadlines.map(
-                                                (deadline, idx) => (
-                                                    <div
-                                                        key={idx}
-                                                        className="flex items-start space-x-3"
-                                                    >
-                                                        <div className="bg-gray-100 rounded-lg p-2 text-center flex-shrink-0 w-12">
-                                                            <div className="text-xs text-gray-500">
-                                                                {new Date(
-                                                                    deadline.deadlineDate
-                                                                ).toLocaleDateString(
-                                                                    undefined,
+                                    {sortedDeadlines.length > 0 ? (
+                                        <div className="max-h-40 overflow-y-auto pr-1 divide-y divide-dotted divide-gray-200">
+                                            {sortedDeadlines.map(
+                                                (deadline, idx) => {
+                                                    const date = new Date(
+                                                        deadline.deadlineDate
+                                                    );
+                                                    const daysLeft = Math.ceil(
+                                                        (date.getTime() -
+                                                            Date.now()) /
+                                                            (1000 *
+                                                                60 *
+                                                                60 *
+                                                                24)
+                                                    );
+                                                    const status =
+                                                        daysLeft <= 0
+                                                            ? "Closed"
+                                                            : daysLeft <= 3
+                                                            ? "Closing Soon"
+                                                            : "Open";
+
+                                                    const statusClass =
+                                                        status === "Closed"
+                                                            ? "bg-red-100 text-red-600"
+                                                            : status ===
+                                                              "Closing Soon"
+                                                            ? "bg-yellow-100 text-yellow-600"
+                                                            : "bg-green-100 text-green-600";
+
+                                                    return (
+                                                        <div
+                                                            key={idx}
+                                                            onClick={() =>
+                                                                navigate(
+                                                                    "/dashboard/overview/grants/discover"
+                                                                )
+                                                            }
+                                                            className="flex items-start space-x-3 py-3 cursor-pointer hover:bg-gray-50 rounded-md px-1 transition"
+                                                        >
+                                                            <div className="bg-gray-100 rounded-lg p-2 text-center flex-shrink-0 w-12">
+                                                                <div className="text-xs text-gray-500">
+                                                                    {date.toLocaleDateString(
+                                                                        undefined,
+                                                                        {
+                                                                            month: "short",
+                                                                        }
+                                                                    )}
+                                                                </div>
+                                                                <div className="text-base font-semibold text-gray-800">
+                                                                    {date.getDate()}
+                                                                </div>
+                                                            </div>
+                                                            <div className="flex-1">
+                                                                <h4 className="text-sm font-medium line-clamp-1 text-gray-800">
                                                                     {
-                                                                        month: "short",
+                                                                        deadline.title
                                                                     }
-                                                                )}
-                                                            </div>
-                                                            <div className="text-base font-semibold text-gray-800">
-                                                                {new Date(
-                                                                    deadline.deadlineDate
-                                                                ).getDate()}
+                                                                </h4>
+                                                                <p className="text-xs text-gray-500">
+                                                                    {
+                                                                        deadline.organization
+                                                                    }
+                                                                </p>
+                                                                <div className="mt-1 flex items-center space-x-2">
+                                                                    <span className="text-xs bg-green-50 text-green-600 px-2 py-0.5 rounded-full">
+                                                                        $
+                                                                        {deadline.amount.toLocaleString()}
+                                                                    </span>
+                                                                    <span
+                                                                        className={`text-xs px-2 py-0.5 rounded-full ${statusClass}`}
+                                                                    >
+                                                                        {status}
+                                                                    </span>
+                                                                    {daysLeft >
+                                                                        0 && (
+                                                                        <span className="text-xs text-gray-400">
+                                                                            (
+                                                                            {
+                                                                                daysLeft
+                                                                            }{" "}
+                                                                            days
+                                                                            left)
+                                                                        </span>
+                                                                    )}
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div>
-                                                            <h4 className="text-sm font-medium line-clamp-1 text-gray-800">
-                                                                {deadline.title}
-                                                            </h4>
-                                                            <p className="text-xs text-gray-500">
-                                                                {
-                                                                    deadline.organization
-                                                                }
-                                                            </p>
-                                                            <div className="mt-1">
-                                                                <span className="text-xs bg-green-50 text-green-600 px-2 py-0.5 rounded-full">
-                                                                    $
-                                                                    {deadline.amount.toLocaleString()}
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )
+                                                    );
+                                                }
                                             )}
                                         </div>
                                     ) : (
@@ -1336,13 +1471,40 @@ const TujitumeDashboard = () => {
 
                                                     {/* Modal */}
                                                     <div className="fixed inset-0 flex items-center justify-center z-50">
-                                                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-80 max-w-full p-4">
+                                                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-80 max-w-full p-4 relative">
+                                                            {/* Close button (X icon) */}
+                                                            <button
+                                                                className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                                                                onClick={() =>
+                                                                    setShowMenu(
+                                                                        false
+                                                                    )
+                                                                }
+                                                            >
+                                                                <svg
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24"
+                                                                    height="24"
+                                                                    viewBox="0 0 24 24"
+                                                                    fill="none"
+                                                                    stroke="currentColor"
+                                                                    strokeWidth="2"
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    className="lucide lucide-x"
+                                                                >
+                                                                    <path d="M18 6 6 18" />
+                                                                    <path d="m6 6 12 12" />
+                                                                </svg>
+                                                            </button>
+
                                                             <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
                                                                 Explore
                                                                 Opportunities
                                                             </h2>
+
                                                             <button
-                                                                className="w-full text-left px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 text-sm rounded-md"
+                                                                className="w-full text-left px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 text-sm rounded-md flex items-center"
                                                                 onClick={() => {
                                                                     handleNavigate(
                                                                         "/Dashboard/overview/grants/discover"
@@ -1352,11 +1514,27 @@ const TujitumeDashboard = () => {
                                                                     );
                                                                 }}
                                                             >
+                                                                <svg
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16"
+                                                                    height="16"
+                                                                    viewBox="0 0 24 24"
+                                                                    fill="none"
+                                                                    stroke="currentColor"
+                                                                    strokeWidth="2"
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    className="lucide lucide-wallet mr-2"
+                                                                >
+                                                                    <path d="M19 7V4a1 1 0 0 0-1-1H4a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" />
+                                                                    <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
+                                                                </svg>
                                                                 Looking for
                                                                 Grants
                                                             </button>
+
                                                             <button
-                                                                className="w-full text-left mt-2 px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 text-sm rounded-md"
+                                                                className="w-full text-left mt-2 px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 text-sm rounded-md flex items-center"
                                                                 onClick={() => {
                                                                     handleNavigate(
                                                                         "/Dashboard/overview/funding/investments"
@@ -1366,6 +1544,21 @@ const TujitumeDashboard = () => {
                                                                     );
                                                                 }}
                                                             >
+                                                                <svg
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16"
+                                                                    height="16"
+                                                                    viewBox="0 0 24 24"
+                                                                    fill="none"
+                                                                    stroke="currentColor"
+                                                                    strokeWidth="2"
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    className="lucide lucide-trending-up mr-2"
+                                                                >
+                                                                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                                                                    <polyline points="16 7 22 7 22 13" />
+                                                                </svg>
                                                                 Looking for
                                                                 Investment
                                                             </button>

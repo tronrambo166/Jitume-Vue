@@ -197,7 +197,7 @@ const OfferGrantModal = ({ onClose, refreshGrants }) => {
         e.preventDefault();
 
         console.log("Submitting form:", formData);
-
+        return; 
         if (!validateForm()) {
             toast.error("Please complete all required fields", {
                 style: { backgroundColor: theme.error },
@@ -214,16 +214,16 @@ const OfferGrantModal = ({ onClose, refreshGrants }) => {
             const formDataToSend = new FormData();
 
             // Handle all fields including arrays and files
-           Object.entries(formData).forEach(([key, value]) => {
-               if (Array.isArray(value)) {
-                   // For arrays, convert to JSON string
-                   formDataToSend.append(key, JSON.stringify(value));
-               } else if (value instanceof File) {
-                   formDataToSend.append(key, value);
-               } else {
-                   formDataToSend.append(key, value);
-               }
-           });
+            Object.entries(formData).forEach(([key, value]) => {
+                if (Array.isArray(value)) {
+                    // For arrays, convert to JSON string
+                    formDataToSend.append(key, JSON.stringify(value));
+                } else if (value instanceof File) {
+                    formDataToSend.append(key, value);
+                } else {
+                    formDataToSend.append(key, value);
+                }
+            });
 
             // API call
             const response = await axiosClient.post(
@@ -282,62 +282,62 @@ const OfferGrantModal = ({ onClose, refreshGrants }) => {
         }
     };
 
-     const countries = [
-         "Algeria",
-         "Angola",
-         "Benin",
-         "Botswana",
-         "Burkina Faso",
-         "Burundi",
-         "Cabo Verde",
-         "Cameroon",
-         "Central African Republic",
-         "Chad",
-         "Comoros",
-         "Congo",
-         // "Côte d'Ivoire",
-         "Djibouti",
-         "Democratic Republic of the Congo",
-         "Egypt",
-         "Equatorial Guinea",
-         "Eritrea",
-         "Eswatini",
-         "Ethiopia",
-         "Gabon",
-         "Gambia",
-         "Ghana",
-         "Guinea",
-         "Guinea-Bissau",
-         "Kenya",
-         "Lesotho",
-         "Liberia",
-         "Libya",
-         "Madagascar",
-         "Malawi",
-         "Mali",
-         "Mauritania",
-         "Mauritius",
-         "Morocco",
-         "Mozambique",
-         "Namibia",
-         "Niger",
-         "Nigeria",
-         "Rwanda",
-         "Sao Tome and Principe",
-         "Senegal",
-         "Seychelles",
-         "Sierra Leone",
-         "Somalia",
-         "South Africa",
-         "South Sudan",
-         "Sudan",
-         "Tanzania",
-         "Togo",
-         "Tunisia",
-         "Uganda",
-         "Zambia",
-         "Zimbabwe",
-     ];
+    const countries = [
+        "Algeria",
+        "Angola",
+        "Benin",
+        "Botswana",
+        "Burkina Faso",
+        "Burundi",
+        "Cabo Verde",
+        "Cameroon",
+        "Central African Republic",
+        "Chad",
+        "Comoros",
+        "Congo",
+        // "Côte d'Ivoire",
+        "Djibouti",
+        "Democratic Republic of the Congo",
+        "Egypt",
+        "Equatorial Guinea",
+        "Eritrea",
+        "Eswatini",
+        "Ethiopia",
+        "Gabon",
+        "Gambia",
+        "Ghana",
+        "Guinea",
+        "Guinea-Bissau",
+        "Kenya",
+        "Lesotho",
+        "Liberia",
+        "Libya",
+        "Madagascar",
+        "Malawi",
+        "Mali",
+        "Mauritania",
+        "Mauritius",
+        "Morocco",
+        "Mozambique",
+        "Namibia",
+        "Niger",
+        "Nigeria",
+        "Rwanda",
+        "Sao Tome and Principe",
+        "Senegal",
+        "Seychelles",
+        "Sierra Leone",
+        "Somalia",
+        "South Africa",
+        "South Sudan",
+        "Sudan",
+        "Tanzania",
+        "Togo",
+        "Tunisia",
+        "Uganda",
+        "Zambia",
+        "Zimbabwe",
+    ];
 
     // Reset form to initial state
     const resetForm = () => {

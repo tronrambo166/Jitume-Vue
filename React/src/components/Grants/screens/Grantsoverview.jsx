@@ -355,7 +355,7 @@ const Navigation = {
             {
                 icon: Home,
                 label: "Dashboard",
-                to: "/Dashboard/overview",
+                to: "/dashboard/overview",
                 exact: true,
             },
             // Hide if user.investor === 3
@@ -364,23 +364,23 @@ const Navigation = {
                       {
                           icon: Briefcase,
                           label: "Grants Funding",
-                          to: "/Dashboard/overview/grants",
+                          to: "/dashboard/overview/grants",
                           children: [
                               ...(user?.investor
                                   ? [
                                         {
                                             label: "Grants",
-                                            to: "/Dashboard/overview/grants/discover",
+                                            to: "/dashboard/overview/grants/discover",
                                         },
                                         {
                                             label: "Pitches",
-                                            to: "/Dashboard/overview/pitch",
+                                            to: "/dashboard/overview/pitch",
                                         },
                                     ]
                                   : [
                                         {
                                             label: "Apply for Grants",
-                                            to: "/Dashboard/overview/grants/discover",
+                                            to: "/dashboard/overview/grants/discover",
                                         },
                                     ]),
                           ],
@@ -393,23 +393,23 @@ const Navigation = {
                       {
                           icon: CreditCard,
                           label: "Investment Funding",
-                          to: "/Dashboard/overview/funding",
+                          to: "/dashboard/overview/funding",
                           children: [
                               ...(user?.investor
                                   ? [
                                         {
                                             label: "Add New Investment",
-                                            to: "/Dashboard/overview/funding/investments",
+                                            to: "/dashboard/overview/funding/investments",
                                         },
                                         {
                                             label: "Pitches",
-                                            to: "/Dashboard/overview/capital-pitch",
+                                            to: "/dashboard/overview/capital-pitch",
                                         },
                                     ]
                                   : [
                                         {
                                             label: "Apply for Investments",
-                                            to: "/Dashboard/overview/funding/investments",
+                                            to: "/dashboard/overview/funding/investments",
                                         },
                                     ]),
                           ],
@@ -422,56 +422,56 @@ const Navigation = {
                       {
                           icon: BarChart2,
                           label: "Analytics",
-                          to: "/Dashboard/overview/analytics",
+                          to: "/dashboard/overview/analytics",
                           children: [
                               {
                                   label: "Metrics Dashboard",
-                                  to: "/Dashboard/overview/analytics",
+                                  to: "/dashboard/overview/analytics",
                               },
                           ],
                       },
                       {
                           icon: Users,
                           label: "Profile",
-                          to: "/Dashboard/overview/profile",
+                          to: "/dashboard/overview/profile",
                           children: [
                               {
                                   label: "Profile",
-                                  to: "/Dashboard/overview/profile",
+                                  to: "/dashboard/overview/profile",
                               },
                               {
                                   label: "User-Management",
-                                  to: "/Dashboard/overview/usermanagement",
+                                  to: "/dashboard/overview/usermanagement",
                               },
                           ],
                       },
                       {
                           icon: Settings,
                           label: "Schedule",
-                          to: "/Dashboard/overview/settings",
+                          to: "/dashboard/overview/settings",
                           children: [
                               {
                                   label: "Office-Hours",
-                                  to: "/Dashboard/overview/settings/profile",
+                                  to: "/dashboard/overview/settings/profile",
                               },
                               //  {
                               //      label: "Calendar",
-                              //      to: "/Dashboard/overview/settings/notifications",
+                              //      to: "/dashboard/overview/settings/notifications",
                               //  },
                               {
                                   label: "Meetings",
-                                  to: "/Dashboard/overview/settings/security",
+                                  to: "/dashboard/overview/settings/security",
                               },
                               //  {
                               //      label: "Messages",
-                              //      to: "/Dashboard/overview/settings/messages",
+                              //      to: "/dashboard/overview/settings/messages",
                               //  },
                           ],
                       },
                       {
                           icon: MessageSquare, // Make sure to import this
                           label: "Messages",
-                          to: "/Dashboard/overview/messages",
+                          to: "/dashboard/overview/messages",
                       },
                   ]
                 : []),
@@ -734,13 +734,13 @@ const Navigation = {
         let pathSegments = [];
 
         // Handle dashboard routes specially
-        if (fullPath.startsWith("/Dashboard")) {
+        if (fullPath.startsWith("/dashboard")) {
             const segments = fullPath.split("/").filter((x) => x);
 
-            // Add Dashboard as first segment
+            // Add dashboard as first segment
             pathSegments.push({
-                name: "Dashboard",
-                path: "/Dashboard/overview",
+                name: "dashboard",
+                path: "/dashboard/overview",
                 icon: <Grid size={16} />,
             });
 

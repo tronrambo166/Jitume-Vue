@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+
 import {
     Award,
     DollarSign,
@@ -25,46 +26,32 @@ import {
 } from "lucide-react";
 import { useStateContext } from "../../../contexts/contextProvider";
 import axiosClient from "../../../axiosClient";
-import GrantApplicationModal from "../Utils/Modals/Newgrant";
-import InvestmentApplicationModal from "../Utils/Modals/InvestmentModal";
+
 const TujitumeDashboard = () => {
     const [filter, setFilter] = useState("all");
     const [searchTerm, setSearchTerm] = useState("");
     const [animateStats, setAnimateStats] = useState(false);
     const [animateHeader, setAnimateHeader] = useState(false);
-    const { token, setToken, user } = useStateContext();
+    const {
+        totalFunds,
+        availableFunds,
+        setTotalFunds,
+        setAvailableFunds,
+        user,
+        setSuccessrate,
+        successrate,
+        setAvgmatchscore,
+        avgmatchscore,
+        totalfunds,
+        setTotalfunds,
+        avgscore,
+        setAvgscore,
+    } = useStateContext();
+
     const [grants, setGrants] = useState([]);
-    const [capitalOpportunities, setCapitalOpportunities] = useState([]);
-    const [showGrantModal, setShowGrantModal] = useState(false);
-    const [showChoiceMenu, setShowChoiceMenu] = useState(false);
-    const [showInvestmentModal, setShowInvestmentModal] = useState(false);
-
-
-    // Refs for animation
-    const headerRef = useRef(null);
     const [showMenu, setShowMenu] = useState(false);
-    const navigate = useNavigate();
 
-    const handleNavigate = (path) => {
-        navigate(path);
-        setShowMenu(false); // close dropdown after clicking
-    };
-    const dropdownRef = useRef(null);
-    useEffect(() => {
-        function handleClickOutside(event) {
-            if (
-                dropdownRef.current &&
-                !dropdownRef.current.contains(event.target)
-            ) {
-                setShowMenu(false);
-            }
-        }
-
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+    const [capitalOpportunities, setCapitalOpportunities] = useState([]);
     const [dashboardMetrics, setDashboardMetrics] = useState({
         totalFunding: 0,
         successRate: 0,
@@ -78,6 +65,80 @@ const TujitumeDashboard = () => {
         statsCards: true,
         impactData: true,
     });
+
+    // Refs for animation
+    const headerRef = useRef(null);
+    const dropdownRef = useRef(null);
+    const navigate = useNavigate();
+
+    const handleNavigate = (path) => {
+        navigate(path);
+        setShowMenu(false); // close dropdown after clicking
+    };
+    const [grantsData, setGrantsData] = useState(null);
+    const [investmentsData, setInvestmentsData] = useState(null);
+
+    // You can use this to trigger re-fetching manually if needed
+    const [refreshTrigger, setRefreshTrigger] = useState(false);
+
+    const fetchGrantsData = async () => {
+        try {
+            const response = await axiosClient.get("/grant/analytics");
+            return response.data;
+        } catch (err) {
+            //console.error("Failed to fetch grant analytics:", err);
+            throw err;
+        }
+    };
+
+    const fetchInvestmentsData = async () => {
+        try {
+            const response = await axiosClient.get("/capital/analytics");
+            return response.data;
+        } catch (err) {
+            //console.error("Failed to fetch investment analytics:", err);
+            throw err;
+        }
+    };
+
+    const fetchAllData = async () => {
+        try {
+            const grants = await fetchGrantsData();
+            const investments = await fetchInvestmentsData();
+            setGrantsData(grants);
+            setInvestmentsData(investments);
+
+            if (user.investor === 2) {
+                setAvgscore(grants?.avg_score || 0);
+            } else if (user.investor === 3) {
+                setAvgscore(investments?.avg_score || 0);
+            }
+            
+
+            // console.log("silewitena:", grants?.breakdown);
+            // console.log("Investments Data:", investments);
+        } catch (err) {
+            // console.error("Error fetching data:", err);
+        }
+    };
+
+    useEffect(() => {
+        fetchAllData();
+    }, [refreshTrigger]); // Only runs on mount or when `refreshTrigger` changes
+
+    // OR use conditional logging
+    useEffect(() => {
+        if (grantsData) {
+            //console.log("silewitena:", grantsData.breakdown);
+        }
+        if (investmentsData) {
+            //console.log("Investments Data:", investmentsData);
+        }
+    }, [grantsData, investmentsData]);
+
+    // Remove these lines that are causing the error:
+    // //console.log("silewitena:", grantsData.breakdown);
+    // //console.log("Investments Data:", investmentsData);
 
     useEffect(() => {
         // Trigger animations
@@ -104,22 +165,33 @@ const TujitumeDashboard = () => {
             clearTimeout(headerTimer);
         };
     }, []);
-    const handleSubmitClick = () => {
-        setShowChoiceMenu(true);
-    };
+    //console.log("GRANTHEFTAOUTO:", grantsData);
 
-    const handleChoice = (type) => {
-        setShowChoiceMenu(false);
-        if (type === "grant") {
-            setShowGrantModal(true);
-        } else if (type === "investment") {
-            alert("Investment application selected");
-        }
-    };
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const { data } = await axiosClient.get("/checkAuth");
 
-    const closeGrantModal = () => {
-        setShowGrantModal(false);
-    };
+                if (data?.user) {
+                    setTotalFunds(data.total_funds || 0);
+                    setAvailableFunds(data.available_funds || 0);
+                    setSuccessrate(data.success_rate || 0);
+                    setAvgmatchscore(data.avg_match_score || 0);
+                    setTotalfunds(data.total_funds || 0);
+
+                    if (data.user.investor === 1) {
+                        navigate("/dashboard");
+                    }
+                }
+            } catch (error) {
+                //console.error("Auth fetch error:", error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
+
+    // Fetch user data
 
     const fetchGrants = async () => {
         setIsLoading((prev) => ({ ...prev, grants: true }));
@@ -128,6 +200,7 @@ const TujitumeDashboard = () => {
             const rawData = Array.isArray(response.data?.grants)
                 ? response.data.grants
                 : [];
+                console.log("rawdata", rawData);
 
             const cleanedData = rawData.map((grant) => ({
                 id: grant.id,
@@ -156,10 +229,8 @@ const TujitumeDashboard = () => {
             }));
 
             setGrants(cleanedData);
-            console.log("Grants data fetched successfully:", cleanedData);
-            console.log("Grants data:", grants);
         } catch (err) {
-            console.error("Failed to fetch grants:", err);
+            //console.error("Failed to fetch grants:", err);
         } finally {
             setIsLoading((prev) => ({ ...prev, grants: false }));
         }
@@ -170,6 +241,7 @@ const TujitumeDashboard = () => {
         try {
             const response = await axiosClient.get("capital/capital-offers");
             const data = response.data?.capital || [];
+            console.log("Raw Grants API Data:", response.data);
 
             if (Array.isArray(data)) {
                 const cleanedData = data.map((opportunity) => ({
@@ -194,7 +266,7 @@ const TujitumeDashboard = () => {
                 setCapitalOpportunities(cleanedData);
             }
         } catch (err) {
-            console.error("Failed to fetch capital offers:", err);
+            //console.error("Failed to fetch capital offers:", err);
         } finally {
             setIsLoading((prev) => ({ ...prev, capital: false }));
         }
@@ -204,6 +276,7 @@ const TujitumeDashboard = () => {
         () => [...grants, ...capitalOpportunities],
         [grants, capitalOpportunities]
     );
+    //console.log("Opportunities:", opportunities);
 
     // Process opportunities for dashboard metrics
     useEffect(() => {
@@ -241,8 +314,11 @@ const TujitumeDashboard = () => {
         }
     }, [opportunities]);
 
+    // Fixed filtering logic
     const filteredOpportunities = useMemo(() => {
-        // Enforce investor type restrictions first
+        let source = [];
+
+        // First enforce user type restrictions
         const enforcedFilter =
             user.investor === 2
                 ? "grant"
@@ -250,20 +326,27 @@ const TujitumeDashboard = () => {
                 ? "investment"
                 : filter;
 
-        // Select source based on enforced filter
-        const source =
-            enforcedFilter === "grant"
-                ? grants
-                : enforcedFilter === "investment"
-                ? capitalOpportunities
-                : [...grants, ...capitalOpportunities];
+        // Then apply the filter
+        if (enforcedFilter === "grant") {
+            source = grants.slice(0, 10); // Show up to 10 grants
+        } else if (enforcedFilter === "investment") {
+            source = capitalOpportunities.slice(0, 10); // Show up to 10 investments
+        } else if (enforcedFilter === "all") {
+            // For "all" filter, show 5 of each type (total 10)
+            const halfGrants = Math.min(5, grants.length);
+            const halfInvestments = Math.min(5, capitalOpportunities.length);
+            source = [
+                ...grants.slice(0, halfGrants),
+                ...capitalOpportunities.slice(0, halfInvestments),
+            ];
+        }
 
-        return source
-            .filter((opp) =>
-                opp.title.toLowerCase().includes(searchTerm.toLowerCase())
-            )
-            .slice(0, 3);
+        // Apply search term filtering
+        return source.filter((opp) =>
+            opp.title.toLowerCase().includes(searchTerm.toLowerCase())
+        );
     }, [filter, searchTerm, grants, capitalOpportunities, user.investor]);
+    console.log("Filtered Opportunities:", filteredOpportunities);
 
     // Extract sectors from opportunities for impact statistics
     const sectors = useMemo(() => {
@@ -315,28 +398,59 @@ const TujitumeDashboard = () => {
     }, [opportunities]);
 
     // Upcoming deadlines
-    const upcomingDeadlines = useMemo(() => {
-        const today = new Date();
-        return grants
-            .filter(
-                (grant) =>
-                    grant.deadlineDate && new Date(grant.deadlineDate) > today
-            )
-            .sort((a, b) => new Date(a.deadlineDate) - new Date(b.deadlineDate))
-            .slice(0, 2);
-    }, [grants]);
-    useEffect(() => {
-        const handleClickOutside = (e) => {
-            if (!e.target.closest(".relative")) {
-                setShowChoiceMenu(false);
-            }
-        };
+    // const upcomingDeadlines = useMemo(() => {
+    //     const today = new Date();
+    //     return grants
+    //         .filter(
+    //             (grant) =>
+    //                 grant.deadlineDate && new Date(grant.deadlineDate) > today
+    //         )
+    //         .sort((a, b) => new Date(a.deadlineDate) - new Date(b.deadlineDate))
+    //         .slice(0, 2);
+    // }, [grants]);
 
-        document.addEventListener("click", handleClickOutside);
-        return () => {
-            document.removeEventListener("click", handleClickOutside);
-        };
-    }, []);
+    const upcomingDeadlines = [
+        {
+            title: "AgriFund 2025",
+            deadlineDate: "2025-07-10",
+            organization: "Kenya AgriCapital",
+            amount: 15000,
+            link: "https://example.com/agri-fund",
+        },
+        {
+            title: "Youth Empowerment Grant",
+            deadlineDate: "2025-07-15",
+            organization: "YouthBank Africa",
+            amount: 10000,
+            link: "https://example.com/youth-grant",
+        },
+    ];
+
+    const sortedDeadlines = [...upcomingDeadlines].sort(
+        (a, b) =>
+            new Date(a.deadlineDate).getTime() -
+            new Date(b.deadlineDate).getTime()
+    );
+
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const futureDeadlines = upcomingDeadlines
+        .filter((d) => new Date(d.deadlineDate) > new Date())
+        .sort((a, b) => new Date(a.deadlineDate) - new Date(b.deadlineDate));
+
+    useEffect(() => {
+        if (futureDeadlines.length === 0) return;
+
+        const interval = setInterval(() => {
+            setCurrentIndex(
+                (prevIndex) => (prevIndex + 1) % futureDeadlines.length
+            );
+        }, 15000);
+
+        return () => clearInterval(interval);
+    }, [futureDeadlines]);
+
+    const current = futureDeadlines[currentIndex];
 
     const statsCards = [
         {
@@ -351,20 +465,34 @@ const TujitumeDashboard = () => {
         },
         {
             icon: <DollarSign className="text-green-600" />,
-            title: "Total Funding",
-            value: `$${dashboardMetrics.totalFunding.toLocaleString()}`,
+            title: !user.investor ? "Total Funds Received" : "Total Funding",
+
+            value: `$${(!user.investor
+                ? totalfunds
+                : totalFunds
+            ).toLocaleString()}`, // Show relevant total based on user type
+
             subtext: "Available Capital",
             trend: `+${dashboardMetrics.growthRate}%`,
             trendUp: dashboardMetrics.growthRate > 0,
         },
-        {
-            icon: <Star className="text-yellow-600" />,
-            title: "Success Rate",
-            value: `${dashboardMetrics.successRate}%`,
-            subtext: "Average Match Score",
-            trend: `${dashboardMetrics.avgMatchScore}% match`,
-            trendUp: dashboardMetrics.avgMatchScore > 70,
-        },
+        !user.investor
+            ? {
+                  icon: <Star className="text-yellow-600" />,
+                  title: "Success Rate",
+                  value: `${successrate}%`,
+                  subtext: "Average Match Score",
+                  trend: `${avgmatchscore}% match`,
+                  trendUp: dashboardMetrics.avgMatchScore > 70,
+              }
+            : {
+                  icon: <Star className="text-emerald-600" />,
+                  title: "Match Score",
+                  value: `${avgscore}%`,
+                  subtext: "Your Average Match",
+                  trend: `${avgscore}% match`,
+                  trendUp: dashboardMetrics.avgMatchScore > 70,
+              },
     ];
 
     // Skeleton loaders
@@ -470,29 +598,18 @@ const TujitumeDashboard = () => {
                         </div>
 
                         <div className="flex items-center space-x-3">
-                            <div className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg p-1.5 border border-white border-opacity-20">
-                                <div className="flex items-center text-xs">
-                                    <div className="px-3 py-1.5 rounded-lg flex items-center">
-                                        <BellRing
-                                            size={14}
-                                            className="text-yellow-300 mr-1.5"
-                                        />
-                                        <span className="text-green-100">
-                                            {dashboardMetrics.recentActivity}{" "}
-                                            New
-                                        </span>
-                                    </div>
-                                    <div className="px-3 py-1.5 rounded-lg flex items-center">
-                                        <UserPlus
-                                            size={14}
-                                            className="text-blue-300 mr-1.5"
-                                        />
-                                        <span className="text-green-100">
-                                            5 Matches
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
+                            {/* <div className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg p-1.5 border border-white border-opacity-20">
+                <div className="flex items-center text-xs">
+                  <div className="px-3 py-1.5 rounded-lg flex items-center">
+                    <BellRing size={14} className="text-yellow-300 mr-1.5" />
+                    <span className="text-green-100">{dashboardMetrics.recentActivity} New</span>
+                  </div>
+                  <div className="px-3 py-1.5 rounded-lg flex items-center">
+                    <UserPlus size={14} className="text-blue-300 mr-1.5" />
+                    <span className="text-green-100">5 Matches</span>
+                  </div>
+                </div>
+              </div> */}
 
                             <div className="relative">
                                 <input
@@ -549,24 +666,61 @@ const TujitumeDashboard = () => {
                                     Available Funding
                                 </div>
                                 <div className="text-lg font-semibold text-white">
-                                    $
-                                    {dashboardMetrics.totalFunding.toLocaleString()}
+                                    ${availableFunds.toLocaleString()}
                                 </div>
                             </div>
                         </div>
 
-                        <div className="bg-white bg-opacity-5 backdrop-filter backdrop-blur-md rounded-lg p-3 border border-white border-opacity-10 flex items-center">
+                        <div className="bg-white bg-opacity-5 backdrop-filter backdrop-blur-md rounded-lg p-3 border border-white border-opacity-10 flex items-center relative">
                             <div className="bg-white bg-opacity-10 p-2 rounded-lg mr-3">
                                 <Calendar size={16} className="text-blue-400" />
                             </div>
                             <div>
                                 <div className="text-xs text-slate-300">
-                                    Upcoming Deadlines
+                                    Upcoming Deadline
                                 </div>
-                                <div className="text-lg font-semibold text-white">
-                                    {upcomingDeadlines.length}
-                                </div>
+                                {current ? (
+                                    <>
+                                        <div className="text-sm font-semibold text-white line-clamp-1">
+                                            {current.title}
+                                        </div>
+                                        <div className="text-xs text-blue-200 mt-0.5">
+                                            {new Date(
+                                                current.deadlineDate
+                                            ).toLocaleDateString(undefined, {
+                                                month: "short",
+                                                day: "numeric",
+                                            })}{" "}
+                                            —{" "}
+                                            {Math.ceil(
+                                                (new Date(
+                                                    current.deadlineDate
+                                                ) -
+                                                    new Date()) /
+                                                    (1000 * 60 * 60 * 24)
+                                            )}{" "}
+                                            day
+                                            {Math.ceil(
+                                                (new Date(
+                                                    current.deadlineDate
+                                                ) -
+                                                    new Date()) /
+                                                    (1000 * 60 * 60 * 24)
+                                            ) !== 1
+                                                ? "s"
+                                                : ""}{" "}
+                                            left
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="text-white text-sm mt-1">
+                                        No upcoming deadlines
+                                    </div>
+                                )}
                             </div>
+
+                            {/* Dotted separator at the bottom */}
+                            <div className="absolute bottom-0 left-3 right-3 border-t border-dotted border-white/30 mt-2"></div>
                         </div>
                     </div>
                 </div>
@@ -672,14 +826,30 @@ const TujitumeDashboard = () => {
                             Active Opportunities
                         </h2>
                         <div className="flex space-x-2">
-                            {["all", "grant", "investment"].map((type) =>
-                                (user.investor === 2 &&
-                                    type === "investment") ||
-                                (user.investor === 3 &&
-                                    type === "grant") ? null : (
+                            {["all", "grant", "investment"].map((type) => {
+                                // Hide buttons based on user investor type
+                                if (
+                                    user.investor === 2 &&
+                                    type === "investment"
+                                )
+                                    return null;
+                                if (user.investor === 3 && type === "grant")
+                                    return null;
+
+                                return (
                                     <button
                                         key={type}
-                                        onClick={() => setFilter(type)}
+                                        onClick={() => {
+                                            setFilter(type);
+                                            // Reset scroll position when changing filter
+                                            const scrollContainer =
+                                                document.querySelector(
+                                                    ".opportunities-scroll-container"
+                                                );
+                                            if (scrollContainer) {
+                                                scrollContainer.scrollLeft = 0;
+                                            }
+                                        }}
                                         className={`px-3 py-1 rounded-full text-xs uppercase tracking-wider transition ${
                                             filter === type
                                                 ? "bg-gradient-to-r from-slate-600 to-green-600 text-white shadow-sm"
@@ -688,8 +858,8 @@ const TujitumeDashboard = () => {
                                     >
                                         {type}
                                     </button>
-                                )
-                            )}
+                                );
+                            })}
                         </div>
                     </div>
 
@@ -700,96 +870,186 @@ const TujitumeDashboard = () => {
                             <OpportunityCardSkeleton />
                         </div>
                     ) : filteredOpportunities.length > 0 ? (
-                        <div className="grid md:grid-cols-3 gap-4">
-                            {filteredOpportunities.map((opp, idx) => (
-                                <div
-                                    key={opp.id}
-                                    className="bg-white border border-neutral-100 rounded-lg p-4 hover:shadow-xl transition transform hover:-translate-y-2 group relative overflow-hidden"
-                                    style={{ transitionDelay: `${idx * 75}ms` }}
-                                >
-                                    {/* Status indicator line */}
+                        <div className="overflow-x-auto pb-4 opportunities-scroll-container">
+                            <div className="flex space-x-4 min-w-max">
+                                {filteredOpportunities.map((opp, idx) => (
                                     <div
-                                        className={`absolute top-0 left-0 w-1 h-full ${
-                                            opp.status === "Open"
-                                                ? "bg-green-500"
-                                                : opp.status === "Closed"
-                                                ? "bg-red-500"
-                                                : "bg-yellow-500"
-                                        }`}
-                                    ></div>
-
-                                    <div className="flex justify-between items-start mb-4 pl-2">
-                                        <div>
-                                            <h3 className="font-semibold text-neutral-800 mb-1 group-hover:text-blue-600 transition line-clamp-1">
-                                                {opp.title}
-                                            </h3>
-                                            <span className="text-xs text-neutral-500 uppercase flex items-center">
-                                                <MapPin
-                                                    size={12}
-                                                    className="mr-1 text-neutral-400"
-                                                />
-                                                {opp.region}
-                                            </span>
-                                        </div>
-                                        <span
-                                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                        key={opp.id}
+                                        className="flex-shrink-0 w-[460px] bg-white border border-neutral-100 rounded-lg p-4 hover:shadow-xl transition transform hover:-translate-y-2 group relative overflow-hidden"
+                                        style={{
+                                            transitionDelay: `${idx * 75}ms`,
+                                        }}
+                                    >
+                                        {/* Status indicator line */}
+                                        <div
+                                            className={`absolute top-0 left-0 w-1 h-full ${
                                                 opp.status === "Open"
-                                                    ? "bg-green-50 text-green-700"
+                                                    ? "bg-green-500"
                                                     : opp.status === "Closed"
-                                                    ? "bg-red-50 text-red-700"
-                                                    : "bg-yellow-50 text-yellow-700"
+                                                    ? "bg-red-500"
+                                                    : "bg-yellow-500"
                                             }`}
-                                        >
-                                            {opp.status}
-                                        </span>
-                                    </div>
+                                        ></div>
 
-                                    <div className="mb-4 pl-2">
-                                        <div className="flex flex-wrap gap-1 mb-2">
-                                            {opp.impact
-                                                .slice(0, 2)
-                                                .map((impact, index) => (
-                                                    <span
-                                                        key={index}
-                                                        className="text-xs bg-neutral-100 text-neutral-600 px-2 py-1 rounded-full"
-                                                    >
-                                                        {impact}
-                                                    </span>
-                                                ))}
+                                        <div className="flex justify-between items-start mb-4 pl-2">
+                                            <div>
+                                                <h3 className="font-semibold text-neutral-800 mb-1 group-hover:text-blue-600 transition line-clamp-1">
+                                                    {opp.title}
+                                                </h3>
+                                                <span className="text-xs text-neutral-500 uppercase flex items-center">
+                                                    <MapPin
+                                                        size={12}
+                                                        className="mr-1 text-neutral-400"
+                                                    />
+                                                    {opp.region}
+                                                </span>
+                                            </div>
+                                            <div className="flex flex-col items-end gap-1">
+                                                <span
+                                                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                                        opp.status === "Open"
+                                                            ? "bg-green-50 text-green-700"
+                                                            : opp.status ===
+                                                              "Closed"
+                                                            ? "bg-red-50 text-red-700"
+                                                            : "bg-yellow-50 text-yellow-700"
+                                                    }`}
+                                                >
+                                                    {opp.status}
+                                                </span>
+                                                {/* Add type indicator */}
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div className="flex justify-between items-center border-t pt-3 pl-2">
-                                        <div className="text-sm">
-                                            <div className="text-neutral-600 flex items-center">
-                                                <DollarSign
-                                                    size={14}
-                                                    className="mr-1 text-green-500"
-                                                />
-                                                Amount
-                                            </div>
-                                            <div className="font-semibold">
-                                                ${opp.amount.toLocaleString()}
-                                            </div>
-                                        </div>
-                                        <div className="text-sm">
-                                            <div className="text-neutral-600 flex items-center">
-                                                <Star
-                                                    size={14}
-                                                    className="mr-1 text-yellow-500"
-                                                />
-                                                Match
-                                            </div>
-                                            <div className="font-semibold text-neutral-800">
-                                                {opp.matchScore}%
+                                        <div className="mb-4 pl-2">
+                                            <div className="flex flex-wrap gap-1 mb-2">
+                                                {opp.impact
+                                                    ?.slice(0, 2)
+                                                    .map((impact, index) => (
+                                                        <span
+                                                            key={index}
+                                                            className="text-xs bg-neutral-100 text-neutral-600 px-2 py-1 rounded-full"
+                                                        >
+                                                            {impact}
+                                                        </span>
+                                                    ))}
                                             </div>
                                         </div>
-                                        <button className="p-2 text-neutral-700 hover:text-blue-600 hover:bg-blue-50 rounded-full transition">
-                                            <ChevronRight size={18} />
-                                        </button>
+
+                                        <div className="flex justify-between items-center border-t pt-3 pl-2">
+                                            <div className="text-sm">
+                                                <div className="text-neutral-600 flex items-center">
+                                                    <DollarSign
+                                                        size={14}
+                                                        className="mr-1 text-green-500"
+                                                    />
+                                                    Amount
+                                                </div>
+                                                <div className="font-semibold">
+                                                    $
+                                                    {opp.amount?.toLocaleString()}
+                                                </div>
+                                            </div>
+                                            <div className="text-sm">
+                                                <div className="text-neutral-600 flex items-center">
+                                                    <Star
+                                                        size={14}
+                                                        className="mr-1 text-yellow-500"
+                                                    />
+                                                    Match
+                                                </div>
+                                                <div className="font-semibold text-neutral-800">
+                                                    {opp.matchScore}%
+                                                </div>
+                                            </div>
+                                            <button className="p-2 text-neutral-700 hover:text-blue-600 hover:bg-blue-50 rounded-full transition">
+                                                <ChevronRight size={18} />
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+
+                                {/* Explore More Card for All (shows modal) */}
+                                {filter === "all" && (
+                                    <div
+                                        className="flex-shrink-0 w-[460px] bg-gradient-to-br from-neutral-50 to-neutral-100 border-2 border-dashed border-neutral-200 rounded-lg p-6 flex flex-col items-center justify-center hover:shadow-md transition cursor-pointer group"
+                                        onClick={() => setShowMenu(true)}
+                                    >
+                                        <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center mb-4 group-hover:bg-neutral-100 transition-colors shadow-sm">
+                                            <ChevronRight
+                                                size={24}
+                                                className="text-neutral-500 group-hover:text-blue-500 transition-colors"
+                                            />
+                                        </div>
+                                        <h3 className="font-medium text-neutral-700 mb-1 text-lg">
+                                            Explore All Opportunities
+                                        </h3>
+                                        <p className="text-sm text-neutral-500 max-w-[300px]">
+                                            View full list of available
+                                            opportunities
+                                        </p>
+                                    </div>
+                                )}
+
+                                {/* Explore More Card for Grants */}
+                                {filter === "grant" && (
+                                    <div
+                                        className="flex-shrink-0 w-[460px] bg-gradient-to-br from-neutral-50 to-neutral-100 border-2 border-dashed border-neutral-200 rounded-lg p-6 flex flex-col items-center justify-center hover:shadow-md transition cursor-pointer group"
+                                        onClick={() =>
+                                            handleNavigate(
+                                                "/dashboard/overview/grants/discover"
+                                            )
+                                        }
+                                    >
+                                        <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center mb-4 group-hover:bg-neutral-100 transition-colors shadow-sm">
+                                            <ChevronRight
+                                                size={24}
+                                                className="text-neutral-500 group-hover:text-blue-500 transition-colors"
+                                            />
+                                        </div>
+                                        <h3 className="font-medium text-neutral-700 mb-1 text-lg">
+                                            Explore More Grants
+                                        </h3>
+                                        <p className="text-sm text-neutral-500 max-w-[300px]">
+                                            {grants.length > 10
+                                                ? `${
+                                                      grants.length - 10
+                                                  }+ additional grants`
+                                                : "View all grants"}
+                                        </p>
+                                    </div>
+                                )}
+
+                                {/* Explore More Card for Investments */}
+                                {filter === "investment" && (
+                                    <div
+                                        className="flex-shrink-0 w-[460px] bg-gradient-to-br from-neutral-50 to-neutral-100 border-2 border-dashed border-neutral-200 rounded-lg p-6 flex flex-col items-center justify-center hover:shadow-md transition cursor-pointer group"
+                                        onClick={() =>
+                                            handleNavigate(
+                                                "/dashboard/overview/funding/investments"
+                                            )
+                                        }
+                                    >
+                                        <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center mb-4 group-hover:bg-neutral-100 transition-colors shadow-sm">
+                                            <ChevronRight
+                                                size={24}
+                                                className="text-neutral-500 group-hover:text-blue-500 transition-colors"
+                                            />
+                                        </div>
+                                        <h3 className="font-medium text-neutral-700 mb-1 text-lg">
+                                            Explore More Investments
+                                        </h3>
+                                        <p className="text-sm text-neutral-500 max-w-[300px]">
+                                            {capitalOpportunities.length > 10
+                                                ? `${
+                                                      capitalOpportunities.length -
+                                                      10
+                                                  }+ additional investments`
+                                                : "View all investments"}
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     ) : (
                         <div className="text-center py-10 bg-white rounded-lg border border-neutral-100">
@@ -809,7 +1069,6 @@ const TujitumeDashboard = () => {
                         </div>
                     )}
                 </section>
-
                 {/* Enhanced Impact Snapshot Section */}
                 <section className="mt-8 bg-white rounded-xl shadow-sm p-6 border border-gray-100 relative overflow-hidden">
                     {/* Background pattern */}
@@ -859,14 +1118,14 @@ const TujitumeDashboard = () => {
                             </div>
 
                             <div className="flex items-center space-x-2">
-                                <div className="text-xs text-gray-500 flex items-center">
+                                {/* <div className="text-xs text-gray-500 flex items-center">
                                     <div className="w-3 h-3 rounded-full bg-green-500 mr-1"></div>
                                     Grants
                                 </div>
                                 <div className="text-xs text-gray-500 flex items-center">
                                     <div className="w-3 h-3 rounded-full bg-blue-500 mr-1"></div>
                                     Investments
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 
@@ -879,97 +1138,274 @@ const TujitumeDashboard = () => {
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
                                 {/* Sector Impact */}
+                                {/* First Performance Metrics Section */}
                                 <div className="border border-gray-100 rounded-lg p-4 bg-gradient-to-br from-white to-gray-50">
                                     <h3 className="text-sm font-medium text-gray-700 mb-4 flex items-center">
                                         <PieChart
                                             className="mr-2 text-blue-500"
                                             size={16}
                                         />
-                                        Top Impact Sectors
+                                        Performance Metrics
                                     </h3>
 
                                     <div className="space-y-3">
-                                        {sectors.map((sector, idx) => (
-                                            <div
-                                                key={idx}
-                                                className="flex items-center"
-                                            >
-                                                <div className="w-full">
-                                                    <div className="flex justify-between text-xs mb-1">
-                                                        <span className="font-medium text-gray-700">
-                                                            {sector.name}
-                                                        </span>
-                                                        <span className="text-gray-500">
-                                                            {sector.percentage}%
-                                                        </span>
-                                                    </div>
-                                                    <div className="bg-gray-200 rounded-full h-2">
-                                                        <div
-                                                            className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full"
-                                                            style={{
-                                                                width: `${sector.percentage}%`,
-                                                            }}
-                                                        ></div>
-                                                    </div>
+                                        {/* Sector */}
+                                        <div className="flex items-center">
+                                            <div className="w-full">
+                                                <div className="flex justify-between text-xs mb-1">
+                                                    <span className="font-medium text-gray-700">
+                                                        Sector
+                                                    </span>
+                                                    <span className="text-gray-500">
+                                                        {user.investor === 2
+                                                            ? grantsData
+                                                                  ?.breakdown
+                                                                  ?.sector || 0
+                                                            : investmentsData
+                                                                  ?.breakdown
+                                                                  ?.sector || 0}
+                                                        %
+                                                    </span>
+                                                </div>
+                                                <div className="bg-gray-200 rounded-full h-2">
+                                                    <div
+                                                        className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full"
+                                                        style={{
+                                                            width: `${
+                                                                user.investor ===
+                                                                2
+                                                                    ? grantsData
+                                                                          ?.breakdown
+                                                                          ?.sector ||
+                                                                      0
+                                                                    : investmentsData
+                                                                          ?.breakdown
+                                                                          ?.sector ||
+                                                                      0
+                                                            }%`,
+                                                        }}
+                                                    ></div>
                                                 </div>
                                             </div>
-                                        ))}
+                                        </div>
+
+                                        {/* Geography */}
+                                        <div className="flex items-center">
+                                            <div className="w-full">
+                                                <div className="flex justify-between text-xs mb-1">
+                                                    <span className="font-medium text-gray-700">
+                                                        Geography
+                                                    </span>
+                                                    <span className="text-gray-500">
+                                                        {user.investor === 2
+                                                            ? grantsData
+                                                                  ?.breakdown
+                                                                  ?.geo || 0
+                                                            : investmentsData
+                                                                  ?.breakdown
+                                                                  ?.geo || 0}
+                                                        %
+                                                    </span>
+                                                </div>
+                                                <div className="bg-gray-200 rounded-full h-2">
+                                                    <div
+                                                        className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full"
+                                                        style={{
+                                                            width: `${
+                                                                user.investor ===
+                                                                2
+                                                                    ? grantsData
+                                                                          ?.breakdown
+                                                                          ?.geo ||
+                                                                      0
+                                                                    : investmentsData
+                                                                          ?.breakdown
+                                                                          ?.geo ||
+                                                                      0
+                                                            }%`,
+                                                        }}
+                                                    ></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Stage */}
+                                        <div className="flex items-center">
+                                            <div className="w-full">
+                                                <div className="flex justify-between text-xs mb-1">
+                                                    <span className="font-medium text-gray-700">
+                                                        Stage
+                                                    </span>
+                                                    <span className="text-gray-500">
+                                                        {user.investor === 2
+                                                            ? grantsData
+                                                                  ?.breakdown
+                                                                  ?.stage || 0
+                                                            : investmentsData
+                                                                  ?.breakdown
+                                                                  ?.stage || 0}
+                                                        %
+                                                    </span>
+                                                </div>
+                                                <div className="bg-gray-200 rounded-full h-2">
+                                                    <div
+                                                        className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full"
+                                                        style={{
+                                                            width: `${
+                                                                user.investor ===
+                                                                2
+                                                                    ? grantsData
+                                                                          ?.breakdown
+                                                                          ?.stage ||
+                                                                      0
+                                                                    : investmentsData
+                                                                          ?.breakdown
+                                                                          ?.stage ||
+                                                                      0
+                                                            }%`,
+                                                        }}
+                                                    ></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                {/* Regional Distribution */}
+                                {/* Second Performance Metrics Section */}
                                 <div className="border border-gray-100 rounded-lg p-4 bg-gradient-to-br from-white to-gray-50">
                                     <h3 className="text-sm font-medium text-gray-700 mb-4 flex items-center">
-                                        <Compass
-                                            className="mr-2 text-green-500"
+                                        <PieChart
+                                            className="mr-2 text-blue-500"
                                             size={16}
                                         />
-                                        Regional Distribution
+                                        Performance Metrics
                                     </h3>
 
                                     <div className="space-y-3">
-                                        {regions.map((region, idx) => (
-                                            <div
-                                                key={idx}
-                                                className="flex items-center"
-                                            >
-                                                <div className="w-full">
-                                                    <div className="flex justify-between text-xs mb-1">
-                                                        <span className="font-medium text-gray-700">
-                                                            {region.name}
-                                                        </span>
-                                                        <span className="text-gray-500">
-                                                            {region.count}{" "}
-                                                            opportunities
-                                                        </span>
-                                                    </div>
-                                                    <div className="bg-gray-200 rounded-full h-2">
-                                                        <div
-                                                            className="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full"
-                                                            style={{
-                                                                width: `${
-                                                                    (region.count /
-                                                                        Math.max(
-                                                                            ...regions.map(
-                                                                                (
-                                                                                    r
-                                                                                ) =>
-                                                                                    r.count
-                                                                            )
-                                                                        )) *
-                                                                    100
-                                                                }%`,
-                                                            }}
-                                                        ></div>
-                                                    </div>
+                                        {/* Revenue */}
+                                        <div className="flex items-center">
+                                            <div className="w-full">
+                                                <div className="flex justify-between text-xs mb-1">
+                                                    <span className="font-medium text-gray-700">
+                                                        Revenue
+                                                    </span>
+                                                    <span className="text-gray-500">
+                                                        {user.investor === 2
+                                                            ? grantsData
+                                                                  ?.breakdown
+                                                                  ?.revenue || 0
+                                                            : investmentsData
+                                                                  ?.breakdown
+                                                                  ?.revenue ||
+                                                              0}
+                                                        %
+                                                    </span>
+                                                </div>
+                                                <div className="bg-gray-200 rounded-full h-2">
+                                                    <div
+                                                        className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full"
+                                                        style={{
+                                                            width: `${
+                                                                user.investor ===
+                                                                2
+                                                                    ? grantsData
+                                                                          ?.breakdown
+                                                                          ?.revenue ||
+                                                                      0
+                                                                    : investmentsData
+                                                                          ?.breakdown
+                                                                          ?.revenue ||
+                                                                      0
+                                                            }%`,
+                                                        }}
+                                                    ></div>
                                                 </div>
                                             </div>
-                                        ))}
+                                        </div>
+
+                                        {/* Team */}
+                                        <div className="flex items-center">
+                                            <div className="w-full">
+                                                <div className="flex justify-between text-xs mb-1">
+                                                    <span className="font-medium text-gray-700">
+                                                        Team
+                                                    </span>
+                                                    <span className="text-gray-500">
+                                                        {user.investor === 2
+                                                            ? grantsData
+                                                                  ?.breakdown
+                                                                  ?.team || 0
+                                                            : investmentsData
+                                                                  ?.breakdown
+                                                                  ?.team || 0}
+                                                        %
+                                                    </span>
+                                                </div>
+                                                <div className="bg-gray-200 rounded-full h-2">
+                                                    <div
+                                                        className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full"
+                                                        style={{
+                                                            width: `${
+                                                                user.investor ===
+                                                                2
+                                                                    ? grantsData
+                                                                          ?.breakdown
+                                                                          ?.team ||
+                                                                      0
+                                                                    : investmentsData
+                                                                          ?.breakdown
+                                                                          ?.team ||
+                                                                      0
+                                                            }%`,
+                                                        }}
+                                                    ></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Impact */}
+                                        <div className="flex items-center">
+                                            <div className="w-full">
+                                                <div className="flex justify-between text-xs mb-1">
+                                                    <span className="font-medium text-gray-700">
+                                                        Impact
+                                                    </span>
+                                                    <span className="text-gray-500">
+                                                        {user.investor === 2
+                                                            ? grantsData
+                                                                  ?.breakdown
+                                                                  ?.impact || 0
+                                                            : investmentsData
+                                                                  ?.breakdown
+                                                                  ?.impact || 0}
+                                                        %
+                                                    </span>
+                                                </div>
+                                                <div className="bg-gray-200 rounded-full h-2">
+                                                    <div
+                                                        className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full"
+                                                        style={{
+                                                            width: `${
+                                                                user.investor ===
+                                                                2
+                                                                    ? grantsData
+                                                                          ?.breakdown
+                                                                          ?.impact ||
+                                                                      0
+                                                                    : investmentsData
+                                                                          ?.breakdown
+                                                                          ?.impact ||
+                                                                      0
+                                                            }%`,
+                                                        }}
+                                                    ></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-
                                 {/* Upcoming Deadlines */}
-                                <div className="border border-gray-100 rounded-lg p-4 bg-gradient-to-br from-white to-gray-50">
+                                <div className="border border-gray-100 rounded-lg p-4 bg-gradient-to-br from-white to-gray-50 shadow-sm">
                                     <h3 className="text-sm font-medium text-gray-700 mb-4 flex items-center">
                                         <Clock
                                             className="mr-2 text-yellow-500"
@@ -978,49 +1414,96 @@ const TujitumeDashboard = () => {
                                         Upcoming Deadlines
                                     </h3>
 
-                                    {upcomingDeadlines.length > 0 ? (
-                                        <div className="space-y-4">
-                                            {upcomingDeadlines.map(
-                                                (deadline, idx) => (
-                                                    <div
-                                                        key={idx}
-                                                        className="flex items-start space-x-3"
-                                                    >
-                                                        <div className="bg-gray-100 rounded-lg p-2 text-center flex-shrink-0 w-12">
-                                                            <div className="text-xs text-gray-500">
-                                                                {new Date(
-                                                                    deadline.deadlineDate
-                                                                ).toLocaleDateString(
-                                                                    undefined,
+                                    {sortedDeadlines.length > 0 ? (
+                                        <div className="max-h-40 overflow-y-auto pr-1 divide-y divide-dotted divide-gray-200">
+                                            {sortedDeadlines.map(
+                                                (deadline, idx) => {
+                                                    const date = new Date(
+                                                        deadline.deadlineDate
+                                                    );
+                                                    const daysLeft = Math.ceil(
+                                                        (date.getTime() -
+                                                            Date.now()) /
+                                                            (1000 *
+                                                                60 *
+                                                                60 *
+                                                                24)
+                                                    );
+                                                    const status =
+                                                        daysLeft <= 0
+                                                            ? "Closed"
+                                                            : daysLeft <= 3
+                                                            ? "Closing Soon"
+                                                            : "Open";
+
+                                                    const statusClass =
+                                                        status === "Closed"
+                                                            ? "bg-red-100 text-red-600"
+                                                            : status ===
+                                                              "Closing Soon"
+                                                            ? "bg-yellow-100 text-yellow-600"
+                                                            : "bg-green-100 text-green-600";
+
+                                                    return (
+                                                        <div
+                                                            key={idx}
+                                                            onClick={() =>
+                                                                navigate(
+                                                                    "/dashboard/overview/grants/discover"
+                                                                )
+                                                            }
+                                                            className="flex items-start space-x-3 py-3 cursor-pointer hover:bg-gray-50 rounded-md px-1 transition"
+                                                        >
+                                                            <div className="bg-gray-100 rounded-lg p-2 text-center flex-shrink-0 w-12">
+                                                                <div className="text-xs text-gray-500">
+                                                                    {date.toLocaleDateString(
+                                                                        undefined,
+                                                                        {
+                                                                            month: "short",
+                                                                        }
+                                                                    )}
+                                                                </div>
+                                                                <div className="text-base font-semibold text-gray-800">
+                                                                    {date.getDate()}
+                                                                </div>
+                                                            </div>
+                                                            <div className="flex-1">
+                                                                <h4 className="text-sm font-medium line-clamp-1 text-gray-800">
                                                                     {
-                                                                        month: "short",
+                                                                        deadline.title
                                                                     }
-                                                                )}
-                                                            </div>
-                                                            <div className="text-base font-semibold text-gray-800">
-                                                                {new Date(
-                                                                    deadline.deadlineDate
-                                                                ).getDate()}
+                                                                </h4>
+                                                                <p className="text-xs text-gray-500">
+                                                                    {
+                                                                        deadline.organization
+                                                                    }
+                                                                </p>
+                                                                <div className="mt-1 flex items-center space-x-2">
+                                                                    <span className="text-xs bg-green-50 text-green-600 px-2 py-0.5 rounded-full">
+                                                                        $
+                                                                        {deadline.amount.toLocaleString()}
+                                                                    </span>
+                                                                    <span
+                                                                        className={`text-xs px-2 py-0.5 rounded-full ${statusClass}`}
+                                                                    >
+                                                                        {status}
+                                                                    </span>
+                                                                    {daysLeft >
+                                                                        0 && (
+                                                                        <span className="text-xs text-gray-400">
+                                                                            (
+                                                                            {
+                                                                                daysLeft
+                                                                            }{" "}
+                                                                            days
+                                                                            left)
+                                                                        </span>
+                                                                    )}
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div>
-                                                            <h4 className="text-sm font-medium line-clamp-1 text-gray-800">
-                                                                {deadline.title}
-                                                            </h4>
-                                                            <p className="text-xs text-gray-500">
-                                                                {
-                                                                    deadline.organization
-                                                                }
-                                                            </p>
-                                                            <div className="mt-1">
-                                                                <span className="text-xs bg-green-50 text-green-600 px-2 py-0.5 rounded-full">
-                                                                    $
-                                                                    {deadline.amount.toLocaleString()}
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )
+                                                    );
+                                                }
                                             )}
                                         </div>
                                     ) : (
@@ -1075,7 +1558,7 @@ const TujitumeDashboard = () => {
                                             <button
                                                 className="bg-white dark:bg-gray-900 text-green-800 dark:text-green-400 px-4 py-2 rounded-lg text-sm font-medium flex items-center hover:bg-gray-100 dark:hover:bg-gray-700 transition"
                                                 onClick={() =>
-                                                    setShowMenu(!showMenu)
+                                                    setShowMenu(true)
                                                 }
                                             >
                                                 <Rocket
@@ -1085,76 +1568,14 @@ const TujitumeDashboard = () => {
                                                 Find Opportunities
                                             </button>
 
-                                            {/* Dropdown */}
-                                            {showMenu && (
-                                                <div className="absolute top-12 left-0 bg-white dark:bg-gray-800 border dark:border-gray-700 shadow-lg rounded-lg w-60 z-10">
-                                                    <button
-                                                        className="w-full text-left px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 text-sm"
-                                                        onClick={() =>
-                                                            handleNavigate(
-                                                                "/Dashboard/overview/grants/discover"
-                                                            )
-                                                        }
-                                                    >
-                                                        Looking for Grants
-                                                    </button>
-                                                    <button
-                                                        className="w-full text-left px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 text-sm"
-                                                        onClick={() =>
-                                                            handleNavigate(
-                                                                "/Dashboard/overview/funding/investments"
-                                                            )
-                                                        }
-                                                    >
-                                                        Looking for Investment
-                                                    </button>
-                                                </div>
-                                            )}
-
                                             {/* Submit Button */}
-                                            <div
-                                                className="relative inline-block"
-                                                ref={dropdownRef}
-                                            >
-                                                <button
-                                                    onClick={handleSubmitClick}
-                                                    className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center hover:bg-green-700 transition"
-                                                >
-                                                    <ArrowUpRight
-                                                        size={16}
-                                                        className="mr-2"
-                                                    />
-                                                    Submit Application
-                                                </button>
-
-                                                {showChoiceMenu && (
-                                                    <div className="absolute right-0 mt-2 w-48 bg-white text-black shadow-lg rounded-lg z-50 text-sm">
-                                                        <button
-                                                            onClick={() =>
-                                                                handleChoice(
-                                                                    "grant"
-                                                                )
-                                                            }
-                                                            className="w-full text-left px-4 py-2 hover:bg-gray-100"
-                                                        >
-                                                            Apply for Grant
-                                                        </button>
-                                                        <button
-                                                            onClick={() => {
-                                                                setShowInvestmentModal(
-                                                                    true
-                                                                ); 
-                                                                setShowChoiceMenu(
-                                                                    false
-                                                                );
-                                                            }}
-                                                            className="w-full text-left px-4 py-2 hover:bg-gray-100"
-                                                        >
-                                                            Apply for Investment
-                                                        </button>
-                                                    </div>
-                                                )}
-                                            </div>
+                                            {/* <button className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center hover:bg-green-700 transition">
+                                                <ArrowUpRight
+                                                    size={16}
+                                                    className="mr-2"
+                                                />
+                                                Submit Application
+                                            </button> */}
                                         </div>
                                     </div>
                                 </div>
@@ -1162,21 +1583,99 @@ const TujitumeDashboard = () => {
                         </section>
                     )}
             </div>
-            {showGrantModal && (
-                <GrantApplicationModal
-                    onClose={closeGrantModal}
-                    grantId={null} // or pass the actual grantId if needed
-                />
-            )}
-            {showInvestmentModal && (
-                <InvestmentApplicationModal
-                    capitalId={null} // or provide a specific ID if needed
-                    onClose={() => setShowInvestmentModal(false)}
-                    onSuccess={() => {
-                        setShowInvestmentModal(false);
-                        handleSuccess(); // Optional success callback
-                    }}
-                />
+            {showMenu && (
+                <>
+                    {/* Backdrop */}
+                    <div
+                        className="fixed inset-0 bg-black bg-opacity-50 z-40"
+                        onClick={() => setShowMenu(false)}
+                    ></div>
+
+                    {/* Modal */}
+                    <div className="fixed inset-0 flex items-center justify-center z-50">
+                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-80 max-w-full p-4 relative">
+                            {/* Close button (X icon) */}
+                            <button
+                                className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                                onClick={() => setShowMenu(false)}
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="lucide lucide-x"
+                                >
+                                    <path d="M18 6 6 18" />
+                                    <path d="m6 6 12 12" />
+                                </svg>
+                            </button>
+
+                            <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+                                Explore Opportunities
+                            </h2>
+
+                            <button
+                                className="w-full text-left px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 text-sm rounded-md flex items-center"
+                                onClick={() => {
+                                    handleNavigate(
+                                        "/Dashboard/overview/grants/discover"
+                                    );
+                                    setShowMenu(false);
+                                }}
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="lucide lucide-wallet mr-2"
+                                >
+                                    <path d="M19 7V4a1 1 0 0 0-1-1H4a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" />
+                                    <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
+                                </svg>
+                                Looking for Grants
+                            </button>
+
+                            <button
+                                className="w-full text-left mt-2 px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 text-sm rounded-md flex items-center"
+                                onClick={() => {
+                                    handleNavigate(
+                                        "/dashboard/overview/funding/investments"
+                                    );
+                                    setShowMenu(false);
+                                }}
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="lucide lucide-trending-up mr-2"
+                                >
+                                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                                    <polyline points="16 7 22 7 22 13" />
+                                </svg>
+                                Looking for Investment
+                            </button>
+                        </div>
+                    </div>
+                </>
             )}
         </div>
     );
