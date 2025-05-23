@@ -270,16 +270,16 @@ const PitchDashboard = () => {
           <div className="flex justify-between items-center">
             <h1 className="text-2xl md:text-3xl font-light text-gray-900">Pitch<span className="font-bold">Flow</span></h1>
             <div className="flex items-center space-x-4 md:space-x-6">
-              <button className="text-gray-500 hover:text-gray-700 relative">
+              {/* <button className="text-gray-500 hover:text-gray-700 relative">
                 <Bell size={20} />
                 <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full text-white text-xs flex items-center justify-center">3</span>
-              </button>
+              </button> */}
               <button className="hidden md:block text-gray-500 hover:text-gray-700">
                 <Calendar size={20} />
               </button>
-              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-800 flex items-center justify-center">
+              {/* <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-800 flex items-center justify-center">
                 <span className="text-white text-sm md:text-base font-medium">JD</span>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

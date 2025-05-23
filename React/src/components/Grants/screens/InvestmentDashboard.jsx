@@ -916,9 +916,14 @@ const InvestmentOpportunities = () => {
                                             </div>
                                         </div>
                                         <div className="flex gap-3 w-full">
-                                            <button className="flex-1 text-neutral-700 whitespace-nowrap hover:text-neutral-900 transition-colors flex items-center justify-center gap-2 px-4 py-2 border border-neutral-300 rounded-md hover:bg-neutral-50">
+                                            <Link
+                                                to={`/dashboard/overview/funding/${opp.id}`} // Update this path to match your route
+                                                state={{ capitalData: opp }} // Pass the full opportunity data
+                                                className="flex-1 text-neutral-700 whitespace-nowrap hover:text-neutral-900 transition-colors flex items-center justify-center gap-2 px-4 py-2 border border-neutral-300 rounded-md hover:bg-neutral-50"
+                                            >
                                                 <Eye size={16} /> View Details
-                                            </button>
+                                            </Link>
+
                                             {user.investor === 3 ? (
                                                 <>
                                                     <label className="inline-flex items-center cursor-pointer">
@@ -937,7 +942,7 @@ const InvestmentOpportunities = () => {
                                                             }}
                                                             style={{
                                                                 display: "none",
-                                                            }} // Hides the checkbox entirely
+                                                            }}
                                                             className="peer"
                                                         />
                                                         <div className="w-11 h-6 bg-gray-200 peer-checked:bg-amber-400 rounded-full peer relative transition-colors">

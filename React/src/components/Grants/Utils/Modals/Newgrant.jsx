@@ -21,6 +21,8 @@ import {
 import axiosClient from "../../../../axiosClient";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import _ from "lodash";
+
 
 import { ToastContainer } from "react-toastify";
 export default function GrantApplicationModal({ onClose, grantId }) {
@@ -117,6 +119,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
     };
 
     // console.log("businessId", businessId);
+    // console.log("formData", grantId);
 
     // Run check whenever formData changes
     // useEffect(() => {
@@ -154,22 +157,6 @@ export default function GrantApplicationModal({ onClose, grantId }) {
         setBusinessId(parseInt(e.target.value, 10));
     };
     // Form handlers
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: type === "checkbox" ? checked : value,
-        }));
-    };
-
-    const handleImpactAreaChange = (area) => {
-        setFormData((prev) => ({
-            ...prev,
-            impactAreas: prev.impactAreas.includes(area)
-                ? prev.impactAreas.filter((a) => a !== area)
-                : [...prev.impactAreas, area],
-        }));
-    };
 
     // Submission handler
     const handleFinalSubmit = async () => {
@@ -310,7 +297,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
 
             // 7. Make API call with timeout
             console.log("Attempting to submit to backend...", formDataToSend);
-            
+
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 30000);
 
@@ -341,7 +328,6 @@ export default function GrantApplicationModal({ onClose, grantId }) {
             console.log("Status:", response.status);
             console.log("Response data:", response.data);
             console.groupEnd();
-            
 
             if (response.status !== 200 && response.status !== 201) {
                 throw new Error(
@@ -630,19 +616,6 @@ export default function GrantApplicationModal({ onClose, grantId }) {
 
     // Handle file upload
 
-    const handleFileChange = (e, field) => {
-        const file = e.target.files[0];
-        if (file) {
-            setFormData((prev) => ({
-                ...prev,
-                documents: {
-                    ...prev.documents,
-                    [field]: file,
-                },
-            }));
-        }
-    };
-
     const [milestones] = useState([
         {
             title: "",
@@ -680,12 +653,172 @@ export default function GrantApplicationModal({ onClose, grantId }) {
         }
     };
 
-    const updateMilestone = async (
-        index,
-        field,
-        value,
-        isFileUpload = false
-    ) => {
+    // const updateMilestone = async (
+    //     index,
+    //     field,
+    //     value,
+    //     isFileUpload = false
+    // ) => {
+    //     const updatedMilestones = [...formData.milestones];
+
+    //     if (isFileUpload) {
+    //         updatedMilestones[index].deliverables = [value];
+    //     } else {
+    //         updatedMilestones[index][field] = value;
+    //     }
+
+    //     const updatedFormData = {
+    //         ...formData,
+    //         milestones: updatedMilestones,
+    //     };
+
+    //     setFormData(updatedFormData);
+
+    //     if (isFileUpload) {
+    //         await sendFormDataToAPI(updatedFormData);
+    //     }
+    // };
+
+    // At top of component
+    // State to track user activity
+    const [isUserActive, setIsUserActive] = useState(false);
+    const userActivityTimeoutRef = useRef(null);
+
+    // Enhanced debounced function with longer delay
+    const debouncedSendFormData = useRef(
+        _.debounce(async (formData) => {
+            await sendFormDataToAPI(formData);
+            setIsUserActive(false);
+        }, 1500) // Increased to 1.5 seconds
+    ).current;
+
+    // Function to handle user activity detection
+    const handleUserActivity = (updatedFormData) => {
+        setIsUserActive(true);
+
+        // Clear existing timeout
+        if (userActivityTimeoutRef.current) {
+            clearTimeout(userActivityTimeoutRef.current);
+        }
+
+        // Set new timeout for 2 seconds of inactivity
+        userActivityTimeoutRef.current = setTimeout(() => {
+            if (hasDeliverableFile(updatedFormData)) {
+                debouncedSendFormData(updatedFormData);
+            }
+        }, 2000);
+    };
+
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        const updatedFormData = {
+            ...formData,
+            [name]: type === "checkbox" ? checked : value,
+        };
+
+        setFormData(updatedFormData);
+
+        // Only track activity if deliverable file has been uploaded
+        if (hasDeliverableFile(updatedFormData)) {
+            handleUserActivity(updatedFormData);
+        }
+    };
+
+    const handleImpactAreaChange = (area) => {
+        const updatedFormData = {
+            ...formData,
+            impactAreas: formData.impactAreas.includes(area)
+                ? formData.impactAreas.filter((a) => a !== area)
+                : [...formData.impactAreas, area],
+        };
+
+        setFormData(updatedFormData);
+
+        // Only track activity if deliverable file has been uploaded
+        if (hasDeliverableFile(updatedFormData)) {
+            handleUserActivity(updatedFormData);
+        }
+    };
+
+    const handleFileChange = (e, field) => {
+        const file = e.target.files[0];
+        if (file) {
+            const updatedFormData = {
+                ...formData,
+                documents: {
+                    ...formData.documents,
+                    [field]: file,
+                },
+            };
+
+            setFormData(updatedFormData);
+
+            // For file uploads, trigger immediately (no waiting)
+            if (hasDeliverableFile(updatedFormData)) {
+                debouncedSendFormData(updatedFormData);
+            }
+        }
+    };
+
+    // Enhanced focus/blur detection for inputs
+    const handleInputFocus = () => {
+        // Clear any pending auto-generation when user focuses on input
+        if (userActivityTimeoutRef.current) {
+            clearTimeout(userActivityTimeoutRef.current);
+        }
+        debouncedSendFormData.cancel();
+    };
+
+    const handleInputBlur = (updatedFormData) => {
+        // When user leaves an input, wait a bit then check if they're done
+        if (hasDeliverableFile(updatedFormData)) {
+            setTimeout(() => {
+                if (
+                    !document.activeElement ||
+                    !document.activeElement.matches("input, select, textarea")
+                ) {
+                    // User is not focused on any form element, trigger generation
+                    debouncedSendFormData(updatedFormData);
+                }
+            }, 500);
+        }
+    };
+
+    // Alternative approach: Detect when user stops typing
+    const handleKeyUp = (e, updatedFormData) => {
+        // Reset the timer on each keystroke
+        if (userActivityTimeoutRef.current) {
+            clearTimeout(userActivityTimeoutRef.current);
+        }
+
+        // Set new timer - will only fire if user stops typing for 2 seconds
+        userActivityTimeoutRef.current = setTimeout(() => {
+            if (hasDeliverableFile(updatedFormData)) {
+                debouncedSendFormData(updatedFormData);
+            }
+        }, 2000);
+    };
+
+    // Helper function to check if any milestone has a deliverable file
+    const hasDeliverableFile = (currentFormData = formData) => {
+        return currentFormData.milestones.some(
+            (milestone) =>
+                milestone.deliverables && milestone.deliverables.length > 0
+        );
+    };
+
+    // Cleanup effect
+    useEffect(() => {
+        return () => {
+            debouncedSendFormData.cancel();
+            if (userActivityTimeoutRef.current) {
+                clearTimeout(userActivityTimeoutRef.current);
+            }
+        };
+    }, []);
+
+    // Updated updateMilestone function
+    const updateMilestone = (index, field, value, isFileUpload = false) => {
         const updatedMilestones = [...formData.milestones];
 
         if (isFileUpload) {
@@ -702,10 +835,15 @@ export default function GrantApplicationModal({ onClose, grantId }) {
         setFormData(updatedFormData);
 
         if (isFileUpload) {
-            await sendFormDataToAPI(updatedFormData);
+            // For file uploads, trigger immediately
+            debouncedSendFormData(updatedFormData);
+        } else if (hasDeliverableFile(updatedFormData)) {
+            // For other changes, use activity detection
+            handleUserActivity(updatedFormData);
         }
     };
 
+    // Your existing sendFormDataToAPI function remains unchanged
     const sendFormDataToAPI = async (currentFormData) => {
         const formDataToSend = new FormData();
         setIsUploading(true);
@@ -823,6 +961,23 @@ export default function GrantApplicationModal({ onClose, grantId }) {
         }
     };
 
+    /* 
+Usage in your JSX:
+Add these props to your input elements:
+
+<input 
+    onFocus={handleInputFocus}
+    onBlur={() => handleInputBlur(formData)}
+    onKeyUp={(e) => handleKeyUp(e, formData)}
+    // ... other props
+/>
+
+<select 
+    onFocus={handleInputFocus}
+    onBlur={() => handleInputBlur(formData)}
+    // ... other props
+/>
+*/
     const getMatchLevel = (score) => {
         if (!score) return "Needs Revision";
         if (score >= 80) return "Ideal Match";
@@ -1215,23 +1370,8 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                                                                 area
                                                             )
                                                         }
-                                                        className="sr-only"
+                                                        className="h-5 w-5 text-green-500 rounded border-gray-300 focus:ring-green-500 mr-3"
                                                     />
-                                                    <div
-                                                        className={`w-5 h-5 rounded flex items-center justify-center mr-3 ${
-                                                            formData.impactAreas.includes(
-                                                                area
-                                                            )
-                                                                ? "bg-green-500"
-                                                                : "border border-gray-300"
-                                                        }`}
-                                                    >
-                                                        {formData.impactAreas.includes(
-                                                            area
-                                                        ) && (
-                                                            <Check className="w-3 h-3 text-white" />
-                                                        )}
-                                                    </div>
                                                     <span className="text-gray-800">
                                                         {area}
                                                     </span>
@@ -2571,7 +2711,6 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                     </div>
 
                     {/* Add this CSS to your global styles */}
-                   
                 </div>
             </div>
         </div>

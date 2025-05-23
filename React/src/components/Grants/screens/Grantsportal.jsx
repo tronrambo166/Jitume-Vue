@@ -148,10 +148,7 @@ const TujitumeGrantPortal = () => {
         setShowDisclaimer(false);
         setPendingToggleId(null);
     };
-
-    // Handler function - fixed to accept businessOwnerId parameter
     const navigate = useNavigate();
-    const { setdashmsg } = useMessage();
 
     const handleMessageOwner = (grantOwnerId) => {
         // Make sure we have a grant owner ID
@@ -164,12 +161,14 @@ const TujitumeGrantPortal = () => {
 
         const initialMessage =
             "Hello, I am interested in your grant opportunity. Can we connect?";
-        setdashmsg(initialMessage);
+
         navigate("/dashboard/overview/messages", {
-            state: { customer_id: grantOwnerId },
+            state: {
+                customer_id: grantOwnerId,
+                initialMessage: initialMessage, // Passing message via state
+            },
         });
     };
-
     // Fetch grants from API
     useEffect(() => {
         const fetchGrants = async () => {
@@ -1221,32 +1220,22 @@ const TujitumeGrantPortal = () => {
                                                         open ? "hidden" : "flex"
                                                     }`}
                                                 >
-                                                    <button
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            const fileName =
-                                                                grant.grant_brief_pdf
-                                                                    ?.split("/")
-                                                                    .pop() ||
-                                                                "grant_brief.pdf";
-                                                            setCurrentPreviewFile(
-                                                                {
-                                                                    name: fileName,
-                                                                    url: grant.grant_brief_pdf,
-                                                                }
-                                                            );
-                                                            setPreviewModalOpen(
-                                                                true
-                                                            );
-                                                        }}
-                                                        disabled={
-                                                            !grant.grant_brief_pdf
-                                                        }
-                                                        className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all"
-                                                        title="View document"
-                                                    >
-                                                        <FileText size={18} />
-                                                    </button>
+                                                    {grant.grant_brief_pdf && (
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                navigate(
+                                                                    `/dashboard/overview/grants/${grant.id}`
+                                                                );
+                                                            }}
+                                                            className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all"
+                                                            title="View document"
+                                                        >
+                                                            <FileText
+                                                                size={18}
+                                                            />
+                                                        </button>
+                                                    )}
                                                 </div>
                                                 {user.investor && (
                                                     <div className="group relative">
@@ -1568,19 +1557,8 @@ const TujitumeGrantPortal = () => {
                                                     <button
                                                         onClick={(e) => {
                                                             e.stopPropagation();
-                                                            const fileName =
-                                                                grant.grant_brief_pdf
-                                                                    ?.split("/")
-                                                                    .pop() ||
-                                                                "grant_brief.pdf";
-                                                            setCurrentPreviewFile(
-                                                                {
-                                                                    name: fileName,
-                                                                    url: grant.grant_brief_pdf,
-                                                                }
-                                                            );
-                                                            setPreviewModalOpen(
-                                                                true
+                                                            navigate(
+                                                                `/dashboard/overview/grants/${grant.id}`
                                                             );
                                                         }}
                                                         className="flex-1 py-2 border border-gray-200 text-gray-700 rounded-md hover:bg-gray-50 transition-all flex items-center justify-center space-x-2"

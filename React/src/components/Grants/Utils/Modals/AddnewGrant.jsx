@@ -788,93 +788,85 @@ const OfferGrantModal = ({ onClose, refreshGrants }) => {
                                 )}
                             </div>
                         </div>
-                        <div className="relative">
-                            <label className="block text-sm font-medium text-gray-600 mb-1.5">
-                                Target Countries{" "}
-                                <span className="text-red-500">*</span>
-                            </label>
+                        <label className="block text-sm font-medium text-gray-600 mb-1.5">
+                            Target Regions{" "}
+                            <span className="text-red-500">*</span>
+                        </label>
 
-                            {/* Country selection pills */}
-                            <div className="flex flex-wrap gap-2 mb-2">
-                                {countries.map((country) => (
-                                    <button
-                                        key={country}
-                                        type="button"
-                                        onClick={() => {
-                                            const currentCountries =
-                                                formData.countries || [];
-                                            const newCountries =
-                                                currentCountries.includes(
-                                                    country
-                                                )
-                                                    ? currentCountries.filter(
-                                                          (c) => c !== country
-                                                      )
-                                                    : [
-                                                          ...currentCountries,
-                                                          country,
-                                                      ];
+                        {/* Region selection pills */}
+                        <div className="flex flex-wrap gap-2 mb-2">
+                            {countries.map((region) => (
+                                <button
+                                    key={region}
+                                    type="button"
+                                    onClick={() => {
+                                        const currentRegions =
+                                            formData.regions || [];
+                                        const newRegions =
+                                            currentRegions.includes(region)
+                                                ? currentRegions.filter(
+                                                      (r) => r !== region
+                                                  )
+                                                : [...currentRegions, region];
 
-                                            setFormData({
-                                                ...formData,
-                                                countries: newCountries,
-                                            });
-                                        }}
-                                        className={`px-3 py-1 text-sm rounded-full border ${
-                                            (formData.countries || []).includes(
-                                                country
-                                            )
-                                                ? "bg-emerald-100 border-emerald-500 text-emerald-700"
-                                                : "bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100"
-                                        }`}
-                                    >
-                                        {country}
-                                    </button>
-                                ))}
-                            </div>
-
-                            {/* Selected countries display */}
-                            {(formData.countries?.length || 0) > 0 && (
-                                <div className="mt-2">
-                                    <p className="text-sm text-gray-500 mb-1">
-                                        Selected countries:
-                                    </p>
-                                    <div className="flex flex-wrap gap-2">
-                                        {formData.countries.map((country) => (
-                                            <span
-                                                key={country}
-                                                className="px-2.5 py-1 bg-emerald-100 text-emerald-700 text-xs rounded-full flex items-center"
-                                            >
-                                                {country}
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setFormData({
-                                                            ...formData,
-                                                            countries:
-                                                                formData.countries.filter(
-                                                                    (c) =>
-                                                                        c !==
-                                                                        country
-                                                                ),
-                                                        });
-                                                    }}
-                                                    className="ml-1.5 text-emerald-500 hover:text-emerald-700"
-                                                >
-                                                    ×
-                                                </button>
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
-                            {validationErrors.countries && (
-                                <p className="mt-1.5 text-sm text-red-500">
-                                    {validationErrors.countries}
-                                </p>
-                            )}
+                                        setFormData({
+                                            ...formData,
+                                            regions: newRegions,
+                                        });
+                                    }}
+                                    className={`px-3 py-1 text-sm rounded-full border ${
+                                        (formData.regions || []).includes(
+                                            region
+                                        )
+                                            ? "bg-emerald-100 border-emerald-500 text-emerald-700"
+                                            : "bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100"
+                                    }`}
+                                >
+                                    {region}
+                                </button>
+                            ))}
                         </div>
+
+                        {/* Selected regions display */}
+                        {(formData.regions?.length || 0) > 0 && (
+                            <div className="mt-2">
+                                <p className="text-sm text-gray-500 mb-1">
+                                    Selected regions:
+                                </p>
+                                <div className="flex flex-wrap gap-2">
+                                    {formData.regions.map((region) => (
+                                        <span
+                                            key={region}
+                                            className="px-2.5 py-1 bg-emerald-100 text-emerald-700 text-xs rounded-full flex items-center"
+                                        >
+                                            {region}
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setFormData({
+                                                        ...formData,
+                                                        regions:
+                                                            formData.regions.filter(
+                                                                (r) =>
+                                                                    r !== region
+                                                            ),
+                                                    });
+                                                }}
+                                                className="ml-1.5 text-emerald-500 hover:text-emerald-700"
+                                            >
+                                                ×
+                                            </button>
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {validationErrors.regions && (
+                            <p className="mt-1.5 text-sm text-red-500">
+                                {validationErrors.regions}
+                            </p>
+                        )}
 
                         {/* Grant Brief PDF */}
                         <div className="relative">

@@ -573,7 +573,6 @@ const PitchCard = ({
     const [releaseError, setReleaseError] = useState(null);
 
     const navigate = useNavigate();
-    const { setdashmsg } = useMessage();
 
     const initiateBusinessOwnerMessage = (businessOwnerId) => {
         // Validate the business owner ID
@@ -585,10 +584,12 @@ const PitchCard = ({
 
         const initialMessage =
             "Hello, I'm interested in your business and would like to discuss further.";
-        setdashmsg(initialMessage);
 
         navigate("/dashboard/overview/messages", {
-            state: { customer_id: businessOwnerId },
+            state: {
+                customer_id: businessOwnerId,
+                initialMessage: initialMessage, // Passing message via state
+            },
         });
     };
 

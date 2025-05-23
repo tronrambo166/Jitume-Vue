@@ -65,6 +65,7 @@ import OfficeHours from "./components/Grants/screens/OfficeHours";
 import NotificationSettingsPage from "./components/Grants/screens/NotificationSettings";
 import MeetingsComponent from "./components/Grants/screens/Meetings";
 import UserManagement from "./components/Grants/screens/UserManagement";
+import CapitalDetailsPage from "./components/Grants/screens/CapitalDetails";
 // import NewMessages from "./components/Grants/screens/NewMessages";
 const router = createBrowserRouter([
     {
@@ -163,6 +164,7 @@ const router = createBrowserRouter([
             { path: "messages", element: <Messages /> }, // Added
 
             { path: "pitch", element: <PitchDashboard /> },
+            { path: "funding/:id", element: <CapitalDetailsPage /> },
             { path: "capital-pitch", element: <Capitalpitch /> },
         ],
     },
