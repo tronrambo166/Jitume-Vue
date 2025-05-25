@@ -197,7 +197,7 @@ const OfferGrantModal = ({ onClose, refreshGrants }) => {
         e.preventDefault();
 
         console.log("Submitting form:", formData);
-        return; 
+        //return;
         if (!validateForm()) {
             toast.error("Please complete all required fields", {
                 style: { backgroundColor: theme.error },

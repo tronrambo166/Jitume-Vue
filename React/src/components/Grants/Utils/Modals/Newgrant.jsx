@@ -933,7 +933,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                 );
             }
         });
-
+        console.log("Data sent to API:", currentFormData);
         try {
             const response = await axiosClient.post(
                 `grant/match-score/${grantId}`,
@@ -949,7 +949,8 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                 }
             );
 
-            console.log("Upload successful:", response.data);
+
+            console.log("Score API Response:", response.data);
             setMatchScore(response.data.original.score);
             setScoreBreakdown(response.data.original.score_breakdown);
             return response.data;
@@ -961,18 +962,18 @@ export default function GrantApplicationModal({ onClose, grantId }) {
         }
     };
 
-    /* 
+    /*
 Usage in your JSX:
 Add these props to your input elements:
 
-<input 
+<input
     onFocus={handleInputFocus}
     onBlur={() => handleInputBlur(formData)}
     onKeyUp={(e) => handleKeyUp(e, formData)}
     // ... other props
 />
 
-<select 
+<select
     onFocus={handleInputFocus}
     onBlur={() => handleInputBlur(formData)}
     // ... other props

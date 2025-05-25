@@ -21,7 +21,7 @@ class MatchScore
             // Input data
             $business = [
                 'sectors' => explode(',',$request->sector),
-                'region' => explode(',',$request->headquarters_location),
+                'region' => $request->headquarters_location,
                 'stage' => $request->stage,
                 'revenue' => $request->revenue_last_12_months,
                 'team_size' => $request->team_experience_avg_years,
@@ -79,13 +79,15 @@ class MatchScore
             $score += $documentScore * 0.05;
 
             // Bonus (up to +20)
-            $bonus_points = explode(',',$request->bonus_points);$bonus = 0;
+            $bonus_points = explode(',',$request->bonus_points); $bo = 0;
             foreach ($bonus_points as $bonus) {
-                if ($bonus == 'gender_led') $score += 5;
-                else if ($bonus == 'youth_led') $score += 5;
-                else if ($bonus == 'rural_based') $score += 5;
-                else if($bonus == 'uses_local_sourcing') $score += 5;
+                if ($bonus == 'gender_led' || $bonus == 'youth_led' ||
+                    $bonus == 'rural_based' || $bonus == 'uses_local_sourcing' )
+                {
+                    $bo = $bo + 5;
+                }
             }
+            $score += $bo;
 
             $score = min($score, 100);
 
@@ -98,6 +100,15 @@ class MatchScore
                 $result = "Needs Revision";
             }
 
+            $value_compare = [
+                'Sector Alignment' => implode(',', $business['sectors']) . ' <=> ' . implode(',', $org['preferred_sectors']),
+                'Geographic Fit' => $business['region'] . ' <=> ' . implode(',', $org['target_regions']),
+                'Startup Stage Compatibility' => $business['stage'] . ' <=> ' . implode(',', $org['target_stages']),
+                'Revenue Traction' => $business['revenue'] . ' <=> ' . $org['revenue'],
+                'Impact Focus' => implode(',', $business['impact_score']) . ' <=> ' . implode(',', $org['impact_score']),
+            ];
+
+
             return response()->json([
                 'score' => round($score, 2),
                 'result' => $result,
@@ -108,8 +119,10 @@ class MatchScore
                     'Revenue Traction' => round($revenueScore * 0.10, 2),
                     'Impact Focus' => round($impactScore * 0.10, 2),
                     'Milestone Success' => round($milestoneScore * 0.10, 2),
-                    'Document Completeness' => round($documentScore * 0.05, 2)
+                    'Document Completeness' => round($documentScore * 0.05, 2),
+                    'Bonus ' => $bo
                 ],
+                'value_compare' => $value_compare
             ]);
         }
         catch (\Exception $e) {
