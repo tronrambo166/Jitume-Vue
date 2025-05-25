@@ -268,7 +268,7 @@ class GrantController extends Controller
             // M I L E S T O N E S
             $milestones = $request->milestones;
             foreach($milestones as $milestone){
-                $document = $request->file($milestone['deliverables'][0]);
+                $document = $request->file('milestones.0.deliverable.file');
                 if($document) {
                     $uniqid=hexdec(uniqid());
                     $ext=strtolower($document->getClientOriginalExtension());

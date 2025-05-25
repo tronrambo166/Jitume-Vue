@@ -7,6 +7,7 @@ use App\Models\StartupPitches;
 use App\Models\Listing;
 use App\Models\Grant;
 use App\Models\CapitalOffer;
+use Illuminate\Support\Str;
 
 class MatchScore
 {
@@ -23,11 +24,12 @@ class MatchScore
                 'sectors' => explode(',',$request->sector),
                 'region' => $request->headquarters_location,
                 'stage' => $request->stage,
-                'revenue' => $request->revenue_last_12_months,
+                'revenue' => (float) $request->revenue_last_12_months,
                 'team_size' => $request->team_experience_avg_years,
-                'impact_score' => explode(',',$request->social_impact_areas),
+                'impact_score' => collect(explode(',', $request->social_impact_areas))
+                    ->flatMap(fn($area) => explode(' ', strtolower(trim($area)))),
                 'milestones_achieved' => true,
-                'documents_submitted' => $request->file('business_plan_file') != null ? true : false,
+                'documents_submitted' => $request->file('businessPlan_file') != null ? true : false,
                 //'is_gender_led' => true,
                 //'is_youth_led' => false,
                 //'is_rural_based' => true,
@@ -35,13 +37,14 @@ class MatchScore
             ];
 
             $org = [
-                'preferred_sectors' => explode(',',$grant->grant_focus),
-                'target_regions' => explode(',',$grant->regions),
-                'target_stages' => explode(',',$grant->startup_stage_focus),
+                'preferred_sectors' => [$grant->grant_focus],
+                'target_regions' => json_decode($grant->regions, true),
+                'target_stages' => json_decode($grant->startup_stage_focus, true),
                 'revenue' => $grant->funding_per_business,
                 'team_size' => $request->evaluation_criteria,
-                'impact_score' => explode(',',$request->impact_objectives),
-                'milestones_achieved' => true,
+                'impact_score' => collect(explode(' ', strtolower($grant->impact_objectives)))
+                    ->map(fn($item) => trim($item)),// Split by words
+                'milestones_achieved' => false,
                 'documents_submitted' => $request->file('grant_brief_pdf') != null ? true : false,
             ];
 
@@ -67,10 +70,23 @@ class MatchScore
             //$score += $teamScore * 0.10;
 
             // Impact Focus (10%)
-            $impactScore = array_intersect($business['impact_score'], $org['impact_score']) ? 100 : 0;
+            //$matchCount = collect($business['impact_score']) // For Unique match
+                //->filter(fn($item) => Str::contains($org['impact_score'], strtolower(trim($item))))->count();
+            $matchCount = 0;
+            foreach ($business['impact_score'] as $item) {
+                $matchCount += substr_count($org['impact_score'], $item);
+            }
+
+            $impactScore = $matchCount >= 2 ? 100 : 0;
             $score += $impactScore * 0.10;
 
             // Milestone Success (10%)
+            foreach ($request->file('milestones') ?? [] as $milestone) {
+                if (isset($milestone['deliverable']) && $milestone['deliverable'] instanceof \Illuminate\Http\UploadedFile) {
+                    $business['milestones_achieved'] = true;
+                    break;
+                }
+            }
             $milestoneScore = $business['milestones_achieved'] ? 100 : 0;
             $score += $milestoneScore * 0.10;
 
@@ -100,13 +116,13 @@ class MatchScore
                 $result = "Needs Revision";
             }
 
-            $value_compare = [
-                'Sector Alignment' => implode(',', $business['sectors']) . ' <=> ' . implode(',', $org['preferred_sectors']),
-                'Geographic Fit' => $business['region'] . ' <=> ' . implode(',', $org['target_regions']),
-                'Startup Stage Compatibility' => $business['stage'] . ' <=> ' . implode(',', $org['target_stages']),
-                'Revenue Traction' => $business['revenue'] . ' <=> ' . $org['revenue'],
-                'Impact Focus' => implode(',', $business['impact_score']) . ' <=> ' . implode(',', $org['impact_score']),
-            ];
+//            $value_compare = [
+//                'Sector Alignment' => implode(',', $business['sectors']) . ' <=> ' . implode(',', $org['preferred_sectors']),
+//                'Geographic Fit' => $business['region'] . ' <=> ' . implode(',', $org['target_regions']),
+//                'Startup Stage Compatibility' => $business['stage'] . ' <=> ' . implode(',', $org['target_stages']),
+//                'Revenue Traction' => $business['revenue'] . ' <=> ' . $org['revenue'],
+//                'Impact Focus' => $business['impact_score']."#".$matchCount . ' <=> ' . $org['impact_score'],
+//            ];
 
 
             return response()->json([
@@ -122,9 +138,8 @@ class MatchScore
                     'Document Completeness' => round($documentScore * 0.05, 2),
                     'Bonus ' => $bo
                 ],
-                'value_sent' => $request->all(),
-                'value_db' => $grant,
-                'value_compare' => $value_compare
+                //'value_sent' => $request->all(),
+                //'value_compare' => $value_compare
             ]);
         }
         catch (\Exception $e) {
