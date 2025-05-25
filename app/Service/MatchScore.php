@@ -122,6 +122,7 @@ class MatchScore
                     'Document Completeness' => round($documentScore * 0.05, 2),
                     'Bonus ' => $bo
                 ],
+                'value_sent' => $request->all(),
                 'value_compare' => $value_compare
             ]);
         }
