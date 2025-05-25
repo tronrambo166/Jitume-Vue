@@ -123,6 +123,7 @@ class MatchScore
                     'Bonus ' => $bo
                 ],
                 'value_sent' => $request->all(),
+                'value_db' => $grant,
                 'value_compare' => $value_compare
             ]);
         }
