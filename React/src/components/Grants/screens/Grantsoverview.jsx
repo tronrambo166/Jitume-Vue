@@ -237,13 +237,33 @@ const Navigation = {
             addToast("Logged out successfully", "success");
             navigate("/");
         };
+        const [messageCount, setMessageCount] = useState(0);
+        const { user, setUser } = useStateContext();
 
+        useEffect(() => {
+            const fetchMessageCount = async () => {
+                try {
+                    const { data } = await axiosClient.get(
+                        `business/service_messages_count/${user?.id}`
+                    );
+                    setMessageCount(data.count);
+                } catch (error) {
+                    console.error("Error fetching messages count:", error);
+                }
+            };
+
+            if (user?.id) {
+                fetchMessageCount();
+            }
+        }, [user?.id]);
+        
         const NavItem = ({
             icon: Icon,
             label,
             to,
             hasChildren,
             isActive,
+            messageCount,
             isLogout = false,
         }) => (
             <div>
@@ -278,6 +298,7 @@ const Navigation = {
                             }
                         }}
                     >
+                        
                         <Icon className="mr-3" size={20} />
                         <span className="flex-1">{label}</span>
                         {hasChildren && (
@@ -324,7 +345,6 @@ const Navigation = {
                 {label}
             </Link>
         );
-        const { user, setUser } = useStateContext();
         const [loading, setLoading] = useState(true);
 
         useEffect(() => {
@@ -472,7 +492,8 @@ const Navigation = {
                           icon: MessageSquare,
                           label: "Messages",
                           to: "/dashboard/overview/messages",
-                          messageCount: 3, // Add this line to show the badge with count of 3
+                          messageCount:
+                              messageCount > 0 ? messageCount : undefined, 
                       },
                   ]
                 : []),
@@ -532,9 +553,14 @@ const Navigation = {
                                         </span>
                                         {item.messageCount &&
                                             item.messageCount > 0 && (
-                                                <span className="ml-2 bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center flex-shrink-0">
-                                                    {item.messageCount}
-                                                </span>
+                                                <div className="relative ml-2">
+                                                    <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center flex-shrink-0">
+                                                        {item.messageCount}
+                                                    </span>
+                                                    <span className="absolute -top-3 -right-3 font-semibold text-xs text-green-600 animate-pulse">
+                                                        New
+                                                    </span>
+                                                </div>
                                             )}
                                     </div>
                                 }
