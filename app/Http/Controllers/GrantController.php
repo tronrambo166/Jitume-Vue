@@ -314,14 +314,15 @@ class GrantController extends Controller
 
             $request->validate([
                 "id" => "required|numeric",
-                "grant_title" => "required|string|max:255",
-                "total_grant_amount" => "required|numeric",
-                "funding_per_business" => "required|numeric",
-                "eligibility_criteria" => "nullable|string",
-                "application_deadline" => "required|date",
-                "grant_focus" => "required|string",
-                "impact_objectives" => "nullable|string",
-                "evaluation_criteria" => "nullable|string",
+                "grantTitle" => "required|string|max:255",
+                "totalGrantAmount" => "required|numeric",
+                "fundingPerBusiness" => "required|numeric",
+                "eligibilityCriteria" => "nullable|string",
+                "applicationDeadline" => "required|date",
+                "grantFocus" => "required|string",
+                "regions" => "nullable|string",
+                "impactObjectives" => "nullable|string",
+                "evaluationCriteria" => "nullable|string",
             ]);
 
             //Upload File
@@ -336,12 +337,9 @@ class GrantController extends Controller
                 $create_name=$uniqid.'.'.$ext;
                 $grant_brief_pdf->move($loc, $create_name);
                 $final_pdf=$loc.$create_name;
+                $request->grant_brief_pdf=$final_pdf;
             }
-            else $final_pdf='';
-
-            $request->grant_brief_pdf=$final_pdf;
             $grant->update($request->all());
-
             return response()->json(['message' => 'Grant updated successfully', 'grant' => $grant],200);
         }
         catch(\Exception $e){

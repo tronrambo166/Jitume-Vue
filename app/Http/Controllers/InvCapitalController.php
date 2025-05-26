@@ -318,12 +318,10 @@ class InvCapitalController extends Controller
                 $create_name=$uniqid.'.'.$ext;
                 $offer_brief_file->move($loc, $create_name);
                 $final_pdf=$loc.$create_name;
+                $request->offer_brief_file=$final_pdf;
             }
-            else $final_pdf='';
 
-            $request->offer_brief_file=$final_pdf;
             $capital->update($request->all());
-
             return response()->json(['message' => 'Capital updated successfully', 'capital' => $capital],200);
         }
         catch(\Exception $e){
