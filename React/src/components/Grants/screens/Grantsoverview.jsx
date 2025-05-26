@@ -469,9 +469,10 @@ const Navigation = {
                           ],
                       },
                       {
-                          icon: MessageSquare, // Make sure to import this
+                          icon: MessageSquare,
                           label: "Messages",
                           to: "/dashboard/overview/messages",
+                          messageCount: 3, // Add this line to show the badge with count of 3
                       },
                   ]
                 : []),
@@ -515,17 +516,27 @@ const Navigation = {
                                 key={item.to}
                                 icon={item.icon}
                                 label={
-                                    <span
-                                        style={{
-                                            whiteSpace: "nowrap",
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                            display: "inline-block",
-                                            maxWidth: "100%",
-                                        }}
-                                    >
-                                        {item.label}
-                                    </span>
+                                    <div className="flex items-center justify-between w-full">
+                                        <span
+                                            style={{
+                                                whiteSpace: "nowrap",
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                display: "inline-block",
+                                                maxWidth: item.messageCount
+                                                    ? "calc(100% - 30px)"
+                                                    : "100%",
+                                            }}
+                                        >
+                                            {item.label}
+                                        </span>
+                                        {item.messageCount &&
+                                            item.messageCount > 0 && (
+                                                <span className="ml-2 bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center flex-shrink-0">
+                                                    {item.messageCount}
+                                                </span>
+                                            )}
+                                    </div>
                                 }
                                 to={item.to}
                                 hasChildren={!!item.children}

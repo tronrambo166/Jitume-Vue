@@ -191,7 +191,6 @@ const TujitumeDashboard = () => {
     }, []);
 
     // Fetch user data
-
     const fetchGrants = async () => {
         setIsLoading((prev) => ({ ...prev, grants: true }));
         try {
@@ -204,31 +203,35 @@ const TujitumeDashboard = () => {
                 id: grant.id,
                 type: "grant",
                 title: grant.grant_title || "Untitled Grant",
-                organization: grant.organization || "Unknown Organization",
+                organization: grant.user_id || "Unknown Organization",
                 amount: grant.funding_per_business
-                    ? parseInt(grant.funding_per_business.replace(/,/g, ""))
+                    ? parseFloat(grant.funding_per_business)
                     : grant.total_grant_amount
-                    ? parseInt(grant.total_grant_amount.replace(/,/g, ""))
+                    ? parseFloat(grant.total_grant_amount)
                     : 0,
+                availableAmount: parseFloat(grant.available_amount) || 0,
                 sector: grant.grant_focus || "General",
+                sectors: grant.grant_focus || "General",
                 matchScore: Math.floor(Math.random() * 30) + 70,
-                status:
-                    grant.application_deadline &&
-                    new Date(grant.application_deadline) > new Date()
-                        ? "Open"
-                        : "Closed",
-                impact: [
-                    (grant.grant_focus || "").split(",")[0] || "Innovation",
-                    "Economic Growth",
-                ],
-                region: grant.regions?.[0] || "Multiple Regions",
+                status: grant.visible ? "Open" : "Closed",
+                impact: grant.grant_focus
+                    ? grant.grant_focus.split(",").map((s) => s.trim())
+                    : ["Innovation"],
+                region: grant.regions || "Multiple Regions",
+                regions: grant.regions || "Multiple Regions",
                 dateAdded: grant.created_at || new Date().toISOString(),
                 deadlineDate: grant.application_deadline || null,
+                startupStage: grant.startup_stage_focus || "All Stages",
+                eligibilityCriteria: grant.eligibility_criteria || "",
+                requiredDocuments: grant.required_documents || "",
+                impactObjectives: grant.impact_objectives || "",
+                evaluationCriteria: grant.evaluation_criteria || "",
+                pitchCount: grant.pitch_count || 0,
             }));
 
             setGrants(cleanedData);
         } catch (err) {
-            //console.error("Failed to fetch grants:", err);
+            console.error("Failed to fetch grants:", err);
         } finally {
             setIsLoading((prev) => ({ ...prev, grants: false }));
         }
@@ -239,7 +242,6 @@ const TujitumeDashboard = () => {
         try {
             const response = await axiosClient.get("capital/capital-offers");
             const data = response.data?.capital || [];
-            //console.log("Raw Grants API Data:", response.data);
 
             if (Array.isArray(data)) {
                 const cleanedData = data.map((opportunity) => ({
@@ -249,22 +251,34 @@ const TujitumeDashboard = () => {
                     organization: opportunity.user_id || "Unknown Organization",
                     amount:
                         parseFloat(opportunity.total_capital_available) || 0,
+                    availableAmount:
+                        parseFloat(opportunity.available_amount) || 0,
+                    perStartupAllocation:
+                        parseFloat(opportunity.per_startup_allocation) || 0,
                     sector: opportunity.sectors || "General",
+                    sectors: opportunity.sectors || "General",
                     matchScore: Math.floor(Math.random() * 30) + 70,
                     status: opportunity.visible ? "Open" : "Closed",
-                    impact: (opportunity.sectors || "")
-                        .split(",")
-                        .map((sector) => sector.trim()) || ["General Impact"],
+                    impact: opportunity.sectors
+                        ? opportunity.sectors
+                              .split(",")
+                              .map((sector) => sector.trim())
+                        : ["General Impact"],
                     region: opportunity.regions || "Multiple Regions",
+                    regions: opportunity.regions || "Multiple Regions",
                     dateAdded:
                         opportunity.created_at || new Date().toISOString(),
-                    investmentType: opportunity.investment_type || "Equity",
+                    startupStage: opportunity.startup_stage || "All Stages",
+                    milestoneRequirements:
+                        opportunity.milestone_requirements || "",
+                    requiredDocs: opportunity.required_docs || "",
+                    offerBriefFile: opportunity.offer_brief_file || "",
                 }));
 
                 setCapitalOpportunities(cleanedData);
             }
         } catch (err) {
-            //console.error("Failed to fetch capital offers:", err);
+            console.error("Failed to fetch capital offers:", err);
         } finally {
             setIsLoading((prev) => ({ ...prev, capital: false }));
         }
@@ -274,7 +288,6 @@ const TujitumeDashboard = () => {
         () => [...grants, ...capitalOpportunities],
         [grants, capitalOpportunities]
     );
-    //console.log("Opportunities:", opportunities);
 
     // Process opportunities for dashboard metrics
     useEffect(() => {
@@ -306,7 +319,7 @@ const TujitumeDashboard = () => {
                 totalFunding,
                 successRate,
                 avgMatchScore: averageMatch,
-                growthRate: opportunities.length > 3 ? 5.2 : 0.0, // Simulated growth rate
+                growthRate: opportunities.length > 3 ? 5.2 : 0.0,
                 recentActivity: recentOppCount,
             });
         }
@@ -321,22 +334,26 @@ const TujitumeDashboard = () => {
                 ? "investment"
                 : filter;
 
-        // Select source based on enforced filter
-        const source =
-            enforcedFilter === "grant"
-                ? grants
-                : enforcedFilter === "investment"
-                ? capitalOpportunities
-                : [...grants, ...capitalOpportunities];
+        let source;
+        if (enforcedFilter === "grant") {
+            source = grants;
+        } else if (enforcedFilter === "investment") {
+            source = capitalOpportunities;
+        } else {
+            // For "all", mix both grants and capital opportunities
+            source = [...grants, ...capitalOpportunities];
+        }
 
-        return source
-            .filter((opp) =>
-                opp.title.toLowerCase().includes(searchTerm.toLowerCase())
-            )
-            .slice(0, 3);
+        // Filter by search term if provided
+        return source.filter(
+            (opp) =>
+                opp.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                opp.sectors.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                opp.regions.toLowerCase().includes(searchTerm.toLowerCase())
+        );
     }, [filter, searchTerm, grants, capitalOpportunities, user.investor]);
-    console.log("Filtered Opportunities:", filteredOpportunities);
 
+    console.log("Filtered Opportunities:", filteredOpportunities);
     // Extract sectors from opportunities for impact statistics
     const sectors = useMemo(() => {
         const allSectors = opportunities
@@ -849,97 +866,100 @@ const TujitumeDashboard = () => {
                             <OpportunityCardSkeleton />
                             <OpportunityCardSkeleton />
                         </div>
-                    ) : filteredOpportunities.length > 0 ? (
-                        <div className="grid md:grid-cols-3 gap-4">
-                            {filteredOpportunities.map((opp, idx) => (
-                                <div
-                                    key={opp.id}
-                                    className="bg-white border border-neutral-100 rounded-lg p-4 hover:shadow-xl transition transform hover:-translate-y-2 group relative overflow-hidden"
-                                    style={{ transitionDelay: `${idx * 75}ms` }}
-                                >
-                                    {/* Status indicator line */}
+                    ) : filteredOpportunities.filter(
+                          (opp) => opp.status !== "Closed"
+                      ).length > 0 ? (
+                        <div className="flex space-x-4 overflow-x-auto pb-4">
+                            {filteredOpportunities
+                                .filter((opp) => opp.status !== "Closed")
+                                .map((opp, idx) => (
                                     <div
-                                        className={`absolute top-0 left-0 w-1 h-full ${
-                                            opp.status === "Open"
-                                                ? "bg-green-500"
-                                                : opp.status === "Closed"
-                                                ? "bg-red-500"
-                                                : "bg-yellow-500"
-                                        }`}
-                                    ></div>
+                                        key={opp.id}
+                                        className="flex-shrink-0 w-[370px] bg-white border border-neutral-100 rounded-lg p-4 hover:shadow-xl transition transform hover:-translate-y-2 group relative overflow-hidden"
+                                        style={{
+                                            transitionDelay: `${idx * 75}ms`,
+                                        }}
+                                    >
+                                        {/* Status indicator line */}
+                                        <div
+                                            className={`absolute top-0 left-0 w-1 h-full ${
+                                                opp.status === "Open"
+                                                    ? "bg-green-500"
+                                                    : "bg-yellow-500"
+                                            }`}
+                                        ></div>
 
-                                    <div className="flex justify-between items-start mb-4 pl-2">
-                                        <div>
-                                            <h3 className="font-semibold text-neutral-800 mb-1 group-hover:text-blue-600 transition line-clamp-1">
-                                                {opp.title}
-                                            </h3>
-                                            <span className="text-xs text-neutral-500 uppercase flex items-center">
-                                                <MapPin
-                                                    size={12}
-                                                    className="mr-1 text-neutral-400"
-                                                />
-                                                {opp.region}
+                                        <div className="flex justify-between items-start mb-4 pl-2">
+                                            <div>
+                                                <h3 className="font-semibold text-neutral-800 mb-1 group-hover:text-blue-600 transition line-clamp-1">
+                                                    {opp.title}
+                                                </h3>
+                                                <span className="text-xs text-neutral-500 uppercase flex items-center">
+                                                    <MapPin
+                                                        size={12}
+                                                        className="mr-1 text-neutral-400"
+                                                    />
+                                                    {opp.region}
+                                                </span>
+                                            </div>
+                                            <span
+                                                className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                                    opp.status === "Open"
+                                                        ? "bg-green-50 text-green-700"
+                                                        : "bg-yellow-50 text-yellow-700"
+                                                }`}
+                                            >
+                                                {opp.status}
                                             </span>
                                         </div>
-                                        <span
-                                            className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                                opp.status === "Open"
-                                                    ? "bg-green-50 text-green-700"
-                                                    : opp.status === "Closed"
-                                                    ? "bg-red-50 text-red-700"
-                                                    : "bg-yellow-50 text-yellow-700"
-                                            }`}
-                                        >
-                                            {opp.status}
-                                        </span>
-                                    </div>
 
-                                    <div className="mb-4 pl-2">
-                                        <div className="flex flex-wrap gap-1 mb-2">
-                                            {opp.impact
-                                                .slice(0, 2)
-                                                .map((impact, index) => (
-                                                    <span
-                                                        key={index}
-                                                        className="text-xs bg-neutral-100 text-neutral-600 px-2 py-1 rounded-full"
-                                                    >
-                                                        {impact}
-                                                    </span>
-                                                ))}
+                                        <div className="mb-4 pl-2">
+                                            <div className="flex flex-wrap gap-1 mb-2">
+                                                {opp.impact
+                                                    .slice(0, 2)
+                                                    .map((impact, index) => (
+                                                        <span
+                                                            key={index}
+                                                            className="text-xs bg-neutral-100 text-neutral-600 px-2 py-1 rounded-full"
+                                                        >
+                                                            {impact}
+                                                        </span>
+                                                    ))}
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div className="flex justify-between items-center border-t pt-3 pl-2">
-                                        <div className="text-sm">
-                                            <div className="text-neutral-600 flex items-center">
-                                                <DollarSign
-                                                    size={14}
-                                                    className="mr-1 text-green-500"
-                                                />
-                                                Amount
+                                        <div className="flex justify-between items-center border-t pt-3 pl-2">
+                                            <div className="text-sm">
+                                                <div className="text-neutral-600 flex items-center">
+                                                    <DollarSign
+                                                        size={14}
+                                                        className="mr-1 text-green-500"
+                                                    />
+                                                    Amount
+                                                </div>
+                                                <div className="font-semibold">
+                                                    $
+                                                    {opp.amount.toLocaleString()}
+                                                </div>
                                             </div>
-                                            <div className="font-semibold">
-                                                ${opp.amount.toLocaleString()}
+                                            <div className="text-sm">
+                                                <div className="text-neutral-600 flex items-center">
+                                                    <Star
+                                                        size={14}
+                                                        className="mr-1 text-yellow-500"
+                                                    />
+                                                    Match
+                                                </div>
+                                                <div className="font-semibold text-neutral-800">
+                                                    {opp.matchScore}%
+                                                </div>
                                             </div>
+                                            <button className="p-2 text-neutral-700 hover:text-blue-600 hover:bg-blue-50 rounded-full transition">
+                                                <ChevronRight size={18} />
+                                            </button>
                                         </div>
-                                        <div className="text-sm">
-                                            <div className="text-neutral-600 flex items-center">
-                                                <Star
-                                                    size={14}
-                                                    className="mr-1 text-yellow-500"
-                                                />
-                                                Match
-                                            </div>
-                                            <div className="font-semibold text-neutral-800">
-                                                {opp.matchScore}%
-                                            </div>
-                                        </div>
-                                        <button className="p-2 text-neutral-700 hover:text-blue-600 hover:bg-blue-50 rounded-full transition">
-                                            <ChevronRight size={18} />
-                                        </button>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
                         </div>
                     ) : (
                         <div className="text-center py-10 bg-white rounded-lg border border-neutral-100">
@@ -950,7 +970,7 @@ const TujitumeDashboard = () => {
                                 />
                             </div>
                             <h3 className="text-lg font-medium text-neutral-800 mb-2">
-                                No opportunities found
+                                No active opportunities found
                             </h3>
                             <p className="text-neutral-500 text-sm">
                                 Try adjusting your search or filters to find

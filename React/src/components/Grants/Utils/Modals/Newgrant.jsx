@@ -154,8 +154,13 @@ export default function GrantApplicationModal({ onClose, grantId }) {
     }, []);
 
     const handleBusinessChange = (e) => {
-        setBusinessId(parseInt(e.target.value, 10));
-    };
+    const selectedBusinessId = parseInt(e.target.value, 10);
+    setBusinessId(selectedBusinessId);
+    setFormData(prev => ({
+        ...prev,
+        business_id: selectedBusinessId
+    }));
+};
     // Form handlers
 
     // Submission handler
@@ -400,25 +405,25 @@ export default function GrantApplicationModal({ onClose, grantId }) {
         }
     };
 
-    useEffect(() => {
-        let score = 0;
-        if (formData.sector && formData.location && formData.stage) {
-            score += 60;
-            if (formData.revenue) score += 5;
-            if (formData.teamExperience) score += 5;
-            if (formData.traction) score += 5;
-            if (formData.impactAreas.length > 0) score += 5;
-            if (formData.isGenderLed) score += 5;
-            if (formData.isYouthLed) score += 5;
-            if (formData.isRuralBased) score += 5;
-            if (formData.usesLocalSourcing) score += 5;
-        }
-        score = Math.min(score, 100);
-        let matchLevel = "Needs Revision";
-        if (score >= 80) matchLevel = "Ideal Match";
-        else if (score >= 60) matchLevel = "Strong Match";
-        setMatchPreview({ score, matchLevel });
-    }, [formData]);
+    // useEffect(() => {
+    //     let score = 0;
+    //     if (formData.sector && formData.location && formData.stage) {
+    //         score += 60;
+    //         if (formData.revenue) score += 5;
+    //         if (formData.teamExperience) score += 5;
+    //         if (formData.traction) score += 5;
+    //         if (formData.impactAreas.length > 0) score += 5;
+    //         if (formData.isGenderLed) score += 5;
+    //         if (formData.isYouthLed) score += 5;
+    //         if (formData.isRuralBased) score += 5;
+    //         if (formData.usesLocalSourcing) score += 5;
+    //     }
+    //     score = Math.min(score, 100);
+    //     let matchLevel = "Needs Revision";
+    //     if (score >= 80) matchLevel = "Ideal Match";
+    //     else if (score >= 60) matchLevel = "Strong Match";
+    //     setMatchPreview({ score, matchLevel });
+    // }, [formData]);
 
     // Custom Toast component for consistent styling
     const ValidationToast = ({ message }) => (
@@ -715,10 +720,28 @@ export default function GrantApplicationModal({ onClose, grantId }) {
             ...formData,
             [name]: type === "checkbox" ? checked : value,
         };
+        // Special handling for bonus points checkboxes
+        if (name.startsWith("is")) {
+            const bonusPointKey = name.replace("is", "").toLowerCase() + "_led";
+            const updatedFormData = {
+                ...formData,
+                [name]: checked,
+                bonusPoints: checked
+                    ? [...formData.bonusPoints, bonusPointKey]
+                    : formData.bonusPoints.filter(
+                          (item) => item !== bonusPointKey
+                      ),
+            };
+            setFormData(updatedFormData);
+        } else {
+            // Normal field handling
+            const updatedFormData = {
+                ...formData,
+                [name]: type === "checkbox" ? checked : value,
+            };
+            setFormData(updatedFormData);
+        }
 
-        setFormData(updatedFormData);
-
-        // Only track activity if deliverable file has been uploaded
         if (hasDeliverableFile(updatedFormData)) {
             handleUserActivity(updatedFormData);
         }
@@ -1676,31 +1699,11 @@ Add these props to your input elements:
                                                 <label className="inline-flex items-center">
                                                     <input
                                                         type="checkbox"
+                                                        name="isYouthLed"
                                                         checked={
                                                             formData.isYouthLed
                                                         }
-                                                        onChange={(e) => {
-                                                            setFormData({
-                                                                ...formData,
-                                                                isYouthLed:
-                                                                    e.target
-                                                                        .checked,
-                                                                bonusPoints: e
-                                                                    .target
-                                                                    .checked
-                                                                    ? [
-                                                                          ...formData.bonusPoints,
-                                                                          "youth_led",
-                                                                      ]
-                                                                    : formData.bonusPoints.filter(
-                                                                          (
-                                                                              item
-                                                                          ) =>
-                                                                              item !==
-                                                                              "youth_led"
-                                                                      ),
-                                                            });
-                                                        }}
+                                                        onChange={handleChange}
                                                         className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
                                                     />
                                                     <span className="ml-2 text-sm text-gray-700">
@@ -1711,37 +1714,19 @@ Add these props to your input elements:
                                                 <label className="inline-flex items-center">
                                                     <input
                                                         type="checkbox"
+                                                        name="isRuralBased"
                                                         checked={
                                                             formData.isRuralBased
                                                         }
-                                                        onChange={(e) => {
-                                                            setFormData({
-                                                                ...formData,
-                                                                isRuralBased:
-                                                                    e.target
-                                                                        .checked,
-                                                                bonusPoints: e
-                                                                    .target
-                                                                    .checked
-                                                                    ? [
-                                                                          ...formData.bonusPoints,
-                                                                          "rural_based",
-                                                                      ]
-                                                                    : formData.bonusPoints.filter(
-                                                                          (
-                                                                              item
-                                                                          ) =>
-                                                                              item !==
-                                                                              "rural_based"
-                                                                      ),
-                                                            });
-                                                        }}
+                                                        onChange={handleChange}
                                                         className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
                                                     />
                                                     <span className="ml-2 text-sm text-gray-700">
                                                         Rural-based business
                                                     </span>
                                                 </label>
+
+                                                {/* Add other bonus point checkboxes similarly */}
                                             </div>
                                         </div>
                                     </div>
