@@ -80,12 +80,12 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/checkAuth', [AuthController::class,'checkAuth']);
 
     // L I P R
-    Route::get('/lipr-status-bids/{reference_id}/{listing_id}/{amountReal}', [MpesaController::class,'status_bids']);
-    Route::get('/lipr-status-bidsAwaiting/{reference_id}/{listing_id}/{amountReal}', [MpesaController::class,'status_bids']);
-    Route::get('/lipr-status-service/{reference_id}/{listing_id}/{amountReal}', [MpesaController::class,'status_service']);
-    Route::get('/lipr-status-smallFee/{reference_id}/{listing_id}/{amountReal}', [MpesaController::class,'status_smallFee']);
-    Route::get('/lipr-status-grant/{reference_id}/{listing_id}/{amountReal}', [MpesaController::class,'release_grant_milestone']);
-    Route::get('/lipr-status-capital/{reference_id}/{listing_id}/{amountReal}', [MpesaController::class,'release_capital_milestone']);
+    Route::get('/lipr-status-bids/{listing_id}/{amountReal}/{reference_id}', [MpesaController::class,'status_bids']);
+    Route::get('/lipr-status-bidsAwaiting/{listing_id}/{amountReal}/{reference_id}', [MpesaController::class,'status_bids']);
+    Route::get('/lipr-status-service/{listing_id}/{amountReal}/{reference_id}', [MpesaController::class,'status_service']);
+    Route::get('/lipr-status-smallFee/{listing_id}/{amountReal}/{reference_id}', [MpesaController::class,'status_smallFee']);
+    Route::get('/lipr-status-grant/{listing_id}/{amountReal}/{percent}/{reference_id}', [MpesaController::class,'release_grant_milestone']);
+    Route::get('/lipr-status-capital/{listing_id}/{amountReal}/{percent}/{reference_id}', [MpesaController::class,'release_capital_milestone']);
     Route::post('/initiate_payment', [MpesaController::class,'initiate_payment']);
     // P A Y M E N T  R O U T E S  E N D S
 
