@@ -67,6 +67,7 @@ import MeetingsComponent from "./components/Grants/screens/Meetings";
 import UserManagement from "./components/Grants/screens/UserManagement";
 import CapitalDetailsPage from "./components/Grants/screens/CapitalDetails";
 // import NewMessages from "./components/Grants/screens/NewMessages";
+import NotFound from "./components/partials/NotFound";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -80,6 +81,7 @@ const router = createBrowserRouter([
             { path: "/", element: <Homepage /> },
             { path: "/home", element: <Homepage /> },
             { path: "/services", element: <Servicepage /> },
+            { path: "*", element: <NotFound /> },
             {
                 path: "/listingResults/:resIds/:loc",
                 name: "listingResults",

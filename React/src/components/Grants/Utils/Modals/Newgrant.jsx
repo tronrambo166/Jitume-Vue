@@ -23,7 +23,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import _ from "lodash";
 
-
 import { ToastContainer } from "react-toastify";
 export default function GrantApplicationModal({ onClose, grantId }) {
     const [step, setStep] = useState(1);
@@ -154,13 +153,13 @@ export default function GrantApplicationModal({ onClose, grantId }) {
     }, []);
 
     const handleBusinessChange = (e) => {
-    const selectedBusinessId = parseInt(e.target.value, 10);
-    setBusinessId(selectedBusinessId);
-    setFormData(prev => ({
-        ...prev,
-        business_id: selectedBusinessId
-    }));
-};
+        const selectedBusinessId = parseInt(e.target.value, 10);
+        setBusinessId(selectedBusinessId);
+        setFormData((prev) => ({
+            ...prev,
+            business_id: selectedBusinessId,
+        }));
+    };
     // Form handlers
 
     // Submission handler
@@ -259,23 +258,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                         console.log(
                             `Added deliverable: milestones[${index}][deliverables][${fileIndex}] = ${file.name}`
                         );
-                        //Match Score API
-                        // const response =  axiosClient.post(
-                        //     "grant/match-score/"+grantId,
-                        //     formDataToSend,
-                        //     {
-                        //         headers: { "Content-Type": "multipart/form-data" },
-                        //         signal: controller.signal,
-                        //         onUploadProgress: (progressEvent) => {
-                        //             const percentCompleted = Math.round(
-                        //                 (progressEvent.loaded * 100) / progressEvent.total
-                        //             );
-                        //             console.log(`Upload progress: ${percentCompleted}%`);
-                        //         },
-                        //     }
-                        // );
-                        console.log("Response Score:", response);
-                        //Match Score API
+                        // Removed the console.log that was trying to access response
                     });
                 } else {
                     console.log("No deliverables for this milestone");
@@ -716,31 +699,31 @@ export default function GrantApplicationModal({ onClose, grantId }) {
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        const updatedFormData = {
+        const isCheckbox = type === "checkbox";
+        const newValue = isCheckbox ? checked : value;
+
+        // First update the form data with the new value
+        let updatedFormData = {
             ...formData,
-            [name]: type === "checkbox" ? checked : value,
+            [name]: newValue,
         };
-        // Special handling for bonus points checkboxes
-        if (name.startsWith("is")) {
-            const bonusPointKey = name.replace("is", "").toLowerCase() + "_led";
-            const updatedFormData = {
-                ...formData,
-                [name]: checked,
-                bonusPoints: checked
-                    ? [...formData.bonusPoints, bonusPointKey]
-                    : formData.bonusPoints.filter(
-                          (item) => item !== bonusPointKey
-                      ),
-            };
-            setFormData(updatedFormData);
-        } else {
-            // Normal field handling
-            const updatedFormData = {
-                ...formData,
-                [name]: type === "checkbox" ? checked : value,
-            };
-            setFormData(updatedFormData);
+
+        // Handle bonus points mapping
+        const bonusFieldMappings = {
+            // isGenderLed: "gender_led",
+            isYouthLed: "youth_led",
+            isRuralBased: "rural_based",
+            // usesLocalSourcing: "local_sourcing",
+        };
+
+        if (Object.keys(bonusFieldMappings).includes(name)) {
+            const bonusKey = bonusFieldMappings[name];
+            updatedFormData.bonusPoints = checked
+                ? [...new Set([...formData.bonusPoints, bonusKey])] // Ensure no duplicates
+                : formData.bonusPoints.filter((item) => item !== bonusKey);
         }
+
+        setFormData(updatedFormData);
 
         if (hasDeliverableFile(updatedFormData)) {
             handleUserActivity(updatedFormData);
@@ -971,7 +954,6 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                     },
                 }
             );
-
 
             console.log("Score API Response:", response.data);
             setMatchScore(response.data.original.score);
@@ -1691,7 +1673,7 @@ Add these props to your input elements:
                                                 )}
                                             </div>
                                         </div>
-                                        <div className="mb-6">
+                                        {/* <div className="mb-6">
                                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                                 Bonus Points Eligibility
                                             </label>
@@ -1726,9 +1708,9 @@ Add these props to your input elements:
                                                     </span>
                                                 </label>
 
-                                                {/* Add other bonus point checkboxes similarly */}
                                             </div>
-                                        </div>
+                                        </div> 
+                                            */}
                                     </div>
                                 </div>
                             )}
@@ -2280,9 +2262,16 @@ Add these props to your input elements:
                             ) : (
                                 <button
                                     onClick={handleFinalSubmit}
-                                    disabled={isSubmitting || submissionSuccess}
+                                    disabled={
+                                        isSubmitting ||
+                                        submissionSuccess ||
+                                        matchScore === null ||
+                                        matchScore <= 50
+                                    }
                                     className={`bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white px-8 py-3 rounded-lg transition-all shadow-lg shadow-green-200 flex items-center font-medium ${
-                                        isSubmitting
+                                        isSubmitting ||
+                                        matchScore === null ||
+                                        matchScore <= 50
                                             ? "opacity-70 cursor-not-allowed"
                                             : ""
                                     } ${
@@ -2298,6 +2287,10 @@ Add these props to your input elements:
                                             Submitted!{" "}
                                             <Check className="w-4 h-4 ml-2" />
                                         </>
+                                    ) : matchScore === null ? (
+                                        "Waiting for match score..."
+                                    ) : matchScore <= 50 ? (
+                                        `Match score too low (${matchScore}%)`
                                     ) : (
                                         <>
                                             Submit Application{" "}

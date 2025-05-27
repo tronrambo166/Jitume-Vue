@@ -5,7 +5,7 @@ import {
     Award,
     DollarSign,
     TrendingUp,
-    Filter,
+    AlertCircle,
     Search,
     ChevronRight,
     MapPin,
@@ -414,54 +414,82 @@ const TujitumeDashboard = () => {
     //         .sort((a, b) => new Date(a.deadlineDate) - new Date(b.deadlineDate))
     //         .slice(0, 2);
     // }, [grants]);
-   
+    function CountdownTimer({ deadlineDate }) {
+        const [timeLeft, setTimeLeft] = useState(
+            calculateTimeLeft(deadlineDate)
+        );
 
-    
-    const upcomingDeadlines = [
-        {
-            title: "AgriFund 2025",
-            deadlineDate: "2025-07-10",
-            organization: "Kenya AgriCapital",
-            amount: 15000,
-            link: "https://example.com/agri-fund",
-        },
-        {
-            title: "Youth Empowerment Grant",
-            deadlineDate: "2025-07-15",
-            organization: "YouthBank Africa",
-            amount: 10000,
-            link: "https://example.com/youth-grant",
-        },
-    ];
-    
+        useEffect(() => {
+            const timer = setInterval(() => {
+                setTimeLeft(calculateTimeLeft(deadlineDate));
+            }, 1000);
 
-    const sortedDeadlines = [...upcomingDeadlines].sort(
-        (a, b) =>
-            new Date(a.deadlineDate).getTime() -
-            new Date(b.deadlineDate).getTime()
-    );
+            return () => clearInterval(timer);
+        }, [deadlineDate]);
+
+        if (timeLeft.total <= 0 || timeLeft.total > 172800000) {
+            // More than 2 days
+            return null;
+        }
+
+        return (
+            <div className="text-xs font-medium mt-1 flex items-center">
+                <span className="text-red-500 mr-1">⏳</span>
+                <span className="text-red-500">
+                    {timeLeft.days > 0 ? `${timeLeft.days}d ` : ""}
+                    {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
+                </span>
+            </div>
+        );
+    }
+
+    function calculateTimeLeft(endDate) {
+        const difference = new Date(endDate) - new Date();
+
+        if (difference <= 0) {
+            return { total: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
+        }
+
+        return {
+            total: difference,
+            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+            minutes: Math.floor((difference / 1000 / 60) % 60),
+            seconds: Math.floor((difference / 1000) % 60),
+        };
+    }
+
+    // Get real upcoming deadlines from grants data
+    const upcomingDeadlines = grants
+        .filter(
+            (grant) =>
+                grant.deadlineDate && new Date(grant.deadlineDate) > new Date()
+        )
+        .map((grant) => ({
+            title: grant.grant_title || grant.title || "Untitled Grant",
+            deadlineDate: grant.deadlineDate,
+            organization: grant.organization || "Unknown Organization",
+            amount: grant.amount ||  0,
+            link: "#", // Add actual link if available in your data
+        }))
+        .sort((a, b) => new Date(a.deadlineDate) - new Date(b.deadlineDate));
+        console.log("Upcoming Deadlines:", upcomingDeadlines);
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const futureDeadlines = upcomingDeadlines
-        .filter((d) => new Date(d.deadlineDate) > new Date())
-        .sort((a, b) => new Date(a.deadlineDate) - new Date(b.deadlineDate));
-
     useEffect(() => {
-        if (futureDeadlines.length === 0) return;
+        if (upcomingDeadlines.length === 0) return;
 
         const interval = setInterval(() => {
             setCurrentIndex(
-                (prevIndex) => (prevIndex + 1) % futureDeadlines.length
+                (prevIndex) => (prevIndex + 1) % upcomingDeadlines.length
             );
         }, 15000);
 
         return () => clearInterval(interval);
-    }, [futureDeadlines]);
+    }, [upcomingDeadlines]);
 
-    const current = futureDeadlines[currentIndex];
-  
-
+    const current = upcomingDeadlines[currentIndex];
     const statsCards = [
         {
             icon: <Award className="text-blue-600" />,
@@ -545,7 +573,6 @@ const TujitumeDashboard = () => {
             </div>
         </div>
     );
-    
 
     const ImpactSectionSkeleton = () => (
         <div className="p-4 rounded-lg border border-gray-100 animate-pulse">
@@ -666,7 +693,6 @@ const TujitumeDashboard = () => {
                                 </div>
                             </div>
                         </div>
-
                         <div className="bg-white bg-opacity-5 backdrop-filter backdrop-blur-md rounded-lg p-3 border border-white border-opacity-10 flex items-center">
                             <div className="bg-white bg-opacity-10 p-2 rounded-lg mr-3">
                                 <DollarSign
@@ -683,7 +709,6 @@ const TujitumeDashboard = () => {
                                 </div>
                             </div>
                         </div>
-
                         <div className="bg-white bg-opacity-5 backdrop-filter backdrop-blur-md rounded-lg p-3 border border-white border-opacity-10 flex items-center relative">
                             <div className="bg-white bg-opacity-10 p-2 rounded-lg mr-3">
                                 <Calendar size={16} className="text-blue-400" />
@@ -697,32 +722,23 @@ const TujitumeDashboard = () => {
                                         <div className="text-sm font-semibold text-white line-clamp-1">
                                             {current.title}
                                         </div>
-                                        <div className="text-xs text-blue-200 mt-0.5">
-                                            {new Date(
-                                                current.deadlineDate
-                                            ).toLocaleDateString(undefined, {
-                                                month: "short",
-                                                day: "numeric",
-                                            })}{" "}
-                                            —{" "}
-                                            {Math.ceil(
-                                                (new Date(
+                                        <div className="flex items-center gap-2 mt-0.5">
+                                            <div className="text-xs text-blue-200">
+                                                {new Date(
                                                     current.deadlineDate
-                                                ) -
-                                                    new Date()) /
-                                                    (1000 * 60 * 60 * 24)
-                                            )}{" "}
-                                            day
-                                            {Math.ceil(
-                                                (new Date(
+                                                ).toLocaleDateString(
+                                                    undefined,
+                                                    {
+                                                        month: "short",
+                                                        day: "numeric",
+                                                    }
+                                                )}
+                                            </div>
+                                            <CountdownTimer
+                                                deadlineDate={
                                                     current.deadlineDate
-                                                ) -
-                                                    new Date()) /
-                                                    (1000 * 60 * 60 * 24)
-                                            ) !== 1
-                                                ? "s"
-                                                : ""}{" "}
-                                            left
+                                                }
+                                            />
                                         </div>
                                     </>
                                 ) : (
@@ -731,8 +747,6 @@ const TujitumeDashboard = () => {
                                     </div>
                                 )}
                             </div>
-
-                            {/* Dotted separator at the bottom */}
                             <div className="absolute bottom-0 left-3 right-3 border-t border-dotted border-white/30 mt-2"></div>
                         </div>
                     </div>
@@ -830,7 +844,6 @@ const TujitumeDashboard = () => {
                         ))
                     )}
                 </section>
-
                 {/* Opportunities Section */}
                 <section>
                     <div className="flex justify-between items-center mb-6">
@@ -872,94 +885,133 @@ const TujitumeDashboard = () => {
                         <div className="flex space-x-4 overflow-x-auto pb-4">
                             {filteredOpportunities
                                 .filter((opp) => opp.status !== "Closed")
-                                .map((opp, idx) => (
-                                    <div
-                                        key={opp.id}
-                                        className="flex-shrink-0 w-[370px] bg-white border border-neutral-100 rounded-lg p-4 hover:shadow-xl transition transform hover:-translate-y-2 group relative overflow-hidden"
-                                        style={{
-                                            transitionDelay: `${idx * 75}ms`,
-                                        }}
-                                    >
-                                        {/* Status indicator line */}
+                                .map((opp, idx) => {
+                                    const formattedDeadline = new Date(
+                                        opp.deadlineDate
+                                    ).toLocaleDateString("en-US", {
+                                        month: "short",
+                                        day: "numeric",
+                                    });
+
+                                    return (
                                         <div
-                                            className={`absolute top-0 left-0 w-1 h-full ${
-                                                opp.status === "Open"
-                                                    ? "bg-green-500"
-                                                    : "bg-yellow-500"
-                                            }`}
-                                        ></div>
-
-                                        <div className="flex justify-between items-start mb-4 pl-2">
-                                            <div>
-                                                <h3 className="font-semibold text-neutral-800 mb-1 group-hover:text-blue-600 transition line-clamp-1">
-                                                    {opp.title}
-                                                </h3>
-                                                <span className="text-xs text-neutral-500 uppercase flex items-center">
-                                                    <MapPin
-                                                        size={12}
-                                                        className="mr-1 text-neutral-400"
-                                                    />
-                                                    {opp.region}
-                                                </span>
-                                            </div>
-                                            <span
-                                                className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                            key={opp.id}
+                                            className="flex-shrink-0 w-[370px] bg-white border border-neutral-100 rounded-lg p-4 hover:shadow-xl transition transform hover:-translate-y-2 group relative overflow-hidden"
+                                            style={{
+                                                transitionDelay: `${
+                                                    idx * 75
+                                                }ms`,
+                                            }}
+                                        >
+                                            {/* Status indicator line */}
+                                            <div
+                                                className={`absolute top-0 left-0 w-1 h-full ${
                                                     opp.status === "Open"
-                                                        ? "bg-green-50 text-green-700"
-                                                        : "bg-yellow-50 text-yellow-700"
+                                                        ? "bg-green-500"
+                                                        : "bg-yellow-500"
                                                 }`}
-                                            >
-                                                {opp.status}
-                                            </span>
-                                        </div>
+                                            ></div>
 
-                                        <div className="mb-4 pl-2">
-                                            <div className="flex flex-wrap gap-1 mb-2">
-                                                {opp.impact
-                                                    .slice(0, 2)
-                                                    .map((impact, index) => (
-                                                        <span
-                                                            key={index}
-                                                            className="text-xs bg-neutral-100 text-neutral-600 px-2 py-1 rounded-full"
-                                                        >
-                                                            {impact}
-                                                        </span>
-                                                    ))}
+                                            <div className="flex justify-between items-start mb-4 pl-2">
+                                                <div>
+                                                    <h3 className="font-semibold text-neutral-800 mb-1 group-hover:text-blue-600 transition line-clamp-1">
+                                                        {opp.title}
+                                                    </h3>
+                                                    <span className="text-xs text-neutral-500 uppercase flex items-center">
+                                                        <MapPin
+                                                            size={12}
+                                                            className="mr-1 text-neutral-400"
+                                                        />
+                                                        {opp.region}
+                                                    </span>
+                                                </div>
+                                                <div className="flex flex-col items-end">
+                                                    <span
+                                                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                                            opp.status ===
+                                                            "Open"
+                                                                ? "bg-green-50 text-green-700"
+                                                                : "bg-yellow-50 text-yellow-700"
+                                                        }`}
+                                                    >
+                                                        {opp.status}
+                                                    </span>
+                                                    <CountdownTimer
+                                                        deadlineDate={
+                                                            opp.deadlineDate
+                                                        }
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div className="flex justify-between items-center border-t pt-3 pl-2">
-                                            <div className="text-sm">
-                                                <div className="text-neutral-600 flex items-center">
-                                                    <DollarSign
-                                                        size={14}
-                                                        className="mr-1 text-green-500"
-                                                    />
-                                                    Amount
+                                            <div className="mb-4 pl-2">
+                                                <div className="flex flex-wrap gap-1 mb-2">
+                                                    {opp.impact
+                                                        .slice(0, 2)
+                                                        .map(
+                                                            (impact, index) => (
+                                                                <span
+                                                                    key={index}
+                                                                    className="text-xs bg-neutral-100 text-neutral-600 px-2 py-1 rounded-full"
+                                                                >
+                                                                    {impact}
+                                                                </span>
+                                                            )
+                                                        )}
                                                 </div>
-                                                <div className="font-semibold">
-                                                    $
-                                                    {opp.amount.toLocaleString()}
+                                                <div className="text-xs text-neutral-500 flex items-center">
+                                                    <Calendar
+                                                        size={12}
+                                                        className="mr-1"
+                                                    />
+                                                    Deadline:{" "}
+                                                    {formattedDeadline}
                                                 </div>
                                             </div>
-                                            <div className="text-sm">
-                                                <div className="text-neutral-600 flex items-center">
-                                                    <Star
-                                                        size={14}
-                                                        className="mr-1 text-yellow-500"
-                                                    />
-                                                    Match
+
+                                            <div className="flex justify-between items-center border-t pt-3 pl-2">
+                                                <div className="text-sm">
+                                                    <div className="text-neutral-600 flex items-center">
+                                                        <DollarSign
+                                                            size={14}
+                                                            className="mr-1 text-green-500"
+                                                        />
+                                                        Amount
+                                                    </div>
+                                                    <div className="font-semibold">
+                                                        $
+                                                        {opp.amount.toLocaleString()}
+                                                    </div>
                                                 </div>
-                                                <div className="font-semibold text-neutral-800">
-                                                    {opp.matchScore}%
+                                                <div className="text-sm">
+                                                    <div className="text-neutral-600 flex items-center">
+                                                        <Star
+                                                            size={14}
+                                                            className="mr-1 text-yellow-500"
+                                                        />
+                                                        Match
+                                                    </div>
+                                                    <div className="font-semibold text-neutral-800">
+                                                        {opp.matchScore}%
+                                                    </div>
                                                 </div>
+                                                <button
+                                                    onClick={() => {
+                                                        handleNavigate(
+                                                            `/dashboard/overview/grants/${opp.id}`
+                                                        );
+                                                        // setShowMenu(
+                                                        //     false
+                                                        // );
+                                                    }}
+                                                    className="p-2 text-neutral-700 hover:text-blue-600 hover:bg-blue-50 rounded-full transition"
+                                                >
+                                                    <ChevronRight size={18} />
+                                                </button>
                                             </div>
-                                            <button className="p-2 text-neutral-700 hover:text-blue-600 hover:bg-blue-50 rounded-full transition">
-                                                <ChevronRight size={18} />
-                                            </button>
                                         </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                         </div>
                     ) : (
                         <div className="text-center py-10 bg-white rounded-lg border border-neutral-100">
@@ -979,7 +1031,6 @@ const TujitumeDashboard = () => {
                         </div>
                     )}
                 </section>
-
                 {/* Enhanced Impact Snapshot Section */}
                 <section className="mt-8 bg-white rounded-xl shadow-sm p-6 border border-gray-100 relative overflow-hidden">
                     {/* Background pattern */}
@@ -1325,9 +1376,9 @@ const TujitumeDashboard = () => {
                                         Upcoming Deadlines
                                     </h3>
 
-                                    {sortedDeadlines.length > 0 ? (
+                                    {upcomingDeadlines.length > 0 ? (
                                         <div className="max-h-40 overflow-y-auto pr-1 divide-y divide-dotted divide-gray-200">
-                                            {sortedDeadlines.map(
+                                            {upcomingDeadlines.map(
                                                 (deadline, idx) => {
                                                     const date = new Date(
                                                         deadline.deadlineDate
@@ -1340,20 +1391,8 @@ const TujitumeDashboard = () => {
                                                                 60 *
                                                                 24)
                                                     );
-                                                    const status =
-                                                        daysLeft <= 0
-                                                            ? "Closed"
-                                                            : daysLeft <= 3
-                                                            ? "Closing Soon"
-                                                            : "Open";
-
-                                                    const statusClass =
-                                                        status === "Closed"
-                                                            ? "bg-red-100 text-red-600"
-                                                            : status ===
-                                                              "Closing Soon"
-                                                            ? "bg-yellow-100 text-yellow-600"
-                                                            : "bg-green-100 text-green-600";
+                                                    const isClosed =
+                                                        daysLeft <= 0;
 
                                                     return (
                                                         <div
@@ -1384,32 +1423,27 @@ const TujitumeDashboard = () => {
                                                                         deadline.title
                                                                     }
                                                                 </h4>
-                                                                <p className="text-xs text-gray-500">
-                                                                    {
-                                                                        deadline.organization
-                                                                    }
-                                                                </p>
                                                                 <div className="mt-1 flex items-center space-x-2">
                                                                     <span className="text-xs bg-green-50 text-green-600 px-2 py-0.5 rounded-full">
                                                                         $
                                                                         {deadline.amount.toLocaleString()}
                                                                     </span>
-                                                                    <span
-                                                                        className={`text-xs px-2 py-0.5 rounded-full ${statusClass}`}
-                                                                    >
-                                                                        {status}
+                                                                    <span className="text-xs text-gray-400">
+                                                                        {isClosed ? (
+                                                                            <span className="text-red-600">
+                                                                                Closed
+                                                                            </span>
+                                                                        ) : daysLeft <=
+                                                                          2 ? (
+                                                                            <CountdownTimer
+                                                                                deadlineDate={
+                                                                                    deadline.deadlineDate
+                                                                                }
+                                                                            />
+                                                                        ) : (
+                                                                            `${daysLeft} days left`
+                                                                        )}
                                                                     </span>
-                                                                    {daysLeft >
-                                                                        0 && (
-                                                                        <span className="text-xs text-gray-400">
-                                                                            (
-                                                                            {
-                                                                                daysLeft
-                                                                            }{" "}
-                                                                            days
-                                                                            left)
-                                                                        </span>
-                                                                    )}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1435,7 +1469,6 @@ const TujitumeDashboard = () => {
                         )}
                     </div>
                 </section>
-
                 {/* Quick Actions Footer */}
                 {user.investor !== 1 &&
                     user.investor !== 2 &&

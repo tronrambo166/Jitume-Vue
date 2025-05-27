@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import axiosClient from "../../../axiosClient";
 import { useStateContext } from "../../../contexts/contextProvider";
-import GrantApplicationModal from "../Utils/Modals/Newgrant"; // Import the modal component
+import GrantApplicationModal from "../Utils/Modals/Newgrant";
 
 export default function GrantDetailsDashboard() {
     const { id } = useParams();
@@ -40,7 +40,6 @@ export default function GrantDetailsDashboard() {
                     ? response.data.grants
                     : [];
 
-                // Find the specific grant by ID
                 const selectedGrant = rawData.find(
                     (grant) => String(grant.id) === String(id)
                 );
@@ -70,17 +69,35 @@ export default function GrantDetailsDashboard() {
     const parseJsonString = (jsonString) => {
         if (!jsonString) return [];
         try {
-            if (typeof jsonString === "string" && jsonString.startsWith("[")) {
-                return JSON.parse(jsonString);
+            // If it's already an array, return it
+            if (Array.isArray(jsonString)) return jsonString;
+
+            // If it's a string that looks like JSON, parse it
+            if (typeof jsonString === "string") {
+                // Remove any escaped quotes if they exist
+                const cleanedString = jsonString.replace(/\\"/g, '"');
+                // Handle cases where the string might be double-encoded
+                try {
+                    return JSON.parse(cleanedString);
+                } catch (e) {
+                    // If parsing fails, try removing outer quotes
+                    const trimmedString = cleanedString.replace(
+                        /^"(.*)"$/,
+                        "$1"
+                    );
+                    return JSON.parse(trimmedString);
+                }
             }
-            return Array.isArray(jsonString) ? jsonString : [jsonString];
+
+            // If it's a single value, return it as an array
+            return [jsonString];
         } catch (e) {
-            return typeof jsonString === "string" ? [jsonString] : [];
+            console.error("Error parsing JSON string:", e);
+            return [];
         }
     };
 
     const createNewGrant = () => {
-        // This function would handle creating a new grant if needed
         console.log("Creating new grant...", newGrant);
     };
 
@@ -163,11 +180,11 @@ export default function GrantDetailsDashboard() {
         );
     }
 
-    // Parse JSON strings from backend
+    // Parse all JSON strings from backend
     const requiredDocuments = parseJsonString(grant.required_documents);
     const startupStages = parseJsonString(grant.startup_stage_focus);
-    const regions = grant.regions || [];
-    const sectors = grant.sectors || [];
+    const regions = parseJsonString(grant.regions);
+    const sectors = parseJsonString(grant.sectors);
 
     return (
         <div className="w-full bg-white rounded-lg shadow-sm overflow-hidden">
@@ -376,39 +393,35 @@ export default function GrantDetailsDashboard() {
                 </div>
 
                 {/* Additional Details */}
-                {(sectors.length > 0 ||
-                    grant.techLevel ||
-                    regions.length > 0) && (
-                    <div className="mb-8">
-                        <h3 className="text-sm font-medium text-gray-500 mb-3">
-                            ADDITIONAL DETAILS
-                        </h3>
-                        <div className="flex flex-wrap gap-2">
-                            {sectors.map((sector, index) => (
-                                <span
-                                    key={index}
-                                    className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm"
-                                >
-                                    {sector}
-                                </span>
-                            ))}
-                            {grant.techLevel && (
-                                <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm">
-                                    Tech Level: {grant.techLevel}
-                                </span>
-                            )}
-                            {regions.map((region, index) => (
-                                <span
-                                    key={index}
-                                    className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm"
-                                >
-                                    <MapPin className="w-3 h-3 inline mr-1" />
-                                    {region}
-                                </span>
-                            ))}
-                        </div>
+                <div className="mb-8">
+                    <h3 className="text-sm font-medium text-gray-500 mb-3">
+                        Regions
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                        {sectors.map((sector, index) => (
+                            <span
+                                key={index}
+                                className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm"
+                            >
+                                {sector}
+                            </span>
+                        ))}
+                        {grant.techLevel && (
+                            <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm">
+                                Tech Level: {grant.techLevel}
+                            </span>
+                        )}
+                        {regions.map((region, index) => (
+                            <span
+                                key={index}
+                                className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm"
+                            >
+                                <MapPin className="w-3 h-3 inline mr-1" />
+                                {region}
+                            </span>
+                        ))}
                     </div>
-                )}
+                </div>
 
                 {/* Criteria & Requirements */}
                 <div className="mb-8">

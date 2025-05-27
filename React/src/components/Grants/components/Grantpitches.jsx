@@ -121,6 +121,93 @@ const PitchesOutlet = ({ grantId }) => {
             setIsLoading(false);
         }
     };
+    const handleConfirmAction = async () => {
+        try {
+            setIsLoading(true);
+            console.groupCollapsed(
+                `[Pitch Action] Starting ${modalAction} action for pitch ${selectedPitch.id}`
+            );
+            console.log("Action:", modalAction);
+            console.log("Pitch ID:", selectedPitch.id);
+            console.log("Current pitch data:", selectedPitch);
+
+            // Use the correct API endpoint based on the action
+            const endpoint =
+                modalAction === "accept"
+                    ? `grant/accept/${selectedPitch.id}`
+                    : `grant/reject/${selectedPitch.id}`;
+
+            console.log("Making GET request to:", endpoint);
+
+            const response = await axiosClient.get(endpoint, {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+            });
+
+            console.groupCollapsed("Backend Response");
+            console.log("Status:", response.status);
+            console.log("Headers:", response.headers);
+            console.log("Response Data:", response.data);
+            console.groupEnd();
+
+            // Update local state to reflect the change
+            setPitches((prevPitches) =>
+                prevPitches.map((pitch) =>
+                    pitch.id === selectedPitch.id
+                        ? {
+                              ...pitch,
+                              status: modalAction === "accept" ? 1 : 2,
+                              // Include any additional data from the backend response
+                              ...(response.data.updatedData || {}),
+                              updatedAt: new Date().toISOString(), // Add timestamp
+                          }
+                        : pitch
+                )
+            );
+
+            setShowConfirmModal(false);
+            setSelectedPitch(null);
+
+            if (response.data.message) {
+                console.log("Success message:", response.data.message);
+            }
+
+            // Refresh data to ensure consistency
+            console.log("Refreshing pitches data...");
+            await fetchPitches();
+
+            console.groupEnd();
+        } catch (err) {
+            console.groupCollapsed(
+                `[Pitch Action Error] ${modalAction} action failed`
+            );
+            console.error("Error details:", err);
+
+            if (err.response) {
+                console.log("Error response status:", err.response.status);
+                console.log("Error response data:", err.response.data);
+                console.log("Error response headers:", err.response.headers);
+            } else if (err.request) {
+                console.log("No response received:", err.request);
+            } else {
+                console.log("Request setup error:", err.message);
+            }
+
+            const errorMessage = err.response?.data?.message
+                ? `Failed to ${modalAction} pitch: ${err.response.data.message}`
+                : `Failed to ${modalAction} pitch. Please try again.`;
+
+            console.log("User error message:", errorMessage);
+            setError(errorMessage);
+
+            console.groupEnd();
+        } finally {
+            setIsLoading(false);
+            console.log("Loading state set to false");
+        }
+    };
 
     const retryFetch = () => {
         console.log("[PitchesOutlet] Retrying fetch...");

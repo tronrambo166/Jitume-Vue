@@ -1118,11 +1118,20 @@ const TujitumeGrantPortal = () => {
                                                             size={14}
                                                             className="mr-1.5 text-gray-400"
                                                         />
-                                                        {grant.regions.length >
-                                                        0
-                                                            ? grant.regions.join(
-                                                                  ", "
+                                                        {grant.regions
+                                                            ? Array.isArray(
+                                                                  grant.regions
                                                               )
+                                                                ? grant.regions
+                                                                      .length >
+                                                                  0
+                                                                    ? grant.regions.join(
+                                                                          ", "
+                                                                      )
+                                                                    : "All regions"
+                                                                : JSON.parse(
+                                                                      grant.regions
+                                                                  ).join(", ")
                                                             : "All regions"}
                                                     </div>
 
