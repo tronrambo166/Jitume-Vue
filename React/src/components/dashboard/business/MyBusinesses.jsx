@@ -25,7 +25,7 @@ const MyBusinesses = () => {
                 .get("/business/bBQhdsfE_WWe4Q-_f7ieh7Hdhf3E_")
                 .then(({ data }) => {
                     setBusiness(data.business);
-                    console.log(data);
+                    // console.log(data);
                     setIsLoading(false);
                 })
                 .catch((err) => {

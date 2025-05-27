@@ -356,7 +356,7 @@ const Navigation = {
                     setUser(data.user);
                     setLoading(false);
 
-                    console.log("My dara :", data);
+                    // console.log("My dara :", data);
 
                     if (data.user.investor == 1) navigate("/dashboard");
                 } catch (error) {
@@ -369,7 +369,7 @@ const Navigation = {
 
             fetchUserData();
         }, []);
-        console.log("user", user);
+        // console.log("user", user);
 
         const navItems = [
             {
@@ -1313,7 +1313,7 @@ const GrantApplication = () => {
         e.preventDefault();
         // Handle form submission logic
         addToast("Grant application submitted successfully!", "success");
-        console.log("Grant Application Submitted", formData);
+        // console.log("Grant Application Submitted", formData);
     };
 
     return (

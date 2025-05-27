@@ -22,7 +22,7 @@ const MyBookings = () => {
                         setLoading(false);
 
                         setBookings(data.results);
-                        console.log(data);
+                        // console.log(data);
                     })
                     .catch((err) => {
                         setLoading(false);

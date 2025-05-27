@@ -68,13 +68,13 @@ const TujitumeWhiteThemeDashboard = () => {
 
     // Define role-based API fetching functions - Insert these before your fetchMatches function
     const fetchDashboardData = async (user) => {
-        console.log("Fetching dashboard data for user role:", user?.investor);
+        // console.log("Fetching dashboard data for user role:", user?.investor);
 
         // Add a small delay to ensure user context is loaded (if needed)
         if (!user || user.investor === undefined) {
-            console.log(
-                "User or investor role not available yet, using default API"
-            );
+            // console.log(
+            //     "User or investor role not available yet, using default API"
+            // );
             return await fetchGrantsData();
         }
 
@@ -84,7 +84,7 @@ const TujitumeWhiteThemeDashboard = () => {
             return await fetchInvestmentsData();
         } else {
             // Default case or fallback
-            console.log("Unknown investor role, defaulting to grants API");
+            // console.log("Unknown investor role, defaulting to grants API");
             return await fetchGrantsData();
         }
     };
@@ -92,9 +92,9 @@ const TujitumeWhiteThemeDashboard = () => {
     // Function to fetch grants data
     const fetchGrantsData = async () => {
         try {
-            console.log("Fetching grants data");
+            // console.log("Fetching grants data");
             const response = await axiosClient.get("/grant/analytics");
-            console.log("Grants data received:", response.data);
+            // console.log("Grants data received:", response.data);
             // Set the avgscore in context
             setAvgscore(response.data.avg_score);
             // Set the user in context
@@ -104,14 +104,14 @@ const TujitumeWhiteThemeDashboard = () => {
             throw err;
         }
     };
-    console.log("topStartups", topStartups);
+    // console.log("topStartups", topStartups);
 
     // Function to fetch investments data
     const fetchInvestmentsData = async () => {
         try {
-            console.log("Fetching investments data");
+            // console.log("Fetching investments data");
             const response = await axiosClient.get("/capital/analytics");
-            console.log("Investments data received:", response.data);
+            // console.log("Investments data received:", response.data);
             return response.data;
         } catch (err) {
             console.error("Failed to fetch investment analytics:", err);
@@ -122,7 +122,7 @@ const TujitumeWhiteThemeDashboard = () => {
         try {
             // Use the role-based function to get the appropriate data
             const data = await fetchDashboardData(user);
-            console.log("Fetched Analytics:", data);
+            // console.log("Fetched Analytics:", data);
             // Set the top startups data
             setTopStartups(data.top_startups || []);
             // Update important metrics with fallback to 0 if null/undefined

@@ -31,7 +31,7 @@ function InvestmentBids() {
             bid_ids: selectedBids,
             reject: 0,
         };
-        console.log(payload);
+        // console.log(payload);
 
         axiosClient
             .post("bookingAccepted", payload)
@@ -63,7 +63,7 @@ function InvestmentBids() {
         const payload = {
             bid_ids: selectedBids,
         };
-        console.log(payload);
+        // console.log(payload);
 
         axiosClient
             .post("bookingRejected", payload)
@@ -100,7 +100,7 @@ function InvestmentBids() {
         setLoading(false);
 
                 setBids(data.results);
-                console.log(data.results);
+                // console.log(data.results);
             })
             .catch((err) => {
         setLoading(false);

@@ -14,7 +14,7 @@ const Dashhome = () => {
                     .get("/business/dashhome/"+'hasInvestment')
                     .then(({ data }) => {
                         SetHasInvestment(data.status);
-                        console.log('dash',data);
+                        // console.log('dash',data);
                     })
                     .catch((err) => {
                         console.error(err);

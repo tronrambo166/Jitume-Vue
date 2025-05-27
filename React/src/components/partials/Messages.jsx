@@ -33,7 +33,7 @@ function Messages() {
 
         const fetchMessages = async (from) => {
             if (check === 0) {
-                console.log("Fetching messages..." + messages.length);
+                // console.log("Fetching messages..." + messages.length);
             }
 
             try {
@@ -41,7 +41,7 @@ function Messages() {
                     "/business/service_messages/" + from
                 );
                 if (isMounted) {
-                    console.log("Messages fetched successfully:", data);
+                    // console.log("Messages fetched successfully:", data);
                     setMessages(data.messages || []);
 
                     // After fetching messages, check if we need to fetch a specific user
@@ -80,7 +80,7 @@ function Messages() {
             );
 
             if (data.status == 200 && data.user) {
-                console.log("New User", data);
+                // console.log("New User", data);
 
                 // Check if user already exists in messages to avoid duplication
                 const userExists = existingMessages.find(
@@ -109,7 +109,7 @@ function Messages() {
                     setNewMessage(dashmsg);
                 }
             } else {
-                console.log(data.messages);
+                // console.log(data.messages);
             }
         } catch (err) {
             console.error("Error fetching user:", err);
@@ -125,7 +125,7 @@ function Messages() {
     }, [chatHistory]);
 
     const handleSelectMessage = (msg) => {
-        console.log("Selected message:", msg);
+        // console.log("Selected message:", msg);
         setSelectedMessage(msg);
 
         setChatHistory([]);
@@ -143,7 +143,7 @@ function Messages() {
     const handleSendMessage = (id, service_id, from_id) => {
         if (!newMessage.trim()) return;
 
-        console.log("Processing message through protection service...");
+        // console.log("Processing message through protection service...");
 
         // Use the message protection service for all outgoing messages
         processMessage(
@@ -174,7 +174,7 @@ function Messages() {
             created_at: new Date().toISOString(),
         };
 
-        console.log("Sending message:", tempMessage);
+        // console.log("Sending message:", tempMessage);
         setChatHistory((prev) => [...prev, tempMessage]);
 
         axiosClient
@@ -185,7 +185,7 @@ function Messages() {
                 to_id: to_id,
             })
             .then(({ data }) => {
-                console.log("Message sent successfully:", data);
+                // console.log("Message sent successfully:", data);
                 setChatHistory((prev) =>
                     prev.map((msg) =>
                         msg === tempMessage ? { ...msg, status: "Sent" } : msg
@@ -228,14 +228,14 @@ function Messages() {
     };
 
     useEffect(() => {
-        console.log("Current message:", dashmsg);
+        // console.log("Current message:", dashmsg);
 
         if (dashmsg != null) {
             const userIdMatch = dashmsg.match(/\(User ID: (\d+)\)/);
 
             if (userIdMatch) {
                 const user_id = userIdMatch[1];
-                console.log("Extracted User ID:", user_id);
+                // console.log("Extracted User ID:", user_id);
                 setUserId(user_id);
             }
 

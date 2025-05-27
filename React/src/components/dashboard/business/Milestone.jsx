@@ -20,7 +20,7 @@ function Milestones() {
 
                     setMilestones(data.milestones);
                     setBusiness(data.business);
-                    console.log(data);
+                    // console.log(data);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -36,7 +36,7 @@ function Milestones() {
             .then(({ data }) => {
                 setBusinessName(data.business_name);
                 setMilestones(data.milestones);
-                console.log(data);
+                // console.log(data);
             })
             .catch((err) => {
                 console.log(err);
@@ -104,7 +104,7 @@ function Milestones() {
         axiosClient
             .post("/business/mile_status", payload)
             .then(({ data }) => {
-                console.log(data);
+                // console.log(data);
                 if (data.status == 200) alert(data.message);
             })
             .catch((err) => {

@@ -38,38 +38,38 @@ const [lastChanged, setLastChanged] = useState(null);
     const fetchPitches = async () => {
       setIsLoading(true);
       setError(null);
-      console.log("[fetchPitches] Start fetching capital offers");
+      // console.log("[fetchPitches] Start fetching capital offers");
   
       try {
         const capitalResponse = await axiosClient.get("capital/capital-offers");
-        console.log("[fetchPitches] Raw capitalResponse:", capitalResponse.data);
+        // console.log("[fetchPitches] Raw capitalResponse:", capitalResponse.data);
   
         let capitals = [];
   
         if (Array.isArray(capitalResponse?.data)) {
           capitals = capitalResponse.data;
-          console.log("[fetchPitches] capitalResponse is an array:", capitals);
+          // console.log("[fetchPitches] capitalResponse is an array:", capitals);
         } else if (Array.isArray(capitalResponse?.data?.capitals)) {
           capitals = capitalResponse.data.capitals;
-          console.log("[fetchPitches] capitalResponse.data.capitals:", capitals);
+          // console.log("[fetchPitches] capitalResponse.data.capitals:", capitals);
         } else if (Array.isArray(capitalResponse?.data?.capital_offers)) {
           capitals = capitalResponse.data.capital_offers;
-          console.log("[fetchPitches] capitalResponse.data.capital_offers:", capitals);
+          // console.log("[fetchPitches] capitalResponse.data.capital_offers:", capitals);
         } else if (Array.isArray(capitalResponse?.data?.capital)) {
           capitals = capitalResponse.data.capital;
-          console.log("[fetchPitches] capitalResponse.data.capital:", capitals);
+          // console.log("[fetchPitches] capitalResponse.data.capital:", capitals);
         } else {
           console.warn("[fetchPitches] No valid capital offers format found in response");
           throw new Error("Invalid capital offers data structure from API");
         }
   
-        console.log(`[fetchPitches] Total capital offers found: ${capitals.length}`);
+        // console.log(`[fetchPitches] Total capital offers found: ${capitals.length}`);
   
         const pitchesPromises = capitals.map(async (capital) => {
           try {
-            console.log(`[fetchPitches] Fetching pitches for capital ID: ${capital.id}`);
+            // console.log(`[fetchPitches] Fetching pitches for capital ID: ${capital.id}`);
             const pitchesResponse = await axiosClient.get(`capital/pitches/${capital.id}`);
-            console.log(`[fetchPitches] Pitches for capital ${capital.id}:`, pitchesResponse.data);
+            // console.log(`[fetchPitches] Pitches for capital ${capital.id}:`, pitchesResponse.data);
             return pitchesResponse.data || [];
           } catch (error) {
             console.error(`[fetchPitches] Error fetching pitches for capital ${capital.id}:`, error);
@@ -79,7 +79,7 @@ const [lastChanged, setLastChanged] = useState(null);
   
         const allPitchesArrays = await Promise.all(pitchesPromises);
         const combinedPitches = allPitchesArrays.flatMap(obj => obj.pitches || []);  // Fixed flattening logic
-        console.log("[fetchPitches] Combined pitches (flattened):", combinedPitches);
+        // console.log("[fetchPitches] Combined pitches (flattened):", combinedPitches);
   
         const cleanedPitches = combinedPitches.map((pitch) => {
           const capitalData = capitals.find(c => c.id === pitch.capital_id);
@@ -127,7 +127,7 @@ const [lastChanged, setLastChanged] = useState(null);
           };
         });
   
-        console.log("[fetchPitches] Cleaned/normalized pitches:", cleanedPitches);
+        // console.log("[fetchPitches] Cleaned/normalized pitches:", cleanedPitches);
         setPitches(cleanedPitches);
   
       } catch (err) {
@@ -138,7 +138,7 @@ const [lastChanged, setLastChanged] = useState(null);
             : err.message || "Failed to load data. Please try again later.";
         setError(errorMessage);
       } finally {
-        console.log("[fetchPitches] Fetch process completed");
+        // console.log("[fetchPitches] Fetch process completed");
         setIsLoading(false);
       }
     };
@@ -179,9 +179,9 @@ const handleStatusChange = async (pitchId, newStatus) => {
   const currentPitch = pitches.find(pitch => pitch.id === pitchId);
   const previousStatus = currentPitch?.status;
   
-  console.groupCollapsed(`[Pitch Status Change] Starting status update for pitch ${pitchId}`);
-  console.log("New Status:", newStatus);
-  console.log("Pitch ID:", pitchId);
+  // console.groupCollapsed(`[Pitch Status Change] Starting status update for pitch ${pitchId}`);
+  // console.log("New Status:", newStatus);
+  // console.log("Pitch ID:", pitchId);
 
   try {
     // Determine numeric status value
@@ -213,10 +213,10 @@ const handleStatusChange = async (pitchId, newStatus) => {
     const action = newStatus === "Accepted" ? "accept" : "reject";
     const endpoint = `capital/${action}/${pitchId}`;
     
-    console.log("Making GET request to:", endpoint);
+    // console.log("Making GET request to:", endpoint);
     const response = await axiosClient.get(endpoint);
 
-    console.log("Backend Response:", response.data);
+    // console.log("Backend Response:", response.data);
     toast.success(`Pitch ${newStatus.toLowerCase()} successfully`);
     setLastChanged(newStatus);
     
@@ -290,7 +290,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
     if (score >= 80) return 'bg-gray-800 text-white';
     return 'bg-gray-100 text-gray-800';
   };
-  console.log(selectedPitch)
+  // console.log(selectedPitch)
 
   // Check if video exists for the pitch
   const hasVideo = (pitch) => {

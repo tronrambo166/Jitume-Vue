@@ -50,11 +50,11 @@ function AddMilestone() {
         formData.append("file", form.file);
 
         // Log form data details
-        console.log("Form Data to be submitted:");
+        // console.log("Form Data to be submitted:");
         for (let [key, value] of formData.entries()) {
-            console.log(
-                `${key}: ${value instanceof File ? value.name : value}`
-            );
+            // console.log(
+            //     `${key}: ${value instanceof File ? value.name : value}`
+            // );
         }
 
         try {
@@ -67,7 +67,7 @@ function AddMilestone() {
             );
 
             // Log the response data
-            console.log("Server Response:", response.data);
+            // console.log("Server Response:", response.data);
 
             if (response.data.status === 200) {
                 showAlert("success", response.data.message); // Show success alert

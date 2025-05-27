@@ -112,7 +112,7 @@ const TujitumeGrantPortal = () => {
 
     const handleGrantUpdate = (updatedGrant) => {
         // Handle the updated grant data
-        console.log("Grant updated:", updatedGrant);
+        // console.log("Grant updated:", updatedGrant);
         // You might want to update your grants list state here
         setIsGrantEditModalOpen(false);
     };
@@ -157,7 +157,7 @@ const TujitumeGrantPortal = () => {
             alert("Unable to message - no grant owner ID found");
             return;
         }
-        console.log("Grant owner ID:", grantOwnerId);
+        // console.log("Grant owner ID:", grantOwnerId);
 
         const initialMessage =
             "Hello, I am interested in your grant opportunity. Can we connect?";
@@ -179,7 +179,7 @@ const TujitumeGrantPortal = () => {
                 const response = await axiosClient.get("/grant/grants");
 
                 // Log the entire response to inspect the structure
-                console.log("API Response:", response);
+                // console.log("API Response:", response);
 
                 // Access the grants array inside the response data
                 const rawData = Array.isArray(response.data?.grants)
@@ -228,10 +228,10 @@ const TujitumeGrantPortal = () => {
                 }));
 
                 setGrantOpportunities(cleanedData);
-                console.log("cleanedData:", cleanedData);
+                // console.log("cleanedData:", cleanedData);
 
                 setGrantOpportunities(cleanedData);
-                console.log("cleanedData:", cleanedData);
+                // console.log("cleanedData:", cleanedData);
             } catch (err) {
                 console.error("Failed to fetch grants:", err);
 
@@ -251,7 +251,7 @@ const TujitumeGrantPortal = () => {
     }, []);
 
     const mee = () => {
-        console.log("Create Grant");
+        // console.log("Create Grant");
     };
 
     useEffect(() => {
@@ -259,17 +259,17 @@ const TujitumeGrantPortal = () => {
     }, []);
 
     const handleFundRequest = async (pitchId) => {
-        console.log("Attempting to request funds for pitch:", pitchId); // logging before request
+        // console.log("Attempting to request funds for pitch:", pitchId); // logging before request
 
         try {
             const response = await axiosClient.get(
                 `grant/fund-release-request/${pitchId}`
             );
-            console.log("Fund request success response:", {
-                status: response.status,
-                headers: response.headers,
-                data: response.data,
-            });
+            // console.log("Fund request success response:", {
+            //     status: response.status,
+            //     headers: response.headers,
+            //     data: response.data,
+            // });
         } catch (error) {
             console.error("Error requesting funds:", {
                 message: error.message,
@@ -293,7 +293,7 @@ const TujitumeGrantPortal = () => {
                 setLoading(false);
             });
     };
-    console.log("myApplications", myApplications);
+    // console.log("myApplications", myApplications);
 
     const openDrawer = (application) => {
         setSelectedApplication(application);
@@ -370,7 +370,7 @@ const TujitumeGrantPortal = () => {
     };
 
     // No dependencies needed since axiosClient handles token internally
-    console.log("grantOpportunities", grantOpportunities);
+    // console.log("grantOpportunities", grantOpportunities);
     // Filter grants
     const filteredGrants = grantOpportunities
         .filter((grant) => {
@@ -416,7 +416,7 @@ const TujitumeGrantPortal = () => {
         })
         .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Newest first
         .slice(0, 6); // Limit to 10 results
-    console.log("filteredGrants", filteredGrants);
+    // console.log("filteredGrants", filteredGrants);
 
     // Dashboard metrics
     const dashboardMetrics = {
@@ -2314,7 +2314,7 @@ const TujitumeGrantPortal = () => {
                     isOpen={isOfferModalOpen}
                     onClose={toggleOfferModal}
                     onSubmit={(formData) => {
-                        console.log("Grant offer submitted:", formData);
+                        // console.log("Grant offer submitted:", formData);
                         toggleOfferModal();
                     }}
                 />

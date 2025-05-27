@@ -196,7 +196,7 @@ const ListingDetails = ({ onClose }) => {
     const openUnlockPopup = () => setIsUnlockPopupOpen(true);
     const closeUnlockPopup = () => setIsUnlockPopupOpen(false);
     const makeSession = (listingId) => {
-        console.log(`Making session for listing ${listingId}`);
+        // console.log(`Making session for listing ${listingId}`);
     };
     const openAuthModal = () => {
         setIsAuthModalOpen(true);
@@ -270,7 +270,7 @@ const ListingDetails = ({ onClose }) => {
         }
     };
 
-    console.log(formattedAmount);
+    // console.log(formattedAmount);
 
     const sintamei = amount;
     // alert(sintamei);
@@ -469,7 +469,7 @@ const ListingDetails = ({ onClose }) => {
 
                     setDetails(data.data[0]);
                     //if (data.data[0].investors_fee == null) setConv(true);
-                    console.log(data);
+                    // console.log(data);
                 })
                 .catch((err) => {
                     console.log(err); //setLoading(false)
@@ -487,7 +487,7 @@ const ListingDetails = ({ onClose }) => {
                     setAmount_r(data.amount_required);
                     setRunning(data.running);
                     setMile(data.data.length);
-                    console.log(data);
+                    // console.log(data);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -498,7 +498,7 @@ const ListingDetails = ({ onClose }) => {
             axiosClient
                 .get("/isSubscribed/" + form.listing_id)
                 .then(({ data }) => {
-                    console.log(data);
+                    // console.log(data);
                     setIsInvestor(data.isInvestor);
 
                     if (data.fee == null) setConv(true);
@@ -516,7 +516,7 @@ const ListingDetails = ({ onClose }) => {
                     }
 
                     if (data.reviews.length > 0) setRev(data.reviews);
-                    console.log(data.reviews);
+                    // console.log(data.reviews);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -537,7 +537,7 @@ const ListingDetails = ({ onClose }) => {
             method: "GET",
             responseType: "blob",
         }).then((data) => {
-            console.log(data);
+            // console.log(data);
             if (data.data.size == 3) {
                 $.alert({
                     title: "Alert!",
@@ -578,7 +578,7 @@ const ListingDetails = ({ onClose }) => {
             method: "GET",
             responseType: "blob",
         }).then((data) => {
-            console.log(data);
+            // console.log(data);
             if (data.data.size == 3) {
                 $.alert({
                     title: "Alert!",

@@ -67,7 +67,7 @@ const Explore = () => {
                         }
                         setcheckCat(true);
                     }
-                    console.log(categories);
+                    // console.log(categories);
                     setCurrentCount(data.listing_count - 1);
                 })
                 .catch((err) => {

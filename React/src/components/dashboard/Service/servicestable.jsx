@@ -28,7 +28,7 @@ const ServiceTable = () => {
                         //setBusiness(data.business);
                         setService(data.services);
                         //setMyInvest(data.results);
-                        console.log("services", data);
+                        // console.log("services", data);
                         setIsLoading(false);
                     })
                     .catch((err) => {

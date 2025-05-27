@@ -353,7 +353,7 @@ const TujitumeDashboard = () => {
         );
     }, [filter, searchTerm, grants, capitalOpportunities, user.investor]);
 
-    console.log("Filtered Opportunities:", filteredOpportunities);
+    // console.log("Filtered Opportunities:", filteredOpportunities);
     // Extract sectors from opportunities for impact statistics
     const sectors = useMemo(() => {
         const allSectors = opportunities
@@ -473,7 +473,7 @@ const TujitumeDashboard = () => {
             link: "#", // Add actual link if available in your data
         }))
         .sort((a, b) => new Date(a.deadlineDate) - new Date(b.deadlineDate));
-        console.log("Upcoming Deadlines:", upcomingDeadlines);
+        // console.log("Upcoming Deadlines:", upcomingDeadlines);
 
     const [currentIndex, setCurrentIndex] = useState(0);
 

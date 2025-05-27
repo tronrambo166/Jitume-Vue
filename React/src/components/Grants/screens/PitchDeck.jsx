@@ -97,7 +97,7 @@ const PitchDashboard = () => {
         }));
 
         setPitches(cleanedPitches);
-        console.log("Combined Pitches Data:", cleanedPitches);
+        // console.log("Combined Pitches Data:", cleanedPitches);
 
       } catch (err) {
         console.error("Failed to fetch data:", err);
@@ -145,9 +145,9 @@ const PitchDashboard = () => {
    const currentPitch = pitches.find(pitch => pitch.id === pitchId);
    const previousStatus = currentPitch?.status;
 
-   console.groupCollapsed(`[Pitch Status Change] Starting status update for pitch ${pitchId}`);
-   console.log("New Status:", newStatus);
-   console.log("Pitch ID:", pitchId);
+//    console.groupCollapsed(`[Pitch Status Change] Starting status update for pitch ${pitchId}`);
+//    console.log("New Status:", newStatus);
+//    console.log("Pitch ID:", pitchId);
 
    try {
      // Determine numeric status value
@@ -179,10 +179,10 @@ const PitchDashboard = () => {
      const action = newStatus === "Accepted" ? "accept" : "reject";
      const endpoint = `capital/${action}/${pitchId}`;
 
-     console.log("Making GET request to:", endpoint);
+    //  console.log("Making GET request to:", endpoint);
      const response = await axiosClient.get(endpoint);
 
-     console.log("Backend Response:", response.data);
+    //  console.log("Backend Response:", response.data);
      toast.success(`Pitch ${newStatus.toLowerCase()} successfully`);
      setLastChanged(newStatus);
 

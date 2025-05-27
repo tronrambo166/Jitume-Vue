@@ -15,7 +15,7 @@ const ReviewServdetailSummary = ({ reviews, rating_count }) => {
 
     const totalReviews2 = rating_count || 0;
 
-    console.log("totalReviews2", totalReviews2);
+    // console.log("totalReviews2", totalReviews2);
 
    const totalReviews = reviews.length || 0; // Avoid division by 0
    const percentage = ratingDistribution.map(

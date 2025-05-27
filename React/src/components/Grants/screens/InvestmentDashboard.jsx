@@ -107,7 +107,7 @@ const InvestmentOpportunities = () => {
           const response = await axiosClient.get('capital/visibility/'+ pendingToggleId);
 
           // Optionally, handle the response (like updating the UI or showing a success message)
-          console.log('Visibility toggled successfully:', response);
+        //   console.log('Visibility toggled successfully:', response);
 
         } catch (error) {
           console.error('Error toggling visibility:', error);
@@ -137,7 +137,7 @@ const InvestmentOpportunities = () => {
       };
 
       const handleCapitalUpdate = (updatedCapital) => {
-        console.log('Capital updated:', updatedCapital);
+        // console.log('Capital updated:', updatedCapital);
         // Update your state or make API call here
         setIsCapitalEditModalOpen(false);
       };
@@ -178,7 +178,7 @@ const InvestmentOpportunities = () => {
                 setOpportunities((prev) =>
                     prev.filter((opp) => opp.id !== deleteId)
                 );
-                console.log("Successfully deleted opportunity");
+                // console.log("Successfully deleted opportunity");
             } else {
                 throw new Error("Unexpected response from server");
             }
@@ -198,15 +198,15 @@ const InvestmentOpportunities = () => {
     useEffect(() => {
         const fetchPreferences = async () => {
             try {
-                console.log("Fetching investor preferences...");
+                // console.log("Fetching investor preferences...");
                 const response = await axiosClient.get("investor/preferences");
-                console.log("Preferences response:", response);
+                // console.log("Preferences response:", response);
 
                 if (response.data && response.data.preferences) {
-                    console.log(
-                        "Setting investor preferences:",
-                        response.data.preferences
-                    );
+                    // console.log(
+                    //     "Setting investor preferences:",
+                    //     response.data.preferences
+                    // );
                     setInvestorPreferences(response.data.preferences);
                 } else {
                     console.warn(
@@ -228,17 +228,17 @@ const InvestmentOpportunities = () => {
             setIsLoading(true);
             setError(null);
             try {
-                console.log("Fetching capital offers...");
+                // console.log("Fetching capital offers...");
                 const response = await axiosClient.get(
                     "capital/capital-offers"
                 );
-                console.log("API Response:", response);
+                // console.log("API Response:", response);
 
                 // Check for both response.data.capital and response.data directly
                 const data = response.data?.capital || response.data;
 
                 if (data && Array.isArray(data)) {
-                    console.log("Capital offers received:", data);
+                    // console.log("Capital offers received:", data);
                     setOpportunities(data);
                 } else {
                     console.warn("Unexpected response format:", response.data);
@@ -256,10 +256,10 @@ const InvestmentOpportunities = () => {
     }, []);
     // Adapt API response to component structure - only using real data
     const processedOpportunities = useMemo(() => {
-        console.log("Processing opportunities:", opportunities);
+        // console.log("Processing opportunities:", opportunities);
 
         if (!Array.isArray(opportunities)) {
-            console.warn("Opportunities is not an array:", opportunities);
+            // console.warn("Opportunities is not an array:", opportunities);
             return [];
         }
 
@@ -272,7 +272,7 @@ const InvestmentOpportunities = () => {
                 return isValid;
             })
             .map((opp) => {
-                console.log("Processing opportunity:", opp);
+                // console.log("Processing opportunity:", opp);
                 return {
                     id: opp.id,
                     name: opp.offer_title || "Untitled Offer",
@@ -299,10 +299,10 @@ const InvestmentOpportunities = () => {
     }, [opportunities]);
 
     const scoredOpportunities = useMemo(() => {
-        console.log(
-            "Calculating match scores with preferences:",
-            investorPreferences
-        );
+        // console.log(
+        //     "Calculating match scores with preferences:",
+        //     investorPreferences
+        // );
 
         return processedOpportunities.map((opp) => {
             const matchScore = calculateMatchScore(opp, investorPreferences);
@@ -311,7 +311,7 @@ const InvestmentOpportunities = () => {
             else if (matchScore >= 60) status = "Strong Match";
             else if (matchScore >= 40) status = "Good Match";
 
-            console.log(`Opportunity ${opp.id} match score:`, matchScore);
+            // console.log(`Opportunity ${opp.id} match score:`, matchScore);
 
             return {
                 ...opp,
@@ -322,8 +322,8 @@ const InvestmentOpportunities = () => {
     }, [processedOpportunities, investorPreferences]);
 
     const filteredOpportunities = useMemo(() => {
-        console.log("Filtering opportunities with filters:", filters);
-        console.log("Search term:", searchTerm);
+        // console.log("Filtering opportunities with filters:", filters);
+        // console.log("Search term:", searchTerm);
 
         return scoredOpportunities.filter((opp) => {
             const matchesSector =
@@ -384,7 +384,7 @@ const InvestmentOpportunities = () => {
             }
         });
         const sectorsArray = Array.from(sectors);
-        console.log("Available sectors:", sectorsArray);
+        // console.log("Available sectors:", sectorsArray);
         return sectorsArray;
     }, [opportunities]);
     const { user } = useStateContext();
@@ -398,18 +398,18 @@ const InvestmentOpportunities = () => {
             }
         });
         const stagesArray = Array.from(stages);
-        console.log("Available stages:", stagesArray);
+        // console.log("Available stages:", stagesArray);
         return stagesArray;
     }, [opportunities]);
 
-    console.log("Rendering with state:", {
-        isLoading,
-        error,
-        opportunities,
-        processedOpportunities,
-        scoredOpportunities,
-        filteredOpportunities,
-    });
+    // console.log("Rendering with state:", {
+    //     isLoading,
+    //     error,
+    //     opportunities,
+    //     processedOpportunities,
+    //     scoredOpportunities,
+    //     filteredOpportunities,
+    // });
 
     return (
         <div className="min-h-screen bg-neutral-50 text-neutral-900 antialiased">
@@ -691,7 +691,7 @@ const InvestmentOpportunities = () => {
                             onClick={() => {
                                 setIsLoading(true);
                                 setError(null);
-                                console.log("Retrying fetch...");
+                                // console.log("Retrying fetch...");
                                 axiosClient
                                     .get("capital/capital-offers")
                                     .then((response) => {

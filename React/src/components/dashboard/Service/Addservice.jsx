@@ -96,7 +96,7 @@ const AddService = ({ connected, userId }) => {
             );
 
             const data = new FormData();
-            console.log(formData);
+            // console.log(formData);
 
             // Append formData to FormData object
             Object.keys(formData).forEach((key) => {
@@ -104,13 +104,13 @@ const AddService = ({ connected, userId }) => {
             });
 
             // Log form data details
-            console.log("Form Data to be submitted:");
+            // console.log("Form Data to be submitted:");
             for (let [key, value] of data.entries()) {
                 // Check if the value is an instance of File
                 if (value instanceof File) {
-                    console.log(`${key}: File - ${value.name}`);
+                    // console.log(`${key}: File - ${value.name}`);
                 } else {
-                    console.log(`${key}: ${value}`);
+                    // console.log(`${key}: ${value}`);
                 }
             }
 
@@ -125,7 +125,7 @@ const AddService = ({ connected, userId }) => {
                     },
                 }
             );
-            console.log(response);
+            // console.log(response);
 
             // Handle response statuses
             if (response.status === 200) {
@@ -205,7 +205,7 @@ const AddService = ({ connected, userId }) => {
             dataType: "json",
             success: function (response) {
                 var i;
-                console.log(response.features);
+                // console.log(response.features);
 
                 for (i = 0; i < 10; i++) {
                     //console.log(response.features[i].name);
@@ -283,7 +283,7 @@ const AddService = ({ connected, userId }) => {
             axiosClient
                 .get("/business/account")
                 .then(({ data }) => {
-                    console.log(data);
+                    // console.log(data);
                     setCon(data.connected);
                 })
                 .catch((err) => {
