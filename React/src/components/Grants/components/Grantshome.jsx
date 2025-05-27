@@ -5,7 +5,7 @@ import {
     Award,
     DollarSign,
     TrendingUp,
-    AlertCircle,
+    ChevronLeft,
     Search,
     ChevronRight,
     MapPin,
@@ -845,7 +845,7 @@ const TujitumeDashboard = () => {
                     )}
                 </section>
                 {/* Opportunities Section */}
-                <section>
+                <section className="relative">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-xl font-semibold flex items-center">
                             <Zap className="mr-2 text-yellow-500" size={20} />
@@ -882,136 +882,197 @@ const TujitumeDashboard = () => {
                     ) : filteredOpportunities.filter(
                           (opp) => opp.status !== "Closed"
                       ).length > 0 ? (
-                        <div className="flex space-x-4 overflow-x-auto pb-4">
-                            {filteredOpportunities
-                                .filter((opp) => opp.status !== "Closed")
-                                .map((opp, idx) => {
-                                    const formattedDeadline = new Date(
-                                        opp.deadlineDate
-                                    ).toLocaleDateString("en-US", {
-                                        month: "short",
-                                        day: "numeric",
-                                    });
-
-                                    return (
-                                        <div
-                                            key={opp.id}
-                                            className="flex-shrink-0 w-[370px] bg-white border border-neutral-100 rounded-lg p-4 hover:shadow-xl transition transform hover:-translate-y-2 group relative overflow-hidden"
-                                            style={{
-                                                transitionDelay: `${
-                                                    idx * 75
-                                                }ms`,
-                                            }}
-                                        >
-                                            {/* Status indicator line */}
-                                            <div
-                                                className={`absolute top-0 left-0 w-1 h-full ${
-                                                    opp.status === "Open"
-                                                        ? "bg-green-500"
-                                                        : "bg-yellow-500"
-                                                }`}
-                                            ></div>
-
-                                            <div className="flex justify-between items-start mb-4 pl-2">
-                                                <div>
-                                                    <h3 className="font-semibold text-neutral-800 mb-1 group-hover:text-blue-600 transition line-clamp-1">
-                                                        {opp.title}
-                                                    </h3>
-                                                    <span className="text-xs text-neutral-500 uppercase flex items-center">
-                                                        <MapPin
-                                                            size={12}
-                                                            className="mr-1 text-neutral-400"
-                                                        />
-                                                        {opp.region}
-                                                    </span>
-                                                </div>
-                                                <div className="flex flex-col items-end">
-                                                    <span
-                                                        className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                                            opp.status ===
-                                                            "Open"
-                                                                ? "bg-green-50 text-green-700"
-                                                                : "bg-yellow-50 text-yellow-700"
-                                                        }`}
-                                                    >
-                                                        {opp.status}
-                                                    </span>
-                                                    <CountdownTimer
-                                                        deadlineDate={
-                                                            opp.deadlineDate
-                                                        }
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            <div className="mb-4 pl-2">
-                                                <div className="flex flex-wrap gap-1 mb-2">
-                                                    {opp.impact
-                                                        .slice(0, 2)
-                                                        .map(
-                                                            (impact, index) => (
-                                                                <span
-                                                                    key={index}
-                                                                    className="text-xs bg-neutral-100 text-neutral-600 px-2 py-1 rounded-full"
-                                                                >
-                                                                    {impact}
-                                                                </span>
-                                                            )
-                                                        )}
-                                                </div>
-                                                <div className="text-xs text-neutral-500 flex items-center">
-                                                    <Calendar
-                                                        size={12}
-                                                        className="mr-1"
-                                                    />
-                                                    Deadline:{" "}
-                                                    {formattedDeadline}
-                                                </div>
-                                            </div>
-
-                                            <div className="flex justify-between items-center border-t pt-3 pl-2">
-                                                <div className="text-sm">
-                                                    <div className="text-neutral-600 flex items-center">
-                                                        <DollarSign
-                                                            size={14}
-                                                            className="mr-1 text-green-500"
-                                                        />
-                                                        Amount
-                                                    </div>
-                                                    <div className="font-semibold">
-                                                        $
-                                                        {opp.amount.toLocaleString()}
-                                                    </div>
-                                                </div>
-                                                <div className="text-sm">
-                                                    <div className="text-neutral-600 flex items-center">
-                                                        <Star
-                                                            size={14}
-                                                            className="mr-1 text-yellow-500"
-                                                        />
-                                                        Match
-                                                    </div>
-                                                    <div className="font-semibold text-neutral-800">
-                                                        {opp.matchScore}%
-                                                    </div>
-                                                </div>
-                                                <button
-                                                    onClick={() => {
-                                                        handleNavigate(
-                                                            `/dashboard/overview/grants/${opp.id}`
-                                                        );
-                                                        // setShowMenu(
-                                                        //     false
-                                                        // );
-                                                    }}
-                                                    className="p-2 text-neutral-700 hover:text-blue-600 hover:bg-blue-50 rounded-full transition"
-                                                >
-                                                    <ChevronRight size={18} />
-                                                </button>
-                                            </div>
-                                        </div>
+                        <div className="relative">
+                            <button
+                                onClick={() => {
+                                    const container = document.getElementById(
+                                        "opportunities-container"
                                     );
-                                })}
+                                    container.scrollBy({
+                                        left: -300,
+                                        behavior: "smooth",
+                                    });
+                                }}
+                                className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md hover:bg-neutral-100 transition"
+                                style={{ marginLeft: "-1rem" }}
+                            >
+                                <ChevronLeft
+                                    size={20}
+                                    className="text-neutral-600"
+                                />
+                            </button>
+
+                            <div
+                                id="opportunities-container"
+                                className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide"
+                                style={{
+                                    scrollbarWidth: "none",
+                                    msOverflowStyle: "none",
+                                }}
+                            >
+                                {filteredOpportunities
+                                    .filter((opp) => opp.status !== "Closed")
+                                    .map((opp, idx) => {
+                                        const formattedDeadline =
+                                            opp.deadlineDate
+                                                ? new Date(
+                                                      opp.deadlineDate
+                                                  ).toLocaleDateString(
+                                                      "en-US",
+                                                      {
+                                                          month: "short",
+                                                          day: "numeric",
+                                                      }
+                                                  )
+                                                : null;
+
+                                        return (
+                                            <div
+                                                key={opp.id}
+                                                className="flex-shrink-0 w-[370px] bg-white border border-neutral-100 rounded-lg p-4 hover:shadow-xl transition transform hover:-translate-y-2 group relative overflow-hidden"
+                                                style={{
+                                                    transitionDelay: `${
+                                                        idx * 75
+                                                    }ms`,
+                                                }}
+                                            >
+                                                {/* Status indicator line */}
+                                                <div
+                                                    className={`absolute top-0 left-0 w-1 h-full ${
+                                                        opp.status === "Open"
+                                                            ? "bg-green-500"
+                                                            : "bg-yellow-500"
+                                                    }`}
+                                                ></div>
+
+                                                <div className="flex justify-between items-start mb-4 pl-2">
+                                                    <div>
+                                                        <h3 className="font-semibold text-neutral-800 mb-1 group-hover:text-blue-600 transition line-clamp-1">
+                                                            {opp.title}
+                                                        </h3>
+                                                        <span className="text-xs text-neutral-500 uppercase flex items-center">
+                                                            <MapPin
+                                                                size={12}
+                                                                className="mr-1 text-neutral-400"
+                                                            />
+                                                            {opp.region}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex flex-col items-end">
+                                                        <span
+                                                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                                                opp.status ===
+                                                                "Open"
+                                                                    ? "bg-green-50 text-green-700"
+                                                                    : "bg-yellow-50 text-yellow-700"
+                                                            }`}
+                                                        >
+                                                            {opp.status}
+                                                        </span>
+                                                        {opp.deadlineDate && (
+                                                            <CountdownTimer
+                                                                deadlineDate={
+                                                                    opp.deadlineDate
+                                                                }
+                                                            />
+                                                        )}
+                                                    </div>
+                                                </div>
+
+                                                <div className="mb-4 pl-2">
+                                                    <div className="flex flex-wrap gap-1 mb-2">
+                                                        {opp.impact
+                                                            .slice(0, 2)
+                                                            .map(
+                                                                (
+                                                                    impact,
+                                                                    index
+                                                                ) => (
+                                                                    <span
+                                                                        key={
+                                                                            index
+                                                                        }
+                                                                        className="text-xs bg-neutral-100 text-neutral-600 px-2 py-1 rounded-full"
+                                                                    >
+                                                                        {impact}
+                                                                    </span>
+                                                                )
+                                                            )}
+                                                    </div>
+                                                    {formattedDeadline && (
+                                                        <div className="text-xs text-neutral-500 flex items-center">
+                                                            <Calendar
+                                                                size={12}
+                                                                className="mr-1"
+                                                            />
+                                                            Deadline:{" "}
+                                                            {formattedDeadline}
+                                                        </div>
+                                                    )}
+                                                </div>
+
+                                                <div className="flex justify-between items-center border-t pt-3 pl-2">
+                                                    <div className="text-sm">
+                                                        <div className="text-neutral-600 flex items-center">
+                                                            <DollarSign
+                                                                size={14}
+                                                                className="mr-1 text-green-500"
+                                                            />
+                                                            Amount
+                                                        </div>
+                                                        <div className="font-semibold">
+                                                            $
+                                                            {opp.amount.toLocaleString()}
+                                                        </div>
+                                                    </div>
+                                                    <div className="text-sm">
+                                                        <div className="text-neutral-600 flex items-center">
+                                                            <Star
+                                                                size={14}
+                                                                className="mr-1 text-yellow-500"
+                                                            />
+                                                            Match
+                                                        </div>
+                                                        <div className="font-semibold text-neutral-800">
+                                                            {opp.matchScore}%
+                                                        </div>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => {
+                                                            handleNavigate(
+                                                                `/dashboard/overview/grants/${opp.id}`
+                                                            );
+                                                        }}
+                                                        className="p-2 text-neutral-700 hover:text-blue-600 hover:bg-blue-50 rounded-full transition"
+                                                    >
+                                                        <ChevronRight
+                                                            size={18}
+                                                        />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                            </div>
+
+                            <button
+                                onClick={() => {
+                                    const container = document.getElementById(
+                                        "opportunities-container"
+                                    );
+                                    container.scrollBy({
+                                        left: 300,
+                                        behavior: "smooth",
+                                    });
+                                }}
+                                className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md hover:bg-neutral-100 transition"
+                                style={{ marginRight: "-1rem" }}
+                            >
+                                <ChevronRight
+                                    size={20}
+                                    className="text-neutral-600"
+                                />
+                            </button>
                         </div>
                     ) : (
                         <div className="text-center py-10 bg-white rounded-lg border border-neutral-100">
