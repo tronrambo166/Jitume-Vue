@@ -17,37 +17,93 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
     });
 
     const [isLoading, setIsLoading] = useState(false);
+    const [isDataLoading, setIsDataLoading] = useState(true); // New loader for data fetching
     const [error, setError] = useState(null);
     const [filePreview, setFilePreview] = useState(null);
 
     useEffect(() => {
-        axiosClient.get("/grant/get_grant/1").then((data) =>{
-            console.log('grant-info', data)
-        });
+        const fetchGrantData = async () => {
+            if (grantData) {
+                try {
+                    setIsDataLoading(true); // Start loading
 
-        if (grantData) {
-            setFormData({
-                grant_title: grantData.grant_title || "",
-                total_grant_amount: grantData.total_grant_amount || "",
-                application_deadline: grantData.application_deadline || "",
-                eligibility_criteria: grantData.eligibility_criteria || "",
-                evaluation_criteria: grantData.evaluation_criteria || "",
-                funding_per_business: grantData.funding_per_business || "",
-                grant_focus: grantData.grant_focus || "",
-                impact_objectives: grantData.impact_objectives || "",
-                startup_stage_focus: grantData.startup_stage_focus || "",
-                required_documents: grantData.required_documents || "",
-                grant_brief_pdf: grantData.grant_brief_pdf || null,
-            });
+                    // If grantData is just an ID, fetch the full data
+                    if (
+                        typeof grantData === "string" ||
+                        typeof grantData === "number"
+                    ) {
+                        //console.log("Fetching grant data for ID:", grantData);
+                        const response = await axiosClient.get(
+                            `/grant/get_grant/${grantData}`
+                        );
+                        //console.log("Grant info from API:", response.data);
 
-            if (grantData.grant_brief_pdf) {
-                setFilePreview(grantData.grant_brief_pdf);
+                        // Access the nested data structure: response.data['grant-data']
+                        const data =
+                            response.data["grant-data"] || response.data;
+                        //console.log("Extracted grant data:", data);
+
+                        setFormData({
+                            grant_title: data.grant_title || "",
+                            total_grant_amount: data.total_grant_amount || "",
+                            application_deadline:
+                                data.application_deadline || "",
+                            eligibility_criteria:
+                                data.eligibility_criteria || "",
+                            evaluation_criteria: data.evaluation_criteria || "",
+                            funding_per_business:
+                                data.funding_per_business || "",
+                            grant_focus: data.grant_focus || "",
+                            impact_objectives: data.impact_objectives || "",
+                            startup_stage_focus: data.startup_stage_focus || "",
+                            required_documents: data.required_documents || "",
+                            grant_brief_pdf: data.grant_brief_pdf || null,
+                        });
+
+                        if (data.grant_brief_pdf) {
+                            setFilePreview(data.grant_brief_pdf);
+                        }
+                    } else {
+                        // If grantData is already an object with the full data
+                        //console.log("Using existing grant data:", grantData);
+                        const data = grantData["grant-data"] || grantData;
+
+                        setFormData({
+                            grant_title: data.grant_title || "",
+                            total_grant_amount: data.total_grant_amount || "",
+                            application_deadline:
+                                data.application_deadline || "",
+                            eligibility_criteria:
+                                data.eligibility_criteria || "",
+                            evaluation_criteria: data.evaluation_criteria || "",
+                            funding_per_business:
+                                data.funding_per_business || "",
+                            grant_focus: data.grant_focus || "",
+                            impact_objectives: data.impact_objectives || "",
+                            startup_stage_focus: data.startup_stage_focus || "",
+                            required_documents: data.required_documents || "",
+                            grant_brief_pdf: data.grant_brief_pdf || null,
+                        });
+
+                        if (data.grant_brief_pdf) {
+                            setFilePreview(data.grant_brief_pdf);
+                        }
+                    }
+                } catch (error) {
+                    //console.error("Error fetching grant data:", error);
+                    setError("Failed to load grant data");
+                } finally {
+                    setIsDataLoading(false); // Stop loading
+                }
+            } else {
+                setIsDataLoading(false);
             }
-        }
+        };
+
+        fetchGrantData();
     }, [grantData]);
 
-
-    console.log("Grant Data:", grantData);
+   
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
@@ -71,75 +127,59 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
         }
     };
 
- const handleSubmit = async (e) => {
-     e.preventDefault();
-     setIsLoading(true);
-     setError(null);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+        setError(null);
 
-     try {
-         const formPayload = new FormData();
+        try {
+            const formPayload = new FormData();
 
-         // First log the original formData
-         console.log("Original formData:", formData);
+            for (const key in formData) {
+                if (formData[key] !== null && formData[key] !== "") {
+                    formPayload.append(key, formData[key]);
+                }
+            }
 
-         // Build FormData and log each entry
-         console.log("FormData entries:");
-         for (const key in formData) {
-             if (formData[key] !== null) {
-                 // Special handling for File objects
-                 if (formData[key] instanceof File) {
-                     console.log(`${key}:`, {
-                         name: formData[key].name,
-                         size: `${(formData[key].size / 1024).toFixed(2)} KB`,
-                         type: formData[key].type,
-                     });
-                 } else {
-                     console.log(`${key}:`, formData[key]);
-                 }
-                 formPayload.append(key, formData[key]);
-             }
-         }
+            const grantId =
+                typeof grantData === "object" ? grantData.id : grantData;
+            const apiUrl = `/grants/update-grant/${grantId}`;
 
-         // Alternative way to log FormData content
-         const formDataObj = {};
-         for (let [key, value] of formPayload.entries()) {
-             if (value instanceof File) {
-                 formDataObj[key] = {
-                     name: value.name,
-                     size: `${(value.size / 1024).toFixed(2)} KB`,
-                     type: value.type,
-                 };
-             } else {
-                 formDataObj[key] = value;
-             }
-         }
-         console.log("FormData content:", formDataObj);
+            const response = await axiosClient.put(apiUrl, formPayload, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
 
-         const apiUrl = "/grants/update-grant" + grantData.id;
-         console.log("Submitting to:", apiUrl);
+            // Show backend response
+            alert(
+                "Grant updated successfully:\n" +
+                    JSON.stringify(response.data, null, 2)
+            );
 
-         const response = await axiosClient.put(apiUrl, formPayload, {
-             headers: {
-                 "Content-Type": "multipart/form-data",
-                 // 'Authorization': 'Bearer your_token_here'
-             },
-         });
+            onSave(response.data);
+            onClose();
+        } catch (err) {
+            setError(err.response?.data?.message || "Failed to update grant");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+    
 
-         console.log("API response:", response.data);
-         onSave(response.data);
-         onClose();
-     } catch (err) {
-         console.error("Error details:", {
-             message: err.message,
-             response: err.response,
-             request: err.request,
-             config: err.config,
-         });
-         setError(err.response?.data?.message || "Failed to update grant");
-     } finally {
-         setIsLoading(false);
-     }
- };
+    // Show loader while fetching data
+    if (isDataLoading) {
+        return (
+            <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+                <div className="bg-white rounded-xl shadow-2xl p-8 flex flex-col items-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mb-4"></div>
+                    <p className="text-gray-600 font-medium">
+                        Loading Please wait...
+                    </p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
@@ -215,7 +255,7 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
                                     value={formData.grant_title}
                                     onChange={handleChange}
                                     required
-                                    className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                    className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
                                     placeholder="Enter grant title"
                                 />
                             </div>
@@ -235,7 +275,7 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
                                     value={formData.grant_focus}
                                     onChange={handleChange}
                                     required
-                                    className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                    className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
                                     placeholder="E.g., Technology, Healthcare, Education"
                                 />
                             </div>
@@ -259,7 +299,7 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
                                         value={formData.total_grant_amount}
                                         onChange={handleChange}
                                         required
-                                        className="block w-full pl-8 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                        className="block w-full pl-8 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
                                         placeholder="0.00"
                                         min="0"
                                         step="0.01"
@@ -286,7 +326,7 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
                                         value={formData.funding_per_business}
                                         onChange={handleChange}
                                         required
-                                        className="block w-full pl-8 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                        className="block w-full pl-8 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
                                         placeholder="0.00"
                                         min="0"
                                         step="0.01"
@@ -309,7 +349,7 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
                                     value={formData.application_deadline}
                                     onChange={handleChange}
                                     required
-                                    className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                    className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
                                 />
                             </div>
 
@@ -325,7 +365,7 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
                                     name="startup_stage_focus"
                                     value={formData.startup_stage_focus}
                                     onChange={handleChange}
-                                    className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                    className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
                                 >
                                     <option value="">Select stage</option>
                                     <option value="Seed">Seed</option>
@@ -349,7 +389,7 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
                                 value={formData.eligibility_criteria}
                                 onChange={handleChange}
                                 rows={4}
-                                className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
                                 placeholder="Describe who is eligible to apply for this grant"
                             />
                         </div>
@@ -368,7 +408,7 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
                                     value={formData.evaluation_criteria}
                                     onChange={handleChange}
                                     rows={4}
-                                    className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                    className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
                                     placeholder="How applications will be evaluated"
                                 />
                             </div>
@@ -386,7 +426,7 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
                                     value={formData.impact_objectives}
                                     onChange={handleChange}
                                     rows={4}
-                                    className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                    className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
                                     placeholder="Expected outcomes and impacts of the grant"
                                 />
                             </div>
@@ -405,7 +445,7 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
                                 name="required_documents"
                                 value={formData.required_documents}
                                 onChange={handleChange}
-                                className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                className="block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
                                 placeholder="List documents needed (comma separated)"
                             />
                         </div>
@@ -480,14 +520,14 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
+                                className="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-all"
                                 disabled={isLoading}
                             >
                                 Cancel
                             </button>
                             <button
                                 type="submit"
-                                className="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all disabled:opacity-50 flex items-center justify-center min-w-[120px]"
+                                className="px-5 py-2.5 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-all disabled:opacity-50 flex items-center justify-center min-w-[120px]"
                                 disabled={isLoading}
                             >
                                 {isLoading ? (

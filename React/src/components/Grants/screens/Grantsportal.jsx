@@ -107,6 +107,7 @@ const TujitumeGrantPortal = () => {
 
     const handleEditGrantClick = (grant) => {
         setGrantToEdit(grant);
+        
         setIsGrantEditModalOpen(true);
     };
 
@@ -570,7 +571,7 @@ const TujitumeGrantPortal = () => {
     if (isLoading && grantOpportunities.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center h-64 w-full">
-                <Loader className="h-12 w-12 animate-spin text-blue-500" />
+                <Loader className="h-12 w-12 animate-spin text-emerald-500" />
                 <p className="mt-4 text-lg">Loading grant opportunities...</p>
             </div>
         );
@@ -583,7 +584,7 @@ const TujitumeGrantPortal = () => {
                 <XCircle className="h-12 w-12" />
                 <p className="mt-4 text-lg">{error}</p>
                 <button
-                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                    className="mt-4 px-4 py-2 bg-emerald-500 text-white rounded-md hover:bg-emerald-600"
                     onClick={() => window.location.reload()}
                 >
                     Try Again
@@ -599,8 +600,8 @@ const TujitumeGrantPortal = () => {
                 {/* Active Applications Card */}
                 <div className="bg-white p-5 rounded-md shadow-sm hover:shadow transition-shadow duration-300">
                     <div className="flex items-center mb-3">
-                        <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center mr-3">
-                            <span className="text-blue-600 text-sm font-medium">
+                        <div className="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center mr-3">
+                            <span className="text-emerald-600 text-sm font-medium">
                                 #
                             </span>
                         </div>
@@ -769,7 +770,7 @@ const TujitumeGrantPortal = () => {
                                                     </span>
                                                 )}
                                                 {grant.startup_stage_focus && (
-                                                    <span className="px-2.5 py-1 rounded-full text-xs bg-blue-50 text-blue-700 flex items-center">
+                                                    <span className="px-2.5 py-1 rounded-full text-xs bg-emerald-50 text-emerald-700 flex items-center">
                                                         <Layers
                                                             size={10}
                                                             className="mr-1"
@@ -1089,22 +1090,6 @@ const TujitumeGrantPortal = () => {
                                                                     Edit-grant
                                                                 </span>
                                                             </button>
-
-                                                            {isGrantEditModalOpen && (
-                                                                <GrantEditModal
-                                                                    grantData={
-                                                                        grantToEdit
-                                                                    }
-                                                                    onClose={() =>
-                                                                        setIsGrantEditModalOpen(
-                                                                            false
-                                                                        )
-                                                                    }
-                                                                    onSave={
-                                                                        handleGrantUpdate
-                                                                    }
-                                                                />
-                                                            )}
                                                         </div>
                                                     </div>
 
@@ -1135,7 +1120,26 @@ const TujitumeGrantPortal = () => {
                                                             size={14}
                                                             className="mr-1.5 text-gray-400"
                                                         />
-                                                        {Array.isArray(JSON.parse(grant.regions)) ? JSON.parse(grant.regions).join(", ") : grant.regions}
+                                                        {(() => {
+                                                            try {
+                                                                const regions =
+                                                                    JSON.parse(
+                                                                        grant.regions
+                                                                    );
+                                                                return Array.isArray(
+                                                                    regions
+                                                                )
+                                                                    ? regions.join(
+                                                                          ", "
+                                                                      )
+                                                                    : grant.regions;
+                                                            } catch (error) {
+                                                                return (
+                                                                    grant.regions ||
+                                                                    "Unknown region"
+                                                                );
+                                                            }
+                                                        })()}
                                                     </div>
 
                                                     {grant.application_deadline && (
@@ -1159,7 +1163,7 @@ const TujitumeGrantPortal = () => {
                                                     checked={
                                                         visibilityStates[
                                                             grant.id
-                                                            ] ?? grant.visible === 1
+                                                        ] ?? grant.visible === 1
                                                     }
                                                     onChange={() =>
                                                         toggleVisibility(
@@ -1175,7 +1179,7 @@ const TujitumeGrantPortal = () => {
                                                         backgroundColor:
                                                             visibilityStates[
                                                                 grant.id
-                                                                ] ??
+                                                            ] ??
                                                             grant.visible === 1
                                                                 ? "#fbbf24"
                                                                 : "#e5e7eb",
@@ -1187,9 +1191,9 @@ const TujitumeGrantPortal = () => {
                                                             left:
                                                                 visibilityStates[
                                                                     grant.id
-                                                                    ] ??
+                                                                ] ??
                                                                 grant.visible ===
-                                                                1
+                                                                    1
                                                                     ? "1.75rem"
                                                                     : "0.25rem",
                                                         }}
@@ -1198,7 +1202,7 @@ const TujitumeGrantPortal = () => {
                                                 <span className="ml-3 text-sm text-gray-700">
                                                     {visibilityStates[
                                                         grant.id
-                                                        ] ?? grant.visible === 1
+                                                    ] ?? grant.visible === 1
                                                         ? "Visible"
                                                         : "Hidden"}
                                                 </span>
@@ -1266,7 +1270,7 @@ const TujitumeGrantPortal = () => {
                                                                     `/dashboard/overview/grants/${grant.id}`
                                                                 );
                                                             }}
-                                                            className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all"
+                                                            className="p-2 text-gray-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-full transition-all"
                                                             title="View document"
                                                         >
                                                             <FileText
@@ -1324,7 +1328,7 @@ const TujitumeGrantPortal = () => {
                                                 </span>
                                             )}
                                             {grant.funding_per_business && (
-                                                <span className="inline-flex items-center px-2.5 py-1 bg-blue-50 text-blue-800 text-xs rounded-full">
+                                                <span className="inline-flex items-center px-2.5 py-1 bg-emerald-50 text-emerald-800 text-xs rounded-full">
                                                     <Briefcase
                                                         size={12}
                                                         className="mr-1"
@@ -1838,7 +1842,7 @@ const TujitumeGrantPortal = () => {
                                                                                 application.grant_owner_id
                                                                             )
                                                                         }
-                                                                        className="px-3 py-1 border border-orange-200 rounded-md text-orange-600 hover:bg-blue-50 text-sm flex items-center"
+                                                                        className="px-3 py-1 border border-orange-200 rounded-md text-orange-600 hover:bg-emerald-50 text-sm flex items-center"
                                                                     >
                                                                         <MessageSquare
                                                                             size={
@@ -1857,7 +1861,7 @@ const TujitumeGrantPortal = () => {
 
                                                 <div className="mt-4 pt-3 border-t border-gray-100">
                                                     <div className="flex flex-wrap gap-3">
-                                                        <span className="px-2.5 py-1 bg-blue-50 text-blue-700 rounded-md text-xs font-medium">
+                                                        <span className="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-md text-xs font-medium">
                                                             {application.stage}
                                                         </span>
                                                         <span className="px-2.5 py-1 bg-purple-50 text-purple-700 rounded-md text-xs font-medium">
@@ -2088,10 +2092,10 @@ const TujitumeGrantPortal = () => {
                                                 {/* Business Plan */}
                                                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                                                     <div className="flex items-center">
-                                                        <div className="bg-blue-100 p-2 rounded-md mr-3">
+                                                        <div className="bg-emerald-100 p-2 rounded-md mr-3">
                                                             <FileText
                                                                 size={18}
-                                                                className="text-blue-600"
+                                                                className="text-emerald-600"
                                                             />
                                                         </div>
                                                         <div>
@@ -2346,6 +2350,13 @@ const TujitumeGrantPortal = () => {
                         // console.log("Grant offer submitted:", formData);
                         toggleOfferModal();
                     }}
+                />
+            )}
+            {isGrantEditModalOpen && (
+                <GrantEditModal
+                    grantData={grantToEdit}
+                    onClose={() => setIsGrantEditModalOpen(false)}
+                    onSave={handleGrantUpdate}
                 />
             )}
 

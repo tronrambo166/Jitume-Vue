@@ -173,6 +173,7 @@ const InvestmentOpportunities = () => {
                     },
                 }
             );
+            // console.log("Delete response:", response);
 
             if (response.status === 200 || response.status === 204) {
                 setOpportunities((prev) =>
@@ -949,9 +950,7 @@ const InvestmentOpportunities = () => {
                                                             <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
                                                         </div>
                                                         <span className="ml-3 text-sm text-gray-700">
-                                                            {visibilityStates[
-                                                                opp.id
-                                                            ]
+                                                            {opp.visible === 1
                                                                 ? "Visible"
                                                                 : "Hidden"}
                                                         </span>

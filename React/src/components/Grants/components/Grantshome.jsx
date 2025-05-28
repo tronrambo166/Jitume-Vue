@@ -469,11 +469,11 @@ const TujitumeDashboard = () => {
             title: grant.grant_title || grant.title || "Untitled Grant",
             deadlineDate: grant.deadlineDate,
             organization: grant.organization || "Unknown Organization",
-            amount: grant.amount ||  0,
+            amount: grant.amount || 0,
             link: "#", // Add actual link if available in your data
         }))
         .sort((a, b) => new Date(a.deadlineDate) - new Date(b.deadlineDate));
-        // console.log("Upcoming Deadlines:", upcomingDeadlines);
+    // console.log("Upcoming Deadlines:", upcomingDeadlines);
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -638,18 +638,42 @@ const TujitumeDashboard = () => {
                         </div>
 
                         <div className="flex items-center space-x-3">
-                            {/* <div className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg p-1.5 border border-white border-opacity-20">
-                <div className="flex items-center text-xs">
-                  <div className="px-3 py-1.5 rounded-lg flex items-center">
-                    <BellRing size={14} className="text-yellow-300 mr-1.5" />
-                    <span className="text-green-100">{dashboardMetrics.recentActivity} New</span>
-                  </div>
-                  <div className="px-3 py-1.5 rounded-lg flex items-center">
-                    <UserPlus size={14} className="text-blue-300 mr-1.5" />
-                    <span className="text-green-100">5 Matches</span>
-                  </div>
-                </div>
-              </div> */}
+                            <div className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg p-1.5 border border-white border-opacity-20">
+                                <div className="flex items-center text-xs">
+                                    <div
+                                        onClick={() => {
+                                            handleNavigate(
+                                                `/serviceResults/Niw1NSw2MCw2Niw2OCw3MCw3MSw3Nyw3OCw3OSw4MCw4MSw4Miw4Myw4NCw4NSw4Niw4Nyw=/false`
+                                            );
+                                        }}
+                                        className="px-3 py-1.5 rounded-lg flex items-center hover:bg-white hover:bg-opacity-10 transition cursor-pointer"
+                                    >
+                                        <BellRing
+                                            size={14}
+                                            className="text-yellow-300 mr-1.5"
+                                        />
+                                        <span className="text-yellow-300">
+                                            Grant Writing Services
+                                        </span>
+                                    </div>
+
+                                    <div
+                                        onClick={() => {
+                                            handleNavigate(`/`);
+                                        }}
+                                        className="px-3 py-1.5 rounded-lg flex items-center hover:bg-white hover:bg-opacity-10 transition cursor-pointer"
+                                    >
+                                        <UserPlus
+                                            size={14}
+                                            className="text-emerald-300 mr-1.5"
+                                        />
+
+                                        <span className="text-emerald-500">
+                                            Pitch Coaching Services
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div className="relative">
                                 <input
