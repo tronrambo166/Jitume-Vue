@@ -21,6 +21,10 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
     const [filePreview, setFilePreview] = useState(null);
 
     useEffect(() => {
+        axiosClient.get("/grant/get_grant/1").then((data) =>{
+            console.log('grant-info', data)
+        });
+
         if (grantData) {
             setFormData({
                 grant_title: grantData.grant_title || "",
@@ -111,7 +115,7 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
          }
          console.log("FormData content:", formDataObj);
 
-         const apiUrl = "change here when the send you the api in the group/grants/" + grantData.id;
+         const apiUrl = "/grants/update-grant" + grantData.id;
          console.log("Submitting to:", apiUrl);
 
          const response = await axiosClient.put(apiUrl, formPayload, {

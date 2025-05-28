@@ -206,6 +206,7 @@ Route::prefix('/grant')->group(function(){
    Route::post('create-grant', [GrantController::class, 'store']);
    Route::post('grant-application',[GrantController::class,'store_application']);
    Route::get('grants', [GrantController::class, 'index']);
+    Route::get('get_grant/{id}', [GrantController::class, 'get_grant']);
    Route::get('pitches/{grant_id}', [GrantController::class, 'pitches']);
    Route::get('my_pitches', [GrantController::class, 'mypitches']);
    Route::post('update-grant', [GrantController::class, 'update']);

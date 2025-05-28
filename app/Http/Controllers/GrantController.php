@@ -62,6 +62,12 @@ class GrantController extends Controller
         return response()->json(['grants' => $grants]);
     }
 
+    public function get_grant($id)
+    {
+        $grant = Grant::find($id);
+        return response()->json(['grant-data' => $grant]);
+    }
+
     public function visibility($grant_id)
     {
         try {

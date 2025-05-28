@@ -123,13 +123,30 @@ const TujitumeGrantPortal = () => {
         setShowDisclaimer(true);
     };
 
-    const confirmToggle = () => {
+    const confirmToggle = async () => {
         setVisibilityStates((prev) => ({
             ...prev,
             [pendingToggleId]: !prev[pendingToggleId],
         }));
         setShowDisclaimer(false);
         setPendingToggleId(null);
+        console.log("Toggling visibility for ID:", pendingToggleId);
+
+        const data = await axiosClient.get("/grant/visibility/"+pendingToggleId);
+        console.log('res', data)
+        if (data.status == 200) {
+            $.confirm({
+                title: "Visibility Changed",
+                content:
+                    "Visibility Changed",
+                Ok: function () {
+                    //$.alert("Canceled!");
+                }
+            });
+        }
+        //else if (data.status == 400)
+            //showErrorToast(data.message);
+
     };
     const [previewFile, setPreviewFile] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -1118,21 +1135,7 @@ const TujitumeGrantPortal = () => {
                                                             size={14}
                                                             className="mr-1.5 text-gray-400"
                                                         />
-                                                        {grant.regions
-                                                            ? Array.isArray(
-                                                                  grant.regions
-                                                              )
-                                                                ? grant.regions
-                                                                      .length >
-                                                                  0
-                                                                    ? grant.regions.join(
-                                                                          ", "
-                                                                      )
-                                                                    : "All regions"
-                                                                : JSON.parse(
-                                                                      grant.regions
-                                                                  ).join(", ")
-                                                            : "All regions"}
+                                                        {Array.isArray(JSON.parse(grant.regions)) ? JSON.parse(grant.regions).join(", ") : grant.regions}
                                                     </div>
 
                                                     {grant.application_deadline && (
@@ -1150,26 +1153,52 @@ const TujitumeGrantPortal = () => {
                                             </div>
 
                                             <label className="inline-flex items-center cursor-pointer">
+                                                {/* Hidden checkbox for accessibility */}
                                                 <input
                                                     type="checkbox"
                                                     checked={
                                                         visibilityStates[
                                                             grant.id
-                                                        ]
+                                                            ] ?? grant.visible === 1
                                                     }
-                                                    onChange={(e) => {
-                                                        e.preventDefault();
+                                                    onChange={() =>
                                                         toggleVisibility(
                                                             grant.id
-                                                        );
-                                                    }}
-                                                    className="sr-only peer"
+                                                        )
+                                                    }
+                                                    className="hidden"
                                                 />
-                                                <div className="w-11 h-6 bg-gray-200 peer-checked:bg-amber-400 rounded-full peer relative transition-colors">
-                                                    <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
+                                                {/* Custom toggle switch */}
+                                                <div
+                                                    className="w-11 h-6 bg-gray-200 rounded-full relative transition-colors"
+                                                    style={{
+                                                        backgroundColor:
+                                                            visibilityStates[
+                                                                grant.id
+                                                                ] ??
+                                                            grant.visible === 1
+                                                                ? "#fbbf24"
+                                                                : "#e5e7eb",
+                                                    }}
+                                                >
+                                                    <div
+                                                        className="absolute top-1 w-4 h-4 bg-white rounded-full transition-transform"
+                                                        style={{
+                                                            left:
+                                                                visibilityStates[
+                                                                    grant.id
+                                                                    ] ??
+                                                                grant.visible ===
+                                                                1
+                                                                    ? "1.75rem"
+                                                                    : "0.25rem",
+                                                        }}
+                                                    ></div>
                                                 </div>
                                                 <span className="ml-3 text-sm text-gray-700">
-                                                    {visibilityStates[grant.id]
+                                                    {visibilityStates[
+                                                        grant.id
+                                                        ] ?? grant.visible === 1
                                                         ? "Visible"
                                                         : "Hidden"}
                                                 </span>
@@ -1802,7 +1831,7 @@ const TujitumeGrantPortal = () => {
                                                                         Request
                                                                         Funds
                                                                     </button>
-                                                                    
+
                                                                     <button
                                                                         onClick={() =>
                                                                             handleMessageOwner(
