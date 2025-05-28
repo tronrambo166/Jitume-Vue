@@ -58,9 +58,6 @@ const ProjectManagers = () => {
                 .get("FindProjectManagers/" + bid_id)
                 .then(({ data }) => {
                     setCards(data.services || []);
-                    // for (const [key, value] of Object.entries(data.services)) {
-                    //          setS_id(btoa(btoa(value.id) || null)
-                    //      }
                     console.log(data);
                 })
                 .catch((err) => {
