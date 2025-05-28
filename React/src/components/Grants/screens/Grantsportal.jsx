@@ -1174,7 +1174,7 @@ const TujitumeGrantPortal = () => {
                                                 />
                                                 {/* Custom toggle switch */}
                                                 <div
-                                                    className="w-11 h-6 bg-gray-200 rounded-full relative transition-colors"
+                                                    className="w-11 h-6 bg-gray-200 rounded-full relative transition-all duration-300 ease-in-out"
                                                     style={{
                                                         backgroundColor:
                                                             visibilityStates[
@@ -1186,16 +1186,16 @@ const TujitumeGrantPortal = () => {
                                                     }}
                                                 >
                                                     <div
-                                                        className="absolute top-1 w-4 h-4 bg-white rounded-full transition-transform"
+                                                        className="absolute top-1 w-4 h-4 bg-white rounded-full transition-all duration-300 ease-in-out"
                                                         style={{
-                                                            left:
+                                                            transform:
                                                                 visibilityStates[
                                                                     grant.id
                                                                 ] ??
                                                                 grant.visible ===
                                                                     1
-                                                                    ? "1.75rem"
-                                                                    : "0.25rem",
+                                                                    ? "translateX(1.75rem)"
+                                                                    : "translateX(0.25rem)",
                                                         }}
                                                     ></div>
                                                 </div>

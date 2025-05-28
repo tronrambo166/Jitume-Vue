@@ -65,6 +65,7 @@ const InvestmentOpportunities = () => {
         minInvestment: "",
         maxInvestment: "",
         stage: "All",
+        visibility: false, // New visibility filter
         priorities: {
             femaleLed: false,
             youthLed: false,
@@ -196,33 +197,7 @@ const InvestmentOpportunities = () => {
     };
 
     // Fetch investor preferences
-    useEffect(() => {
-        const fetchPreferences = async () => {
-            try {
-                // console.log("Fetching investor preferences...");
-                const response = await axiosClient.get("investor/preferences");
-                // console.log("Preferences response:", response);
 
-                if (response.data && response.data.preferences) {
-                    // console.log(
-                    //     "Setting investor preferences:",
-                    //     response.data.preferences
-                    // );
-                    setInvestorPreferences(response.data.preferences);
-                } else {
-                    console.warn(
-                        "No preferences data received, using defaults"
-                    );
-                }
-            } catch (error) {
-                console.error("Error fetching investor preferences:", error);
-                // Fallback to empty preferences
-            }
-        };
-
-        // Comment out if you don't have this endpoint yet
-        // fetchPreferences();
-    }, []);
 
     useEffect(() => {
         const fetchCapitalOffers = async () => {
@@ -295,6 +270,7 @@ const InvestmentOpportunities = () => {
                     createdAt: opp.created_at || new Date().toISOString(),
                     updatedAt: opp.updated_at || new Date().toISOString(),
                     pitch_count: opp.pitch_count ?? 0,
+                    visible: opp.visible,
                 };
             });
     }, [opportunities]);
@@ -323,9 +299,6 @@ const InvestmentOpportunities = () => {
     }, [processedOpportunities, investorPreferences]);
 
     const filteredOpportunities = useMemo(() => {
-        // console.log("Filtering opportunities with filters:", filters);
-        // console.log("Search term:", searchTerm);
-
         return scoredOpportunities.filter((opp) => {
             const matchesSector =
                 filters.sector === "All" ||
@@ -348,6 +321,7 @@ const InvestmentOpportunities = () => {
                 (!filters.priorities.youthLed || opp.isYouthLed) &&
                 (!filters.priorities.ruralBased || opp.isRuralBased) &&
                 (!filters.priorities.localSourcing || opp.usesLocalSourcing);
+            const matchesVisibility = !filters.visibility || opp.visible;
 
             return (
                 matchesSector &&
@@ -355,11 +329,11 @@ const InvestmentOpportunities = () => {
                 matchesMaxInvestment &&
                 matchesStage &&
                 matchesSearch &&
-                matchesPriorities
+                matchesPriorities &&
+                matchesVisibility // <- Add this line
             );
         });
     }, [scoredOpportunities, filters, searchTerm]);
-
     const getStatusColor = (status) => {
         switch (status) {
             case "Ideal Match":
@@ -928,29 +902,57 @@ const InvestmentOpportunities = () => {
                                             {user.investor === 3 ? (
                                                 <>
                                                     <label className="inline-flex items-center cursor-pointer">
+                                                        {/* Hidden checkbox for accessibility */}
                                                         <input
                                                             type="checkbox"
                                                             checked={
                                                                 visibilityStates[
                                                                     opp.id
-                                                                ]
+                                                                ] ??
+                                                                opp.visible ===
+                                                                    1
                                                             }
-                                                            onChange={(e) => {
-                                                                e.preventDefault();
+                                                            onChange={() =>
                                                                 toggleVisibility(
                                                                     opp.id
-                                                                );
-                                                            }}
-                                                            style={{
-                                                                display: "none",
-                                                            }}
-                                                            className="peer"
+                                                                )
+                                                            }
+                                                            className="hidden"
                                                         />
-                                                        <div className="w-11 h-6 bg-gray-200 peer-checked:bg-amber-400 rounded-full peer relative transition-colors">
-                                                            <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
+                                                        {/* Custom toggle switch */}
+                                                        <div
+                                                            className="w-11 h-6 bg-gray-200 rounded-full relative transition-all duration-300 ease-in-out"
+                                                            style={{
+                                                                backgroundColor:
+                                                                    visibilityStates[
+                                                                        opp.id
+                                                                    ] ??
+                                                                    opp.visible ===
+                                                                        1
+                                                                        ? "#fbbf24"
+                                                                        : "#e5e7eb",
+                                                            }}
+                                                        >
+                                                            <div
+                                                                className="absolute top-1 w-4 h-4 bg-white rounded-full transition-all duration-300 ease-in-out"
+                                                                style={{
+                                                                    transform:
+                                                                        visibilityStates[
+                                                                            opp
+                                                                                .id
+                                                                        ] ??
+                                                                        opp.visible ===
+                                                                            1
+                                                                            ? "translateX(1.75rem)"
+                                                                            : "translateX(0.25rem)",
+                                                                }}
+                                                            ></div>
                                                         </div>
                                                         <span className="ml-3 text-sm text-gray-700">
-                                                            {opp.visible === 1
+                                                            {visibilityStates[
+                                                                opp.id
+                                                            ] ??
+                                                            opp.visible === 1
                                                                 ? "Visible"
                                                                 : "Hidden"}
                                                         </span>

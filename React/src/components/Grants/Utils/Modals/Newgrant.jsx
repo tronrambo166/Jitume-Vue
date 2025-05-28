@@ -53,7 +53,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
         isYouthLed: false,
         isRuralBased: false,
         usesLocalSourcing: false,
-        bonusPoints: [], // Add this array to track selected bonus points
+        bonusPoints: "", // Add this array to track selected bonus points
         documents: {
             pitchDeck: null,
             businessPlan: null,
@@ -197,7 +197,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
                 youth_led: formData.isYouthLed,
                 rural_based: formData.isRuralBased,
                 uses_local_sourcing: formData.usesLocalSourcing,
-                bonus_points: formData.bonusPoints.join(","), // Add bonus_points as comma-separated string
+                bonus_points: formData.bonusPoints || "", // Use the string directly
             };
 
             console.group("[REQUEST DATA]");
@@ -702,25 +702,30 @@ export default function GrantApplicationModal({ onClose, grantId }) {
         const isCheckbox = type === "checkbox";
         const newValue = isCheckbox ? checked : value;
 
-        // First update the form data with the new value
+        // Clone existing form data
         let updatedFormData = {
             ...formData,
             [name]: newValue,
         };
 
-        // Handle bonus points mapping
+        // Bonus fields mapping
         const bonusFieldMappings = {
-            // isGenderLed: "gender_led",
+            isGenderLed: "gender_led",
             isYouthLed: "youth_led",
             isRuralBased: "rural_based",
-            // usesLocalSourcing: "local_sourcing",
+            usesLocalSourcing: "local_sourcing",
         };
 
         if (Object.keys(bonusFieldMappings).includes(name)) {
             const bonusKey = bonusFieldMappings[name];
-            updatedFormData.bonusPoints = checked
-                ? [...new Set([...formData.bonusPoints, bonusKey])] // Ensure no duplicates
-                : formData.bonusPoints.filter((item) => item !== bonusKey);
+            let updatedBonusPoints = checked
+                ? [...new Set([...formData.bonusPoints.split(","), bonusKey])]
+                : formData.bonusPoints
+                      .split(",")
+                      .filter((item) => item !== bonusKey);
+
+            // Re-join into string
+            updatedFormData.bonusPoints = updatedBonusPoints.join(",");
         }
 
         setFormData(updatedFormData);
@@ -882,7 +887,7 @@ export default function GrantApplicationModal({ onClose, grantId }) {
         );
         formDataToSend.append(
             "bonus_points",
-            currentFormData.bonusPoints.join(", ")
+            currentFormData.bonusPoints || "" // Use the string directly, fallback to empty string if undefined
         );
 
         // Handle documents
