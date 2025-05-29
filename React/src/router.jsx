@@ -68,6 +68,7 @@ import UserManagement from "./components/Grants/screens/UserManagement";
 import CapitalDetailsPage from "./components/Grants/screens/CapitalDetails";
 // import NewMessages from "./components/Grants/screens/NewMessages";
 import NotFound from "./components/partials/NotFound";
+import GrantWritingServices from "./components/partials/GrantWritingServices.jsx";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -108,6 +109,10 @@ const router = createBrowserRouter([
             {
                 path: "/projectManagers/:resIds/:loc/:bid_id",
                 element: <ProjectManagers />,
+            },
+            {
+                path: "/grant-writing-services/:resIds/:loc",
+                element: <GrantWritingServices />,
             },
             {
                 path: "/equipmentRelease/:b_owner_id/:manager_id/:bid_id",

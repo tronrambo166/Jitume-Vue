@@ -7,19 +7,25 @@ use App\Models\Listing;
 use App\Models\Services;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Auth;
 
 class GrantServiceController extends Controller
 {
-    public function grantWritingServices($grant_id){
+    public function grantWritingServices(){
         try{
-            $results = array();
-            $this_grant = Grant::where('id',$grant_id)->first();
-            $grant_loc = $this_grant->location;
-            $lat = (float)$this_grant->lat;
-            $lng = (float)$this_grant->lng;
-            $services = $this->findNearestServices($lat,$lng,100);
-            return response()->json(['results' => $services, 'loc'=>'true',
-                'lat'=>$lat, 'lng'=>$lng],200);
+            $user_id = Auth::id();
+            //$this_business = Listing::where('id',$business_id)->first();
+            $this_business = Listing::where('user_id', $user_id)->latest()->first();
+
+            if($this_business) {
+                $business_loc = $this_business->location;
+                $lat = (float)$this_business->lat;
+                $lng = (float)$this_business->lng;
+                $services = $this->findNearestServices($lat, $lng, 100);
+                return response()->json(['results' => $services, 'loc' => 'true',
+                    'lat' => $lat, 'lng' => $lng], 200);
+            }
+            return response()->json(['message' => "You do not have any business."], 200);
         }
         catch (\Exception $e){
             return response()->json(['message'=>$e->getMessage()],400);
@@ -27,10 +33,10 @@ class GrantServiceController extends Controller
     }
 
 
-    public function pitchCoachingServices($grant_id){
+    public function pitchCoachingServices($listing_id){
         try{
             $results = array();
-            $this_grant = Grant::where('id',$grant_id)->first();
+            $this_grant = Listing::where('id',$listing_id)->first();
             $grant_loc = $this_grant->location;
             $lat = (float)$this_grant->lat;
             $lng = (float)$this_grant->lng;
@@ -52,7 +58,7 @@ class GrantServiceController extends Controller
                ) + sin( radians(?) ) *
                sin( radians( lat ) ) )
              ) AS distance", [$latitude, $longitude, $latitude])
-             ->where('category', '=', '0')
+             ->where('category', '=', 'Business Planning')
              ->having("distance", "<", $radius)
              ->orderBy("distance",'asc')
              ->offset(0)

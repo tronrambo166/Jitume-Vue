@@ -31,7 +31,7 @@ const CapitalEditModal = ({ capitalData, onClose, onSave }) => {
                         typeof capitalData === "number"
                     ) {
                         const response = await axiosClient.get(
-                            `/capital/update-capital/${capitalData}`
+                            `/capital/get_capital/${capitalData}`
                         );
                         const data =
                             response.data["capital-data"] || response.data;
@@ -54,6 +54,7 @@ const CapitalEditModal = ({ capitalData, onClose, onSave }) => {
 
         const populateFormData = (data) => {
             setFormData({
+                id: data.id || "",
                 offer_title: data.offer_title || "",
                 total_capital_available: data.total_capital_available || "",
                 per_startup_allocation: data.per_startup_allocation || "",
@@ -127,7 +128,7 @@ const CapitalEditModal = ({ capitalData, onClose, onSave }) => {
 
             const capitalId =
                 typeof capitalData === "object" ? capitalData.id : capitalData;
-            const apiUrl = `/capital/update-capital/${capitalId}`;
+            const apiUrl = `/capital/update-capital`;
 
             console.log("Submitting form data:", {
                 ...formData,
@@ -136,7 +137,7 @@ const CapitalEditModal = ({ capitalData, onClose, onSave }) => {
                     : "No file selected",
             });
 
-            const response = await axiosClient.put(apiUrl, formPayload, {
+            const response = await axiosClient.post(apiUrl, formPayload, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -149,7 +150,7 @@ const CapitalEditModal = ({ capitalData, onClose, onSave }) => {
             setError(
                 err.response?.data?.message || "Failed to update capital offer"
             );
-            // console.error("Error updating capital offer:", err);
+            console.log(err);
         } finally {
             setIsLoading(false);
         }

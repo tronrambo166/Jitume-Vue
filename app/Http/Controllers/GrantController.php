@@ -43,7 +43,7 @@ class GrantController extends Controller
             $user_id = Auth::id();
             $user = User::select('investor','id')->where('id',$user_id)->first();
             if($user->investor == 2){
-                $grants = Grant::where('user_id',$user_id)->get();
+                $grants = Grant::where('user_id',$user_id)->latest()->get();
                 foreach ($grants as $grant){
                     $pitches = GrantApplication::where('grant_id',$grant->id)->count();
                     $grant->pitch_count = $pitches;
@@ -71,7 +71,6 @@ class GrantController extends Controller
         catch (\Exception $e){
             return response()->json(['message'=>$e->getMessage()],400);
         }
-
     }
 
     public function visibility($grant_id)
@@ -326,19 +325,21 @@ class GrantController extends Controller
 
             $request->validate([
                 "id" => "required|numeric",
-                "grantTitle" => "required|string|max:255",
-                "totalGrantAmount" => "required|numeric",
-                "fundingPerBusiness" => "required|numeric",
-                "eligibilityCriteria" => "nullable|string",
-                "applicationDeadline" => "required|date",
-                "grantFocus" => "required|string",
+                "grant_title" => "required|string|max:255",
+                "funding_per_business" => "required|numeric",
+                "eligibility_criteria" => "nullable|string",
+                "required_documents" => "nullable|string",
+                "application_deadline" => "required|date",
+                "grant_focus" => "required|string",
                 "regions" => "nullable|string",
-                "impactObjectives" => "nullable|string",
-                "evaluationCriteria" => "nullable|string",
+                "startup_stage_focus" => "nullable|string",
+                "impact_objectives" => "nullable|string",
+                "evaluation_criteria" => "nullable|string",
             ]);
+            $data = $request->except('grant_brief_pdf'); // get all fields except the file path
 
             //Upload File
-            $grant_brief_pdf = $request->file('grantBriefPDF');
+            $grant_brief_pdf = $request->file('grant_brief_pdf');
             if (!file_exists('files/grants/'.$grant->id))
                 mkdir('files/grants/'.$grant->id, 0777, true);
 
@@ -349,9 +350,13 @@ class GrantController extends Controller
                 $create_name=$uniqid.'.'.$ext;
                 $grant_brief_pdf->move($loc, $create_name);
                 $final_pdf=$loc.$create_name;
-                $request->grant_brief_pdf=$final_pdf;
+                $data['grant_brief_pdf'] = $final_pdf;
+                //Unlink
+                if($grant->grant_brief_pdf !=null && file_exists($grant->grant_brief_pdf)){
+                    unlink($grant->grant_brief_pdf);
+                }
             }
-            $grant->update($request->all());
+            $grant->update($data);
             return response()->json(['message' => 'Grant updated successfully', 'grant' => $grant],200);
         }
         catch(\Exception $e){

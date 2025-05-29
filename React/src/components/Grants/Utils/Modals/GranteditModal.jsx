@@ -44,6 +44,7 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
                         //console.log("Extracted grant data:", data);
 
                         setFormData({
+                            id: data.id || "",
                             grant_title: data.grant_title || "",
                             total_grant_amount: data.total_grant_amount || "",
                             application_deadline:
@@ -103,7 +104,7 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
         fetchGrantData();
     }, [grantData]);
 
-   
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
@@ -141,15 +142,16 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
                 }
             }
 
-            const grantId =
-                typeof grantData === "object" ? grantData.id : grantData;
-            const apiUrl = `/grants/update-grant/${grantId}`;
+            //const grantId =
+                //typeof grantData === "object" ? grantData.id : grantData;
+            const apiUrl = "/grant/update-grant";
 
-            const response = await axiosClient.put(apiUrl, formPayload, {
+            const response = await axiosClient.post(apiUrl, formPayload, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
+            console.log(response);
 
             // Show backend response
             alert(
@@ -161,11 +163,12 @@ const GrantEditModal = ({ grantData, onClose, onSave }) => {
             onClose();
         } catch (err) {
             setError(err.response?.data?.message || "Failed to update grant");
+            console.log(err);
         } finally {
             setIsLoading(false);
         }
     };
-    
+
 
     // Show loader while fetching data
     if (isDataLoading) {

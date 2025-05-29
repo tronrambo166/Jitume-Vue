@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GrantServiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -206,7 +207,7 @@ Route::prefix('/grant')->group(function(){
    Route::post('create-grant', [GrantController::class, 'store']);
    Route::post('grant-application',[GrantController::class,'store_application']);
    Route::get('grants', [GrantController::class, 'index']);
-    Route::get('get_grant/{id}', [GrantController::class, 'get_grant']);
+   Route::get('get_grant/{id}', [GrantController::class, 'get_grant']);
    Route::get('pitches/{grant_id}', [GrantController::class, 'pitches']);
    Route::get('my_pitches', [GrantController::class, 'mypitches']);
    Route::post('update-grant', [GrantController::class, 'update']);
@@ -218,7 +219,7 @@ Route::prefix('/grant')->group(function(){
    Route::post('grant-milestone', [GrantController::class, 'release_milestone']);
    Route::post('match-score/{grant_id}', [MatchController::class, 'score']);
    Route::get('analytics', [AnalyticsController::class, 'index']);
-
+   Route::get('grantWritingServices', [GrantServiceController::class, 'grantWritingServices']);
 
 });
 
@@ -228,6 +229,7 @@ Route::prefix('/capital')->group(function(){
    Route::post('investment-application',[InvCapitalController::class,'store_application']);
    Route::get('capital-offers', [InvCapitalController::class, 'index']);
    Route::get('pitches/{capital_id}', [InvCapitalController::class, 'pitches']);
+   Route::get('get_capital/{id}', [InvCapitalController::class, 'get_capital']);
    Route::get('my_pitches', [InvCapitalController::class, 'mypitches']);
    Route::post('update-capital', [InvCapitalController::class, 'update']);
    Route::get('visibility/{capital_id}', [InvCapitalController::class, 'visibility']);

@@ -34,7 +34,7 @@ class InvCapitalController extends Controller
             $user_id = Auth::id();
             $user = User::select('investor','id')->where('id',$user_id)->first();
             if($user->investor == 3){
-                $capitals = CapitalOffer::where('user_id',$user_id)->get();
+                $capitals = CapitalOffer::where('user_id',$user_id)->latest()->get();
                 foreach ($capitals as $capital){
                     $pitches = StartupPitches::where('capital_id',$capital->id)->count();
                     $capital->pitch_count = $pitches;
@@ -45,6 +45,17 @@ class InvCapitalController extends Controller
         }
         $capital = CapitalOffer::all();
         return response()->json(['capital' => $capital]);
+    }
+
+    public function get_capital($id)
+    {
+        try{
+            $capital = CapitalOffer::find($id);
+            return response()->json(['capital-data' => $capital],200);
+        }
+        catch (\Exception $e){
+            return response()->json(['message'=>$e->getMessage()],400);
+        }
     }
 
     public function visibility($capital_id)
@@ -296,7 +307,6 @@ class InvCapitalController extends Controller
             $request->validate([
                 "id" => "required|numeric",
                 'offer_title' => 'required|string|max:255',
-                'total_capital_available' => 'required|numeric',
                 'per_startup_allocation' => 'required|numeric',
                 'milestone_requirements' => 'nullable|string',
                 'startup_stage' => 'required|string',
@@ -305,6 +315,7 @@ class InvCapitalController extends Controller
                 'required_docs' => 'nullable|string',
                 //'offer_brief_file' => 'nullable|file|mimes:pdf|max:2048',
             ]);
+            $data = $request->except('grant_brief_pdf');
 
             //Upload File
             $offer_brief_file = $request->file('offer_brief_file');
@@ -318,10 +329,14 @@ class InvCapitalController extends Controller
                 $create_name=$uniqid.'.'.$ext;
                 $offer_brief_file->move($loc, $create_name);
                 $final_pdf=$loc.$create_name;
-                $request->offer_brief_file=$final_pdf;
+                $data['offer_brief_file'] = $final_pdf;
+
+                if($capital->offer_brief_file !=null && file_exists($capital->offer_brief_file)){
+                    unlink($capital->offer_brief_file);
+                }
             }
 
-            $capital->update($request->all());
+            $capital->update($data);
             return response()->json(['message' => 'Capital updated successfully', 'capital' => $capital],200);
         }
         catch(\Exception $e){

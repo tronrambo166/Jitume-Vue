@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { useStateContext } from "../../../contexts/contextProvider";
 import axiosClient from "../../../axiosClient";
+import {encode as base64_encode} from "base-64";
 
 const TujitumeDashboard = () => {
     const [filter, setFilter] = useState("all");
@@ -89,6 +90,34 @@ const TujitumeDashboard = () => {
             //console.error("Failed to fetch grant analytics:", err);
             throw err;
         }
+    };
+
+    const grantServicesPage = () => {
+            let ids = "";
+            axiosClient.get("grant/grantWritingServices")
+                .then((data ) => {
+                    console.log(data);
+                    console.log(data.data.results);
+                    if (data.status == 200) {
+                        const services = data.data.results;
+                        Object.entries(services).forEach((entry) => {
+                            const [index, row] = entry;
+                            ids = ids + row.id + ",";
+                        });
+                        if (!ids) ids = 0;
+                        sessionStorage.setItem("queryLat", data.data.lat);
+                        sessionStorage.setItem("queryLng", data.data.lng);
+                        navigate(
+                            "/grant-writing-services/" + base64_encode(ids) +
+                            "/" + data.data.loc
+                        );
+                    }
+                    else
+                        console.log('Error:', data.message);
+                })
+                .catch((err) => {
+                    console.error("Failed to fetch grant analytics:", err);
+                });
     };
 
     const fetchInvestmentsData = async () => {
@@ -641,11 +670,7 @@ const TujitumeDashboard = () => {
                             <div className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg p-1.5 border border-white border-opacity-20">
                                 <div className="flex items-center text-xs">
                                     <div
-                                        onClick={() => {
-                                            handleNavigate(
-                                                `/serviceResults/Niw1NSw2MCw2Niw2OCw3MCw3MSw3Nyw3OCw3OSw4MCw4MSw4Miw4Myw4NCw4NSw4Niw4Nyw=/false`
-                                            );
-                                        }}
+                                        onClick={grantServicesPage}
                                         className="px-3 py-1.5 rounded-lg flex items-center hover:bg-white hover:bg-opacity-10 transition cursor-pointer"
                                     >
                                         <BellRing
@@ -659,7 +684,7 @@ const TujitumeDashboard = () => {
 
                                     <div
                                         onClick={() => {
-                                            handleNavigate(`/`);
+                                            grantServicesPage2
                                         }}
                                         className="px-3 py-1.5 rounded-lg flex items-center hover:bg-white hover:bg-opacity-10 transition cursor-pointer"
                                     >
