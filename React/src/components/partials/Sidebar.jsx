@@ -67,7 +67,7 @@ const Sidebar = ({ onToggle }) => {
     }, []);
 
     useEffect(() => {
-        axiosClient.get("business/getCurrSubscription/").then((data) => {
+        axiosClient.get("business/getCurrSubscription").then((data) => {
             console.log(data);
             setSubId(data.data.mySub.id);
         });
