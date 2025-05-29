@@ -292,7 +292,7 @@ class checkoutController extends Controller
     $user_id = Auth::id();
     $subscribed = BusinessSubscriptions::where('investor_id',$user_id)
     ->where('active',1)->orderBy('id','DESC')->first();
-    return response()->json(['mySub'=>$subscribed], 200);
+    return response()->json(['mySub' => $subscribed], 200);
     }
 
      public function cancelSubscription($id)

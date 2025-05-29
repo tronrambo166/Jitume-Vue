@@ -189,7 +189,7 @@ Route::post('add_doc', [ServiceController::class, 'add_docs'])->name('add_docs')
 Route::post('add_video', [ServiceController::class, 'add_video'])->name('add_videos');
 Route::post('embed_service_videos', [ServiceController::class, 'embed_service_videos'])->name('embed_service_videos');
 
-Route::get('/getCurrSubscription', [checkoutController::class, 'getCurrSubscription'])->name('getCurrSubscription');
+Route::get('getCurrSubscription', [checkoutController::class, 'getCurrSubscription']);
 Route::get('cancelSubscription/{id}', [checkoutController::class, 'cancelSubscription'])->name('cancelSubscription');
 Route::get('fetchUser/{id}', [AuthController::class, 'fetchUser']);
 Route::get('bidInfo/{id}', [bidsEmailController::class, 'bid_info']);
