@@ -704,7 +704,7 @@ const Sidebar = ({ onToggle }) => {
                                 <button
                                     className="navLink flex items-center gap-4 py-2 px-4 rounded text-[12px] sm:text-[14px] md:text-[16px] transition-colors duration-300
                                             bg-green-800 text-white"
-                                    onClick={cancelSubscription}
+                                    //onClick={cancelSubscription}
                                 >
                                     <BsQuestionCircle />
                                     <span>Cancel Subscription</span>
