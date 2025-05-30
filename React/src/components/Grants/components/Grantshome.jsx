@@ -683,9 +683,7 @@ const TujitumeDashboard = () => {
                                     </div>
 
                                     <div
-                                        onClick={() => {
-                                            grantServicesPage2
-                                        }}
+                                        onClick={grantServicesPage}
                                         className="px-3 py-1.5 rounded-lg flex items-center hover:bg-white hover:bg-opacity-10 transition cursor-pointer"
                                     >
                                         <UserPlus

@@ -19,13 +19,17 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://beta.tujitume.com'],
+    'allowed_origins' => [
+        'https://beta.tujitume.com',
+        'http://localhost:81', // for Vite/React
+        'http://127.0.0.1:81', // if you're using 127.0.0.1 directly
+    ],
 
     'allowed_headers' => ['*'],
 
     'exposed_headers' => [],
 
     'max_age' => 0,
-    
+
     'supports_credentials' => false,
 ];

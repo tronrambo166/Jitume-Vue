@@ -437,7 +437,7 @@ const PaymentForm = () => {
 
         let status_url = ''; let redirect_url = ''; let content = '';
         if (purpos == "bids") {
-            status_url = `/lipr-status-bids/${business_id}/${amountToSend}`;
+            status_url = `/lipr-status-bids/${business_id}/${amountToSend}/${percent}`;
             redirect_url = 'dashboard/';
             content = "Go to Dashboard to see bid status.";
         }
@@ -498,24 +498,6 @@ const PaymentForm = () => {
                                     if(purpos == 's_mile')
                                         redirect_url = '/service-milestones/'+res.data.service_id;
 
-                                    // if (result === "processed") {
-                                    //     clearInterval(interval);
-                                    //     setPaymentStatus("success");
-                                    //     mpesasetLoading(false);
-                                    //     setTimeout(
-                                    //         () => navigate("/dashboard"),
-                                    //         3000
-                                    //     );
-                                    // } else if (
-                                    //     result === "failed" ||
-                                    //     result === 404 ||
-                                    //     res.data.error ===
-                                    //         "Payment not found"
-                                    // ) {
-                                    //     clearInterval(interval);
-                                    //     setPaymentStatus("failed");
-                                    //     mpesasetLoading(false);
-                                    // }
                                     if (result === "processed") {
                                         clearInterval(interval);
                                         setPaymentStatus("success");
@@ -574,7 +556,26 @@ const PaymentForm = () => {
 
         }, 500);
     };
-    //M P E S A
+    //M P E S A  ENDS
+
+    // if (result === "processed") {
+    //     clearInterval(interval);
+    //     setPaymentStatus("success");
+    //     mpesasetLoading(false);
+    //     setTimeout(
+    //         () => navigate("/dashboard"),
+    //         3000
+    //     );
+    // } else if (
+    //     result === "failed" ||
+    //     result === 404 ||
+    //     res.data.error ===
+    //         "Payment not found"
+    // ) {
+    //     clearInterval(interval);
+    //     setPaymentStatus("failed");
+    //     mpesasetLoading(false);
+    // }
 
     //OTHER PAYMENTS
 

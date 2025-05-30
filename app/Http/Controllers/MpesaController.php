@@ -221,7 +221,7 @@ class MpesaController extends Controller
 
 
     // C H E C K  P A Y M E N T  S T A T U S   &   U P D A T E  D A T A B A S E
-    public function status_bids($business_id,$amounts_passed,$referenceId)
+    public function status_bids($business_id,$amounts_passed,$share,$referenceId)
     {
         if(Auth::check()){
             $investor_id = Auth::id();
@@ -260,7 +260,7 @@ class MpesaController extends Controller
                 'owner_id' => $owner->id,
                 'type' => $type,
                 'amount' => $amountRealUSD,
-                'representation' => $payment->share,
+                'representation' => $share,
                 'lipr_transaction_id' => $referenceId
             ]);
 
@@ -329,7 +329,7 @@ class MpesaController extends Controller
         }
         else {
             return response()->json(['message' => 'Unauthorized!','status' => 401 ]);
-        }
+        } return $amounts_passed;
         $investor_id = 112;
         $payment = LiprPayment::where('reference_id', $referenceId)->first();
         if (!$payment) {

@@ -81,8 +81,8 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/checkAuth', [AuthController::class,'checkAuth']);
 
     // L I P R
-    Route::get('/lipr-status-bids/{listing_id}/{amountReal}/{reference_id}', [MpesaController::class,'status_bids']);
-    Route::get('/lipr-status-bidsAwaiting/{listing_id}/{amountReal}/{reference_id}', [MpesaController::class,'status_bids']);
+    Route::get('/lipr-status-bids/{listing_id}/{amountReal}/{share}/{reference_id}', [MpesaController::class,'status_bids']);
+    Route::get('/lipr-status-bidsAwaiting/{listing_id}/{amountReal}/{reference_id}', [MpesaController::class,'status_bidsAwaiting']);
     Route::get('/lipr-status-service/{listing_id}/{amountReal}/{reference_id}', [MpesaController::class,'status_service']);
     Route::get('/lipr-status-smallFee/{listing_id}/{amountReal}/{reference_id}', [MpesaController::class,'status_smallFee']);
     Route::get('/lipr-status-grant/{listing_id}/{amountReal}/{percent}/{reference_id}', [MpesaController::class,'release_grant_milestone']);
