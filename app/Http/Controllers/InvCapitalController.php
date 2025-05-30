@@ -165,7 +165,6 @@ class InvCapitalController extends Controller
                 'contact_person_name' => 'required|string|max:100',
                 'contact_person_email' => 'required|email|max:100',
                 'sector' => 'required|string|max:255',
-                'regions' => 'required|string|max:255',
                 'headquarters_location' => 'required|string|max:255',
                 'stage' => 'required|string|max:200',
                 'revenue_last_12_months' => 'nullable|numeric',
@@ -194,7 +193,6 @@ class InvCapitalController extends Controller
                 'contact_person_name' => $request->contact_person_name,
                 'contact_person_email' => $request->contact_person_email,
                 'sector' => $request->sector,
-                'regions' => $request->regions,
                 'headquarters_location' => $request->headquarters_location,
                 'stage' => $request->stage,
                 'revenue_last_12_months' => $request->revenue_last_12_months,
@@ -394,4 +392,69 @@ class InvCapitalController extends Controller
             return response()->json(['message' => $e->getMessage()], 400);
         }
     }
+
+    public function release_milestone(Request $request)
+    {
+        try {
+            $milestone = CapitalMilestone::where('id', $request->listing)->first();
+            $pitch = StartupPitches::with('capital')->where('id', $milestone->app_id)->first();
+            $owner = User::select('fname', 'email', 'connect_id')->where('id', $pitch->user_id)->first();
+
+            // T r a n s f e r
+            $curr = 'USD';
+            $db_amount = $milestone->amount + $milestone->amount * 0.05;
+            $amount = $request->amount;
+            $amountOriginal = $request->amountOriginal;
+            $transferAmount = round($amount - ($amountOriginal * 0.05), 2);
+
+            $this->validate($request, [
+                'stripeToken' => ['required', 'string']
+            ]);
+
+            if ($request->percent != 100 && $db_amount != $amount) {
+                return response()->json(['message' => 'Amount does not match!'], 400);
+            }
+
+            if ($request->percent != 100) {
+                $charge = $this->Client->charges->create([
+                    "amount" => $amount * 100,
+                    "currency" => $curr,
+                    "source" => $request->stripeToken,
+                    "description" => "Release Capital Milestone Funds"
+                ]);
+
+                $milestone->update([
+                    'status' => 1,
+                ]);
+
+                $capitalUp = Capital::where('id', $pitch->capital_id)->update([
+                    'available_amount' => DB::raw("available_amount - {$amount}")
+                ]);
+            } else {
+                $charge = $this->Client->charges->create([
+                    "amount" => $pitch->total_amount_requested * 100,
+                    "currency" => $curr,
+                    "source" => $request->stripeToken,
+                    "description" => "Release Capital Milestone Funds"
+                ]);
+
+                CapitalMilestone::where('app_id', $milestone->app_id)->update([
+                    'status' => 1,
+                ]);
+
+                $capitalUp = CapitalOffer::where('id', $pitch->capital_id)->update([
+                    'available_amount' => DB::raw("available_amount - {$pitch->total_amount_requested}")
+                ]);
+            }
+
+            $text = $milestone->title . ' fund for ' . $pitch->capital->offer_title . ' has been released.';
+            $notification = new Notification();
+            $notification->create($pitch->user_id, $pitch->capital->user_id, $text, 'capital-overview/capital/discover', 'capital');
+
+            return response()->json(['message' => 'Fund Release Success.', 'status' => 200]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
 }

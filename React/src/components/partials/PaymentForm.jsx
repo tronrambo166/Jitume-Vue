@@ -448,7 +448,7 @@ const PaymentForm = () => {
         }
         else if (purpos === "awaiting_payment") {
             status_url = `/lipr-status-bidsAwaiting/${business_id}/${amountToSend}`;
-            redirect_url = 'dashboard/';
+            redirect_url = '/dashboard';
             content = "Go to Dashboard to see bid status.";
         }
         else if (purpos === "grant_milestone") {

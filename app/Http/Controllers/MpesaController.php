@@ -329,7 +329,7 @@ class MpesaController extends Controller
         }
         else {
             return response()->json(['message' => 'Unauthorized!','status' => 401 ]);
-        } return $amounts_passed;
+        }
         $investor_id = 112;
         $payment = LiprPayment::where('reference_id', $referenceId)->first();
         if (!$payment) {

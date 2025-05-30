@@ -148,27 +148,25 @@ class MatchScore
     }
 
 
-    public function capital($request,$capital_id)
+    public function capital($request, $capital_id)
     {
-        $now=date("Y-m-d H:i"); $date=date('d M, h:i a',strtotime($now));
-        $capital = CapitalOffer::where('id',$capital_id)->first();
+        $now = date("Y-m-d H:i");
+        $date = date('d M, h:i a', strtotime($now));
+        $capital = CapitalOffer::where('id', $capital_id)->first();
         $score = 0;
 
-        try{
+        try {
             // Input data
             $business = [
-                'sectors' => explode(',',$request->sector),
-                'region' => explode(',',$request->headquarters_location),
+                'sectors' => explode(',', $request->sector),
+                'region' => explode(',', $request->headquarters_location), // Modified: treat region as array
                 'stage' => $request->stage,
-                'revenue' => $request->revenue_last_12_months,
+                'revenue' => (float) $request->revenue_last_12_months,
                 'team_size' => $request->team_experience_avg_years,
-                'impact_score' => explode(',',$request->social_impact_areas),
-                'milestones_achieved' => true,
+                'impact_score' => collect(explode(',', $request->social_impact_areas))
+                    ->flatMap(fn($area) => explode(' ', strtolower(trim($area)))), // Modified: flatten for keywords
+                'milestones_achieved' => false, // Modified: initially false
                 'documents_submitted' => $request->file('business_plan_file') != null ? true : false,
-                //'is_gender_led' => true,
-                //'is_youth_led' => false,
-                //'is_rural_based' => true,
-                //'uses_local_sourcing' => true,
             ];
 
             $org = [
@@ -177,8 +175,9 @@ class MatchScore
                 'target_stages' => explode(',', $capital->startup_stage),
                 'revenue' => $capital->per_startup_allocation,
                 'team_size' => $request->exit_strategy,
-                'impact_score' => explode(',', $request->social_impact_areas),
-                'milestones_achieved' => true,
+                'impact_score' => collect(explode(' ', strtolower($capital->impact_objectives)))
+                    ->map(fn($item) => trim($item)), // Modified: normalize for keyword match
+                'milestones_achieved' => false,
                 'documents_submitted' => $request->file('offer_brief_file') != null ? true : false,
             ];
 
@@ -187,8 +186,9 @@ class MatchScore
             $sectorScore = count($commonSectors) / count($org['preferred_sectors']) * 100;
             $score += $sectorScore * 0.30;
 
-            // Geographic Fit (15%)
-            $geoScore = in_array($business['region'], $org['target_regions']) ? 100 : 0;
+            // Geographic Fit (15%) - Modified
+            $geoMatch = array_intersect($business['region'], $org['target_regions']);
+            $geoScore = count($geoMatch) > 0 ? 100 : 0;
             $score += $geoScore * 0.15;
 
             // Startup Stage Compatibility (10%)
@@ -199,15 +199,21 @@ class MatchScore
             $revenueScore = $business['revenue'] >= $org['revenue'] ? 100 : 0;
             $score += $revenueScore * 0.10;
 
-            // Team Experience / Background (10%)
-            //$teamScore = $business['team_size'] >= $org['team_threshold'] ? 100 : 0;
-            //$score += $teamScore * 0.10;
-
-            // Impact Focus (10%)
-            $impactScore = array_intersect($business['impact_score'], $org['impact_score']) ? 100 : 0;
+            // Impact Focus (10%) - Modified
+            $matchCount = 0;
+            foreach ($business['impact_score'] as $item) {
+                $matchCount += substr_count(implode(' ', $org['impact_score']->toArray()), $item);
+            }
+            $impactScore = $matchCount >= 2 ? 100 : 0;
             $score += $impactScore * 0.10;
 
-            // Milestone Success (10%)
+            // Milestone Success (10%) - Modified
+            foreach ($request->file('milestones') ?? [] as $milestone) {
+                if (isset($milestone['deliverable']) && $milestone['deliverable'] instanceof \Illuminate\Http\UploadedFile) {
+                    $business['milestones_achieved'] = true;
+                    break;
+                }
+            }
             $milestoneScore = $business['milestones_achieved'] ? 100 : 0;
             $score += $milestoneScore * 0.10;
 
@@ -215,15 +221,17 @@ class MatchScore
             $documentScore = $business['documents_submitted'] ? 100 : 0;
             $score += $documentScore * 0.05;
 
-            // Bonus (up to +20)
-            $bonus_points = explode(',',$request->bonus_points);$bonus = 0;
+            // Bonus (up to +20) - Modified
+            $bonus_points = explode(',', $request->bonus_points);
+            $bo = 0;
             foreach ($bonus_points as $bonus) {
-                if ($bonus == 'gender_led') $score += 5;
-                else if ($bonus == 'youth_led') $score += 5;
-                else if ($bonus == 'rural_based') $score += 5;
-                else if($bonus == 'uses_local_sourcing') $score += 5;
+                if (in_array($bonus, ['gender_led', 'youth_led', 'rural_based', 'uses_local_sourcing'])) {
+                    $bo += 5;
+                }
             }
+            $score += $bo;
 
+            // Cap score
             $score = min($score, 100);
 
             // Final Result
@@ -245,12 +253,13 @@ class MatchScore
                     'Revenue Traction' => round($revenueScore * 0.10, 2),
                     'Impact Focus' => round($impactScore * 0.10, 2),
                     'Milestone Success' => round($milestoneScore * 0.10, 2),
-                    'Document Completeness' => round($documentScore * 0.05, 2)
-                ],
+                    'Document Completeness' => round($documentScore * 0.05, 2),
+                    'Bonus' => $bo
+                ]
             ]);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }
     }
+
 }

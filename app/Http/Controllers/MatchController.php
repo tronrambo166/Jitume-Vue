@@ -14,4 +14,10 @@ class MatchController extends Controller
         $score = $match->grant($request, $grant_id);
         return response()->json($score,200);
     }
+
+    public function score_capital(MatchScore $match, Request $request, $capital_id)
+    {
+        $score = $match->capital($request, $capital_id);
+        return response()->json($score,200);
+    }
 }
