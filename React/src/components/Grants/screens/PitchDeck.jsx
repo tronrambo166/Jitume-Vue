@@ -1,5 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { Table, ChevronDown, ChevronUp, Play, Download, Users, BarChart, FileText, Star, Search, Filter, Bell, Calendar, TrendingUp, Clock, Bookmark, CheckCircle, Trash2, Flag, Info } from 'lucide-react';
+import {
+    Table,
+    ChevronDown,
+    Loader2,
+    Play,
+    Download,
+    Users,
+    BarChart,
+    FileText,
+    Star,
+    Search,
+    Filter,
+    Bell,
+    Calendar,
+    TrendingUp,
+    Clock,
+    Bookmark,
+    CheckCircle,
+    Trash2,
+    Flag,
+    Info,
+    VideoOff,
+} from "lucide-react";
 import axiosClient from "../../../axiosClient";
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -15,6 +37,8 @@ const PitchDashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isChanging, setIsChanging] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
+
 
   // Royalty-free images and video links
   const mediaAssets = {
@@ -249,7 +273,95 @@ const PitchDashboard = () => {
       default: return 'bg-gray-100 text-gray-800';
     }
   };
+  const VideoPlayerWithThumbnail = ({ videoUrl, thumbnailUrl }) => {
+      const [hasError, setHasError] = useState(false);
+      const [isLoading, setIsLoading] = useState(true);
+      const [isPlaying, setIsPlaying] = useState(false);
 
+      const handlePlayClick = () => {
+          setIsPlaying(true);
+      };
+
+      return (
+          <div className="w-full h-full relative">
+              {!isPlaying ? (
+                  // Thumbnail preview state
+                  <div
+                      className="w-full h-full cursor-pointer relative"
+                      onClick={handlePlayClick}
+                  >
+                      {/* <img
+                          src={thumbnailUrl}
+                          alt="Video thumbnail"
+                          className="w-full h-full object-cover"
+                      /> */}
+                      <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center group-hover:bg-opacity-10 transition-all">
+                          <div className="w-16 h-16 bg-black bg-opacity-60 rounded-full flex items-center justify-center hover:bg-opacity-80 transition-all">
+                              <Play className="text-white w-6 h-6 ml-1" />
+                          </div>
+                      </div>
+                      <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
+                          0:00
+                      </div>
+                  </div>
+              ) : (
+                  // Video playing state
+                  <>
+                      {hasError ? (
+                          <div className="w-full h-full flex flex-col items-center justify-center bg-gray-900 p-4">
+                              <VideoOff
+                                  size={24}
+                                  className="text-gray-500 mb-2"
+                              />
+                              <p className="text-sm text-gray-400">
+                                  Video unavailable
+                              </p>
+                              <a
+                                  href={videoUrl}
+                                  className="text-blue-400 text-xs mt-1 hover:underline"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                              >
+                                  Try downloading instead
+                              </a>
+                          </div>
+                      ) : (
+                          <>
+                              {isLoading && (
+                                  <div className="absolute inset-0 flex items-center justify-center bg-black">
+                                      <Loader2
+                                          className="animate-spin text-gray-400"
+                                          size={24}
+                                      />
+                                  </div>
+                              )}
+                              <video
+                                  controls
+                                  autoPlay
+                                  className={`w-full h-full object-contain ${
+                                      isLoading ? "opacity-0" : "opacity-100"
+                                  }`}
+                                  style={{
+                                      borderRadius: "0.75rem",
+                                      background: "#000",
+                                  }}
+                                  onCanPlay={() => setIsLoading(false)}
+                                  onError={() => setHasError(true)}
+                              >
+                                  <source src={videoUrl} type="video/mp4" />
+                                  <source
+                                      src={videoUrl.replace(".mp4", ".webm")}
+                                      type="video/webm"
+                                  />
+                                  Your browser does not support the video tag.
+                              </video>
+                          </>
+                      )}
+                  </>
+              )}
+          </div>
+      );
+  };
   // Match score colors
   const getMatchColor = (score) => {
     if (score >= 90) return 'bg-green-100 text-green-800';
@@ -1044,7 +1156,6 @@ const PitchDashboard = () => {
                                               </p>
                                           </div>
                                       </div>
-
                                       {/* Sectors & Impact Areas */}
                                       <div className="mb-8">
                                           <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
@@ -1071,7 +1182,6 @@ const PitchDashboard = () => {
                                               </div>
                                           </div>
                                       </div>
-
                                       {/* Business Details */}
                                       <div className="mb-8">
                                           <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
@@ -1120,7 +1230,6 @@ const PitchDashboard = () => {
                                               </div>
                                           </div>
                                       </div>
-
                                       {/* Grant Details */}
                                       <div className="mb-8">
                                           <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
@@ -1165,37 +1274,55 @@ const PitchDashboard = () => {
                                               </div>
                                           </div>
                                       </div>
+                                      {/* Pitch Video */}
 
                                       {/* Pitch Video */}
-                                      {selectedPitch.pitch_video && (
-                                          <div className="mb-8">
-                                              <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
+                                      {/* Pitch Video */}
+                                      <section className="mb-8">
+                                          <div className="flex items-center mb-3">
+                                              <Play
+                                                  size={20}
+                                                  className="text-green-700 mr-2"
+                                              />
+                                              <h4 className="text-base font-semibold text-green-900 uppercase tracking-wider">
                                                   Pitch Video
                                               </h4>
-                                              <div className="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg overflow-hidden shadow-sm">
-                                                  <video
-                                                      controls
-                                                      poster={
-                                                          mediaAssets
-                                                              ?.thumbnails?.[0] ||
-                                                          "/path/to/default/thumbnail.jpg"
-                                                      }
-                                                      className="w-full h-full object-cover"
-                                                  >
-                                                      {/*+selectedPitch.pitch_video*/}
-                                                      <source
-                                                          src={
-                                                              "https://tujitume.com/" +
-                                                              selectedPitch.pitch_video
-                                                          }
-                                                          type="video/mp4"
-                                                      />
-                                                      Your browser does not
-                                                      support the video tag.
-                                                  </video>
-                                              </div>
                                           </div>
-                                      )}
+
+                                          {selectedPitch.pitch_video ? (
+                                              <div
+                                                  className="w-full max-w-2xl mx-auto rounded-xl overflow-hidden shadow-lg border border-gray-200 bg-black relative group"
+                                                  style={{
+                                                      aspectRatio: "16/9",
+                                                      minHeight: 180,
+                                                      maxHeight: 360,
+                                                  }}
+                                              >
+                                                  <VideoPlayerWithThumbnail
+                                                      videoUrl={
+                                                          "https://tujitume.com/" +
+                                                          selectedPitch.pitch_video
+                                                      }
+                                                      thumbnailUrl={
+                                                          selectedPitch.pitch_video_thumbnail ||
+                                                          "/default-video-poster.jpg"
+                                                      }
+                                                  />
+                                              </div>
+                                          ) : (
+                                              <div className="w-full max-w-2xl mx-auto rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center h-48 text-gray-500 text-sm font-medium">
+                                                  No pitch video provided for
+                                                  this application.
+                                              </div>
+                                          )}
+
+                                          <div className="flex items-center mt-2 text-xs text-gray-500">
+                                              <span>
+                                                  Video preview of the pitch
+                                                  presentation.
+                                              </span>
+                                          </div>
+                                      </section>
                                   </div>
 
                                   {/* Right Sidebar */}

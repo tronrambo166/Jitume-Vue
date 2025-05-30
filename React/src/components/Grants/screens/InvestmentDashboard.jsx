@@ -710,199 +710,203 @@ const InvestmentOpportunities = () => {
                         </button>
                     </div>
                 ) : activeTab === "discover" ? (
-                    <div className="space-y-6">
+                    <div className="space-y-4 sm:space-y-6">
                         {filteredOpportunities.length > 0 ? (
                             filteredOpportunities.map((opp) => (
                                 <div
                                     key={opp.id}
-                                    className="bg-white border border-neutral-200 rounded-lg p-6 flex flex-col md:flex-row justify-between items-start hover:shadow-sm transition-shadow"
+                                    className="bg-white border border-neutral-200 rounded-lg p-4 sm:p-6 flex flex-col gap-4 hover:shadow-sm transition-shadow"
                                 >
-                                    <div className="flex-grow w-full">
-                                        <div className="flex items-center">
-                                            {user?.investor && (
-                                                <div>
-                                                    {/* Your capitals list rendering */}
-                                                    <button
-                                                        onClick={() =>
-                                                            handleEditCapital(
-                                                                opp.id
-                                                            )
-                                                        }
-                                                        className="text-yellow-500 bg-neutral-100 rounded-full mr-4 font-semibold py-4 px-4"
-                                                    >
-                                                        <Edit3 className=" text-[10px]" />
-                                                    </button>
+                                    {/* Header section - actions and basic info */}
+                                    <div className="flex justify-between items-start gap-4">
+                                        {/* Edit/Delete buttons - only for investors */}
+                                        {user?.investor && (
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() =>
+                                                        handleEditCapital(
+                                                            opp.id
+                                                        )
+                                                    }
+                                                    className="text-yellow-500 bg-neutral-100 rounded-full font-semibold p-2 sm:p-4"
+                                                >
+                                                    <Edit3
+                                                        size={14}
+                                                        className="sm:text-[10px]"
+                                                    />
+                                                </button>
 
-                                                    {isCapitalEditModalOpen && (
-                                                        <CapitalEditModal
-                                                            capitalData={
-                                                                selectedCapital
-                                                            }
-                                                            onClose={() =>
-                                                                setIsCapitalEditModalOpen(
-                                                                    false
-                                                                )
-                                                            }
-                                                            onSave={
-                                                                handleCapitalUpdate
-                                                            }
-                                                        />
-                                                    )}
-                                                </div>
-                                            )}
-                                            {user?.investor && ( // Changed to proper conditional rendering
                                                 <button
                                                     onClick={() =>
                                                         handleDeleteClick(
                                                             opp.id
                                                         )
                                                     }
-                                                    className="text-red-500 bg-neutral-100 rounded-full font-semibold py-4 px-4"
+                                                    className="text-red-500 bg-neutral-100 rounded-full font-semibold p-2 sm:p-4"
                                                 >
-                                                    <Trash />
+                                                    <Trash size={14} />
                                                 </button>
-                                            )}
-                                        </div>
-                                        <div className="flex flex-col md:flex-row md:items-center mb-4 gap-2 md:gap-4">
-                                            <h2 className="text-xl font-medium">
-                                                {opp.name}
-                                            </h2>
-                                            <div className="flex items-center gap-2">
-                                                <span
-                                                    className={`px-2 py-1 rounded-full text-xs ${getStatusColor(
-                                                        opp.status
-                                                    )}`}
-                                                >
-                                                    {opp.status}
-                                                </span>
-                                                <span className="text-sm text-neutral-500 flex items-center">
-                                                    <MapPin
-                                                        size={14}
-                                                        className="mr-1"
-                                                    />{" "}
-                                                    {opp.location}
-                                                </span>
                                             </div>
-                                        </div>
+                                        )}
 
-                                        <div className="flex flex-wrap gap-x-4 gap-y-2 text-neutral-600 mb-4">
-                                            <span className="flex items-center gap-1 text-emerald-700">
-                                                <span className="bg-emerald-100 p-1 rounded-full">
-                                                    <Eye
-                                                        size={12}
-                                                        className="text-emerald-600"
-                                                    />
-                                                </span>
-                                                {opp.pitch_count ?? 0} Pitches
-                                            </span>
-                                            <span className="flex items-center gap-1">
-                                                <BadgePercent size={14} />{" "}
-                                                {opp.sector}
-                                            </span>
-                                            <span>{opp.stage}</span>
-                                            <span className="font-semibold">
-                                                ${opp.amount.toLocaleString()}
-                                            </span>
-                                            {opp.isFemaleLed && (
-                                                <span className="flex items-center gap-1 text-emerald-600">
-                                                    <Venus size={14} />{" "}
-                                                    Female-Led
-                                                </span>
-                                            )}
-                                            {opp.isYouthLed && (
-                                                <span className="flex items-center gap-1 text-emerald-600">
-                                                    <Clock size={14} />{" "}
-                                                    Youth-Led
-                                                </span>
-                                            )}
-                                            {opp.isRuralBased && (
-                                                <span className="flex items-center gap-1 text-emerald-600">
-                                                    <Home size={14} /> Rural
-                                                </span>
-                                            )}
-                                            {opp.usesLocalSourcing && (
-                                                <span className="flex items-center gap-1 text-emerald-600">
-                                                    <LocateFixed size={14} />{" "}
-                                                    Local Sourcing
-                                                </span>
-                                            )}
-                                        </div>
+                                        {isCapitalEditModalOpen && (
+                                            <CapitalEditModal
+                                                capitalData={selectedCapital}
+                                                onClose={() =>
+                                                    setIsCapitalEditModalOpen(
+                                                        false
+                                                    )
+                                                }
+                                                onSave={handleCapitalUpdate}
+                                            />
+                                        )}
 
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm text-neutral-700 mb-4">
-                                            <div>
-                                                <span className="block text-neutral-500 uppercase text-xs mb-1">
-                                                    Required Documents
-                                                </span>
-                                                <span className="font-medium">
-                                                    {opp.requiredDocs.length > 0
-                                                        ? opp.requiredDocs
-                                                              .slice(0, 2)
-                                                              .join(", ") +
-                                                          (opp.requiredDocs
-                                                              .length > 2
-                                                              ? "..."
-                                                              : "")
-                                                        : "None specified"}
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <span className="block text-neutral-500 uppercase text-xs mb-1">
-                                                    Per Startup Allocation
-                                                </span>
-                                                <span className="font-medium">
-                                                    $
-                                                    {opp.perStartupAmount
-                                                        ? opp.perStartupAmount.toLocaleString()
-                                                        : "Not specified"}
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <span className="block text-neutral-500 uppercase text-xs mb-1">
-                                                    Listed Date
-                                                </span>
-                                                <span className="font-medium">
-                                                    {new Date(
-                                                        opp.createdAt
-                                                    ).toLocaleDateString()}
-                                                </span>
+                                        {/* Title and status */}
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                                                <h2 className="text-lg sm:text-xl font-medium truncate">
+                                                    {opp.name}
+                                                </h2>
+                                                <div className="flex flex-wrap items-center gap-2">
+                                                    <span
+                                                        className={`px-2 py-1 rounded-full text-xs ${getStatusColor(
+                                                            opp.status
+                                                        )}`}
+                                                    >
+                                                        {opp.status}
+                                                    </span>
+                                                    <span className="text-xs sm:text-sm text-neutral-500 flex items-center">
+                                                        <MapPin
+                                                            size={12}
+                                                            className="mr-1"
+                                                        />
+                                                        {opp.location}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="flex flex-col md:items-end w-full md:w-auto gap-4">
-                                        <div className="flex justify-between w-full md:w-auto gap-6">
+                                    {/* Tags and metadata */}
+                                    <div className="flex flex-wrap gap-2 sm:gap-4 text-neutral-600 text-xs sm:text-sm">
+                                        <span className="flex items-center gap-1 text-emerald-700">
+                                            <span className="bg-emerald-100 p-1 rounded-full">
+                                                <Eye
+                                                    size={12}
+                                                    className="text-emerald-600"
+                                                />
+                                            </span>
+                                            {opp.pitch_count ?? 0} Pitches
+                                        </span>
+                                        <span className="flex items-center gap-1">
+                                            <BadgePercent size={12} />{" "}
+                                            {opp.sector}
+                                        </span>
+                                        <span>{opp.stage}</span>
+                                        <span className="font-semibold">
+                                            ${opp.amount.toLocaleString()}
+                                        </span>
+                                        {opp.isFemaleLed && (
+                                            <span className="flex items-center gap-1 text-emerald-600">
+                                                <Venus size={12} /> Female-Led
+                                            </span>
+                                        )}
+                                        {opp.isYouthLed && (
+                                            <span className="flex items-center gap-1 text-emerald-600">
+                                                <Clock size={12} /> Youth-Led
+                                            </span>
+                                        )}
+                                        {opp.isRuralBased && (
+                                            <span className="flex items-center gap-1 text-emerald-600">
+                                                <Home size={12} /> Rural
+                                            </span>
+                                        )}
+                                        {opp.usesLocalSourcing && (
+                                            <span className="flex items-center gap-1 text-emerald-600">
+                                                <LocateFixed size={12} /> Local
+                                                Sourcing
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    {/* Details grid - single column on mobile */}
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 text-sm text-neutral-700">
+                                        <div>
+                                            <span className="block text-neutral-500 uppercase text-xs mb-1">
+                                                Required Documents
+                                            </span>
+                                            <span className="font-medium">
+                                                {opp.requiredDocs.length > 0
+                                                    ? opp.requiredDocs
+                                                          .slice(0, 2)
+                                                          .join(", ") +
+                                                      (opp.requiredDocs.length >
+                                                      2
+                                                          ? "..."
+                                                          : "")
+                                                    : "None specified"}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span className="block text-neutral-500 uppercase text-xs mb-1">
+                                                Per Startup Allocation
+                                            </span>
+                                            <span className="font-medium">
+                                                $
+                                                {opp.perStartupAmount
+                                                    ? opp.perStartupAmount.toLocaleString()
+                                                    : "Not specified"}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span className="block text-neutral-500 uppercase text-xs mb-1">
+                                                Listed Date
+                                            </span>
+                                            <span className="font-medium">
+                                                {new Date(
+                                                    opp.createdAt
+                                                ).toLocaleDateString()}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {/* Footer section - stats and actions */}
+                                    <div className="flex flex-col sm:flex-row justify-between gap-4 sm:gap-6 pt-2 border-t border-neutral-100">
+                                        {/* Stats */}
+                                        <div className="flex justify-between sm:justify-start sm:gap-6 w-full sm:w-auto">
                                             <div>
-                                                <span className="text-sm text-neutral-500">
+                                                <span className="text-xs sm:text-sm text-neutral-500">
                                                     Match Score
                                                 </span>
-                                                <div className="text-2xl font-light">
+                                                <div className="text-xl sm:text-2xl font-light">
                                                     {opp.matchScore}%
                                                 </div>
                                             </div>
-                                            <div className="hidden md:block border-l border-neutral-200"></div>
+                                            <div className="hidden sm:block border-l border-neutral-200"></div>
                                             <div className="flex flex-col">
-                                                <span className="text-sm text-neutral-500">
+                                                <span className="text-xs sm:text-sm text-neutral-500">
                                                     Total Capital
                                                 </span>
-                                                <div className="text-2xl font-light">
+                                                <div className="text-xl sm:text-2xl font-light">
                                                     $
                                                     {opp.amount.toLocaleString()}
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="flex gap-3 w-full">
+
+                                        {/* Actions */}
+                                        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                                             <Link
-                                                to={`/dashboard/overview/funding/${opp.id}`} // Update this path to match your route
-                                                state={{ capitalData: opp }} // Pass the full opportunity data
-                                                className="flex-1 text-neutral-700 whitespace-nowrap hover:text-neutral-900 transition-colors flex items-center justify-center gap-2 px-4 py-2 border border-neutral-300 rounded-md hover:bg-neutral-50"
+                                                to={`/dashboard/overview/funding/${opp.id}`}
+                                                state={{ capitalData: opp }}
+                                                className="flex-1 sm:flex-none text-neutral-700 whitespace-nowrap hover:text-neutral-900 transition-colors flex items-center justify-center gap-2 px-3 sm:px-4 py-2 border border-neutral-300 rounded-md hover:bg-neutral-50 text-sm sm:text-base"
                                             >
-                                                <Eye size={16} /> View Details
+                                                <Eye size={14} /> View Details
                                             </Link>
 
                                             {user.investor === 3 ? (
                                                 <>
-                                                    <label className="inline-flex items-center cursor-pointer">
-                                                        {/* Hidden checkbox for accessibility */}
+                                                    <label className="inline-flex items-center cursor-pointer gap-2">
                                                         <input
                                                             type="checkbox"
                                                             checked={
@@ -919,9 +923,8 @@ const InvestmentOpportunities = () => {
                                                             }
                                                             className="hidden"
                                                         />
-                                                        {/* Custom toggle switch */}
                                                         <div
-                                                            className="w-11 h-6 bg-gray-200 rounded-full relative transition-all duration-300 ease-in-out"
+                                                            className="w-10 h-5 sm:w-11 sm:h-6 bg-gray-200 rounded-full relative transition-all duration-300 ease-in-out"
                                                             style={{
                                                                 backgroundColor:
                                                                     visibilityStates[
@@ -934,7 +937,7 @@ const InvestmentOpportunities = () => {
                                                             }}
                                                         >
                                                             <div
-                                                                className="absolute top-1 w-4 h-4 bg-white rounded-full transition-all duration-300 ease-in-out"
+                                                                className="absolute top-0.5 sm:top-1 w-4 h-4 sm:w-4 sm:h-4 bg-white rounded-full transition-all duration-300 ease-in-out"
                                                                 style={{
                                                                     transform:
                                                                         visibilityStates[
@@ -943,12 +946,12 @@ const InvestmentOpportunities = () => {
                                                                         ] ??
                                                                         opp.visible ===
                                                                             1
-                                                                            ? "translateX(1.75rem)"
+                                                                            ? "translateX(1.5rem)"
                                                                             : "translateX(0.25rem)",
                                                                 }}
                                                             ></div>
                                                         </div>
-                                                        <span className="ml-3 text-sm text-gray-700">
+                                                        <span className="text-xs sm:text-sm text-gray-700">
                                                             {visibilityStates[
                                                                 opp.id
                                                             ] ??
@@ -963,35 +966,33 @@ const InvestmentOpportunities = () => {
                                                         state={{
                                                             opportunity: opp,
                                                         }}
-                                                        className="flex-1 text-white whitespace-nowrap bg-emerald-600 hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium"
+                                                        className="flex-1 text-white whitespace-nowrap bg-emerald-600 hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2 px-3 sm:px-4 py-2 rounded-md font-medium text-sm sm:text-base"
                                                     >
                                                         <ArrowUpRight
-                                                            size={16}
+                                                            size={14}
                                                         />{" "}
                                                         Open Deal Room
                                                     </Link>
                                                 </>
                                             ) : (
-                                                <div>
-                                                    <button
-                                                        onClick={() => {
-                                                            setSelectedOpportunity(
-                                                                opp.id
-                                                            );
-                                                            setshowModes(true);
-                                                        }}
-                                                        className="px-4 py-2 bg-green-600 whitespace-nowrap text-white rounded-md hover:bg-green-700"
-                                                    >
-                                                        Apply for Investment
-                                                    </button>
-                                                </div>
+                                                <button
+                                                    onClick={() => {
+                                                        setSelectedOpportunity(
+                                                            opp.id
+                                                        );
+                                                        setshowModes(true);
+                                                    }}
+                                                    className="px-3 sm:px-4 py-2 bg-green-600 whitespace-nowrap text-white rounded-md hover:bg-green-700 text-sm sm:text-base"
+                                                >
+                                                    Apply for Investment
+                                                </button>
                                             )}
                                         </div>
                                     </div>
                                 </div>
                             ))
                         ) : (
-                            <div className="bg-white border border-neutral-200 rounded-lg p-8 text-center">
+                            <div className="bg-white border border-neutral-200 rounded-lg p-6 text-center">
                                 <p className="text-neutral-500">
                                     No matching opportunities found. Try
                                     adjusting your filters.

@@ -668,183 +668,257 @@ const TujitumeGrantPortal = () => {
             </div>
 
             {/* Featured Grants - Futuristic Cards */}
-            <div>
+            <div className="px-4 sm:px-6">
                 <div>
-                    <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-xl font-bold text-gray-900">
+                    {/* Section header */}
+                    <div className="flex justify-between items-center mb-4 sm:mb-6">
+                        <h2 className="text-lg sm:text-xl font-bold text-gray-900">
                             Featured Grants
                         </h2>
                         <button
                             onClick={() => setActiveView("opportunities")}
-                            className="flex items-center text-green-600 hover:text-green-800"
+                            className="flex items-center text-green-600 hover:text-green-800 text-sm sm:text-base"
                         >
-                            View all <ArrowRight size={16} className="ml-1" />
+                            View all <ArrowRight size={14} className="ml-1" />
                         </button>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 gap-6">
+                    {/* Grants grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                         {filteredGrants.length === 0 ? (
-                            <div className="bg-whit rounded-xl border border-gray-200 text-center p-6 col-span-full">
+                            <div className="bg-white rounded-xl border border-gray-200 text-center p-6 col-span-full">
                                 <p className="text-gray-600">
                                     No grants available
                                 </p>
                             </div>
                         ) : (
-                            filteredGrants.map((grant) => (
-                                <div
-                                    key={grant.id}
-                                    className="bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all group relative "
-                                >
-                                    <div className="p-6">
-                                        {/* Header section with title and amount */}
-                                        <div className="flex justify-between items-start">
-                                            <div>
-                                                <div className="flex items-center space-x-2 mb-2">
-                                                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-green-600 transition-colors">
-                                                        {grant.title ||
-                                                            grant.grant_title ||
-                                                            "Untitled Grant"}
-                                                    </h3>
-                                                    {grant.techLevel ===
-                                                        "cutting-edge" && (
-                                                        <span className="px-2.5 py-0.5 bg-purple-50 text-purple-700 text-xs font-medium rounded-full flex items-center">
-                                                            <Zap
-                                                                size={12}
+                            filteredGrants
+                                .filter((grant) => {
+                                    // For non-investors: only show visible grants
+                                    // For investors: show all grants (they can see hidden ones too)
+                                    if (!user.investor) {
+                                        const isVisible =
+                                            visibilityStates[grant.id] ??
+                                            grant.visible === 1;
+                                        return isVisible;
+                                    }
+                                    return true; // Show all grants for investors
+                                })
+                                .map((grant) => (
+                                    <div
+                                        key={grant.id}
+                                        className="bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all group relative"
+                                    >
+                                        <div className="p-4 sm:p-6">
+                                            {/* Visibility Toggle - Only show for investors */}
+                                            {user.investor && (
+                                                <div className="mb-4 flex justify-end">
+                                                    <label className="inline-flex items-center cursor-pointer">
+                                                        {/* Hidden checkbox for accessibility */}
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={
+                                                                visibilityStates[
+                                                                    grant.id
+                                                                ] ??
+                                                                grant.visible ===
+                                                                    1
+                                                            }
+                                                            onChange={() =>
+                                                                toggleVisibility(
+                                                                    grant.id
+                                                                )
+                                                            }
+                                                            className="hidden"
+                                                        />
+                                                        {/* Custom toggle switch */}
+                                                        <div
+                                                            className="w-11 h-6 bg-gray-200 rounded-full relative transition-all duration-300 ease-in-out"
+                                                            style={{
+                                                                backgroundColor:
+                                                                    visibilityStates[
+                                                                        grant.id
+                                                                    ] ??
+                                                                    grant.visible ===
+                                                                        1
+                                                                        ? "#fbbf24"
+                                                                        : "#e5e7eb",
+                                                            }}
+                                                        >
+                                                            <div
+                                                                className="absolute top-1 w-4 h-4 bg-white rounded-full transition-all duration-300 ease-in-out"
+                                                                style={{
+                                                                    transform:
+                                                                        visibilityStates[
+                                                                            grant
+                                                                                .id
+                                                                        ] ??
+                                                                        grant.visible ===
+                                                                            1
+                                                                            ? "translateX(1.75rem)"
+                                                                            : "translateX(0.25rem)",
+                                                                }}
+                                                            ></div>
+                                                        </div>
+                                                        <span className="ml-3 text-sm text-gray-700">
+                                                            {visibilityStates[
+                                                                grant.id
+                                                            ] ??
+                                                            grant.visible === 1
+                                                                ? "Visible"
+                                                                : "Hidden"}
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            )}
+
+                                            {/* Header section with title and amount */}
+                                            <div className="flex flex-col sm:flex-row justify-between gap-3 sm:items-start">
+                                                <div className="flex-1">
+                                                    <div className="flex items-center space-x-2 mb-2">
+                                                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 group-hover:text-green-600 transition-colors line-clamp-1">
+                                                            {grant.title ||
+                                                                grant.grant_title ||
+                                                                "Untitled Grant"}
+                                                        </h3>
+                                                        {grant.techLevel ===
+                                                            "cutting-edge" && (
+                                                            <span className="px-2 py-0.5 bg-purple-50 text-purple-700 text-xs font-medium rounded-full flex items-center shrink-0">
+                                                                <Zap
+                                                                    size={10}
+                                                                    className="mr-1"
+                                                                />
+                                                                Cutting Edge
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    <p className="text-xs sm:text-sm text-gray-600 flex items-center">
+                                                        <Building
+                                                            size={12}
+                                                            className="mr-1.5 text-gray-400"
+                                                        />
+                                                        {grant.organization ||
+                                                            "No organization specified"}
+                                                    </p>
+                                                </div>
+                                                <div className="text-right sm:text-left">
+                                                    <p className="text-lg sm:text-xl font-bold text-green-600">
+                                                        $
+                                                        {grant.total_grant_amount ||
+                                                            grant.maxGrantPerStartup ||
+                                                            0}
+                                                    </p>
+                                                    <div className="flex items-center justify-end sm:justify-start text-xs text-gray-500 mt-1">
+                                                        <Calendar
+                                                            size={10}
+                                                            className="mr-1.5 text-gray-400"
+                                                        />
+                                                        <span>
+                                                            {grant.application_deadline
+                                                                ? new Date(
+                                                                      grant.application_deadline
+                                                                  ).toLocaleDateString()
+                                                                : "No deadline"}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Subtle divider */}
+                                            <div className="h-px bg-gray-50 my-3 sm:my-4"></div>
+
+                                            <div className="mt-3 sm:mt-4">
+                                                <p className="text-xs sm:text-sm text-gray-700 mb-3 line-clamp-2">
+                                                    {grant.impact ||
+                                                        grant.impact_objectives ||
+                                                        "No impact description"}
+                                                </p>
+
+                                                <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+                                                    {grant.grant_focus && (
+                                                        <span className="px-2 py-1 rounded-full text-xs bg-green-50 text-green-700 flex items-center">
+                                                            <Target
+                                                                size={8}
                                                                 className="mr-1"
                                                             />
-                                                            Cutting Edge
+                                                            {grant.grant_focus}
                                                         </span>
                                                     )}
-                                                </div>
-                                                <p className="text-sm text-gray-600 flex items-center">
-                                                    <Building
-                                                        size={14}
-                                                        className="mr-1.5 text-gray-400"
-                                                    />
-                                                    {grant.organization ||
-                                                        "No organization specified"}
-                                                </p>
-                                            </div>
-                                            <div className="text-right">
-                                                <p className="text-xl font-bold text-green-600">
-                                                    $
-                                                    {grant.total_grant_amount ||
-                                                        grant.maxGrantPerStartup ||
-                                                        0}
-                                                </p>
-
-                                                <div className="flex items-center justify-end text-xs text-gray-500 mt-1">
-                                                    <Calendar
-                                                        size={12}
-                                                        className="mr-1.5 text-gray-400"
-                                                    />
-                                                    <span>
-                                                        {grant.application_deadline
-                                                            ? new Date(
-                                                                  grant.application_deadline
-                                                              ).toLocaleDateString()
-                                                            : "No deadline"}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Subtle divider */}
-                                        <div className="h-px bg-gray-50 my-4"></div>
-
-                                        <div className="mt-4">
-                                            <p className="text-sm text-gray-700 mb-3 line-clamp-2">
-                                                {grant.impact ||
-                                                    grant.impact_objectives ||
-                                                    "No impact description"}
-                                            </p>
-
-                                            <div className="flex flex-wrap gap-2 mb-4">
-                                                {grant.grant_focus && (
-                                                    <span className="px-2.5 py-1 rounded-full text-xs bg-green-50 text-green-700 flex items-center">
-                                                        <Target
-                                                            size={10}
-                                                            className="mr-1"
-                                                        />
-                                                        {grant.grant_focus}
-                                                    </span>
-                                                )}
-                                                {grant.startup_stage_focus && (
-                                                    <span className="px-2.5 py-1 rounded-full text-xs bg-emerald-50 text-emerald-700 flex items-center">
-                                                        <Layers
-                                                            size={10}
-                                                            className="mr-1"
-                                                        />
-                                                        {grant.startup_stage_focus
-                                                            ? grant.startup_stage_focus.replace(
-                                                                  /[\[\]"]+/g,
-                                                                  ""
-                                                              )
-                                                            : "No stage specified"}
-                                                    </span>
-                                                )}
-                                                <span className="px-2.5 py-1 rounded-full text-xs bg-emerald-900 text-white flex items-center gap-x-1.5">
-                                                    <Eye
-                                                        size={16}
-                                                        className="text-emerald-200"
-                                                    />
-                                                    <span className="font-medium">
-                                                        {formatNumber(
-                                                            grant.pitch_count ||
-                                                                0
-                                                        )}
-                                                    </span>
-                                                    <span className="text-xs">
-                                                        Pitches
-                                                    </span>
-                                                </span>
-                                            </div>
-
-                                            <div className="space-y-3 bg-gray-50 p-3 rounded-lg">
-                                                <div>
-                                                    <h4 className="flex items-center text-xs font-medium text-gray-500 mb-1">
-                                                        <Users
+                                                    {grant.startup_stage_focus && (
+                                                        <span className="px-2 py-1 rounded-full text-xs bg-emerald-50 text-emerald-700 flex items-center">
+                                                            <Layers
+                                                                size={8}
+                                                                className="mr-1"
+                                                            />
+                                                            {grant.startup_stage_focus
+                                                                ? grant.startup_stage_focus.replace(
+                                                                      /[\[\]"]+/g,
+                                                                      ""
+                                                                  )
+                                                                : "No stage specified"}
+                                                        </span>
+                                                    )}
+                                                    <span className="px-2 py-1 rounded-full text-xs bg-emerald-900 text-white flex items-center gap-x-1">
+                                                        <Eye
                                                             size={12}
-                                                            className="mr-1.5 text-gray-400"
+                                                            className="text-emerald-200"
                                                         />
-                                                        Eligibility:
-                                                    </h4>
-                                                    <p className="text-sm text-gray-600 line-clamp-2 pl-4">
-                                                        {grant.eligibility_criteria ||
-                                                            "Not specified"}
-                                                    </p>
+                                                        <span className="font-medium">
+                                                            {formatNumber(
+                                                                grant.pitch_count ||
+                                                                    0
+                                                            )}
+                                                        </span>
+                                                        <span className="text-xs">
+                                                            Pitches
+                                                        </span>
+                                                    </span>
                                                 </div>
-                                                <div>
-                                                    <h4 className="flex items-center text-xs font-medium text-gray-500 mb-1">
-                                                        <Files
-                                                            size={12}
-                                                            className="mr-1.5 text-gray-400"
-                                                        />
-                                                        Documents:
-                                                    </h4>
-                                                    <p className="text-sm text-gray-600 pl-4">
-                                                        {grant.required_documents
-                                                            ? grant.required_documents.replace(
-                                                                  /[\[\]"]+/g,
-                                                                  ""
-                                                              )
-                                                            : "Not specified"}
-                                                    </p>
+
+                                                <div className="space-y-2 sm:space-y-3 bg-gray-50 p-2 sm:p-3 rounded-lg">
+                                                    <div>
+                                                        <h4 className="flex items-center text-xs font-medium text-gray-500 mb-1">
+                                                            <Users
+                                                                size={10}
+                                                                className="mr-1.5 text-gray-400"
+                                                            />
+                                                            Eligibility:
+                                                        </h4>
+                                                        <p className="text-xs sm:text-sm text-gray-600 line-clamp-2 pl-3 sm:pl-4">
+                                                            {grant.eligibility_criteria ||
+                                                                "Not specified"}
+                                                        </p>
+                                                    </div>
+                                                    <div>
+                                                        <h4 className="flex items-center text-xs font-medium text-gray-500 mb-1">
+                                                            <Files
+                                                                size={10}
+                                                                className="mr-1.5 text-gray-400"
+                                                            />
+                                                            Documents:
+                                                        </h4>
+                                                        <p className="text-xs sm:text-sm text-gray-600 pl-3 sm:pl-4">
+                                                            {grant.required_documents
+                                                                ? grant.required_documents.replace(
+                                                                      /[\[\]"]+/g,
+                                                                      ""
+                                                                  )
+                                                                : "Not specified"}
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div className="mt-6 flex space-x-3">
-                                            {grant.grant_brief_pdf && (
-                                                <Link
-                                                    to={`/dashboard/overview/grants/${grant.id}`}
-                                                    className="flex-1 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center space-x-2 text-gray-700"
-                                                >
-                                                    <FileText size={16} />
-                                                    <span>Details</span>
-                                                </Link>
-                                            )}
-                                            <p>
+                                            <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row gap-2 sm:space-x-3">
+                                                {grant.grant_brief_pdf && (
+                                                    <Link
+                                                        to={`/dashboard/overview/grants/${grant.id}`}
+                                                        className="px-3 sm:px-4 py-1.5 sm:py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-1.5 sm:space-x-2 text-gray-700 text-sm sm:text-base"
+                                                    >
+                                                        <FileText size={14} />
+                                                        <span>Details</span>
+                                                    </Link>
+                                                )}
                                                 {!user.investor ? (
                                                     <button
                                                         onClick={(e) => {
@@ -856,13 +930,13 @@ const TujitumeGrantPortal = () => {
                                                                 true
                                                             );
                                                         }}
-                                                        className={`flex-1 px-4 py-2 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center space-x-2 shadow-sm ${
+                                                        className={`px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center gap-1.5 sm:space-x-2 shadow-sm text-sm sm:text-base ${
                                                             !grant.grant_brief_pdf
                                                                 ? "w-full"
                                                                 : ""
                                                         }`}
                                                     >
-                                                        <Upload size={16} />
+                                                        <Upload size={14} />
                                                         <span>Apply</span>
                                                     </button>
                                                 ) : (
@@ -873,22 +947,17 @@ const TujitumeGrantPortal = () => {
                                                                 grant.id
                                                             );
                                                         }}
-                                                        className={`px-3 py-3 bg-gradient-to-r from-yellow-300 to-green-600 text-black text-sm rounded-lg hover:shadow-md transition-all flex items-center space-x-1.5 shadow-sm ${
-                                                            open
-                                                                ? "hidden md:flex"
-                                                                : "flex"
-                                                        }`}
+                                                        className="px-3 py-1.5 sm:py-2 bg-gradient-to-r from-yellow-300 to-green-600 text-black rounded-lg hover:shadow-md transition-all flex items-center justify-center gap-1.5 sm:space-x-1.5 shadow-sm text-sm"
                                                         title="View pitches"
                                                     >
-                                                        <Eye size={16} />
+                                                        <Eye size={14} />
                                                         <span>Pitches</span>
                                                     </button>
                                                 )}
-                                            </p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))
+                                ))
                         )}
                     </div>
                 </div>
@@ -1076,21 +1145,23 @@ const TujitumeGrantPortal = () => {
                                                             {grant.title ||
                                                                 grant.grant_title}
                                                         </h2>
-                                                        <div className="flex items-center">
-                                                            <button
-                                                                onClick={() =>
-                                                                    handleEditGrantClick(
-                                                                        grant.id
-                                                                    )
-                                                                }
-                                                                className="px-4 py-2  text-green rounded "
-                                                            >
-                                                                <Edit3 className=" text-[10px]" />
-                                                                <span>
-                                                                    Edit-grant
-                                                                </span>
-                                                            </button>
-                                                        </div>
+                                                        {user.investor && (
+                                                            <div className="flex items-center">
+                                                                <button
+                                                                    onClick={() =>
+                                                                        handleEditGrantClick(
+                                                                            grant.id
+                                                                        )
+                                                                    }
+                                                                    className="px-4 py-2  text-green rounded "
+                                                                >
+                                                                    <Edit3 className=" text-[10px]" />
+                                                                    <span>
+                                                                        Edit-grant
+                                                                    </span>
+                                                                </button>
+                                                            </div>
+                                                        )}
                                                     </div>
 
                                                     {grant.techLevel ===
@@ -1156,57 +1227,61 @@ const TujitumeGrantPortal = () => {
                                                 </div>
                                             </div>
 
-                                            <label className="inline-flex items-center cursor-pointer">
-                                                {/* Hidden checkbox for accessibility */}
-                                                <input
-                                                    type="checkbox"
-                                                    checked={
-                                                        visibilityStates[
-                                                            grant.id
-                                                        ] ?? grant.visible === 1
-                                                    }
-                                                    onChange={() =>
-                                                        toggleVisibility(
-                                                            grant.id
-                                                        )
-                                                    }
-                                                    className="hidden"
-                                                />
-                                                {/* Custom toggle switch */}
-                                                <div
-                                                    className="w-11 h-6 bg-gray-200 rounded-full relative transition-all duration-300 ease-in-out"
-                                                    style={{
-                                                        backgroundColor:
+                                            {user.investor && (
+                                                <label className="inline-flex items-center cursor-pointer">
+                                                    {/* Hidden checkbox for accessibility */}
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={
                                                             visibilityStates[
                                                                 grant.id
                                                             ] ??
                                                             grant.visible === 1
-                                                                ? "#fbbf24"
-                                                                : "#e5e7eb",
-                                                    }}
-                                                >
+                                                        }
+                                                        onChange={() =>
+                                                            toggleVisibility(
+                                                                grant.id
+                                                            )
+                                                        }
+                                                        className="hidden"
+                                                    />
+                                                    {/* Custom toggle switch */}
                                                     <div
-                                                        className="absolute top-1 w-4 h-4 bg-white rounded-full transition-all duration-300 ease-in-out"
+                                                        className="w-11 h-6 bg-gray-200 rounded-full relative transition-all duration-300 ease-in-out"
                                                         style={{
-                                                            transform:
+                                                            backgroundColor:
                                                                 visibilityStates[
                                                                     grant.id
                                                                 ] ??
                                                                 grant.visible ===
                                                                     1
-                                                                    ? "translateX(1.75rem)"
-                                                                    : "translateX(0.25rem)",
+                                                                    ? "#fbbf24"
+                                                                    : "#e5e7eb",
                                                         }}
-                                                    ></div>
-                                                </div>
-                                                <span className="ml-3 text-sm text-gray-700">
-                                                    {visibilityStates[
-                                                        grant.id
-                                                    ] ?? grant.visible === 1
-                                                        ? "Visible"
-                                                        : "Hidden"}
-                                                </span>
-                                            </label>
+                                                    >
+                                                        <div
+                                                            className="absolute top-1 w-4 h-4 bg-white rounded-full transition-all duration-300 ease-in-out"
+                                                            style={{
+                                                                transform:
+                                                                    visibilityStates[
+                                                                        grant.id
+                                                                    ] ??
+                                                                    grant.visible ===
+                                                                        1
+                                                                        ? "translateX(1.75rem)"
+                                                                        : "translateX(0.25rem)",
+                                                            }}
+                                                        ></div>
+                                                    </div>
+                                                    <span className="ml-3 text-sm text-gray-700">
+                                                        {visibilityStates[
+                                                            grant.id
+                                                        ] ?? grant.visible === 1
+                                                            ? "Visible"
+                                                            : "Hidden"}
+                                                    </span>
+                                                </label>
+                                            )}
                                             <div className="flex items-center space-x-3 flex-shrink-0">
                                                 <span className="bg-green-100 text-green-800 text-md px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
                                                     <Eye size={16} />
@@ -1632,7 +1707,7 @@ const TujitumeGrantPortal = () => {
 
     return (
         <div className="min-h-screen  ">
-            <div className="max-w-7xl   mx-auto">
+            <div className="mx-auto">
                 {/* Futuristic Header */}
                 <header className="mb-8">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">

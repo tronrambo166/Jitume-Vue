@@ -619,27 +619,29 @@ const TujitumeDashboard = () => {
             {/* Futuristic Header Section */}
             <div
                 ref={headerRef}
-                className={`relative bg-gradient-to-r from-slate-900 via-green-950 to-slate-800 text-white py-8 px-6 rounded-3xl overflow-hidden transition-all duration-700 transform ${
+                className={`relative bg-gradient-to-r from-slate-900 via-green-950 to-slate-800 text-white py-6 sm:py-8 px-4 sm:px-6 rounded-3xl overflow-hidden transition-all duration-700 transform ${
                     animateHeader
                         ? "translate-y-0 opacity-100"
                         : "-translate-y-10 opacity-0"
                 }`}
             >
-                {/* Background elements */}
+                {/* Background elements - reduced size on mobile */}
                 <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-green-400 to-blue-500 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
-                    <div className="absolute bottom-0 left-1/4 w-64 h-64 bg-gradient-to-br from-yellow-400 to-green-500 rounded-full blur-3xl"></div>
+                    <div className="absolute top-0 right-0 w-64 h-64 sm:w-96 sm:h-96 bg-gradient-to-br from-green-400 to-blue-500 rounded-full blur-xl sm:blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+                    <div className="absolute bottom-0 left-1/4 w-40 h-40 sm:w-64 sm:h-64 bg-gradient-to-br from-yellow-400 to-green-500 rounded-full blur-xl sm:blur-3xl"></div>
                 </div>
 
                 <div className="container mx-auto relative z-10">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
-                        <div className="animate-fadeIn">
+                    {/* Main content - stacked vertically on mobile */}
+                    <div className="flex flex-col space-y-4">
+                        {/* Title section */}
+                        <div className="flex flex-col">
                             <div className="flex items-center mb-1">
                                 <Sparkles
                                     className="text-yellow-400 mr-3"
-                                    size={22}
+                                    size={20}
                                 />
-                                <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-yellow-300">
+                                <h1 className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-yellow-300">
                                     {user.investor === 2
                                         ? "Tujitume Grants Hub"
                                         : user.investor === 3
@@ -648,9 +650,9 @@ const TujitumeDashboard = () => {
                                 </h1>
                             </div>
                             <div className="flex items-center ml-1">
-                                <div className="h-8 w-1 bg-gradient-to-b from-green-500 to-transparent rounded-full mr-3"></div>
+                                <div className="h-6 sm:h-8 w-1 bg-gradient-to-b from-green-500 to-transparent rounded-full mr-3"></div>
                                 <div>
-                                    <div className="text-slate-300 text-sm flex items-center">
+                                    <div className="text-slate-300 text-xs sm:text-sm flex items-center">
                                         {user.investor === 2
                                             ? "Empowering African Social Impact"
                                             : user.investor === 3
@@ -666,39 +668,41 @@ const TujitumeDashboard = () => {
                             </div>
                         </div>
 
-                        <div className="flex items-center space-x-3">
-                            <div className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg p-1.5 border border-white border-opacity-20">
-                                <div className="flex items-center text-xs">
+                        {/* Search and actions row - stacked on mobile */}
+                        <div className="flex flex-col sm:flex-row justify-between gap-3">
+                            {/* Services buttons - wrap on small screens */}
+                            <div className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg p-1 border border-white border-opacity-20 w-full sm:w-auto">
+                                <div className="flex flex-wrap gap-1 sm:flex-nowrap sm:gap-0">
                                     <div
                                         onClick={grantServicesPage}
-                                        className="px-3 py-1.5 rounded-lg flex items-center hover:bg-white hover:bg-opacity-10 transition cursor-pointer"
+                                        className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg flex items-center hover:bg-white hover:bg-opacity-10 transition cursor-pointer text-xs"
                                     >
                                         <BellRing
-                                            size={14}
+                                            size={12}
                                             className="text-yellow-300 mr-1.5"
                                         />
                                         <span className="text-yellow-300">
-                                            Grant Writing Services
+                                            Grant Writing
                                         </span>
                                     </div>
 
                                     <div
                                         onClick={grantServicesPage}
-                                        className="px-3 py-1.5 rounded-lg flex items-center hover:bg-white hover:bg-opacity-10 transition cursor-pointer"
+                                        className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg flex items-center hover:bg-white hover:bg-opacity-10 transition cursor-pointer text-xs"
                                     >
                                         <UserPlus
-                                            size={14}
+                                            size={12}
                                             className="text-emerald-300 mr-1.5"
                                         />
-
                                         <span className="text-emerald-500">
-                                            Pitch Coaching Services
+                                            Pitch Coaching
                                         </span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="relative">
+                            {/* Search bar - full width on mobile */}
+                            <div className="relative w-full sm:w-64">
                                 <input
                                     type="text"
                                     placeholder={
@@ -708,98 +712,100 @@ const TujitumeDashboard = () => {
                                             ? "Search investments..."
                                             : "Search opportunities"
                                     }
-                                    className="pl-9 pr-4 py-2.5 bg-white bg-opacity-10 border border-white border-opacity-20 rounded-lg text-sm w-64 shadow-sm focus:ring-2 focus:ring-green-400 focus:bg-opacity-20 backdrop-filter backdrop-blur-lg text-white transition"
+                                    className="pl-9 pr-4 py-2 bg-white bg-opacity-10 border border-white border-opacity-20 rounded-lg text-sm w-full shadow-sm focus:ring-2 focus:ring-green-400 focus:bg-opacity-20 backdrop-filter backdrop-blur-lg text-white transition"
                                     value={searchTerm}
                                     onChange={(e) =>
                                         setSearchTerm(e.target.value)
                                     }
                                 />
                                 <Search
-                                    className="absolute left-3 top-3 text-green-300"
+                                    className="absolute left-3 top-2.5 sm:top-3 text-green-300"
                                     size={16}
                                 />
                             </div>
                         </div>
-                    </div>
 
-                    {/* Quick stats row */}
-                    <div className="grid grid-cols-3 gap-4 mt-6">
-                        <div className="bg-white bg-opacity-5 backdrop-filter backdrop-blur-md rounded-lg p-3 border border-white border-opacity-10 flex items-center">
-                            <div className="bg-white bg-opacity-10 p-2 rounded-lg mr-3">
-                                <BarChart3
-                                    size={16}
-                                    className="text-green-400"
-                                />
-                            </div>
-                            <div>
-                                <div className="text-xs text-slate-300">
-                                    Opportunities
+                        {/* Quick stats - single column on mobile */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-4 sm:mt-6">
+                            <div className="bg-white bg-opacity-5 backdrop-filter backdrop-blur-md rounded-lg p-3 border border-white border-opacity-10 flex items-center">
+                                <div className="bg-white bg-opacity-10 p-2 rounded-lg mr-3">
+                                    <BarChart3
+                                        size={16}
+                                        className="text-green-400"
+                                    />
                                 </div>
-                                <div className="text-lg font-semibold text-white">
-                                    {opportunities.length}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="bg-white bg-opacity-5 backdrop-filter backdrop-blur-md rounded-lg p-3 border border-white border-opacity-10 flex items-center">
-                            <div className="bg-white bg-opacity-10 p-2 rounded-lg mr-3">
-                                <DollarSign
-                                    size={16}
-                                    className="text-yellow-400"
-                                />
-                            </div>
-                            <div>
-                                <div className="text-xs text-slate-300">
-                                    Available Funding
-                                </div>
-                                <div className="text-lg font-semibold text-white">
-                                    ${availableFunds.toLocaleString()}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="bg-white bg-opacity-5 backdrop-filter backdrop-blur-md rounded-lg p-3 border border-white border-opacity-10 flex items-center relative">
-                            <div className="bg-white bg-opacity-10 p-2 rounded-lg mr-3">
-                                <Calendar size={16} className="text-blue-400" />
-                            </div>
-                            <div>
-                                <div className="text-xs text-slate-300">
-                                    Upcoming Deadline
-                                </div>
-                                {current ? (
-                                    <>
-                                        <div className="text-sm font-semibold text-white line-clamp-1">
-                                            {current.title}
-                                        </div>
-                                        <div className="flex items-center gap-2 mt-0.5">
-                                            <div className="text-xs text-blue-200">
-                                                {new Date(
-                                                    current.deadlineDate
-                                                ).toLocaleDateString(
-                                                    undefined,
-                                                    {
-                                                        month: "short",
-                                                        day: "numeric",
-                                                    }
-                                                )}
-                                            </div>
-                                            <CountdownTimer
-                                                deadlineDate={
-                                                    current.deadlineDate
-                                                }
-                                            />
-                                        </div>
-                                    </>
-                                ) : (
-                                    <div className="text-white text-sm mt-1">
-                                        No upcoming deadlines
+                                <div>
+                                    <div className="text-xs text-slate-300">
+                                        Opportunities
                                     </div>
-                                )}
+                                    <div className="text-lg font-semibold text-white">
+                                        {opportunities.length}
+                                    </div>
+                                </div>
                             </div>
-                            <div className="absolute bottom-0 left-3 right-3 border-t border-dotted border-white/30 mt-2"></div>
+                            <div className="bg-white bg-opacity-5 backdrop-filter backdrop-blur-md rounded-lg p-3 border border-white border-opacity-10 flex items-center">
+                                <div className="bg-white bg-opacity-10 p-2 rounded-lg mr-3">
+                                    <DollarSign
+                                        size={16}
+                                        className="text-yellow-400"
+                                    />
+                                </div>
+                                <div>
+                                    <div className="text-xs text-slate-300">
+                                        Available Funding
+                                    </div>
+                                    <div className="text-lg font-semibold text-white">
+                                        ${availableFunds.toLocaleString()}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="bg-white bg-opacity-5 backdrop-filter backdrop-blur-md rounded-lg p-3 border border-white border-opacity-10 flex items-center relative">
+                                <div className="bg-white bg-opacity-10 p-2 rounded-lg mr-3">
+                                    <Calendar
+                                        size={16}
+                                        className="text-blue-400"
+                                    />
+                                </div>
+                                <div>
+                                    <div className="text-xs text-slate-300">
+                                        Upcoming Deadline
+                                    </div>
+                                    {current ? (
+                                        <>
+                                            <div className="text-sm font-semibold text-white line-clamp-1">
+                                                {current.title}
+                                            </div>
+                                            <div className="flex items-center gap-2 mt-0.5">
+                                                <div className="text-xs text-blue-200">
+                                                    {new Date(
+                                                        current.deadlineDate
+                                                    ).toLocaleDateString(
+                                                        undefined,
+                                                        {
+                                                            month: "short",
+                                                            day: "numeric",
+                                                        }
+                                                    )}
+                                                </div>
+                                                <CountdownTimer
+                                                    deadlineDate={
+                                                        current.deadlineDate
+                                                    }
+                                                />
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div className="text-white text-sm mt-1">
+                                            No upcoming deadlines
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="absolute bottom-0 left-3 right-3 border-t border-dotted border-white/30 mt-2"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             {/* Main Dashboard Content */}
             <div className="container mx-auto py-6 mt-2">
                 {/* Stats Cards */}
@@ -1002,7 +1008,26 @@ const TujitumeDashboard = () => {
                                                                 size={12}
                                                                 className="mr-1 text-neutral-400"
                                                             />
-                                                            {opp.region}
+                                                            {(() => {
+                                                                try {
+                                                                    const regions =
+                                                                        JSON.parse(
+                                                                            opp.region
+                                                                        );
+                                                                    return Array.isArray(
+                                                                        regions
+                                                                    )
+                                                                        ? regions.join(
+                                                                              ", "
+                                                                          )
+                                                                        : opp.region;
+                                                                } catch (error) {
+                                                                    return (
+                                                                        opp.region ||
+                                                                        "Unknown region"
+                                                                    );
+                                                                }
+                                                            })()}
                                                         </span>
                                                     </div>
                                                     <div className="flex flex-col items-end">
