@@ -111,6 +111,8 @@ class InvCapitalController extends Controller
             'regions' => 'required|string',
             'required_docs' => 'nullable|string',
             'offer_brief_file' => 'nullable|file|mimes:pdf|max:2048',
+            "end_date" => "nullable|string",
+            "start_date" => "nullable|string",
         ]);
 
             $capital = CapitalOffer::create([
@@ -124,6 +126,8 @@ class InvCapitalController extends Controller
                 'sectors' => $request->sectors,
                 'regions' => $request->regions,
                 'required_docs' => $request->required_docs,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
             //'offer_brief_file' => $request->offer_brief_file,
         ]);
 
@@ -277,6 +281,10 @@ class InvCapitalController extends Controller
                 ]);
             }
 
+            $text = 'You have a new application pitch.';
+            $notification = new Notification();
+            $notification->create($capital_owner_id,$capital->user_id,$text
+                ,'overview/capital-pitch',' capital');
             return response()->json(['message' => 'Investment Application Successfull.'], 200);
         }
         catch(\Exception $e){

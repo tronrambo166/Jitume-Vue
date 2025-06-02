@@ -132,7 +132,8 @@ class GrantController extends Controller
                 "impactObjectives" => "nullable|string",
                 "evaluationCriteria" => "nullable|string",
                 "grantBriefPDF" => "nullable|file|mimes:pdf|max:2048",
-
+                "applicationDeadline" => "nullable|string",
+                "applicationStartDate" => "nullable|string",
         ]);
 
         try{
@@ -150,6 +151,8 @@ class GrantController extends Controller
                 'startup_stage_focus' => $request->startupStageFocus,
                 'impact_objectives' => $request->impactObjectives,
                 'evaluation_criteria' => $request->evaluationCriteria,
+                'start_date' => $request->applicationStartDate,
+                'end_date' => $request->applicationDeadline,
                 //'grant_brief_pdf' => $request->grantBriefPDF,
             ]);
 
@@ -297,6 +300,10 @@ class GrantController extends Controller
                 ]);
             }
 
+            $text = 'You have a new application pitch.';
+            $notification = new Notification();
+            $notification->create($grant_owner_id,$grant->user_id,$text
+                ,'overview/grant-pitch',' grant');
 
             return response()->json(['message' => 'Grant Application Successfull.'], 200);
         }

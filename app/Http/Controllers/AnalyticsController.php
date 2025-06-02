@@ -203,13 +203,16 @@ class AnalyticsController extends Controller
                     $dist['<60'] += 1;
 
                 //Score Breakdown
-                $breakdown = explode(',',$pitch->score_breakdown);
-                $break['sector'] = (float) $breakdown[0] + $break['sector'];
-                $break['geo'] = (float) $breakdown[1] + $break['geo'];
-                $break['stage'] = (float) $breakdown[2] + $break['stage'];
-                $break['revenue'] = (float) $breakdown[3] + $break['revenue'];
-                $break['team'] = (float) $breakdown[4] + $break['team'];
-                $break['impact'] = (float) $breakdown[5] + $break['impact'];
+                if($pitch->score_breakdown && $pitch->score_breakdown != ''){
+                    $breakdown = explode(',',$pitch->score_breakdown);
+                    $break['sector'] = (float) $breakdown[0] + $break['sector'];
+                    $break['geo'] = (float) $breakdown[1] + $break['geo'];
+                    $break['stage'] = (float) $breakdown[2] + $break['stage'];
+                    $break['revenue'] = (float) $breakdown[3] + $break['revenue'];
+                    $break['team'] = (float) $breakdown[4] + $break['team'];
+                    $break['impact'] = (float) $breakdown[5] + $break['impact'];
+                }
+
             }
 
             if($pitches_count > 0)
