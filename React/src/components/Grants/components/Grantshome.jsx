@@ -708,7 +708,7 @@ const TujitumeDashboard = () => {
                                             onClick={grantServicesPage}
                                             className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg flex items-center hover:bg-white hover:bg-opacity-10 transition cursor-pointer text-xs group"
                                         >
-                                            <BarChart2
+                                            <BarChart3
                                                 size={12}
                                                 className="text-blue-300 mr-1.5 group-hover:text-blue-200 transition-colors"
                                             />

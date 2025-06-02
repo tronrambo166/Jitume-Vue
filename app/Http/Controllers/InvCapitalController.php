@@ -182,7 +182,7 @@ class InvCapitalController extends Controller
                 'score' => 'nullable|numeric',
                 'score_breakdown' => 'nullable|numeric',
             ]);
-            $capital_owner_id = StartupPitches::where('id',$request->capital_id)->first()->user_id;
+            $capital_owner_id = CapitalOffer::where('id',$request->capital_id)->first()->user_id;
 
             $capital = StartupPitches::create([
                 'user_id' => Auth::id(),

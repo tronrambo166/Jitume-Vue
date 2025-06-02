@@ -286,7 +286,7 @@ function InvestmentBids() {
                 .get("/business/business_bids")
                 .then(({ data }) => {
                     setBids(data.bids);
-                    // console.log('pending', data.bids);
+                     console.log('pending', data.bids);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -305,7 +305,7 @@ function InvestmentBids() {
                     setActiveBids(data.bids || []);
                     setUnderReview(data.underVerify || []);
 
-                    // console.log("daraa",data);
+                     console.log("active",data);
                 })
                 .catch((err) => {
                     console.log(err);
