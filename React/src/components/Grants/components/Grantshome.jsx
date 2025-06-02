@@ -17,7 +17,8 @@ import {
     BarChart3,
     Clock,
     Calendar,
-    Compass,
+    FileText,
+    Mic,
     PieChart,
     ArrowUpRight,
     BellRing,
@@ -671,35 +672,53 @@ const TujitumeDashboard = () => {
                         {/* Search and actions row - stacked on mobile */}
                         <div className="flex flex-col sm:flex-row justify-between gap-3">
                             {/* Services buttons - wrap on small screens */}
-                            <div className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg p-1 border border-white border-opacity-20 w-full sm:w-auto">
-                                <div className="flex flex-wrap gap-1 sm:flex-nowrap sm:gap-0">
-                                    <div
-                                        onClick={grantServicesPage}
-                                        className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg flex items-center hover:bg-white hover:bg-opacity-10 transition cursor-pointer text-xs"
-                                    >
-                                        <BellRing
-                                            size={12}
-                                            className="text-yellow-300 mr-1.5"
-                                        />
-                                        <span className="text-yellow-300">
-                                            Grant Writing
-                                        </span>
-                                    </div>
+                            {!user.investor && (
+                                <div className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg p-1 border border-white border-opacity-20 w-full sm:w-auto">
+                                    <div className="flex flex-wrap gap-1 sm:flex-nowrap sm:gap-0">
+                                        {/* Grant Writing Service */}
+                                        <div
+                                            onClick={grantServicesPage}
+                                            className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg flex items-center hover:bg-white hover:bg-opacity-10 transition cursor-pointer text-xs group"
+                                        >
+                                            <FileText
+                                                size={12}
+                                                className="text-yellow-300 mr-1.5 group-hover:text-yellow-200 transition-colors"
+                                            />
+                                            <span className="text-yellow-300 group-hover:text-yellow-200 transition-colors">
+                                                Grant Writing
+                                            </span>
+                                        </div>
 
-                                    <div
-                                        onClick={grantServicesPage}
-                                        className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg flex items-center hover:bg-white hover:bg-opacity-10 transition cursor-pointer text-xs"
-                                    >
-                                        <UserPlus
-                                            size={12}
-                                            className="text-emerald-300 mr-1.5"
-                                        />
-                                        <span className="text-emerald-500">
-                                            Pitch Coaching
-                                        </span>
+                                        {/* Pitch Coaching Service */}
+                                        <div
+                                            onClick={grantServicesPage}
+                                            className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg flex items-center hover:bg-white hover:bg-opacity-10 transition cursor-pointer text-xs group"
+                                        >
+                                            <Mic
+                                                size={12}
+                                                className="text-emerald-300 mr-1.5 group-hover:text-emerald-200 transition-colors"
+                                            />
+                                            <span className="text-emerald-300 group-hover:text-emerald-200 transition-colors">
+                                                Pitch Coaching
+                                            </span>
+                                        </div>
+
+                                        {/* Additional Services (example) */}
+                                        <div
+                                            onClick={grantServicesPage}
+                                            className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg flex items-center hover:bg-white hover:bg-opacity-10 transition cursor-pointer text-xs group"
+                                        >
+                                            <BarChart2
+                                                size={12}
+                                                className="text-blue-300 mr-1.5 group-hover:text-blue-200 transition-colors"
+                                            />
+                                            <span className="text-blue-300 group-hover:text-blue-200 transition-colors">
+                                                Financial Planning
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            )}
 
                             {/* Search bar - full width on mobile */}
                             <div className="relative w-full sm:w-64">

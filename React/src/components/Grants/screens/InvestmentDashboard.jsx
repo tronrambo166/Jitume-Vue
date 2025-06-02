@@ -208,7 +208,7 @@ const InvestmentOpportunities = () => {
                 const response = await axiosClient.get(
                     "capital/capital-offers"
                 );
-                // console.log("API Response:", response);
+                console.log("API Response:", response);
 
                 // Check for both response.data.capital and response.data directly
                 const data = response.data?.capital || response.data;
@@ -330,10 +330,12 @@ const InvestmentOpportunities = () => {
                 matchesStage &&
                 matchesSearch &&
                 matchesPriorities &&
-                matchesVisibility // <- Add this line
+                matchesVisibility
             );
         });
     }, [scoredOpportunities, filters, searchTerm]);
+
+    
     const getStatusColor = (status) => {
         switch (status) {
             case "Ideal Match":
@@ -387,8 +389,8 @@ const InvestmentOpportunities = () => {
     // });
 
     return (
-        <div className="min-h-screen bg-neutral-50 text-neutral-900 antialiased">
-            <div className="container px-4 py-8">
+        <div className="min-h-screen  bg-neutral-50 text-neutral-900 antialiased">
+            <div>
                 {/* Header */}
                 <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                     <div>
@@ -722,19 +724,34 @@ const InvestmentOpportunities = () => {
                                         {/* Edit/Delete buttons - only for investors */}
                                         {user?.investor && (
                                             <div className="flex gap-2">
-                                                <button
-                                                    onClick={() =>
-                                                        handleEditCapital(
-                                                            opp.id
-                                                        )
-                                                    }
-                                                    className="text-yellow-500 bg-neutral-100 rounded-full font-semibold p-2 sm:p-4"
-                                                >
-                                                    <Edit3
-                                                        size={14}
-                                                        className="sm:text-[10px]"
-                                                    />
-                                                </button>
+                                                {new Date(opp.start_date) >
+                                                new Date() ? (
+                                                    <button
+                                                        onClick={() =>
+                                                            handleEditCapital(
+                                                                opp.id
+                                                            )
+                                                        }
+                                                        className="text-yellow-500 bg-neutral-100 rounded-full font-semibold p-2 sm:p-4 hover:bg-neutral-200 transition-colors"
+                                                        title="Edit opportunity"
+                                                    >
+                                                        <Edit3
+                                                            size={14}
+                                                            className="sm:text-[10px]"
+                                                        />
+                                                    </button>
+                                                ) : (
+                                                    <button
+                                                        disabled
+                                                        className="text-gray-400 bg-neutral-100 rounded-full font-semibold p-2 sm:p-4 cursor-not-allowed"
+                                                        title="Editing disabled - opportunity has started"
+                                                    >
+                                                        <Edit3
+                                                            size={14}
+                                                            className="sm:text-[10px]"
+                                                        />
+                                                    </button>
+                                                )}
 
                                                 <button
                                                     onClick={() =>
@@ -742,7 +759,8 @@ const InvestmentOpportunities = () => {
                                                             opp.id
                                                         )
                                                     }
-                                                    className="text-red-500 bg-neutral-100 rounded-full font-semibold p-2 sm:p-4"
+                                                    className="text-red-500 bg-neutral-100 rounded-full font-semibold p-2 sm:p-4 hover:bg-neutral-200 transition-colors"
+                                                    title="Delete opportunity"
                                                 >
                                                     <Trash size={14} />
                                                 </button>
@@ -874,14 +892,14 @@ const InvestmentOpportunities = () => {
                                     <div className="flex flex-col sm:flex-row justify-between gap-4 sm:gap-6 pt-2 border-t border-neutral-100">
                                         {/* Stats */}
                                         <div className="flex justify-between sm:justify-start sm:gap-6 w-full sm:w-auto">
-                                            <div>
+                                            {/* <div>
                                                 <span className="text-xs sm:text-sm text-neutral-500">
                                                     Match Score
                                                 </span>
                                                 <div className="text-xl sm:text-2xl font-light">
                                                     {opp.matchScore}%
                                                 </div>
-                                            </div>
+                                            </div> */}
                                             <div className="hidden sm:block border-l border-neutral-200"></div>
                                             <div className="flex flex-col">
                                                 <span className="text-xs sm:text-sm text-neutral-500">

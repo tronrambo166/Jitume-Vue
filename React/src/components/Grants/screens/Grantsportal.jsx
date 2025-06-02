@@ -197,7 +197,7 @@ const TujitumeGrantPortal = () => {
                 const response = await axiosClient.get("/grant/grants");
 
                 // Log the entire response to inspect the structure
-                // console.log("API Response:", response);
+                console.log("API Response:", response);
 
                 // Access the grants array inside the response data
                 const rawData = Array.isArray(response.data?.grants)
@@ -1147,19 +1147,36 @@ const TujitumeGrantPortal = () => {
                                                         </h2>
                                                         {user.investor && (
                                                             <div className="flex items-center">
-                                                                <button
-                                                                    onClick={() =>
-                                                                        handleEditGrantClick(
-                                                                            grant.id
-                                                                        )
-                                                                    }
-                                                                    className="px-4 py-2  text-green rounded "
-                                                                >
-                                                                    <Edit3 className=" text-[10px]" />
-                                                                    <span>
-                                                                        Edit-grant
-                                                                    </span>
-                                                                </button>
+                                                                {new Date(
+                                                                    grant.start_date
+                                                                ) >
+                                                                new Date() ? (
+                                                                    <button
+                                                                        onClick={() =>
+                                                                            handleEditGrantClick(
+                                                                                grant.id
+                                                                            )
+                                                                        }
+                                                                        className="px-4 py-2 text-green-600 rounded hover:bg-green-50 flex items-center gap-1 transition-colors"
+                                                                    >
+                                                                        <Edit3 className="w-4 h-4" />
+                                                                        <span className="text-sm">
+                                                                            Edit
+                                                                            Grant
+                                                                        </span>
+                                                                    </button>
+                                                                ) : (
+                                                                    <div
+                                                                        className="px-4 py-2 text-gray-400 rounded flex items-center gap-1"
+                                                                        title="Editing disabled - grant has already started"
+                                                                    >
+                                                                        <Edit3 className="w-4 h-4" />
+                                                                        <span className="text-sm">
+                                                                            Edit
+                                                                            Grant
+                                                                        </span>
+                                                                    </div>
+                                                                )}
                                                             </div>
                                                         )}
                                                     </div>
@@ -2410,6 +2427,7 @@ const TujitumeGrantPortal = () => {
                     setNewGrant={setNewGrant}
                     setShowCreateModal={setShowCreateModal}
                     createNewGrant={createNewGrant}
+                    fundingPerBusiness={selectedGrant.funding_per_business}
                     // Amount={Amount}
                     onClose={() => {
                         setShowCreateModal(false);

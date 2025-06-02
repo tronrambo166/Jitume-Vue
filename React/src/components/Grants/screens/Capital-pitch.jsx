@@ -323,7 +323,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
       {/* Main Content */}
       <main className="py-6 md:py-8">
         {/* Dashboard Stats */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-2">
+        <div className=" px-4 sm:px-6 lg:px-2">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 md:p-4">
               <div className="flex items-center justify-between">

@@ -74,6 +74,73 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
         }));
     };
 
+    const countries = [
+        "Algeria",
+        "Angola",
+        "Benin",
+        "Botswana",
+        "Burkina Faso",
+        "Burundi",
+        "Cabo Verde",
+        "Cameroon",
+        "Central African Republic",
+        "Chad",
+        "Comoros",
+        "Congo",
+        // "Côte d'Ivoire",
+        "Djibouti",
+        "Democratic Republic of the Congo",
+        "Egypt",
+        "Equatorial Guinea",
+        "Eritrea",
+        "Eswatini",
+        "Ethiopia",
+        "Gabon",
+        "Gambia",
+        "Ghana",
+        "Guinea",
+        "Guinea-Bissau",
+        "Kenya",
+        "Lesotho",
+        "Liberia",
+        "Libya",
+        "Madagascar",
+        "Malawi",
+        "Mali",
+        "Mauritania",
+        "Mauritius",
+        "Morocco",
+        "Mozambique",
+        "Namibia",
+        "Niger",
+        "Nigeria",
+        "Rwanda",
+        "Sao Tome and Principe",
+        "Senegal",
+        "Seychelles",
+        "Sierra Leone",
+        "Somalia",
+        "South Africa",
+        "South Sudan",
+        "Sudan",
+        "Tanzania",
+        "Togo",
+        "Tunisia",
+        "Uganda",
+        "Zambia",
+        "Zimbabwe",
+    ];
+
+    const impactAreas = [
+        "Food Security",
+        "Carbon Reduction",
+        "Job Creation",
+        "Water Conservation",
+        "Education",
+        "Healthcare",
+        "Financial Inclusion",
+    ];
+
      const sectors = [
         "Agriculture",
         "Arts Culture",
@@ -204,8 +271,8 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
         }));
     };
 
-    console.log("capitalId", capitalId);
-    console.log("businessId", businessId);
+    // console.log("capitalId", capitalId);
+    // console.log("businessId", businessId);
 
     const validateFile = (file, allowedTypes) => {
         if (!file) return true;
@@ -312,48 +379,48 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
         let requiredFields = [];
         const errors = {};
 
-        // if (step === 1) {
-        //     requiredFields = [
-        //         "startup_name",
-        //         "contact_person_name",
-        //         "contact_person_email",
-        //         "sector",
-        //         "headquarters_location",
-        //         "stage",
-        //     ];
+        if (step === 1) {
+            requiredFields = [
+                "startup_name",
+                "contact_person_name",
+                "contact_person_email",
+                "sector",
+                "headquarters_location",
+                "stage",
+            ];
 
-        //     // Email validation
-        //     if (formData.contact_person_email) {
-        //         if (
-        //             !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-        //                 formData.contact_person_email
-        //             )
-        //         ) {
-        //             errors.contact_person_email =
-        //                 "Please enter a valid email address";
-        //             isValid = false;
-        //         }
-        //     }
-        // } else if (step === 2) {
-        //     requiredFields = [
-        //         "revenue_last_12_months",
-        //         "team_experience_avg_years",
-        //         "traction_kpis",
-        //         "exit_strategy",
-        //     ];
-        // } else if (step === 3) {
-        //     // Make pitch_deck_file required
-        //     if (!formData.pitch_deck_file) {
-        //         errors.pitch_deck_file = "Pitch Deck is required";
-        //         isValid = false;
-        //     }
-        // }
+            // Email validation
+            if (formData.contact_person_email) {
+                if (
+                    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+                        formData.contact_person_email
+                    )
+                ) {
+                    errors.contact_person_email =
+                        "Please enter a valid email address";
+                    isValid = false;
+                }
+            }
+        } else if (step === 2) {
+            requiredFields = [
+                "revenue_last_12_months",
+                "team_experience_avg_years",
+                "traction_kpis",
+                "exit_strategy",
+            ];
+        } else if (step === 3) {
+            // Make pitch_deck_file required
+            if (!formData.pitch_deck_file) {
+                errors.pitch_deck_file = "Pitch Deck is required";
+                isValid = false;
+            }
+        }
         if (step === 4) {
-            // requiredFields = [
-            //     "funding_ask",
-            //     "use_of_funds",
-            //     "competitive_advantage",
-            // ];
+            requiredFields = [
+                "funding_ask",
+                "use_of_funds",
+                "competitive_advantage",
+            ];
         }
 
         // Check required fields
@@ -398,8 +465,11 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!validateStep(currentStep)) {
+            console.log("Validation failed for step:", currentStep);
             return;
+
         }
+        console.log("Submitting form data:", formData);
 
         setIsSubmitting(true);
 
@@ -731,8 +801,7 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                                     Headquarters Location{" "}
                                     <span className="text-red-500">*</span>
                                 </label>
-                                <input
-                                    type="text"
+                                <select
                                     id="headquarters_location"
                                     name="headquarters_location"
                                     value={formData.headquarters_location}
@@ -742,10 +811,18 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                                         fieldErrors.headquarters_location
                                             ? "border-red-300 focus:ring-red-500"
                                             : "border-gray-300 focus:ring-green-500"
-                                    } rounded-md focus:outline-none focus:ring-2`}
-                                    placeholder="City, Country"
+                                    } rounded-md focus:outline-none focus:ring-2 bg-white`}
                                     required
-                                />
+                                >
+                                    <option value="" disabled>
+                                        Select a country
+                                    </option>
+                                    {countries.map((country) => (
+                                        <option key={country} value={country}>
+                                            {country}
+                                        </option>
+                                    ))}
+                                </select>
                                 {renderFieldError("headquarters_location")}
                             </div>
 
@@ -992,7 +1069,9 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                                     className="block text-sm font-medium text-gray-700 mb-1"
                                 >
                                     Business Plan (PDF/DOCX/PPT)
+                                    <span className="text-red-500">*</span>
                                 </label>
+
                                 <input
                                     type="file"
                                     id="business_plan"
@@ -1005,6 +1084,7 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                                             : "border-gray-300 focus:ring-green-500"
                                     } rounded-md focus:outline-none focus:ring-2`}
                                     accept=".pdf,.docx,.ppt,.pptx"
+                                    required
                                 />
                                 {formData.business_plan && (
                                     <p className="mt-1 text-sm text-green-600">
@@ -1021,8 +1101,7 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                                 >
                                     Social Impact Areas
                                 </label>
-                                <input
-                                    type="text"
+                                <select
                                     id="social_impact_areas"
                                     name="social_impact_areas"
                                     value={formData.social_impact_areas}
@@ -1032,9 +1111,17 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                                         fieldErrors.social_impact_areas
                                             ? "border-red-300 focus:ring-red-500"
                                             : "border-gray-300 focus:ring-green-500"
-                                    } rounded-md focus:outline-none focus:ring-2`}
-                                    placeholder="Education, Environment, etc."
-                                />
+                                    } rounded-md focus:outline-none focus:ring-2 bg-white`}
+                                >
+                                    <option value="" disabled>
+                                        Select a social impact area
+                                    </option>
+                                    {impactAreas.map((area) => (
+                                        <option key={area} value={area}>
+                                            {area}
+                                        </option>
+                                    ))}
+                                </select>
                                 {renderFieldError("social_impact_areas")}
                             </div>
 

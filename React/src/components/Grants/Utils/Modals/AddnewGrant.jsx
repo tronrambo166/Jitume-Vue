@@ -17,6 +17,7 @@ const OfferGrantModal = ({ onClose, refreshGrants }) => {
         eligibilityCriteria: "",
         requiredDocuments: [],
         applicationDeadline: "",
+        applicationStartDate: "", // Add start date field
         grantFocus: "",
         startupStageFocus: [],
         impactObjectives: "",
@@ -162,6 +163,7 @@ const OfferGrantModal = ({ onClose, refreshGrants }) => {
             "fundingPerBusiness",
             "eligibilityCriteria",
             "applicationDeadline",
+            "applicationStartDate", // Include start date in validation
             "grantFocus",
             "impactObjectives",
             "evaluationCriteria",
@@ -348,6 +350,7 @@ const OfferGrantModal = ({ onClose, refreshGrants }) => {
             eligibilityCriteria: "",
             requiredDocuments: [],
             applicationDeadline: "",
+            applicationStartDate: "", // Reset start date
             grantFocus: "",
             startupStageFocus: [],
             impactObjectives: "",
@@ -512,6 +515,39 @@ const OfferGrantModal = ({ onClose, refreshGrants }) => {
 
                         {/* Two columns for dates and focus */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {/* Application Start Date */}
+                            <div className="relative">
+                                <label className="block text-sm font-medium text-gray-600 mb-1.5">
+                                    Application Start Date{" "}
+                                    <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="date"
+                                    name="applicationStartDate"
+                                    value={formData.applicationStartDate}
+                                    onChange={handleChange}
+                                    onFocus={() =>
+                                        setActiveField("applicationStartDate")
+                                    }
+                                    onBlur={() => setActiveField(null)}
+                                    min={new Date().toISOString().split("T")[0]}
+                                    className={`mt-1 block w-full rounded-xl bg-white border ${
+                                        activeField === "applicationStartDate"
+                                            ? "border-green-500 ring-1 ring-green-500"
+                                            : "border-gray-200"
+                                    } px-4 py-2.5 text-gray-900 focus:outline-none transition-all duration-200 ${
+                                        validationErrors.applicationStartDate
+                                            ? "border-red-500"
+                                            : ""
+                                    }`}
+                                />
+                                {validationErrors.applicationStartDate && (
+                                    <p className="mt-1.5 text-sm text-red-500">
+                                        {validationErrors.applicationStartDate}
+                                    </p>
+                                )}
+                            </div>
+
                             {/* Application Deadline */}
                             <div className="relative">
                                 <label className="block text-sm font-medium text-gray-600 mb-1.5">

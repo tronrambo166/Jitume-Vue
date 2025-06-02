@@ -35,6 +35,8 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
         regions: [],
         required_docs: [],
         offer_brief_file: null,
+        start_date: "",
+        end_date: "",
     });
 
     // Sectors with market trends
@@ -286,33 +288,95 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
     };
 
     // Also, enhance the validateStep function to be more thorough:
-    const validateStep = (currentStep) => {
-        // if (currentStep === 1) {
-        //   if (!formData.offer_title || !formData.total_capital_available || !formData.per_startup_allocation || !formData.milestone_requirements) {
-        //     setNotification({
-        //       type: 'error',
-        //       message: 'Please complete all required fields'
-        //     });
-        //     setTimeout(() => setNotification(null), 5000);
-        //     return false;
-        //   }
-        // } else if (currentStep === 2) {
-        //   if (!formData.startup_stage || formData.sectors.length === 0 || formData.regions.length === 0) {
-        //     setNotification({
-        //       type: 'error',
-        //       message: 'Please select startup stage, sectors, and regions'
-        //     });
-        //     setTimeout(() => setNotification(null), 5000);
-        //     return false;
-        //   }
-        // }
-        // return true;
+    // STRICT VALIDATION FUNCTION
+    const validateStep = (stepToValidate) => {
+        // Step 1: Basic Details
+        if (stepToValidate === 1) {
+            if (!formData.offer_title?.trim()) {
+                setNotification({
+                    type: "error",
+                    message: "Give your opportunity a title",
+                });
+                return false;
+            }
+
+            const totalCapital = Number(formData.total_capital_available);
+            if (!totalCapital || totalCapital <= 0) {
+                setNotification({
+                    type: "error",
+                    message: "Enter valid total capital ($1 minimum)",
+                });
+                return false;
+            }
+
+            const perStartup = Number(formData.per_startup_allocation);
+            if (!perStartup || perStartup <= 0) {
+                setNotification({
+                    type: "error",
+                    message: "Enter valid per-startup amount ($1 minimum)",
+                });
+                return false;
+            }
+
+            if (perStartup > totalCapital) {
+                setNotification({
+                    type: "error",
+                    message: "Per-startup amount can't exceed total capital",
+                });
+                return false;
+            }
+
+            if (!formData.milestone_requirements?.trim()) {
+                setNotification({
+                    type: "error",
+                    message: "Describe your milestone requirements",
+                });
+                return false;
+            }
+
+            return true;
+        }
+
+        // Step 2: Targeting
+        if (stepToValidate === 2) {
+            if (!formData.startup_stage) {
+                setNotification({
+                    type: "error",
+                    message: "Select a startup stage",
+                });
+                return false;
+            }
+
+            if (formData.sectors.length === 0) {
+                setNotification({
+                    type: "error",
+                    message: "Select at least 1 sector",
+                });
+                return false;
+            }
+
+            if (formData.regions.length === 0) {
+                setNotification({
+                    type: "error",
+                    message: "Select at least 1 region",
+                });
+                return false;
+            }
+
+            return true;
+        }
+
+        return true;
     };
 
+    // LOCKED-DOWN NEXT STEP FUNCTION
     const nextStep = () => {
-        // if (validateStep(step)) {
-        //   setStep(step + 1);
-        // }
+        // Validate current step FIRST
+        if (!validateStep(step)) {
+            return; // BLOCK progression if invalid
+        }
+
+        // Only increment if validation passed
         setStep(step + 1);
     };
 
@@ -363,6 +427,16 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                     formData.offer_brief_file
                 );
             }
+            // Append start date if provided
+            if (formData.start_date) {
+                formDataToSend.append("start_date", formData.start_date);
+            }
+            // Append END date if provided
+            if (formData.end_date) {
+                 formDataToSend.append("end_date", formData.end_date);
+            }
+
+            // console.log("Submitting Opportunity Form Data:", formData);
 
             // Make API request
             await axiosClient.post(
@@ -1187,37 +1261,107 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
                                     </div>
                                 )}
 
-                                <div>
-                                    <label className="block text-sm font-medium text-neutral-700 mb-2">
-                                        Upload Brief (Optional)
-                                    </label>
-                                    <div className="border border-dashed border-neutral-300 rounded-lg p-4 text-center hover:bg-neutral-50 cursor-pointer transition-colors">
-                                        <input
-                                            type="file"
-                                            id="fileUpload"
-                                            className="hidden"
-                                            onChange={handleFileChange}
-                                            accept=".pdf,.doc,.docx"
-                                        />
-                                        <label
-                                            htmlFor="fileUpload"
-                                            className="cursor-pointer flex flex-col items-center"
-                                        >
-                                            <Upload
-                                                size={32}
-                                                className="text-neutral-400 mb-2"
-                                            />
-                                            <p className="text-neutral-700 font-medium">
-                                                {formData.offer_brief_file
-                                                    ? formData.offer_brief_file
-                                                          .name
-                                                    : "Upload detailed brief"}
-                                            </p>
-                                            <p className="text-sm text-neutral-500 mt-1">
-                                                Supported formats: PDF, DOC,
-                                                DOCX (max 5MB)
-                                            </p>
+                                <div className="space-y-4">
+                                    {/* Start Date Field */}
+                                    <div>
+                                        <label className="block text-sm font-medium text-neutral-700 mb-1">
+                                            Start Date*
                                         </label>
+                                        <input
+                                            type="date"
+                                            className="block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm p-2 border"
+                                            value={formData.start_date || ""}
+                                            onChange={(e) => {
+                                                const newStartDate =
+                                                    e.target.value;
+                                                setFormData({
+                                                    ...formData,
+                                                    start_date: newStartDate,
+                                                    // Reset end date if it's now before start date
+                                                    end_date:
+                                                        formData.end_date &&
+                                                        newStartDate >
+                                                            formData.end_date
+                                                            ? ""
+                                                            : formData.end_date,
+                                                });
+                                            }}
+                                            min={
+                                                new Date()
+                                                    .toISOString()
+                                                    .split("T")[0]
+                                            }
+                                            required
+                                        />
+                                        <p className="mt-1 text-xs text-neutral-500">
+                                            The date when this opportunity
+                                            becomes active
+                                        </p>
+                                    </div>
+
+                                    {/* End Date Field */}
+                                    <div>
+                                        <label className="block text-sm font-medium text-neutral-700 mb-1">
+                                            End Date*
+                                        </label>
+                                        <input
+                                            type="date"
+                                            className="block w-full rounded-md border-neutral-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm p-2 border"
+                                            value={formData.end_date || ""}
+                                            onChange={(e) =>
+                                                setFormData({
+                                                    ...formData,
+                                                    end_date: e.target.value,
+                                                })
+                                            }
+                                            min={
+                                                formData.start_date ||
+                                                new Date()
+                                                    .toISOString()
+                                                    .split("T")[0]
+                                            }
+                                            required
+                                        />
+                                        <p className="mt-1 text-xs text-neutral-500">
+                                            The date when this opportunity
+                                            closes
+                                        </p>
+                                    </div>
+
+                                    {/* Upload Brief Section */}
+                                    <div>
+                                        <label className="block text-sm font-medium text-neutral-700 mb-2">
+                                            Upload Brief (Optional)
+                                        </label>
+                                        <div className="border border-dashed border-neutral-300 rounded-lg p-4 text-center hover:bg-neutral-50 cursor-pointer transition-colors">
+                                            <input
+                                                type="file"
+                                                id="fileUpload"
+                                                className="hidden"
+                                                onChange={handleFileChange}
+                                                accept=".pdf,.doc,.docx"
+                                            />
+                                            <label
+                                                htmlFor="fileUpload"
+                                                className="cursor-pointer flex flex-col items-center"
+                                            >
+                                                <Upload
+                                                    size={32}
+                                                    className="text-neutral-400 mb-2"
+                                                />
+                                                <p className="text-neutral-700 font-medium">
+                                                    {formData.offer_brief_file
+                                                        ? formData
+                                                              .offer_brief_file
+                                                              .name
+                                                        : "Upload detailed brief"}
+                                                </p>
+                                                <p className="text-sm text-neutral-500 mt-1">
+                                                    Supported formats: PDF, DOC,
+                                                    DOCX (max 5MB)
+                                                </p>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
 

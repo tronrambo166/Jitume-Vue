@@ -952,32 +952,32 @@ const PitchDashboard = () => {
                                               className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow"
                                           >
                                               <div className="relative">
-                                                  {hasVideo(pitch) ? (
-                                                      <div className="aspect-w-16 aspect-h-9 bg-gray-200">
-                                                          <img
-                                                              src={
-                                                                  randomThumbnail
+                                                  {pitch.pitch_video ? (
+                                                      <div
+                                                          className="w-full rounded-t-lg overflow-hidden bg-black"
+                                                          style={{
+                                                              aspectRatio:
+                                                                  "16/9",
+                                                          }}
+                                                      >
+                                                          <VideoPlayerWithThumbnail
+                                                              videoUrl={
+                                                                  "https://tujitume.com/" +
+                                                                  pitch.pitch_video
                                                               }
-                                                              alt="Video thumbnail"
-                                                              className="object-cover w-full h-40"
+                                                              thumbnailUrl={
+                                                                  pitch.pitch_video_thumbnail ||
+                                                                  "/default-video-poster.jpg"
+                                                              }
                                                           />
-                                                          <div className="absolute inset-0 flex items-center justify-center">
-                                                              <button className="w-10 h-10 bg-white bg-opacity-80 rounded-full flex items-center justify-center">
-                                                                  <Play
-                                                                      size={16}
-                                                                      className="text-gray-800"
-                                                                      fill="currentColor"
-                                                                  />
-                                                              </button>
-                                                          </div>
                                                       </div>
                                                   ) : (
-                                                      <img
-                                                          src={randomThumbnail}
-                                                          alt="Startup thumbnail"
-                                                          className="object-cover w-full h-40"
-                                                      />
+                                                      <div className="w-full aspect-w-16 aspect-h-9 bg-gray-200 flex items-center justify-center text-gray-500 text-sm font-medium">
+                                                          No pitch video
+                                                          provided
+                                                      </div>
                                                   )}
+
                                                   <div className="absolute top-2 right-2">
                                                       <button
                                                           onClick={() =>

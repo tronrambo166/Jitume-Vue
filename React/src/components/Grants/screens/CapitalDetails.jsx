@@ -18,17 +18,14 @@ import {
     Send,
 } from "lucide-react";
 import InvestmentApplicationModal from "../Utils/Modals/InvestmentModal";
+import { useStateContext } from "../../../contexts/contextProvider";
 
 function CapitalDetailsPage() {
     const location = useLocation();
     const capitalData = location.state?.capitalData;
     const [showModes, setshowModes] = useState(false);
     const [selectedOpportunity, setSelectedOpportunity] = useState(null);
-
-    // Mock user data - replace with your actual user context/state
-    const user = {
-        investor: false, // Change this based on your user state
-    };
+    const { user } = useStateContext();
 
     const handleSuccess = () => {
         // Handle successful application submission
@@ -50,7 +47,6 @@ function CapitalDetailsPage() {
                 </div>
             </div>
         );
-        
     }
 
     //console.log("Capital Data:", capitalData);
@@ -91,7 +87,7 @@ function CapitalDetailsPage() {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className=" mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 {/* Back Button */}
                 <div className="mb-6">
                     <button
