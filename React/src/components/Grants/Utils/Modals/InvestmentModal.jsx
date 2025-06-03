@@ -464,11 +464,11 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!validateStep(currentStep)) {
-            console.log("Validation failed for step:", currentStep);
-            return;
+        // if (!validateStep(currentStep)) {
+        //     console.log("Validation failed for step:", currentStep);
+        //     return;
 
-        }
+        // }
         console.log("Submitting form data:", formData);
 
         setIsSubmitting(true);

@@ -15,6 +15,7 @@ import {
     Rocket,
     Loader,
     BarChart3,
+    BarChart2,
     Clock,
     Calendar,
     FileText,

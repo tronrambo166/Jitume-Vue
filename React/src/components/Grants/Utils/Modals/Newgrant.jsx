@@ -676,34 +676,40 @@ export default function GrantApplicationModal({ onClose, grantId,fundingPerBusin
 
     // Handle file upload
 
-    const [milestones] = useState([
-        {
-            title: "",
-            amount: "",
-            description: "",
-            date: "",
-            requiresVerification: false,
-            deliverables: [],
-        },
-    ]);
+   ;
+   const addMilestone = () => {
+       // Calculate current total of all milestone amounts
+       const currentTotal = formData.milestones.reduce(
+           (sum, m) => sum + (parseFloat(m.amount) || 0),
+           0
+       );
 
-    const addMilestone = () => {
-        setFormData({
-            ...formData,
-            milestones: [
-                ...formData.milestones,
-                {
-                    title: "",
-                    amount: "",
-                    description: "",
-                    date: "",
-                    requiresVerification: false,
-                    deliverables: [],
-                },
-            ],
-        });
-    };
+       // Check if adding another milestone would exceed fundingPerBusiness
+       if (currentTotal >= formData.fundingPerBusiness) {
+           alert(
+               `Cannot add more milestones - total funding would exceed $${formData.fundingPerBusiness}`
+           );
+           return;
+       }
 
+       // Proceed with adding the milestone
+       setFormData({
+           ...formData,
+           milestones: [
+               ...formData.milestones,
+               {
+                   title: "",
+                   amount: "",
+                   description: "",
+                   date: "",
+                   requiresVerification: false,
+                   deliverables: [],
+               },
+           ],
+       });
+   };
+
+    
     const removeMilestone = (index) => {
         if (formData.milestones.length > 1) {
             setFormData({
@@ -785,7 +791,7 @@ export default function GrantApplicationModal({ onClose, grantId,fundingPerBusin
             isGenderLed: "gender_led",
             isYouthLed: "youth_led",
             isRuralBased: "rural_based",
-            usesLocalSourcing: "local_sourcing",
+            usesLocalSourcing: "uses_local_sourcing",
         };
 
         if (Object.keys(bonusFieldMappings).includes(name)) {
@@ -901,6 +907,24 @@ export default function GrantApplicationModal({ onClose, grantId,fundingPerBusin
 
     // Updated updateMilestone function
     const updateMilestone = (index, field, value, isFileUpload = false) => {
+        // First check if we're updating amount and validate against fundingPerBusiness
+        if (field === "amount") {
+            const newAmount = parseFloat(value) || 0;
+            const currentTotal = formData.milestones.reduce((sum, m, i) => {
+                return (
+                    sum + (i === index ? newAmount : parseFloat(m.amount) || 0)
+                );
+            }, 0);
+
+            if (currentTotal > formData.fundingPerBusiness) {
+                alert(
+                    `Total milestone amounts cannot exceed $${formData.fundingPerBusiness}`
+                );
+                return; // Prevent the update
+            }
+        }
+
+        // Proceed with the original update logic
         const updatedMilestones = [...formData.milestones];
 
         if (isFileUpload) {
@@ -917,13 +941,12 @@ export default function GrantApplicationModal({ onClose, grantId,fundingPerBusin
         setFormData(updatedFormData);
 
         if (isFileUpload) {
-            // For file uploads, trigger immediately
             debouncedSendFormData(updatedFormData);
         } else if (hasDeliverableFile(updatedFormData)) {
-            // For other changes, use activity detection
             handleUserActivity(updatedFormData);
         }
     };
+    
 
     // Your existing sendFormDataToAPI function remains unchanged
     const sendFormDataToAPI = async (currentFormData) => {
@@ -1015,7 +1038,7 @@ export default function GrantApplicationModal({ onClose, grantId,fundingPerBusin
                 );
             }
         });
-        // console.log("Data sent to API:", currentFormData);
+        console.log("Data sent to API:", currentFormData);
         try {
             const response = await axiosClient.post(
                 `grant/match-score/${grantId}`,
@@ -1031,7 +1054,7 @@ export default function GrantApplicationModal({ onClose, grantId,fundingPerBusin
                 }
             );
 
-            //console.log("Score API Response:", response.data);
+            console.log("Score API Response:", response.data);
             setMatchScore(response.data.original.score);
             setScoreBreakdown(response.data.original.score_breakdown);
             return response.data;
@@ -1832,7 +1855,7 @@ Add these props to your input elements:
                                             </div>
                                             <div>
                                                 <h3 className="text-lg font-semibold text-green-800 mb-1">
-                                                    Funding Milestones
+                                                    Funding Milestones {fundingPerBusiness}
                                                 </h3>
                                                 <p className="text-gray-600 leading-relaxed">
                                                     Define clear and verifiable
