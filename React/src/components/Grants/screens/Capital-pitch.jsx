@@ -682,11 +682,9 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   </td>
       
                   <td className="px-4  md:px-6 py-3 whitespace-nowrap">
-                   <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(statusText)}`}>
-  {statusText}
-</span>
-
-
+                    <span className={`px-2 py-1 text-xs bg-amber-500 font-medium rounded-full`}>
+                      {statusText}
+                    </span>
                   </td>
       
                   <td className="px-4 md:px-6 py-3 whitespace-nowrap text-sm text-gray-500">
