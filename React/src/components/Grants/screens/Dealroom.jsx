@@ -24,6 +24,11 @@ import {
     Leaf,
     Briefcase,
     Presentation,
+    Video,
+    DownloadCloud,
+    Eye,
+    Layers,
+    Layers2,
 } from "lucide-react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import axiosClient from "../../../axiosClient";
@@ -137,234 +142,108 @@ const DealRoomLayout = () => {
     };
 
     // Mock data fetch with investors and matching criteria
-    useEffect(() => {
-        let mockDeal;
+  useEffect(() => {
+  const fetchDealData = async () => {
+    try {
+      // Fetch pitch data from your API
+      const response = await axios.get(`/api/pitches/${opportunityId}`);
+      const pitchData = response.data;
 
-        if (opportunityFromState) {
-            // Use the opportunity data passed from the investor portal
-            mockDeal = {
-                ...opportunityFromState,
-                id: opportunityFromState.id || opportunityId,
-                name: opportunityFromState.name,
-                stage: opportunityFromState.stage || "Seed",
-                amount: opportunityFromState.amount || 250000,
-                valuation: opportunityFromState.valuation || 1000000,
-                equityOffered: opportunityFromState.equityOffered || "25%",
-                sector: opportunityFromState.sector || "Agriculture",
-                location: opportunityFromState.location || "Kenya",
-                revenue: opportunityFromState.revenue || 75000,
-                teamExperience: opportunityFromState.teamExperience || 5,
-                impactScore: opportunityFromState.impactScore || 8,
-                milestoneSuccess: opportunityFromState.milestoneSuccess || 75,
-                documents: opportunityFromState.documents || [
-                    {
-                        id: 1,
-                        name: "Pitch Deck",
-                        type: "pdf",
-                        uploaded: "2023-05-15",
-                        size: "2.4 MB",
-                    },
-                    {
-                        id: 2,
-                        name: "Financial Model",
-                        type: "xlsx",
-                        uploaded: "2023-05-20",
-                        size: "1.8 MB",
-                    },
-                    {
-                        id: 3,
-                        name: "Cap Table",
-                        type: "pdf",
-                        uploaded: "2023-06-01",
-                        size: "3.2 MB",
-                    },
-                ],
-                timeline: opportunityFromState.timeline || [
-                    {
-                        id: 1,
-                        event: "Initial Pitch",
-                        date: "2023-05-10",
-                        completed: true,
-                    },
-                    {
-                        id: 2,
-                        event: "Due Diligence",
-                        date: "2023-06-15",
-                        completed: false,
-                    },
-                    {
-                        id: 3,
-                        event: "Term Sheet",
-                        date: "2023-07-01",
-                        completed: false,
-                    },
-                ],
-                team: opportunityFromState.team || [
-                    {
-                        id: 1,
-                        name: "Jane Muthoni",
-                        role: "CEO",
-                        joined: "2020",
-                        email: "jane@example.com",
-                    },
-                    {
-                        id: 2,
-                        name: "David Omondi",
-                        role: "CTO",
-                        joined: "2021",
-                        email: "david@example.com",
-                    },
-                ],
-            };
-        } else {
-            // Fallback to mock data if no state was passed
-            mockDeal = {
-                id: opportunityId,
-                name:
-                    opportunityId === "1"
-                        ? "Solar Farm Kenya"
-                        : "AgriTech Tanzania",
-                stage: opportunityId === "1" ? "Series A" : "Seed",
-                amount: opportunityId === "1" ? 500000 : 250000,
-                valuation: opportunityId === "1" ? 2500000 : 1000000,
-                equityOffered: opportunityId === "1" ? "20%" : "25%",
-                sector:
-                    opportunityId === "1" ? "Renewable Energy" : "Agriculture",
-                location: "Kenya",
-                revenue: opportunityId === "1" ? 120000 : 75000,
-                teamExperience: 5,
-                impactScore: 8,
-                milestoneSuccess: 75,
-                documents: [
-                    {
-                        id: 1,
-                        name: "Pitch Deck",
-                        type: "pdf",
-                        uploaded: "2023-05-15",
-                        size: "2.4 MB",
-                    },
-                    {
-                        id: 2,
-                        name: "Financial Model",
-                        type: "xlsx",
-                        uploaded: "2023-05-20",
-                        size: "1.8 MB",
-                    },
-                    {
-                        id: 3,
-                        name: "Cap Table",
-                        type: "pdf",
-                        uploaded: "2023-06-01",
-                        size: "3.2 MB",
-                    },
-                ],
-                timeline: [
-                    {
-                        id: 1,
-                        event: "Initial Pitch",
-                        date: "2023-05-10",
-                        completed: true,
-                    },
-                    {
-                        id: 2,
-                        event: "Due Diligence",
-                        date: "2023-06-15",
-                        completed: false,
-                    },
-                    {
-                        id: 3,
-                        event: "Term Sheet",
-                        date: "2023-07-01",
-                        completed: false,
-                    },
-                ],
-                team: [
-                    {
-                        id: 1,
-                        name: "Jane Muthoni",
-                        role: "CEO",
-                        joined: "2020",
-                        email: "jane@example.com",
-                    },
-                    {
-                        id: 2,
-                        name: "David Omondi",
-                        role: "CTO",
-                        joined: "2021",
-                        email: "david@example.com",
-                    },
-                ],
-            };
-        }
+      // Transform the API data to match your expected structure
+      const dealData = {
+        id: pitchData.id,
+        name: pitchData.startup_name,
+        stage: pitchData.stage,
+        amount: pitchData.total_amount_requested || 0,
+        valuation: null, // Not in your data structure
+        equityOffered: null, // Not in your data structure
+        sector: pitchData.sector,
+        location: pitchData.headquarters_location,
+        revenue: pitchData.revenue_last_12_months,
+        teamExperience: pitchData.team_experience_avg_years,
+        impactScore: null, // Not in your data structure
+        milestoneSuccess: null, // Not in your data structure
+        documents: [
+          pitchData.pitch_deck_file && {
+            id: 1,
+            name: "Pitch Deck",
+            type: "pdf",
+            uploaded: pitchData.created_at,
+            size: "N/A", // You might need to get this from the server
+            url: pitchData.pitch_deck_file
+          },
+          pitchData.business_plan && {
+            id: 2,
+            name: "Business Plan",
+            type: "pdf",
+            uploaded: pitchData.created_at,
+            size: "N/A",
+            url: pitchData.business_plan
+          },
+          pitchData.pitch_video && {
+            id: 3,
+            name: "Pitch Video",
+            type: "mp4",
+            uploaded: pitchData.created_at,
+            size: "N/A",
+            url: pitchData.pitch_video
+          }
+        ].filter(Boolean), // Remove null/undefined entries
+        timeline: [], // Not in your data structure
+        team: [] // Not in your data structure
+      };
 
-        const mockInvestors = [
-            {
-                id: 1,
-                name: "Green Energy Ventures",
-                type: "VC Firm",
-                sectors: ["Renewable Energy", "Agriculture"],
-                investmentRange: "$100k - $1M",
-                stage: ["Seed", "Series A"],
-                location: ["Kenya", "Tanzania"],
-                minRevenue: 50000,
-                teamThreshold: 3,
-                impactThreshold: 5,
-                contactEmail: "contact@greenenergy.vc",
-            },
-            {
-                id: 2,
-                name: "AgriTech Angels",
-                type: "Angel Network",
-                sectors: ["Agriculture", "Tech"],
-                investmentRange: "$50k - $500k",
-                stage: ["Idea", "MVP", "Seed"],
-                location: ["East Africa"],
-                minRevenue: 0,
-                teamThreshold: 2,
-                impactThreshold: 7,
-                contactEmail: "invest@agritechangels.com",
-            },
-            {
-                id: 3,
-                name: "Afrika Impact Fund",
-                type: "Impact Investor",
-                sectors: ["Agriculture", "Renewable Energy", "Tech"],
-                investmentRange: "$200k - $2M",
-                stage: ["Seed", "Growth"],
-                location: ["Africa"],
-                minRevenue: 100000,
-                teamThreshold: 4,
-                impactThreshold: 8,
-                contactEmail: "info@afrikaimpact.org",
-            },
-        ];
+      setDeal(dealData);
+      setDocuments(dealData.documents);
+      
+      // For fields not in your data structure, you might want to:
+      // 1. Fetch additional data from other endpoints
+      // 2. Set default values
+      // 3. Leave them empty if not required
+      
+      setTeamMembers([]); // You might need to fetch this separately
+      setTimeline([]); // You might need to fetch this separately
 
-        setDeal(mockDeal);
-        setDocuments(mockDeal.documents || []);
-        setTeamMembers(mockDeal.team || []);
-        setTimeline(mockDeal.timeline || []);
-        setInvestors(mockInvestors);
+      // Fetch investors (this would come from a separate endpoint)
+      const investorsResponse = await axios.get('/api/investors');
+      setInvestors(investorsResponse.data);
 
-        // Initial mock messages
-        setMessages([
-            {
-                id: 1,
-                sender: "Jane Muthoni",
-                text: "Hi team, I've updated the financial model. Please review.",
-                timestamp: new Date(Date.now() - 86400000).toISOString(),
-            },
-            {
-                id: 2,
-                sender: "David Omondi",
-                text: "Looks good. We should discuss the next steps.",
-                timestamp: new Date(Date.now() - 3600000).toISOString(),
-            },
-        ]);
+      // Fetch messages (this would come from a separate endpoint)
+      const messagesResponse = await axios.get(`/api/pitches/${opportunityId}/messages`);
+      setMessages(messagesResponse.data);
 
-        // Fetch pitches
-        fetchPitches();
-    }, [opportunityId, opportunityFromState]);
+    } catch (error) {
+      console.error("Error fetching deal data:", error);
+      // Fallback to mock data if API fails (optional)
+      // ... your existing mock data logic ...
+    }
+  };
 
+  if (opportunityFromState) {
+    // If data is passed via state, use that
+    const dealData = {
+      ...opportunityFromState,
+      documents: [
+        opportunityFromState.pitch_deck_file && {
+          id: 1,
+          name: "Pitch Deck",
+          type: "pdf",
+          uploaded: opportunityFromState.created_at,
+          url: opportunityFromState.pitch_deck_file
+        },
+        // ... other documents ...
+      ].filter(Boolean)
+    };
+    setDeal(dealData);
+    setDocuments(dealData.documents);
+  } else {
+    // Otherwise fetch from API
+    fetchDealData();
+  }
+
+  // Fetch pitches list (if needed)
+  fetchPitches();
+}, [opportunityId, opportunityFromState]);
     // Message sending handler
     const handleSendMessage = () => {
         if (newMessage.trim()) {
@@ -653,6 +532,7 @@ const DealRoomLayout = () => {
             <p>No pitches available.</p>
         );
     }
+// console.log(filteredPitches)
 
     // Priority Filters Component
     const PriorityFilters = () => (
@@ -735,7 +615,6 @@ const DealRoomLayout = () => {
                 Loading...
             </div>
         );
-
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50 text-gray-900">
             {/* Header */}
@@ -744,7 +623,7 @@ const DealRoomLayout = () => {
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
                             <Link
-                                to="/grants-overview/funding/investments"
+                                to="/dashboard/overview/funding/investments"
                                 className="text-gray-500 hover:text-gray-700"
                             >
                                 <ArrowLeft size={20} />
@@ -765,9 +644,7 @@ const DealRoomLayout = () => {
                             <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
                                 Active
                             </span>
-                            <button className="p-2 text-gray-500 hover:text-gray-700">
-                                <Settings size={20} />
-                            </button>
+                           
                         </div>
                     </div>
                 </div>
@@ -779,6 +656,10 @@ const DealRoomLayout = () => {
                     <nav className="flex space-x-8 overflow-x-auto">
                         {[
                             {
+                                name: "overview",
+                                icon: BarChart2,
+                                label: "Overview",
+                            },{
                                 name: "pitches",
                                 icon: Presentation,
                                 label: (
@@ -790,16 +671,7 @@ const DealRoomLayout = () => {
                                     </>
                                 ),
                             },
-                           {
-                                name: "overview",
-                                icon: BarChart2,
-                                label: "Overview",
-                            },
-                            {
-                                name: "investors",
-                                icon: Briefcase,
-                                label: "Investors",
-                            },
+                           
                            
                             {
                                 name: "documents",
@@ -830,127 +702,153 @@ const DealRoomLayout = () => {
 
             {/* Content Sections */}
             <div className="container mx-auto px-4 py-8">
+
                 {/* Overview Tab */}
-                {activeTab === "overview" && (
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                        <div className="grid md:grid-cols-3 divide-x divide-gray-200">
-                            {/* Key Metrics */}
-                            <div className="p-6">
-                                <h3 className="text-lg font-medium text-gray-900 mb-4">
-                                    Key Metrics
-                                </h3>
-                                <div className="space-y-4">
-                                    <div>
-                                        <p className="text-sm text-gray-500">
-                                            Valuation
-                                        </p>
-                                        <p className="text-xl font-semibold">
-                                            ${deal.valuation.toLocaleString()}
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm text-gray-500">
-                                            Equity Offered
-                                        </p>
-                                        <p className="text-xl font-semibold">
-                                            {deal.equityOffered}
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm text-gray-500">
-                                            Investment Amount
-                                        </p>
-                                        <p className="text-xl font-semibold">
-                                            ${deal.amount.toLocaleString()}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+{activeTab === "overview" && (
+  <div className=" rounded-xl  overflow-hidden">
+     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 my-6">
+                    {filteredPitches.map((pitch) => (
+                        <PitchCard
+                            key={pitch.id}
+                            pitch={pitch}
+                            onStatusChange={(id, newStatus) => {
+                                setPitches((prev) =>
+                                    prev.map((p) =>
+                                        p.id === id
+                                            ? {
+                                                  ...p,
+                                                  status:
+                                                      newStatus === "accepted"
+                                                          ? 1
+                                                          : 0,
+                                              }
+                                            : p
+                                    )
+                                );
+                            }}
+                        />
+                    ))}
+                </div>
+    <div className="grid bg-slate-300/50 md:grid-cols-3 divide-x divide-gray-200">
+      {/* Key Metrics */}
+      <div className="p-6">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Key Metrics</h3>
+        <div className="space-y-4">
+          <div>
+            <p className="text-sm text-gray-500">Match Score</p>
+            <p className="text-xl font-semibold">
+              {filteredPitches[0]?.score || 'N/A'}%
+            </p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Sector</p>
+            <p className="text-xl font-semibold">
+              {filteredPitches[0]?.sector || 'N/A'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Stage</p>
+            <p className="text-xl font-semibold">
+              <span className={`px-2 py-1 rounded-full text-xs ${
+                filteredPitches[0]?.stage === "Seed" ? "bg-green-100 text-green-800" :
+                filteredPitches[0]?.stage === "Series A" ? "bg-blue-100 text-blue-800" :
+                filteredPitches[0]?.stage === "Series B" ? "bg-purple-100 text-purple-800" :
+                "bg-gray-100 text-gray-800"
+              }`}>
+                {filteredPitches[0]?.stage || 'N/A'}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
 
-                            {/* Timeline */}
-                            <div className="p-6">
-                                <h3 className="text-lg font-medium text-gray-900 mb-4">
-                                    Deal Timeline
-                                </h3>
-                                <div className="space-y-4">
-                                    {timeline.map((item) => (
-                                        <div
-                                            key={item.id}
-                                            className="flex items-start cursor-pointer"
-                                            onClick={() =>
-                                                toggleTimelineCompletion(
-                                                    item.id
-                                                )
-                                            }
-                                        >
-                                            <div className="mr-3 mt-1">
-                                                {item.completed ? (
-                                                    <CheckCircle
-                                                        size={16}
-                                                        className="text-green-500"
-                                                    />
-                                                ) : (
-                                                    <Clock
-                                                        size={16}
-                                                        className="text-yellow-500"
-                                                    />
-                                                )}
-                                            </div>
-                                            <div>
-                                                <p className="text-sm font-medium">
-                                                    {item.event}
-                                                </p>
-                                                <p className="text-xs text-gray-500">
-                                                    {item.date}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+      {/* Timeline - Using Real Date Information */}
+      <div className="p-6">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Key Dates</h3>
+        <div className="space-y-4">
+          <div className="flex items-start">
+            <div className="mr-3 mt-1">
+              <Calendar size={16} className="text-blue-500" />
+            </div>
+            <div>
+              <p className="text-sm font-medium">Created</p>
+              <p className="text-xs text-gray-500">
+                {filteredPitches[0]?.created_at ? new Date(filteredPitches[0].created_at).toLocaleDateString() : 'N/A'}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-start">
+            <div className="mr-3 mt-1">
+              <Clock size={16} className="text-yellow-500" />
+            </div>
+            <div>
+              <p className="text-sm font-medium">Last Updated</p>
+              <p className="text-xs text-gray-500">
+                {filteredPitches[0]?.updated_at ? new Date(filteredPitches[0].updated_at).toLocaleDateString() : 'N/A'}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-start">
+            <div className="mr-3 mt-1">
+              <Star size={16} className="text-purple-500" />
+            </div>
+            <div>
+              <p className="text-sm font-medium">Status</p>
+              <p className="text-xs text-gray-500">
+                {filteredPitches[0]?.status === 1 ? 'Active' : 'Inactive'}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-                            {/* Recent Activity */}
-                            <div className="p-6">
-                                <h3 className="text-lg font-medium text-gray-900 mb-4">
-                                    Recent Activity
-                                </h3>
-                                <div className="space-y-4">
-                                    {messages
-                                        .slice(-2)
-                                        .reverse()
-                                        .map((msg) => (
-                                            <div
-                                                key={msg.id}
-                                                className="flex items-start"
-                                            >
-                                                <div className="mr-3 mt-1">
-                                                    <MessageSquare
-                                                        size={16}
-                                                        className="text-green-500"
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <p className="text-sm font-medium">
-                                                        {msg.sender === "System"
-                                                            ? "System notification"
-                                                            : `${msg.sender}: ${msg.text}`}
-                                                    </p>
-                                                    <p className="text-xs text-gray-500">
-                                                        {new Date(
-                                                            msg.timestamp
-                                                        ).toLocaleString()}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
+      {/* Startup Details */}
+      <div className="p-6">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Startup Details</h3>
+        <div className="space-y-4">
+          <div className="flex items-start">
+            <div className="mr-3 mt-1">
+              <FileText size={16} className="text-green-500" />
+            </div>
+            <div>
+              <p className="text-sm font-medium">Startup Name</p>
+              <p className="text-xs text-gray-500">
+                {filteredPitches[0]?.startup_name || 'N/A'}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-start">
+            <div className="mr-3 mt-1">
+              <MapPin size={16} className="text-red-500" />
+            </div>
+            <div>
+              <p className="text-sm font-medium">Location</p>
+              <p className="text-xs text-gray-500">
+                {filteredPitches[0]?.headquarters_location || 'N/A'}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-start">
+            <div className="mr-3 mt-1">
+              <DollarSign size={16} className="text-blue-500" />
+            </div>
+            <div>
+              <p className="text-sm font-medium">Revenue (12M)</p>
+              <p className="text-xs text-gray-500">
+                ${filteredPitches[0]?.revenue_last_12_months ? parseFloat(filteredPitches[0].revenue_last_12_months).toLocaleString() : 'N/A'}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+
 
                 {/* Investors Tab */}
-                {activeTab === "investors" && (
+                {/* {activeTab === "investors" && (
                     <div className="space-y-6">
                         <PriorityFilters />
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1022,7 +920,7 @@ const DealRoomLayout = () => {
                             </div>
                         </div>
                     </div>
-                )}
+                )} */}
 
         {activeTab === "pitches" && (
     <>
@@ -1136,60 +1034,92 @@ const DealRoomLayout = () => {
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200">
-                                        {documents.map((doc) => (
-                                            <tr
-                                                key={doc.id}
-                                                className="hover:bg-gray-50"
-                                            >
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                    {doc.name}
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 uppercase">
-                                                    {doc.type}
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    {doc.uploaded}
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    {doc.size}
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                    <button
-                                                        onClick={() =>
-                                                            handleDocumentDownload(
-                                                                doc
-                                                            )
-                                                        }
-                                                        className="text-green-600 hover:text-green-900 mr-3"
-                                                    >
-                                                        <Download size={16} />
-                                                    </button>
-                                                    <button
-                                                        onClick={() =>
-                                                            handleDocumentRemove(
-                                                                doc
-                                                            )
-                                                        }
-                                                        className="text-red-600 hover:text-red-900"
-                                                    >
-                                                        <XCircle size={16} />
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-
-                                        {documents.length === 0 && (
-                                            <tr>
-                                                <td
-                                                    colSpan="5"
-                                                    className="px-6 py-4 text-center text-sm text-gray-500"
-                                                >
-                                                    No documents uploaded yet.
-                                                </td>
-                                            </tr>
-                                        )}
-                                    </tbody>
+<tbody className="bg-white divide-y divide-gray-200">
+  {filteredPitches.map((pitch) => (
+    <tr key={pitch.id} className="hover:bg-gray-50">
+      <td className="px-3 py-3 text-sm font-medium text-gray-900 max-w-0 min-w-0">
+        <div className="truncate">{pitch.startup_name}</div>
+      </td>
+      
+      <td className="px-3 py-3 text-sm text-gray-500 max-w-0 min-w-0">
+        <div className="truncate">{pitch.sector}</div>
+      </td>
+      
+      <td className="px-3 py-3 text-sm text-gray-500 max-w-0 min-w-0">
+        <div className="truncate">{pitch.stage}</div>
+      </td>
+      
+      <td className="px-3 py-3 text-sm text-gray-500 max-w-0 min-w-0">
+        <div className="truncate">${pitch.revenue_last_12_months}</div>
+      </td>
+      
+      <td className="px-3 py-3 max-w-0 min-w-0">
+        <div className="flex flex-wrap gap-1">
+          {pitch.pitch_deck_file && (
+            <a
+              href={`https://tujitume.com/${pitch.pitch_deck_file}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 flex items-center text-xs"
+            >
+              <FileText size={12} className="mr-1" />
+              Deck
+            </a>
+          )}
+          {pitch.business_plan && (
+            <a
+              href={`https://tujitume.com/${pitch.business_plan}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 flex items-center text-xs"
+            >
+              <FileText size={12} className="mr-1" />
+              Plan
+            </a>
+          )}
+          {pitch.pitch_video && (
+            <a
+              href={`https://tujitume.com/${pitch.pitch_video}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 flex items-center text-xs"
+            >
+              <Video size={12} className="mr-1" />
+              Video
+            </a>
+          )}
+        </div>
+      </td>
+      
+      <td className="px-3 py-3 text-right">
+        <div className="flex justify-end space-x-2">
+          <button
+            onClick={() => handleDownloadAll(pitch)}
+            className="text-green-600 hover:text-green-900"
+            title="Download all documents"
+          >
+            <DownloadCloud size={16} />
+          </button>
+          <button
+            onClick={() => handleViewDetails(pitch.id)}
+            className="text-blue-600 hover:text-blue-900"
+            title="View details"
+          >
+            <Eye size={16} />
+          </button>
+        </div>
+      </td>
+    </tr>
+  ))}
+  
+  {filteredPitches.length === 0 && (
+    <tr>
+      <td colSpan="6" className="px-6 py-4 text-center text-sm text-gray-500">
+        No pitch documents found
+      </td>
+    </tr>
+  )}
+</tbody>
                                 </table>
                             </div>
 

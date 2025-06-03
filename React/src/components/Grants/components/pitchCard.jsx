@@ -247,7 +247,7 @@ const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
     };
 
     return (
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden transition-all duration-300 shadow-md hover:shadow-lg">
+        <div className=" rounded-xl border border-gray-200 overflow-hidden transition-all duration-300  hover:shadow-lg">
             {/* Header section */}
             <div className="p-6 pb-4">
                 <div className="flex justify-between items-start mb-4">
