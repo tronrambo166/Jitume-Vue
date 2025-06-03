@@ -570,7 +570,7 @@ const Sidebar = ({ onToggle }) => {
                                                     : "hover:bg-gray-100 bg-gradient-to-r from-blue-50 to-purple-50 border border-gray-200"
                                             }`
                                         }
-                                        to="/Dashboard/overview"
+                                        to="/dashboard/overview"
                                         end
                                         onClick={() => setIsOpen(false)}
                                     >

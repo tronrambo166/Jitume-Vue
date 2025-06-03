@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
+
 import {
     Award,
     DollarSign,
@@ -20,8 +21,8 @@ import {
     Calendar,
     FileText,
     Mic,
+    Loader2,
     PieChart,
-    ArrowUpRight,
     BellRing,
     UserPlus,
     Sparkles,
@@ -94,32 +95,54 @@ const TujitumeDashboard = () => {
         }
     };
 
-    const grantServicesPage = () => {
-            let ids = "";
-            axiosClient.get("grant/grantWritingServices")
-                .then((data ) => {
-                    console.log(data);
-                    console.log(data.data.results);
-                    if (data.status == 200) {
-                        const services = data.data.results;
-                        Object.entries(services).forEach((entry) => {
-                            const [index, row] = entry;
-                            ids = ids + row.id + ",";
-                        });
-                        if (!ids) ids = 0;
-                        sessionStorage.setItem("queryLat", data.data.lat);
-                        sessionStorage.setItem("queryLng", data.data.lng);
-                        navigate(
-                            "/grant-writing-services/" + base64_encode(ids) +
-                            "/" + data.data.loc
-                        );
-                    }
-                    else
-                        console.log('Error:', data.message);
-                })
-                .catch((err) => {
-                    console.error("Failed to fetch grant analytics:", err);
+    // State management
+    const [loading, setLoading] = useState({
+        service: null, // 'grantWriting', 'pitchCoaching', or 'financialPlanning'
+        isLoading: false,
+    });
+
+    const grantServicesPage = (serviceType) => {
+        setLoading({
+            service: serviceType,
+            isLoading: true,
+        });
+
+        let ids = "";
+        axiosClient
+            .get("grant/grantWritingServices")
+            .then((data) => {
+                console.log(data);
+                console.log(data.data.results);
+                if (data.status == 200) {
+                    const services = data.data.results;
+                    Object.entries(services).forEach((entry) => {
+                        const [index, row] = entry;
+                        ids = ids + row.id + ",";
+                    });
+                    if (!ids) ids = 0;
+                    sessionStorage.setItem("queryLat", data.data.lat);
+                    sessionStorage.setItem("queryLng", data.data.lng);
+                    navigate(
+                        "/grant-writing-services/" +
+                            base64_encode(ids) +
+                            "/" +
+                            data.data.loc
+                    );
+                } else {
+                    console.log("Error:", data.message);
+                    setLoading({
+                        service: null,
+                        isLoading: false,
+                    });
+                }
+            })
+            .catch((err) => {
+                console.error("Failed to fetch grant analytics:", err);
+                setLoading({
+                    service: null,
+                    isLoading: false,
                 });
+            });
     };
 
     const fetchInvestmentsData = async () => {
@@ -491,19 +514,38 @@ const TujitumeDashboard = () => {
     }
 
     // Get real upcoming deadlines from grants data
-    const upcomingDeadlines = grants
-        .filter(
-            (grant) =>
-                grant.deadlineDate && new Date(grant.deadlineDate) > new Date()
-        )
-        .map((grant) => ({
-            title: grant.grant_title || grant.title || "Untitled Grant",
-            deadlineDate: grant.deadlineDate,
-            organization: grant.organization || "Unknown Organization",
-            amount: grant.amount || 0,
-            link: "#", // Add actual link if available in your data
-        }))
-        .sort((a, b) => new Date(a.deadlineDate) - new Date(b.deadlineDate));
+    const upcomingDeadlines = useMemo(() => {
+        let source = [];
+        if (user.investor === 2) {
+            source = grants;
+        } else if (user.investor === 3) {
+            source = capitalOpportunities;
+        } else {
+            source = [...grants, ...capitalOpportunities];
+        }
+        return source
+            .filter(
+                (item) =>
+                    item.deadlineDate &&
+                    new Date(item.deadlineDate) > new Date()
+            )
+            .map((item) => ({
+                title:
+                    item.title ||
+                    item.grant_title ||
+                    item.offer_title ||
+                    "Untitled",
+                deadlineDate: item.deadlineDate,
+                organization: item.organization || "Unknown Organization",
+                amount: item.amount || 0,
+                type: item.type, // 'grant' or 'investment'
+                link: "#", // Add actual link if available
+            }))
+            .sort(
+                (a, b) => new Date(a.deadlineDate) - new Date(b.deadlineDate)
+            );
+    }, [user.investor, grants, capitalOpportunities]);
+    
     // console.log("Upcoming Deadlines:", upcomingDeadlines);
 
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -678,49 +720,93 @@ const TujitumeDashboard = () => {
                                     <div className="flex flex-wrap gap-1 sm:flex-nowrap sm:gap-0">
                                         {/* Grant Writing Service */}
                                         <div
-                                            onClick={grantServicesPage}
+                                            onClick={() =>
+                                                grantServicesPage(
+                                                    "grantWriting"
+                                                )
+                                            }
                                             className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg flex items-center hover:bg-white hover:bg-opacity-10 transition cursor-pointer text-xs group"
                                         >
-                                            <FileText
-                                                size={12}
-                                                className="text-yellow-300 mr-1.5 group-hover:text-yellow-200 transition-colors"
-                                            />
+                                            {loading.service ===
+                                            "grantWriting" ? (
+                                                <Loader2
+                                                    size={12}
+                                                    className="animate-spin text-yellow-300 mr-1.5"
+                                                />
+                                            ) : (
+                                                <FileText
+                                                    size={12}
+                                                    className="text-yellow-300 mr-1.5 group-hover:text-yellow-200 transition-colors"
+                                                />
+                                            )}
                                             <span className="text-yellow-300 group-hover:text-yellow-200 transition-colors">
-                                                Grant Writing
+                                                {loading.service ===
+                                                "grantWriting"
+                                                    ? "Loading..."
+                                                    : "Grant Writing"}
                                             </span>
                                         </div>
 
                                         {/* Pitch Coaching Service */}
                                         <div
-                                            onClick={grantServicesPage}
+                                            onClick={() =>
+                                                grantServicesPage(
+                                                    "pitchCoaching"
+                                                )
+                                            }
                                             className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg flex items-center hover:bg-white hover:bg-opacity-10 transition cursor-pointer text-xs group"
                                         >
-                                            <Mic
-                                                size={12}
-                                                className="text-emerald-300 mr-1.5 group-hover:text-emerald-200 transition-colors"
-                                            />
+                                            {loading.service ===
+                                            "pitchCoaching" ? (
+                                                <Loader2
+                                                    size={12}
+                                                    className="animate-spin text-emerald-300 mr-1.5"
+                                                />
+                                            ) : (
+                                                <Mic
+                                                    size={12}
+                                                    className="text-emerald-300 mr-1.5 group-hover:text-emerald-200 transition-colors"
+                                                />
+                                            )}
                                             <span className="text-emerald-300 group-hover:text-emerald-200 transition-colors">
-                                                Pitch Coaching
+                                                {loading.service ===
+                                                "pitchCoaching"
+                                                    ? "Loading..."
+                                                    : "Pitch Coaching"}
                                             </span>
                                         </div>
 
                                         {/* Additional Services (example) */}
                                         <div
-                                            onClick={grantServicesPage}
+                                            onClick={() =>
+                                                grantServicesPage(
+                                                    "financialPlanning"
+                                                )
+                                            }
                                             className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg flex items-center hover:bg-white hover:bg-opacity-10 transition cursor-pointer text-xs group"
                                         >
-                                            <BarChart3
-                                                size={12}
-                                                className="text-blue-300 mr-1.5 group-hover:text-blue-200 transition-colors"
-                                            />
+                                            {loading.service ===
+                                            "financialPlanning" ? (
+                                                <Loader2
+                                                    size={12}
+                                                    className="animate-spin text-blue-300 mr-1.5"
+                                                />
+                                            ) : (
+                                                <BarChart3
+                                                    size={12}
+                                                    className="text-blue-300 mr-1.5 group-hover:text-blue-200 transition-colors"
+                                                />
+                                            )}
                                             <span className="text-blue-300 group-hover:text-blue-200 transition-colors">
-                                                Financial Planning
+                                                {loading.service ===
+                                                "financialPlanning"
+                                                    ? "Loading..."
+                                                    : "Financial Planning"}
                                             </span>
                                         </div>
                                     </div>
                                 </div>
                             )}
-
                             {/* Search bar - full width on mobile */}
                             <div className="relative w-full sm:w-64">
                                 <input

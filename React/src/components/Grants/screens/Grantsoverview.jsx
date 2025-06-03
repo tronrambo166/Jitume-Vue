@@ -738,14 +738,7 @@ const Navigation = {
                                         </Link>
                                     )}
 
-                                    <Link
-                                        to="/grants-overview/settings/notifications"
-                                        className="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 rounded transition-colors"
-                                        onClick={() => setIsProfileOpen(false)}
-                                    >
-                                        <BellOutlined className="mr-2 text-base" />
-                                        Notifications
-                                    </Link>
+                                    
                                     <button
                                         onClick={handleLogout}
                                         className="flex items-center w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 rounded transition-colors"

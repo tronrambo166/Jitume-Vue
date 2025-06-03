@@ -395,7 +395,7 @@ const Dashboardhero = () => {
                                             </button>
                                             {!user?.investor && (
                                                 <Link
-                                                    to="/Dashboard/overview"
+                                                    to="/dashboard/overview"
                                                     onClick={() =>
                                                         setShowMore(false)
                                                     }

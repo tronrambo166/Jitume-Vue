@@ -12,9 +12,12 @@ import {
     Flag,
     Check,
 } from "lucide-react";
+import { useAlert } from "../../../partials/AlertContext";
+
 const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
      const [businessId, setBusinessId] = useState(null);
      const [businessOptions, setBusinessOptions] = useState([]);
+    const { showAlert } = useAlert();
 
   const [formData, setFormData] = useState({
       business_id: null,
@@ -464,36 +467,27 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // if (!validateStep(currentStep)) {
-        //     console.log("Validation failed for step:", currentStep);
-        //     return;
 
-        // }
-        console.log("Submitting form data:", formData);
-
+        // console.log("Submitting form data:", formData);
         setIsSubmitting(true);
 
         try {
             // Create FormData object
             const formDataToSend = new FormData();
 
-            // First, log the complete form data to console
-            console.log("Form data being submitted:", {
-                ...formData,
-                // Stringify milestones for better readability in console
-                milestones: formData.milestones.map((m) => ({
-                    ...m,
-                    // Convert file objects to file names for logging
-                    deliverables: m.deliverables.map((f) => f.name),
-                })),
-            });
+            // Log complete form data for debugging
+            // console.log("Form data being submitted:", {
+            //     ...formData,
+            //     milestones: formData.milestones?.map((m) => ({
+            //         ...m,
+            //         deliverables: m.deliverables?.map((f) => f.name),
+            //     })),
+            // });
 
             // Append all regular fields (non-file, non-array)
             Object.entries(formData).forEach(([key, value]) => {
-                // Skip milestones for now (we'll handle them separately)
                 if (key !== "milestones" && value !== null && value !== "") {
                     if (typeof value === "object" && !(value instanceof File)) {
-                        // Stringify objects
                         formDataToSend.append(key, JSON.stringify(value));
                     } else {
                         formDataToSend.append(key, value);
@@ -502,8 +496,7 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
             });
 
             // Handle milestones data
-            formData.milestones.forEach((milestone, index) => {
-                // Append each milestone field with index prefix
+            formData.milestones?.forEach((milestone, index) => {
                 formDataToSend.append(
                     `milestones[${index}][title]`,
                     milestone.title
@@ -526,7 +519,7 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                 );
 
                 // Handle deliverables (files)
-                milestone.deliverables.forEach((file, fileIndex) => {
+                milestone.deliverables?.forEach((file, fileIndex) => {
                     formDataToSend.append(
                         `milestones[${index}][deliverables][${fileIndex}]`,
                         file
@@ -534,11 +527,11 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                 });
             });
 
-            // Log the FormData content before sending
-            console.log("FormData content:");
-            for (let [key, value] of formDataToSend.entries()) {
-                console.log(key, value);
-            }
+            // Log FormData content before sending
+            // console.log("FormData content:");
+            // for (let [key, value] of formDataToSend.entries()) {
+            //     console.log(key, value);
+            // }
 
             const response = await axiosClient.post(
                 "capital/investment-application",
@@ -550,43 +543,61 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                 }
             );
 
-            console.log("API Response:", response);
-            toast.success("Application submitted successfully!");
+            // Handle successful response
+            if (response.data.message) {
+                toast.success(response.data.message);
+                showAlert("success", response.data.message);
+            } else {
+                toast.success("Application submitted successfully!");
+                showAlert("success", "Application submitted successfully!");
+            }
 
+            setSuccess(true);
             setTimeout(() => {
                 onSuccess();
                 onClose();
             }, 2000);
         } catch (err) {
-            console.error("Submission error:", err);
-            const errorMessage =
-                err.response?.data?.message ||
-                "An error occurred. Please try again.";
-            toast.error(errorMessage);
+            // console.error("Submission error:", err);
+            const backendError = err.response?.data;
 
-            // Handle validation errors from the server
-            if (err.response?.data?.errors) {
-                console.error(
-                    "Server validation errors:",
-                    err.response.data.errors
-                );
+            // Single error message
+            if (backendError?.message) {
+                const errorMessage = backendError.message;
+                toast.error(errorMessage);
+                showAlert("error", errorMessage);
+            }
+            // Multiple validation errors
+            else if (backendError?.errors) {
+                const errorMessages = Object.values(backendError.errors)
+                    .flat()
+                    .join("\n");
+
+                toast.error(errorMessages);
+                showAlert("error", errorMessages);
+
+                // Set field-specific errors
                 const serverErrors = {};
-                Object.entries(err.response.data.errors).forEach(
+                Object.entries(backendError.errors).forEach(
                     ([key, messages]) => {
                         serverErrors[key] = Array.isArray(messages)
                             ? messages[0]
                             : messages;
                     }
                 );
-                setFieldErrors((prev) => ({
-                    ...prev,
-                    ...serverErrors,
-                }));
+                setFieldErrors(serverErrors);
+            }
+            // Generic error
+            else {
+                const defaultError = "An error occurred. Please try again.";
+                toast.error(defaultError);
+                showAlert("error", defaultError);
             }
         } finally {
             setIsSubmitting(false);
         }
     };
+
     const renderStepIndicator = () => (
         <div className="flex items-center justify-center mb-8">
             {[
@@ -1626,6 +1637,7 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
         }
     };
 
+    
     if (success) {
         return (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
@@ -1637,7 +1649,15 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
-                            ></svg>
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M5 13l4 4L19 7"
+                                />
+                            </svg>
                         </div>
                         <h3 className="text-xl font-bold text-gray-900 mb-2">
                             Application Submitted!
@@ -1658,6 +1678,7 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
         );
     }
 
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
             {/* Outer scrollable container (for viewport scrolling) */}
@@ -1666,7 +1687,7 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                 <div className="px-6 py-4 border-b sticky top-0 bg-white z-10">
                     <div className="flex justify-between items-center">
                         <h2 className="text-xl font-semibold">
-                            Investment Application - {capitalId}
+                            Investment Application 
                         </h2>
                         <button
                             onClick={onClose}
