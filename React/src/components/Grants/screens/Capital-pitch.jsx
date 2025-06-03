@@ -16,11 +16,11 @@ const Capitalpitch = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+
 const [isChanging, setIsChanging] = useState(false);
 const [lastChanged, setLastChanged] = useState(null);
 
-  
+
   // Royalty-free images and video links
   const mediaAssets = {
     thumbnails: [
@@ -39,13 +39,13 @@ const [lastChanged, setLastChanged] = useState(null);
       setIsLoading(true);
       setError(null);
       // console.log("[fetchPitches] Start fetching capital offers");
-  
+
       try {
         const capitalResponse = await axiosClient.get("capital/capital-offers");
         // console.log("[fetchPitches] Raw capitalResponse:", capitalResponse.data);
-  
+
         let capitals = [];
-  
+
         if (Array.isArray(capitalResponse?.data)) {
           capitals = capitalResponse.data;
           // console.log("[fetchPitches] capitalResponse is an array:", capitals);
@@ -62,25 +62,25 @@ const [lastChanged, setLastChanged] = useState(null);
           console.warn("[fetchPitches] No valid capital offers format found in response");
           throw new Error("Invalid capital offers data structure from API");
         }
-  
+
         // console.log(`[fetchPitches] Total capital offers found: ${capitals.length}`);
-  
+
         const pitchesPromises = capitals.map(async (capital) => {
           try {
             // console.log(`[fetchPitches] Fetching pitches for capital ID: ${capital.id}`);
             const pitchesResponse = await axiosClient.get(`capital/pitches/${capital.id}`);
-            // console.log(`[fetchPitches] Pitches for capital ${capital.id}:`, pitchesResponse.data);
+             console.log(`[fetchPitches] Pitches for capital`, pitchesResponse.data);
             return pitchesResponse.data || [];
           } catch (error) {
             console.error(`[fetchPitches] Error fetching pitches for capital ${capital.id}:`, error);
             return [];
           }
         });
-  
+
         const allPitchesArrays = await Promise.all(pitchesPromises);
         const combinedPitches = allPitchesArrays.flatMap(obj => obj.pitches || []);  // Fixed flattening logic
         // console.log("[fetchPitches] Combined pitches (flattened):", combinedPitches);
-  
+
         const cleanedPitches = combinedPitches.map((pitch) => {
           const capitalData = capitals.find(c => c.id === pitch.capital_id);
           return {
@@ -126,10 +126,10 @@ const [lastChanged, setLastChanged] = useState(null);
             favorite: false
           };
         });
-  
+
         // console.log("[fetchPitches] Cleaned/normalized pitches:", cleanedPitches);
         setPitches(cleanedPitches);
-  
+
       } catch (err) {
         console.error("[fetchPitches] Failed to fetch data:", err);
         const errorMessage =
@@ -142,11 +142,11 @@ const [lastChanged, setLastChanged] = useState(null);
         setIsLoading(false);
       }
     };
-  
+
     fetchPitches();
   }, []);
-  
-  
+
+
   // Check for mobile view
   useEffect(() => {
     const handleResize = () => {
@@ -155,7 +155,7 @@ const [lastChanged, setLastChanged] = useState(null);
         setViewMode('grid'); // Default to grid view on mobile
       }
     };
-    
+
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -174,11 +174,11 @@ const [lastChanged, setLastChanged] = useState(null);
 // Function to handle status changes
 const handleStatusChange = async (pitchId, newStatus) => {
   setIsChanging(true);
-  
+
   // Get current pitch data for potential rollback
   const currentPitch = pitches.find(pitch => pitch.id === pitchId);
   const previousStatus = currentPitch?.status;
-  
+
   // console.groupCollapsed(`[Pitch Status Change] Starting status update for pitch ${pitchId}`);
   // console.log("New Status:", newStatus);
   // console.log("Pitch ID:", pitchId);
@@ -186,7 +186,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
   try {
     // Determine numeric status value
     const statusCode = newStatus === "Accepted" ? 1 : 2;
-    
+
     // Update UI immediately (optimistic update)
     if (selectedPitch && selectedPitch.id === pitchId) {
       setSelectedPitch(prev => ({
@@ -197,8 +197,8 @@ const handleStatusChange = async (pitchId, newStatus) => {
     }
 
     // Update in main list
-    setPitches(prevPitches => 
-      prevPitches.map(pitch => 
+    setPitches(prevPitches =>
+      prevPitches.map(pitch =>
         pitch.id === pitchId
           ? {
               ...pitch,
@@ -212,20 +212,20 @@ const handleStatusChange = async (pitchId, newStatus) => {
     // Make API call
     const action = newStatus === "Accepted" ? "accept" : "reject";
     const endpoint = `capital/${action}/${pitchId}`;
-    
+
     // console.log("Making GET request to:", endpoint);
     const response = await axiosClient.get(endpoint);
 
     // console.log("Backend Response:", response.data);
     toast.success(`Pitch ${newStatus.toLowerCase()} successfully`);
     setLastChanged(newStatus);
-    
+
     // IMPORTANT: Prevent the data refetch from overriding our state
     // by adding a debounce or flag that prevents status reset
-    
+
   } catch (error) {
     console.error("Error updating pitch status:", error);
-    
+
     // Revert changes on error
     if (selectedPitch && selectedPitch.id === pitchId) {
       setSelectedPitch(prev => ({
@@ -234,20 +234,20 @@ const handleStatusChange = async (pitchId, newStatus) => {
         processingStatus: null
       }));
     }
-    
-    setPitches(prevPitches => 
-      prevPitches.map(pitch => 
+
+    setPitches(prevPitches =>
+      prevPitches.map(pitch =>
         pitch.id === pitchId ? { ...pitch, status: previousStatus } : pitch
       )
     );
-    
+
     toast.error("Failed to update status. Please try again.");
   } finally {
     setIsChanging(false);
   }
 };
   const toggleFavorite = (id) => {
-    setPitches(pitches.map(pitch => 
+    setPitches(pitches.map(pitch =>
       pitch.id === id ? { ...pitch, favorite: !pitch.favorite } : pitch
     ));
   };
@@ -262,17 +262,17 @@ const handleStatusChange = async (pitchId, newStatus) => {
     ) {
       return false;
     }
-  
+
     // Filter by selected tab
     if (selectedTab === 'favorites' && !pitch.favorite) return false;
     if (selectedTab === 'new' && pitch.status !== 'New') return false;
     if (selectedTab === 'review' && pitch.status !== 'In Review') return false;
     if (selectedTab === 'accepted' && pitch.status !== 'Accepted') return false;
     if (selectedTab === 'rejected' && pitch.status !== 'Rejected') return false;
-  
+
     return true;
   });
-  
+
   // Status colors
   const getStatusColor = (status) => {
     switch(status) {
@@ -340,7 +340,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                 <span>+12% from last month</span>
               </div>
             </div>
-            
+
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 md:p-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -356,7 +356,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                 <span>+5% from last month</span>
               </div>
             </div>
-            
+
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 md:p-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -371,7 +371,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                 <span>2 due today</span>
               </div>
             </div>
-            
+
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 md:p-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -388,13 +388,13 @@ const handleStatusChange = async (pitchId, newStatus) => {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             {/* Tabs and Search */}
             <div className="p-3 border-b border-gray-100">
               <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-3 md:mb-4">
                 <div className="flex overflow-x-auto pb-2 md:pb-0 space-x-2 md:space-x-4">
-                  <button 
+                  <button
                     onClick={() => setSelectedTab('all')}
                     className={`text-xs md:text-sm font-medium px-2 py-1 md:px-3 md:py-1 rounded-lg whitespace-nowrap ${
                       selectedTab === 'all' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-100'
@@ -402,7 +402,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   >
                     All Pitches
                   </button>
-                  <button 
+                  <button
                     onClick={() => setSelectedTab('favorites')}
                     className={`text-xs md:text-sm font-medium px-2 py-1 md:px-3 md:py-1 rounded-lg whitespace-nowrap ${
                       selectedTab === 'favorites' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-100'
@@ -410,7 +410,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   >
                     Favorites
                   </button>
-                  <button 
+                  <button
                     onClick={() => setSelectedTab('new')}
                     className={`text-xs md:text-sm font-medium px-2 py-1 md:px-3 md:py-1 rounded-lg whitespace-nowrap ${
                       selectedTab === 'new' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-100'
@@ -418,7 +418,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   >
                     New
                   </button>
-                  <button 
+                  <button
                     onClick={() => setSelectedTab('review')}
                     className={`text-xs md:text-sm font-medium px-2 py-1 md:px-3 md:py-1 rounded-lg whitespace-nowrap ${
                       selectedTab === 'review' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-100'
@@ -426,7 +426,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   >
                     In Review
                   </button>
-                  <button 
+                  <button
                     onClick={() => setSelectedTab('accepted')}
                     className={`text-xs md:text-sm font-medium px-2 py-1 md:px-3 md:py-1 rounded-lg whitespace-nowrap ${
                       selectedTab === 'accepted' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-100'
@@ -434,7 +434,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   >
                     Accepted
                   </button>
-                  <button 
+                  <button
                     onClick={() => setSelectedTab('rejected')}
                     className={`text-xs md:text-sm font-medium px-2 py-1 md:px-3 md:py-1 rounded-lg whitespace-nowrap ${
                       selectedTab === 'rejected' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-100'
@@ -444,13 +444,13 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   </button>
                 </div>
                 <div className="flex items-center space-x-2 md:space-x-3 mt-2 md:mt-0">
-                  <button 
+                  <button
                     onClick={() => setViewMode('table')}
                     className={`p-1 md:p-2 rounded-lg ${viewMode === 'table' ? 'bg-gray-100' : 'text-gray-400 hover:bg-gray-50'}`}
                   >
                     <Table size={16} />
                   </button>
-                  <button 
+                  <button
                     onClick={() => setViewMode('grid')}
                     className={`p-1 md:p-2 rounded-lg ${viewMode === 'grid' ? 'bg-gray-100' : 'text-gray-400 hover:bg-gray-50'}`}
                   >
@@ -463,14 +463,14 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   </button>
                 </div>
               </div>
-              
+
               <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0">
                 <div className="relative w-full md:max-w-md">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <Search size={14} className="text-gray-400" />
                   </div>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     className="block w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg text-sm placeholder-gray-400"
                     placeholder="Search startups or sectors..."
                     value={searchQuery}
@@ -478,7 +478,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   />
                 </div>
                 <div className="flex items-center space-x-2 md:space-x-3 w-full md:w-auto">
-                  <button 
+                  <button
                     onClick={() => setShowFilters(!showFilters)}
                     className="px-3 py-1.5 md:px-4 md:py-2 bg-white border border-gray-200 rounded-lg text-xs md:text-sm text-gray-600 hover:bg-gray-50 flex items-center"
                   >
@@ -490,7 +490,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   </button>
                 </div>
               </div>
-              
+
               {/* Advanced Filters (conditionally shown) */}
               {showFilters && (
                 <div className="mt-3 p-3 md:p-4 bg-gray-50 rounded-lg grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
@@ -542,7 +542,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-800"></div>
               </div>
             )}
-            
+
             {error && (
               <div className="flex justify-center items-center p-8">
                 <div className="bg-red-50 text-red-700 p-4 rounded-lg max-w-md">
@@ -556,7 +556,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                 </div>
               </div>
             )}
-            
+
             {/* Empty state when no pitches match filters */}
             {!isLoading && !error && filteredPitches.length === 0 && (
               <div className="flex flex-col items-center justify-center p-12">
@@ -599,27 +599,27 @@ const handleStatusChange = async (pitchId, newStatus) => {
           <tbody className="bg-white divide-y divide-gray-200">
             {filteredPitches.map((pitch) => {
               // Calculate derived data once per pitch
-              const statusText = typeof pitch.status === 'number' ? 
-                pitch.status === 0 ? 'New' : 
-                pitch.status === 1 ? 'In Review' : 
-                pitch.status === 2 ? 'Accepted' : 'Rejected' : 
+              const statusText = typeof pitch.status === 'number' ?
+                pitch.status === 0 ? 'New' :
+                pitch.status === 1 ? 'In Review' :
+                pitch.status === 2 ? 'Accepted' : 'Rejected' :
                 pitch.status;
-              
+
               const formattedDate = new Date(pitch.createdAt || pitch.created_at || new Date()).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric'
               });
-      
+
               const sectorsDisplay = pitch.sector || pitch.sectors || 'No sector';
               const truncatedSectors = sectorsDisplay.split(',').slice(0, 2).join(', ');
               const showEllipsis = sectorsDisplay.split(',').length > 2;
-      
+
               return (
                 <tr key={pitch.id} className="hover:bg-gray-50">
                   <td className="px-4 md:px-6 py-3 whitespace-nowrap">
                     <div className="flex items-center">
-                      <button 
+                      <button
                         onClick={() => toggleFavorite(pitch.id)}
                         className={`mr-2 ${pitch.favorite ? 'text-green-500' : 'text-gray-300 hover:text-gray-400'}`}
                       >
@@ -630,17 +630,17 @@ const handleStatusChange = async (pitchId, newStatus) => {
                       </div>
                     </div>
                   </td>
-      
+
                   <td className="px-4 md:px-6 py-3 whitespace-nowrap max-w-xs overflow-hidden">
-                    <div 
-                      className="text-sm text-gray-600 overflow-hidden text-ellipsis" 
+                    <div
+                      className="text-sm text-gray-600 overflow-hidden text-ellipsis"
                       title={sectorsDisplay}
                     >
                       {truncatedSectors}
                       {showEllipsis && '...'}
                     </div>
                   </td>
-      
+
                   <td className="px-4 md:px-6 py-3 whitespace-nowrap">
                     <div className={`flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full ${getMatchColor(pitch.matchScore)}`}>
                       <span className="text-xs md:text-sm font-medium">
@@ -648,19 +648,19 @@ const handleStatusChange = async (pitchId, newStatus) => {
                       </span>
                     </div>
                   </td>
-      
+
                   <td className="px-4 md:px-6 py-3 whitespace-nowrap">
                     <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(statusText)}`}>
                       {statusText}
                     </span>
                   </td>
-      
+
                   <td className="px-4 md:px-6 py-3 whitespace-nowrap text-sm text-gray-500">
                     {formattedDate}
                   </td>
-      
+
                   <td className="px-4 md:px-6 py-3 whitespace-nowrap text-right text-sm font-medium">
-                    <button 
+                    <button
                       onClick={() => openModal(pitch)}
                       className="text-green-600 hover:text-green-900 mr-3"
                     >
@@ -676,35 +676,35 @@ const handleStatusChange = async (pitchId, newStatus) => {
           </tbody>
         </table>
       </div>
-      
+
             )}
 
             {/* Grid View */}
             {!isLoading && !error && filteredPitches.length > 0 && viewMode === 'grid' && (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
                 {filteredPitches.map((pitch) => {
-                  const statusText = typeof pitch.status === 'number' ? 
-                    pitch.status === 0 ? 'New' : 
-                    pitch.status === 1 ? 'In Review' : 
-                    pitch.status === 2 ? 'Accepted' : 'Rejected' : 
+                  const statusText = typeof pitch.status === 'number' ?
+                    pitch.status === 0 ? 'New' :
+                    pitch.status === 1 ? 'In Review' :
+                    pitch.status === 2 ? 'Accepted' : 'Rejected' :
                     pitch.status;
-                  
+
                   const formattedDate = new Date(pitch.createdAt || pitch.created_at || new Date()).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'short',
                     day: 'numeric'
                   });
-                  
+
                   const randomThumbnail = mediaAssets.thumbnails[Math.floor(Math.random() * mediaAssets.thumbnails.length)];
-                  
+
                   return (
                     <div key={pitch.id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
                       <div className="relative">
                         {hasVideo(pitch) ? (
                           <div className="aspect-w-16 aspect-h-9 bg-gray-200">
-                            <img 
-                              src={randomThumbnail} 
-                              alt="Video thumbnail" 
+                            <img
+                              src={randomThumbnail}
+                              alt="Video thumbnail"
                               className="object-cover w-full h-40"
                             />
                             <div className="absolute inset-0 flex items-center justify-center">
@@ -714,14 +714,14 @@ const handleStatusChange = async (pitchId, newStatus) => {
                             </div>
                           </div>
                         ) : (
-                          <img 
-                            src={randomThumbnail} 
-                            alt="Startup thumbnail" 
+                          <img
+                            src={randomThumbnail}
+                            alt="Startup thumbnail"
                             className="object-cover w-full h-40"
                           />
                         )}
                         <div className="absolute top-2 right-2">
-                          <button 
+                          <button
                             onClick={() => toggleFavorite(pitch.id)}
                             className={`p-1.5 rounded-full bg-white bg-opacity-80 shadow-sm ${pitch.favorite ? 'text-green-500' : 'text-gray-400'}`}
                           >
@@ -729,7 +729,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                           </button>
                         </div>
                       </div>
-                      
+
                       <div className="p-4">
                         <div className="flex justify-between items-start mb-2">
                           <h3 className="text-lg font-medium text-gray-900 line-clamp-1">
@@ -741,7 +741,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                             </span>
                           </div>
                         </div>
-                        
+
                         <div className="flex items-center mb-3">
                           <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(statusText)}`}>
                             {statusText}
@@ -750,13 +750,13 @@ const handleStatusChange = async (pitchId, newStatus) => {
                             {formattedDate}
                           </span>
                         </div>
-                        
+
                         <p className="text-sm text-gray-600 line-clamp-2 mb-4">
                           {pitch.sectors || 'No sector information available'}
                         </p>
-                        
+
                         <div className="flex justify-between items-center">
-                          <button 
+                          <button
                             onClick={() => openModal(pitch)}
                             className="text-sm font-medium text-green-600 hover:text-green-800"
                           >
@@ -783,9 +783,9 @@ const handleStatusChange = async (pitchId, newStatus) => {
       <div className="fixed inset-0 transition-opacity" aria-hidden="true">
         <div className="absolute inset-0 bg-black opacity-50" onClick={closeModal}></div>
       </div>
-      
+
       <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-      
+
       <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full border border-gray-100">
         {/* Header with brand color */}
         <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
@@ -793,7 +793,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
             <h3 className="text-xl leading-6 font-semibold text-white">
               {selectedPitch.startupName || 'Unnamed Startup'}
             </h3>
-            <button 
+            <button
               onClick={closeModal}
               className="text-white hover:text-gray-200 transition-colors"
             >
@@ -802,7 +802,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
               </svg>
             </button>
           </div>
-          
+
           <div className="flex flex-wrap items-center gap-3 mt-2">
             <span className={`px-3 py-1 text-xs font-medium rounded-full bg-white bg-opacity-20 text-white`}>
               {selectedPitch.status}
@@ -830,7 +830,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   </p>
                 </div>
               </div>
-              
+
               {/* Financial Metrics */}
               <div className="mb-8">
                 <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">Financial Metrics</h4>
@@ -853,7 +853,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   </div>
                 </div>
               </div>
-              
+
               {/* Business Details */}
               <div className="mb-8">
                 <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">Business Details</h4>
@@ -876,7 +876,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   </div>
                 </div>
               </div>
-              
+
               {/* Social Impact & Strategy */}
               <div className="mb-8">
                 <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">Social Impact & Strategy</h4>
@@ -891,7 +891,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   </div>
                 </div>
               </div>
-              
+
               {/* Funding Milestones */}
               {selectedPitch.milestones && selectedPitch.milestones.length > 0 && (
                 <div className="mb-8">
@@ -907,13 +907,13 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   </div>
                 </div>
               )}
-              
+
               {/* Pitch Video */}
               {selectedPitch.pitchVideo && (
                 <div className="mb-8">
                   <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">Pitch Video</h4>
                   <div className="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg overflow-hidden shadow-sm">
-                    <video 
+                    <video
                       controls
                       className="w-full h-full object-cover"
                     >
@@ -924,7 +924,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                 </div>
               )}
             </div>
-            
+
             {/* Right Sidebar */}
             <div className="md:col-span-1">
               {/* Contact Person */}
@@ -940,7 +940,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   </p>
                 </div>
               </div>
-            
+
               {/* Team Members */}
               <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 mb-6 shadow-sm">
                 <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">Team Members</h4>
@@ -962,7 +962,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   )}
                 </div>
               </div>
-              
+
               {/* Capital Details */}
               <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 mb-6 shadow-sm">
                 <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">Capital Details</h4>
@@ -981,7 +981,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   </div>
                 </div>
               </div>
-              
+
               {/* Documents */}
               <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 mb-6 shadow-sm">
                 <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">Documents</h4>
@@ -992,20 +992,20 @@ const handleStatusChange = async (pitchId, newStatus) => {
                       <span className="text-sm text-gray-700 hover:text-green-700">Pitch Deck</span>
                     </a>
                   ) : null}
-                  
+
                   {selectedPitch.businessPlan ? (
                     <a href={selectedPitch.businessPlan} target="_blank" rel="noopener noreferrer" className="flex items-center p-2 rounded-md hover:bg-green-50 transition-colors">
                       <FileText size={16} className="text-green-600 mr-2" />
                       <span className="text-sm text-gray-700 hover:text-green-700">Business Plan</span>
                     </a>
                   ) : null}
-                  
+
                   {!selectedPitch.pitchDeck && !selectedPitch.businessPlan && (
                     <p className="text-xs text-gray-500">No documents provided</p>
                   )}
                 </div>
               </div>
-              
+
               {/* Change Pitch Status */}
               <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 shadow-sm">
                 <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">Pitch Status</h4>
@@ -1050,7 +1050,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                       disabled={isChanging}
                       className={`
                         px-3 py-2 text-sm rounded-md flex items-center justify-center transition-all
-                        bg-white border border-green-200 text-green-700 hover:bg-green-50 
+                        bg-white border border-green-200 text-green-700 hover:bg-green-50
                         ${isChanging ? 'opacity-70 cursor-not-allowed' : ''}
                         shadow-sm hover:shadow
                       `}
@@ -1095,9 +1095,9 @@ const handleStatusChange = async (pitchId, newStatus) => {
                 ) : (
                   /* Status message for already processed pitches */
                   <div className="text-xs text-gray-500 italic mt-2">
-                    {selectedPitch.status === 1 
+                    {selectedPitch.status === 1
                       ? "This pitch has been accepted and cannot be modified."
-                      : selectedPitch.status === 0 
+                      : selectedPitch.status === 0
                       ? "This pitch has been rejected and cannot be modified."
                       : "This pitch's milestone has been released."}
                   </div>
@@ -1125,7 +1125,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
         </div>
       </div>
     </div>
-    
+
     {/* Toast Container */}
     <ToastContainer
       position="bottom-right"

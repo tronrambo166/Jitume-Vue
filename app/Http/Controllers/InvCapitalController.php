@@ -83,13 +83,31 @@ class InvCapitalController extends Controller
     public function pitches($capital_id)
     {
         $user_id = Auth::id();
+        $match_score = 0;
         if($capital_id == 'latest'){
             $capital = CapitalOffer::where('user_id',$user_id)->latest()->first();
             $pitches = StartupPitches::with('capital_milestone')->where('capital_id',$capital->id)->latest()->get();
             return response()->json(['pitches' => $pitches]);
         }
-        $pitches = StartupPitches::with('capital_milestone')->where('capital_id',$capital_id)->latest()->get();
-        return response()->json(['pitches' => $pitches]);
+        $capital_pitches = StartupPitches::where('capital_owner_id',$user_id)->latest()->get();
+        $pitch_count = $capital_pitches->count();
+        $pitch_count_accept = StartupPitches::where('capital_owner_id',$user_id)
+            ->where('status',1)->count();
+
+        foreach ($capital_pitches as $pitch){
+            $match_score = $match_score + $pitch->score;
+        }
+        $pitch_count_pending = $pitch_count-$pitch_count_accept;
+        $avg_match_score = round($pitch_count > 0 ? $match_score/$pitch_count : 0, 2);;
+        $accept_rate = round( ($pitch_count_accept/$pitch_count)*100, 2);
+
+        return response()->json([
+            'pitches' => $capital_pitches,
+            'avg_match_score' => $avg_match_score,
+            'accept_rate' => $accept_rate,
+            'pitch_count' => $pitch_count,
+            'pitch_count_pending' => $pitch_count_pending,
+        ]);
     }
 
 

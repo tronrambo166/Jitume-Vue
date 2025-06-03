@@ -38,29 +38,6 @@ class AuthController extends Controller
                 $total_funds = $total_funds + $grant->total_capital_available;
                 $available_funds = $available_funds + $grant->available_amount;
             }
-
-            $capital_pitches = StartupPitches::where('capital_owner_id',$user->id)->latest()->get();
-            $pitch_count = $capital_pitches->count();
-            $pitch_count_accept = StartupPitches::where('capital_owner_id',$user->id)
-                ->where('status',1)->count();
-
-            foreach ($capital_pitches as $pitch){
-                $match_score = $match_score + $pitch->score;
-            }
-            $pitch_count_pending = $pitch_count-$pitch_count_accept;
-            $avg_match_score = $pitch_count > 0 ? $match_score/$pitch_count : 0;
-            $accept_rate = round( ($pitch_count_accept/$pitch_count)*100, 2);
-            
-
-            return response()->json([
-                'user' => $user,
-                'total_funds' => $total_funds,
-                'available_funds' => $available_funds,
-                'avg_match_score' => $avg_match_score,
-                'accept_rate' => $accept_rate,
-                'pitch_count' => $pitch_count,
-                'pitch_count_pending' => $pitch_count_pending,
-            ]);
         }
         // For SMEs and Businesses
         else if ($user->investor == null){
@@ -102,11 +79,11 @@ class AuthController extends Controller
             ]);
         }
 
-//         return response()->json([
-//             'user' => $user,
-//             'total_funds' => $total_funds,
-//             'available_funds' => $available_funds,
-//         ]);
+         return response()->json([
+             'user' => $user,
+             'total_funds' => $total_funds,
+             'available_funds' => $available_funds,
+         ]);
     }
 
     public function fetchUser($id) {
