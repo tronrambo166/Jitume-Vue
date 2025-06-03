@@ -69,7 +69,7 @@ const [lastChanged, setLastChanged] = useState(null);
           try {
             // console.log(`[fetchPitches] Fetching pitches for capital ID: ${capital.id}`);
             const pitchesResponse = await axiosClient.get(`capital/pitches/${capital.id}`);
-             console.log(`[fetchPitches] Pitches for capital`, pitchesResponse.data);
+            // console.log(`[fetchPitches] Pitches for capital ${capital.id}:`, pitchesResponse.data);
             return pitchesResponse.data || [];
           } catch (error) {
             console.error(`[fetchPitches] Error fetching pitches for capital ${capital.id}:`, error);
