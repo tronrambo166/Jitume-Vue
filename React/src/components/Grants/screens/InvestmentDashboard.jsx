@@ -208,7 +208,7 @@ const InvestmentOpportunities = () => {
                 const response = await axiosClient.get(
                     "capital/capital-offers"
                 );
-                console.log("API Response:", response);
+                // console.log("API Response:", response);
 
                 // Check for both response.data.capital and response.data directly
                 const data = response.data?.capital || response.data;
@@ -672,10 +672,10 @@ const InvestmentOpportunities = () => {
                                 axiosClient
                                     .get("capital/capital-offers")
                                     .then((response) => {
-                                        console.log(
-                                            "Retry response:",
-                                            response
-                                        );
+                                        // console.log(
+                                        //     "Retry response:",
+                                        //     response
+                                        // );
                                         if (
                                             response.data &&
                                             Array.isArray(response.data.capital)

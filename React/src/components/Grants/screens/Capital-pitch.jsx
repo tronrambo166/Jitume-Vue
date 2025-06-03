@@ -129,7 +129,6 @@ const [lastChanged, setLastChanged] = useState(null);
   
         // console.log("[fetchPitches] Cleaned/normalized pitches:", cleanedPitches);
         setPitches(cleanedPitches);
-  
       } catch (err) {
         console.error("[fetchPitches] Failed to fetch data:", err);
         const errorMessage =
@@ -305,16 +304,13 @@ const handleStatusChange = async (pitchId, newStatus) => {
           <div className="flex justify-between items-center">
             <h1 className="text-2xl md:text-3xl font-light text-gray-900">Pitch<span className="font-bold">Flow</span></h1>
             <div className="flex items-center space-x-4 md:space-x-6">
-              <button className="text-gray-500 hover:text-gray-700 relative">
-                <Bell size={20} />
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full text-white text-xs flex items-center justify-center">3</span>
-              </button>
+              
               <button className="hidden md:block text-gray-500 hover:text-gray-700">
                 <Calendar size={20} />
               </button>
-              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-800 flex items-center justify-center">
+              {/* <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-800 flex items-center justify-center">
                 <span className="text-white text-sm md:text-base font-medium">JD</span>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -397,7 +393,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   <button 
                     onClick={() => setSelectedTab('all')}
                     className={`text-xs md:text-sm font-medium px-2 py-1 md:px-3 md:py-1 rounded-lg whitespace-nowrap ${
-                      selectedTab === 'all' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-100'
+                      selectedTab === 'all' ? 'bg-green-700 text-white' : 'text-gray-600 hover:bg-gray-100'
                     }`}
                   >
                     All Pitches
@@ -405,7 +401,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   <button 
                     onClick={() => setSelectedTab('favorites')}
                     className={`text-xs md:text-sm font-medium px-2 py-1 md:px-3 md:py-1 rounded-lg whitespace-nowrap ${
-                      selectedTab === 'favorites' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-100'
+                      selectedTab === 'favorites' ? 'bg-green-700 text-white' : 'text-gray-600 hover:bg-gray-100'
                     }`}
                   >
                     Favorites
@@ -413,7 +409,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   <button 
                     onClick={() => setSelectedTab('new')}
                     className={`text-xs md:text-sm font-medium px-2 py-1 md:px-3 md:py-1 rounded-lg whitespace-nowrap ${
-                      selectedTab === 'new' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-100'
+                      selectedTab === 'new' ? 'bg-green-700 text-white' : 'text-gray-600 hover:bg-gray-100'
                     }`}
                   >
                     New
@@ -421,7 +417,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   <button 
                     onClick={() => setSelectedTab('review')}
                     className={`text-xs md:text-sm font-medium px-2 py-1 md:px-3 md:py-1 rounded-lg whitespace-nowrap ${
-                      selectedTab === 'review' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-100'
+                      selectedTab === 'review' ? 'bg-green-700 text-white' : 'text-gray-600 hover:bg-gray-100'
                     }`}
                   >
                     In Review
@@ -429,7 +425,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   <button 
                     onClick={() => setSelectedTab('accepted')}
                     className={`text-xs md:text-sm font-medium px-2 py-1 md:px-3 md:py-1 rounded-lg whitespace-nowrap ${
-                      selectedTab === 'accepted' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-100'
+                      selectedTab === 'accepted' ? 'bg-green-700 text-white' : 'text-gray-600 hover:bg-gray-100'
                     }`}
                   >
                     Accepted
@@ -437,7 +433,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   <button 
                     onClick={() => setSelectedTab('rejected')}
                     className={`text-xs md:text-sm font-medium px-2 py-1 md:px-3 md:py-1 rounded-lg whitespace-nowrap ${
-                      selectedTab === 'rejected' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-100'
+                      selectedTab === 'rejected' ? 'bg-green-700 text-white' : 'text-gray-600 hover:bg-gray-100'
                     }`}
                   >
                     Rejected
@@ -485,9 +481,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                     <Filter size={12} className="mr-1 md:mr-2" />
                     Filter
                   </button>
-                  <button className="px-3 py-1.5 md:px-4 md:py-2 bg-green-600 rounded-lg text-xs md:text-sm text-white hover:bg-green-700 whitespace-nowrap">
-                    Export
-                  </button>
+                  
                 </div>
               </div>
               
@@ -526,7 +520,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                     <label className="block text-xs font-medium text-gray-700 mb-1">Funding Stage</label>
                     <select className="w-full border border-gray-200 rounded-md p-1.5 md:p-2 text-sm">
                       <option>All Stages</option>
-                      <option>Pre-seed</option>
+                      <greeno7>Pre-seed</greeno7>
                       <option>Seed</option>
                       <option>Series A</option>
                       <option>Series B+</option>
@@ -538,9 +532,63 @@ const handleStatusChange = async (pitchId, newStatus) => {
 
             {/* Loading or error states */}
             {isLoading && (
-              <div className="flex justify-center items-center p-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-800"></div>
+              <div className="overflow-x-auto">
+    <table className="min-w-full divide-y divide-gray-200">
+      <thead className="bg-gray-50">
+        <tr>
+          <th scope="col" className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Startup Name
+          </th>
+          <th scope="col" className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Sector
+          </th>
+          <th scope="col" className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Match Score
+          </th>
+          <th scope="col" className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Status
+          </th>
+          <th scope="col" className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Date
+          </th>
+          <th scope="col" className="px-4 md:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody className="bg-white divide-y divide-gray-200">
+        {[...Array(5)].map((_, i) => (
+          <tr key={i}>
+            <td className="px-4 md:px-6 py-4 whitespace-nowrap">
+              <div className="flex items-center">
+                <div className="h-4 w-4 bg-gray-200 rounded-full animate-pulse mr-2"></div>
+                <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
               </div>
+            </td>
+            <td className="px-4 md:px-6 py-4 whitespace-nowrap">
+              <div className="h-4 bg-gray-200 rounded w-full animate-pulse"></div>
+            </td>
+            <td className="px-4 md:px-6 py-4 whitespace-nowrap">
+              <div className="h-8 w-8 bg-gray-200 rounded-full animate-pulse mx-auto"></div>
+            </td>
+            <td className="px-4 md:px-6 py-4 whitespace-nowrap">
+              <div className="h-6 bg-gray-200 rounded-full w-16 animate-pulse"></div>
+            </td>
+            <td className="px-4 md:px-6 py-4 whitespace-nowrap">
+              <div className="h-4 bg-gray-200 rounded w-20 animate-pulse"></div>
+            </td>
+            <td className="px-4 md:px-6 py-4 whitespace-nowrap text-right">
+              <div className="flex justify-end space-x-2">
+                <div className="h-6 bg-gray-200 rounded w-12 animate-pulse"></div>
+                <div className="h-6 w-6 bg-gray-200 rounded animate-pulse"></div>
+              </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
             )}
             
             {error && (
@@ -642,15 +690,15 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   </td>
       
                   <td className="px-4 md:px-6 py-3 whitespace-nowrap">
-                    <div className={`flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full ${getMatchColor(pitch.matchScore)}`}>
-                      <span className="text-xs md:text-sm font-medium">
+                    <div className={`flex items-center bg-green-600 text-white justify-center w-8 h-8 md:w-10 md:h-10 rounded-full ${getMatchColor(pitch.matchScore)}`}>
+                      <span className="text-xs  md:text-sm font-medium">
                         {pitch.matchScore ?? 'N/A'}
                       </span>
                     </div>
                   </td>
       
-                  <td className="px-4 md:px-6 py-3 whitespace-nowrap">
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(statusText)}`}>
+                  <td className="px-4  md:px-6 py-3 whitespace-nowrap">
+                    <span className={`px-2 py-1 text-xs bg-amber-500 font-medium rounded-full ${getStatusColor(statusText)}`}>
                       {statusText}
                     </span>
                   </td>
@@ -700,26 +748,69 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   return (
                     <div key={pitch.id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
                       <div className="relative">
-                        {hasVideo(pitch) ? (
-                          <div className="aspect-w-16 aspect-h-9 bg-gray-200">
-                            <img 
-                              src={randomThumbnail} 
-                              alt="Video thumbnail" 
-                              className="object-cover w-full h-40"
-                            />
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <button className="w-10 h-10 bg-white bg-opacity-80 rounded-full flex items-center justify-center">
-                                <Play size={16} className="text-gray-800" fill="currentColor" />
-                              </button>
-                            </div>
-                          </div>
-                        ) : (
-                          <img 
-                            src={randomThumbnail} 
-                            alt="Startup thumbnail" 
-                            className="object-cover w-full h-40"
-                          />
-                        )}
+                      <div className="relative aspect-video bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+  {pitch?.pitch_video ? (
+    <>
+      {/* Video Thumbnail with Fallbacks */}
+      <img
+        src={pitch.pitch_video_thumbnail || "/default-video-poster.jpg"}
+        alt={`${pitch.startupName || 'Startup'} video thumbnail`}
+        className="object-cover w-full h-full"
+        onError={(e) => {
+          if (e.currentTarget.src !== "/default-video-poster.jpg") {
+            e.currentTarget.src = "/default-video-poster.jpg";
+          } else {
+            // Show error state
+            e.currentTarget.src = "";
+            e.currentTarget.parentElement.querySelector('.video-error').classList.remove('hidden');
+          }
+        }}
+      />
+      
+      {/* Video Play Button */}
+      <div className="absolute inset-0 flex items-center justify-center bg-black/10 hover:bg-black/20 transition-all">
+        <button
+          onClick={() => window.open(`https://tujitume.com/${pitch.pitch_video}`, '_blank')}
+          className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center hover:bg-white hover:scale-105 transition-all"
+          aria-label="Play video"
+        >
+          <Play size={20} className="text-gray-800 ml-1" />
+        </button>
+      </div>
+      
+      {/* Error Message (shown only if needed) */}
+      <div className="video-error hidden absolute inset-0 bg-gray-100 flex flex-col items-center justify-center p-4 text-center">
+        <div className="w-8 h-8 mb-2 text-gray-400 bg-gray-200 rounded-full flex items-center justify-center">!</div>
+        <p className="text-sm text-gray-500 font-medium">Video unavailable</p>
+        <p className="text-xs text-gray-400 mt-1">We couldn't load this pitch video</p>
+      </div>
+    </>
+  ) : (
+    /* No Video Available State */
+    <div className="h-full w-full flex flex-col items-center justify-center bg-gray-50 p-4">
+      <div className="w-8 h-8 mb-2 text-gray-400 bg-gray-200 rounded-full flex items-center justify-center">X</div>
+      <p className="text-sm text-gray-500 font-medium">No video available</p>
+      <p className="text-xs text-gray-400 mt-1">
+        {pitch.startupName || 'This startup'} hasn't uploaded a pitch video
+      </p>
+      
+      {/* Fallback Image (shown behind the message) */}
+      <img
+        src={
+          pitch.startup_logo ||
+          randomThumbnail ||
+          "/default-startup-thumbnail.jpg"
+        }
+        alt=""
+        className="absolute inset-0 object-cover w-full h-full opacity-20"
+        onError={(e) => {
+          e.currentTarget.src = "/default-startup-thumbnail.jpg";
+          e.currentTarget.onerror = null;
+        }}
+      />
+    </div>
+  )}
+</div>
                         <div className="absolute top-2 right-2">
                           <button 
                             onClick={() => toggleFavorite(pitch.id)}
@@ -730,43 +821,64 @@ const handleStatusChange = async (pitchId, newStatus) => {
                         </div>
                       </div>
                       
-                      <div className="p-4">
-                        <div className="flex justify-between items-start mb-2">
-                          <h3 className="text-lg font-medium text-gray-900 line-clamp-1">
-                            {pitch.startup_name || 'Unnamed Startup'}
-                          </h3>
-                          <div className={`flex items-center justify-center w-8 h-8 rounded-full ${getMatchColor(pitch.matchScore)}`}>
-                            <span className="text-xs font-medium">
-                              {pitch.matchScore ?? 'N/A'}
-                            </span>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center mb-3">
-                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(statusText)}`}>
-                            {statusText}
-                          </span>
-                          <span className="text-xs text-gray-500 ml-2">
-                            {formattedDate}
-                          </span>
-                        </div>
-                        
-                        <p className="text-sm text-gray-600 line-clamp-2 mb-4">
-                          {pitch.sectors || 'No sector information available'}
-                        </p>
-                        
-                        <div className="flex justify-between items-center">
-                          <button 
-                            onClick={() => openModal(pitch)}
-                            className="text-sm font-medium text-green-600 hover:text-green-800"
-                          >
-                            View details
-                          </button>
-                          <button className="text-gray-500 hover:text-gray-700">
-                            <Download size={16} />
-                          </button>
-                        </div>
-                      </div>
+                  <div className="p-4 space-y-3">
+  <div className="flex justify-between items-start">
+    <div>
+      <h3 className="text-lg font-medium text-gray-900 line-clamp-1">
+        {pitch.startupName || 'Unnamed Startup'}
+      </h3>
+      <p className="text-sm text-gray-600">
+        {pitch.contactPerson || 'No contact'} • {pitch.headquarters || 'Location N/A'}
+      </p>
+    </div>
+    <div className={`flex items-center justify-center w-8 h-8 rounded-full ${getMatchColor(pitch.matchScore)}`}>
+      <span className="text-xs font-medium">
+        {pitch.matchScore ?? 'N/A'}
+      </span>
+    </div>
+  </div>
+
+  <div className="flex items-center space-x-2">
+    <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(statusText)}`}>
+      {statusText}
+    </span>
+    <span className="text-xs text-gray-500">
+      {formattedDate}
+    </span>
+  </div>
+
+  <div className="flex space-x-4 text-sm">
+    <div>
+      <span className="text-gray-500">Burn:</span>{' '}
+      <span className="font-medium">
+        {pitch.burnRate ? `$${parseFloat(pitch.burnRate).toLocaleString()}` : 'N/A'}
+      </span>
+    </div>
+    <div>
+      <span className="text-gray-500">IRR:</span>{' '}
+      <span className="font-medium">
+        {pitch.irrProjection ? `${pitch.irrProjection}%` : 'N/A'}
+      </span>
+    </div>
+  </div>
+
+  <div className="flex justify-between items-center pt-2">
+    <button 
+      onClick={() => openModal(pitch)}
+      className="text-sm font-medium text-green-600 hover:text-green-800"
+    >
+      View details
+    </button>
+    {pitch.businessPlan && (
+      <a 
+        href={pitch.businessPlan} 
+        className="text-xs text-gray-500 hover:underline"
+      >
+        PDF
+      </a>
+    )}
+  </div>
+</div>
                     </div>
                   );
                 })}
@@ -912,15 +1024,48 @@ const handleStatusChange = async (pitchId, newStatus) => {
               {selectedPitch.pitchVideo && (
                 <div className="mb-8">
                   <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">Pitch Video</h4>
-                  <div className="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg overflow-hidden shadow-sm">
-                    <video 
-                      controls
-                      className="w-full h-full object-cover"
-                    >
-                      <source src={selectedPitch.pitchVideo} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
+                  <div className="relative w-full h-0 pb-[56.25%] bg-gray-200 rounded-lg overflow-hidden shadow-sm">
+  <div className="absolute inset-0 flex items-center justify-center">
+    <video
+      controls
+      className="w-full h-full object-cover"
+      poster={selectedPitch.thumbnail ? "https://tujitume.com/" + selectedPitch.thumbnail : undefined}
+    >
+      <source 
+        src={"https://tujitume.com/" + selectedPitch.pitchVideo} 
+        type="video/mp4" 
+      />
+      <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center bg-gray-100">
+        <svg
+          className="w-12 h-12 text-gray-400 mb-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"
+          />
+        </svg>
+        <p className="text-gray-600 font-medium">Video playback not supported</p>
+        <p className="text-gray-500 text-sm mt-1">
+          Your browser doesn't support HTML5 video. Here's a 
+          <a 
+            href={"https://tujitume.com/" + selectedPitch.pitchVideo} 
+            className="text-blue-500 hover:underline ml-1"
+            download
+          >
+            link to the video
+          </a> 
+          instead.
+        </p>
+      </div>
+    </video>
+  </div>
+</div>
                 </div>
               )}
             </div>

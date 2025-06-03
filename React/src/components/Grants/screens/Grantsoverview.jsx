@@ -418,7 +418,7 @@ const Navigation = {
                               ...(user?.investor
                                   ? [
                                         {
-                                            label: "Add New Investment",
+                                            label: "Add New Investments",
                                             to: "/dashboard/overview/funding/investments",
                                         },
                                         {

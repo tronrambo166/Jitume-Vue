@@ -64,7 +64,7 @@ const DealRoomLayout = () => {
             return;
         }
 
-        console.log("🔍 Fetching pitches for opportunityId:", opportunityId);
+        // console.log("🔍 Fetching pitches for opportunityId:", opportunityId);
         setIsLoadingPitches(true);
 
         try {
@@ -73,8 +73,8 @@ const DealRoomLayout = () => {
             );
 
             // Log raw response
-            console.log("✅ Full response object:", response);
-            console.log("📦 Fetched pitch data:", response.data);
+            // console.log("✅ Full response object:", response);
+            // console.log("📦 Fetched pitch data:", response.data);
 
             // Try multiple possible data structures while keeping the API endpoint the same
             const pitchesArray = response?.data?.pitches
@@ -85,7 +85,7 @@ const DealRoomLayout = () => {
                 ? response.data.data
                 : [];
 
-            console.log("📊 Extracted pitches array:", pitchesArray);
+            // console.log("📊 Extracted pitches array:", pitchesArray);
             setCount(pitchesArray.length);
 
 
@@ -96,7 +96,7 @@ const DealRoomLayout = () => {
                         opportunityId
                     );
                 } else {
-                    console.log(`✅ ${pitchesArray.length} pitches loaded.`);
+                    // console.log(`✅ ${pitchesArray.length} pitches loaded.`);
                 }
 
                 setPitches(pitchesArray);
@@ -779,16 +779,6 @@ const DealRoomLayout = () => {
                     <nav className="flex space-x-8 overflow-x-auto">
                         {[
                             {
-                                name: "overview",
-                                icon: BarChart2,
-                                label: "Overview",
-                            },
-                            {
-                                name: "investors",
-                                icon: Briefcase,
-                                label: "Investors",
-                            },
-                            {
                                 name: "pitches",
                                 icon: Presentation,
                                 label: (
@@ -800,17 +790,24 @@ const DealRoomLayout = () => {
                                     </>
                                 ),
                             },
+                           {
+                                name: "overview",
+                                icon: BarChart2,
+                                label: "Overview",
+                            },
+                            {
+                                name: "investors",
+                                icon: Briefcase,
+                                label: "Investors",
+                            },
+                           
                             {
                                 name: "documents",
                                 icon: FileText,
                                 label: "Documents",
                             },
                             { name: "team", icon: Users, label: "Team" },
-                            {
-                                name: "communication",
-                                icon: MessageSquare,
-                                label: "Communication",
-                            },
+                           
                         ].map((tab) => (
                             <button
                                 key={tab.name}
@@ -1027,85 +1024,61 @@ const DealRoomLayout = () => {
                     </div>
                 )}
 
-                {/* Pitches Tab */}
-                {isLoadingPitches ? (
-                    <div className="flex justify-center py-12">
-                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
-                    </div>
-                ) : (
-                    <>
-                        <div className="flex justify-between items-center">
-                            <h2 className="text-xl font-bold">
-                                Investor Pitches
-                            </h2>
-                            <div className="flex bg-gray-100 rounded-lg p-1">
-                                <button
-                                    onClick={() => setActiveTab("pending")}
-                                    className={`px-4 py-2 text-sm font-medium rounded-md ${
-                                        activeTab === "pending"
-                                            ? "bg-white shadow-sm text-gray-900"
-                                            : "text-gray-500 hover:text-gray-700"
-                                    }`}
-                                >
-                                    Pending
-                                </button>
-                                <button
-                                    onClick={() => setActiveTab("accepted")}
-                                    className={`px-4 py-2 text-sm font-medium rounded-md ${
-                                        activeTab === "accepted"
-                                            ? "bg-white shadow-sm text-gray-900"
-                                            : "text-gray-500 hover:text-gray-700"
-                                    }`}
-                                >
-                                    Accepted
-                                </button>
-                            </div>
-                        </div>
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {filteredPitches.map((pitch) => (
-                                <PitchCard
-                                    key={pitch.id}
-                                    pitch={pitch}
-                                    onStatusChange={(id, newStatus) => {
-                                        // Update the pitch status in local state
-                                        setPitches((prev) =>
-                                            prev.map((p) =>
-                                                p.id === id
-                                                    ? {
-                                                          ...p,
-                                                          status:
-                                                              newStatus ===
-                                                              "accepted"
-                                                                  ? 1
-                                                                  : 0,
-                                                      }
-                                                    : p
-                                            )
-                                        );
-                                    }}
-                                />
-                            ))}
-                        </div>
-                    </>
-                )}
-                {filteredPitches.length === 0 && !isLoadingPitches && (
-                    <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-200 text-center">
-                        <Presentation
-                            size={48}
-                            className="mx-auto text-gray-400 mb-3"
+        {activeTab === "pitches" && (
+    <>
+        {/* Pitches Tab */}
+        {isLoadingPitches ? (
+            <div className="flex justify-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
+            </div>
+        ) : (
+            <>
+                <h2 className="text-xl font-bold">Investor Pitches</h2>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredPitches.map((pitch) => (
+                        <PitchCard
+                            key={pitch.id}
+                            pitch={pitch}
+                            onStatusChange={(id, newStatus) => {
+                                setPitches((prev) =>
+                                    prev.map((p) =>
+                                        p.id === id
+                                            ? {
+                                                  ...p,
+                                                  status:
+                                                      newStatus === "accepted"
+                                                          ? 1
+                                                          : 0,
+                                              }
+                                            : p
+                                    )
+                                );
+                            }}
                         />
-                        <h3 className="text-lg font-medium mb-2">
-                            {activeTab === "pending"
-                                ? "No Pending Pitches"
-                                : "No Accepted Pitches"}
-                        </h3>
-                        <p className="text-gray-500 mb-4">
-                            {activeTab === "pending"
-                                ? "You don't have any pending pitches at the moment."
-                                : "You haven't accepted any pitches yet."}
-                        </p>
-                    </div>
-                )}
+                    ))}
+                </div>
+            </>
+        )}
+        {filteredPitches.length === 0 && !isLoadingPitches && (
+            <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-200 text-center">
+                <Presentation
+                    size={48}
+                    className="mx-auto text-gray-400 mb-3"
+                />
+                <h3 className="text-lg font-medium mb-2">
+                    {activeTab === "pending"
+                        ? "No Pending Pitches"
+                        : "No Accepted Pitches"}
+                </h3>
+                <p className="text-gray-500 mb-4">
+                    {activeTab === "pending"
+                        ? "You don't have any pending pitches at the moment."
+                        : "You haven't accepted any pitches yet."}
+                </p>
+            </div>
+        )}
+    </>
+)}
 
                 {/* Documents Tab */}
                 {activeTab === "documents" && (
@@ -1305,77 +1278,7 @@ const DealRoomLayout = () => {
                     </div>
                 )}
 
-                {/* Communication Tab */}
-                {activeTab === "communication" && (
-                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 h-[600px] flex flex-col">
-                        <div className="p-4 border-b border-gray-200">
-                            <h3 className="text-lg font-medium">
-                                Deal Room Chat
-                            </h3>
-                        </div>
-                        <div className="flex-1 overflow-y-auto p-4">
-                            <div className="space-y-4">
-                                {messages.map((msg) => (
-                                    <div
-                                        key={msg.id}
-                                        className={`flex ${
-                                            msg.sender === "You"
-                                                ? "justify-end"
-                                                : "justify-start"
-                                        }`}
-                                    >
-                                        <div
-                                            className={`rounded-lg p-3 max-w-md ${
-                                                msg.sender === "System"
-                                                    ? "bg-gray-100 text-gray-700"
-                                                    : msg.sender === "You"
-                                                    ? "bg-green-600 text-white"
-                                                    : "bg-gray-200 text-gray-800"
-                                            }`}
-                                        >
-                                            {msg.sender !== "You" &&
-                                                msg.sender !== "System" && (
-                                                    <div className="font-bold text-sm">
-                                                        {msg.sender}
-                                                    </div>
-                                                )}
-                                            <p className="text-sm">
-                                                {msg.text}
-                                            </p>
-                                            <div className="text-xs mt-1 opacity-70">
-                                                {new Date(
-                                                    msg.timestamp
-                                                ).toLocaleTimeString()}
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                        <div className="p-4 border-t border-gray-200">
-                            <div className="flex">
-                                <input
-                                    type="text"
-                                    placeholder="Type your message..."
-                                    value={newMessage}
-                                    onChange={(e) =>
-                                        setNewMessage(e.target.value)
-                                    }
-                                    onKeyPress={(e) =>
-                                        e.key === "Enter" && handleSendMessage()
-                                    }
-                                    className="flex-1 border-gray-300 focus:ring-green-500 focus:border-green-500 block w-full rounded-md sm:text-sm border p-2"
-                                />
-                                <button
-                                    onClick={handleSendMessage}
-                                    className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                                >
-                                    <Send size={16} className="mr-1" /> Send
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                )}
+         
             </div>
         </div>
     );
