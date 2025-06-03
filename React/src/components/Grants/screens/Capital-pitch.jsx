@@ -276,9 +276,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
   const getStatusColor = (status) => {
     switch(status) {
       case 'New': return 'bg-gray-100 text-gray-800';
-      case 'In Review': return 'bg-gray-800 text-white';
-      case 'Accepted': return 'bg-green-100 text-green-800';
-      case 'Rejected': return 'bg-red-100 text-red-800';
+      case 'Accepted': return 'bg-amber-500 text-green-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -414,14 +412,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   >
                     New
                   </button>
-                  <button 
-                    onClick={() => setSelectedTab('review')}
-                    className={`text-xs md:text-sm font-medium px-2 py-1 md:px-3 md:py-1 rounded-lg whitespace-nowrap ${
-                      selectedTab === 'review' ? 'bg-green-700 text-white' : 'text-gray-600 hover:bg-gray-100'
-                    }`}
-                  >
-                    In Review
-                  </button>
+                
                   <button 
                     onClick={() => setSelectedTab('accepted')}
                     className={`text-xs md:text-sm font-medium px-2 py-1 md:px-3 md:py-1 rounded-lg whitespace-nowrap ${
@@ -430,14 +421,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   >
                     Accepted
                   </button>
-                  <button 
-                    onClick={() => setSelectedTab('rejected')}
-                    className={`text-xs md:text-sm font-medium px-2 py-1 md:px-3 md:py-1 rounded-lg whitespace-nowrap ${
-                      selectedTab === 'rejected' ? 'bg-green-700 text-white' : 'text-gray-600 hover:bg-gray-100'
-                    }`}
-                  >
-                    Rejected
-                  </button>
+                 
                 </div>
                 <div className="flex items-center space-x-2 md:space-x-3 mt-2 md:mt-0">
                   <button 
@@ -698,9 +682,11 @@ const handleStatusChange = async (pitchId, newStatus) => {
                   </td>
       
                   <td className="px-4  md:px-6 py-3 whitespace-nowrap">
-                    <span className={`px-2 py-1 text-xs bg-amber-500 font-medium rounded-full ${getStatusColor(statusText)}`}>
-                      {statusText}
-                    </span>
+                   <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(statusText)}`}>
+  {statusText}
+</span>
+
+
                   </td>
       
                   <td className="px-4 md:px-6 py-3 whitespace-nowrap text-sm text-gray-500">
