@@ -46,8 +46,7 @@ const [lastChanged, setLastChanged] = useState(null);
   
       try {
         const capitalResponse = await axiosClient.get("capital/capital-offers");
-        // console.log("[fetchPitches] Raw capitalResponse:", capitalResponse.data);
-  
+        
         let capitals = [];
   
         if (Array.isArray(capitalResponse?.data)) {
@@ -86,49 +85,54 @@ const [lastChanged, setLastChanged] = useState(null);
         // console.log("[fetchPitches] Combined pitches (flattened):", combinedPitches);
   
         const cleanedPitches = combinedPitches.map((pitch) => {
-          const capitalData = capitals.find(c => c.id === pitch.capital_id);
-          return {
-            id: pitch.id,
-            startupName: pitch.startup_name || "",
-            contactPerson: pitch.contact_person_name || "",
-            contactEmail: pitch.contact_person_email || "",
-            sector: pitch.sector || "",
-            stage: pitch.stage || "",
-            headquarters: pitch.headquarters_location || "",
-            burnRate: pitch.burn_rate || "N/A",
-            revenue: pitch.revenue_last_12_months || "N/A",
-            cacLtv: pitch.cac_ltv || "N/A",
-            irrProjection: pitch.irr_projection || "N/A",
-            teamExperience: pitch.team_experience_avg_years ? `${pitch.team_experience_avg_years} years` : "N/A",
-            socialImpact: pitch.social_impact_areas || "None specified",
-            exitStrategy: pitch.exit_strategy || "Not provided",
-            traction: pitch.traction_kpis || "Not provided",
-            businessPlan: pitch.business_plan || null,
-            pitchDeck: pitch.pitch_deck_file || null,
-            pitchVideo: pitch.pitch_video || null,
-            status: pitch.status === 1 ? "Active" : "Inactive",
-            createdAt: pitch.created_at || "",
-            updatedAt: pitch.updated_at || "",
-            capitalId: pitch.capital_id || null,
-            milestones: pitch.capital_milestone || [],
-            userId: pitch.user_id || null,
-            capitalName: capitalData?.name || "Unknown Capital",
-            capitalAmount: capitalData?.amount
-              ? `$${Number(capitalData.amount).toLocaleString()}`
-              : "N/A",
-            capitalFocus: capitalData?.focus_area || "General",
-            team: [
-              {
-                name: pitch.contact_person_name || "Unknown",
-                role: "CEO",
-                initials: (pitch.contact_person_name || "U").split(' ').map(n => n[0]).join('')
-              },
-              { name: "CTO", role: "CTO", initials: "CT" },
-              { name: "Product Lead", role: "Product", initials: "PL" }
-            ],
-            matchScore: Math.floor(Math.random() * 20) + 80,
-            favorite: false
-          };
+            const capitalData = capitals.find((c) => c.id === pitch.capital_id);
+            return {
+                id: pitch.id,
+                startupName: pitch.startup_name || "",
+                contactPerson: pitch.contact_person_name || "",
+                contactEmail: pitch.contact_person_email || "",
+                sector: pitch.sector || "",
+                stage: pitch.stage || "",
+                headquarters: pitch.headquarters_location || "",
+                burnRate: pitch.burn_rate || "N/A",
+                revenue: pitch.revenue_last_12_months || "N/A",
+                cacLtv: pitch.cac_ltv || "N/A",
+                irrProjection: pitch.irr_projection || "N/A",
+                teamExperience: pitch.team_experience_avg_years
+                    ? `${pitch.team_experience_avg_years} years`
+                    : "N/A",
+                socialImpact: pitch.social_impact_areas || "None specified",
+                exitStrategy: pitch.exit_strategy || "Not provided",
+                traction: pitch.traction_kpis || "Not provided",
+                businessPlan: pitch.business_plan || null,
+                pitchDeck: pitch.pitch_deck_file || null,
+                pitchVideo: pitch.pitch_video || null,
+                status: pitch.status, // <-- KEEP AS NUMBER
+                createdAt: pitch.created_at || "",
+                updatedAt: pitch.updated_at || "",
+                capitalId: pitch.capital_id || null,
+                milestones: pitch.capital_milestone || [],
+                userId: pitch.user_id || null,
+                capitalName: capitalData?.name || "Unknown Capital",
+                capitalAmount: capitalData?.amount
+                    ? `$${Number(capitalData.amount).toLocaleString()}`
+                    : "N/A",
+                capitalFocus: capitalData?.focus_area || "General",
+                team: [
+                    {
+                        name: pitch.contact_person_name || "Unknown",
+                        role: "CEO",
+                        initials: (pitch.contact_person_name || "U")
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join(""),
+                    },
+                    { name: "CTO", role: "CTO", initials: "CT" },
+                    { name: "Product Lead", role: "Product", initials: "PL" },
+                ],
+                matchScore: Math.floor(Math.random() * 20) + 80,
+                favorite: false,
+            };
         });
   
         // console.log("[fetchPitches] Cleaned/normalized pitches:", cleanedPitches);
@@ -148,6 +152,8 @@ const [lastChanged, setLastChanged] = useState(null);
   
     fetchPitches();
   }, []);
+
+  
   
   
   // Check for mobile view
@@ -176,79 +182,82 @@ const [lastChanged, setLastChanged] = useState(null);
 
 // Function to handle status changes
 const handleStatusChange = async (pitchId, newStatus) => {
-  setIsChanging(true);
-  
-  // Get current pitch data for potential rollback
-  const currentPitch = pitches.find(pitch => pitch.id === pitchId);
-  const previousStatus = currentPitch?.status;
-  
-  // console.groupCollapsed(`[Pitch Status Change] Starting status update for pitch ${pitchId}`);
-  // console.log("New Status:", newStatus);
-  // console.log("Pitch ID:", pitchId);
+    setIsChanging(true);
 
-  try {
-    // Determine numeric status value
-    const statusCode = newStatus === "Accepted" ? 1 : 2;
-    
-    // Update UI immediately (optimistic update)
-    if (selectedPitch && selectedPitch.id === pitchId) {
-      setSelectedPitch(prev => ({
-        ...prev,
-        status: statusCode,
-        processingStatus: newStatus
-      }));
-    }
+    // Get current pitch data for potential rollback
+    const currentPitch = pitches.find((pitch) => pitch.id === pitchId);
+    const previousStatus = currentPitch?.status;
 
-    // Update in main list
-    setPitches(prevPitches => 
-      prevPitches.map(pitch => 
-        pitch.id === pitchId
-          ? {
-              ...pitch,
-              status: statusCode,
-              updatedAt: new Date().toISOString()
+    try {
+        if (newStatus === "Accepted") {
+            // Optimistically update status to 1
+            if (selectedPitch && selectedPitch.id === pitchId) {
+                setSelectedPitch((prev) => ({
+                    ...prev,
+                    status: 1,
+                    processingStatus: "Accepted",
+                }));
             }
-          : pitch
-      )
-    );
+            setPitches((prevPitches) =>
+                prevPitches.map((pitch) =>
+                    pitch.id === pitchId
+                        ? {
+                              ...pitch,
+                              status: 1,
+                              updatedAt: new Date().toISOString(),
+                          }
+                        : pitch
+                )
+            );
+            const response = await axiosClient.get(`capital/accept/${pitchId}`);
+            console.log("Backend Response (accept):", response.data);
+            toast.success("Pitch accepted successfully");
+            setLastChanged("Accepted");
+        } else if (newStatus === "Rejected") {
+            // Optimistically remove pitch
+            setPitches((prevPitches) =>
+                prevPitches.filter((pitch) => pitch.id !== pitchId)
+            );
+            if (selectedPitch && selectedPitch.id === pitchId) {
+                setIsModalOpen(false);
+                setSelectedPitch(null);
+            }
+            const response = await axiosClient.get(`capital/reject/${pitchId}`);
+            console.log("Backend Response (reject):", response.data);
+            toast.success("Pitch rejected and removed");
+            setLastChanged("Rejected");
+        }
+    } catch (error) {
+        console.error("Error updating pitch status:", error);
 
-    // Make API call
-    const action = newStatus === "Accepted" ? "accept" : "reject";
-    const endpoint = `capital/${action}/${pitchId}`;
-    
-    // console.log("Making GET request to:", endpoint);
-    const response = await axiosClient.get(endpoint);
-
-    // console.log("Backend Response:", response.data);
-    toast.success(`Pitch ${newStatus.toLowerCase()} successfully`);
-    setLastChanged(newStatus);
-    
-    // IMPORTANT: Prevent the data refetch from overriding our state
-    // by adding a debounce or flag that prevents status reset
-    
-  } catch (error) {
-    console.error("Error updating pitch status:", error);
-    
-    // Revert changes on error
-    if (selectedPitch && selectedPitch.id === pitchId) {
-      setSelectedPitch(prev => ({
-        ...prev,
-        status: previousStatus,
-        processingStatus: null
-      }));
+        // Revert changes on error
+        if (newStatus === "Accepted") {
+            if (selectedPitch && selectedPitch.id === pitchId) {
+                setSelectedPitch((prev) => ({
+                    ...prev,
+                    status: previousStatus,
+                    processingStatus: null,
+                }));
+            }
+            setPitches((prevPitches) =>
+                prevPitches.map((pitch) =>
+                    pitch.id === pitchId
+                        ? { ...pitch, status: previousStatus }
+                        : pitch
+                )
+            );
+        }
+        if (newStatus === "Rejected") {
+            // Optionally, re-fetch pitches or show an error
+            toast.error("Failed to reject pitch. Please try again.");
+        } else {
+            toast.error("Failed to update status. Please try again.");
+        }
+    } finally {
+        setIsChanging(false);
     }
-    
-    setPitches(prevPitches => 
-      prevPitches.map(pitch => 
-        pitch.id === pitchId ? { ...pitch, status: previousStatus } : pitch
-      )
-    );
-    
-    toast.error("Failed to update status. Please try again.");
-  } finally {
-    setIsChanging(false);
-  }
 };
+
   const toggleFavorite = (id) => {
     setPitches(pitches.map(pitch => 
       pitch.id === id ? { ...pitch, favorite: !pitch.favorite } : pitch
@@ -346,7 +355,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
   const hasVideo = (pitch) => {
     return pitch?.video_url || pitch?.pitch_video || mediaAssets.video;
   };
-console.log(filteredPitches)
+// console.log(filteredPitches)
   return (
       <div className="min-h-screen bg-gray-50">
           {/* Header */}
@@ -816,7 +825,7 @@ console.log(filteredPitches)
                                           </tr>
                                       </thead>
                                       <tbody className="bg-white divide-y divide-gray-200">
-                                          {filteredPitches.map((pitch) => {
+                                          {filteredPitches.map((pitch, idx) => {
                                               // Calculate derived data once per pitch
                                               const statusText =
                                                   typeof pitch.status ===
@@ -855,7 +864,7 @@ console.log(filteredPitches)
 
                                               return (
                                                   <tr
-                                                      key={pitch.id}
+                                                      key={`${pitch.id}-${idx}`}
                                                       className="hover:bg-gray-50"
                                                   >
                                                       <td className="px-4 md:px-6 py-3 whitespace-nowrap">
@@ -957,7 +966,7 @@ console.log(filteredPitches)
                           filteredPitches.length > 0 &&
                           viewMode === "grid" && (
                               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-                                  {filteredPitches.map((pitch) => {
+                                  {filteredPitches.map((pitch, idx) => {
                                       const statusText =
                                           typeof pitch.status === "number"
                                               ? pitch.status === 0
@@ -990,7 +999,7 @@ console.log(filteredPitches)
 
                                       return (
                                           <div
-                                              key={pitch.id}
+                                              key={`${pitch.id}-${idx}`}
                                               className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow"
                                           >
                                               <div className="relative">
@@ -1726,23 +1735,35 @@ console.log(filteredPitches)
                                           </h4>
                                           <div className="mb-4">
                                               {selectedPitch.status === 1 ? (
-                                                  <div className="flex items-center text-green-600 font-medium">
-                                                      <svg
-                                                          className="w-5 h-5 mr-2"
-                                                          fill="none"
-                                                          stroke="currentColor"
-                                                          viewBox="0 0 24 24"
-                                                          xmlns="http://www.w3.org/2000/svg"
+                                                  <>
+                                                      <div className="flex items-center text-green-600 font-medium">
+                                                          <svg
+                                                              className="w-5 h-5 mr-2"
+                                                              fill="none"
+                                                              stroke="currentColor"
+                                                              viewBox="0 0 24 24"
+                                                              xmlns="http://www.w3.org/2000/svg"
+                                                          >
+                                                              <path
+                                                                  strokeLinecap="round"
+                                                                  strokeLinejoin="round"
+                                                                  strokeWidth={
+                                                                      2
+                                                                  }
+                                                                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                              />
+                                                          </svg>
+                                                          Accepted
+                                                      </div>
+                                                      <button
+                                                          className="mt-4 px-4 py-2 bg-green-600 text-white rounded-md shadow hover:bg-green-700 transition"
+                                                          onClick={() => {
+                                                              window.location.href = `mailto:${selectedPitch.contactEmail}?subject=Congratulations on your accepted pitch!`;
+                                                          }}
                                                       >
-                                                          <path
-                                                              strokeLinecap="round"
-                                                              strokeLinejoin="round"
-                                                              strokeWidth={2}
-                                                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                          />
-                                                      </svg>
-                                                      Accepted
-                                                  </div>
+                                                          Message Business Owner
+                                                      </button>
+                                                  </>
                                               ) : selectedPitch.status === 0 ? (
                                                   <div className="flex items-center text-red-600 font-medium">
                                                       <svg
@@ -1800,7 +1821,7 @@ console.log(filteredPitches)
                                               )}
                                           </div>
 
-                                          {/* Show buttons only if the pitch status is neither 1 (Accepted) nor 0 (Rejected) */}
+                                          {/* Show buttons only if the pitch status is neither 1 (Accepted) nor 0 (Rejected) nor 2 */}
                                           {selectedPitch.status !== 1 &&
                                           selectedPitch.status !== 0 &&
                                           selectedPitch.status !== 2 ? (
@@ -1815,11 +1836,11 @@ console.log(filteredPitches)
                                                       }
                                                       disabled={isChanging}
                                                       className={`
-                        px-3 py-2 text-sm rounded-md flex items-center justify-center transition-all
-                        bg-white border border-green-200 text-green-700 hover:bg-green-50 
-                        ${isChanging ? "opacity-70 cursor-not-allowed" : ""}
-                        shadow-sm hover:shadow
-                      `}
+                    px-3 py-2 text-sm rounded-md flex items-center justify-center transition-all
+                    bg-white border border-green-200 text-green-700 hover:bg-green-50 
+                    ${isChanging ? "opacity-70 cursor-not-allowed" : ""}
+                    shadow-sm hover:shadow
+                `}
                                                   >
                                                       {isChanging &&
                                                       selectedPitch.processingStatus ===
@@ -1875,11 +1896,11 @@ console.log(filteredPitches)
                                                       }
                                                       disabled={isChanging}
                                                       className={`
-                        px-3 py-2 text-sm rounded-md flex items-center justify-center transition-all
-                        bg-white border border-red-200 text-red-700 hover:bg-red-50
-                        ${isChanging ? "opacity-70 cursor-not-allowed" : ""}
-                        shadow-sm hover:shadow
-                      `}
+                    px-3 py-2 text-sm rounded-md flex items-center justify-center transition-all
+                    bg-white border border-red-200 text-red-700 hover:bg-red-50
+                    ${isChanging ? "opacity-70 cursor-not-allowed" : ""}
+                    shadow-sm hover:shadow
+                `}
                                                   >
                                                       {isChanging &&
                                                       selectedPitch.processingStatus ===
@@ -1925,15 +1946,20 @@ console.log(filteredPitches)
                                                       Reject
                                                   </button>
                                               </div>
+                                          ) : selectedPitch.status === 1 ? (
+                                              <div className="text-xs text-green-700 italic mt-2">
+                                                  You can now message the
+                                                  business owner directly.
+                                              </div>
                                           ) : (
                                               /* Status message for already processed pitches */
                                               <div className="text-xs text-gray-500 italic mt-2">
-                                                  {selectedPitch.status === 1
-                                                      ? "This pitch has been accepted and cannot be modified."
-                                                      : selectedPitch.status ===
-                                                        0
+                                                  {selectedPitch.status === 0
                                                       ? "This pitch has been rejected and cannot be modified."
-                                                      : "This pitch's milestone has been released."}
+                                                      : selectedPitch.status ===
+                                                        2
+                                                      ? "This pitch's milestone has been released."
+                                                      : ""}
                                               </div>
                                           )}
                                       </div>
@@ -1943,12 +1969,12 @@ console.log(filteredPitches)
 
                           {/* Footer */}
                           <div className="bg-gray-50 px-6 py-4 border-t border-gray-100 flex justify-end">
-                              <button
+                              {/* <button
                                   type="button"
                                   className="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm transition-colors"
                               >
                                   Download Application
-                              </button>
+                              </button> */}
                               <button
                                   type="button"
                                   onClick={closeModal}
