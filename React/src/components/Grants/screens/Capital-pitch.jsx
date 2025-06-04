@@ -293,7 +293,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
   const hasVideo = (pitch) => {
     return pitch?.video_url || pitch?.pitch_video || mediaAssets.video;
   };
-
+console.log(filteredPitches)
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
