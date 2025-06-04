@@ -3,6 +3,7 @@ import { Table, ChevronDown, ChevronUp, Play, Download, Users, BarChart, FileTex
 import axiosClient from "../../../axiosClient";
 import { ToastContainer, toast } from 'react-toastify';
 import { X } from 'lucide-react'; // Optional if you want a nicer icon
+import { useNavigate } from "react-router-dom";
 
 import 'react-toastify/dist/ReactToastify.css';
 const Capitalpitch = () => {
@@ -71,8 +72,9 @@ const [lastChanged, setLastChanged] = useState(null);
         const pitchesPromises = capitals.map(async (capital) => {
           try {
             // console.log(`[fetchPitches] Fetching pitches for capital ID: ${capital.id}`);
+            
             const pitchesResponse = await axiosClient.get(`capital/pitches/${capital.id}`);
-            // console.log(`[fetchPitches] Pitches for capital ${capital.id}:`, pitchesResponse.data);
+            // console.log("Original pitch data from api/Backend", pitchesResponse);
             return pitchesResponse.data || [];
           } catch (error) {
             console.error(`[fetchPitches] Error fetching pitches for capital ${capital.id}:`, error);
@@ -263,6 +265,33 @@ const handleStatusChange = async (pitchId, newStatus) => {
       pitch.id === id ? { ...pitch, favorite: !pitch.favorite } : pitch
     ));
   };
+  
+
+   const navigate = useNavigate();
+  
+   const JustMassage = () => {
+       if (
+           !selectedPitch ||
+           !selectedPitch.userId ||
+           !selectedPitch.contactEmail
+       ) {
+           console.error("No business owner info found in pitch data");
+           alert("Unable to message - no business owner info found");
+           return;
+       }
+
+       const initialMessage =
+           "Hello, I am interested in your business. Can we connect?";
+
+       navigate("/dashboard/overview/messages", {
+           state: {
+               customer_id: selectedPitch.userId,
+               customer_email: selectedPitch.contactEmail,
+               initialMessage,
+           },
+       });
+   };
+
 
   const filteredPitches = pitches.filter((pitch) => {
       // Search filter
@@ -1758,7 +1787,7 @@ const handleStatusChange = async (pitchId, newStatus) => {
                                                       <button
                                                           className="mt-4 px-4 py-2 bg-green-600 text-white rounded-md shadow hover:bg-green-700 transition"
                                                           onClick={() => {
-                                                              window.location.href = `mailto:${selectedPitch.contactEmail}?subject=Congratulations on your accepted pitch!`;
+                                                            JustMassage();
                                                           }}
                                                       >
                                                           Message Business Owner

@@ -2377,7 +2377,7 @@ const TujitumeGrantPortal = () => {
                                 Grant Pitches
                             </h3>
                             <button
-                                onClick={() => setViewingPitchesForGrant(null)}
+                            onClick={() => setViewingPitchesForGrant(null)}
                                 className="p-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100"
                             >
                                 <XCircle size={20} />

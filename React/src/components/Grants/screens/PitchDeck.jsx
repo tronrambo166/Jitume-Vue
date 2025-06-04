@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import axiosClient from "../../../axiosClient";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const PitchDashboard = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -171,7 +172,32 @@ const PitchDashboard = () => {
         fetchPitches();
     }, []);
 
+    const navigate = useNavigate();
 
+    const JustMassage = () => {
+        if (
+            !selectedPitch ||
+            !selectedPitch.user_id ||
+            !selectedPitch.contact_person_email
+        ) {
+            console.error("No business owner info found in pitch data");
+            alert("Unable to message - no business owner info found");
+            return;
+        }
+
+        const initialMessage =
+            "Hello, I am interested in your business. Can we connect?";
+
+        navigate("/dashboard/overview/messages", {
+            state: {
+                customer_id: selectedPitch.user_id,
+                customer_email: selectedPitch.contact_person_email,
+                initialMessage,
+            },
+        });
+    };
+ 
+ 
     // Check for mobile view
     useEffect(() => {
         const handleResize = () => {
@@ -1648,7 +1674,7 @@ const filteredPitches = pitches.filter((pitch) => {
                                                         <button
                                                             className="mt-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
                                                             onClick={
-                                                                messageBusinessOwner
+                                                                JustMassage
                                                             }
                                                         >
                                                             Message Business

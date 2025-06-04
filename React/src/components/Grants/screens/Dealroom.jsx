@@ -78,7 +78,7 @@ const DealRoomLayout = () => {
             );
 
             // Log raw response
-            // console.log("✅ Full response object:", response);
+            console.log("✅ Full response object:", response);
             // console.log("📦 Fetched pitch data:", response.data);
 
             // Try multiple possible data structures while keeping the API endpoint the same

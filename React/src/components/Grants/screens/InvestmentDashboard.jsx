@@ -94,54 +94,53 @@ const InvestmentOpportunities = () => {
         // Show disclaimer modal before toggling
         setPendingToggleId(id);
         setShowDisclaimer(true);
-      };
+    };
 
-      const confirmToggle = async () => {
+    const confirmToggle = async () => {
         // Update visibility state locally
-        setVisibilityStates(prev => ({
-          ...prev,
-          [pendingToggleId]: !prev[pendingToggleId],
+        setVisibilityStates((prev) => ({
+            ...prev,
+            [pendingToggleId]: !prev[pendingToggleId],
         }));
 
         try {
-          // Send the request to the backend to persist visibility change
-          const response = await axiosClient.get('capital/visibility/'+ pendingToggleId);
+            // Send the request to the backend to persist visibility change
+            const response = await axiosClient.get(
+                "capital/visibility/" + pendingToggleId
+            );
 
-          // Optionally, handle the response (like updating the UI or showing a success message)
-        //   console.log('Visibility toggled successfully:', response);
-
+            // Optionally, handle the response (like updating the UI or showing a success message)
+            //   console.log('Visibility toggled successfully:', response);
         } catch (error) {
-          console.error('Error toggling visibility:', error);
-          // Optionally, restore the previous state if the toggle fails
-          setVisibilityStates(prev => ({
-            ...prev,
-            [pendingToggleId]: !prev[pendingToggleId], // Revert the state
-          }));
+            console.error("Error toggling visibility:", error);
+            // Optionally, restore the previous state if the toggle fails
+            setVisibilityStates((prev) => ({
+                ...prev,
+                [pendingToggleId]: !prev[pendingToggleId], // Revert the state
+            }));
         }
 
         // Hide the disclaimer modal and reset pending toggle ID
         setShowDisclaimer(false);
         setPendingToggleId(null);
-      };
+    };
 
-      const cancelToggle = () => {
+    const cancelToggle = () => {
         // Cancel the toggle and close the disclaimer modal
         setShowDisclaimer(false);
         setPendingToggleId(null);
-      };
-
-
+    };
 
     const handleEditCapital = (capital) => {
         setSelectedCapital(capital);
         setIsCapitalEditModalOpen(true);
-      };
+    };
 
-      const handleCapitalUpdate = (updatedCapital) => {
+    const handleCapitalUpdate = (updatedCapital) => {
         // console.log('Capital updated:', updatedCapital);
         // Update your state or make API call here
         setIsCapitalEditModalOpen(false);
-      };
+    };
 
     const handleSuccess = () => {
         // Handle successful submission (e.g., show success message)
@@ -198,7 +197,6 @@ const InvestmentOpportunities = () => {
 
     // Fetch investor preferences
 
-
     useEffect(() => {
         const fetchCapitalOffers = async () => {
             setIsLoading(true);
@@ -208,7 +206,7 @@ const InvestmentOpportunities = () => {
                 const response = await axiosClient.get(
                     "capital/capital-offers"
                 );
-                console.log("API Response:", response);
+                // console.log("API Response:", response);
 
                 // Check for both response.data.capital and response.data directly
                 const data = response.data?.capital || response.data;
@@ -230,6 +228,36 @@ const InvestmentOpportunities = () => {
 
         fetchCapitalOffers();
     }, []);
+    // CountdownTimer Component (separate file)
+const CountdownTimer = ({ targetDate }) => {
+    const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  
+    function calculateTimeLeft() {
+      const difference = new Date(targetDate) - new Date();
+      return {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60)
+      };
+    }
+  
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setTimeLeft(calculateTimeLeft());
+      }, 60000); // Update every minute
+  
+      return () => clearTimeout(timer);
+    });
+  
+    return (
+      <span className="text-xs font-medium ${
+        timeLeft.days <= 2 ? 'text-orange-500' : 'text-gray-500'
+      }">
+        {timeLeft.days > 0 ? `${timeLeft.days}d ` : ''}
+        {timeLeft.hours}h {timeLeft.minutes}m
+      </span>
+    );
+  };
     // Adapt API response to component structure - only using real data
     const processedOpportunities = useMemo(() => {
         // console.log("Processing opportunities:", opportunities);
@@ -248,7 +276,6 @@ const InvestmentOpportunities = () => {
                 return isValid;
             })
             .map((opp) => {
-                // console.log("Processing opportunity:", opp);
                 return {
                     id: opp.id,
                     name: opp.offer_title || "Untitled Offer",
@@ -271,6 +298,8 @@ const InvestmentOpportunities = () => {
                     updatedAt: opp.updated_at || new Date().toISOString(),
                     pitch_count: opp.pitch_count ?? 0,
                     visible: opp.visible,
+                    start_date: opp.start_date || null, // <-- ADD THIS LINE
+                    end_date: opp.end_date || null, // <-- ADD THIS LINE
                 };
             });
     }, [opportunities]);
@@ -335,7 +364,6 @@ const InvestmentOpportunities = () => {
         });
     }, [scoredOpportunities, filters, searchTerm]);
 
-    
     const getStatusColor = (status) => {
         switch (status) {
             case "Ideal Match":
@@ -767,18 +795,6 @@ const InvestmentOpportunities = () => {
                                             </div>
                                         )}
 
-                                        {isCapitalEditModalOpen && (
-                                            <CapitalEditModal
-                                                capitalData={selectedCapital}
-                                                onClose={() =>
-                                                    setIsCapitalEditModalOpen(
-                                                        false
-                                                    )
-                                                }
-                                                onSave={handleCapitalUpdate}
-                                            />
-                                        )}
-
                                         {/* Title and status */}
                                         <div className="flex-1 min-w-0">
                                             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
@@ -876,15 +892,215 @@ const InvestmentOpportunities = () => {
                                                     : "Not specified"}
                                             </span>
                                         </div>
-                                        <div>
-                                            <span className="block text-neutral-500 uppercase text-xs mb-1">
-                                                Listed Date
-                                            </span>
-                                            <span className="font-medium">
-                                                {new Date(
-                                                    opp.createdAt
-                                                ).toLocaleDateString()}
-                                            </span>
+                                        <div className="space-y-3">
+                                            {/* Timeline Header */}
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Opportunity Timeline
+                                                </span>
+                                                {opp.start_date &&
+                                                    opp.end_date && (
+                                                        <span
+                                                            className={`text-xs px-2 py-1 rounded-full ${
+                                                                new Date() >
+                                                                new Date(
+                                                                    opp.end_date
+                                                                )
+                                                                    ? "bg-gray-100 text-gray-800"
+                                                                    : new Date() >
+                                                                      new Date(
+                                                                          opp.start_date
+                                                                      )
+                                                                    ? "bg-green-100 text-green-800"
+                                                                    : "bg-blue-100 text-blue-800"
+                                                            }`}
+                                                        >
+                                                            {new Date() >
+                                                            new Date(
+                                                                opp.end_date
+                                                            )
+                                                                ? "Completed"
+                                                                : new Date() >
+                                                                  new Date(
+                                                                      opp.start_date
+                                                                  )
+                                                                ? "Active"
+                                                                : "Upcoming"}
+                                                        </span>
+                                                    )}
+                                            </div>
+
+                                            {/* Start Date Countdown */}
+                                            <div className="space-y-1">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-sm font-medium text-gray-700">
+                                                        Starts
+                                                    </span>
+                                                    {opp.start_date &&
+                                                        new Date(
+                                                            opp.start_date
+                                                        ) > new Date() && (
+                                                            <CountdownTimer
+                                                                targetDate={
+                                                                    opp.start_date
+                                                                }
+                                                            />
+                                                        )}
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <span
+                                                        className={`inline-block w-3 h-3 rounded-full ${
+                                                            !opp.start_date
+                                                                ? "bg-gray-300"
+                                                                : new Date(
+                                                                      opp.start_date
+                                                                  ) <=
+                                                                  new Date()
+                                                                ? "bg-green-500"
+                                                                : new Date(
+                                                                      opp.start_date
+                                                                  ) -
+                                                                      new Date() <
+                                                                  48 *
+                                                                      60 *
+                                                                      60 *
+                                                                      1000
+                                                                ? "bg-orange-400 animate-pulse"
+                                                                : "bg-blue-400"
+                                                        }`}
+                                                    />
+                                                    <span className="text-sm">
+                                                        {opp.start_date
+                                                            ? new Date(
+                                                                  opp.start_date
+                                                              ).toLocaleDateString(
+                                                                  "en-US",
+                                                                  {
+                                                                      weekday:
+                                                                          "short",
+                                                                      month: "short",
+                                                                      day: "numeric",
+                                                                      hour: "2-digit",
+                                                                      minute: "2-digit",
+                                                                  }
+                                                              )
+                                                            : "Not scheduled"}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            {/* End Date Countdown (only shows when started) */}
+                                            {opp.start_date &&
+                                                new Date() >=
+                                                    new Date(
+                                                        opp.start_date
+                                                    ) && (
+                                                    <div className="space-y-1">
+                                                        <div className="flex items-center justify-between">
+                                                            <span className="text-sm font-medium text-gray-700">
+                                                                Ends
+                                                            </span>
+                                                            {opp.end_date &&
+                                                                new Date(
+                                                                    opp.end_date
+                                                                ) >
+                                                                    new Date() && (
+                                                                    <CountdownTimer
+                                                                        targetDate={
+                                                                            opp.end_date
+                                                                        }
+                                                                    />
+                                                                )}
+                                                        </div>
+                                                        <div className="flex items-center gap-2">
+                                                            <span
+                                                                className={`inline-block w-3 h-3 rounded-full ${
+                                                                    !opp.end_date
+                                                                        ? "bg-gray-300"
+                                                                        : new Date(
+                                                                              opp.end_date
+                                                                          ) <=
+                                                                          new Date()
+                                                                        ? "bg-red-400"
+                                                                        : new Date(
+                                                                              opp.end_date
+                                                                          ) -
+                                                                              new Date() <
+                                                                          48 *
+                                                                              60 *
+                                                                              60 *
+                                                                              1000
+                                                                        ? "bg-orange-400 animate-pulse"
+                                                                        : "bg-gray-400"
+                                                                }`}
+                                                            />
+                                                            <span className="text-sm">
+                                                                {opp.end_date
+                                                                    ? new Date(
+                                                                          opp.end_date
+                                                                      ).toLocaleDateString(
+                                                                          "en-US",
+                                                                          {
+                                                                              weekday:
+                                                                                  "short",
+                                                                              month: "short",
+                                                                              day: "numeric",
+                                                                              hour: "2-digit",
+                                                                              minute: "2-digit",
+                                                                          }
+                                                                      )
+                                                                    : "No end date"}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                            {/* 48-Hour Countdown Bar (only shows when within 2 days of start) */}
+                                            {opp.start_date &&
+                                                new Date(opp.start_date) >
+                                                    new Date() &&
+                                                new Date(opp.start_date) -
+                                                    new Date() <
+                                                    48 * 60 * 60 * 1000 && (
+                                                    <div className="mt-3">
+                                                        <div className="flex justify-between text-xs text-gray-500 mb-1">
+                                                            <span>
+                                                                Starting soon!
+                                                            </span>
+                                                            <span>
+                                                                {Math.floor(
+                                                                    (new Date(
+                                                                        opp.start_date
+                                                                    ) -
+                                                                        new Date()) /
+                                                                        (60 *
+                                                                            60 *
+                                                                            1000)
+                                                                )}{" "}
+                                                                hours remaining
+                                                            </span>
+                                                        </div>
+                                                        <div className="w-full bg-gray-200 rounded-full h-2">
+                                                            <div
+                                                                className="bg-orange-500 h-2 rounded-full"
+                                                                style={{
+                                                                    width: `${
+                                                                        100 -
+                                                                        ((new Date(
+                                                                            opp.start_date
+                                                                        ) -
+                                                                            new Date()) /
+                                                                            (48 *
+                                                                                60 *
+                                                                                60 *
+                                                                                1000)) *
+                                                                            100
+                                                                    }%`,
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                )}
                                         </div>
                                     </div>
 
@@ -1101,6 +1317,13 @@ const InvestmentOpportunities = () => {
                             (o) => o.id === selectedOpportunity
                         )?.perStartupAmount ?? ""
                     }
+                />
+            )}
+            {isCapitalEditModalOpen && (
+                <CapitalEditModal
+                    capitalData={selectedCapital}
+                    onClose={() => setIsCapitalEditModalOpen(false)}
+                    onSave={handleCapitalUpdate}
                 />
             )}
 

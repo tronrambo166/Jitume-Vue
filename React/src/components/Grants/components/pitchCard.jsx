@@ -80,6 +80,7 @@ const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
             setShowAcceptModal(false);
         }
     };
+    console.log("Pitch Card Rendered:", pitch)
 
     const handleReject = async () => {
         try {
@@ -113,6 +114,21 @@ const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
 
     const handleDecline = () => {
         setShowDeclineModal(true);
+    };
+
+    const handleMessageBusinessOwner = () => {
+        if (!pitch.user_id || !pitch.contact_person_email) {
+            alert("Business owner contact info not available.");
+            return;
+        }
+        navigate("/dashboard/overview/messages", {
+            state: {
+                customer_id: pitch.user_id,
+                customer_email: pitch.contact_person_email,
+                initialMessage:
+                    "Hello, I am interested in your business. Can we connect?",
+            },
+        });
     };
 
     // Ensure all necessary data exists to avoid runtime errors
@@ -562,66 +578,95 @@ const PitchCard = ({ pitch, onStatusChange = () => {} }) => {
                 } transition-all duration-300 overflow-hidden`}
                 style={{ maxHeight: expanded ? "500px" : "0px" }}
             >
-                <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-                    <div>
-                        <p className="text-xs font-medium text-gray-500 mb-1">
-                            CAC TO LTV RATIO
-                        </p>
-                        <p className="text-sm font-medium">
-                            {pitch.cac_ltv || "Not specified"}
-                        </p>
-                    </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* First Column */}
+                    <div className="space-y-6">
+                        {/* CAC to LTV */}
+                        <div>
+                            <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                                CAC to LTV Ratio
+                            </p>
+                            <p className="text-sm font-medium text-gray-900">
+                                {pitch.cac_ltv || "Not specified"}
+                            </p>
+                        </div>
 
-                    <div>
-                        <p className="text-xs font-medium text-gray-500 mb-1">
-                            TEAM EXPERIENCE
-                        </p>
-                        <p className="text-sm font-medium">
-                            {pitch.team_experience_avg_years
-                                ? `${pitch.team_experience_avg_years} years avg.`
-                                : "Not specified"}
-                        </p>
-                    </div>
-
-                    <div>
-                        <p className="text-xs font-medium text-gray-500 mb-1">
-                            EXIT STRATEGY
-                        </p>
-                        <p className="text-sm">
-                            {pitch.exit_strategy || "Not specified"}
-                        </p>
-                    </div>
-
-                    <div>
-                        <p className="text-xs font-medium text-gray-500 mb-1">
-                            SOCIAL IMPACT AREAS
-                        </p>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                            {socialImpactAreas.length > 0 ? (
-                                socialImpactAreas.map((area, index) => (
-                                    <span
-                                        key={index}
-                                        className="px-2 py-0.5 bg-gray-100 text-gray-700 text-xs rounded-full"
-                                    >
-                                        {typeof area === "string"
-                                            ? area.trim()
-                                            : area}
-                                    </span>
-                                ))
-                            ) : (
-                                <span className="text-sm">None specified</span>
-                            )}
+                        {/* Team Experience */}
+                        <div>
+                            <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                                Team Experience
+                            </p>
+                            <p className="text-sm font-medium text-gray-900">
+                                {pitch.team_experience_avg_years
+                                    ? `${pitch.team_experience_avg_years} years avg.`
+                                    : "Not specified"}
+                            </p>
                         </div>
                     </div>
 
-                    {pitch.hasOwnProperty("pitch_summary") && (
-                        <div className="col-span-2 mt-2">
-                            <p className="text-xs font-medium text-gray-500 mb-1">
-                                PITCH SUMMARY
+                    {/* Second Column */}
+                    <div className="space-y-6">
+                        {/* Exit Strategy */}
+                        <div>
+                            <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                                Exit Strategy
                             </p>
-                            <p className="text-sm">{pitch.pitch_summary}</p>
+                            <p className="text-sm text-gray-900">
+                                {pitch.exit_strategy || "Not specified"}
+                            </p>
+                        </div>
+
+                        {/* Social Impact Areas */}
+                        <div>
+                            <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                                Social Impact Areas
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                {socialImpactAreas.length > 0 ? (
+                                    socialImpactAreas.map((area, index) => (
+                                        <span
+                                            key={index}
+                                            className="px-2.5 py-1 bg-gray-100 text-gray-700 text-xs rounded-full whitespace-nowrap"
+                                        >
+                                            {typeof area === "string"
+                                                ? area.trim()
+                                                : area}
+                                        </span>
+                                    ))
+                                ) : (
+                                    <span className="text-sm text-gray-500">
+                                        None specified
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Full width items */}
+                    {pitch.hasOwnProperty("pitch_summary") && (
+                        <div className="col-span-1 md:col-span-2">
+                            <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                                Pitch Summary
+                            </p>
+                            <p className="text-sm text-gray-900 leading-relaxed">
+                                {pitch.pitch_summary}
+                            </p>
                         </div>
                     )}
+
+                    {/* Message Button */}
+                    {pitch.status === 1 &&
+                        pitch.contact_person_email &&
+                        pitch.user_id && (
+                            <div className="col-span-1 md:col-span-2 pt-4 border-t border-gray-200">
+                                <button
+                                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md shadow-sm transition-colors duration-150"
+                                    onClick={handleMessageBusinessOwner}
+                                >
+                                    Message Business Owner
+                                </button>
+                            </div>
+                        )}
                 </div>
             </div>
 

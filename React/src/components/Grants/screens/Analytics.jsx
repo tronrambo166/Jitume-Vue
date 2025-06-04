@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import axiosClient from "../../../axiosClient";
 import { useStateContext } from "../../../contexts/contextProvider";
-
+import { useNavigate } from "react-router-dom";
 const TujitumeWhiteThemeDashboard = () => {
     const [activeTab, setActiveTab] = useState("grants");
     const [hoveredItem, setHoveredItem] = useState(null);
@@ -32,7 +32,7 @@ const TujitumeWhiteThemeDashboard = () => {
     const [topStartups, setTopStartups] = useState([]); // Add this with your other state declarations
     const [highPotential, setHighPotential] = useState(0);
     const { user, setUser, setAvgscore } = useStateContext();
-
+    const navigate = useNavigate();
     // Updated color palette - Sophisticated neutrals with green accents
     const COLORS = {
         // Neutral grayscale
@@ -374,6 +374,21 @@ const TujitumeWhiteThemeDashboard = () => {
         }, 500);
         return () => clearTimeout(timer);
     }, []);
+
+    const massageFromAnalytic = (startup) => {
+        if (!startup?.user_id || !startup?.contact_person_email) {
+            alert("Business owner contact info not available.");
+            return;
+        }
+        navigate("/dashboard/overview/messages", {
+            state: {
+                customer_id: startup.user_id,
+                customer_email: startup.contact_person_email,
+                initialMessage:
+                    "Hello, I am interested in your business. Can we connect?",
+            },
+        });
+    };
 
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
@@ -1871,12 +1886,14 @@ const TujitumeWhiteThemeDashboard = () => {
                                                                         color: "white",
                                                                     }}
                                                                     onClick={() =>
-                                                                        (window.location.href = `mailto:${startup.contact_person_email}`)
+                                                                        massageFromAnalytic(
+                                                                            startup
+                                                                        )
                                                                     }
                                                                 >
                                                                     Contact
                                                                 </button>
-                                                                <button
+                                                                {/* <button
                                                                     className="px-3 py-1 text-xs border rounded-md transition-colors hover:bg-gray-50"
                                                                     style={{
                                                                         borderColor:
@@ -1890,7 +1907,7 @@ const TujitumeWhiteThemeDashboard = () => {
                                                                     }
                                                                 >
                                                                     Save
-                                                                </button>
+                                                                </button> */}
                                                             </div>
                                                         </div>
                                                     </td>

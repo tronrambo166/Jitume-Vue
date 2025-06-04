@@ -12,7 +12,7 @@ import {
     CheckCircle,
     RefreshCw,
     Code,
-    User,
+    Loader,
     X,
     ExternalLink,
     ThumbsUp,
@@ -380,37 +380,31 @@ const PitchesOutlet = ({ grantId }) => {
 
     return (
         <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
-            <div className="p-4 sm:p-6 md:p-8">
-                {/* Header Section */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3">
-                    <div className="flex-1">
-                        <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-1">
+            <div className="p-6 md:p-8">
+                <div className="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 className="text-xl font-bold text-gray-900 mb-1">
                             Available Pitches
                         </h2>
-                        <p className="text-gray-500 text-xs sm:text-sm">
+                        <p className="text-gray-500 text-sm">
                             Browse through pitches submitted for this grant
                             opportunity
                         </p>
                     </div>
-
-                    {/* Stats and Filter */}
-                    <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-                        <div className="bg-green-50 px-2 sm:px-3 py-1 rounded-full text-xs font-medium text-green-700 whitespace-nowrap">
+                    <div className="flex items-center space-x-3">
+                        <div className="bg-green-50 px-3 py-1 rounded-full text-xs font-medium text-green-700">
                             {filteredPitches.length}{" "}
                             {filteredPitches.length === 1 ? "Pitch" : "Pitches"}
                         </div>
-                        <div className="relative flex-1 sm:flex-none">
-                            <div className="flex items-center bg-gray-50 rounded-full px-2 sm:px-3 py-1 sm:py-1.5 cursor-pointer w-full">
-                                <Filter
-                                    size={12}
-                                    className="text-gray-500 min-w-[14px]"
-                                />
+                        <div className="relative">
+                            <div className="flex items-center space-x-1 bg-gray-50 rounded-full px-3 py-1.5 cursor-pointer">
+                                <Filter size={14} className="text-gray-500" />
                                 <select
                                     value={statusFilter}
                                     onChange={(e) =>
                                         setStatusFilter(e.target.value)
                                     }
-                                    className="bg-transparent text-xs sm:text-sm appearance-none outline-none pr-5 cursor-pointer w-full pl-1"
+                                    className="bg-transparent text-sm appearance-none outline-none pr-5 cursor-pointer"
                                 >
                                     <option value="all">All</option>
                                     <option value="active">Active</option>
@@ -421,17 +415,16 @@ const PitchesOutlet = ({ grantId }) => {
                     </div>
                 </div>
 
-                {/* Empty State */}
                 {filteredPitches.length === 0 ? (
-                    <div className="bg-gray-50 p-6 sm:p-8 rounded-xl border border-gray-100 text-center">
+                    <div className="bg-gray-50 p-8 rounded-xl border border-gray-100 text-center">
                         <div className="flex flex-col items-center">
-                            <div className="w-12 sm:w-16 h-12 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3 sm:mb-4">
-                                <FileText size={18} className="text-gray-400" />
+                            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                <FileText size={24} className="text-gray-400" />
                             </div>
-                            <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-1">
+                            <h3 className="text-lg font-medium text-gray-900 mb-1">
                                 No Pitches Found
                             </h3>
-                            <p className="text-gray-600 text-sm">
+                            <p className="text-gray-600">
                                 {statusFilter === "all"
                                     ? "No pitches have been submitted for this grant yet."
                                     : statusFilter === "active"
@@ -441,7 +434,7 @@ const PitchesOutlet = ({ grantId }) => {
                         </div>
                     </div>
                 ) : (
-                    <div className="space-y-3 sm:space-y-4">
+                    <div className="space-y-4">
                         {filteredPitches.map((pitch) => (
                             <PitchCard
                                 key={pitch.id}
@@ -465,13 +458,13 @@ const PitchesOutlet = ({ grantId }) => {
                 )}
             </div>
 
-            {/* Responsive Confirmation Modal */}
+            {/* Confirmation Modal */}
             {showConfirmModal && selectedPitch && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-2 sm:p-4">
-                    <div className="bg-white rounded-lg sm:rounded-xl shadow-xl w-full max-w-md flex flex-col max-h-[90vh] mx-2">
+                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-xl shadow-xl max-w-md w-full flex flex-col max-h-[90vh]">
                         {/* Header */}
-                        <div className="flex justify-between items-center p-4 sm:p-6 border-b">
-                            <h3 className="text-base sm:text-lg font-semibold text-gray-900">
+                        <div className="flex justify-between items-center p-6 border-b">
+                            <h3 className="text-lg font-semibold text-gray-900">
                                 {modalAction === "accept"
                                     ? "Accept Investment Proposal"
                                     : "Reject Proposal"}
@@ -480,15 +473,15 @@ const PitchesOutlet = ({ grantId }) => {
                                 onClick={() => setShowConfirmModal(false)}
                                 className="p-1 rounded-full hover:bg-gray-100"
                             >
-                                <X size={18} className="text-gray-500" />
+                                <X size={20} className="text-gray-500" />
                             </button>
                         </div>
 
                         {/* Scrollable Content */}
-                        <div className="overflow-y-auto p-4 sm:p-6 flex-1">
+                        <div className="overflow-y-auto p-6 flex-1">
                             {modalAction === "accept" ? (
                                 <>
-                                    <p className="text-gray-700 text-sm sm:text-base mb-4 sm:mb-6">
+                                    <p className="text-gray-700 mb-6">
                                         You're approving funding for{" "}
                                         <strong className="text-green-600">
                                             {selectedPitch.startup_name ||
@@ -498,9 +491,9 @@ const PitchesOutlet = ({ grantId }) => {
                                         disbursement method:
                                     </p>
 
-                                    <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
+                                    <div className="space-y-4 mb-6">
                                         {/* Milestone Option */}
-                                        <div className="flex items-start p-3 sm:p-4 border rounded-lg border-gray-200 hover:border-green-300 transition-colors">
+                                        <div className="flex items-start p-4 border rounded-lg border-gray-200 hover:border-green-300 transition-colors">
                                             <div className="flex items-center h-5 mt-0.5">
                                                 <input
                                                     id="milestone-option"
@@ -514,21 +507,21 @@ const PitchesOutlet = ({ grantId }) => {
                                                 <div className="flex justify-between items-start">
                                                     <label
                                                         htmlFor="milestone-option"
-                                                        className="block font-medium text-gray-900 text-sm sm:text-base"
+                                                        className="block font-medium text-gray-900"
                                                     >
                                                         Milestone-Based Funding
                                                     </label>
-                                                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                                         Recommended
                                                     </span>
                                                 </div>
-                                                <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                                                <p className="text-sm text-gray-600 mt-1">
                                                     Funds are released in
                                                     predefined stages as the
                                                     startup achieves specific
                                                     business milestones.
                                                 </p>
-                                                <div className="mt-2 bg-green-50 p-2 sm:p-3 rounded-md">
+                                                <div className="mt-2 bg-green-50 p-3 rounded-md">
                                                     <h4 className="text-xs font-semibold text-green-700 uppercase tracking-wider mb-1">
                                                         Benefits
                                                     </h4>
@@ -551,7 +544,7 @@ const PitchesOutlet = ({ grantId }) => {
                                         </div>
 
                                         {/* Lump Sum Option */}
-                                        <div className="flex items-start p-3 sm:p-4 border rounded-lg border-gray-200 hover:border-green-300 transition-colors">
+                                        <div className="flex items-start p-4 border rounded-lg border-gray-200 hover:border-green-300 transition-colors">
                                             <div className="flex items-center h-5 mt-0.5">
                                                 <input
                                                     id="lump-sum-option"
@@ -563,16 +556,16 @@ const PitchesOutlet = ({ grantId }) => {
                                             <div className="ml-3 flex-1">
                                                 <label
                                                     htmlFor="lump-sum-option"
-                                                    className="block font-medium text-gray-900 text-sm sm:text-base"
+                                                    className="block font-medium text-gray-900"
                                                 >
                                                     Full Amount Disbursement
                                                 </label>
-                                                <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                                                <p className="text-sm text-gray-600 mt-1">
                                                     Transfer the entire
                                                     investment amount
                                                     immediately upon acceptance.
                                                 </p>
-                                                <div className="mt-2 bg-red-50 p-2 sm:p-3 rounded-md">
+                                                <div className="mt-2 bg-red-50 p-3 rounded-md">
                                                     <h4 className="text-xs font-semibold text-red-700 uppercase tracking-wider mb-1">
                                                         Risk Considerations
                                                     </h4>
@@ -603,7 +596,7 @@ const PitchesOutlet = ({ grantId }) => {
                                 </>
                             ) : (
                                 <>
-                                    <p className="text-gray-700 text-sm sm:text-base">
+                                    <p className="text-gray-700">
                                         Reject the proposal from{" "}
                                         <strong className="text-gray-900">
                                             {selectedPitch.startup_name ||
@@ -611,8 +604,8 @@ const PitchesOutlet = ({ grantId }) => {
                                         </strong>
                                         ?
                                     </p>
-                                    <div className="mt-3 sm:mt-4 bg-gray-50 p-2 sm:p-3 rounded-md">
-                                        <p className="text-xs sm:text-sm text-gray-600">
+                                    <div className="mt-4 bg-gray-50 p-3 rounded-md">
+                                        <p className="text-sm text-gray-600">
                                             <ExclamationTriangleIcon className="h-4 w-4 text-gray-400 inline mr-1" />
                                             This action cannot be undone. The
                                             startup will be notified
@@ -623,18 +616,18 @@ const PitchesOutlet = ({ grantId }) => {
                             )}
                         </div>
 
-                        {/* Footer */}
-                        <div className="p-3 sm:p-4 border-t bg-gray-50 rounded-b-lg sm:rounded-b-xl">
-                            <div className="flex flex-col sm:flex-row sm:space-x-3 gap-2 sm:gap-0">
+                        {/* Fixed Footer */}
+                        <div className="p-4 border-t bg-gray-50 rounded-b-xl">
+                            <div className="flex space-x-3 justify-end">
                                 <button
                                     onClick={() => setShowConfirmModal(false)}
-                                    className="px-3 sm:px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-xs sm:text-sm hover:bg-gray-100 transition-colors order-2 sm:order-1"
+                                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-100 transition-colors"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={handleConfirmAction}
-                                    className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm text-white shadow-sm transition-colors order-1 sm:order-2 ${
+                                    className={`px-4 py-2 rounded-lg text-sm text-white shadow-sm transition-colors ${
                                         modalAction === "accept"
                                             ? "bg-green-600 hover:bg-green-700"
                                             : "bg-red-600 hover:bg-red-700"
@@ -807,45 +800,42 @@ const PitchCard = ({
                     : "border-gray-100"
             }`}
         >
-            <div className="p-4 sm:p-5">
-                {/* Header Section */}
-                <div className="flex flex-col sm:flex-row justify-between gap-3 sm:gap-4">
+            <div className="p-5">
+                <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
                     {/* Left side - Pitch info */}
                     <div className="flex-grow">
-                        <div className="flex flex-wrap items-center gap-2">
-                            <h3 className="font-medium text-gray-900 text-base sm:text-lg">
+                        <div className="flex items-center">
+                            <h3 className="font-medium text-gray-900">
                                 {pitch.startup_name || "Untitled Pitch"}
                             </h3>
                             {pitch.status === 1 && (
-                                <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-800 whitespace-nowrap">
+                                <span className="ml-3 px-2 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-800">
                                     Active
                                 </span>
                             )}
                             {pitch.status === 2 && (
-                                <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-800 whitespace-nowrap">
+                                <span className="ml-3 px-2 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-800">
                                     Declined
                                 </span>
                             )}
                             {pitch.status === 0 && (
-                                <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800 whitespace-nowrap">
+                                <span className="ml-3 px-2 py-0.5 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">
                                     Pending
                                 </span>
                             )}
                         </div>
-
-                        {/* Metadata */}
-                        <div className="flex flex-wrap items-center mt-2 gap-2 sm:gap-4 text-xs sm:text-sm text-gray-500">
+                        <div className="flex items-center mt-2 space-x-4 text-sm text-gray-500">
                             <span className="flex items-center">
                                 <Briefcase
-                                    size={12}
-                                    className="mr-1 sm:mr-1.5 text-gray-400"
+                                    size={14}
+                                    className="mr-1.5 text-gray-400"
                                 />
                                 {pitch.sector || "No sector"}
                             </span>
                             <span className="flex items-center">
                                 <MapPin
-                                    size={12}
-                                    className="mr-1 sm:mr-1.5 text-gray-400"
+                                    size={14}
+                                    className="mr-1.5 text-gray-400"
                                 />
                                 {pitch.headquarters_location ||
                                     "Location not specified"}
@@ -853,8 +843,8 @@ const PitchCard = ({
                             {pitch.revenue_last_12_months && (
                                 <span className="flex items-center">
                                     <DollarSign
-                                        size={12}
-                                        className="mr-1 sm:mr-1.5 text-gray-400"
+                                        size={14}
+                                        className="mr-1.5 text-gray-400"
                                     />
                                     $
                                     {parseFloat(
@@ -866,32 +856,28 @@ const PitchCard = ({
                     </div>
 
                     {/* Right side - Action buttons */}
-                    <div className="flex items-center justify-end sm:justify-normal gap-2 sm:gap-3">
+                    <div className="flex items-center space-x-2 md:justify-end">
                         {pitch.status === 0 && (
-                            <div className="flex gap-2">
+                            <div className="flex space-x-2">
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         onDecline();
                                     }}
-                                    className="px-2 sm:px-3 py-1 sm:py-1.5 border border-red-200 text-red-600 rounded-lg text-xs sm:text-sm hover:bg-red-50 transition-colors flex items-center"
+                                    className="px-3 py-1.5 border border-red-200 text-red-600 rounded-lg text-sm hover:bg-red-50 transition-colors flex items-center"
                                 >
-                                    <ThumbsDown size={12} className="mr-1" />
-                                    <span className="hidden sm:inline">
-                                        Decline
-                                    </span>
+                                    <ThumbsDown size={14} className="mr-1.5" />
+                                    Decline
                                 </button>
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         onAccept();
                                     }}
-                                    className="px-2 sm:px-3 py-1 sm:py-1.5 bg-green-600 text-white rounded-lg text-xs sm:text-sm hover:bg-green-700 transition-colors flex items-center"
+                                    className="px-3 py-1.5 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700 transition-colors flex items-center"
                                 >
-                                    <ThumbsUp size={12} className="mr-1" />
-                                    <span className="hidden sm:inline">
-                                        Accept
-                                    </span>
+                                    <ThumbsUp size={14} className="mr-1.5" />
+                                    Accept
                                 </button>
                             </div>
                         )}
@@ -903,20 +889,18 @@ const PitchCard = ({
                                         pitch.pitch_deck_file
                                     );
                                 }}
-                                className="px-2 sm:px-3 py-1 sm:py-1.5 bg-gray-100 text-gray-800 rounded-lg text-xs sm:text-sm hover:bg-gray-200 transition-colors flex items-center"
+                                className="px-3 py-1.5 bg-gray-100 text-gray-800 rounded-lg text-sm hover:bg-gray-200 transition-colors flex items-center whitespace-nowrap"
                             >
-                                <FileText size={12} className="mr-1" />
-                                <span className="hidden sm:inline">
-                                    View Deck
-                                </span>
+                                <FileText size={14} className="mr-1.5" />
+                                View Pitch Deck
                             </button>
                         )}
                         <button
                             onClick={() => onToggle(pitch.id)}
-                            className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg bg-gray-50 hover:bg-green-50 transition-colors"
+                            className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-50 hover:bg-green-50 transition-colors"
                         >
                             <ChevronDown
-                                size={16}
+                                size={18}
                                 className={`text-gray-400 hover:text-green-500 transition-transform duration-200 ${
                                     isOpen ? "transform rotate-180" : ""
                                 }`}
@@ -926,17 +910,15 @@ const PitchCard = ({
                 </div>
             </div>
 
-            {/* Expanded Content */}
             {isOpen && (
-                <div className="px-4 sm:px-5 pb-4 sm:pb-5 border-t border-gray-100 pt-3 sm:pt-4">
-                    <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
-                        {/* Overview Card */}
-                        <div className="bg-gray-50 p-3 sm:p-4 rounded-xl border border-gray-100">
-                            <h4 className="text-xs sm:text-sm font-medium text-gray-800 mb-2 sm:mb-3 flex items-center">
-                                <div className="w-1 h-3 sm:h-4 bg-green-400 rounded-full mr-2"></div>
+                <div className="px-5 pb-5 border-t border-gray-100 pt-4">
+                    <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                            <h4 className="text-sm font-medium text-gray-800 mb-3 flex items-center">
+                                <div className="w-1 h-4 bg-green-400 rounded-full mr-2"></div>
                                 Overview
                             </h4>
-                            <p className="text-gray-600 text-xs sm:text-sm">
+                            <p className="text-gray-600 text-sm">
                                 <strong>Stage:</strong>{" "}
                                 {pitch.stage || "Not specified"}
                                 <br />
@@ -955,25 +937,24 @@ const PitchCard = ({
                             </p>
                         </div>
 
-                        {/* Financial Info Card */}
-                        <div className="bg-gray-50 p-3 sm:p-4 rounded-xl border border-gray-100">
-                            <h4 className="text-xs sm:text-sm font-medium text-gray-800 mb-2 sm:mb-3 flex items-center">
-                                <div className="w-1 h-3 sm:h-4 bg-black rounded-full mr-2"></div>
+                        <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                            <h4 className="text-sm font-medium text-gray-800 mb-3 flex items-center">
+                                <div className="w-1 h-4 bg-black rounded-full mr-2"></div>
                                 Financial Information
                             </h4>
                             <div className="space-y-2">
-                                <div className="flex items-center gap-2 sm:gap-3 bg-white p-2 sm:p-3 rounded-lg">
-                                    <div className="p-1 sm:p-1.5 bg-green-50 rounded-lg">
+                                <div className="flex items-center space-x-3 bg-white p-3 rounded-lg">
+                                    <div className="p-1.5 bg-green-50 rounded-lg">
                                         <DollarSign
                                             className="text-green-600"
-                                            size={14}
+                                            size={16}
                                         />
                                     </div>
                                     <div>
-                                        <span className="text-2xs sm:text-xs block text-gray-500">
+                                        <span className="text-xs block text-gray-500">
                                             Revenue (Last 12 Months):
                                         </span>
-                                        <span className="font-medium text-gray-900 text-sm">
+                                        <span className="font-medium text-gray-900">
                                             $
                                             {pitch.revenue_last_12_months
                                                 ? parseFloat(
@@ -984,45 +965,47 @@ const PitchCard = ({
                                     </div>
                                 </div>
                             </div>
-
-                            <h4 className="text-xs sm:text-sm font-medium text-gray-800 mt-3 sm:mt-4 mb-2 sm:mb-3 flex items-center">
-                                <div className="w-1 h-3 sm:h-4 bg-black rounded-full mr-2"></div>
+                            <h4 className="text-sm font-medium text-gray-800 mb-3 flex items-center">
+                                <div className="w-1 h-4 bg-black rounded-full mr-2"></div>
                                 Message The Business Owner
                             </h4>
-                            <button
-                                onClick={() =>
-                                    initiateBusinessOwnerMessage(pitch.user_id)
-                                }
-                                className="flex items-center gap-2 sm:gap-3 bg-white p-2 sm:p-3 rounded-lg w-full text-left hover:bg-gray-50 transition-colors"
-                            >
-                                <div className="p-1 sm:p-1.5 bg-green-50 rounded-lg">
-                                    <MessageSquare
-                                        className="text-green-600"
-                                        size={14}
-                                    />
+                            <div className="space-y-2">
+                                <div className="space-y-2">
+                                    <button
+                                        onClick={() =>
+                                            initiateBusinessOwnerMessage(
+                                                pitch.user_id
+                                            )
+                                        }
+                                        className="flex items-center space-x-3 bg-white p-3 rounded-lg w-full text-left hover:bg-gray-50 transition-colors"
+                                    >
+                                        <div className="p-1.5 bg-green-50 rounded-lg">
+                                            <MessageSquare
+                                                className="text-green-600"
+                                                size={16}
+                                            />
+                                        </div>
+                                        <span>Message Owner</span>
+                                    </button>
                                 </div>
-                                <span className="text-xs sm:text-sm">
-                                    Message Owner
-                                </span>
-                            </button>
+                            </div>
                         </div>
 
-                        {/* Contact Card */}
-                        <div className="bg-gray-50 p-3 sm:p-4 rounded-xl border border-gray-100">
-                            <h4 className="text-xs sm:text-sm font-medium text-gray-800 mb-2 sm:mb-3 flex items-center">
-                                <div className="w-1 h-3 sm:h-4 bg-gray-400 rounded-full mr-2"></div>
+                        <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                            <h4 className="text-sm font-medium text-gray-800 mb-3 flex items-center">
+                                <div className="w-1 h-4 bg-gray-400 rounded-full mr-2"></div>
                                 Contact
                             </h4>
                             <div className="space-y-2">
-                                <div className="flex items-center gap-2 sm:gap-3 bg-white p-2 sm:p-3 rounded-lg">
-                                    <div className="p-1 sm:p-1.5 bg-gray-50 rounded-lg">
-                                        <User
+                                <div className="flex items-center space-x-3 bg-white p-3 rounded-lg">
+                                    <div className="p-1.5 bg-gray-50 rounded-lg">
+                                        <Mail
                                             className="text-gray-600"
-                                            size={14}
+                                            size={16}
                                         />
                                     </div>
                                     <div>
-                                        <span className="text-2xs sm:text-xs block text-gray-500">
+                                        <span className="text-xs block text-gray-500">
                                             Contact Person:
                                         </span>
                                         <span className="font-medium text-gray-900 text-sm">
@@ -1031,15 +1014,15 @@ const PitchCard = ({
                                         </span>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-2 sm:gap-3 bg-white p-2 sm:p-3 rounded-lg">
-                                    <div className="p-1 sm:p-1.5 bg-gray-50 rounded-lg">
+                                <div className="flex items-center space-x-3 bg-white p-3 rounded-lg">
+                                    <div className="p-1.5 bg-gray-50 rounded-lg">
                                         <Mail
                                             className="text-gray-600"
-                                            size={14}
+                                            size={16}
                                         />
                                     </div>
                                     <div>
-                                        <span className="text-2xs sm:text-xs block text-gray-500">
+                                        <span className="text-xs block text-gray-500">
                                             Email:
                                         </span>
                                         <span className="font-medium text-gray-900 text-sm">
@@ -1052,28 +1035,27 @@ const PitchCard = ({
                         </div>
                     </div>
 
-                    {/* Supporting Documents */}
                     {(pitch.pitch_deck_file ||
                         pitch.business_plan_file ||
                         pitch.pitch_video) && (
-                        <div className="mt-4 sm:mt-6">
-                            <h4 className="text-xs sm:text-sm font-medium text-gray-800 mb-2 sm:mb-3">
+                        <div className="mt-6">
+                            <h4 className="text-sm font-medium text-gray-800 mb-3">
                                 Supporting Documents
                             </h4>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                                 {pitch.pitch_deck_file && (
-                                    <div className="flex items-center p-2 sm:p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors group">
-                                        <div className="p-1.5 sm:p-2 bg-gray-50 rounded-lg mr-2 sm:mr-3 group-hover:bg-green-50 transition-colors">
+                                    <div className="flex items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors group">
+                                        <div className="p-2 bg-gray-50 rounded-lg mr-3 group-hover:bg-green-50 transition-colors">
                                             <FileText
-                                                size={14}
-                                                className="text-gray-500 group-hover:text-green-500"
+                                                size={16}
+                                                className="text-gray-500 group-hover:text-green-500 transition-colors"
                                             />
                                         </div>
                                         <div className="truncate flex-grow">
-                                            <p className="text-xs sm:text-sm font-medium text-gray-900 truncate">
+                                            <p className="text-sm font-medium text-gray-900 truncate">
                                                 Pitch Deck
                                             </p>
-                                            <p className="text-2xs sm:text-xs text-gray-500">
+                                            <p className="text-xs text-gray-500">
                                                 PDF Document
                                             </p>
                                         </div>
@@ -1084,67 +1066,276 @@ const PitchCard = ({
                                                     pitch.pitch_deck_file
                                                 );
                                             }}
-                                            className="ml-2 text-xs sm:text-sm text-green-600 hover:text-green-700 flex items-center"
+                                            className="ml-2 text-sm text-green-600 hover:text-green-700 flex items-center"
                                         >
                                             <ExternalLink
-                                                size={12}
-                                                className="mr-0.5 sm:mr-1"
+                                                size={14}
+                                                className="mr-1"
                                             />
-                                            <span className="hidden sm:inline">
-                                                View
-                                            </span>
+                                            View
                                         </button>
                                     </div>
                                 )}
-                                {/* Other document items with similar responsive adjustments */}
+                                {pitch.business_plan_file && (
+                                    <a
+                                        href={pitch.business_plan_file}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors group"
+                                    >
+                                        <div className="p-2 bg-gray-50 rounded-lg mr-3 group-hover:bg-green-50 transition-colors">
+                                            <FileText
+                                                size={16}
+                                                className="text-gray-500 group-hover:text-green-500 transition-colors"
+                                            />
+                                        </div>
+                                        <div className="truncate">
+                                            <p className="text-sm font-medium text-gray-900 truncate">
+                                                Business Plan
+                                            </p>
+                                            <p className="text-xs text-gray-500">
+                                                PDF Document
+                                            </p>
+                                        </div>
+                                    </a>
+                                )}
+                                {pitch.pitch_video && (
+                                    <a
+                                        href={pitch.pitch_video}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors group"
+                                    >
+                                        <div className="p-2 bg-gray-50 rounded-lg mr-3 group-hover:bg-green-50 transition-colors">
+                                            <FileText
+                                                size={16}
+                                                className="text-gray-500 group-hover:text-green-500 transition-colors"
+                                            />
+                                        </div>
+                                        <div className="truncate">
+                                            <p className="text-sm font-medium text-gray-900 truncate">
+                                                Pitch Video
+                                            </p>
+                                            <p className="text-xs text-gray-500">
+                                                Video
+                                            </p>
+                                        </div>
+                                    </a>
+                                )}
                             </div>
+                            {pitch.status === 1 &&
+                                pitch.grant_milestone &&
+                                pitch.grant_milestone.length > 0 && (
+                                    <div className="mt-8">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <h4 className="text-lg font-semibold text-gray-900 flex items-center">
+                                                <svg
+                                                    className="w-5 h-5 text-green-500 mr-2"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                    />
+                                                </svg>
+                                                Funding Milestones
+                                            </h4>
+                                            <span className="text-sm text-gray-500">
+                                                {pitch.grant_milestone.length}{" "}
+                                                milestone
+                                                {pitch.grant_milestone
+                                                    .length !== 1
+                                                    ? "s"
+                                                    : ""}
+                                            </span>
+                                        </div>
+
+                                        <div className="bg-gray-50 rounded-lg border border-gray-200 divide-y divide-gray-200">
+                                            {pitch.grant_milestone.map(
+                                                (milestone) => (
+                                                    <div
+                                                        key={milestone.id}
+                                                        className="p-5 hover:bg-white transition-colors duration-150"
+                                                    >
+                                                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                                            <div className="flex-1">
+                                                                <div className="flex items-start">
+                                                                    <div className="flex-shrink-0 mt-1">
+                                                                        {milestone.status ===
+                                                                        0 ? (
+                                                                            <div className="h-3 w-3 rounded-full bg-yellow-400"></div>
+                                                                        ) : (
+                                                                            <div className="h-3 w-3 rounded-full bg-green-500"></div>
+                                                                        )}
+                                                                    </div>
+                                                                    <div className="ml-3">
+                                                                        <h5 className="text-base font-medium text-gray-900">
+                                                                            {milestone.title ||
+                                                                                "Untitled Milestone"}
+                                                                        </h5>
+                                                                        <p className="text-sm text-gray-600 mt-1">
+                                                                            {milestone.description ||
+                                                                                "No description provided"}
+                                                                        </p>
+
+                                                                        {/* Document section */}
+                                                                        <div className="mt-3">
+                                                                            <div className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                                                                                Supporting
+                                                                                Document
+                                                                            </div>
+                                                                            {milestone.document ? (
+                                                                                <a
+                                                                                    href={
+                                                                                        milestone.document
+                                                                                    }
+                                                                                    target="_blank"
+                                                                                    rel="noopener noreferrer"
+                                                                                    className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800"
+                                                                                >
+                                                                                    <svg
+                                                                                        className="w-4 h-4 mr-1"
+                                                                                        fill="none"
+                                                                                        stroke="currentColor"
+                                                                                        viewBox="0 0 24 24"
+                                                                                    >
+                                                                                        <path
+                                                                                            strokeLinecap="round"
+                                                                                            strokeLinejoin="round"
+                                                                                            strokeWidth={
+                                                                                                2
+                                                                                            }
+                                                                                            d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                                                                                        />
+                                                                                    </svg>
+                                                                                    Download
+                                                                                    Document
+                                                                                </a>
+                                                                            ) : (
+                                                                                <div className="text-sm text-gray-500 italic">
+                                                                                    No
+                                                                                    document
+                                                                                    attached
+                                                                                </div>
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="flex flex-col items-end">
+                                                                <div className="text-xl font-bold text-green-600 mb-2">
+                                                                    $
+                                                                    {milestone.amount.toLocaleString()}
+                                                                </div>
+                                                                <div className="mb-3">
+                                                                    {milestone.status ===
+                                                                    0 ? (
+                                                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                                            Pending
+                                                                            Release
+                                                                        </span>
+                                                                    ) : (
+                                                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                                            Funds
+                                                                            Released
+                                                                        </span>
+                                                                    )}
+                                                                </div>
+                                                                {milestone.status ===
+                                                                    0 && (
+                                                                    <button
+                                                                        onClick={() =>
+                                                                            handleReleaseFunds(
+                                                                                milestone.id
+                                                                            )
+                                                                        }
+                                                                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                                                    >
+                                                                        {isReleasing ? (
+                                                                            <>
+                                                                                <svg
+                                                                                    className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                                    fill="none"
+                                                                                    viewBox="0 0 24 24"
+                                                                                >
+                                                                                    <circle
+                                                                                        className="opacity-25"
+                                                                                        cx="12"
+                                                                                        cy="12"
+                                                                                        r="10"
+                                                                                        stroke="currentColor"
+                                                                                        strokeWidth="4"
+                                                                                    ></circle>
+                                                                                    <path
+                                                                                        className="opacity-75"
+                                                                                        fill="currentColor"
+                                                                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                                                                    ></path>
+                                                                                </svg>
+                                                                                Processing...
+                                                                            </>
+                                                                        ) : (
+                                                                            <>
+                                                                                <svg
+                                                                                    className="-ml-1 mr-2 h-4 w-4"
+                                                                                    fill="none"
+                                                                                    stroke="currentColor"
+                                                                                    viewBox="0 0 24 24"
+                                                                                >
+                                                                                    <path
+                                                                                        strokeLinecap="round"
+                                                                                        strokeLinejoin="round"
+                                                                                        strokeWidth={
+                                                                                            2
+                                                                                        }
+                                                                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                                                    />
+                                                                                </svg>
+                                                                                Release
+                                                                                Funds
+                                                                            </>
+                                                                        )}
+                                                                    </button>
+                                                                )}
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Additional info */}
+                                                        <div className="mt-4 pt-4 border-t border-gray-100 text-xs text-gray-500">
+                                                            <div className="flex space-x-4">
+                                                                <div>
+                                                                    <span className="font-medium">
+                                                                        Created:
+                                                                    </span>{" "}
+                                                                    {new Date(
+                                                                        milestone.created_at
+                                                                    ).toLocaleDateString()}
+                                                                </div>
+                                                                <div>
+                                                                    <span className="font-medium">
+                                                                        Last
+                                                                        Updated:
+                                                                    </span>{" "}
+                                                                    {new Date(
+                                                                        milestone.updated_at
+                                                                    ).toLocaleDateString()}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                         </div>
                     )}
-
-                    {/* Milestones Section */}
-                    {pitch.status === 1 &&
-                        pitch.grant_milestone &&
-                        pitch.grant_milestone.length > 0 && (
-                            <div className="mt-6 sm:mt-8">
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 sm:mb-4 gap-2">
-                                    <h4 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
-                                        <svg
-                                            className="w-4 sm:w-5 h-4 sm:h-5 text-green-500 mr-2"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                            />
-                                        </svg>
-                                        Funding Milestones
-                                    </h4>
-                                    <span className="text-xs sm:text-sm text-gray-500">
-                                        {pitch.grant_milestone.length} milestone
-                                        {pitch.grant_milestone.length !== 1
-                                            ? "s"
-                                            : ""}
-                                    </span>
-                                </div>
-
-                                <div className="bg-gray-50 rounded-lg border border-gray-200 divide-y divide-gray-200">
-                                    {pitch.grant_milestone.map((milestone) => (
-                                        <div
-                                            key={milestone.id}
-                                            className="p-3 sm:p-4 md:p-5 hover:bg-white transition-colors duration-150"
-                                        >
-                                            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 sm:gap-4">
-                                                {/* Content with responsive adjustments */}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
                 </div>
             )}
         </div>
