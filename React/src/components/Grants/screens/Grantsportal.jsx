@@ -243,6 +243,7 @@ const TujitumeGrantPortal = () => {
                     impact_objectives: grant.impact_objectives || "",
                     required_documents: grant.required_documents || "",
                     grant_brief_pdf: grant.grant_brief_pdf || "",
+                    start_date: grant.start_date || "",
                 }));
 
                 setGrantOpportunities(cleanedData);
