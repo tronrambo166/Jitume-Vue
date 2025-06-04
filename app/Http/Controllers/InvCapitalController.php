@@ -90,7 +90,7 @@ class InvCapitalController extends Controller
             $pitches = StartupPitches::with('capital_milestone')->where('capital_id',$capital->id)->latest()->get();
             return response()->json(['pitches' => $pitches]);
         }
-        $capital_pitches = StartupPitches::where('capital_owner_id',$user_id)->latest()->get();
+        $capital_pitches = StartupPitches::with('capital_milestone')->where('capital_owner_id',$user_id)->latest()->get();
         $pitch_count = $capital_pitches->count();
         $pitch_count_accept = StartupPitches::where('capital_owner_id',$user_id)
             ->where('status',1)->count();
