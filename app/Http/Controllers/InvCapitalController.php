@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CapitalWatchlist;
 use App\Models\Grant;
 use App\Models\GrantApplication;
 use App\Models\GrantMilestone;
@@ -15,11 +16,11 @@ use App\Models\Notifications;
 use App\Models\CapitalOffer;
 use App\Models\StartupPitches;
 use App\Models\CapitalMilestone;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Response;
 use Session;
 use Hash;
-use Auth;
 use Mail;
 use DateTime;
 
@@ -479,6 +480,63 @@ class InvCapitalController extends Controller
 
             return response()->json(['message' => 'Fund Release Success.', 'status' => 200]);
         } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+
+    public function store_watchlist($pitch_id)
+    {
+        try{
+            $capital_owner_id = Auth::id();
+            $watchlist = CapitalWatchlist::firstOrCreate([
+                'pitch_id' => $pitch_id,
+                'capital_owner_id' => $capital_owner_id
+            ]);
+            if (!$watchlist->wasRecentlyCreated)
+                return response()->json(['message' => 'Already exists'],200);
+            return response()->json(['message' => 'Added to watchlist'],200);
+        }
+        catch(\Exception $e){
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+    public function get_watchlist()
+    {
+        try{
+            $capital_owner_id = Auth::id();
+            $watchlists = CapitalWatchlist::with('pitch')
+                ->where('capital_owner_id', $capital_owner_id)
+                ->latest()->get();
+            $pitches = $watchlists->pluck('pitch')->filter()->values();
+            return response()->json(['pitches' => $pitches],200);
+        }
+        catch(\Exception $e){
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+    public function update_profile(Request $request)
+    {
+        try{
+            $id = Auth::id();
+            $user = User::findOrFail($id);
+            $request->validate([
+                'fname' => 'required|string|max:255', // Org name
+                'interested_cats' => 'required', // Preferred Sectors
+                'org_type' => 'required|string',
+                'phone' => 'required|string|max:20',
+                'startup_stage' => 'required|string', //Startup Stage Preferences
+                'inv_range' => 'required|string', //Investment Range
+                'eng_prefer' => 'required|string', //Preferred Engagement Types
+                'regions' => 'required|string', // Geographic Focus
+                'website' => 'nullable|url',
+            ]);
+            $user->update($request->all());
+            return response()->json(['message' => 'Profile updated successfully'],200);
+        }
+        catch(\Exception $e){
             return response()->json(['message' => $e->getMessage()], 400);
         }
     }

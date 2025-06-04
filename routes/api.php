@@ -220,6 +220,9 @@ Route::prefix('/grant')->group(function(){
    Route::post('match-score/{grant_id}', [MatchController::class, 'score']);
    Route::get('analytics', [AnalyticsController::class, 'index']);
    Route::get('grantWritingServices', [GrantServiceController::class, 'grantWritingServices']);
+   Route::get('store-watchlist/{pitch_id}', [GrantController::class, 'store_watchlist']);
+   Route::get('get-watchlist', [GrantController::class, 'get_watchlist']);
+   Route::post('update-profile', [GrantController::class, 'update_profile']);
 
 });
 
@@ -237,11 +240,14 @@ Route::prefix('/capital')->group(function(){
    Route::get('accept/{pitch_id}', [InvCapitalController::class, 'accept']);
    Route::get('reject/{pitch_id}', [InvCapitalController::class, 'reject']);
    Route::get('fund-release-request/{pitch_id}', [InvCapitalController::class, 'fund_request']);
-    Route::post('match-score/{capital_id}', [MatchController::class, 'score_capital']);
+   Route::post('match-score/{capital_id}', [MatchController::class, 'score_capital']);
    Route::get('analytics', [AnalyticsController::class, 'index_capital']);
 
    Route::get('grant-writing-services', [GrantServiceController::class, 'grantWritingServices']);
    Route::get('pitch-coaching-services', [GrantServiceController::class, 'pitchCoachingServices']);
+   Route::get('store-watchlist/{pitch_id}', [InvCapitalController::class, 'store_watchlist']);
+   Route::get('get-watchlist', [InvCapitalController::class, 'get_watchlist']);
+   Route::post('update-profile', [InvCapitalController::class, 'update_profile']);
 });
 
 // G R A N T S    P R O T E C T E D   ENDS

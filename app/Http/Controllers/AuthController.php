@@ -395,7 +395,7 @@ class AuthController extends Controller
     }
 
 
-    // REGISTER SUB FUNCTIONS...
+    // REGISTER SUB FUNCTIONS - Grants & Capitals...
 
     public function grantRegister($data)
     {
@@ -403,50 +403,48 @@ class AuthController extends Controller
          $interested_cats = $data['interested_cats'];
          $website = $data['website'];
 
-         //File Type Check!
-        $passport=$data['document'];
-        if($passport) {
-          $ext=strtolower($passport->getClientOriginalExtension());
+        try {
+            //File Type Check!
+            $passport=$data['document'];
+            if($passport) {
+                  $ext=strtolower($passport->getClientOriginalExtension());
 
-          $size=($passport->getSize())/1048576; // Get MB
-          if($size == 3 || $size > 3)
-          {
-            return response()->json([ 'status' => 400, 'message' => 'Document size must be less than 2MB!']);
-          }
+                  $size=($passport->getSize())/1048576; // Get MB
+                  if($size == 2 || $size > 2)
+                  {
+                    return response()->json([ 'status' => 400, 'message' => 'Document size must be less than 2MB!']);
+                  }
 
-          if($ext!='pdf' && $ext!= 'docx')
-          {
-            return response()->json([ 'status' => 400, 'message' => 'Only pdf & docx are allowed!']);
-          }
-        }
+                  if($ext!='pdf' && $ext!= 'docx')
+                  {
+                    return response()->json([ 'status' => 400, 'message' => 'Only pdf & docx are allowed!']);
+                  }
+            }
 
             //File Type Check END!
 
-                $userCheck = User::where('email',$data['email'])->first();
-                if($userCheck){
-                    return response()->json([ 'status' => 400, 'message' => 'Email already exists!']);
-                 }
+            $userCheck = User::where('email',$data['email'])->first();
+            if($userCheck){
+                return response()->json([ 'status' => 400, 'message' => 'Email already exists!']);
+             }
 
-                $user = User::create([
-                'fname' => $data['fname'],
-                'email' => $data['email'],
-                'password' => bcrypt($data['password']),
-                'investor' => $investor,
-                'interested_cats' =>  json_encode($interested_cats),
-                'org_type' => $data['org_type'],
-                'phone' => $data['phone'],
-                'mission' => $data['mission'],
-                'regions' => $data['regions'],
-                'website' => $website
-                ]);
-
-
-
+            $user = User::create([
+            'fname' => $data['fname'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+            'investor' => $investor,
+            'interested_cats' =>  json_encode($interested_cats),
+            'org_type' => $data['org_type'],
+            'phone' => $data['phone'],
+            'mission' => $data['mission'],
+            'regions' => $data['regions'],
+            'website' => $website
+            ]);
 
             //Upload
             $inv_id = $user->id;
 
-            try {
+
             if (!file_exists('files/investor/'.$inv_id))
                       mkdir('files/investor/'.$inv_id, 0777, true);
                       $loc='files/investor/'.$inv_id.'/';
@@ -469,10 +467,10 @@ class AuthController extends Controller
                             'auth' => true
                         ]);
 
-                        } catch (\Exception $e) {
-                           return response()->json([ 'status' => 400, 'message' => $e->getMessage() ]);
+        } catch (\Exception $e) {
+           return response()->json([ 'status' => 400, 'message' => $e->getMessage() ]);
 
-                        }
+        }
     }
 
 

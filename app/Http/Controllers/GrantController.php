@@ -512,4 +512,27 @@ class GrantController extends Controller
             return response()->json(['message' => $e->getMessage()], 400);
         }
     }
+
+
+    public function update_profile(Request $request)
+    {
+        try{
+            $id = Auth::id();
+            $user = User::findOrFail($id);
+            $request->validate([
+                'fname' => 'required|string|max:255', // Org name
+                'interested_cats' => 'required', // Focus Sectors
+                'org_type' => 'required|string',
+                'phone' => 'required|string|max:20',
+                'mission' => 'required|string',
+                'regions' => 'required|string', // Target Regions
+                'website' => 'nullable|url',
+            ]);
+            $user->update($request->all());
+            return response()->json(['message' => 'Profile updated successfully'],200);
+        }
+        catch(\Exception $e){
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
 }
