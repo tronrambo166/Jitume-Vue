@@ -296,6 +296,7 @@ const TujitumeDashboard = () => {
         try {
             const response = await axiosClient.get("capital/capital-offers");
             const data = response.data?.capital || [];
+            console.log("Capital Offers Data:", data);
 
             if (Array.isArray(data)) {
                 const cleanedData = data.map((opportunity) => ({
@@ -327,6 +328,7 @@ const TujitumeDashboard = () => {
                         opportunity.milestone_requirements || "",
                     requiredDocs: opportunity.required_docs || "",
                     offerBriefFile: opportunity.offer_brief_file || "",
+                    deadlineDate: opportunity.end_date || null,
                 }));
 
                 setCapitalOpportunities(cleanedData);
@@ -342,6 +344,7 @@ const TujitumeDashboard = () => {
         () => [...grants, ...capitalOpportunities],
         [grants, capitalOpportunities]
     );
+    console.log("Opportunities:", opportunities);
 
     // Process opportunities for dashboard metrics
     useEffect(() => {
@@ -512,6 +515,12 @@ const TujitumeDashboard = () => {
             seconds: Math.floor((difference / 1000) % 60),
         };
     }
+    const isDeadlinePassed = (deadlineDate) => {
+        if (!deadlineDate) return false;
+        const today = new Date();
+        const deadline = new Date(deadlineDate);
+        return deadline < today;
+    };
 
     // Get real upcoming deadlines from grants data
     const upcomingDeadlines = useMemo(() => {
@@ -1039,7 +1048,9 @@ const TujitumeDashboard = () => {
                             <OpportunityCardSkeleton />
                         </div>
                     ) : filteredOpportunities.filter(
-                          (opp) => opp.status !== "Closed"
+                          (opp) =>
+                              opp.status !== "Closed" &&
+                              !isDeadlinePassed(opp.deadlineDate)
                       ).length > 0 ? (
                         <div className="relative">
                             <button
@@ -1098,9 +1109,12 @@ const TujitumeDashboard = () => {
                                                 {/* Status indicator line */}
                                                 <div
                                                     className={`absolute top-0 left-0 w-1 h-full ${
-                                                        opp.status === "Open"
+                                                        opp.status === "Open" &&
+                                                        !isDeadlinePassed(
+                                                            opp.deadlineDate
+                                                        )
                                                             ? "bg-green-500"
-                                                            : "bg-yellow-500"
+                                                            : "bg-red-500"
                                                     }`}
                                                 ></div>
 
@@ -1140,12 +1154,19 @@ const TujitumeDashboard = () => {
                                                         <span
                                                             className={`px-2 py-1 rounded-full text-xs font-medium ${
                                                                 opp.status ===
-                                                                "Open"
+                                                                    "Open" &&
+                                                                !isDeadlinePassed(
+                                                                    opp.deadlineDate
+                                                                )
                                                                     ? "bg-green-50 text-green-700"
-                                                                    : "bg-yellow-50 text-yellow-700"
+                                                                    : "bg-red-50 text-red-700"
                                                             }`}
                                                         >
-                                                            {opp.status}
+                                                            {isDeadlinePassed(
+                                                                opp.deadlineDate
+                                                            )
+                                                                ? "Closed"
+                                                                : opp.status}
                                                         </span>
                                                         {opp.deadlineDate && (
                                                             <CountdownTimer
@@ -1632,15 +1653,24 @@ const TujitumeDashboard = () => {
                                                     );
                                                     const isClosed =
                                                         daysLeft <= 0;
+                                                    const isGrant =
+                                                        deadline.type ===
+                                                        "grant";
 
                                                     return (
                                                         <div
                                                             key={idx}
-                                                            onClick={() =>
+                                                            onClick={() => {
+                                                                const basePath =
+                                                                    "/dashboard/overview";
+                                                                const subPath =
+                                                                    isGrant
+                                                                        ? "grants/discover"
+                                                                        : "funding/investments";
                                                                 navigate(
-                                                                    "/dashboard/overview/grants/discover"
-                                                                )
-                                                            }
+                                                                    `${basePath}/${subPath}/${deadline.id}`
+                                                                );
+                                                            }}
                                                             className="flex items-start space-x-3 py-3 cursor-pointer hover:bg-gray-50 rounded-md px-1 transition"
                                                         >
                                                             <div className="bg-gray-100 rounded-lg p-2 text-center flex-shrink-0 w-12">
@@ -1657,11 +1687,24 @@ const TujitumeDashboard = () => {
                                                                 </div>
                                                             </div>
                                                             <div className="flex-1">
-                                                                <h4 className="text-sm font-medium line-clamp-1 text-gray-800">
-                                                                    {
-                                                                        deadline.title
-                                                                    }
-                                                                </h4>
+                                                                <div className="flex items-center gap-2">
+                                                                    <h4 className="text-sm font-medium line-clamp-1 text-gray-800">
+                                                                        {
+                                                                            deadline.title
+                                                                        }
+                                                                    </h4>
+                                                                    <span
+                                                                        className={`text-xs px-2 py-0.5 rounded-full ${
+                                                                            isGrant
+                                                                                ? "bg-emerald-50 text-emerald-600"
+                                                                                : "bg-orange-50 text-orange-600"
+                                                                        }`}
+                                                                    >
+                                                                        {isGrant
+                                                                            ? "Grant"
+                                                                            : "Investment"}
+                                                                    </span>
+                                                                </div>
                                                                 <div className="mt-1 flex items-center space-x-2">
                                                                     <span className="text-xs bg-green-50 text-green-600 px-2 py-0.5 rounded-full">
                                                                         $

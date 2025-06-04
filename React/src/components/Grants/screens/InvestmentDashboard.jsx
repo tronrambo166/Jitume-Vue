@@ -208,7 +208,7 @@ const InvestmentOpportunities = () => {
                 const response = await axiosClient.get(
                     "capital/capital-offers"
                 );
-                // console.log("API Response:", response);
+                console.log("API Response:", response);
 
                 // Check for both response.data.capital and response.data directly
                 const data = response.data?.capital || response.data;
@@ -1095,6 +1095,12 @@ const InvestmentOpportunities = () => {
                         setSelectedOpportunity(null);
                     }}
                     onSuccess={handleSuccess}
+                    perStartupAllocation={
+                        // Find the selected opportunity object and pass its perStartupAmount
+                        filteredOpportunities.find(
+                            (o) => o.id === selectedOpportunity
+                        )?.perStartupAmount ?? ""
+                    }
                 />
             )}
 

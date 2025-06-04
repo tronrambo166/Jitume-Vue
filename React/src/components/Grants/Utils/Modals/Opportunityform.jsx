@@ -395,6 +395,7 @@ const InvestmentModal = ({ isOpen, onClose, onSuccess }) => {
         }
 
         setIsSubmitting(true);
+        console.log("Submitting form data...");
 
         try {
             const formDataToSend = new FormData();

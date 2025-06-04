@@ -14,42 +14,47 @@ import {
 } from "lucide-react";
 import { useAlert } from "../../../partials/AlertContext";
 
-const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
-     const [businessId, setBusinessId] = useState(null);
-     const [businessOptions, setBusinessOptions] = useState([]);
+const InvestmentApplicationModal = ({
+    capitalId,
+    onClose,
+    onSuccess,
+    perStartupAllocation,
+}) => {
+    const [businessId, setBusinessId] = useState(null);
+    const [businessOptions, setBusinessOptions] = useState([]);
     const { showAlert } = useAlert();
 
-  const [formData, setFormData] = useState({
-      business_id: null,
-      capital_id: capitalId,
-      startup_name: "",
-      contact_person_name: "",
-      contact_person_email: "",
-      sector: "",
-      headquarters_location: "",
-      stage: "",
-      revenue_last_12_months: "",
-      team_experience_avg_years: "",
-      traction_kpis: "",
-      pitch_deck_file: null,
-      pitch_video_file: null,
-      business_plan: null,
-      social_impact_areas: "",
-      cac_ltv: "",
-      burn_rate: "",
-      irr_projection: "",
-      exit_strategy: "",
-      milestones: [
-          {
-              title: "",
-              amount: "",
-              description: "",
-              date: "",
-              requiresVerification: false,
-              deliverables: [],
-          },
-      ],
-  });
+    const [formData, setFormData] = useState({
+        business_id: null,
+        capital_id: capitalId,
+        startup_name: "",
+        contact_person_name: "",
+        contact_person_email: "",
+        sector: "",
+        headquarters_location: "",
+        stage: "",
+        revenue_last_12_months: "",
+        team_experience_avg_years: "",
+        traction_kpis: "",
+        pitch_deck_file: null,
+        pitch_video_file: null,
+        business_plan: null,
+        social_impact_areas: "",
+        cac_ltv: "",
+        burn_rate: "",
+        irr_projection: "",
+        exit_strategy: "",
+        milestones: [
+            {
+                title: "",
+                amount: "",
+                description: "",
+                date: "",
+                requiresVerification: false,
+                deliverables: [],
+            },
+        ],
+    });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -144,7 +149,7 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
         "Financial Inclusion",
     ];
 
-     const sectors = [
+    const sectors = [
         "Agriculture",
         "Arts Culture",
         "Auto",
@@ -455,9 +460,9 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
     };
 
     const handleNext = () => {
-        if (!validateStep(currentStep)) {
-            return;
-        }
+        // if (!validateStep(currentStep)) {
+        //     return;
+        // }
         setCurrentStep((prev) => prev + 1);
     };
 
@@ -1291,7 +1296,7 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
                             </div>
                             <div>
                                 <h3 className="text-lg font-semibold text-green-800 mb-1">
-                                    Funding Milestones
+                                    Funding Milestones {perStartupAllocation}
                                 </h3>
                                 <p className="text-gray-600 leading-relaxed">
                                     Define clear and verifiable milestones to
@@ -1637,7 +1642,6 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
         }
     };
 
-    
     if (success) {
         return (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
@@ -1677,7 +1681,6 @@ const InvestmentApplicationModal = ({ capitalId, onClose, onSuccess }) => {
             </div>
         );
     }
-
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">

@@ -441,140 +441,140 @@ export default function GrantApplicationModal({ onClose, grantId,fundingPerBusin
     );
 
     const nextStep = () => {
-        let canProceed = true;
-        let message = "";
-        let invalidFields = [];
+        // let canProceed = true;
+        // let message = "";
+        // let invalidFields = [];
 
-        if (step === 1) {
-            // Validate Step 1 fields
-            const requiredFields = [
-                { field: "startupName", name: "Startup Name" },
-                { field: "contactPerson", name: "Contact Person" },
-                { field: "contactEmail", name: "Contact Email" },
-                { field: "sector", name: "Sector" },
-                { field: "business_id", name: "Business" },
-                { field: "stage", name: "Stage" },
-                { field: "location", name: "Headquarters Location" },
-            ];
+        // if (step === 1) {
+        //     // Validate Step 1 fields
+        //     const requiredFields = [
+        //         { field: "startupName", name: "Startup Name" },
+        //         { field: "contactPerson", name: "Contact Person" },
+        //         { field: "contactEmail", name: "Contact Email" },
+        //         { field: "sector", name: "Sector" },
+        //         { field: "business_id", name: "Business" },
+        //         { field: "stage", name: "Stage" },
+        //         { field: "location", name: "Headquarters Location" },
+        //     ];
 
-            // Check required fields
-            requiredFields.forEach(({ field, name }) => {
-                if (
-                    !formData[field] ||
-                    (typeof formData[field] === "string" &&
-                        !formData[field].trim())
-                ) {
-                    invalidFields.push(name);
-                }
-            });
+        //     // Check required fields
+        //     requiredFields.forEach(({ field, name }) => {
+        //         if (
+        //             !formData[field] ||
+        //             (typeof formData[field] === "string" &&
+        //                 !formData[field].trim())
+        //         ) {
+        //             invalidFields.push(name);
+        //         }
+        //     });
 
-            // Validate email format if email is provided
-            if (
-                formData.contactEmail &&
-                !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.contactEmail)
-            ) {
-                invalidFields.push("Contact Email (invalid format)");
-            }
+        //     // Validate email format if email is provided
+        //     if (
+        //         formData.contactEmail &&
+        //         !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.contactEmail)
+        //     ) {
+        //         invalidFields.push("Contact Email (invalid format)");
+        //     }
 
-            if (invalidFields.length > 0) {
-                canProceed = false;
-                message = `Required fields missing or invalid: ${invalidFields.join(
-                    ", "
-                )}`;
-            }
-        } else if (step === 2) {
-            // Validate Step 2 fields
-            if (!formData.impactAreas || formData.impactAreas.length === 0) {
-                canProceed = false;
-                message = "Please select at least one Impact Area";
-            }
-        } else if (step === 3) {
-            // Validate Step 3 fields
-            invalidFields = [];
+        //     if (invalidFields.length > 0) {
+        //         canProceed = false;
+        //         message = `Required fields missing or invalid: ${invalidFields.join(
+        //             ", "
+        //         )}`;
+        //     }
+        // } else if (step === 2) {
+        //     // Validate Step 2 fields
+        //     if (!formData.impactAreas || formData.impactAreas.length === 0) {
+        //         canProceed = false;
+        //         message = "Please select at least one Impact Area";
+        //     }
+        // } else if (step === 3) {
+        //     // Validate Step 3 fields
+        //     invalidFields = [];
 
-            // Validate required documents
-            if (!formData.documents.pitchDeck) {
-                invalidFields.push("Pitch Deck");
-            }
-            if (!formData.documents.businessPlan) {
-                invalidFields.push("Business Plan");
-            }
+        //     // Validate required documents
+        //     if (!formData.documents.pitchDeck) {
+        //         invalidFields.push("Pitch Deck");
+        //     }
+        //     if (!formData.documents.businessPlan) {
+        //         invalidFields.push("Business Plan");
+        //     }
 
-            // Validate file types and sizes if files are uploaded
-            if (formData.documents.pitchDeck) {
-                const validTypes = [
-                    "application/pdf",
-                    "application/vnd.ms-powerpoint",
-                    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-                ];
-                if (!validTypes.includes(formData.documents.pitchDeck.type)) {
-                    invalidFields.push("Pitch Deck (invalid file type)");
-                } else if (
-                    formData.documents.pitchDeck.size >
-                    10 * 1024 * 1024
-                ) {
-                    invalidFields.push("Pitch Deck (file too large)");
-                }
-            }
+        //     // Validate file types and sizes if files are uploaded
+        //     if (formData.documents.pitchDeck) {
+        //         const validTypes = [
+        //             "application/pdf",
+        //             "application/vnd.ms-powerpoint",
+        //             "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        //         ];
+        //         if (!validTypes.includes(formData.documents.pitchDeck.type)) {
+        //             invalidFields.push("Pitch Deck (invalid file type)");
+        //         } else if (
+        //             formData.documents.pitchDeck.size >
+        //             10 * 1024 * 1024
+        //         ) {
+        //             invalidFields.push("Pitch Deck (file too large)");
+        //         }
+        //     }
 
-            if (formData.documents.businessPlan) {
-                const validTypes = [
-                    "application/pdf",
-                    "application/msword",
-                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                ];
-                if (
-                    !validTypes.includes(formData.documents.businessPlan.type)
-                ) {
-                    invalidFields.push("Business Plan (invalid file type)");
-                } else if (
-                    formData.documents.businessPlan.size >
-                    5 * 1024 * 1024
-                ) {
-                    invalidFields.push("Business Plan (file too large)");
-                }
-            }
+        //     if (formData.documents.businessPlan) {
+        //         const validTypes = [
+        //             "application/pdf",
+        //             "application/msword",
+        //             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        //         ];
+        //         if (
+        //             !validTypes.includes(formData.documents.businessPlan.type)
+        //         ) {
+        //             invalidFields.push("Business Plan (invalid file type)");
+        //         } else if (
+        //             formData.documents.businessPlan.size >
+        //             5 * 1024 * 1024
+        //         ) {
+        //             invalidFields.push("Business Plan (file too large)");
+        //         }
+        //     }
 
-            if (formData.documents.pitchVideo) {
-                const validTypes = ["video/mp4"];
-                if (!validTypes.includes(formData.documents.pitchVideo.type)) {
-                    invalidFields.push("Pitch Video (invalid file type)");
-                } else if (
-                    formData.documents.pitchVideo.size >
-                    20 * 1024 * 1024
-                ) {
-                    invalidFields.push("Pitch Video (file too large)");
-                }
-            }
+        //     if (formData.documents.pitchVideo) {
+        //         const validTypes = ["video/mp4"];
+        //         if (!validTypes.includes(formData.documents.pitchVideo.type)) {
+        //             invalidFields.push("Pitch Video (invalid file type)");
+        //         } else if (
+        //             formData.documents.pitchVideo.size >
+        //             20 * 1024 * 1024
+        //         ) {
+        //             invalidFields.push("Pitch Video (file too large)");
+        //         }
+        //     }
 
-            if (invalidFields.length > 0) {
-                canProceed = false;
-                message = `Document issues: ${invalidFields.join(", ")}`;
-            }
-        } else if (step === 4) {
-            // Validate Step 4 fields (milestones)
-            if (formData.milestones.length === 0) {
-                canProceed = false;
-                message = "Please add at least one milestone";
-            }
-        }
+        //     if (invalidFields.length > 0) {
+        //         canProceed = false;
+        //         message = `Document issues: ${invalidFields.join(", ")}`;
+        //     }
+        // } else if (step === 4) {
+        //     // Validate Step 4 fields (milestones)
+        //     if (formData.milestones.length === 0) {
+        //         canProceed = false;
+        //         message = "Please add at least one milestone";
+        //     }
+        // }
 
-        if (!canProceed) {
-            toast.error(message, {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                toastClassName:
-                    "!bg-white !text-gray-800 !shadow-lg !border !border-yellow-200",
-                bodyClassName: "p-3",
-                progressClassName: "!bg-yellow-500",
-            });
-            return;
-        }
+        // if (!canProceed) {
+        //     toast.error(message, {
+        //         position: "top-center",
+        //         autoClose: 5000,
+        //         hideProgressBar: false,
+        //         closeOnClick: true,
+        //         pauseOnHover: true,
+        //         draggable: true,
+        //         progress: undefined,
+        //         toastClassName:
+        //             "!bg-white !text-gray-800 !shadow-lg !border !border-yellow-200",
+        //         bodyClassName: "p-3",
+        //         progressClassName: "!bg-yellow-500",
+        //     });
+        //     return;
+        // }
 
         setStep((prev) => Math.min(prev + 1, 4));
     };
