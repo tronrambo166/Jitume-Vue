@@ -166,7 +166,7 @@ class MatchScore
                 'impact_score' => collect(explode(',', $request->social_impact_areas))
                     ->flatMap(fn($area) => explode(' ', strtolower(trim($area)))), // Modified: flatten for keywords
                 'milestones_achieved' => false, // Modified: initially false
-                'documents_submitted' => $request->file('business_plan_file') != null ? true : false,
+                'documents_submitted' => $request->file('business_plan') != null ? true : false,
             ];
 
             $org = [
