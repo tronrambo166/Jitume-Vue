@@ -286,7 +286,7 @@ function InvestmentBids() {
                 .get("/business/business_bids")
                 .then(({ data }) => {
                     setBids(data.bids);
-                     console.log('pending', data.bids);
+                     console.log('pending', data);
                 })
                 .catch((err) => {
                     console.log(err);

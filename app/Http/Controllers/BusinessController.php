@@ -1278,8 +1278,7 @@ $remove_new = BusinessBids::where('owner_id', Auth::id())
 return response()->json(['bids' => $bids]);
 }
  catch(\Exception $e){
-  Session::put('failed',$e->getMessage());
-  return response()->json(['status' => 400, 'message' => $e->getMessage()]);
+  return response()->json(['status' => 400, 'message' => $e->getMessage(), 'line' => $e->getLine()]);
  }
 }
 
@@ -1356,8 +1355,7 @@ public function confirmed_bids()
 return response()->json(['status'=>200, 'bids' => $bids, 'underVerify' => $under_verify]);
 }
  catch(\Exception $e){
-  Session::put('failed',$e->getMessage());
-  return response()->json(['status' => '400', 'message' => $e->getMessage()]);
+  return response()->json(['status' => '400', 'message' => $e->getMessage(), 'line' => $e->getLine()]);
  }
 }
 
