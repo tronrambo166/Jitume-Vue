@@ -1,5 +1,5 @@
 import React from "react";
-import { AlertTriangle, Check, Zap, Globe, Calendar, X } from "lucide-react";
+import { AlertTriangle, X } from "lucide-react";
 
 export default function ScoreCapitalMobile({
     open,

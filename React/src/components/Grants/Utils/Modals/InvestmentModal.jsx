@@ -314,6 +314,13 @@ const InvestmentApplicationModal = ({
         return { valid: true };
     };
     const addMilestone = () => {
+        if (getTotalMilestoneAmount() >= perStartupAllocation) {
+            const msg = `You have reached the maximum amount of $${perStartupAllocation}`;
+            setMilestoneAmountError(msg);
+            showAlert("error", msg);
+            return;
+        }
+        setMilestoneAmountError("");
         setFormData((prev) => ({
             ...prev,
             milestones: [
@@ -337,19 +344,42 @@ const InvestmentApplicationModal = ({
         }));
     };
 
-    const updateMilestone = (index, field, value) => {
-        setFormData((prev) => {
-            const updatedMilestones = [...prev.milestones];
-            updatedMilestones[index] = {
-                ...updatedMilestones[index],
-                [field]: value,
-            };
-            return {
-                ...prev,
-                milestones: updatedMilestones,
-            };
-        });
-    };
+    const [milestoneAmountError, setMilestoneAmountError] = useState("");
+
+    const getTotalMilestoneAmount = () =>
+        formData.milestones.reduce(
+            (sum, m) => sum + (parseFloat(m.amount) || 0),
+            0
+        );
+
+        const updateMilestone = (index, field, value) => {
+            setFormData((prev) => {
+                const updatedMilestones = [...prev.milestones];
+                if (field === "amount") {
+                    const newAmount = parseFloat(value) || 0;
+                    const oldAmount =
+                        parseFloat(updatedMilestones[index].amount) || 0;
+                    const currentTotal = getTotalMilestoneAmount();
+                    const newTotal = currentTotal - oldAmount + newAmount;
+                    if (newTotal > perStartupAllocation) {
+                        const msg = `Total milestone amount cannot exceed $${perStartupAllocation}`;
+                        setMilestoneAmountError(msg);
+                        showAlert("error", msg);
+                        return prev;
+                    } else {
+                        setMilestoneAmountError("");
+                    }
+                }
+                updatedMilestones[index] = {
+                    ...updatedMilestones[index],
+                    [field]: value,
+                };
+                return {
+                    ...prev,
+                    milestones: updatedMilestones,
+                };
+            });
+        };
 
     const handleFileChange = (e) => {
         const { name, files } = e.target;
@@ -1312,7 +1342,7 @@ const InvestmentApplicationModal = ({
                             </div>
                             <div>
                                 <h3 className="text-lg font-semibold text-green-800 mb-1">
-                                    Funding Milestones {perStartupAllocation}
+                                    Funding Milestones
                                 </h3>
                                 <p className="text-gray-600 leading-relaxed">
                                     Define clear and verifiable milestones to
@@ -1327,6 +1357,11 @@ const InvestmentApplicationModal = ({
 
                         {/* Milestones List */}
                         <div className="space-y-4">
+                            {milestoneAmountError && (
+                                <div className="text-red-600 font-medium mb-2">
+                                    {milestoneAmountError}
+                                </div>
+                            )}
                             {formData.milestones.map((milestone, index) => (
                                 <div
                                     key={index}

@@ -24,6 +24,8 @@ import "react-toastify/dist/ReactToastify.css";
 import _ from "lodash";
 import MatchScoreModal from "./MatchScoreModal";
 import { ToastContainer } from "react-toastify";
+import { useAlert } from "../../../partials/AlertContext";
+
 export default function GrantApplicationModal({ onClose, grantId,fundingPerBusiness }) {
     const [step, setStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,6 +38,8 @@ export default function GrantApplicationModal({ onClose, grantId,fundingPerBusin
     const [matchScore, setMatchScore] = useState(null);
     const [scoreBreakdown, setScoreBreakdown] = useState(null);
     const [showMatchModal, setShowMatchModal] = useState(false);
+        const { showAlert } = useAlert();
+    
 
     const [matchPreview, setMatchPreview] = useState(null);
     const [formData, setFormData] = useState({
@@ -678,21 +682,17 @@ export default function GrantApplicationModal({ onClose, grantId,fundingPerBusin
 
    ;
    const addMilestone = () => {
-       // Calculate current total of all milestone amounts
        const currentTotal = formData.milestones.reduce(
            (sum, m) => sum + (parseFloat(m.amount) || 0),
            0
        );
-
-       // Check if adding another milestone would exceed fundingPerBusiness
-       if (currentTotal >= formData.fundingPerBusiness) {
-           alert(
-               `Cannot add more milestones - total funding would exceed $${formData.fundingPerBusiness}`
+       if (currentTotal >= fundingPerBusiness) {
+           showAlert(
+               "error",
+               `Cannot add more milestones - total funding would exceed $${fundingPerBusiness}`
            );
            return;
        }
-
-       // Proceed with adding the milestone
        setFormData({
            ...formData,
            milestones: [
@@ -907,7 +907,6 @@ export default function GrantApplicationModal({ onClose, grantId,fundingPerBusin
 
     // Updated updateMilestone function
     const updateMilestone = (index, field, value, isFileUpload = false) => {
-        // First check if we're updating amount and validate against fundingPerBusiness
         if (field === "amount") {
             const newAmount = parseFloat(value) || 0;
             const currentTotal = formData.milestones.reduce((sum, m, i) => {
@@ -915,38 +914,25 @@ export default function GrantApplicationModal({ onClose, grantId,fundingPerBusin
                     sum + (i === index ? newAmount : parseFloat(m.amount) || 0)
                 );
             }, 0);
-
-            if (currentTotal > formData.fundingPerBusiness) {
-                alert(
-                    `Total milestone amounts cannot exceed $${formData.fundingPerBusiness}`
+            if (currentTotal > fundingPerBusiness) {
+                showAlert(
+                    "error",
+                    `You have reached the maximum amount of $${fundingPerBusiness}`
                 );
                 return; // Prevent the update
             }
         }
-
-        // Proceed with the original update logic
         const updatedMilestones = [...formData.milestones];
-
         if (isFileUpload) {
             updatedMilestones[index].deliverables = [value];
         } else {
             updatedMilestones[index][field] = value;
         }
-
-        const updatedFormData = {
+        setFormData({
             ...formData,
             milestones: updatedMilestones,
-        };
-
-        setFormData(updatedFormData);
-
-        if (isFileUpload) {
-            debouncedSendFormData(updatedFormData);
-        } else if (hasDeliverableFile(updatedFormData)) {
-            handleUserActivity(updatedFormData);
-        }
+        });
     };
-    
 
     // Your existing sendFormDataToAPI function remains unchanged
     const sendFormDataToAPI = async (currentFormData) => {
