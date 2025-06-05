@@ -1246,30 +1246,31 @@ foreach($res as $r){
   $business = listing::select('name','id','threshold_met')
   ->where('id',$r->business_id)->first();
 
-  $activeMilestone = Milestones::select('title')
-    ->where('listing_id',$business->id)
-    ->where('status','In Progress')->first();
-    if($activeMilestone)
-        $Milestone = $activeMilestone->title;
-    else $Milestone='';
+    if($business && $inv){
+        $activeMilestone = Milestones::select('title')
+        ->where('listing_id',$business->id)
+        ->where('status','In Progress')->first();
+        if($activeMilestone)
+            $Milestone = $activeMilestone->title;
+        else $Milestone='';
 
-  if($business && $inv){
-  $r->investor = $inv->fname.' '.$inv->lname;
-  $r->business = $business->name;
-  $r->threshold = $business->threshold_met;
 
-  //Investor details
-  $r->investor_name = $inv->fname.' '.$inv->mname.' '.$inv->lname;
-  $r->inv_range = $inv->inv_range;
-  $r->interested_cats = $inv->interested_cats;
-  $r->past_investment = $inv->past_investment;
-  $r->website = $inv->website;
-  $r->email = $inv->email;
-  $r->status = 'Pending';
-  $r->milestone = $Milestone;
-  //Investor details
-  $r->photos = explode(',',$r->photos);
-  $bids[] = $r;
+      $r->investor = $inv->fname.' '.$inv->lname;
+      $r->business = $business->name;
+      $r->threshold = $business->threshold_met;
+
+      //Investor details
+      $r->investor_name = $inv->fname.' '.$inv->mname.' '.$inv->lname;
+      $r->inv_range = $inv->inv_range;
+      $r->interested_cats = $inv->interested_cats;
+      $r->past_investment = $inv->past_investment;
+      $r->website = $inv->website;
+      $r->email = $inv->email;
+      $r->status = 'Pending';
+      $r->milestone = $Milestone;
+      //Investor details
+      $r->photos = explode(',',$r->photos);
+      $bids[] = $r;
   }
 }
 
@@ -1304,17 +1305,16 @@ public function confirmed_bids()
     $business = listing::select('name','id')
     ->where('id',$r->business_id)->first();
 
-    if($business){
+      if($business && $inv){
       $activeMilestone = Milestones::select('title')
       ->where('listing_id',$business->id)
       ->where('status','In Progress')->first();
-    }
 
     if($activeMilestone)
         $Milestone = $activeMilestone->title;
     else $Milestone='';
 
-    if($business && $inv){
+
     $r->investor = $inv->fname.' '.$inv->lname;
     $r->business = $business->name;
     $r->interested_cats = $inv->interested_cats;
@@ -1331,24 +1331,24 @@ public function confirmed_bids()
     $inv = User::where('id',$r->investor_id)->first();
     $business = listing::where('id',$r->business_id)->first();
 
-    $activeMilestone = Milestones::select('title')
-    ->where('listing_id',$business->id)
-    ->where('status','In Progress')->first();
+      if($business && $inv){
+            $activeMilestone = Milestones::select('title')
+            ->where('listing_id',$business->id)
+            ->where('status','In Progress')->first();
 
-    if($activeMilestone)
-        $Milestone = $activeMilestone->title;
-    else $Milestone='';
+            if($activeMilestone)
+                $Milestone = $activeMilestone->title;
+            else $Milestone='';
 
-    if($business && $inv){
-    $r->investor = $inv->fname.' '.$inv->lname;
-    $r->business = $business->name;
-    $r->interested_cats = $inv->interested_cats;
-    $r->past_investment = $inv->past_investment;
-    $r->website = $inv->website;
-    $r->email = $inv->email;
-    $r->milestone = $Milestone;
-    $r->photos = explode(',',$r->photos);
-    $under_verify[] = $r;
+            $r->investor = $inv->fname.' '.$inv->lname;
+            $r->business = $business->name;
+            $r->interested_cats = $inv->interested_cats;
+            $r->past_investment = $inv->past_investment;
+            $r->website = $inv->website;
+            $r->email = $inv->email;
+            $r->milestone = $Milestone;
+            $r->photos = explode(',',$r->photos);
+            $under_verify[] = $r;
     }
   }
 

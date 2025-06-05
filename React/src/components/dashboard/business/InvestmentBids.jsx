@@ -285,7 +285,7 @@ function InvestmentBids() {
             axiosClient
                 .get("/business/business_bids")
                 .then(({ data }) => {
-                    setBids(data.bids);
+                    setBids(data.bids || []);
                      console.log('pending', data);
                 })
                 .catch((err) => {
