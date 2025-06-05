@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import axiosClient from "../../../../axiosClient";
 import ScoreCapitalMobile from "./ScoreCapitalMobile";
-
 const MatchScoreCapital = ({ capitalId, formData, hasDeliverables }) => {
     const [score, setScore] = useState(null);
     const [result, setResult] = useState("");
@@ -49,6 +48,7 @@ const MatchScoreCapital = ({ capitalId, formData, hasDeliverables }) => {
         if (score >= 40) return "bg-orange-50 text-orange-700";
         return "bg-red-50 text-red-700";
     };
+    // ...existing code...
 
     useEffect(() => {
         // Open modal on mobile when upload starts
@@ -63,6 +63,7 @@ const MatchScoreCapital = ({ capitalId, formData, hasDeliverables }) => {
         setLoading(true);
         setUploadProgress(0);
 
+        // Simulate progress animation
         const progressInterval = setInterval(() => {
             setUploadProgress((prev) => {
                 if (prev >= 100) {
@@ -73,10 +74,19 @@ const MatchScoreCapital = ({ capitalId, formData, hasDeliverables }) => {
             });
         }, 200);
 
+        console.log("[MatchScoreCapital] Sending match score request:", {
+            capitalId,
+            formData,
+        });
+
         axiosClient
             .post(`capital/match-score/${capitalId}`, formData)
             .then((res) => {
+                console.log("[MatchScoreCapital] Response:", res.data);
+
+                // Fix: Access data from the 'original' property
                 const responseData = res.data?.original || res.data;
+
                 setTimeout(() => {
                     setScore(responseData?.score ?? null);
                     setResult(responseData?.result ?? "");
@@ -98,12 +108,12 @@ const MatchScoreCapital = ({ capitalId, formData, hasDeliverables }) => {
         return () => clearInterval(progressInterval);
     }, [capitalId, hasDeliverables, formData]);
 
+    // ...existing code...
     return (
         <>
             {/* Desktop Sidebar */}
-            <div className="md:w-80 w-full border-l border-gray-200 hidden lg:block h-full overflow-y-auto">
-                <div className="p-6 bg-emerald-50 h-screen flex flex-col items-center">
-                    {/* Header Section */}
+            <div className="md:w-80 w-full border-l border-gray-200 hidden lg:block h-full overflow-y-auto bg-emerald-50">
+                <div className="p-6 flex flex-col items-center">
                     <div className="text-center mb-6">
                         <div className="flex items-center justify-center gap-2 mb-3">
                             <div className="h-6 w-6 bg-emerald-500 rounded-full animate-pulse"></div>
@@ -117,9 +127,7 @@ const MatchScoreCapital = ({ capitalId, formData, hasDeliverables }) => {
                             </span>
                         </div>
                     </div>
-
-                    {/* Empty State (matches your image exactly) */}
-                    {!loading && score === null && (
+                    {!loading && score === null ? (
                         <div className="text-center p-6">
                             <div className="w-20 h-20 mx-auto mb-4 relative">
                                 <div className="absolute inset-0 bg-emerald-100 rounded-xl rotate-6"></div>
@@ -132,93 +140,101 @@ const MatchScoreCapital = ({ capitalId, formData, hasDeliverables }) => {
                                 Complete fields for Tujitume analysis
                             </p>
                         </div>
-                    )}
-
-                    {/* Loading State */}
-                    {loading && (
-                        <div className="flex flex-col items-center py-4">
-                            <div className="relative mb-4 w-32 h-32">
-                                <div className="absolute inset-0 rounded-full border-4 border-emerald-100 bg-white bg-opacity-30 backdrop-blur-sm overflow-hidden">
-                                    <div
-                                        className="absolute bottom-0 w-full bg-gradient-to-t from-emerald-500 to-yellow-400 transition-all duration-1000 ease-in-out"
-                                        style={{
-                                            height: `${uploadProgress}%`,
-                                            boxShadow:
-                                                "0 -5px 15px rgba(99, 102, 241, 0.5)",
-                                            borderTopLeftRadius:
-                                                uploadProgress < 95
-                                                    ? "100%"
-                                                    : "0",
-                                            borderTopRightRadius:
-                                                uploadProgress < 95
-                                                    ? "100%"
-                                                    : "0",
-                                        }}
-                                    ></div>
-                                    <div className="absolute top-0 left-0 w-full h-8 bg-white bg-opacity-20 transform -skew-y-12"></div>
-                                </div>
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="bg-white bg-opacity-80 backdrop-blur-sm rounded-full px-3 py-1 shadow-lg">
-                                        <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-yellow-600">
-                                            {Math.round(uploadProgress)}%
-                                        </span>
+                    ) : (
+                        <>
+                            {loading ? (
+                                <div className="flex flex-col items-center py-4">
+                                    <div className="relative mb-4 w-32 h-32">
+                                        <div className="absolute inset-0 rounded-full border-4 border-emerald-100 bg-white bg-opacity-30 backdrop-blur-sm overflow-hidden">
+                                            <div
+                                                className="absolute bottom-0 w-full bg-gradient-to-t from-emerald-500 to-yellow-400 transition-all duration-1000 ease-in-out"
+                                                style={{
+                                                    height: `${uploadProgress}%`,
+                                                    boxShadow:
+                                                        "0 -5px 15px rgba(99, 102, 241, 0.5)",
+                                                    borderTopLeftRadius:
+                                                        uploadProgress < 95
+                                                            ? "100%"
+                                                            : "0",
+                                                    borderTopRightRadius:
+                                                        uploadProgress < 95
+                                                            ? "100%"
+                                                            : "0",
+                                                }}
+                                            ></div>
+                                            <div className="absolute top-0 left-0 w-full h-8 bg-white bg-opacity-20 transform -skew-y-12"></div>
+                                        </div>
+                                        <div className="absolute inset-0 flex items-center justify-center">
+                                            <div className="bg-white bg-opacity-80 backdrop-blur-sm rounded-full px-3 py-1 shadow-lg">
+                                                <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-yellow-600">
+                                                    {Math.round(uploadProgress)}
+                                                    %
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <p className="text-sm font-bold text-emerald-700 text-center">
+                                        {uploadProgress < 30
+                                            ? "Initializing..."
+                                            : uploadProgress < 60
+                                            ? "Processing..."
+                                            : uploadProgress < 90
+                                            ? "Calculating..."
+                                            : "Finalizing..."}
+                                    </p>
                                 </div>
-                            </div>
-                            <p className="text-sm font-bold text-emerald-700 text-center">
-                                {uploadProgress < 30
-                                    ? "Initializing..."
-                                    : uploadProgress < 60
-                                    ? "Processing..."
-                                    : uploadProgress < 90
-                                    ? "Calculating..."
-                                    : "Finalizing..."}
-                            </p>
-                        </div>
-                    )}
-
-                    {/* Data Loaded State */}
-                    {!loading && score !== null && (
-                        <div className="w-full">
-                            <div className="relative mb-4">
-                                <div className="w-32 h-32 rounded-2xl flex items-center justify-center bg-gradient-to-br from-emerald-50 to-yellow-50 border border-emerald-100">
-                                    <div
-                                        className={`w-24 h-24 rounded-xl ${getMatchColor(
-                                            score
-                                        )} flex items-center justify-center text-white text-2xl font-bold backdrop-blur-sm bg-opacity-90 shadow-lg`}
-                                    >
-                                        {score}%
+                            ) : (
+                                <div className="relative mb-4">
+                                    <div className="w-32 h-32 rounded-2xl flex items-center justify-center bg-gradient-to-br from-emerald-50 to-yellow-50 border border-emerald-100">
+                                        <div
+                                            className={`w-24 h-24 rounded-xl ${
+                                                score !== null
+                                                    ? getMatchColor(score)
+                                                    : "bg-gray-300"
+                                            } flex items-center justify-center text-white text-2xl font-bold backdrop-blur-sm bg-opacity-90 shadow-lg`}
+                                        >
+                                            {score !== null
+                                                ? `${score}%`
+                                                : "--"}
+                                        </div>
                                     </div>
+                                    {score !== null && (
+                                        <>
+                                            <div
+                                                className={`absolute -right-1 -top-1 rounded-full p-1.5 ${getMatchColor(
+                                                    score
+                                                )} text-white shadow-lg`}
+                                            >
+                                                {getMatchIcon(score)}
+                                            </div>
+                                            <div className="absolute -left-0.5 -bottom-0.5 h-6 w-6 rounded-lg bg-emerald-600 flex items-center justify-center rotate-12 shadow-lg">
+                                                <span className="text-white text-xs font-bold">
+                                                    T
+                                                </span>
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
-                                <div
-                                    className={`absolute -right-1 -top-1 rounded-full p-1.5 ${getMatchColor(
-                                        score
-                                    )} text-white shadow-lg`}
-                                >
-                                    {getMatchIcon(score)}
-                                </div>
-                                <div className="absolute -left-0.5 -bottom-0.5 h-6 w-6 rounded-lg bg-emerald-600 flex items-center justify-center rotate-12 shadow-lg">
-                                    <span className="text-white text-xs font-bold">
-                                        T
-                                    </span>
-                                </div>
-                            </div>
+                            )}
 
                             <div className="text-center mb-4">
                                 <span className="font-semibold text-base text-emerald-700">
-                                    {result || getMatchLevel(score)}
+                                    {result ||
+                                        (score !== null
+                                            ? getMatchLevel(score)
+                                            : "Fill up All Fields to see your score")}
                                 </span>
                             </div>
 
                             <div className="w-full space-y-4">
-                                {/* Score Breakdown */}
                                 <div className="bg-white p-4 rounded-xl border border-emerald-100 shadow-sm backdrop-blur-sm">
                                     <h4 className="text-sm font-bold text-emerald-700 mb-3 flex items-center">
                                         <span className="w-1 h-4 bg-emerald-500 rounded-sm mr-2"></span>
                                         Score Breakdown
                                     </h4>
                                     <div className="space-y-3">
-                                        {Object.keys(breakdown).length > 0 ? (
+                                        {breakdown &&
+                                        Object.keys(breakdown).length > 0 ? (
                                             Object.entries(breakdown).map(
                                                 ([key, value]) => (
                                                     <div
@@ -347,7 +363,7 @@ const MatchScoreCapital = ({ capitalId, formData, hasDeliverables }) => {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </>
                     )}
                 </div>
             </div>
