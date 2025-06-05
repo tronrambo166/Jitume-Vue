@@ -13,7 +13,7 @@ import {
     Check,
 } from "lucide-react";
 import { useAlert } from "../../../partials/AlertContext";
-
+import MatchScoreCapital from "./MatchScoreCapital";
 const InvestmentApplicationModal = ({
     capitalId,
     onClose,
@@ -23,6 +23,15 @@ const InvestmentApplicationModal = ({
     const [businessId, setBusinessId] = useState(null);
     const [businessOptions, setBusinessOptions] = useState([]);
     const { showAlert } = useAlert();
+
+    function useDebounce(value, delay = 2000) {
+        const [debounced, setDebounced] = useState(value);
+        useEffect(() => {
+            const handler = setTimeout(() => setDebounced(value), delay);
+            return () => clearTimeout(handler);
+        }, [value, delay]);
+        return debounced;
+    }
 
     const [formData, setFormData] = useState({
         business_id: null,
@@ -60,6 +69,8 @@ const InvestmentApplicationModal = ({
     const [success, setSuccess] = useState(false);
     const [currentStep, setCurrentStep] = useState(1);
     const [fieldErrors, setFieldErrors] = useState({});
+    const debouncedFormData = useDebounce(formData, 3000);
+
 
     useEffect(() => {
         const id = "all";
@@ -381,6 +392,11 @@ const InvestmentApplicationModal = ({
             toast.error(validationResult.message);
         }
     };
+
+    // Helper: true if any milestone has at least one deliverable
+    const hasDeliverables = formData.milestones.some(
+        (m) => Array.isArray(m.deliverables) && m.deliverables.length > 0
+    );
 
     const validateStep = (step) => {
         let isValid = true;
@@ -1683,74 +1699,89 @@ const InvestmentApplicationModal = ({
     }
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
-            {/* Outer scrollable container (for viewport scrolling) */}
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
-                {/* Fixed Header */}
-                <div className="px-6 py-4 border-b sticky top-0 bg-white z-10">
-                    <div className="flex justify-between items-center">
-                        <h2 className="text-xl font-semibold">
-                            Investment Application 
-                        </h2>
-                        <button
-                            onClick={onClose}
-                            className="text-gray-500 hover:text-gray-700 text-2xl"
-                        >
-                            &times;
-                        </button>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-hidden">
+            {/* Outer container with flex layout */}
+            <div className="flex w-full max-w-6xl h-[90vh]">
+                {/* Main content container (left side) */}
+                <div className="bg-white rounded-l-xl shadow-2xl w-full max-w-2xl flex flex-col h-full">
+                    {/* Fixed Header */}
+                    <div className="px-6 py-4 border-b sticky top-0 bg-white z-10">
+                        <div className="flex justify-between items-center">
+                            <h2 className="text-xl font-semibold">
+                                Investment Application
+                            </h2>
+                            <button
+                                onClick={onClose}
+                                className="text-gray-500 hover:text-gray-700 text-2xl"
+                            >
+                                &times;
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Inner scrollable content (for form scrolling) */}
+                    <div className="overflow-y-auto flex-1 p-6 h-0">
+                        {renderStepIndicator()}
+                        <div className="min-h-[40vh]">
+                            {renderStepContent()}
+                        </div>
+                    </div>
+
+                    {/* Fixed Footer */}
+                    <div className="p-6 border-t sticky bottom-0 bg-white z-10">
+                        <div className="flex justify-between gap-4">
+                            {currentStep > 1 && (
+                                <button
+                                    type="button"
+                                    onClick={handleBack}
+                                    className="px-6 py-2 border border-gray-300 rounded-md hover:bg-gray-50 flex-1 sm:flex-none"
+                                >
+                                    Back
+                                </button>
+                            )}
+                            <div className="flex-1" /> {/* Spacer */}
+                            {currentStep < 4 ? (
+                                <button
+                                    type="button"
+                                    onClick={handleNext}
+                                    className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 flex-1 sm:flex-none"
+                                >
+                                    Next
+                                </button>
+                            ) : (
+                                <button
+                                    type="button"
+                                    onClick={handleSubmit}
+                                    disabled={isSubmitting}
+                                    className={`px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 flex-1 sm:flex-none ${
+                                        isSubmitting
+                                            ? "opacity-75 cursor-not-allowed"
+                                            : ""
+                                    }`}
+                                >
+                                    {isSubmitting ? (
+                                        <span className="flex items-center justify-center gap-2">
+                                            <span className="animate-spin">
+                                                ⟳
+                                            </span>
+                                            Submitting...
+                                        </span>
+                                    ) : (
+                                        "Submit Application"
+                                    )}
+                                </button>
+                            )}
+                        </div>
                     </div>
                 </div>
 
-                {/* Inner scrollable content (for form scrolling) */}
-                <div className="overflow-y-auto flex-1 p-6">
-                    {/* Remove the inner form tag here */}
-                    {renderStepIndicator()}
-                    <div className="min-h-[40vh]">{renderStepContent()}</div>
-                </div>
-
-                {/* Fixed Footer */}
-                <div className="p-6 border-t sticky bottom-0 bg-white z-10">
-                    <div className="flex justify-between gap-4">
-                        {currentStep > 1 && (
-                            <button
-                                type="button"
-                                onClick={handleBack}
-                                className="px-6 py-2 border border-gray-300 rounded-md hover:bg-gray-50 flex-1 sm:flex-none"
-                            >
-                                Back
-                            </button>
-                        )}
-                        <div className="flex-1" /> {/* Spacer */}
-                        {currentStep < 4 ? (
-                            <button
-                                type="button"
-                                onClick={handleNext}
-                                className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 flex-1 sm:flex-none"
-                            >
-                                Next
-                            </button>
-                        ) : (
-                            <button
-                                type="button" // Change to type="button" to prevent form submission
-                                onClick={handleSubmit} // Use onClick handler instead
-                                disabled={isSubmitting}
-                                className={`px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 flex-1 sm:flex-none ${
-                                    isSubmitting
-                                        ? "opacity-75 cursor-not-allowed"
-                                        : ""
-                                }`}
-                            >
-                                {isSubmitting ? (
-                                    <span className="flex items-center justify-center gap-2">
-                                        <span className="animate-spin">⟳</span>
-                                        Submitting...
-                                    </span>
-                                ) : (
-                                    "Submit Application"
-                                )}
-                            </button>
-                        )}
-                    </div>
+                {/* MatchScoreCapital on the right side */}
+                <div className="hidden lg:block w-80 h-full overflow-y-auto">
+                    <MatchScoreCapital
+                        capitalId={capitalId}
+                        formData={debouncedFormData}
+                        hasDeliverables={hasDeliverables}
+                    />
                 </div>
             </div>
         </div>
