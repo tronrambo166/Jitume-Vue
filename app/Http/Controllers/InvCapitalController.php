@@ -22,13 +22,25 @@ use Response;
 use Session;
 use Hash;
 use Mail;
+use DB;
 use DateTime;
+use Stripe\StripeClient;
 
 class InvCapitalController extends Controller
 {
     /**
      * Display a listing of capital.
      */
+    protected $api_base_url;
+    protected $Client;
+
+    public function __construct(StripeClient $client)
+    {
+        $this->Client = $client;
+        $this->api_base_url = env('API_BASE_URL');
+        //$this->middleware('business');
+
+    }
     public function index()
     {
         if(Auth::check()){
@@ -205,7 +217,9 @@ class InvCapitalController extends Controller
                 'score' => 'nullable|numeric',
                 'score_breakdown' => 'nullable|numeric',
             ]);
-            $capital_owner_id = CapitalOffer::where('id',$request->capital_id)->first()->user_id;
+            $this_capital= CapitalOffer::select('user_id','capital_title')->where('id',$request->capital_id)->first()->user_id;
+            $capital_owner_id = $this_capital->user_id;
+            $capital_owner_email = User::select('email')->where('id',$capital_owner_id)->first()->email;
 
             $capital = StartupPitches::create([
                 'user_id' => Auth::id(),
@@ -304,6 +318,16 @@ class InvCapitalController extends Controller
             $notification = new Notification();
             $notification->create($capital_owner_id,$capital->user_id,$text
                 ,'overview/capital-pitch',' capital');
+
+            // E M A I L
+            $info=[ 'capital'=>$this_capital->offer_title, 'SME'=>$request->startup_name ];
+            $user['to'] = $capital_owner_email; //'tottenham266@gmail.com'; //
+            Mail::send('opportunities.capital_pitch', $info, function($msg) use ($user){
+                $msg->to($user['to']);
+                $msg->subject('Capital Pitch Received');
+            });
+            // E M A I L
+
             return response()->json(['message' => 'Investment Application Successfull.'], 200);
         }
         catch(\Exception $e){
@@ -425,7 +449,11 @@ class InvCapitalController extends Controller
         try {
             $milestone = CapitalMilestone::where('id', $request->listing)->first();
             $pitch = StartupPitches::with('capital')->where('id', $milestone->app_id)->first();
-            $owner = User::select('fname', 'email', 'connect_id')->where('id', $pitch->user_id)->first();
+
+            $emails = User::whereIn('id', [$pitch->user_id, $pitch->capital_owner_id])
+                ->pluck('email', 'id');
+            $sme_email = $emails[$pitch->user_id];
+            $capital_owner_email = $emails[$pitch->capital_owner_id];
 
             // T r a n s f e r
             $curr = 'USD';
@@ -454,7 +482,7 @@ class InvCapitalController extends Controller
                     'status' => 1,
                 ]);
 
-                $capitalUp = Capital::where('id', $pitch->capital_id)->update([
+                $capitalUp = CapitalOffer::where('id', $pitch->capital_id)->update([
                     'available_amount' => DB::raw("available_amount - {$amount}")
                 ]);
             } else {
@@ -478,6 +506,18 @@ class InvCapitalController extends Controller
             $notification = new Notification();
             $notification->create($pitch->user_id, $pitch->capital->user_id, $text, 'capital-overview/capital/discover', 'capital');
 
+            // E M A I L
+            $info=[
+                'capital'=>$pitch->capital->offer_title,
+                'amount'=>$milestone->amount,
+                'milestone_title' => $milestone->title
+            ];
+            $user['to'] = [$capital_owner_email, $sme_email]; //'tottenham266@gmail.com'; //
+            Mail::send('opportunities.capital_milestone', $info, function($msg) use ($user){
+                $msg->to($user['to']);
+                $msg->subject(' Capital Milestone');
+            });
+            // E M A I L
             return response()->json(['message' => 'Fund Release Success.', 'status' => 200]);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);

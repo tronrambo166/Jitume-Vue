@@ -305,7 +305,47 @@ const PaymentForm = () => {
                                     "Go to Dashboard to see investment status.",
                                 buttons: {
                                     yes: function () {
-                                        navigate("/grants-overview");
+                                        navigate("/dashboard/overview");
+                                    },
+                                    home: function () {
+                                        navigate("/");
+                                    },
+                                    cancel: function () {
+                                        $.alert("Canceled!");
+                                    },
+                                },
+                            });
+                        }
+                        if (data.status == 400)
+                            // alert(data.message);
+                            showErrorToast(data.message);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        setLoading(false);
+                        const response = err.response;
+                        showErrorToast(response.data.message);
+                        if (response && response.status === 422) {
+                            console.log(response.data.errors);
+                            showErrorToast(response.data.errors);
+                        }
+                    })
+                    .finally(() => {
+                        setLoading(false); // Stop loading spinner
+                    });
+            } else if (purpos == "capital_milestone") {
+                axiosClient
+                    .post("capital/capital-milestone", payload)
+                    .then(({ data }) => {
+                        console.log(data);
+                        if (data.status == 200) {
+                            $.confirm({
+                                title: "Payment Successful",
+                                content:
+                                    "Go to Dashboard to see investment status.",
+                                buttons: {
+                                    yes: function () {
+                                        navigate("/dashboard/overview");
                                     },
                                     home: function () {
                                         navigate("/");

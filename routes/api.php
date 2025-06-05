@@ -242,6 +242,7 @@ Route::prefix('/capital')->group(function(){
    Route::get('fund-release-request/{pitch_id}', [InvCapitalController::class, 'fund_request']);
    Route::post('match-score/{capital_id}', [MatchController::class, 'score_capital']);
    Route::get('analytics', [AnalyticsController::class, 'index_capital']);
+    Route::post('capital-milestone', [InvCapitalController::class, 'release_milestone']);
 
    Route::get('grant-writing-services', [GrantServiceController::class, 'grantWritingServices']);
    Route::get('pitch-coaching-services', [GrantServiceController::class, 'pitchCoachingServices']);

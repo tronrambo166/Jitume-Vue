@@ -15,8 +15,6 @@ use App\Models\Services;
 use App\Models\Shop;
 use App\Models\Equipments;
 use App\Models\User;
-use App\Models\Cart;
-use App\Models\orders;
 use App\Models\Conversation;
 use App\Models\Milestones;
 use App\Models\Smilestones;
@@ -32,6 +30,7 @@ use Session;
 use Hash;
 use Auth;
 use Mail;
+use DB;
 
 class MpesaController extends Controller
 {
@@ -578,11 +577,10 @@ class MpesaController extends Controller
 
             $milestone = GrantMilestone::where('id',$milestone_id)->first();
             $pitch = GrantApplication::with('grant')->where('id',$milestone->app_id)->first();
-            $owner = User::select('fname','email','connect_id')->where('id',$pitch->user_id)->first();
-
-            $text = $milestone->title.' fund for '.$pitch->grant->grant_title.' has been released.';
-            $notification->create($pitch->user_id,$pitch->grant->user_id,$text
-                ,'grants-overview/grants/discover',' grant');
+            $emails = User::whereIn('id', [$pitch->user_id, $pitch->grant_owner_id])
+                ->pluck('email', 'id');
+            $sme_email = $emails[$pitch->user_id];
+            $grant_owner_email = $emails[$pitch->grant_owner_id];
 
             //D a t a b a s e
             if($percent != 100){
@@ -591,6 +589,24 @@ class MpesaController extends Controller
             else{
                 GrantMilestone::where('app_id',$milestone->app_id)->update(['status' => 1]);
             }
+
+            //N O T I
+            $text = $milestone->title.' fund for '.$pitch->grant->grant_title.' has been released.';
+            $notification->create($pitch->user_id,$pitch->grant->user_id,$text
+                ,'grants-overview/grants/discover',' grant');
+
+            // E M A I L
+            $info=[
+                'grant'=>$pitch->grant->grant_title,
+                'amount'=>$milestone->amount,
+                'milestone_title' => $milestone->title
+            ];
+            $user['to'] = [$grant_owner_email, $sme_email]; //'tottenham266@gmail.com'; //
+            Mail::send('opportunities.grant_milestone', $info, function($msg) use ($user){
+                $msg->to($user['to']);
+                $msg->subject(' Grant Milestone');
+            });
+            // E M A I L
 
             return response()->json([
                 'status' => $payment->status,
@@ -631,11 +647,10 @@ class MpesaController extends Controller
 
             $milestone = CapitalMilestone::where('id',$milestone_id)->first();
             $pitch = StartupPitches::with('capital_offer')->where('id',$milestone->app_id)->first();
-            $owner = User::select('fname','email','connect_id')->where('id',$pitch->user_id)->first();
-
-            $text = $milestone->title.' fund for '.$pitch->capital_offer->offer_title.' has been released.';
-            $notification->create($pitch->user_id,$pitch->capital_offer->user_id,$text
-                ,'capitals-overview/capital/discover',' capital');
+            $emails = User::whereIn('id', [$pitch->user_id, $pitch->capital_owner_id])
+                ->pluck('email', 'id');
+            $sme_email = $emails[$pitch->user_id];
+            $capital_owner_email = $emails[$pitch->capital_owner_id];
 
             //D a t a b a s e
             if($percent != 100){
@@ -644,6 +659,23 @@ class MpesaController extends Controller
             else{
                 CapitalMilestone::where('app_id',$milestone->app_id)->update(['status' => 1]);
             }
+            // N O T I
+            $text = $milestone->title.' fund for '.$pitch->capital_offer->offer_title.' has been released.';
+            $notification->create($pitch->user_id,$pitch->capital_offer->user_id,$text
+                ,'capitals-overview/capital/discover',' capital');
+
+            // E M A I L
+            $info=[
+                'capital'=>$pitch->capital->offer_title,
+                'amount'=>$milestone->amount,
+                'milestone_title' => $milestone->title
+            ];
+            $user['to'] = [$capital_owner_email, $sme_email]; //'tottenham266@gmail.com'; //
+            Mail::send('opportunities.capital_milestone', $info, function($msg) use ($user){
+                $msg->to($user['to']);
+                $msg->subject(' Capital Milestone');
+            });
+            // E M A I L
 
             return response()->json([
                 'status' => $payment->status,

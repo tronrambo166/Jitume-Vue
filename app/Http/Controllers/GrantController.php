@@ -13,10 +13,11 @@ use App\Models\GrantApplication;
 use App\Models\GrantMilestone;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Response;
 use Session;
 use Hash;
-use Mail;
+use Illuminate\Support\Facades\DB;
 use DateTime;
 use App\Service\Notification;
 use Stripe\StripeClient;
@@ -184,9 +185,7 @@ class GrantController extends Controller
     // Store Grant Application
     public function store_application(Request $request)
     {
-
         try{
-
             $request->validate([
                 'grant_id' => 'nullable|numeric',
                 'business_id' => 'nullable|numeric',
@@ -204,11 +203,13 @@ class GrantController extends Controller
                 'businessPlan_file' => 'nullable|file|mimes:pdf,docx',
                 'social_impact_areas' => 'nullable|string',
                 'bonus_points' => 'nullable|string',
-                'score' => 'nullable|numeric',
-                'score_breakdown' => 'nullable|string',
-                'milestones' => 'nullable|array',
+                'score' => 'required|nullable|numeric',
+                'score_breakdown' => 'required|nullable|string',
+                'milestones' => 'required|nullable|array',
             ]);
-            $grant_owner_id = Grant::where('id',$request->grant_id)->first()->user_id;
+            $this_grant = Grant::select('user_id','grant_title')->where('id',$request->grant_id)->first();
+            $grant_owner_id = $this_grant->user_id;
+            $grant_owner_email = User::select('email')->where('id',$grant_owner_id)->first()->email;
 
             $grant = GrantApplication::create([
                 'user_id' => Auth::id(),
@@ -275,29 +276,32 @@ class GrantController extends Controller
                 'business_plan_file' => $business_plan_path
             ]);
 
-            if (!file_exists('files/grantMiles/'.$grant->id))
-                mkdir('files/grantMiles/'.$grant->id, 0777, true);
-            $loc='files/grantMiles/'.$grant->id.'/';
+
 
             // M I L E S T O N E S
             $milestones = $request->milestones;
-            foreach($milestones as $milestone){
-                $document = $request->file('milestones.0.deliverable.file');
-                if($document) {
-                    $uniqid=hexdec(uniqid());
-                    $ext=strtolower($document->getClientOriginalExtension());
-                    $create_name=$uniqid.'.'.$ext;
-                    $document->move($loc, $create_name);
-                    $document=$loc.$create_name;
+            if($milestones && count($milestones)>0) {
+                if (!file_exists('files/grantMiles/'.$grant->id))
+                    mkdir('files/grantMiles/'.$grant->id, 0777, true);
+                $loc='files/grantMiles/'.$grant->id.'/';
+
+                foreach ($milestones as $milestone) {
+                    $document = $request->file('milestones.0.deliverable.file');
+                    if ($document) {
+                        $uniqid = hexdec(uniqid());
+                        $ext = strtolower($document->getClientOriginalExtension());
+                        $create_name = $uniqid . '.' . $ext;
+                        $document->move($loc, $create_name);
+                        $document = $loc . $create_name;
+                    } else $document = '';
+                    $mile = GrantMilestone::create([
+                        'app_id' => $grant->id,
+                        'title' => $milestone['title'],
+                        'amount' => $milestone['amount'],
+                        'description' => $milestone['description'],
+                        'document' => $document
+                    ]);
                 }
-                else $document='';
-                $mile = GrantMilestone::create([
-                    'app_id' => $grant->id,
-                    'title' => $milestone['title'],
-                    'amount' => $milestone['amount'],
-                    'description' => $milestone['description'],
-                    'document' => $document
-                ]);
             }
 
             $text = 'You have a new application pitch.';
@@ -305,10 +309,22 @@ class GrantController extends Controller
             $notification->create($grant_owner_id,$grant->user_id,$text
                 ,'overview/grant-pitch',' grant');
 
+            // E M A I L
+            $info=[ 'grant'=>$this_grant->grant_title, 'SME'=>$request->startup_name ];
+            $user['to'] = $grant_owner_email; //'tottenham266@gmail.com'; //
+            Mail::send('opportunities.grant_pitch', $info, function($msg) use ($user){
+                $msg->to($user['to']);
+                $msg->subject('Grant Pitch Received');
+            });
+            // E M A I L
+
             return response()->json(['message' => 'Grant Application Successfull.'], 200);
         }
         catch(\Exception $e){
-            return response()->json(['message' => $e->getMessage()], 400);
+//            if (app()->environment('production')) {
+//                return response()->json(['message' => 'Something went wrong.'], 400);
+//            }
+            return response()->json(['message' => $e->getMessage(), 'line' => $e->getLine(),], 400);
         }
     }
 
@@ -449,7 +465,11 @@ class GrantController extends Controller
         try{ //return $request->all();
             $milestone = GrantMilestone::where('id',$request->listing)->first();
             $pitch = GrantApplication::with('grant')->where('id',$milestone->app_id)->first();
-            $owner = User::select('fname','email','connect_id')->where('id',$pitch->user_id)->first();
+
+            $emails = User::whereIn('id', [$pitch->user_id, $pitch->grant_owner_id])
+                ->pluck('email', 'id');
+            $sme_email = $emails[$pitch->user_id];
+            $grant_owner_email = $emails[$pitch->grant_owner_id];
 
             //T r a n s f e r
             $curr='USD'; //$request->currency;
@@ -503,9 +523,18 @@ class GrantController extends Controller
             $notification->create($pitch->user_id,$pitch->grant->user_id,$text
                 ,'grants-overview/grants/discover',' grant');
 
-            //MAIL
-
-            //MAIL
+            // E M A I L
+            $info=[
+                'grant'=>$pitch->grant->grant_title,
+                'amount'=>$milestone->amount,
+                'milestone_title' => $milestone->title
+            ];
+            $user['to'] = [$grant_owner_email, $sme_email]; //'tottenham266@gmail.com'; //
+            Mail::send('opportunities.grant_milestone', $info, function($msg) use ($user){
+                $msg->to($user['to']);
+                $msg->subject(' Grant Milestone');
+            });
+            // E M A I L
             return response()->json(['message' => 'Fund Release Success.', 'status' =>200]);
         }
         catch(\Exception $e){
