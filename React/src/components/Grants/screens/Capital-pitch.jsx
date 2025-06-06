@@ -42,87 +42,56 @@ const [lastChanged, setLastChanged] = useState(null);
   };
 const [watchlistLoading, setWatchlistLoading] = useState({});
 
-const toggleFavorite = async (pitchId) => {
+// Add watchlist state (add this near your other state declarations)
+const [watchlist, setWatchlist] = useState([]);
+
+
+useEffect(() => {
+  axiosClient.get('/capital/get-watchlist')
+    .then(res => {
+      console.log('Watchlist raw response:', res.data);
+
+      const list = Array.isArray(res.data) ? res.data : res.data?.data || [];
+      setWatchlist(list);
+    })
+    .catch(err => console.error('Error fetching watchlist:', err));
+}, []);
+
+
+const toggleFavorite = async (pitchId, isCurrentlyFavorite, updateCallback) => {
   try {
-    // 1. Debug: Log the base URL being used
-    console.log('Axios baseURL:', axiosClient.defaults.baseURL);
-
-    // 2. Check watchlist status
-    console.log('Fetching watchlist...');
-    const watchlistResponse = await axiosClient.get('/capital/get-watchlist')
-      .catch(err => {
-        console.error('Watchlist fetch failed:', {
-          url: err.config.url,
-          status: err.response?.status,
-          data: err.response?.data
-        });
-        throw err;
-      });
-
-    // 3. Process watchlist data with safety checks
-    const watchlistData = watchlistResponse.data || {};
-    const watchlist = Array.isArray(watchlistData) ? watchlistData : 
-                     Array.isArray(watchlistData.data) ? watchlistData.data : 
-                     Array.isArray(watchlistData.items) ? watchlistData.items : [];
-    
-    console.log('Current watchlist:', watchlist);
-
-    // 4. Check if pitch exists in watchlist
-    const isCurrentlyWatchlisted = watchlist.some(item => {
-      const itemId = item?.id || item?.pitch_id || item?.pitch?.id;
-      return String(itemId) === String(pitchId); // Ensure string comparison
+    // Check if already in watchlist
+    const isInWatchlist = watchlist.some(item => {
+      const id = item?.id || item?.pitch_id || item?.pitch?.id;
+      return String(id) === String(pitchId);
     });
 
-    // 5. Optimistic UI update
-    setPitches2(prev => prev.map(pitch => 
-      pitch.id === pitchId 
-        ? { ...pitch, favorite: !isCurrentlyWatchlisted } 
-        : pitch
+    if (isInWatchlist || isCurrentlyFavorite) {
+      console.log(`Pitch ${pitchId} is already in watchlist`);
+      toast.info("Already in watchlist");
+      return;
+    }
+
+    // Add to watchlist
+    const res = await axiosClient.get(`/capital/store-watchlist/${pitchId}`);
+    console.log('Watchlist updated:', res.data);
+
+    // Update states
+    setWatchlist(prev => [...prev, res.data]);
+    updateCallback?.(pitchId, true); // Update parent component state
+    setPitches2(prev => prev.map(p => 
+      p.id === pitchId ? {...p, favorite: true} : p
     ));
 
-    // 6. Toggle watchlist status with debugging
-    console.log(`Toggling watchlist for pitch ${pitchId}`);
-    const toggleResponse = await axiosClient.get(`/capital/store-watchlist/${pitchId}`, {
-      params: { _: Date.now() }, // Cache buster
-      validateStatus: (status) => status < 500 // Don't reject on 4xx errors
-    })
-    .catch(err => {
-      console.error('Toggle failed:', {
-        url: err.config.url,
-        status: err.response?.status,
-        data: err.response?.data
-      });
-      throw err;
-    });
-
-    // 7. Verify successful toggle
-    if (toggleResponse.status >= 400) {
-      throw new Error(toggleResponse.data?.message || 'Watchlist update failed');
-    }
-
-    console.log('Watchlist updated successfully');
-    return true;
-
+    toast.success("Added to watchlist");
   } catch (error) {
-    console.error('Watchlist error:', {
-      message: error.message,
-      response: error.response?.data,
-      stack: error.stack
-    });
-
-    // User-friendly error messages
-    let errorMessage = 'Failed to update watchlist';
-    if (error.response) {
-      errorMessage = error.response.data?.message || 
-                   `Server error (${error.response.status})`;
-    } else if (error.request) {
-      errorMessage = 'No response from server';
-    }
-
-    toast.error(errorMessage);
-    return false;
+    console.error('Error updating watchlist:', error);
+    toast.error("Failed to update watchlist");
   }
 };
+
+
+
 useEffect(() => {
   const fetchPitches = async () => {
     setIsLoading(true);
