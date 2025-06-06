@@ -20,8 +20,7 @@ use Mail;
 class AuthController extends Controller
 {
     public function checkAuth() {
-         $user = User::select('email','id', 'fname', 'lname', 'gender','image','investor')
-         ->where('id', Auth::id())->first();
+         $user = User::where('id', Auth::id())->first();
 
         $total_funds = 0; $available_funds = 0;
         $cntG = 0; $cntC = 0; $match_score = 0;

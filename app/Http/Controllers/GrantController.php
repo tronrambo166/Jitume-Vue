@@ -123,18 +123,18 @@ class GrantController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-                "grantTitle" => "required|string|max:255",
-                "totalGrantAmount" => "required|numeric",
-                "fundingPerBusiness" => "required|numeric",
-                "eligibilityCriteria" => "nullable|string",
-                "applicationDeadline" => "required|date",
-                "grantFocus" => "required|string",
-                "regions" => "nullable|string",
-                "impactObjectives" => "nullable|string",
-                "evaluationCriteria" => "nullable|string",
-                "grantBriefPDF" => "nullable|file|mimes:pdf|max:2048",
-                "applicationDeadline" => "nullable|string",
-                "applicationStartDate" => "nullable|string",
+            "grantTitle" => "required|string|max:255",
+            "totalGrantAmount" => "required|numeric",
+            "fundingPerBusiness" => "required|numeric",
+            "eligibilityCriteria" => "nullable|string",
+            "applicationDeadline" => "required|date",
+            "grantFocus" => "required|string",
+            "regions" => "nullable|string",
+            "impactObjectives" => "nullable|string",
+            "evaluationCriteria" => "nullable|string",
+            "grantBriefPDF" => "nullable|file|mimes:pdf|max:2048",
+            "applicationDeadline" => "nullable|string",
+            "applicationStartDate" => "nullable|string",
         ]);
 
         try{
@@ -462,7 +462,7 @@ class GrantController extends Controller
 
     public function release_milestone(Request $request)
     {
-        try{ //return $request->all();
+        try{
             $milestone = GrantMilestone::where('id',$request->listing)->first();
             $pitch = GrantApplication::with('grant')->where('id',$milestone->app_id)->first();
 
