@@ -337,8 +337,89 @@ const handleStatusChange = async (pitchId, newStatus) => {
    };
 
 
-const filteredPitches = [...pitches2]; // Simple copy of all pitches without filtering
-  
+   const filteredPitches = pitches2.filter((pitch) => {
+       // Search filter (by startup name, sector, or contact person)
+       const search = searchQuery.trim().toLowerCase();
+       if (
+           search &&
+           !(
+               (pitch.startup_name || "").toLowerCase().includes(search) ||
+               (pitch.sector || "").toLowerCase().includes(search) ||
+               (pitch.contact_person_name || "").toLowerCase().includes(search)
+           )
+       ) {
+           return false;
+       }
+
+       // Match Score filter
+       if (
+           filterMatchScore === "90% or higher" &&
+           (parseFloat(pitch.matchScore) || 0) < 90
+       ) {
+           return false;
+       }
+       if (
+           filterMatchScore === "80% - 90%" &&
+           ((parseFloat(pitch.matchScore) || 0) < 80 ||
+               (parseFloat(pitch.matchScore) || 0) >= 90)
+       ) {
+           return false;
+       }
+       if (
+           filterMatchScore === "Below 80%" &&
+           (parseFloat(pitch.matchScore) || 0) >= 80
+       ) {
+           return false;
+       }
+
+       // Sector filter
+       if (
+           filterSector !== "All Sectors" &&
+           filterSector !== "" &&
+           (pitch.sector || "") !== filterSector
+       ) {
+           return false;
+       }
+
+       // Stage filter
+       if (
+           filterStage !== "All Stages" &&
+           filterStage !== "" &&
+           (pitch.stage || "") !== filterStage
+       ) {
+           return false;
+       }
+
+       // Date filter (created_at)
+       if (filterDate === "Last 7 days") {
+           const created = new Date(pitch.created_at || pitch.createdAt);
+           const now = new Date();
+           const diff = (now - created) / (1000 * 60 * 60 * 24);
+           if (diff > 7) return false;
+       }
+       if (filterDate === "Last 30 days") {
+           const created = new Date(pitch.created_at || pitch.createdAt);
+           const now = new Date();
+           const diff = (now - created) / (1000 * 60 * 60 * 24);
+           if (diff > 30) return false;
+       }
+       // (Custom range not implemented)
+
+       // Tab filter
+       if (selectedTab === "favorites" && !pitch.favorite) return false;
+       if (
+           selectedTab === "new" &&
+           !(pitch.status === 0 || pitch.status === "New")
+       )
+           return false;
+       if (
+           selectedTab === "accepted" &&
+           !(pitch.status === 1 || pitch.status === "Accepted")
+       )
+           return false;
+
+       return true;
+   });
   // Status colors
   const getStatusColor = (status) => {
     switch(status) {
@@ -387,6 +468,7 @@ const filteredPitches = [...pitches2]; // Simple copy of all pitches without fil
               {/* Dashboard Stats */}
               <div className=" px-4 sm:px-6 lg:px-2">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
+                      {/* Total Pitches */}
                       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 md:p-4">
                           <div className="flex items-center justify-between">
                               <div>
@@ -394,7 +476,7 @@ const filteredPitches = [...pitches2]; // Simple copy of all pitches without fil
                                       Total Pitches
                                   </p>
                                   <p className="text-xl md:text-2xl font-semibold text-gray-800">
-                                      42
+                                      {filteredPitches.length}
                                   </p>
                               </div>
                               <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-100 flex items-center justify-center">
@@ -403,10 +485,15 @@ const filteredPitches = [...pitches2]; // Simple copy of all pitches without fil
                           </div>
                           <div className="mt-2 flex items-center text-xs text-green-600">
                               <TrendingUp size={12} className="mr-1" />
-                              <span>+12% from last month</span>
+                              <span>
+                                  {/* Example: +12% from last month */}
+                                  {/* You can calculate this if you have previous month data */}
+                                  +12% from last month
+                              </span>
                           </div>
                       </div>
 
+                      {/* Average Match */}
                       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 md:p-4">
                           <div className="flex items-center justify-between">
                               <div>
@@ -414,7 +501,18 @@ const filteredPitches = [...pitches2]; // Simple copy of all pitches without fil
                                       Average Match
                                   </p>
                                   <p className="text-xl md:text-2xl font-semibold text-gray-800">
-                                      86%
+                                      {filteredPitches.length > 0
+                                          ? (
+                                                filteredPitches.reduce(
+                                                    (sum, p) =>
+                                                        sum +
+                                                        (parseFloat(
+                                                            p.matchScore
+                                                        ) || 0),
+                                                    0
+                                                ) / filteredPitches.length
+                                            ).toFixed(0) + "%"
+                                          : "N/A"}
                                   </p>
                               </div>
                               <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-100 flex items-center justify-center">
@@ -427,6 +525,7 @@ const filteredPitches = [...pitches2]; // Simple copy of all pitches without fil
                           </div>
                       </div>
 
+                      {/* Pending Review */}
                       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 md:p-4">
                           <div className="flex items-center justify-between">
                               <div>
@@ -434,7 +533,13 @@ const filteredPitches = [...pitches2]; // Simple copy of all pitches without fil
                                       Pending Review
                                   </p>
                                   <p className="text-xl md:text-2xl font-semibold text-gray-800">
-                                      12
+                                      {
+                                          filteredPitches.filter(
+                                              (p) =>
+                                                  p.status === 0 ||
+                                                  p.status === "New"
+                                          ).length
+                                      }
                                   </p>
                               </div>
                               <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-100 flex items-center justify-center">
@@ -442,10 +547,26 @@ const filteredPitches = [...pitches2]; // Simple copy of all pitches without fil
                               </div>
                           </div>
                           <div className="mt-2 flex items-center text-xs text-green-600">
-                              <span>2 due today</span>
+                              <span>
+                                  {/* Example: 2 due today */}
+                                  {/* You can add logic for due today if you have a due date */}
+                                  {filteredPitches.filter(
+                                      (p) =>
+                                          p.status === 0 || p.status === "New"
+                                  ).length > 0
+                                      ? `${
+                                            filteredPitches.filter(
+                                                (p) =>
+                                                    p.status === 0 ||
+                                                    p.status === "New"
+                                            ).length
+                                        } due today`
+                                      : "0 due today"}
+                              </span>
                           </div>
                       </div>
 
+                      {/* Acceptance Rate */}
                       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 md:p-4">
                           <div className="flex items-center justify-between">
                               <div>
@@ -453,7 +574,17 @@ const filteredPitches = [...pitches2]; // Simple copy of all pitches without fil
                                       Acceptance Rate
                                   </p>
                                   <p className="text-xl md:text-2xl font-semibold text-gray-800">
-                                      32%
+                                      {filteredPitches.length > 0
+                                          ? (
+                                                (filteredPitches.filter(
+                                                    (p) =>
+                                                        p.status === 1 ||
+                                                        p.status === "Accepted"
+                                                ).length /
+                                                    filteredPitches.length) *
+                                                100
+                                            ).toFixed(0) + "%"
+                                          : "N/A"}
                                   </p>
                               </div>
                               <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-100 flex items-center justify-center">
@@ -874,24 +1005,48 @@ const filteredPitches = [...pitches2]; // Simple copy of all pitches without fil
                                                   >
                                                       <td className="px-4 md:px-6 py-3 whitespace-nowrap">
                                                           <div className="flex items-center">
-                                                            <button 
-  onClick={() => toggleFavorite(
-    pitch.id, 
-    pitch.favorite, 
-    (id, newStatus) => {
-      // This function would update the state in your parent component
-      // Example implementation might look like:
-      setPitches(prev => prev.map(p => 
-        p.id === id ? {...p, favorite: newStatus} : p
-      ))
-    }
-  )}
->
-  <Bookmark
-    size={14}
-    fill={pitch.favorite ? "currentColor" : "none"}
-  />
-</button>
+                                                              <button
+                                                                  onClick={() =>
+                                                                      toggleFavorite(
+                                                                          pitch.id,
+                                                                          pitch.favorite,
+                                                                          (
+                                                                              id,
+                                                                              newStatus
+                                                                          ) => {
+                                                                              // This function would update the state in your parent component
+                                                                              // Example implementation might look like:
+                                                                              setPitches(
+                                                                                  (
+                                                                                      prev
+                                                                                  ) =>
+                                                                                      prev.map(
+                                                                                          (
+                                                                                              p
+                                                                                          ) =>
+                                                                                              p.id ===
+                                                                                              id
+                                                                                                  ? {
+                                                                                                        ...p,
+                                                                                                        favorite:
+                                                                                                            newStatus,
+                                                                                                    }
+                                                                                                  : p
+                                                                                      )
+                                                                              );
+                                                                          }
+                                                                      )
+                                                                  }
+                                                              >
+                                                                  <Bookmark
+                                                                      size={14}
+                                                                      fill={
+                                                                          pitch.favorite
+                                                                              ? "currentColor"
+                                                                              : "none"
+                                                                      }
+                                                                  />
+                                                              </button>
                                                               <div className="text-sm pl-8 font-medium text-gray-900">
                                                                   {pitch.startup_name ||
                                                                       "Unnamed Startup"}
@@ -1152,7 +1307,9 @@ const filteredPitches = [...pitches2]; // Simple copy of all pitches without fil
                                                   <div className="flex justify-between items-start">
                                                       <div>
                                                           <h3 className="text-lg font-medium text-gray-900 line-clamp-1">
-                                                              {pitch.startup_name }
+                                                              {
+                                                                  pitch.startup_name
+                                                              }
                                                           </h3>
                                                           <p className="text-sm text-gray-600">
                                                               {pitch.contactPerson ||
@@ -1243,431 +1400,732 @@ const filteredPitches = [...pitches2]; // Simple copy of all pitches without fil
           </main>
 
           {/* Pitch Details Modal */}
- {isModalOpen && selectedPitch && (
-  <div className="fixed inset-0 overflow-y-auto z-50">
-    <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-      <div className="fixed inset-0 transition-opacity" aria-hidden="true">
-        <div className="absolute inset-0 bg-black opacity-50" onClick={closeModal}></div>
-      </div>
-
-      <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
-        &#8203;
-      </span>
-
-      <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full border border-gray-100">
-        {/* Header with brand color */}
-        <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
-          <div className="flex justify-between items-center">
-            <h3 className="text-xl leading-6 font-semibold text-white">
-              {selectedPitch.startup_name || "Unnamed Startup"}
-            </h3>
-            <button
-              onClick={closeModal}
-              className="text-white hover:text-gray-200 transition-colors"
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3 mt-2">
-            <span className={`px-3 py-1 text-xs font-medium rounded-full bg-white bg-opacity-20 text-white`}>
-              {selectedPitch.status}
-            </span>
-            <span className="text-xs text-gray-100">
-              Submitted on {new Date(selectedPitch.created_at).toLocaleDateString()}
-            </span>
-            <div className={`flex items-center justify-center w-7 h-7 rounded-full bg-white bg-opacity-20`}>
-              <span className="text-xs font-medium text-white">
-                {selectedPitch.matchScore ?? "N/A"}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white px-6 py-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="md:col-span-2">
-              {/* Traction & KPIs */}
-              <div className="mb-8">
-                <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
-                  Traction & KPIs
-                </h4>
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                  <p className="text-sm text-gray-700 leading-relaxed">
-                    {selectedPitch.traction_kpis || "No traction data provided."}
-                  </p>
-                </div>
-              </div>
-
-              {/* Financial Metrics */}
-              <div className="mb-8">
-                <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
-                  Financial Metrics
-                </h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                    <p className="text-xs text-gray-500 mb-1">Burn Rate</p>
-                    <p className="text-lg font-semibold text-gray-800">
-                      ${selectedPitch.burn_rate || "N/A"}
-                    </p>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                    <p className="text-xs text-gray-500 mb-1">Revenue (Last 12 Months)</p>
-                    <p className="text-lg font-semibold text-gray-800">
-                      ${selectedPitch.revenue_last_12_months || "N/A"}
-                    </p>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                    <p className="text-xs text-gray-500 mb-1">CAC/LTV Ratio</p>
-                    <p className="text-lg font-semibold text-gray-800">
-                      {selectedPitch.cac_ltv || "N/A"}
-                    </p>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                    <p className="text-xs text-gray-500 mb-1">IRR Projection</p>
-                    <p className="text-lg font-semibold text-gray-800">
-                      {selectedPitch.irr_projection || "N/A"}%
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Business Details */}
-              <div className="mb-8">
-                <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
-                  Business Details
-                </h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                    <p className="text-xs text-gray-500 mb-1">Sector</p>
-                    <p className="text-sm font-medium text-gray-800">
-                      {selectedPitch.sector || "N/A"}
-                    </p>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                    <p className="text-xs text-gray-500 mb-1">Business Stage</p>
-                    <p className="text-sm font-medium text-gray-800">
-                      {selectedPitch.stage || "N/A"}
-                    </p>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                    <p className="text-xs text-gray-500 mb-1">Headquarters</p>
-                    <p className="text-sm font-medium text-gray-800">
-                      {selectedPitch.headquarters_location || "N/A"}
-                    </p>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                    <p className="text-xs text-gray-500 mb-1">Team Experience</p>
-                    <p className="text-sm font-medium text-gray-800">
-                      {selectedPitch.team_experience_avg_years || "N/A"} years
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Social Impact & Strategy */}
-              <div className="mb-8">
-                <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
-                  Social Impact & Strategy
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                    <p className="text-xs text-gray-500 mb-1">Social Impact</p>
-                    <p className="text-sm text-gray-700">
-                      {selectedPitch.social_impact_areas || "Not specified"}
-                    </p>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                    <p className="text-xs text-gray-500 mb-1">Exit Strategy</p>
-                    <p className="text-sm text-gray-700">
-                      {selectedPitch.exit_strategy || "Not specified"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Funding Milestones */}
-              {selectedPitch.capital_milestone && selectedPitch.capital_milestone.length > 0 && (
-                <div className="mb-8">
-                  <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
-                    Funding Milestones
-                  </h4>
-                  <div className="space-y-3">
-                    {selectedPitch.capital_milestone.map((milestone, index) => (
-                      <div key={index} className="bg-gray-50 p-4 rounded-lg border-l-4 border-green-500 border-t border-r border-b border-gray-100">
-                        <p className="text-sm font-medium text-gray-800">{milestone.title}</p>
-                        <p className="text-xs text-gray-500 mt-1">Amount: ${milestone.amount}</p>
-                        <p className="text-xs text-gray-600 mt-2">{milestone.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Pitch Video */}
-              {selectedPitch.pitch_video && (
-                <div className="mb-8">
-                  <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
-                    Pitch Video
-                  </h4>
-                  <div className="relative w-full h-0 pb-[56.25%] bg-gray-200 rounded-lg overflow-hidden shadow-sm">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <video
-                        controls
-                        className="w-full h-full object-cover"
-                        poster={selectedPitch.thumbnail ? "https://tujitume.com/" + selectedPitch.thumbnail : undefined}
+          {isModalOpen && selectedPitch && (
+              <div className="fixed inset-0 overflow-y-auto z-50">
+                  <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                      <div
+                          className="fixed inset-0 transition-opacity"
+                          aria-hidden="true"
                       >
-                        <source src={"https://tujitume.com/" + selectedPitch.pitch_video} type="video/mp4" />
-                        <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center bg-gray-100">
-                          <svg className="w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
-                          </svg>
-                          <p className="text-gray-600 font-medium">Video playback not supported</p>
-                          <p className="text-gray-500 text-sm mt-1">
-                            Your browser doesn't support HTML5 video. Here's a
-                            <a href={"https://tujitume.com/" + selectedPitch.pitch_video} className="text-blue-500 hover:underline ml-1" download>
-                              link to the video
-                            </a>
-                            instead.
-                          </p>
-                        </div>
-                      </video>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Right Sidebar */}
-            <div className="md:col-span-1">
-              {/* Contact Person */}
-              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 mb-6 shadow-sm">
-                <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
-                  Contact Person
-                </h4>
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-gray-800">
-                    {selectedPitch.contact_person_name || "Not provided"}
-                  </p>
-                  <p className="text-sm text-gray-600 flex items-center">
-                    <svg className="w-4 h-4 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    {selectedPitch.contact_person_email || "No email provided"}
-                  </p>
-                </div>
-              </div>
-
-              {/* Team Members */}
-              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 mb-6 shadow-sm">
-                <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
-                  Team Members
-                </h4>
-                <div className="space-y-4">
-                  {selectedPitch.team?.length > 0 ? (
-                    selectedPitch.team.map((member, index) => (
-                      <div key={index} className="flex items-center">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-lime-400 flex items-center justify-center mr-3 shadow-sm">
-                          <span className="text-xs font-medium text-white">{member.initials}</span>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-gray-800">{member.name}</p>
-                          <p className="text-xs text-gray-500">{member.role}</p>
-                        </div>
+                          <div
+                              className="absolute inset-0 bg-black opacity-50"
+                              onClick={closeModal}
+                          ></div>
                       </div>
-                    ))
-                  ) : (
-                    <p className="text-xs text-gray-500">No team members listed</p>
-                  )}
-                </div>
-              </div>
 
-              {/* Documents */}
-              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 mb-6 shadow-sm">
-                <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
-                  Documents
-                </h4>
-                <div className="space-y-3">
-                  {selectedPitch.pitch_deck_file ? (
-                    <a
-                      href={selectedPitch.pitch_deck_file}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center p-2 rounded-md hover:bg-green-50 transition-colors"
-                    >
-                      <FileText size={16} className="text-green-600 mr-2" />
-                      <span className="text-sm text-gray-700 hover:text-green-700">Pitch Deck</span>
-                    </a>
-                  ) : null}
-
-                  {selectedPitch.business_plan ? (
-                    <a
-                      href={selectedPitch.business_plan}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center p-2 rounded-md hover:bg-green-50 transition-colors"
-                    >
-                      <FileText size={16} className="text-green-600 mr-2" />
-                      <span className="text-sm text-gray-700 hover:text-green-700">Business Plan</span>
-                    </a>
-                  ) : null}
-
-                  {!selectedPitch.pitch_deck_file && !selectedPitch.business_plan && (
-                    <p className="text-xs text-gray-500">No documents provided</p>
-                  )}
-                </div>
-              </div>
-
-              {/* Change Pitch Status */}
-              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 shadow-sm">
-                <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
-                  Pitch Status
-                </h4>
-                <div className="mb-4">
-                  {selectedPitch.status === 1 ? (
-                    <>
-                      <div className="flex items-center text-green-600 font-medium">
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        Accepted
-                      </div>
-                      <button
-                        className="mt-4 px-4 py-2 bg-green-600 text-white rounded-md shadow hover:bg-green-700 transition"
-                        onClick={() => { JustMassage(); }}
+                      <span
+                          className="hidden sm:inline-block sm:align-middle sm:h-screen"
+                          aria-hidden="true"
                       >
-                        Message Business Owner
-                      </button>
-                    </>
-                  ) : selectedPitch.status === 0 ? (
-                    <div className="flex items-center text-red-600 font-medium">
-                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      Rejected
-                    </div>
-                  ) : selectedPitch.status === 2 ? (
-                    <div className="flex items-center text-blue-600 font-medium">
-                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      Milestone Released
-                    </div>
-                  ) : (
-                    <div className="flex items-center text-yellow-600 font-medium">
-                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      Pending
-                    </div>
-                  )}
-                </div>
+                          &#8203;
+                      </span>
 
-                {selectedPitch.status !== 1 && selectedPitch.status !== 0 && selectedPitch.status !== 2 ? (
-                  <div className="grid grid-cols-2 gap-3">
-                    {/* Accept Button */}
-                    <button
-                      onClick={() => handleStatusChange(selectedPitch.id, "Accepted")}
-                      disabled={isChanging}
-                      className={`px-3 py-2 text-sm rounded-md flex items-center justify-center transition-all bg-white border border-green-200 text-green-700 hover:bg-green-50 ${isChanging ? "opacity-70 cursor-not-allowed" : ""} shadow-sm hover:shadow`}
-                    >
-                      {isChanging && selectedPitch.processingStatus === "Accepted" ? (
-                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                      ) : (
-                        <svg className="w-4 h-4 mr-1 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      )}
-                      Accept
-                    </button>
+                      <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full border border-gray-100">
+                          {/* Header with brand color */}
+                          <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
+                              <div className="flex justify-between items-center">
+                                  <h3 className="text-xl leading-6 font-semibold text-white">
+                                      {selectedPitch.startup_name ||
+                                          "Unnamed Startup"}
+                                  </h3>
+                                  <button
+                                      onClick={closeModal}
+                                      className="text-white hover:text-gray-200 transition-colors"
+                                  >
+                                      <svg
+                                          className="h-6 w-6"
+                                          fill="none"
+                                          viewBox="0 0 24 24"
+                                          stroke="currentColor"
+                                      >
+                                          <path
+                                              strokeLinecap="round"
+                                              strokeLinejoin="round"
+                                              strokeWidth="2"
+                                              d="M6 18L18 6M6 6l12 12"
+                                          />
+                                      </svg>
+                                  </button>
+                              </div>
 
-                    {/* Reject Button */}
-                    <button
-                      onClick={() => handleStatusChange(selectedPitch.id, "Rejected")}
-                      disabled={isChanging}
-                      className={`px-3 py-2 text-sm rounded-md flex items-center justify-center transition-all bg-white border border-red-200 text-red-700 hover:bg-red-50 ${isChanging ? "opacity-70 cursor-not-allowed" : ""} shadow-sm hover:shadow`}
-                    >
-                      {isChanging && selectedPitch.processingStatus === "Rejected" ? (
-                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                      ) : (
-                        <svg className="w-4 h-4 mr-1 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+                              <div className="flex flex-wrap items-center gap-3 mt-2">
+                                  <span
+                                      className={`px-3 py-1 text-xs font-medium rounded-full bg-white bg-opacity-20 text-white`}
+                                  >
+                                      {selectedPitch.status}
+                                  </span>
+                                  <span className="text-xs text-gray-100">
+                                      Submitted on{" "}
+                                      {new Date(
+                                          selectedPitch.created_at
+                                      ).toLocaleDateString()}
+                                  </span>
+                                  <div
+                                      className={`flex items-center justify-center w-7 h-7 rounded-full bg-white bg-opacity-20`}
+                                  >
+                                      <span className="text-xs font-medium text-white">
+                                          {selectedPitch.matchScore ?? "N/A"}
+                                      </span>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div className="bg-white px-6 py-6">
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                  <div className="md:col-span-2">
+                                      {/* Traction & KPIs */}
+                                      <div className="mb-8">
+                                          <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
+                                              Traction & KPIs
+                                          </h4>
+                                          <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                              <p className="text-sm text-gray-700 leading-relaxed">
+                                                  {selectedPitch.traction_kpis ||
+                                                      "No traction data provided."}
+                                              </p>
+                                          </div>
+                                      </div>
+
+                                      {/* Financial Metrics */}
+                                      <div className="mb-8">
+                                          <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
+                                              Financial Metrics
+                                          </h4>
+                                          <div className="grid grid-cols-2 gap-4">
+                                              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                                  <p className="text-xs text-gray-500 mb-1">
+                                                      Burn Rate
+                                                  </p>
+                                                  <p className="text-lg font-semibold text-gray-800">
+                                                      $
+                                                      {selectedPitch.burn_rate ||
+                                                          "N/A"}
+                                                  </p>
+                                              </div>
+                                              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                                  <p className="text-xs text-gray-500 mb-1">
+                                                      Revenue (Last 12 Months)
+                                                  </p>
+                                                  <p className="text-lg font-semibold text-gray-800">
+                                                      $
+                                                      {selectedPitch.revenue_last_12_months ||
+                                                          "N/A"}
+                                                  </p>
+                                              </div>
+                                              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                                  <p className="text-xs text-gray-500 mb-1">
+                                                      CAC/LTV Ratio
+                                                  </p>
+                                                  <p className="text-lg font-semibold text-gray-800">
+                                                      {selectedPitch.cac_ltv ||
+                                                          "N/A"}
+                                                  </p>
+                                              </div>
+                                              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                                  <p className="text-xs text-gray-500 mb-1">
+                                                      IRR Projection
+                                                  </p>
+                                                  <p className="text-lg font-semibold text-gray-800">
+                                                      {selectedPitch.irr_projection ||
+                                                          "N/A"}
+                                                      %
+                                                  </p>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      {/* Business Details */}
+                                      <div className="mb-8">
+                                          <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
+                                              Business Details
+                                          </h4>
+                                          <div className="grid grid-cols-2 gap-4">
+                                              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                                  <p className="text-xs text-gray-500 mb-1">
+                                                      Sector
+                                                  </p>
+                                                  <p className="text-sm font-medium text-gray-800">
+                                                      {selectedPitch.sector ||
+                                                          "N/A"}
+                                                  </p>
+                                              </div>
+                                              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                                  <p className="text-xs text-gray-500 mb-1">
+                                                      Business Stage
+                                                  </p>
+                                                  <p className="text-sm font-medium text-gray-800">
+                                                      {selectedPitch.stage ||
+                                                          "N/A"}
+                                                  </p>
+                                              </div>
+                                              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                                  <p className="text-xs text-gray-500 mb-1">
+                                                      Headquarters
+                                                  </p>
+                                                  <p className="text-sm font-medium text-gray-800">
+                                                      {selectedPitch.headquarters_location ||
+                                                          "N/A"}
+                                                  </p>
+                                              </div>
+                                              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                                  <p className="text-xs text-gray-500 mb-1">
+                                                      Team Experience
+                                                  </p>
+                                                  <p className="text-sm font-medium text-gray-800">
+                                                      {selectedPitch.team_experience_avg_years ||
+                                                          "N/A"}{" "}
+                                                      years
+                                                  </p>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      {/* Social Impact & Strategy */}
+                                      <div className="mb-8">
+                                          <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
+                                              Social Impact & Strategy
+                                          </h4>
+                                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                                  <p className="text-xs text-gray-500 mb-1">
+                                                      Social Impact
+                                                  </p>
+                                                  <p className="text-sm text-gray-700">
+                                                      {selectedPitch.social_impact_areas ||
+                                                          "Not specified"}
+                                                  </p>
+                                              </div>
+                                              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                                  <p className="text-xs text-gray-500 mb-1">
+                                                      Exit Strategy
+                                                  </p>
+                                                  <p className="text-sm text-gray-700">
+                                                      {selectedPitch.exit_strategy ||
+                                                          "Not specified"}
+                                                  </p>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      {/* Funding Milestones */}
+                                      {selectedPitch.capital_milestone &&
+                                          selectedPitch.capital_milestone
+                                              .length > 0 && (
+                                              <div className="mb-8">
+                                                  <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
+                                                      Funding Milestones
+                                                  </h4>
+                                                  <div className="space-y-3">
+                                                      {selectedPitch.capital_milestone.map(
+                                                          (
+                                                              milestone,
+                                                              index
+                                                          ) => (
+                                                              <div
+                                                                  key={index}
+                                                                  className="bg-gray-50 p-4 rounded-lg border-l-4 border-green-500 border-t border-r border-b border-gray-100"
+                                                              >
+                                                                  <p className="text-sm font-medium text-gray-800">
+                                                                      {
+                                                                          milestone.title
+                                                                      }
+                                                                  </p>
+                                                                  <p className="text-xs text-gray-500 mt-1">
+                                                                      Amount: $
+                                                                      {
+                                                                          milestone.amount
+                                                                      }
+                                                                  </p>
+                                                                  <p className="text-xs text-gray-600 mt-2">
+                                                                      {
+                                                                          milestone.description
+                                                                      }
+                                                                  </p>
+                                                              </div>
+                                                          )
+                                                      )}
+                                                  </div>
+                                              </div>
+                                          )}
+
+                                      {/* Pitch Video */}
+                                      {selectedPitch.pitch_video && (
+                                          <div className="mb-8">
+                                              <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
+                                                  Pitch Video
+                                              </h4>
+                                              <div className="relative w-full h-0 pb-[56.25%] bg-gray-200 rounded-lg overflow-hidden shadow-sm">
+                                                  <div className="absolute inset-0 flex items-center justify-center">
+                                                      <video
+                                                          controls
+                                                          className="w-full h-full object-cover"
+                                                          poster={
+                                                              selectedPitch.thumbnail
+                                                                  ? "https://tujitume.com/" +
+                                                                    selectedPitch.thumbnail
+                                                                  : undefined
+                                                          }
+                                                      >
+                                                          <source
+                                                              src={
+                                                                  "https://tujitume.com/" +
+                                                                  selectedPitch.pitch_video
+                                                              }
+                                                              type="video/mp4"
+                                                          />
+                                                          <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center bg-gray-100">
+                                                              <svg
+                                                                  className="w-12 h-12 text-gray-400 mb-2"
+                                                                  fill="none"
+                                                                  stroke="currentColor"
+                                                                  viewBox="0 0 24 24"
+                                                                  xmlns="http://www.w3.org/2000/svg"
+                                                              >
+                                                                  <path
+                                                                      strokeLinecap="round"
+                                                                      strokeLinejoin="round"
+                                                                      strokeWidth={
+                                                                          2
+                                                                      }
+                                                                      d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"
+                                                                  />
+                                                              </svg>
+                                                              <p className="text-gray-600 font-medium">
+                                                                  Video playback
+                                                                  not supported
+                                                              </p>
+                                                              <p className="text-gray-500 text-sm mt-1">
+                                                                  Your browser
+                                                                  doesn't
+                                                                  support HTML5
+                                                                  video. Here's
+                                                                  a
+                                                                  <a
+                                                                      href={
+                                                                          "https://tujitume.com/" +
+                                                                          selectedPitch.pitch_video
+                                                                      }
+                                                                      className="text-blue-500 hover:underline ml-1"
+                                                                      download
+                                                                  >
+                                                                      link to
+                                                                      the video
+                                                                  </a>
+                                                                  instead.
+                                                              </p>
+                                                          </div>
+                                                      </video>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      )}
+                                  </div>
+
+                                  {/* Right Sidebar */}
+                                  <div className="md:col-span-1">
+                                      {/* Contact Person */}
+                                      <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 mb-6 shadow-sm">
+                                          <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
+                                              Contact Person
+                                          </h4>
+                                          <div className="space-y-2">
+                                              <p className="text-sm font-medium text-gray-800">
+                                                  {selectedPitch.contact_person_name ||
+                                                      "Not provided"}
+                                              </p>
+                                              <p className="text-sm text-gray-600 flex items-center">
+                                                  <svg
+                                                      className="w-4 h-4 mr-2 text-green-600"
+                                                      fill="none"
+                                                      stroke="currentColor"
+                                                      viewBox="0 0 24 24"
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                  >
+                                                      <path
+                                                          strokeLinecap="round"
+                                                          strokeLinejoin="round"
+                                                          strokeWidth={2}
+                                                          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                                      />
+                                                  </svg>
+                                                  {selectedPitch.contact_person_email ||
+                                                      "No email provided"}
+                                              </p>
+                                          </div>
+                                      </div>
+
+                                      {/* Team Members */}
+                                      <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 mb-6 shadow-sm">
+                                          <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
+                                              Team Members
+                                          </h4>
+                                          <div className="space-y-4">
+                                              {selectedPitch.team?.length >
+                                              0 ? (
+                                                  selectedPitch.team.map(
+                                                      (member, index) => (
+                                                          <div
+                                                              key={index}
+                                                              className="flex items-center"
+                                                          >
+                                                              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-lime-400 flex items-center justify-center mr-3 shadow-sm">
+                                                                  <span className="text-xs font-medium text-white">
+                                                                      {
+                                                                          member.initials
+                                                                      }
+                                                                  </span>
+                                                              </div>
+                                                              <div>
+                                                                  <p className="text-sm font-medium text-gray-800">
+                                                                      {
+                                                                          member.name
+                                                                      }
+                                                                  </p>
+                                                                  <p className="text-xs text-gray-500">
+                                                                      {
+                                                                          member.role
+                                                                      }
+                                                                  </p>
+                                                              </div>
+                                                          </div>
+                                                      )
+                                                  )
+                                              ) : (
+                                                  <p className="text-xs text-gray-500">
+                                                      No team members listed
+                                                  </p>
+                                              )}
+                                          </div>
+                                      </div>
+
+                                      {/* Documents */}
+                                      <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 mb-6 shadow-sm">
+                                          <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
+                                              Documents
+                                          </h4>
+                                          <div className="space-y-3">
+                                              {selectedPitch.pitch_deck_file ? (
+                                                  <a
+                                                      href={
+                                                          selectedPitch.pitch_deck_file
+                                                      }
+                                                      target="_blank"
+                                                      rel="noopener noreferrer"
+                                                      className="flex items-center p-2 rounded-md hover:bg-green-50 transition-colors"
+                                                  >
+                                                      <FileText
+                                                          size={16}
+                                                          className="text-green-600 mr-2"
+                                                      />
+                                                      <span className="text-sm text-gray-700 hover:text-green-700">
+                                                          Pitch Deck
+                                                      </span>
+                                                  </a>
+                                              ) : null}
+
+                                              {selectedPitch.business_plan ? (
+                                                  <a
+                                                      href={
+                                                          selectedPitch.business_plan
+                                                      }
+                                                      target="_blank"
+                                                      rel="noopener noreferrer"
+                                                      className="flex items-center p-2 rounded-md hover:bg-green-50 transition-colors"
+                                                  >
+                                                      <FileText
+                                                          size={16}
+                                                          className="text-green-600 mr-2"
+                                                      />
+                                                      <span className="text-sm text-gray-700 hover:text-green-700">
+                                                          Business Plan
+                                                      </span>
+                                                  </a>
+                                              ) : null}
+
+                                              {!selectedPitch.pitch_deck_file &&
+                                                  !selectedPitch.business_plan && (
+                                                      <p className="text-xs text-gray-500">
+                                                          No documents provided
+                                                      </p>
+                                                  )}
+                                          </div>
+                                      </div>
+
+                                      {/* Change Pitch Status */}
+                                      <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 shadow-sm">
+                                          <h4 className="text-sm font-semibold text-green-800 mb-3 uppercase tracking-wider">
+                                              Pitch Status
+                                          </h4>
+                                          <div className="mb-4">
+                                              {selectedPitch.status === 1 ? (
+                                                  <>
+                                                      <div className="flex items-center text-green-600 font-medium">
+                                                          <svg
+                                                              className="w-5 h-5 mr-2"
+                                                              fill="none"
+                                                              stroke="currentColor"
+                                                              viewBox="0 0 24 24"
+                                                              xmlns="http://www.w3.org/2000/svg"
+                                                          >
+                                                              <path
+                                                                  strokeLinecap="round"
+                                                                  strokeLinejoin="round"
+                                                                  strokeWidth={
+                                                                      2
+                                                                  }
+                                                                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                              />
+                                                          </svg>
+                                                          Accepted
+                                                      </div>
+                                                      <button
+                                                          className="mt-4 px-4 py-2 bg-green-600 text-white rounded-md shadow hover:bg-green-700 transition"
+                                                          onClick={() => {
+                                                              JustMassage();
+                                                          }}
+                                                      >
+                                                          Message Business Owner
+                                                      </button>
+                                                  </>
+                                              ) : selectedPitch.status === 0 ? (
+                                                  <div className="flex items-center text-red-600 font-medium">
+                                                      <svg
+                                                          className="w-5 h-5 mr-2"
+                                                          fill="none"
+                                                          stroke="currentColor"
+                                                          viewBox="0 0 24 24"
+                                                          xmlns="http://www.w3.org/2000/svg"
+                                                      >
+                                                          <path
+                                                              strokeLinecap="round"
+                                                              strokeLinejoin="round"
+                                                              strokeWidth={2}
+                                                              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                          />
+                                                      </svg>
+                                                      Rejected
+                                                  </div>
+                                              ) : selectedPitch.status === 2 ? (
+                                                  <div className="flex items-center text-blue-600 font-medium">
+                                                      <svg
+                                                          className="w-5 h-5 mr-2"
+                                                          fill="none"
+                                                          stroke="currentColor"
+                                                          viewBox="0 0 24 24"
+                                                          xmlns="http://www.w3.org/2000/svg"
+                                                      >
+                                                          <path
+                                                              strokeLinecap="round"
+                                                              strokeLinejoin="round"
+                                                              strokeWidth={2}
+                                                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                          />
+                                                      </svg>
+                                                      Milestone Released
+                                                  </div>
+                                              ) : (
+                                                  <div className="flex items-center text-yellow-600 font-medium">
+                                                      <svg
+                                                          className="w-5 h-5 mr-2"
+                                                          fill="none"
+                                                          stroke="currentColor"
+                                                          viewBox="0 0 24 24"
+                                                          xmlns="http://www.w3.org/2000/svg"
+                                                      >
+                                                          <path
+                                                              strokeLinecap="round"
+                                                              strokeLinejoin="round"
+                                                              strokeWidth={2}
+                                                              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                          />
+                                                      </svg>
+                                                      Pending
+                                                  </div>
+                                              )}
+                                          </div>
+
+                                          {selectedPitch.status !== 1 &&
+                                          selectedPitch.status !== 0 &&
+                                          selectedPitch.status !== 2 ? (
+                                              <div className="grid grid-cols-2 gap-3">
+                                                  {/* Accept Button */}
+                                                  <button
+                                                      onClick={() =>
+                                                          handleStatusChange(
+                                                              selectedPitch.id,
+                                                              "Accepted"
+                                                          )
+                                                      }
+                                                      disabled={isChanging}
+                                                      className={`px-3 py-2 text-sm rounded-md flex items-center justify-center transition-all bg-white border border-green-200 text-green-700 hover:bg-green-50 ${
+                                                          isChanging
+                                                              ? "opacity-70 cursor-not-allowed"
+                                                              : ""
+                                                      } shadow-sm hover:shadow`}
+                                                  >
+                                                      {isChanging &&
+                                                      selectedPitch.processingStatus ===
+                                                          "Accepted" ? (
+                                                          <svg
+                                                              className="animate-spin -ml-1 mr-2 h-4 w-4 text-green-600"
+                                                              xmlns="http://www.w3.org/2000/svg"
+                                                              fill="none"
+                                                              viewBox="0 0 24 24"
+                                                          >
+                                                              <circle
+                                                                  className="opacity-25"
+                                                                  cx="12"
+                                                                  cy="12"
+                                                                  r="10"
+                                                                  stroke="currentColor"
+                                                                  strokeWidth="4"
+                                                              ></circle>
+                                                              <path
+                                                                  className="opacity-75"
+                                                                  fill="currentColor"
+                                                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                                              ></path>
+                                                          </svg>
+                                                      ) : (
+                                                          <svg
+                                                              className="w-4 h-4 mr-1 text-green-600"
+                                                              fill="none"
+                                                              stroke="currentColor"
+                                                              viewBox="0 0 24 24"
+                                                              xmlns="http://www.w3.org/2000/svg"
+                                                          >
+                                                              <path
+                                                                  strokeLinecap="round"
+                                                                  strokeLinejoin="round"
+                                                                  strokeWidth={
+                                                                      2
+                                                                  }
+                                                                  d="M5 13l4 4L19 7"
+                                                              />
+                                                          </svg>
+                                                      )}
+                                                      Accept
+                                                  </button>
+
+                                                  {/* Reject Button */}
+                                                  <button
+                                                      onClick={() =>
+                                                          handleStatusChange(
+                                                              selectedPitch.id,
+                                                              "Rejected"
+                                                          )
+                                                      }
+                                                      disabled={isChanging}
+                                                      className={`px-3 py-2 text-sm rounded-md flex items-center justify-center transition-all bg-white border border-red-200 text-red-700 hover:bg-red-50 ${
+                                                          isChanging
+                                                              ? "opacity-70 cursor-not-allowed"
+                                                              : ""
+                                                      } shadow-sm hover:shadow`}
+                                                  >
+                                                      {isChanging &&
+                                                      selectedPitch.processingStatus ===
+                                                          "Rejected" ? (
+                                                          <svg
+                                                              className="animate-spin -ml-1 mr-2 h-4 w-4 text-red-600"
+                                                              xmlns="http://www.w3.org/2000/svg"
+                                                              fill="none"
+                                                              viewBox="0 0 24 24"
+                                                          >
+                                                              <circle
+                                                                  className="opacity-25"
+                                                                  cx="12"
+                                                                  cy="12"
+                                                                  r="10"
+                                                                  stroke="currentColor"
+                                                                  strokeWidth="4"
+                                                              ></circle>
+                                                              <path
+                                                                  className="opacity-75"
+                                                                  fill="currentColor"
+                                                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                                              ></path>
+                                                          </svg>
+                                                      ) : (
+                                                          <svg
+                                                              className="w-4 h-4 mr-1 text-red-600"
+                                                              fill="none"
+                                                              stroke="currentColor"
+                                                              viewBox="0 0 24 24"
+                                                              xmlns="http://www.w3.org/2000/svg"
+                                                          >
+                                                              <path
+                                                                  strokeLinecap="round"
+                                                                  strokeLinejoin="round"
+                                                                  strokeWidth={
+                                                                      2
+                                                                  }
+                                                                  d="M6 18L18 6M6 6l12 12"
+                                                              />
+                                                          </svg>
+                                                      )}
+                                                      Reject
+                                                  </button>
+                                              </div>
+                                          ) : selectedPitch.status === 1 ? (
+                                              <div className="text-xs text-green-700 italic mt-2">
+                                                  You can now message the
+                                                  business owner directly.
+                                              </div>
+                                          ) : (
+                                              <div className="text-xs text-gray-500 italic mt-2">
+                                                  {selectedPitch.status === 0
+                                                      ? "This pitch has been rejected and cannot be modified."
+                                                      : selectedPitch.status ===
+                                                        2
+                                                      ? "This pitch's milestone has been released."
+                                                      : ""}
+                                              </div>
+                                          )}
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+
+                          {/* Footer */}
+                          <div className="bg-gray-50 px-6 py-4 border-t border-gray-100 flex justify-end">
+                              <button
+                                  type="button"
+                                  onClick={closeModal}
+                                  className="ml-3 inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:w-auto sm:text-sm transition-colors"
+                              >
+                                  Close
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+
+                  {/* Toast Container */}
+                  <ToastContainer
+                      position="bottom-right"
+                      autoClose={3000}
+                      hideProgressBar={false}
+                      newestOnTop
+                      closeOnClick
+                      rtl={false}
+                      pauseOnFocusLoss
+                      draggable
+                      pauseOnHover
+                      closeButton={({ closeToast }) => (
+                          <button
+                              onClick={closeToast}
+                              className="text-gray-200 hover:text-white focus:outline-none"
+                          >
+                              <X size={16} />
+                          </button>
                       )}
-                      Reject
-                    </button>
-                  </div>
-                ) : selectedPitch.status === 1 ? (
-                  <div className="text-xs text-green-700 italic mt-2">
-                    You can now message the business owner directly.
-                  </div>
-                ) : (
-                  <div className="text-xs text-gray-500 italic mt-2">
-                    {selectedPitch.status === 0
-                      ? "This pitch has been rejected and cannot be modified."
-                      : selectedPitch.status === 2
-                      ? "This pitch's milestone has been released."
-                      : ""}
-                  </div>
-                )}
+                      toastClassName={() =>
+                          "relative bg-green-800 text-white rounded-lg shadow-lg px-4 py-3 mb-3"
+                      }
+                      bodyClassName="text-sm font-medium"
+                      progressClassName="bg-green-300"
+                  />
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="bg-gray-50 px-6 py-4 border-t border-gray-100 flex justify-end">
-          <button
-            type="button"
-            onClick={closeModal}
-            className="ml-3 inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:w-auto sm:text-sm transition-colors"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-
-    {/* Toast Container */}
-    <ToastContainer
-      position="bottom-right"
-      autoClose={3000}
-      hideProgressBar={false}
-      newestOnTop
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      closeButton={({ closeToast }) => (
-        <button onClick={closeToast} className="text-gray-200 hover:text-white focus:outline-none">
-          <X size={16} />
-        </button>
-      )}
-      toastClassName={() => "relative bg-green-800 text-white rounded-lg shadow-lg px-4 py-3 mb-3"}
-      bodyClassName="text-sm font-medium"
-      progressClassName="bg-green-300"
-    />
-  </div>
-)}
+          )}
       </div>
   );
 };

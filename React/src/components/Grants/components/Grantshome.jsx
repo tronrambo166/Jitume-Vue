@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 import {
     Award,
     DollarSign,
@@ -29,7 +28,7 @@ import {
 } from "lucide-react";
 import { useStateContext } from "../../../contexts/contextProvider";
 import axiosClient from "../../../axiosClient";
-import {encode as base64_encode} from "base-64";
+import { encode as base64_encode } from "base-64";
 
 const TujitumeDashboard = () => {
     const [filter, setFilter] = useState("all");
@@ -296,7 +295,7 @@ const TujitumeDashboard = () => {
         try {
             const response = await axiosClient.get("capital/capital-offers");
             const data = response.data?.capital || [];
-            console.log("Capital Offers Data:", data);
+            // console.log("Capital Offers Data:", data);
 
             if (Array.isArray(data)) {
                 const cleanedData = data.map((opportunity) => ({
@@ -344,7 +343,7 @@ const TujitumeDashboard = () => {
         () => [...grants, ...capitalOpportunities],
         [grants, capitalOpportunities]
     );
-    console.log("Opportunities:", opportunities);
+    // console.log("Opportunities:", opportunities);
 
     // Process opportunities for dashboard metrics
     useEffect(() => {
@@ -532,13 +531,21 @@ const TujitumeDashboard = () => {
         } else {
             source = [...grants, ...capitalOpportunities];
         }
+
         return source
             .filter(
                 (item) =>
                     item.deadlineDate &&
                     new Date(item.deadlineDate) > new Date()
             )
-            .map((item) => ({
+            .map((item, idx) => ({
+                // Create a completely unique ID using crypto.randomUUID if available, or fallback
+                id:
+                    typeof crypto !== "undefined" && crypto.randomUUID
+                        ? `${crypto.randomUUID()}_${idx}`
+                        : `deadline_${Date.now()}_${Math.random()
+                              .toString(36)
+                              .substr(2, 16)}_${idx}`,
                 title:
                     item.title ||
                     item.grant_title ||
@@ -549,12 +556,16 @@ const TujitumeDashboard = () => {
                 amount: item.amount || 0,
                 type: item.type, // 'grant' or 'investment'
                 link: "#", // Add actual link if available
+                originalIndex: idx, // Keep track of original index for debugging
             }))
-            .sort(
-                (a, b) => new Date(a.deadlineDate) - new Date(b.deadlineDate)
-            );
+            .sort((a, b) => new Date(a.deadlineDate) - new Date(b.deadlineDate))
+            .map((item, sortedIdx) => ({
+                ...item,
+                // Ensure uniqueness even after sorting by adding sorted index
+                id: `${item.id}_sorted${sortedIdx}`,
+            }));
     }, [user.investor, grants, capitalOpportunities]);
-    
+
     // console.log("Upcoming Deadlines:", upcomingDeadlines);
 
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -1083,6 +1094,7 @@ const TujitumeDashboard = () => {
                                 {filteredOpportunities
                                     .filter((opp) => opp.status !== "Closed")
                                     .map((opp, idx) => {
+                                        const uniqueKey = `${opp.id}_${opp.title}_${idx}`;
                                         const formattedDeadline =
                                             opp.deadlineDate
                                                 ? new Date(
@@ -1098,7 +1110,7 @@ const TujitumeDashboard = () => {
 
                                         return (
                                             <div
-                                                key={opp.id}
+                                                key={uniqueKey}
                                                 className="flex-shrink-0 w-[370px] bg-white border border-neutral-100 rounded-lg p-4 hover:shadow-xl transition transform hover:-translate-y-2 group relative overflow-hidden"
                                                 style={{
                                                     transitionDelay: `${
@@ -1639,7 +1651,7 @@ const TujitumeDashboard = () => {
                                     {upcomingDeadlines.length > 0 ? (
                                         <div className="max-h-40 overflow-y-auto pr-1 divide-y divide-dotted divide-gray-200">
                                             {upcomingDeadlines.map(
-                                                (deadline, idx) => {
+                                                (deadline, index) => {
                                                     const date = new Date(
                                                         deadline.deadlineDate
                                                     );
@@ -1659,12 +1671,13 @@ const TujitumeDashboard = () => {
 
                                                     return (
                                                         <div
-                                                            key={idx}
+                                                            key={deadline.id} // Use only the generated ID, no need for additional index
                                                             onClick={() => {
                                                                 const basePath =
                                                                     "/dashboard/overview";
                                                                 const subPath =
-                                                                    isGrant
+                                                                    deadline.type ===
+                                                                    "grant"
                                                                         ? "grants/discover"
                                                                         : "funding/investments";
                                                                 navigate(

@@ -57,10 +57,10 @@ const PitchesOutlet = ({ grantId }) => {
         }
     }, [statusFilter, pitches]);
 
-    console.log("pitches", pitches);
+    // //console.log("pitches", pitches);
 
     const fetchPitches = async () => {
-        console.log(`[PitchesOutlet] Fetching pitches for grant ID:`, grantId);
+        // //console.log(`[PitchesOutlet] Fetching pitches for grant ID:`, grantId);
 
         try {
             setIsLoading(true);
@@ -74,7 +74,7 @@ const PitchesOutlet = ({ grantId }) => {
                 },
             });
 
-            console.log("[PitchesOutlet] Response data:", response.data);
+            // //console.log("[PitchesOutlet] Response data:", response.data);
 
             // Handle empty response
             if (!response.data) {
@@ -85,7 +85,7 @@ const PitchesOutlet = ({ grantId }) => {
             const pitchesData = response.data.pitches || response.data;
             setPitches(Array.isArray(pitchesData) ? pitchesData : []);
         } catch (err) {
-            console.error("[PitchesOutlet] Error fetching pitches:", err);
+            // //console.error("[PitchesOutlet] Error fetching pitches:", err);
 
             if (err.response) {
                 // Server responded with error status
@@ -124,12 +124,12 @@ const PitchesOutlet = ({ grantId }) => {
     const handleConfirmAction = async () => {
         try {
             setIsLoading(true);
-            console.groupCollapsed(
-                `[Pitch Action] Starting ${modalAction} action for pitch ${selectedPitch.id}`
-            );
-            console.log("Action:", modalAction);
-            console.log("Pitch ID:", selectedPitch.id);
-            console.log("Current pitch data:", selectedPitch);
+            // //console.groupCollapsed(
+            //     `[Pitch Action] Starting ${modalAction} action for pitch ${selectedPitch.id}`
+            // );
+            // //console.log("Action:", modalAction);
+            // //console.log("Pitch ID:", selectedPitch.id);
+            // //console.log("Current pitch data:", selectedPitch);
 
             // Use the correct API endpoint based on the action
             const endpoint =
@@ -137,7 +137,7 @@ const PitchesOutlet = ({ grantId }) => {
                     ? `grant/accept/${selectedPitch.id}`
                     : `grant/reject/${selectedPitch.id}`;
 
-            console.log("Making GET request to:", endpoint);
+            // //console.log("Making GET request to:", endpoint);
 
             const response = await axiosClient.get(endpoint, {
                 headers: {
@@ -146,11 +146,11 @@ const PitchesOutlet = ({ grantId }) => {
                 },
             });
 
-            console.groupCollapsed("Backend Response");
-            console.log("Status:", response.status);
-            console.log("Headers:", response.headers);
-            console.log("Response Data:", response.data);
-            console.groupEnd();
+            // //console.groupCollapsed("Backend Response");
+            // //console.log("Status:", response.status);
+            // //console.log("Headers:", response.headers);
+            // //console.log("Response Data:", response.data);
+            // //console.groupEnd();
 
             // Update local state to reflect the change
             setPitches((prevPitches) =>
@@ -170,47 +170,47 @@ const PitchesOutlet = ({ grantId }) => {
             setShowConfirmModal(false);
             setSelectedPitch(null);
 
-            if (response.data.message) {
-                console.log("Success message:", response.data.message);
-            }
+            // if (response.data.message) {
+            //     //console.log("Success message:", response.data.message);
+            // }
 
             // Refresh data to ensure consistency
-            console.log("Refreshing pitches data...");
+            // //console.log("Refreshing pitches data...");
             await fetchPitches();
 
-            console.groupEnd();
+            //console.groupEnd();
         } catch (err) {
-            console.groupCollapsed(
-                `[Pitch Action Error] ${modalAction} action failed`
-            );
-            console.error("Error details:", err);
+            //console.groupCollapsed(
+            //     `[Pitch Action Error] ${modalAction} action failed`
+            // );
+            //console.error("Error details:", err);
 
             if (err.response) {
-                console.log("Error response status:", err.response.status);
-                console.log("Error response data:", err.response.data);
-                console.log("Error response headers:", err.response.headers);
+                //console.log("Error response status:", err.response.status);
+                //console.log("Error response data:", err.response.data);
+                //console.log("Error response headers:", err.response.headers);
             } else if (err.request) {
-                console.log("No response received:", err.request);
+                //console.log("No response received:", err.request);
             } else {
-                console.log("Request setup error:", err.message);
+                //console.log("Request setup error:", err.message);
             }
 
             const errorMessage = err.response?.data?.message
                 ? `Failed to ${modalAction} pitch: ${err.response.data.message}`
                 : `Failed to ${modalAction} pitch. Please try again.`;
 
-            console.log("User error message:", errorMessage);
+            //console.log("User error message:", errorMessage);
             setError(errorMessage);
 
-            console.groupEnd();
+            //console.groupEnd();
         } finally {
             setIsLoading(false);
-            console.log("Loading state set to false");
+            //console.log("Loading state set to false");
         }
     };
 
     const retryFetch = () => {
-        console.log("[PitchesOutlet] Retrying fetch...");
+        //console.log("[PitchesOutlet] Retrying fetch...");
         setRetryCount((prevCount) => prevCount + 1);
     };
 
@@ -234,11 +234,11 @@ const PitchesOutlet = ({ grantId }) => {
             (pitch) => pitch.id === pitchId
         )?.status;
 
-        console.groupCollapsed(
-            `[Pitch Status Change] Starting status update for pitch ${pitchId}`
-        );
-        console.log("New Status:", newStatus);
-        console.log("Pitch ID:", pitchId);
+        //console.groupCollapsed(
+        //     `[Pitch Status Change] Starting status update for pitch ${pitchId}`
+        // );
+        //console.log("New Status:", newStatus);
+        //console.log("Pitch ID:", pitchId);
 
         try {
             // EXACT endpoint format from working function
@@ -246,7 +246,7 @@ const PitchesOutlet = ({ grantId }) => {
                 newStatus.toLowerCase() === "accepted" ? "accept" : "reject";
             const endpoint = `grant/${action}/${pitchId}`; // No trailing slash!
 
-            console.log("Making GET request to:", endpoint);
+            //console.log("Making GET request to:", endpoint);
             const response = await axiosClient.get(endpoint, {
                 headers: {
                     Accept: "application/json",
@@ -254,10 +254,10 @@ const PitchesOutlet = ({ grantId }) => {
                 },
             });
 
-            console.groupCollapsed("Backend Response");
-            console.log("Status:", response.status);
-            console.log("Response Data:", response.data);
-            console.groupEnd();
+            //console.groupCollapsed("Backend Response");
+            //console.log("Status:", response.status);
+            //console.log("Response Data:", response.data);
+            //console.groupEnd();
 
             // Numeric status codes (1=accept, 2=reject)
             const statusCode = action === "accept" ? 1 : 2;
@@ -283,12 +283,12 @@ const PitchesOutlet = ({ grantId }) => {
 
             toast.success(`Status successfully updated to ${newStatus}`);
             setLastChanged(newStatus);
-            console.groupEnd();
+            //console.groupEnd();
         } catch (error) {
-            console.groupCollapsed(
-                `[Pitch Status Change Error] ${newStatus} action failed`
-            );
-            console.error("Error details:", error);
+            //console.groupCollapsed(
+            //     `[Pitch Status Change Error] ${newStatus} action failed`
+            // );
+            //console.error("Error details:", error);
 
             // Revert changes
             setSelectedPitch((prev) => ({
@@ -309,10 +309,10 @@ const PitchesOutlet = ({ grantId }) => {
                 : "Failed to update status. Please try again.";
 
             toast.error(errorMessage);
-            console.groupEnd();
+            //console.groupEnd();
         } finally {
             setIsChanging(false);
-            console.log("Loading state set to false");
+            //console.log("Loading state set to false");
         }
     };
 
@@ -664,7 +664,7 @@ const PitchCard = ({
     const initiateBusinessOwnerMessage = (businessOwnerId) => {
         // Validate the business owner ID
         if (!businessOwnerId) {
-            console.error("No business owner ID provided");
+            //console.error("No business owner ID provided");
             alert("Error: Unable to message - no business owner ID found");
             return;
         }
@@ -732,10 +732,10 @@ const PitchCard = ({
                         setReleaseError(null);
 
                         try {
-                            console.log(
-                                "Releasing funds for milestone:",
-                                milestoneId
-                            );
+                            //console.log(
+                            //     "Releasing funds for milestone:",
+                            //     milestoneId
+                            // );
 
                             // Navigate to checkout with the specified parameters
                             navigate("/checkout", {
@@ -747,7 +747,7 @@ const PitchCard = ({
                                 },
                             });
                         } catch (error) {
-                            console.error("Error releasing funds:", error);
+                            //console.error("Error releasing funds:", error);
                             $.alert({
                                 title: false,
                                 content: `
@@ -783,7 +783,7 @@ const PitchCard = ({
                     text: "Cancel",
                     btnClass: "btn-default",
                     action: function () {
-                        console.log("Fund release canceled");
+                        //console.log("Fund release canceled");
                     },
                 },
             },

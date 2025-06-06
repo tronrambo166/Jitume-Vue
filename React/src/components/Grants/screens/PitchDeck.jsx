@@ -383,13 +383,11 @@ const filteredPitches = pitches.filter((pitch) => {
     const getStatusColor = (status) => {
         switch (status) {
             case "New":
-                return "bg-gray-100 text-gray-800";
+                return "bg-green-100 text-white"; // Orange
             case "In Review":
-                return "bg-gray-800 text-white";
+                return "bg-[#F59E0B] text-gray-900"; // Your green
             case "Accepted":
-                return "bg-green-100 text-green-800";
-            case "Rejected":
-                return "bg-red-100 text-red-800";
+                return "bg-green-700 text-white"; // Strong green
             default:
                 return "bg-gray-100 text-gray-800";
         }
@@ -485,8 +483,8 @@ const filteredPitches = pitches.filter((pitch) => {
     };
     // Match score colors
     const getMatchColor = (score) => {
-        if (score >= 90) return "bg-green-100 text-green-800";
-        if (score >= 80) return "bg-gray-800 text-white";
+        if (score >= 90) return " bg-green-600 text-white";
+        if (score >= 80) return "bg-[#F59E0B] text-black";
         return "bg-gray-100 text-gray-800";
     };
 
@@ -525,6 +523,7 @@ const filteredPitches = pitches.filter((pitch) => {
                 {/* Dashboard Stats */}
                 <div className=" px-4 sm:px-6 lg:px-2">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
+                        {/* Total Pitches */}
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 md:p-4">
                             <div className="flex items-center justify-between">
                                 <div>
@@ -532,7 +531,7 @@ const filteredPitches = pitches.filter((pitch) => {
                                         Total Pitches
                                     </p>
                                     <p className="text-xl md:text-2xl font-semibold text-gray-800">
-                                        42
+                                        {pitches.length}
                                     </p>
                                 </div>
                                 <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-100 flex items-center justify-center">
@@ -544,10 +543,14 @@ const filteredPitches = pitches.filter((pitch) => {
                             </div>
                             <div className="mt-2 flex items-center text-xs text-green-600">
                                 <TrendingUp size={12} className="mr-1" />
-                                <span>+12% from last month</span>
+                                <span>
+                                    {/* Example: show change vs last month if you have that data */}
+                                    +{pitches.length} this month
+                                </span>
                             </div>
                         </div>
 
+                        {/* Average Match */}
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 md:p-4">
                             <div className="flex items-center justify-between">
                                 <div>
@@ -555,7 +558,19 @@ const filteredPitches = pitches.filter((pitch) => {
                                         Average Match
                                     </p>
                                     <p className="text-xl md:text-2xl font-semibold text-gray-800">
-                                        86%
+                                        {pitches.length > 0
+                                            ? (
+                                                  pitches.reduce(
+                                                      (sum, p) =>
+                                                          sum +
+                                                          (Number(
+                                                              p.matchScore
+                                                          ) || 0),
+                                                      0
+                                                  ) / pitches.length
+                                              ).toFixed(1)
+                                            : "0"}
+                                        %
                                     </p>
                                 </div>
                                 <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-100 flex items-center justify-center">
@@ -564,10 +579,14 @@ const filteredPitches = pitches.filter((pitch) => {
                             </div>
                             <div className="mt-2 flex items-center text-xs text-green-600">
                                 <TrendingUp size={12} className="mr-1" />
-                                <span>+5% from last month</span>
+                                <span>
+                                    {/* Example: show change vs last month if you have that data */}
+                                    +5% from last month
+                                </span>
                             </div>
                         </div>
 
+                        {/* Pending Review */}
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 md:p-4">
                             <div className="flex items-center justify-between">
                                 <div>
@@ -575,7 +594,13 @@ const filteredPitches = pitches.filter((pitch) => {
                                         Pending Review
                                     </p>
                                     <p className="text-xl md:text-2xl font-semibold text-gray-800">
-                                        12
+                                        {
+                                            pitches.filter(
+                                                (p) =>
+                                                    p.status === "New" ||
+                                                    p.status === 0
+                                            ).length
+                                        }
                                     </p>
                                 </div>
                                 <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-100 flex items-center justify-center">
@@ -586,10 +611,21 @@ const filteredPitches = pitches.filter((pitch) => {
                                 </div>
                             </div>
                             <div className="mt-2 flex items-center text-xs text-green-600">
-                                <span>2 due today</span>
+                                <span>
+                                    {/* Example: show due today if you have that info */}
+                                    {
+                                        pitches.filter(
+                                            (p) =>
+                                                p.status === "New" ||
+                                                p.status === 0
+                                        ).length
+                                    }{" "}
+                                    due today
+                                </span>
                             </div>
                         </div>
 
+                        {/* Acceptance Rate */}
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 md:p-4">
                             <div className="flex items-center justify-between">
                                 <div>
@@ -597,7 +633,19 @@ const filteredPitches = pitches.filter((pitch) => {
                                         Acceptance Rate
                                     </p>
                                     <p className="text-xl md:text-2xl font-semibold text-gray-800">
-                                        32%
+                                        {pitches.length > 0
+                                            ? (
+                                                  (pitches.filter(
+                                                      (p) =>
+                                                          p.status ===
+                                                              "Accepted" ||
+                                                          p.status === 1
+                                                  ).length /
+                                                      pitches.length) *
+                                                  100
+                                              ).toFixed(0)
+                                            : "0"}
+                                        %
                                     </p>
                                 </div>
                                 <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-100 flex items-center justify-center">
@@ -609,7 +657,10 @@ const filteredPitches = pitches.filter((pitch) => {
                             </div>
                             <div className="mt-2 flex items-center text-xs text-green-600">
                                 <TrendingUp size={12} className="mr-1" />
-                                <span>+3% from last month</span>
+                                <span>
+                                    {/* Example: show change vs last month if you have that data */}
+                                    +3% from last month
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -623,7 +674,7 @@ const filteredPitches = pitches.filter((pitch) => {
                                         onClick={() => setSelectedTab("all")}
                                         className={`text-xs md:text-sm font-medium px-2 py-1 md:px-3 md:py-1 rounded-lg whitespace-nowrap ${
                                             selectedTab === "all"
-                                                ? "bg-gray-900 text-white"
+                                                ? "bg-green-700 text-white"
                                                 : "text-gray-600 hover:bg-gray-100"
                                         }`}
                                     >

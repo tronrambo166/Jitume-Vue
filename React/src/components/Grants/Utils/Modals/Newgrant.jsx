@@ -25,8 +25,11 @@ import _ from "lodash";
 import MatchScoreModal from "./MatchScoreModal";
 import { ToastContainer } from "react-toastify";
 import { useAlert } from "../../../partials/AlertContext";
-
-export default function GrantApplicationModal({ onClose, grantId,fundingPerBusiness }) {
+export default function GrantApplicationModal({
+    onClose,
+    grantId,
+    fundingPerBusiness,
+}) {
     const [step, setStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submissionSuccess, setSubmissionSuccess] = useState(false);
@@ -38,8 +41,7 @@ export default function GrantApplicationModal({ onClose, grantId,fundingPerBusin
     const [matchScore, setMatchScore] = useState(null);
     const [scoreBreakdown, setScoreBreakdown] = useState(null);
     const [showMatchModal, setShowMatchModal] = useState(false);
-        const { showAlert } = useAlert();
-    
+    const { showAlert } = useAlert();
 
     const [matchPreview, setMatchPreview] = useState(null);
     const [formData, setFormData] = useState({
@@ -138,7 +140,7 @@ export default function GrantApplicationModal({ onClose, grantId,fundingPerBusin
             setShowMatchModal(false);
         }
     }, [isUploading, matchScore]);
-    
+
     const modalRef = useRef();
     // console.log("grantId", grantId);
     // Handle outside click
@@ -178,7 +180,6 @@ export default function GrantApplicationModal({ onClose, grantId,fundingPerBusin
         }));
     };
     // Form handlers
-    
 
     // Submission handler
     const handleFinalSubmit = async () => {
@@ -411,7 +412,6 @@ export default function GrantApplicationModal({ onClose, grantId,fundingPerBusin
         setShowMatchModal(false);
         // console.log("Match score modal closed");
     };
-    
 
     // useEffect(() => {
     //     let score = 0;
@@ -680,36 +680,46 @@ export default function GrantApplicationModal({ onClose, grantId,fundingPerBusin
 
     // Handle file upload
 
-   ;
-   const addMilestone = () => {
-       const currentTotal = formData.milestones.reduce(
-           (sum, m) => sum + (parseFloat(m.amount) || 0),
-           0
-       );
-       if (currentTotal >= fundingPerBusiness) {
-           showAlert(
-               "error",
-               `Cannot add more milestones - total funding would exceed $${fundingPerBusiness}`
-           );
-           return;
-       }
-       setFormData({
-           ...formData,
-           milestones: [
-               ...formData.milestones,
-               {
-                   title: "",
-                   amount: "",
-                   description: "",
-                   date: "",
-                   requiresVerification: false,
-                   deliverables: [],
-               },
-           ],
-       });
-   };
+    const addMilestone = () => {
+        // Remove commas before parsing for all amounts
+        const currentTotal = formData.milestones.reduce(
+            (sum, m) =>
+                sum + (parseFloat((m.amount + "").replace(/,/g, "")) || 0),
+            0
+        );
 
-    
+        // Ensure fundingPerBusiness is a number
+        const fundingLimit =
+            typeof fundingPerBusiness === "string"
+                ? parseFloat(fundingPerBusiness.replace(/,/g, ""))
+                : fundingPerBusiness;
+
+        // Check if adding another milestone would exceed fundingPerBusiness
+        if (currentTotal >= fundingLimit) {
+            showAlert(
+                "error",
+                `Cannot add more milestones - total funding would exceed $${fundingLimit}`
+            );
+            return;
+        }
+
+        // Proceed with adding the milestone
+        setFormData({
+            ...formData,
+            milestones: [
+                ...formData.milestones,
+                {
+                    title: "",
+                    amount: "",
+                    description: "",
+                    date: "",
+                    requiresVerification: false,
+                    deliverables: [],
+                },
+            ],
+        });
+    };
+
     const removeMilestone = (index) => {
         if (formData.milestones.length > 1) {
             setFormData({
@@ -796,14 +806,15 @@ export default function GrantApplicationModal({ onClose, grantId,fundingPerBusin
 
         if (Object.keys(bonusFieldMappings).includes(name)) {
             const bonusKey = bonusFieldMappings[name];
-            let currentBonusPoints = formData.bonusPoints.split(",").filter(Boolean);
+            let currentBonusPoints = formData.bonusPoints
+                .split(",")
+                .filter(Boolean);
             let updatedBonusPoints = checked
                 ? [...new Set([...currentBonusPoints, bonusKey])]
                 : currentBonusPoints.filter((item) => item !== bonusKey);
-        
+
             updatedFormData.bonusPoints = updatedBonusPoints.join(",");
         }
-        
 
         setFormData(updatedFormData);
 
@@ -907,31 +918,56 @@ export default function GrantApplicationModal({ onClose, grantId,fundingPerBusin
 
     // Updated updateMilestone function
     const updateMilestone = (index, field, value, isFileUpload = false) => {
+        // First check if we're updating amount and validate against fundingPerBusiness
+        // ...existing code...
         if (field === "amount") {
-            const newAmount = parseFloat(value) || 0;
+            // Remove commas before parsing
+            const newAmount = parseFloat((value + "").replace(/,/g, "")) || 0;
             const currentTotal = formData.milestones.reduce((sum, m, i) => {
-                return (
-                    sum + (i === index ? newAmount : parseFloat(m.amount) || 0)
-                );
+                const amt =
+                    i === index
+                        ? newAmount
+                        : parseFloat((m.amount + "").replace(/,/g, "")) || 0;
+                return sum + amt;
             }, 0);
-            if (currentTotal > fundingPerBusiness) {
+
+            // Ensure fundingPerBusiness is a number
+            const fundingLimit =
+                typeof fundingPerBusiness === "string"
+                    ? parseFloat(fundingPerBusiness.replace(/,/g, ""))
+                    : fundingPerBusiness;
+
+            if (currentTotal > fundingLimit) {
                 showAlert(
                     "error",
-                    `You have reached the maximum amount of $${fundingPerBusiness}`
+                    `You have reached the maximum amount of $${fundingLimit}`
                 );
                 return; // Prevent the update
             }
         }
+        // ...existing code...
+
+        // Proceed with the original update logic
         const updatedMilestones = [...formData.milestones];
+
         if (isFileUpload) {
             updatedMilestones[index].deliverables = [value];
         } else {
             updatedMilestones[index][field] = value;
         }
-        setFormData({
+
+        const updatedFormData = {
             ...formData,
             milestones: updatedMilestones,
-        });
+        };
+
+        setFormData(updatedFormData);
+
+        if (isFileUpload) {
+            debouncedSendFormData(updatedFormData);
+        } else if (hasDeliverableFile(updatedFormData)) {
+            handleUserActivity(updatedFormData);
+        }
     };
 
     // Your existing sendFormDataToAPI function remains unchanged
@@ -1841,7 +1877,8 @@ Add these props to your input elements:
                                             </div>
                                             <div>
                                                 <h3 className="text-lg font-semibold text-green-800 mb-1">
-                                                    Funding Milestones {fundingPerBusiness}
+                                                    Funding Milestones{" "}
+                                                    {fundingPerBusiness}
                                                 </h3>
                                                 <p className="text-gray-600 leading-relaxed">
                                                     Define clear and verifiable
@@ -2441,7 +2478,6 @@ Add these props to your input elements:
                                         ) : matchScore === null ? (
                                             <span className="text-center">
                                                 Please complete all fields
-                                                
                                             </span>
                                         ) : matchScore <= 50 ? (
                                             <span className="text-center text-xs">

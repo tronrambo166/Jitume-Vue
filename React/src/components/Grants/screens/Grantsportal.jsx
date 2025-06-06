@@ -65,7 +65,7 @@ const TujitumeGrantPortal = () => {
     const [pendingDeleteId, setPendingDeleteId] = useState(null);
     const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
     const [grantCount, setGrantCount] = useState(0);
-z
+
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [selectedApplication, setSelectedApplication] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -197,7 +197,7 @@ z
                 const response = await axiosClient.get("/grant/grants");
 
                 // Log the entire response to inspect the structure
-                console.log("API Response:", response);
+                // console.log("API Response:", response);
 
                 // Access the grants array inside the response data
                 const rawData = Array.isArray(response.data?.grants)
